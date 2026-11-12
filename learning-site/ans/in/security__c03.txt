@@ -1,0 +1,298 @@
+# 章节：03 重入攻击：在你记账之前再取一次钱
+
+## 思考题（共 3 题，按顺序作答）
+Q1. 打开 reentrancy-lab.html，选择"nonReentrant 锁"，再选择"跨函数重入"变体。攻击成功了吗？为什么？
+Q2. 一个 NFT 合约在 mint() 中先调用 _safeMint，再执行 totalMinted++，并用 totalMinted 限制最大供应量。攻击者能多铸造吗？
+Q3. 如果一个合约的所有外部函数都加了 nonReentrant，它还会受到只读重入的影响吗？受影响的是谁？
+
+## 章节正文
+
+# 03 重入攻击：在你记账之前再取一次钱
+
+学习目标：读完本章，你能——
+
+- 用调用栈图解释单函数重入、跨函数重入、跨合约重入和只读重入。
+
+- 写出符合 CEI 模式的提款函数，并说明重入锁的适用边界。
+
+- 在代码审查中找出所有"把控制权交出去"的位置。
+
+前置章节：02 EVM 与 Solidity 安全基础交互实验：reentrancy-lab.html ｜ 示例合约：examples/01-Reentrancy.sol
+
+## 1. 一句话理解
+
+合约在更新自己的账本之前，把控制权交给了外部地址；外部地址趁账本还是旧的，再次调用合约。
+
+重入（Reentrancy）：一个函数执行尚未结束时，被外部调用再次进入。
+
+🎯 打个比方：你去银行取 100 元。柜员先把现金递给你，然后才去改账本。你接过现金的瞬间，你的同伴在旁边窗口说"他要再取 100 元"。柜员查账本——账本上余额还是 100——于是又给了一次。只要柜员一直"先给钱、后改账"，你们就能一直取，直到金库空了。
+
+比喻的局限：现实中柜员是两个人，可以并行。EVM 是单线程的：重入不是"并发"，而是嵌套——第二次取款完整地发生在第一次取款的中间。
+
+## 2. 威胁模型：攻击者控制了什么
+
+重入的前提只有两个：
+
+- 合约在函数中途发起外部调用，被调用方受攻击者控制。
+
+- 外部调用发生时，合约的状态尚未更新到最终值。
+
+会把控制权交给外部的操作：
+
+ | 
+
+ | 操作
+ | 为什么会交出控制权
+
+ | addr.call{value: x}("")
+ | 接收方是合约时，执行它的 receive / fallback
+
+ | IERC20(token).transfer(...)
+ | 代币合约由攻击者部署时，代码任意
+
+ | ERC-777 send / transfer
+ | 触发接收方的 tokensReceived 钩子
+
+ | ERC-721 / ERC-1155 safeTransferFrom、_safeMint
+ | 触发接收方的 onERC721Received / onERC1155Received
+
+ | 闪电贷回调 onFlashLoan
+ | 设计上就是把控制权交给借款人
+
+ | 调用任意用户提供的地址
+ | 包括路由器、钩子、预言机
+
+💡 注意：TRON 上用系统交易 TransferContract 转 TRX，不会执行接收合约的 fallback；用 TriggerSmartContract 附带 callValue 才会执行（TRON 官方开发文档）。Mantle 上 ETH 以 ERC-20 形式（BVM_ETH）存在，转 ETH 不触发 receive，但转原生币 MNT 会触发。同一份代码，在三条链上的回调入口不一样。
+
+## 3. 漏洞机制
+
+### 3.1 单函数重入
+
+// ❌ 漏洞：先转账，后记账
+function withdraw() external {
+    uint256 amt = balances[msg.sender];
+    require(amt > 0, "no balance");
+    (bool ok, ) = msg.sender.call{value: amt}("");   // ① 交出控制权
+    require(ok, "send failed");
+    balances[msg.sender] = 0;                         // ② 太晚了
+}
+
+攻击合约：
+
+contract Attacker {
+    IBank bank;
+    receive() external payable {
+        if (address(bank).balance >= 1 ether) {
+            bank.withdraw();          // 在 ② 之前再次进入
+        }
+    }
+}
+
+[图]
+sequenceDiagram
+  autonumber
+  participant A as Attacker
+  participant B as Bank
+  A->>B: withdraw()（余额记录 1 ETH）
+  B->>A: call{value: 1 ETH}
+  Note over A: receive() 被触发
+  A->>B: withdraw()（余额记录仍是 1 ETH）
+  B->>A: call{value: 1 ETH}
+  A->>B: withdraw() ……
+  Note over B: 金库余额不足，递归停止
+  B-->>A: 最内层返回
+  Note over B: 各层依次执行 balances = 0
+[/图]
+
+读图要点：
+
+- 每一层 withdraw 都读到了旧余额 1 ETH。账本清零发生在所有层返回之后。
+
+- 递归深度受 gas 和调用深度（1024）限制。攻击者会一次取尽量大的金额，减少层数。
+
+- 局限：如果 Bank 先清零再转账（CEI），第二层读到 0，攻击直接失败。
+
+### 3.2 跨函数重入
+
+攻击者不回到 withdraw，而是进入另一个共享同一状态的函数：
+
+function transfer(address to, uint256 amt) external {   // 没有加锁
+    require(balances[msg.sender] >= amt);
+    balances[msg.sender] -= amt;
+    balances[to] += amt;
+}
+
+在 receive() 里，攻击者调用 transfer(同伙, 1 ether)。此时 balances[攻击者] 还没清零，余额被转给同伙。外层 withdraw 返回后才清零——但钱已经同时"转走"和"提走"了。
+
+⚠️ 警告：只给 withdraw 加 nonReentrant 不够。所有读写同一状态的函数都要加同一把锁，或者全部遵循 CEI。
+
+### 3.3 跨合约重入
+
+协议由多个合约组成，它们共享状态（例如金库合约和份额代币合约）。合约 A 的锁挡不住对合约 B 的调用。B 在此刻读到的是 A 尚未更新的状态。
+
+### 3.4 只读重入
+
+只读重入（Read-only Reentrancy）：攻击者在回调中不修改目标合约，而是让第三方协议调用目标合约的 view 函数，读到中间状态。
+
+[图]
+flowchart LR
+  A["攻击者"] -->|"1. 从池子移除流动性"| P["AMM 池<br/>（先转出代币，后更新总量）"]
+  P -->|"2. 回调攻击者<br/>此时储备已减、总量未减"| A
+  A -->|"3. 调用借贷协议"| L["借贷协议"]
+  L -->|"4. 读取 pool.getVirtualPrice()"| P
+  P -->|"5. 返回被扭曲的价格"| L
+  L -->|"6. 按错误价格放贷/清算"| A
+[/图]
+
+读图要点：
+
+- 池子自己的状态最终是对的。出错的是在中间时刻读数据的第三方。
+
+- 池子的 view 函数通常没有加锁，所以 nonReentrant 挡不住。
+
+- 防御方在第三方：读取外部价格前，检查对方的重入锁状态（部分池子提供此接口），或改用不受单笔交易影响的价格源（07 章）。
+
+## 4. 防御方法
+
+### 4.1 CEI 模式（首选）
+
+CEI（Checks-Effects-Interactions）：函数按"检查 → 修改状态 → 外部交互"的顺序编写。
+
+// ✅ 修复：CEI
+function withdraw() external {
+    uint256 amt = balances[msg.sender];          // Checks
+    require(amt > 0, "no balance");
+    balances[msg.sender] = 0;                    // Effects
+    (bool ok, ) = msg.sender.call{value: amt}(""); // Interactions
+    require(ok, "send failed");
+}
+
+### 4.2 重入锁（第二道防线）
+
+// ✅ 修复：OpenZeppelin ReentrancyGuard（或 0.8.24+ 的瞬态存储版本）
+function withdraw() external nonReentrant { ... }
+
+ | 
+
+ | 方案
+ | 优点
+ | 局限
+
+ | CEI
+ | 零开销，从根本上消除中间状态
+ | 复杂函数里难以做到"所有交互都在最后"
+
+ | nonReentrant（存储锁）
+ | 简单，覆盖整个函数
+ | 只保护加了锁的函数；不防只读重入；跨合约要共享锁
+
+ | 瞬态存储锁（transient）
+ | gas 更低
+ | 目标链必须支持 EIP-1153（部署前确认，见 C02）
+
+ | 拉取式支付（Pull Payment）
+ | 用户自己来取，合约不主动推送
+ | 体验差一步
+
+### 4.3 纵深防御
+
+- 把 CEI 当作默认写法。
+
+- 对所有修改共享状态的外部入口加同一把锁。
+
+- 不在 view 函数中暴露"中间态"可读的关键价格；如果必须暴露，提供锁状态查询。
+
+- 用不变量测试验证"合约余额 ≥ Σ 用户余额"在任何调用序列后都成立（12 章）。
+
+## 5. 真实案例
+
+### 5.1 The DAO（2016 年 6 月，以太坊）
+
+- 攻击者利用 splitDAO 先转账、后更新余额的顺序，递归提取资金。
+
+- 约 360 万 ETH（事发时约 6,000 万美元）被转入子 DAO。
+
+- 以太坊社区通过硬分叉回滚，反对者继续维护原链，形成以太坊经典（ETC）。
+
+- 教训：重入在以太坊早期就被发现，但"先给钱、后记账"至今仍反复出现。
+
+### 5.2 Curve / Vyper 编译器重入（2023 年 7 月，以太坊）
+
+- 合约源码写了 @nonreentrant，但 Vyper 0.2.15、0.2.16、0.3.0 生成的锁不正确，不同函数使用了不同的锁槽。
+
+- 攻击者对使用原生 ETH 的池子发起跨函数重入，损失约 7,000 万美元（多方公开复盘）。
+
+- 教训：源码正确不等于字节码正确。审计范围要包括编译器版本，关键协议要做字节码层面的测试。
+
+### 5.3 BNB Chain 扩展：分叉项目的"回调入口"
+
+BNB Chain 上大量项目分叉自以太坊协议。常见模式是：原协议只接受白名单代币，分叉项目放开为"任意代币可上架"，但没有给存款函数加锁。攻击者上架一个自己部署的代币，在 transferFrom 里回调存款函数，同一笔资产被记账两次。详细机制和检查清单见 C01 BNB Chain 专题。
+
+💡 注意："允许任意代币"就等于"允许任意回调"。上架流程本身是安全边界。
+
+### 5.4 以太坊扩展：Fei Rari 与 Penpie
+
+- Fei Rari（2022 年 4 月，约 8,000 万美元）：分叉自 Compound 的借贷池在 borrow 中先用 call 发送 ETH，后写入借款记录。攻击者在回调里调用没有被锁覆盖的 exitMarket()，取回了全部抵押品。这是 3.2 节"跨函数重入"的真实版本。
+
+- Penpie（2024 年 9 月，约 2,700 万美元）：攻击者无许可创建 Pendle 市场，市场使用恶意代币；Penpie 的批量领取奖励函数没有重入锁，攻击者在回调中存入资产，把存款"变成"奖励。
+
+两起事故的根因代码和攻击路径图见 C00 以太坊专题 4.1、4.2 节。
+
+## 6. 审计检查点
+
+-  列出所有外部调用（包括代币转账、NFT 安全转账、回调、低级 call）。
+
+-  每个外部调用之前，所有相关状态都已更新到最终值？
+
+-  所有读写同一状态的入口，是否共享同一把锁？
+
+-  是否有 view 函数在交互期间返回中间状态，并被其他协议用作价格？
+
+-  协议是否支持 ERC-777 或带钩子的代币？如果不支持，是否显式拒绝？
+
+-  编译器版本是否有已知的重入锁 bug？
+
+-  部署链上，原生币转账是否触发 fallback？（TRON、Mantle 与以太坊不同）
+
+## 7. 术语表
+
+ | 
+
+ | 术语
+ | 英文
+ | 定义
+
+ | 重入
+ | Reentrancy
+ | 函数执行尚未结束时被再次进入
+
+ | CEI 模式
+ | Checks-Effects-Interactions
+ | 先检查、再改状态、最后外部交互
+
+ | 重入锁
+ | Reentrancy Guard / Mutex
+ | 函数执行期间拒绝再次进入的标志位
+
+ | 只读重入
+ | Read-only Reentrancy
+ | 第三方在中间时刻读取目标合约的 view 函数
+
+ | 钩子
+ | Hook
+ | 代币标准中，转账时自动调用接收方的函数
+
+ | 拉取式支付
+ | Pull Payment
+ | 合约只记账，由收款人主动提取
+
+## 8. 思考题
+
+- 打开 reentrancy-lab.html，选择"nonReentrant 锁"，再选择"跨函数重入"变体。攻击成功了吗？为什么？
+
+- 一个 NFT 合约在 mint() 中先调用 _safeMint，再执行 totalMinted++，并用 totalMinted 限制最大供应量。攻击者能多铸造吗？
+
+- 如果一个合约的所有外部函数都加了 nonReentrant，它还会受到只读重入的影响吗？受影响的是谁？
+
+下一章：04 访问控制与权限 —— 不该调用的人调用了。
+

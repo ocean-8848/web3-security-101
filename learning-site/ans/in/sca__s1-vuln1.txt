@@ -1,0 +1,193 @@
+# 章节：漏洞图鉴 I：执行流与外部调用
+
+## 思考题（共 3 题，按顺序作答）
+Q1. 在重入实验中只打开"重入锁"，不改代码顺序。为什么攻击失败？如果攻击者改用跨函数重入（回调中调 transfer），锁还有效吗？
+Q2. 只读重入中，被攻击的协议没有做任何外部调用。那么"控制权交出"发生在哪里？
+Q3. 为什么 transfer() 的 2300 Gas 限制不再被推荐作为防重入手段？
+
+## 章节正文
+
+寻门而入 · 1.6
+
+# 漏洞图鉴 I：重入、外部调用与拒绝服务
+
+学习目标区分单函数、跨函数、跨合约、只读四种重入；用 CEI 模式和重入锁修复；识别外部调用导致的 DoS、强制转账和 delegatecall 注入。
+
+前置章节1.2、1.5
+
+交互实验重入攻击单步调试器
+
+## 1. 一句话理解
+
+每一次外部调用，都是把控制权交给一个你不认识的人。在他把控制权还给你之前，你的状态必须已经是"正确的"。
+
+🎯 打个比方：银行柜员先把现金递出窗口，然后才在账本上划掉你的余额。在他低头记账之前，你又递进来一张取款单。账本上的余额还没减，柜员又给你一份现金。
+
+## 2. 漏洞分类坐标
+
+常用的漏洞分类体系有：DASP Top 10（2018）、SWC Registry（智能合约弱点分类，2020 年后基本停止更新，但编号仍被广泛引用）、OWASP Smart Contract Top 10（持续更新）。另外三份按攻击向量整理的清单：Kaden（kadenzipfel/smart-contract-vulnerabilities）、Quillhash Solidity Attack Vectors、RareSkills Smart Contract Security，以及 SCSFG（scsfg.io）智能合约安全指南。建议初学者反复读完全部清单。
+
+ |  | 本手册章节 | 漏洞 | SWC | DASP
+
+ | 1.6 执行流 | 重入 | SWC-107 | 1 Reentrancy
+
+ | 未检查的外部调用返回值 | SWC-104 | 4 Unchecked Return Values
+
+ | 失败调用导致 DoS / 区块 Gas 上限 DoS | SWC-113 / 128 | 5 Denial of Service
+
+ | 委托调用到不可信合约 | SWC-112 | 2 Access Control
+
+ | 意外的 ETH 余额（强制转账） | SWC-132 | —
+
+ | 1.7 权限算术签名 | 访问控制缺失、未保护的 selfdestruct / 提款 | SWC-105 / 106 / 100 | 2 Access Control
+
+ | 整数溢出与精度 | SWC-101 | 3 Arithmetic
+
+ | tx.origin 鉴权 | SWC-115 | 2
+
+ | 签名重放 / 可塑性 | SWC-121 / 117 | —
+
+ | 弱随机数 / 时间戳依赖 | SWC-120 / 116 | 6 / 8
+
+ | 1.8 交易顺序 | 抢跑、夹击、MEV | SWC-114 | 7 Front-Running
+
+## 3. 重入：四种形态
+
+[图]
+flowchart TB
+  E["外部调用把控制权交给攻击者call / ERC777 钩子 / ERC721 回调 / ETH receive"] --> A["单函数重入withdraw 回调里再调 withdraw"]
+  E --> B["跨函数重入withdraw 回调里调 transfer / borrow"]
+  E --> C["跨合约重入回调里调同一系统的另一个合约它们共享未更新的状态"]
+  E --> D["只读重入回调里调第三方协议第三方读取了中间态的 view 函数"]
+  A --> F1["修复：CEI + nonReentrant"]
+  B --> F2["修复：全合约共享同一把锁"]
+  C --> F3["修复：跨合约全局锁 / 先更新所有状态"]
+  D --> F4["修复：view 函数也检查锁集成方检查被读协议的锁状态"]
+[/图]
+
+读图要点
+
+- 单函数重入最容易发现。nonReentrant 只加在一个函数上，挡不住跨函数重入。
+
+- 只读重入最隐蔽：被攻击的协议本身没有外部调用，它只是读了别人的 get_virtual_price()。2022–2023 年多个协议因为读取 Curve 池在 remove_liquidity 回调中的中间价格而被攻击（例如 dForce，2023 年 2 月，约 365 万美元）。
+
+- 2023 年 7 月 Curve 事件：Vyper 编译器 0.2.15、0.2.16、0.3.0 版本的重入锁实现错误，多个池子被重入，损失约 7,000 万美元。源码"看起来"有锁，字节码里没有。
+
+- 局限：重入锁增加约 2,000–5,000 Gas。EIP-1153 瞬态存储（2024 年 Cancun 升级）让锁变便宜。
+
+### 3.1 经典漏洞代码
+
+function withdraw(uint256 amount) external {
+    require(balances[msg.sender] >= amount, "insufficient");
+    (bool ok, ) = msg.sender.call{value: amount}("");   // ① 先交互（Interaction）
+    require(ok);
+    balances[msg.sender] -= amount;                      // ② 后更新状态（Effect）
+}
+
+图 · 先转账后记账的重入新增图解
+
+[图]
+sequenceDiagram
+  participant A as 攻击合约
+  participant V as 漏洞合约
+  A->>V: withdraw(amount)
+  V->>V: 检查余额 >= amount 通过
+  V->>A: call 转出 ETH（先交互）
+  Note over A: receive() 被触发
+  A->>V: 再次 withdraw(amount)
+  V->>V: 余额还没减 检查又通过
+  V->>A: 再次转出 ETH
+  Note over V: 回调全部结束后才执行 余额 -= amount
+  Note over A,V: 修复 CEI 先减余额再转账 加 nonReentrant
+[/图]
+
+读图要点
+- 出错点：错在顺序：外部调用发生在更新余额之前。
+- 风险：每次重入都通过同一个余额检查，金库被反复取款。
+- 关键：交出控制权之前，状态必须已经是正确的。
+- 局限：nonReentrant 只加在一个函数上，挡不住跨函数重入。
+
+修复：CEI 模式——先检查（Checks），再更新状态（Effects），最后外部交互（Interactions）。
+
+function withdraw(uint256 amount) external nonReentrant {
+    require(balances[msg.sender] >= amount, "insufficient");  // Checks
+    balances[msg.sender] -= amount;                           // Effects
+    (bool ok, ) = msg.sender.call{value: amount}("");        // Interactions
+    require(ok);
+}
+
+历史事件：2016 年 6 月 The DAO 被重入，约 360 万 ETH 被转移，以太坊因此硬分叉为 ETH 和 ETC。2022 年 4 月 Fei / Rari Fuse 池因 Compound 分叉代码的跨函数重入损失约 8,000 万美元。2024 年 9 月 Penpie 因奖励领取函数可重入损失约 2,700 万美元。
+
+## 4. 外部调用导致的拒绝服务
+
+ |  | 模式 | 问题 | 修复
+
+ | 推送支付（Push） | 拍卖合约给上一个出价者退款。如果对方是一个 receive() 总是 revert 的合约，没人能再出价（Ethernaut King）。 | 拉取支付（Pull）：记录可提金额，让用户自己提
+
+ | 无界循环 | 遍历一个任何人都能追加的数组。数组变长后，函数超过区块 Gas 上限，永远执行失败。 | 分页处理；限制数组长度；用映射代替数组
+
+ | 黑名单代币 | 批量分发 USDC 时，一个地址被拉黑，整批交易回滚。 | 单个失败不影响整体（try/catch 或记录失败）
+
+ | Gas 不足攻击（griefing） | 中继者提供刚好不够子调用使用的 Gas。子调用失败，但外层继续并标记"已执行"。 | 检查 gasleft()；见 3.2 的 63/64 规则
+
+ | 返回炸弹（return bomb） | 被调用方返回巨大数据，调用方复制返回数据时耗尽 Gas。 | 用汇编限制复制长度（例如 ExcessivelySafeCall）
+
+图 · 推送支付与拉取支付新增图解
+
+[图]
+flowchart TB
+  subgraph PUSH["推送支付 Push"]
+    P1["新出价"] --> P2["合约给上一个出价者退款"]
+    P2 --> P3["对方 receive() 总是 revert"]
+    P3 --> P4["出价交易回滚<br/>没人能再出价"]
+  end
+  subgraph PULL["拉取支付 Pull"]
+    Q1["新出价"] --> Q2["记录上一出价者可提金额"]
+    Q2 --> Q3["用户自己来提款"]
+    Q3 --> Q4["一个人提款失败<br/>不影响别人出价"]
+  end
+[/图]
+
+读图要点
+- 出错点：推送支付把每次出价都绑在一个外部调用的成功上。
+- 风险：一个恶意合约就能让整个拍卖永久卡死（Ethernaut King）。
+- 关键：拉取支付把外部调用拆出去，失败只影响提款者自己。
+
+## 5. 强制转账：余额不是你能控制的
+
+即使合约没有 receive()，攻击者仍能强制给它 ETH：selfdestruct(target)（Cancun 之后仍会转出余额）、作为区块奖励接收地址、在合约部署前预先转账到 CREATE2 地址。
+
+// ❌ 依赖精确余额
+require(address(this).balance == totalDeposits);   // 攻击者转入 1 wei，此函数永久失败
+// ✅ 用内部变量记账，用 >= 比较
+
+## 6. delegatecall 注入与 selfdestruct
+
+- 如果 delegatecall 的目标地址或 calldata 由用户控制，用户能执行任意代码改写存储（Ethernaut Delegation、Preservation）。
+
+- EIP-6780（2024 年 Cancun）之后，selfdestruct 只在"创建合约的同一交易中"才删除代码。其他情况只转出余额。但旧链和部分 L2 行为不同，审计时要确认目标链版本。
+
+- 库合约（被 delegatecall 的合约）如果自己可以被初始化并自毁，所有依赖它的代理都会失效（Parity 2017）。
+
+## 7. 审计检查清单
+
+- 列出所有外部调用点：call、代币转账、NFT safe 转账、预言机读取、回调接口。
+
+- 每个外部调用之后，还有没有状态写入？
+
+- nonReentrant 是否覆盖所有共享同一状态的函数？view 函数是否会被第三方读取？
+
+- 有没有对用户提供的地址执行 call 或 delegatecall？
+
+- 有没有循环遍历用户可增长的数组？
+
+- 有没有使用 address(this).balance 或 token.balanceOf(this) 做关键判断？
+
+## 8. 思考题
+
+- 在重入实验中只打开"重入锁"，不改代码顺序。为什么攻击失败？如果攻击者改用跨函数重入（回调中调 transfer），锁还有效吗？
+
+- 只读重入中，被攻击的协议没有做任何外部调用。那么"控制权交出"发生在哪里？
+
+- 为什么 transfer() 的 2300 Gas 限制不再被推荐作为防重入手段？
+

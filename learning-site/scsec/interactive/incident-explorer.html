@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>合约安全事故浏览器</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .filters { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .stats { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); margin: 12px 0; }
+  .bars { display: flex; flex-direction: column; gap: 6px; }
+  .bar { display: grid; grid-template-columns: 120px minmax(0, 1fr) 90px; gap: 8px; align-items: center; font-size: 13px; cursor: pointer; }
+  .bar .track { height: 14px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
+  .bar .fill { height: 100%; background: var(--accent); border-radius: 4px; }
+  .bar.on .fill { background: var(--sell); }
+  .bar .amt { font-family: var(--mono); text-align: right; color: var(--text-2); }
+  .list { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  .inc { cursor: pointer; display: flex; flex-direction: column; gap: 6px; }
+  .inc:hover { border-color: var(--accent); }
+  .inc .top { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+  .inc .date { font-family: var(--mono); font-size: 12px; color: var(--text-2); }
+  .inc .name { font-weight: 650; font-size: 16px; }
+  .inc .loss { font-family: var(--mono); font-weight: 650; color: var(--sell); font-size: 13px; text-align: right; }
+  .inc .tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .inc .more { display: none; font-size: 13px; border-top: 1px dashed var(--border); padding-top: 6px; }
+  .inc.open .more { display: block; }
+  .inc .more p { margin: 4px 0; }
+  .empty { color: var(--text-2); font-size: 14px; padding: 12px 0; }
+  @media (max-width: 600px) { .bar { grid-template-columns: 88px minmax(0, 1fr) 70px; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="back" href="index.html">← 交互实验目录</a>
+    <h1>合约安全事故浏览器</h1>
+  </header>
+  <p class="lead">按链、根因类别、年份筛选代表性事故。点击卡片展开根因、教训和对应章节。点击条形图中的类别可以直接筛选。配套章节：<a href="../13-incident-casebook.md">13 事故案例库</a>、<a href="../01-security-landscape.md">01 安全全景</a>。</p>
+
+  <div class="card">
+    <h3>怎么玩</h3>
+    <ol class="small">
+      <li>先看"按类别的损失"，找出损失最大的根因。</li>
+      <li>用链筛选器分别查看 BNB Chain、TRON、Mantle 的案例。</li>
+      <li>展开一张卡片，读"一句话根因"和"教训"，再点章节链接深入。</li>
+    </ol>
+    <p class="small muted">数据来自项目方复盘、安全公司分析和主流媒体报道；金额为事发时美元估值约数。TRON 和 Mantle 条目包含"非损失型"事件（审计发现、防御成功、集成风险），金额栏显示为"—"。</p>
+  </div>
+
+  <h2>1. 筛选</h2>
+  <div class="card">
+    <div class="filters">
+      <div><label for="q">搜索</label><input type="text" id="q" placeholder="名称、根因、关键词"></div>
+      <div><label for="chain">链</label><select id="chain"><option value="">全部</option></select></div>
+      <div><label for="cat">根因类别</label><select id="cat"><option value="">全部</option></select></div>
+      <div><label for="sort">排序</label><select id="sort"><option value="date">按时间</option><option value="loss">按损失</option></select></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="k">事件数</span><span class="v" id="sN">0</span></div>
+      <div class="stat"><span class="k">损失合计（约）</span><span class="v" id="sSum">0</span></div>
+      <div class="stat"><span class="k">最大单起</span><span class="v" id="sMax">—</span></div>
+    </div>
+  </div>
+
+  <h2>2. 按类别的损失</h2>
+  <div class="card"><div class="bars" id="bars"></div></div>
+
+  <h2>3. 事件</h2>
+  <div class="list" id="list"></div>
+
+  <footer class="note">本页仅用于学习安全原理，所有数值为示例或公开报道的约数；不要在未授权的合约上做任何测试。</footer>
+</div>
+
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  // loss: 百万美元（约，事发时估值）；null 表示非损失型事件或难以计算
+  const D = [
+    { d: '2016-06', n: 'The DAO', ch: '以太坊', loss: 60, cat: '重入', root: 'splitDAO 先转账、后更新余额，攻击者递归提取。', lesson: '先记账后交互（CEI）；以太坊因此硬分叉，产生 ETC。', ref: ['03'] },
+    { d: '2017-07', n: 'Parity 多签（一）', ch: '以太坊', loss: 30, cat: '访问控制 / 初始化', root: '库合约的 initWallet 可经 delegatecall 被任何人调用，攻击者重置 owner（约 153,037 ETH）。', lesson: '初始化函数必须受保护；fallback 不应把任意调用委托给库。', ref: ['04', '09'] },
+    { d: '2017-11', n: 'Parity 多签（二）', ch: '以太坊', loss: 150, cat: '访问控制 / 初始化', root: '未初始化的库合约被用户接管并自毁，依赖它的钱包全部失效，约 51 万 ETH 被永久冻结。', lesson: '实现合约本身也要初始化或锁死（_disableInitializers）。', ref: ['04', '09'] },
+    { d: '2018-04', n: 'BEC batchOverflow', ch: '以太坊', loss: null, cat: '算术精度', root: 'cnt * _value 乘法溢出为 0，绕过余额检查，凭空铸币；代币价值归零。', lesson: '0.8 之前必须用 SafeMath；0.8 之后审查 unchecked 与类型转换。', ref: ['05'] },
+    { d: '2020-02', n: 'bZx', ch: '以太坊', loss: 0.95, cat: '预言机操纵', root: '使用单一 DEX 价格估值，闪电贷操纵（两次合计约 95 万美元）。', lesson: '不使用一笔交易内可变的价格。', ref: ['07'] },
+    { d: '2021-04', n: 'Uranium Finance', ch: 'BNB Chain', loss: 50, cat: '算术精度', root: '分叉 Uniswap V2 修改手续费时，余额调整项放大到 10000，k 检查仍用 1000²，不变量放宽 100 倍。', lesson: '常数集中定义；分叉改动做差异审计和不变量测试。', ref: ['05', 'C01'] },
+    { d: '2021-05', n: 'PancakeBunny', ch: 'BNB Chain', loss: 45, cat: '预言机操纵', root: '按 PancakeSwap 池储备给 LP 和收益估值并铸造 BUNNY 奖励，闪电贷扭曲储备后大量铸币。', lesson: '铸币逻辑的输入必须抗操纵；LP 用公平储备定价。', ref: ['07', 'C01'] },
+    { d: '2021-05', n: 'Venus（XVS 事件）', ch: 'BNB Chain', loss: 95, cat: '经济设计', root: '低流动性治理代币 XVS 作抵押品，价格快速拉升后回落，清算超过 2 亿美元，坏账超过 9,500 万美元。', lesson: '自有代币与低流动性抵押品要有供应上限和更低抵押率。', ref: ['10', 'C01'] },
+    { d: '2021-08', n: 'Poly Network', ch: '多链', loss: 611, cat: '跨链验证', root: '跨链消息可调用 EthCrossChainData 的 putCurEpochConPubKeyBytes（选择器碰撞），攻击者替换 keeper 公钥。资金后被归还。', lesson: '跨链执行器不能调用特权合约；目标与选择器白名单。', ref: ['11'] },
+    { d: '2021-10', n: 'Cream Finance', ch: '以太坊', loss: 130, cat: '预言机操纵', root: 'yUSD 金库份额价格可被捐赠抬高，协议据此给抵押品估值。', lesson: '份额价格不能读 balanceOf；用内部记账或外部喂价。', ref: ['07'] },
+    { d: '2022-01', n: 'Qubit Bridge', ch: 'BNB Chain', loss: 80, cat: '外部调用', root: 'ETH 资源 ID 对应 tokenAddress = address(0)；对零地址 safeTransferFrom 返回成功，伪造存款后在 BSC 铸造 qXETH 借空资金池。', lesson: '调用前检查目标有代码；原生币与 ERC-20 路径分离。', ref: ['06', 'C01'] },
+    { d: '2022-02', n: 'Wormhole', ch: '多链', loss: 320, cat: '跨链验证', root: 'Solana 侧使用已弃用的指令校验函数，伪造守护者签名验证，铸造约 12 万 wETH。', lesson: '证明 / 签名验证代码需要独立审计与测试向量。', ref: ['11'] },
+    { d: '2022-03', n: 'Ronin Bridge', ch: '多链', loss: 620, cat: '私钥与运营', root: '9 个验证者中 5 把私钥被控制（其中一把来自未撤销的授权）。', lesson: '阈值意义取决于签名人独立性；定期审计签名权。', ref: ['04', '11'] },
+    { d: '2022-04', n: 'Beanstalk', ch: '以太坊', loss: 180, cat: '治理攻击', root: '闪电贷借入投票权，emergencyCommit 在同一交易内通过并执行恶意提案。', lesson: '投票权快照；提案执行经过时间锁。', ref: ['10'] },
+    { d: '2022-05', n: 'Venus（LUNA）', ch: 'BNB Chain', loss: 11, cat: '预言机操纵', root: 'LUNA 喂价触及最低价熔断后停在约 0.1 美元，市场价更低，有人低价买入抵押借款。', lesson: '检查喂价上下限；危机时快速暂停市场。', ref: ['07'] },
+    { d: '2022-08', n: 'Nomad Bridge', ch: '多链', loss: 190, cat: '访问控制 / 初始化', root: '升级时把可信根初始化为 0x00，任何消息都被视为已证明，交易被数百人复制哄抢。', lesson: '零值不能有业务含义；升级交易本身需要审计。', ref: ['09', '11'] },
+    { d: '2022-10', n: 'BSC Token Hub', ch: 'BNB Chain', loss: 570, cat: '跨链验证', root: '攻击者注册为中继者，利用 IAVL 证明校验缺陷伪造消息，铸造 200 万 BNB；约 1 亿多美元被转出，验证者暂停 BSC。', lesson: '中继者白名单；证明验证代码独立审计；系统层风险会传导到应用层。', ref: ['11', 'C01'] },
+    { d: '2023-03', n: 'Euler Finance', ch: '以太坊', loss: 197, cat: '业务逻辑', root: 'donateToReserves 未检查健康因子，配合闪电贷制造坏账并自我清算。资金大部分归还。', lesson: '所有减少抵押品 / 增加债务的路径都要检查健康因子。', ref: ['10'] },
+    { d: '2023-07', n: 'Curve / Vyper', ch: '以太坊', loss: 70, cat: '编译器', root: 'Vyper 0.2.15、0.2.16、0.3.0 的 @nonreentrant 锁实现错误，导致跨函数重入。', lesson: '审计范围包括编译器版本；源码正确不等于字节码正确。', ref: ['03', '12'] },
+    { d: '2024-04', n: 'Mantle op-geth 审计', ch: 'Mantle', loss: null, cat: '客户端 / 审计发现', root: 'OpenZeppelin 审计报告 3 个严重问题（均已修复），包括 ETH 转账缺少溢出检查可无限铸造 BVM_ETH。', lesson: 'L2 客户端是可信计算基础的一部分；"原生币不是 ETH"的设计带来新代码和新攻击面。', ref: ['C03'] },
+    { d: '2025-02', n: 'Bybit（Safe 多签）', ch: '以太坊', loss: 1500, cat: '前端与签名界面', root: 'Safe{Wallet} 前端被篡改，签名人看到正常交易，实际签了 delegatecall 替换多签实现。公开报道归因于 Lazarus。', lesson: '多签防不了"所有人看同一个假界面"；独立解码、delegatecall 白名单。', ref: ['08', '04'] },
+    { d: '2025-02', n: 'mETH 追回 cmETH', ch: 'Mantle', loss: null, cat: '防御成功', root: 'Bybit 被盗资金中的 cmETH 进入 8 小时提款延迟；团队暂停合约，追回 15,000 cmETH（约 4,300 万美元）。', lesson: '延迟 + 暂停是安全参数；同时也是需要披露的中心化权限。', ref: ['10', 'C03'] },
+    { d: '2025-11', n: 'Balancer V2', ch: '多链', loss: 128, cat: '算术精度', root: 'Composable Stable Pool 在 batchSwap 中的舍入误差被反复累积，操纵不变量与 BPT 价格。', lesson: '舍入方向对协议有利；对"重复 N 次"路径做模糊测试。', ref: ['05'] },
+    { d: '持续', n: 'TRON 账户权限篡改', ch: 'TRON', loss: null, cat: '私钥与运营', root: '攻击者拿到私钥后修改 Owner / Active 权限，受害者看得到余额却转不出，新转入的 USDT 被择机转走。', lesson: '定期检查账户权限；不导入他人提供的私钥。', ref: ['04', 'C02'] },
+    { d: '2026', n: 'TRON USDT 返回 false', ch: 'TRON', loss: null, cat: '外部调用', root: 'OpenZeppelin 审计指出 TRON USDT 的 transfer 成功时也返回 false，SafeERC20 推送全部回滚。', lesson: 'TRON 上推送 USDT 用余额差校验；用真实代币合约在测试网测试。', ref: ['06', 'C02'] },
+    { d: '持续', n: 'TRON 失败交易误入账', ch: 'TRON', loss: null, cat: '外部调用', root: '能量不足或回滚的 TRC-20 转账仍上链并有哈希；只看"交易存在"的集成方会误记到账。', lesson: '检查执行结果和代币合约地址；以 (txHash, logIndex) 幂等入账。', ref: ['11', 'C02'] },
+    { d: '2020-10', n: 'Harvest Finance', ch: '以太坊', loss: 33.8, cat: '预言机操纵', root: '金库份额价格依赖 Curve Y 池中的稳定币价格；闪电贷反复"压价存入、抬价赎回"。后归还约 250 万美元。', lesson: '份额估值不能依赖一笔交易内可变的价格；同交易存取要限制。', ref: ['07', 'C00'] },
+    { d: '2021-09', n: 'Compound 提案 62', ch: '以太坊', loss: 80, cat: '升级与应急权限', root: '升级后的奖励逻辑让部分用户可超额领取 COMP（最坏约 28 万枚）；没有紧急开关，修复需约 7 天治理。金额为面临错误发放的上限估计。', lesson: '暂停权与升级权分开；奖励类功能要有独立紧急开关。', ref: ['09', 'C00'] },
+    { d: '2022-04', n: 'Inverse Finance', ch: '以太坊', loss: 15.6, cat: '预言机操纵', root: '自有资金持续推高浅池中的 INV 价格并用垃圾交易抑制套利，TWAP 输出虚高价格（非闪电贷）。', lesson: 'TWAP 挡不住有资本的多区块操纵；浅池资产不作高抵押率抵押品。', ref: ['07', 'C00'] },
+    { d: '2022-04', n: 'Fei Rari（Fuse）', ch: '以太坊', loss: 80, cat: '重入', root: '分叉 Compound 的 borrow 先用 call 发送 ETH 后记账；回调中调用未被锁覆盖的 exitMarket 取回抵押品。', lesson: '改转账方式就改变了重入面；所有共享状态的入口共用一把锁。', ref: ['03', 'C00'] },
+    { d: '2022-04', n: 'Akutars NFT', ch: '以太坊', loss: 34, cat: '外部调用', root: '推送退款可被拒收合约卡死；项目方提款条件比较了错误的变量，永远不成立，11,539.5 ETH 永久锁定。', lesson: '拉取式退款；资金出口必须有端到端测试。', ref: ['06', 'C00'] },
+    { d: '2023-04', n: 'Sushi RouteProcessor2', ch: '以太坊', loss: 3.3, cat: '访问控制 / 初始化', root: '路由中的池子地址由用户填写；恶意"池子"回调时伪造付款人，转走任意授权用户的代币。风险波及 14 条链。', lesson: '回调校验基于计算出的合法地址；持有授权的合约不接受用户可控地址。', ref: ['06', 'C00'] },
+    { d: '2023-11', n: 'KyberSwap Elastic', ch: '以太坊', loss: 48, cat: '算术精度', root: 'deltaL 向下取整而注释要求向上取整，tick 跨越被误判，流动性被重复计算（多链合计）。', lesson: '舍入方向对协议有利；代码与注释不一致是漏洞线索。', ref: ['05', 'C00'] },
+    { d: '2024-07', n: 'WazirX 多签', ch: '以太坊', loss: 230, cat: '前端与签名界面', root: '4/6 多签的签名界面显示日常交易，实际签名数据把多签升级为攻击者控制的版本。', lesson: '独立解码 calldata；升级类操作额外审批。', ref: ['08', 'C00'] },
+    { d: '2024-09', n: 'Penpie', ch: '以太坊', loss: 27, cat: '重入', root: '无许可创建 Pendle 市场（恶意代币）；批量领奖函数无重入锁，回调中存入资产被算成奖励。', lesson: '无许可上架 = 任意回调；余额差记账必须加锁。', ref: ['03', 'C00'] },
+    { d: '2025', n: 'EIP-7702 委托钓鱼', ch: '以太坊', loss: null, cat: '前端与签名界面', root: 'Wintermute 统计超过 80% 的 7702 委托指向复制粘贴的清扫合约；Scam Sniffer 记录一个钱包损失近 15 万美元。', lesson: '钱包清晰展示委托目标；合约不再用 tx.origin / code.length 判断调用者。', ref: ['02', '08', 'C00'] }
+  ];
+  const chains = [...new Set(D.map(x => x.ch))], cats = [...new Set(D.map(x => x.cat))];
+  $('chain').innerHTML += chains.map(c => '<option>' + c + '</option>').join('');
+  $('cat').innerHTML += cats.map(c => '<option>' + c + '</option>').join('');
+  const CH = { '02': '02-evm-solidity-basics', '03': '03-reentrancy', '04': '04-access-control', '05': '05-arithmetic-precision', '06': '06-external-calls-tokens', '07': '07-oracle-flashloan', '08': '08-mev-signatures', '09': '09-upgradeable-proxy', '10': '10-defi-economic-security', '11': '11-cross-chain-bridges', '12': '12-audit-testing-workflow', C00: 'chains/C00-ethereum', C01: 'chains/C01-bnb-chain', C02: 'chains/C02-tron', C03: 'chains/C03-mantle' };
+  // m 的单位是百万美元：100 百万 = 1 亿
+  const fmt = m => {
+    if (m == null) return '—';
+    if (m >= 100) return '约 ' + (m / 100).toLocaleString('zh-CN', { maximumFractionDigits: 2 }) + ' 亿美元';
+    return '约 ' + Math.round(m * 100).toLocaleString('zh-CN') + ' 万美元';
+  };
+  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  function filtered() {
+    const q = $('q').value.trim().toLowerCase(), ch = $('chain').value, cat = $('cat').value;
+    let r = D.filter(x => (!ch || x.ch === ch) && (!cat || x.cat === cat) && (!q || (x.n + x.root + x.lesson + x.cat + x.ch).toLowerCase().includes(q)));
+    if ($('sort').value === 'loss') r.sort((a, b) => (b.loss || 0) - (a.loss || 0));
+    else r.sort((a, b) => a.d.localeCompare(b.d));
+    return r;
+  }
+  function render() {
+    const r = filtered();
+    $('sN').textContent = r.length;
+    const sum = r.reduce((s, x) => s + (x.loss || 0), 0);
+    $('sSum').textContent = sum ? fmt(sum) : '—';
+    const mx = r.filter(x => x.loss).sort((a, b) => b.loss - a.loss)[0];
+    $('sMax').textContent = mx ? mx.n : '—';
+    // bars: over chain filter + search only (not category), so the user can compare categories
+    const q = $('q').value.trim().toLowerCase(), ch = $('chain').value;
+    const base = D.filter(x => (!ch || x.ch === ch) && (!q || (x.n + x.root + x.lesson + x.cat + x.ch).toLowerCase().includes(q)));
+    const by = {};
+    base.forEach(x => { by[x.cat] = (by[x.cat] || 0) + (x.loss || 0); });
+    const ent = Object.entries(by).sort((a, b) => b[1] - a[1]);
+    const top = Math.max(1, ...ent.map(e => e[1]));
+    $('bars').innerHTML = ent.map(([c, v]) => '<div class="bar' + ($('cat').value === c ? ' on' : '') + '" data-cat="' + esc(c) + '" role="button" tabindex="0"><span>' + esc(c) + '</span><span class="track"><span class="fill" style="width:' + (v / top * 100).toFixed(1) + '%"></span></span><span class="amt">' + (v ? fmt(v).replace('约 ', '') : '—') + '</span></div>').join('');
+    $('list').innerHTML = r.length ? r.map((x, i) => '<div class="card inc" data-i="' + D.indexOf(x) + '" tabindex="0"><div class="top"><span class="date">' + x.d + '</span><span class="loss">' + fmt(x.loss) + '</span></div><span class="name">' + esc(x.n) + '</span><span class="tags"><span class="pill info">' + esc(x.ch) + '</span><span class="pill warn">' + esc(x.cat) + '</span></span><div class="more"><p><strong>一句话根因：</strong>' + esc(x.root) + '</p><p><strong>教训：</strong>' + esc(x.lesson) + '</p><p>' + x.ref.map(c => '<a href="../' + CH[c] + '.md">章节 ' + c + ' →</a>').join(' ') + '</p></div></div>').join('') : '<p class="empty">没有符合条件的事件。</p>';
+  }
+  ['q', 'chain', 'cat', 'sort'].forEach(id => $(id).addEventListener('input', render));
+  $('bars').addEventListener('click', e => { const b = e.target.closest('[data-cat]'); if (!b) return; $('cat').value = $('cat').value === b.dataset.cat ? '' : b.dataset.cat; render(); });
+  $('bars').addEventListener('keydown', e => { if (e.key === 'Enter') e.target.click(); });
+  $('list').addEventListener('click', e => { if (e.target.closest('a')) return; const c = e.target.closest('.inc'); if (c) c.classList.toggle('open'); });
+  $('list').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.classList.contains('inc')) e.target.classList.toggle('open'); });
+  render();
+})();
+</script>
+<script>
+/* 在单文件阅读版（handbook.html）的 iframe 中打开时，把章节链接交给外层阅读器处理 */
+(function () {
+  if (window.parent === window) return;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href');
+    if (/\.md(#|$)/.test(h)) { e.preventDefault(); window.parent.postMessage({ cexNavMd: h }, '*'); }
+  });
+})();
+</script>
+</body>
+</html>

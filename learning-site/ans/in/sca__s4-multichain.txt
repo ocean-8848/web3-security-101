@@ -1,0 +1,102 @@
+# 章节：突破局限：多语言与多链
+
+## 思考题（共 2 题，按顺序作答）
+Q1. Solana 程序在 CPI 之后继续使用之前读取的账户数据。为什么要重新加载？
+Q2. TON 中，A 合约给 B 发出转账消息。B 处理失败并 bounce。A 应该如何恢复状态？
+
+## 章节正文
+
+破门而出 · 4.1
+
+# 突破局限：Rust、Move、Cairo、Vyper 与非 EVM 链
+
+学习目标说出每种链 / 语言的执行模型和主要审计关注点；把 EVM 审计经验迁移到新环境；了解账户抽象与 L2 的审计重点。
+
+前置章节融会贯通全部
+
+交互实验多链审计对照卡
+
+## 1. 一句话理解
+
+各条链上，风险的本质相同：权限、算术、外部调用、价格、状态一致性。风险的形态由执行模型决定。学一条新链，先学它的执行模型。
+
+## 2. 执行模型对比
+
+ |  | 环境 | 语言 | 执行模型 | 审计关注点
+
+ | EVM（以太坊、L2、BNB Chain） | Solidity / Vyper | 账户模型；合约自带存储；同步调用 | 重入、delegatecall、存储布局、编译器版本
+
+ | Solana | Rust（Anchor） | 程序无状态；数据在账户里，由调用者传入；CPI 跨程序调用 | 每个传入账户都要校验签名者、所有者和类型；PDA 使用规范 bump；CPI 目标程序要固定
+
+ | Aptos / Sui | Move | 资源类型不可复制、不可丢弃；Sui 以对象为中心 | 能力（ability）和权限对象（Capability）的分配；泛型类型校验；数学库边界（2025 年 Cetus 事件与移位溢出检查有关）
+
+ | Starknet | Cairo | felt252 模素数运算；原生账户抽象；L1↔L2 消息 | felt 运算按模数回绕；L1 消息处理器校验来源
+
+ | Cosmos SDK | Go | 应用链；BeginBlock / EndBlock；IBC | 区块钩子中的 panic 与无界循环会影响链运行；确定性（map 遍历、浮点）
+
+ | TON | FunC / Tact / Tolk | Actor 模型；消息全部异步；bounce 机制 | 异步状态一致性；bounce 消息处理；Gas 与存储费预留
+
+ | 比特币 | Script / Taproot | UTXO；无通用状态 | 脚本条件；Ordinals / BRC-20 依赖链下索引器
+
+ | EVM L2 | Solidity | 排序器 + 向 L1 提交 | 排序器状态检查；L1→L2 地址别名；block.number 语义；操作码支持差异
+
+ | EOS | C++ | 账户与权限分层；通知机制 | 通知来源校验
+
+## 3. Solana 示例：校验签名者
+
+// Anchor：authority 应声明为 Signer，框架会自动检查签名
+#[derive(Accounts)]
+pub struct Withdraw<'info> {
+    #[account(mut, has_one = authority)]
+    pub vault: Account<'info, Vault>,
+    pub authority: Signer<'info>,     // ✅ 不要用未检查的 AccountInfo
+}
+
+EVM 中 msg.sender 天然是"已签名的调用者"。Solana 中账户列表由调用者构造，程序必须自己验证每个账户。
+
+## 4. 账户抽象（ERC-4337 与 EIP-7702）
+
+[图]
+sequenceDiagram
+  participant U as 用户
+  participant BU as Bundler
+  participant EP as EntryPoint
+  participant W as 智能账户
+  participant PM as Paymaster
+  U->>BU: UserOperation（签名）
+  BU->>EP: handleOps([userOps])
+  EP->>W: validateUserOp()：校验签名、nonce
+  EP->>PM: validatePaymasterUserOp()：是否代付 Gas
+  EP->>W: 执行 callData
+  EP->>PM: postOp()：结算
+  EP-->>BU: 补偿 Gas
+[/图]
+
+读图要点
+
+- 验证阶段受 ERC-7562 规则限制：不能依赖会变化的外部状态。
+
+- 签名必须绑定 chainId 和 EntryPoint 地址。
+
+- Paymaster 要防止押金被无效操作消耗。
+
+- 参考：慢雾《账户抽象安全审计 checklist》。EIP-7702 改变了"EOA 没有代码"的假设（见 1.7）。
+
+## 5. 慢雾公开的扩展资料（路线图原文条目）
+
+- 基于区块链的加密货币安全审计指南；Web3 项目安全实践要求。
+
+- EOS 智能合约最佳安全开发指南；Solana 智能合约安全最佳实践；Aptos Move 智能合约审计入门。
+
+- zk-SNARK Groth16 详解；Cairo 0 安全审计实践指南；账户抽象安全审计 checklist。
+
+- 初识 TON：账号、Token、交易与资产安全；Toncoin 智能合约安全最佳实践；探索 Sui：高性能背后的技术与合约安全。
+
+同样重要：Web2 安全（服务端、API、云配置）、移动端安全和密码学。项目后台和钱包都运行在这些基础设施上。
+
+## 6. 思考题
+
+- Solana 程序在 CPI 之后继续使用之前读取的账户数据。为什么要重新加载？
+
+- TON 中，A 合约给 B 发出转账消息。B 处理失败并 bounce。A 应该如何恢复状态？
+

@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A03 交易所自有合约与钱包评估</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .ana .card { font-size: 30px; display: flex; flex-direction: column; gap: 10px; min-height: 260px; }
+  .ana .card .a { color: var(--text-2); font-size: 27px; }
+  .chk { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 28px; }
+  .chk .card { font-size: 28px; padding: 18px 24px; display: flex; flex-direction: column; gap: 6px; }
+  .chk .card .d { color: var(--text-2); font-size: 25px; }
+  .fld { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .fld .card { font-family: var(--mono); font-size: 26px; padding: 14px 16px; text-align: center; }
+  .fld .card small { display: block; font-family: var(--sans); color: var(--text-2); font-size: 22px; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="A03" data-title="交易所自有合约与钱包评估">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 评估篇 · A03</div>
+    <h1>资产 99% 的时间躺在冷钱包，<br>损失发生在<span class="hl">签名的那几秒</span></h1>
+    <div class="hero">
+      <div class="card sell" data-k="1" data-nocur><div class="k">2025-02 · Bybit</div><div class="big">约 14.6 亿$</div><div>签名界面被篡改</div></div>
+      <div class="card warn" data-k="2" data-nocur><div class="k">2024-07 · WazirX</div><div class="big">约 2.3 亿$</div><div>看到的与签的不一致</div></div>
+      <div class="card info" data-k="3" data-nocur><div class="k">2024-10 · Radiant</div><div class="big">约 5,000 万$</div><div>签名人电脑中木马</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到评估篇第3集。这一集讲第一类评估对象，交易所自己的合约和钱包。先记住一句话。交易所的链上资产，绝大部分时间安全地躺在冷钱包里。损失却发生在签一笔交易的那几秒。</li>
+      <li>看三起事故，以下据公开报道。2025年2月，Bybit 冷钱包被盗，约14.6亿美元。签名人看到的界面被篡改了。</li>
+      <li>2024年7月，印度交易所 WazirX 被盗约2.3亿美元。签名人看到的内容，和实际签的数据不一致。</li>
+      <li>2024年10月，借贷协议 Radiant 被盗约5000万美元。签名人的电脑被植入木马。三起事故，合约本身都没有新漏洞。所以本集的重心不是合约代码，而是签名流程。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="像银行运钞" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>交易所金库像银行运钞流程</h2>
+    <div class="ana">
+      <div class="card" data-k="0"><b>金库的锁</b><div class="a">很难撬开</div><div class="hl">→ 多签阈值</div></div>
+      <div class="card sell" data-k="1"><b>伪造调拨单</b><div class="a">押运员按正常流程把钱运出</div><div class="hl">→ 签名界面被篡改</div></div>
+      <div class="card sell" data-k="2"><b>押运员电脑里有木马</b><div class="a">以为签 A，实际签了 B</div><div class="hl">→ 终端被入侵</div></div>
+    </div>
+    <div class="card warn fs30" data-k="3">比喻不准的地方：运钞单可以打电话复核、可以追回。链上交易一旦达到阈值并广播，<b>没有撤回</b>。</div>
+    <ol class="say">
+      <li>打个比方，交易所的金库像银行的运钞流程。金库的锁很难撬开，对应多签的阈值。</li>
+      <li>但劫匪不撬锁。他们伪造一张调拨单，让押运员按正常流程把钱运出来。对应到链上，就是签名界面被篡改。</li>
+      <li>或者，他们在押运员的电脑里装了木马。押运员以为在签 A，实际签了 B。这就是终端被入侵。</li>
+      <li>比喻不准的地方在于，银行的运钞单可以打电话复核，出了事还有机会追回。链上交易一旦达到签名阈值并广播，就没有撤回。</li>
+    </ol>
+  </section>
+
+  <!-- 3 攻击面 -->
+  <section class="scene" data-title="攻击面全景" data-onstep="surfStep">
+    <div class="kicker">攻击面</div>
+    <h2>链上五块，链下四块；损失多在链下</h2>
+    <svg id="surf" width="1640" height="550" viewBox="0 0 1640 550"></svg>
+    <ol class="say">
+      <li>先画出攻击面。链上有五块。热钱包负责日常提币。冷钱包或者多签，负责大额存储。还有充值地址和归集合约，提币和批量转账合约，以及交易所对外部协议的授权。</li>
+      <li>链下有四块。签名服务，可能是多签、MPC 或者硬件安全模块。签名界面，比如多签的网页前端。签名人的电脑。还有部署和升级的流水线。</li>
+      <li>看箭头。签名人在电脑上，通过签名界面，驱动签名服务，最终让冷钱包动起来。冷钱包的升级和换签名人，也要经过部署流水线。</li>
+      <li>红色的四块全在链下。开场那三起事故，加上另一起 DMM，合计损失超过20亿美元，根因都在这里。所以评估的重点，是谁能让冷钱包动，怎么让它动。</li>
+    </ol>
+  </section>
+
+  <!-- 4 钱包与多签合约 -->
+  <section class="scene" data-title="合约层：钱包与多签" data-onstep="marks">
+    <div class="kicker">合约层 · 钱包与多签合约</div>
+    <h2>合约层的五个检查点</h2>
+    <div class="chk">
+      <div class="card" data-k="0"><b>标准实现还是自研</b><div class="d">经过审计的标准实现（如 Safe）优先；自研必须单独深审</div></div>
+      <div class="card sell" data-k="1"><b>实现能否被替换</b><div class="d">谁能升级，有无时间锁 · Bybit：实现被 delegatecall 替换</div></div>
+      <div class="card" data-k="2"><b>所有权转移</b><div class="d">两步式？能否被单笔交易夺取 · Radiant：盲签 transferOwnership</div></div>
+      <div class="card warn" data-k="3"><b>module / guard 扩展点</b><div class="d">Safe 的 module 等于一把额外的钥匙，可绕过签名阈值</div></div>
+      <div class="card" data-k="4"><b>签名验证</b><div class="d">合约签名、零地址、签名可塑性 · 见第 08 章</div></div>
+    </div>
+    <ol class="say">
+      <li>合约层先看钱包和多签合约，有五个检查点。第一，用的是经过审计的标准实现，比如 Safe，还是自研的。自研必须单独深审。</li>
+      <li>第二，实现能不能被替换。谁能升级，有没有时间锁。Bybit 就是这样，一笔 delegatecall 交易把钱包的实现换掉了。</li>
+      <li>第三，所有权转移。是不是两步式，能不能被一笔交易直接夺走。Radiant 的签名人，就是盲签了一笔所有权转移。</li>
+      <li>第四，扩展点。Safe 的 module 可以绕过签名阈值直接执行交易，等于一把额外的钥匙。guard 也会改变签名逻辑。要列出所有已启用的扩展点，逐个评估。</li>
+      <li>第五，签名验证是否正确处理了合约签名、零地址，以及签名可塑性。这些在第8章讲过。</li>
+    </ol>
+  </section>
+
+  <!-- 5 充值归集提币 -->
+  <section class="scene" data-title="合约层：充值、归集、提币" data-onstep="depStep">
+    <div class="kicker">合约层 · 充值入账 · 示例</div>
+    <h2>入账要幂等：同一笔转账，只能记一次</h2>
+    <div class="row">
+      <table class="t sm" style="flex:1.2" id="dep">
+        <thead><tr><th>收到的事件</th><th>按 txHash 去重</th><th>按 (txHash, logIndex) 去重</th></tr></thead>
+        <tbody>
+          <tr><td>0xab… 第 3 条日志 · 500 USDT</td><td class="num">+500</td><td class="num">+500</td></tr>
+          <tr><td>0xab… 第 7 条日志 · 300 USDT</td><td class="num bad">漏记</td><td class="num">+300</td></tr>
+          <tr><td>0xab… 第 3 条日志 · 重放</td><td class="num">忽略</td><td class="num">忽略</td></tr>
+          <tr><td>按序号去重 · 重组后重放</td><td class="num bad">+500 重复</td><td class="num">忽略</td></tr>
+        </tbody>
+      </table>
+      <div class="col" style="flex:0.8" id="depSide"></div>
+    </div>
+    <ol class="say">
+      <li>再看充值。充值入账有一条铁律，幂等。同一笔转账，只能记一次账。来看一个示例。</li>
+      <li>一笔批量转账交易里，有两条转账日志。第3条给用户转500 USDT，第7条转300 USDT。如果只按交易哈希去重，第7条会被当成重复，漏记了300。</li>
+      <li>正确的键是交易哈希加日志序号。两条都入账，同一条日志重放时被忽略。</li>
+      <li>反过来，如果用自增序号之类不稳定的键，链重组后同一事件被重新推送，就会重复入账500。</li>
+      <li>还有两点。识别资产要用代币合约地址，不能用符号，因为任何人都能部署一个叫 USDT 的代币。还要校验交易执行结果。TRON 上就出现过执行失败的交易被当成充值的假充值。确认数要按链设置，考虑重组。</li>
+    </ol>
+  </section>
+
+  <!-- 6 对外授权 -->
+  <section class="scene" data-title="合约层：对外部协议的授权" data-onstep="aprStep">
+    <div class="kicker">合约层 · 授权敞口 · 数字为示例</div>
+    <h2>无限授权：对方出事，你的余额就是敞口</h2>
+    <svg id="apr" width="1640" height="520" viewBox="0 0 1640 520"></svg>
+    <ol class="say">
+      <li>交易所做市、理财或质押时，会给外部协议授权，让对方能从我们的地址划走代币。这里的风险是授权额度。</li>
+      <li>来算一个示例。做市地址里有5000万 USDT，给一个外部协议设置了无限授权。某天这个协议被攻破，攻击者能划走的上限，就是这个地址的全部余额，5000万。</li>
+      <li>改成按需授权。每次只授权本次操作需要的数额，比如100万，用完撤销。同样的事故，敞口降到100万以内。</li>
+      <li>还要看一点。持有授权的内部合约，是否允许调用任意目标和任意数据？如果允许，攻击者可以借它的手，调用代币的转账函数，把授权给它的钱转走。这在第6章讲过。</li>
+    </ol>
+  </section>
+
+  <!-- 7 签名流程评估表 -->
+  <section class="scene" data-title="签名流程评估清单" data-onstep="rowStep">
+    <div class="kicker">重点 · 签名流程评估</div>
+    <h2>多签的安全，不等于 M-of-N</h2>
+    <table class="t sm">
+      <thead><tr><th>环节</th><th>要问的问题</th><th>反面案例</th></tr></thead>
+      <tbody>
+        <tr><td>签名人独立性</td><td>不同的人、组织、地点、设备？实际几方控制？</td><td>Ronin</td></tr>
+        <tr><td>终端安全</td><td>专机专用？能否收文件、装软件、上网？</td><td>Radiant</td></tr>
+        <tr><td>交易构造与展示</td><td>看到的内容和签署的数据是否一致？</td><td>Bybit、WazirX</td></tr>
+        <tr><td>独立解码</td><td>是否用不同于构造方的工具解码核对？</td><td>硬件钱包盲签</td></tr>
+        <tr><td>高危操作审批</td><td>升级、换签名人、delegatecall 额外审批？</td><td>Radiant</td></tr>
+        <tr><td>带外确认</td><td>大额交易通过电话或线下二次核对哈希？</td><td>多数被盗所缺</td></tr>
+        <tr><td>时间锁与限额</td><td>大额转出有延迟？单位时间有上限？</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>评估一个多签托管方案，要看整条签名链路。第一个环节是签名人独立性。N 个签名人，是不是不同的人、不同的组织、不同的地点和设备？实际上有几方在控制？</li>
+      <li>第二是终端安全，签名用的电脑是不是专机专用，能不能收文件、装软件、上网。第三是交易的构造和展示，签名人看到的，和实际签的，是不是一回事。</li>
+      <li>第四是独立解码。签名人是否用一个不同于构造方的工具，自己解码交易数据并逐字段核对。如果硬件钱包无法解析交易内容，签名人就是在盲签。</li>
+      <li>第五，升级、换签名人、delegatecall 这些高危操作，有没有额外的审批。第六是带外确认，大额交易是否通过电话或线下，二次核对交易哈希。</li>
+      <li>第七是时间锁和限额，作为最后的兜底。下面先用一个数字例子，看看签名人独立性为什么排第一。</li>
+    </ol>
+  </section>
+
+  <!-- 8 Ronin -->
+  <section class="scene" data-title="案例：九选五，实际一方" data-onstep="roninStep">
+    <div class="kicker">真实案例 · 2022-03 Ronin 跨链桥 · 据公开报道</div>
+    <h2 id="roH">9 选 5 看起来很稳，实际要攻破几方？</h2>
+    <svg id="ro" width="1640" height="560" viewBox="0 0 1640 560"></svg>
+    <ol class="say">
+      <li>来看 Ronin 跨链桥，以下据公开报道。2022年3月，Ronin 桥被盗约6.2亿美元。它的验证人是9选5，需要5个签名才能放行提款。看起来，攻击者要攻破5个独立的验证人。</li>
+      <li>但这9把钥匙里，有4把由同一家公司运营。攻破这家公司的系统，就同时拿到了4把。</li>
+      <li>还差1把。此前为了分担负载，一个合作的组织曾授权这家公司代为签名，这个授权后来没有撤销。于是第5个签名也能从同一家公司的系统里拿到。</li>
+      <li>算一下。名义上要攻破5方，实际上只要攻破1方。阈值是5，独立方的数量是1。评估多签时，要问的不是有几把钥匙，而是实际有几个独立的控制方。</li>
+    </ol>
+  </section>
+
+  <!-- 9 理想流程 -->
+  <section class="scene" data-title="签名流程的理想形态" data-onstep="seqStep">
+    <div class="kicker">理想形态 · 每个签名人独立完成</div>
+    <h2>不依赖构造系统给的摘要</h2>
+    <svg id="seq" width="1640" height="560" viewBox="0 0 1640 560"></svg>
+    <ol class="say">
+      <li>签名流程的理想形态是这样的。发起人提出转账请求，构造系统生成交易数据和一份人类可读的摘要，发给签名人。</li>
+      <li>关键在接下来几步。签名人不看构造系统给的摘要，而是用一个独立的工具，自己解码交易数据。目标地址、金额、调用的函数，以及是不是 delegatecall。</li>
+      <li>如果是高危操作，再通过带外渠道，比如电话，和发起人核对交易哈希。</li>
+      <li>最后在硬件钱包上，逐字段核对，再签名。每个签名人独立重复这些步骤，达到阈值后广播。</li>
+      <li>这条流程防的是构造系统或界面被攻破。如果所有签名人都只看同一个摘要，那么不管阈值多高，整个多签都退化成一个单点。</li>
+    </ol>
+  </section>
+
+  <!-- 10 独立解码字段 -->
+  <section class="scene" data-title="独立解码：看哪些字段" data-onstep="marks">
+    <div class="kicker">独立解码 · 以 Safe 交易为例</div>
+    <h2>一个字段出现 1，立刻停下</h2>
+    <div class="fld">
+      <div class="card" data-k="0">to<small>目标地址</small></div>
+      <div class="card" data-k="0">value<small>转出原生币</small></div>
+      <div class="card" data-k="0">data<small>函数与参数</small></div>
+      <div class="card sell" data-k="1">operation<small>0 = call · <b class="down">1 = delegatecall</b></small></div>
+      <div class="card" data-k="2">nonce<small>第几笔交易</small></div>
+    </div>
+    <div class="vs">
+      <div class="card good" data-k="1"><h3>operation = 0</h3><div class="fs28">普通调用：在目标合约里执行，<br>改的是目标合约的状态</div></div>
+      <div class="card bad" data-k="1"><h3>operation = 1</h3><div class="fs28">委托调用：目标代码<b>在钱包自己的存储里</b>执行，<br>可以改写实现地址、签名人、阈值</div></div>
+    </div>
+    <div class="card warn fs28" data-k="3">据公开报道，Bybit 那笔交易表面上是转账，实际 operation = 1，钱包实现被替换，随后资金被转走。</div>
+    <ol class="say">
+      <li>独立解码具体看什么？以 Safe 多签的交易为例。先看三个基本字段。to 是目标地址，value 是转出多少原生币，data 是调用哪个函数、带什么参数。</li>
+      <li>最关键的是 operation 这个字段。0 是普通调用，代码在目标合约里执行。1 是委托调用，也就是 delegatecall。目标合约的代码会在钱包自己的存储里执行，可以改写实现地址、签名人和阈值。日常转账几乎用不到委托调用，看到1，立刻停下。</li>
+      <li>还要看 nonce，确认这是第几笔交易，防止有人插队，或者让你签一笔预先准备好的交易。</li>
+      <li>据公开报道，Bybit 那笔交易，界面上显示的是一笔正常的转账。实际的 operation 是1，钱包的实现被替换成攻击者的合约，随后资金被转走。</li>
+    </ol>
+  </section>
+
+  <!-- 11 三起事故映射 -->
+  <section class="scene" data-title="三起事故映射到评估项" data-onstep="rowStep">
+    <div class="kicker">事故 → 评估项</div>
+    <h2>合约没有新漏洞，失守的是"人签了什么"</h2>
+    <table class="t sm">
+      <thead><tr><th>事故</th><th>根因环节</th><th>对应评估项</th></tr></thead>
+      <tbody>
+        <tr><td>Bybit · 2025-02</td><td>签名界面被篡改 → delegatecall 替换实现</td><td>交易展示 · 独立解码 · 高危审批 · 升级机制</td></tr>
+        <tr><td>WazirX · 2024-07</td><td>界面与签名数据不一致 → 多签被升级</td><td>交易展示 · 独立解码 · 带外确认</td></tr>
+        <tr><td>Radiant · 2024-10</td><td>终端被木马入侵 → 盲签所有权转移</td><td>终端安全 · 独立解码 · 所有权两步式</td></tr>
+      </tbody>
+    </table>
+    <div class="card gold fs30" data-k="2">评估托管方案时，把约 <b>60%</b> 的精力放在签名流程上。</div>
+    <ol class="say">
+      <li>把三起事故映射到评估项上。Bybit 的根因是签名界面被篡改，导致一笔 delegatecall 替换了钱包实现。对应的评估项，是交易展示、独立解码、高危操作审批，以及钱包的升级机制。</li>
+      <li>WazirX 的根因是界面和签名数据不一致，多签被升级。对应交易展示、独立解码和带外确认。Radiant 的根因是终端被入侵，签名人盲签了所有权转移。对应终端安全、独立解码，以及所有权转移是否两步式。</li>
+      <li>三起的共同点是，合约本身没有新漏洞，失守的是人签了什么。所以评估一个托管方案，建议把大约六成的精力放在签名流程上。</li>
+    </ol>
+  </section>
+
+  <!-- 12 时间锁与限额 -->
+  <section class="scene" data-title="兜底：时间锁与限额" data-onstep="limStep">
+    <div class="kicker">兜底 · 数字为示例</div>
+    <h2>流程挡不住集体被骗，限额能把损失封顶</h2>
+    <div class="row">
+      <svg id="lim" width="1040" height="540" viewBox="0 0 1040 540"></svg>
+      <div class="col" id="limSide"></div>
+    </div>
+    <ol class="say">
+      <li>流程再严，也挡不住签名人集体被钓鱼，或者被胁迫。所以还要有兜底，就是时间锁和限额。来看一个示例。</li>
+      <li>没有限额时，冷钱包里有3亿美元。一旦签名被骗，一笔交易就能全部转走。</li>
+      <li>加上限额。示例里，冷钱包每24小时最多转出2000万，超过的部分进入48小时时间锁。同样被骗，第一天最多损失2000万。</li>
+      <li>时间锁里的大额转出，会触发告警。只要在48小时内发现并取消，剩下的2亿8000万都保得住。限额的意义，不是防住攻击，而是把最坏结果从全部，变成一个能承受的数字。</li>
+    </ol>
+  </section>
+
+  <!-- 13 交付物 -->
+  <section class="scene" data-title="评估交付物" data-onstep="marks">
+    <div class="kicker">A 类评估的交付物</div>
+    <h2>比普通审计多两项</h2>
+    <div class="steps c3">
+      <div class="card" data-k="0"><span class="n">1</span><b>合约审计报告</b><div class="d">钱包、多签、充值归集、提币合约 · 按 A02 定级</div></div>
+      <div class="card gold" data-k="1"><span class="n">2</span><b>签名流程评估</b><div class="d">按七个环节逐项打分<br>标出所有单点</div></div>
+      <div class="card info" data-k="2"><span class="n">3</span><b>监控与应急需求</b><div class="d">大额转出 · 权限变更 · 冷钱包异动告警<br>移交给 A09</div></div>
+    </div>
+    <div class="card warn fs28" data-k="3">这些攻击多由有国家背景的团队长期策划。按"对方会渗透数月、同时攻破多个签名人"来设防。</div>
+    <ol class="say">
+      <li>最后是交付物。交易所自有资产的评估，比普通审计多两项。第一项是标准的合约审计报告，覆盖钱包、多签、充值归集和提币合约，按第2集的方法定级。</li>
+      <li>第二项是签名流程评估。按刚才的七个环节逐项打分，标出所有单点。</li>
+      <li>第三项是监控和应急需求，包括大额转出、权限变更和冷钱包异动的告警，移交给应急响应，在第9集讲。</li>
+      <li>还要记住一点。据公开报道，这类攻击多由有国家背景的团队长期策划。防御不能假设对方是机会主义者。要假设对方会花几个月渗透，会伪造完整的招聘流程，会同时攻破多个签名人的电脑。</li>
+    </ol>
+  </section>
+
+  <!-- 14 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">交易所资产的重心是<span class="hl">签名流程</span>，不是多签阈值。</li>
+      <li data-step="1">问"实际有几个<span class="hl">独立控制方</span>"；独立解码，看到 operation = 1 立刻停。</li>
+      <li data-step="2">入账幂等、按需授权、<span class="hl">限额与时间锁</span>兜底。</li>
+    </ul>
+    <h2 data-show="3">下一集：A04 DeFi 协议评估</h2>
+    <div class="path" data-show="3">
+      <div class="card info"><div class="n">1</div><b>通用清单</b><div class="d">九类问题，每类对应一起事故</div></div>
+      <div class="card gold"><div class="n">8</div><b>八类协议</b><div class="d">借贷、DEX、稳定币、金库、质押、桥…</div></div>
+      <div class="card buy"><div class="n">2</div><b>两种目标</b><div class="d">自研协议 vs 接入第三方</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，交易所资产评估的重心是签名流程，不是多签阈值。</li>
+      <li>第二，评估多签时，问实际有几个独立的控制方。签名人要独立解码，看到 operation 等于1，立刻停下。</li>
+      <li>第三，合约层做到入账幂等、按需授权，再用限额和时间锁兜底。</li>
+      <li>下一集讲第二类对象，DeFi 协议。先是一张通用清单，再分八类协议逐个讲，最后区分自研协议和接入第三方，两种评估目标。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line, circle, fmt } = K;
+
+  function surfStep(el, st) {
+    const svg = el.querySelector('#surf'); svg.innerHTML = '';
+    rect(svg, 0, 0, 780, 550, { fill: 'rgba(91,156,255,.05)', stroke: C.info, sw: 2 });
+    rect(svg, 860, 0, 780, 550, { fill: st >= 3 ? 'rgba(246,70,93,.07)' : 'rgba(255,255,255,.02)', stroke: st >= 3 ? C.sell : C.line, sw: 2 });
+    T(svg, 390, 36, '链上', C.info, 32, 'middle', true);
+    T(svg, 1250, 36, '链下' + (st >= 3 ? ' · 最大损失来源' : ''), st >= 3 ? C.sell : C.t2, 32, 'middle', true);
+    const on = st >= 0 ? 1 : .15, off = st >= 1 ? 1 : .15;
+    const N = {
+      hw: [40, 70, '热钱包', '日常提币'], cw: [420, 70, '冷钱包 / 多签', '大额存储'],
+      dep: [40, 240, '充值地址', '归集合约'], wd: [420, 240, '提币合约', '批量转账'], apv: [230, 410, '对外部协议的授权', ''],
+    };
+    const O = { dev: [900, 70, '签名人终端', ''], ui: [1270, 70, '签名界面', '多签前端'], sig: [1270, 230, '签名服务', '多签 / MPC / HSM'], dep2: [900, 410, '部署与升级', '流水线'] };
+    Object.values(N).forEach(([x, y, a, b]) => box(svg, x, y, 320, 100, b ? [a, b] : a, { stroke: C.info, op: on }));
+    Object.values(O).forEach(([x, y, a, b]) => box(svg, x, y, 330, 100, b ? [a, b] : a, { stroke: st >= 3 ? C.sell : C.warn, fill: st >= 3 ? C.badFill : C.panel, op: off, sw: st >= 3 ? 4 : 3 }));
+    if (st >= 2) {
+      arrow(svg, 1232, 120, 1268, 120, C.gold, false, 5);
+      arrow(svg, 1435, 172, 1435, 228, C.gold, false, 5);
+      arrow(svg, 1266, 280, 744, 130, C.gold, false, 5);
+      arrow(svg, 896, 450, 744, 165, C.warn, true, 4);
+      T(svg, 906, 388, '升级 / 换签名人', C.warn, 24, 'start');
+      arrow(svg, 200, 238, 200, 172, C.t2, false, 3);
+      arrow(svg, 362, 290, 418, 290, C.t2, false, 3);
+    }
+    if (st >= 3) {
+      rect(svg, 1270, 380, 340, 150, { fill: C.badFill, stroke: C.sell, sw: 4 });
+      T(svg, 1440, 416, 'Bybit · WazirX', C.sell, 28, 'middle', true);
+      T(svg, 1440, 454, 'Radiant · DMM', C.sell, 28, 'middle', true);
+      T(svg, 1440, 500, '合计超 20 亿$', C.text, 28);
+    }
+  }
+
+  function depStep(el, st) {
+    const rows = [...el.querySelectorAll('#dep tbody tr')];
+    const vis = [0, 2, 3, 4, 4][st];
+    rows.forEach((r, i) => { r.classList.toggle('pend', i >= vis); r.classList.toggle('cur', (st === 1 && i === 1) || (st === 2 && i === 2) || (st === 3 && i === 3)); });
+    const side = el.querySelector('#depSide');
+    side.innerHTML = [
+      '<div class="card fs30">一笔批量转账交易<br><span class="muted">含两条转账日志</span></div>',
+      '<div class="card sell fs30">只按 <b>txHash</b> 去重：<br>第 7 条被当成重复，<b>漏记 300</b></div>',
+      '<div class="card buy fs30">键 = <b>(txHash, logIndex)</b><br>两条都入账；重放被忽略</div>',
+      '<div class="card sell fs30">不稳定的键 + 链重组<br>同一事件被重推 → <b>重复 +500</b></div>',
+      '<div class="card info fs28">以<b>合约地址</b>识别资产，不用符号<br>校验<b>执行结果</b>（TRON 假充值）<br>确认数按链设置，考虑重组</div>'][st];
+  }
+
+  function aprStep(el, st) {
+    const svg = el.querySelector('#apr'); svg.innerHTML = '';
+    box(svg, 20, 180, 330, 140, ['做市地址', '余额 5,000 万 USDT'], { stroke: C.info, fs: 32 });
+    box(svg, 1290, 180, 330, 140, ['外部协议', st >= 1 ? '被攻破' : '理财 / 做市'], { stroke: st >= 1 ? C.sell : C.line, fill: st >= 1 ? C.badFill : C.panel, fs: 32, sc: st >= 1 ? C.sell : C.t2 });
+    arrow(svg, 352, 250, 1286, 250, C.t2, true, 3);
+    T(svg, 820, 220, 'approve', C.t2, 26);
+    const W = 900, x0 = 370;
+    if (st >= 1) {
+      rect(svg, x0, 360, W, 56, { fill: 'rgba(246,70,93,.25)', stroke: C.sell, sw: 3 });
+      T(svg, x0 + W / 2, 388, '无限授权 · 敞口 = 全部余额 5,000 万', C.sell, 30, 'middle', true);
+    }
+    if (st >= 2) {
+      rect(svg, x0, 440, W * 0.02 + 4, 56, { fill: C.buy });
+      T(svg, x0 + 40, 468, '按需授权 100 万，用完撤销 · 敞口 ≤ 100 万（2%）', C.buy, 30, 'start', true);
+    }
+    if (st >= 3) {
+      rect(svg, 370, 40, 900, 110, { fill: C.curFill, stroke: C.gold, sw: 3 });
+      T(svg, 820, 78, '持有授权的内部合约，能否调用任意目标与数据？', C.gold, 30, 'middle', true);
+      T(svg, 820, 120, '能 → 攻击者可借它的手调用 transferFrom', C.text, 28);
+    }
+  }
+
+  function roninStep(el, st) {
+    const svg = el.querySelector('#ro'); svg.innerHTML = '';
+    const cx = 520, cy = 290, R = 210;
+    const owner = i => (i < 4 ? 'A' : i === 4 ? 'B' : 'O');
+    for (let i = 0; i < 9; i++) {
+      const a = -Math.PI / 2 + i * 2 * Math.PI / 9, x = cx + R * Math.cos(a), y = cy + R * Math.sin(a);
+      const o = owner(i);
+      let fill = C.panel, stroke = C.info;
+      if (st >= 1 && o === 'A') { fill = C.badFill; stroke = C.sell; }
+      if (st >= 2 && o === 'B') { fill = C.badFill; stroke = C.sell; }
+      circle(svg, x, y, 52, fill, { stroke, sw: 4 });
+      T(svg, x, y, '钥' + (i + 1), C.text, 30, 'middle', true);
+    }
+    if (st >= 1) { T(svg, cx, cy - 40, '4 把：同一家公司', C.sell, 28, 'middle', true); }
+    if (st >= 2) { T(svg, cx, cy + 4, '+1 把：', C.sell, 28, 'middle', true); T(svg, cx, cy + 44, '未撤销的代签授权', C.sell, 28, 'middle', true); }
+    if (st === 0) T(svg, cx, cy, '9 选 5', C.gold, 48, 'middle', true);
+    const sx = 1020;
+    const rows = [['阈值', '5 / 9', 0, C.gold], ['名义上要攻破', '5 方', 0, C.text], ['同一公司控制', '4 把', 1, C.sell], ['未撤销授权', '+1 把', 2, C.sell], ['实际要攻破', '1 方', 3, C.sell]];
+    rows.forEach(([k, v, s, c], i) => {
+      const op = st >= s ? 1 : .12;
+      T(svg, sx, 70 + i * 96, k, C.t2, 28, 'start', false, op);
+      T(svg, 1600, 70 + i * 96, v, c, i === 4 ? 56 : 44, 'end', true, op);
+    });
+    if (st >= 3) { rect(svg, sx - 20, 394, 636, 120, { fill: 'none', stroke: C.sell, sw: 4 }); }
+    T(svg, 1300, 22, '损失约 6.2 亿$ · 据公开报道', C.t2, 26);
+  }
+
+  function seqStep(el, st) {
+    const svg = el.querySelector('#seq'); svg.innerHTML = '';
+    const P = ['发起人', '构造系统', '签名人', '独立解码工具', '带外确认', '硬件钱包'];
+    const X = i => 130 + i * 276;
+    P.forEach((p, i) => { box(svg, X(i) - 120, 4, 240, 58, p, { stroke: i === 2 ? C.gold : C.info, fs: 28 }); line(svg, X(i), 62, X(i), st >= 4 ? 488 : 548, C.line, 3, true); });
+    const M = [
+      [0, 0, 1, '发起转账请求', C.t2], [0, 1, 2, '交易数据 + 可读摘要', C.t2],
+      [1, 2, 3, '不看摘要：自己解码 calldata', C.gold], [1, 3, 2, '目标 · 金额 · 函数 · operation', C.gold],
+      [2, 2, 4, '高危操作：核对交易哈希', C.info], [2, 4, 2, '一致', C.buy],
+      [3, 2, 5, '逐字段核对后签名', C.buy], [3, 5, 1, '每人独立重复 · 达到阈值后广播', C.buy],
+    ];
+    let y = 110;
+    M.forEach(([k, a, b, t, c]) => {
+      if (k > st) return;
+      const op = k === st || st === 4 ? 1 : .55;
+      arrow(svg, X(a) + (b > a ? 8 : -8), y, X(b) + (b > a ? -10 : 10), y, c, false, 3, op);
+      const tx = T(svg, (X(a) + X(b)) / 2, y - 25, t, c, 24, 'middle', k === st, op);
+      tx.setAttribute('stroke', '#0d0e10'); tx.setAttribute('stroke-width', 10); tx.setAttribute('paint-order', 'stroke'); tx.setAttribute('stroke-linejoin', 'round');
+      y += 52;
+    });
+    if (st >= 4) {
+      rect(svg, 260, 498, 1120, 58, { fill: C.badFill, stroke: C.sell, sw: 3 });
+      T(svg, 820, 527, '所有签名人只看同一份摘要 → 多签退化为单点', C.sell, 30, 'middle', true);
+    }
+  }
+
+  function limStep(el, st) {
+    const svg = el.querySelector('#lim'); svg.innerHTML = '';
+    const total = 300, H = 440, y0 = 480, x = 100, w = 220;
+    T(svg, x + w / 2, 30, '没有限额', C.t2, 28);
+    rect(svg, x, y0 - H, w, H, { fill: st >= 1 ? 'rgba(246,70,93,.55)' : C.panel2, stroke: C.line });
+    T(svg, x + w / 2, y0 - H / 2, st >= 1 ? '一笔转走 3 亿' : '冷钱包 3 亿', st >= 1 ? C.text : C.t2, 30, 'middle', true);
+    if (st >= 2) {
+      const x2 = 560;
+      T(svg, x2 + w / 2, 30, '限额 + 时间锁', C.t2, 28);
+      const lost = H * 20 / total;
+      rect(svg, x2, y0 - H, w, H - lost, { fill: st >= 3 ? 'rgba(46,189,133,.45)' : 'rgba(240,185,11,.25)', stroke: C.line });
+      rect(svg, x2, y0 - lost, w, lost, { fill: 'rgba(246,70,93,.75)' });
+      T(svg, x2 + w + 16, y0 - lost / 2, '首日最多 2,000 万', C.sell, 26, 'start', true);
+      T(svg, x2 + w / 2, y0 - H / 2, st >= 3 ? '保住 2.8 亿' : '48 小时时间锁', st >= 3 ? C.text : C.gold, 30, 'middle', true);
+    }
+    line(svg, 60, y0, 1000, y0, C.t2, 3);
+    const side = el.querySelector('#limSide');
+    side.innerHTML = '<div class="stat"><div class="k">每 24 小时上限</div><div class="v hl" style="font-size:48px">2,000 万</div></div>' +
+      '<div class="stat"><div class="k">超出部分</div><div class="v" style="font-size:44px">48 小时锁</div></div>' +
+      (st >= 3 ? '<div class="card buy fs28">告警 → 48 小时内取消<br>最坏结果：从<b>全部</b>变成<b>能承受的数字</b></div>' : '');
+    side.style.opacity = st >= 2 ? 1 : .12;
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

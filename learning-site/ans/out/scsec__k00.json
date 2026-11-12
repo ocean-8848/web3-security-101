@@ -1,0 +1,8 @@
+{
+ "answers": [
+  "因为那把锁没有覆盖所有读写借贷状态的入口，<code>exitMarket()</code> 就在锁外。攻击者在 <code>borrow</code> 发出 ETH 的回调中调用 <code>exitMarket(fUSDC)</code>，此时借款记录还没写入，Comptroller 读到的借款为 0，于是允许退出并取回抵押品。这是跨函数重入。<br>实验中只给 <code>withdraw</code> 加锁，然后从回调里去调用另一个未加锁、读同一状态的函数，你应该看到重入仍然成功，因为锁只保护了一个入口。",
+  "写一个端到端测试：让若干出价者参与拍卖，处理完所有退款后，断言项目方能调用 <code>claimProjectFunds</code> 并提走余额。章节指出这个测试会立刻失败，因为 <code>refundProgress</code> 最多等于出价笔数 <code>_bidIndex</code>，而条件却要求它 ≥ <code>totalBids</code>（NFT 数量之和）。<br>另外对资金出口做不变量测试：「所有退款完成后合约资金必须能被提取」，也能发现。",
+  "更强的校验是不信任「上一次调用的地址」，而是用工厂地址、两个代币和费率计算出合法池子地址，再与 <code>msg.sender</code> 比较（Uniswap V3 的 CallbackValidation 思路，见 <code>examples/08-RouterCallback.sol</code>）。<br>原因：攻击者自己部署的恶意池子不是工厂创建的，算出的地址对不上，回调就会被拒绝。原代码只证明了回调来自刚才调用的地址，而这个地址正是攻击者填的。",
+  "不能。EIP-7702（Pectra）之后，EOA 可以签名委托一段合约代码，委托后的 EOA 可以执行任意代码，也可以回调，所以 <code>msg.sender == tx.origin</code> 不再代表调用者是普通钱包。攻击者可以用委托的 EOA 绕过这个检查。<br>应该改用真正的防护，比如重入锁、CEI 顺序和对价格的多区块抵抗，而不是靠判断是不是 EOA。"
+ ]
+}

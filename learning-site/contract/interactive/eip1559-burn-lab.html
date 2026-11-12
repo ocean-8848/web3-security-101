@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EIP-1559 销毁实验</title>
+<link rel="stylesheet" href="assets/common.css">
+<script src="assets/handbook-nav.js"></script>
+<style>
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 8px 0; }
+  .stats .stat .v { font-size: 18px; word-break: break-all; }
+  .chart { width: 100%; height: auto; display: block; background: var(--surface-2); border-radius: 8px; touch-action: none; cursor: crosshair; }
+  .chart .grid-line { stroke: var(--border); stroke-width: 1; }
+  .chart .t-axis { fill: var(--text-2); font-size: 11px; }
+  .chart .bar { fill: var(--info); opacity: .28; }
+  .chart .bar.over { fill: var(--warn); opacity: .45; }
+  .chart .target { stroke: var(--text-2); stroke-dasharray: 4 4; stroke-width: 1; }
+  .chart .l-base { stroke: var(--accent); stroke-width: 2.4; fill: none; }
+  .chart .l-burn { stroke: var(--sell); stroke-width: 1.8; fill: none; stroke-dasharray: 6 3; }
+  .chart .dot { fill: var(--accent); }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--text-2); margin-top: 6px; }
+  .legend i { display: inline-block; width: 14px; height: 6px; vertical-align: middle; margin-right: 4px; border-radius: 2px; }
+  .formula { font-family: var(--mono); font-size: 13px; background: var(--surface-2); border-radius: 8px; padding: 10px; overflow-x: auto; white-space: pre; }
+  .stack { display: flex; height: 30px; border-radius: 6px; overflow: hidden; margin: 10px 0 4px; background: var(--surface-2); }
+  .stack div { height: 100%; transition: width .3s; min-width: 0; font-size: 11px; line-height: 30px; text-align: center; color: #fff; white-space: nowrap; overflow: hidden; }
+  .stack .s-burn { background: var(--sell); }
+  .stack .s-tip { background: var(--buy); }
+  .stack .s-ref { background: var(--border); color: var(--text-2); }
+  @media (prefers-reduced-motion: reduce) { .stack div { transition: none; } }
+  .tbl-scroll { max-height: 240px; overflow: auto; }
+  .tag { font-size: 11px; color: var(--warn); }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <h1>EIP-1559 销毁实验</h1>
+    <a class="back" href="../02-blockchain-fundamentals.md">配套章节：02 区块链底层（3.7 费用市场）</a>
+    <a class="back" href="../13-tokenomics-business-models.md">配套章节：13 代币经济与商业模式</a>
+    <a class="back" href="../projects/X01-ethereum.md">项目：X01 以太坊</a>
+    <a class="back" href="../projects/X02-bnb-chain.md">项目：X02 BNB Chain</a>
+  </header>
+  <p class="lead">基础费随区块使用率自动涨跌，并且全部销毁。本实验逐块模拟基础费，拆解一笔交易的费用去向，再把销毁量放进净发行公式，最后和 BSC 的按比例销毁对比。</p>
+
+  <div class="callout">
+    <strong>怎么玩</strong>
+    <ol style="margin:6px 0 0; padding-left:20px;">
+      <li>点一个"预设场景"，或拖动"区块数"和"统一使用率"滑块。</li>
+      <li>在图上点击或拖动，可以单独改某一块的使用率。蓝紫线是基础费，红虚线是累计销毁。</li>
+      <li>在 (b) 输入一笔交易的参数，看费用怎样拆成"销毁 + 小费 + 未用上限"。</li>
+      <li>在 (c) 用模拟出的销毁量推算全年，看净发行率是正还是负。</li>
+      <li>在 (d) 拖动 BSC 的销毁比例，和以太坊的销毁占比对比。</li>
+    </ol>
+  </div>
+
+  <h3>预设场景</h3>
+  <div class="btn-row" id="presets">
+    <button type="button" data-p="calm">平静期</button>
+    <button type="button" data-p="jam">拥堵</button>
+    <button type="button" data-p="nft">NFT 抢购</button>
+    <button type="button" data-p="blob">Blob 后低费</button>
+  </div>
+
+  <!-- (a) 逐块模拟 -->
+  <h2>(a) 逐块模拟基础费</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <label for="base0">起始基础费（gwei）</label>
+      <input id="base0" type="number" value="20" min="0.01" step="0.5">
+      <label for="limit">区块 Gas 上限（目标用量 = 上限的 50%）</label>
+      <input id="limit" type="number" value="60000000" min="1000000" step="1000000">
+      <label for="nBlocks">区块数 N</label>
+      <div class="range-row"><input id="nBlocks" type="range" min="1" max="60" step="1" value="20"><output id="nOut">20</output></div>
+      <label for="util">统一使用率（拖动后全部区块设为同一值）</label>
+      <div class="range-row"><input id="util" type="range" min="0" max="100" step="1" value="50"><output id="utilOut">50%</output></div>
+      <label for="avgTip">平均小费（gwei，示例）</label>
+      <input id="avgTip" type="number" value="2" min="0" step="0.1">
+      <div class="btn-row">
+        <button id="jamBtn" class="primary" type="button">🔥 拥堵模式（全部 100%）</button>
+        <button id="emptyBtn" type="button">全部空块（0%）</button>
+      </div>
+      <div class="formula">下一块基础费 = 当前基础费 × (1 + 1/8 × (本块用量 − 目标用量) / 目标用量)
+本块销毁     = 本块用量 × 本块基础费</div>
+    </div>
+    <div class="card">
+      <div class="stats">
+        <div class="stat"><span class="k">第 N 块后的基础费</span><span class="v" id="sEnd">-</span></div>
+        <div class="stat"><span class="k">变化</span><span class="v" id="sChg">-</span></div>
+        <div class="stat"><span class="k">最高基础费</span><span class="v" id="sMax">-</span></div>
+        <div class="stat"><span class="k">累计销毁</span><span class="v down" id="sBurn">-</span></div>
+        <div class="stat"><span class="k">累计小费（给验证者）</span><span class="v up" id="sTip">-</span></div>
+        <div class="stat"><span class="k">销毁占总费用</span><span class="v" id="sShare">-</span></div>
+      </div>
+      <p class="small muted" id="aNote"></p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <svg id="chart" class="chart" viewBox="0 0 640 280" role="img" aria-label="基础费与累计销毁曲线，可点击修改区块使用率"></svg>
+    <div class="legend">
+      <span><i style="background:var(--info);opacity:.5"></i>区块使用率（≤ 50%）</span>
+      <span><i style="background:var(--warn);opacity:.7"></i>区块使用率（&gt; 50%）</span>
+      <span><i style="background:var(--accent)"></i>基础费（左轴，gwei）</span>
+      <span><i style="background:var(--sell)"></i>累计销毁（右轴，ETH）</span>
+      <span><i style="background:var(--text-2)"></i>虚线 = 50% 目标用量</span>
+    </div>
+    <details style="margin-top:8px">
+      <summary class="small">逐块明细</summary>
+      <div class="tbl-scroll table-wrap">
+        <table>
+          <thead><tr><th>块</th><th class="num">使用率</th><th class="num">基础费 gwei</th><th class="num">本块销毁 ETH</th><th class="num">下一块基础费</th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </details>
+  </div>
+
+  <!-- (b) 单笔交易拆解 -->
+  <h2>(b) 单笔交易费用拆解</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <label for="tBase">当前基础费（gwei）</label>
+      <input id="tBase" type="number" value="20" min="0" step="0.1">
+      <div class="btn-row"><button id="useEnd" type="button">用 (a) 第 N 块后的基础费</button><button id="useCh2" type="button">恢复 02 章示例</button></div>
+      <label for="tMax">maxFeePerGas（gwei）</label>
+      <input id="tMax" type="number" value="30" min="0" step="0.5">
+      <label for="tTip">maxPriorityFeePerGas（gwei）</label>
+      <input id="tTip" type="number" value="2" min="0" step="0.1">
+      <label for="tGas">实际消耗 Gas</label>
+      <input id="tGas" type="number" value="21000" min="21000" step="1000">
+    </div>
+    <div class="card">
+      <div class="formula" id="bFormula"></div>
+      <div class="stack" id="stack"></div>
+      <div class="legend">
+        <span><i style="background:var(--sell)"></i>销毁（基础费部分）</span>
+        <span><i style="background:var(--buy)"></i>小费（给出块验证者）</span>
+        <span><i style="background:var(--border)"></i>未用上限（不扣，留在账户）</span>
+      </div>
+      <p class="small" id="bVerdict"></p>
+    </div>
+  </div>
+
+  <!-- (c) 净发行 -->
+  <h2>(c) 净发行计算器</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <label for="supply">期初总供给（枚，示例）</label>
+      <input id="supply" type="number" value="122000000" min="1" step="1000000">
+      <label for="issue">年新增发行（枚，示例）</label>
+      <input id="issue" type="number" value="1000000" min="0" step="10000">
+      <label for="burn">销毁量（枚，示例）</label>
+      <input id="burn" type="number" value="1500" min="0" step="10">
+      <label for="burnUnit">销毁量口径</label>
+      <select id="burnUnit"><option value="day">日均</option><option value="year">全年</option></select>
+      <div class="btn-row">
+        <button id="fromSim" type="button">用 (a) 的平均每块销毁推算日均</button>
+        <button id="ch13" type="button">13 章示例</button>
+      </div>
+      <p class="small muted">推算口径：以太坊每 12 秒一块，一天 86,400 ÷ 12 = 7,200 块。</p>
+    </div>
+    <div class="card">
+      <div class="formula">净发行   = 新增发行 − 销毁
+净发行率 = 净发行 ÷ 期初总供给</div>
+      <div class="stats">
+        <div class="stat"><span class="k">全年销毁</span><span class="v" id="cBurnY">-</span></div>
+        <div class="stat"><span class="k">净发行</span><span class="v" id="cNet">-</span></div>
+        <div class="stat"><span class="k">净发行率</span><span class="v" id="cRate">-</span></div>
+        <div class="stat"><span class="k">盈亏平衡：日均销毁需达到</span><span class="v" id="cBE">-</span></div>
+      </div>
+      <p class="small" id="cVerdict"></p>
+    </div>
+  </div>
+
+  <!-- (d) BSC 对比 -->
+  <h2>(d) 对比：BSC 的 BEP-95 按比例销毁</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <p class="small muted">BSC 的基础费设为 0。用户付的 Gas 费归验证者，BEP-95 再把其中一部分实时销毁。</p>
+      <label for="bscGas">实际消耗 Gas</label>
+      <input id="bscGas" type="number" value="21000" min="21000" step="1000">
+      <label for="bscPrice">Gas 单价（gwei，BNB 计价）<span class="tag">示例 / 以官方为准</span></label>
+      <input id="bscPrice" type="number" value="1" min="0" step="0.05">
+      <label for="bscRatio">BEP-95 销毁比例 <span class="tag">示例；公开资料称 10%，可由治理调整</span></label>
+      <div class="range-row"><input id="bscRatio" type="range" min="0" max="50" step="1" value="10"><output id="bscRatioOut">10%</output></div>
+    </div>
+    <div class="card">
+      <div class="formula" id="dFormula"></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>对比项</th><th class="num">以太坊（取 (b) 参数）</th><th class="num">BSC</th></tr></thead>
+          <tbody id="dBody"></tbody>
+        </table>
+      </div>
+      <p class="small" id="dNote"></p>
+    </div>
+  </div>
+
+  <h2>观察要点</h2>
+  <div class="card">
+    <ol style="margin:0; padding-left:20px;">
+      <li><strong>满块涨 12.5%，空块跌 12.5%，50% 不变。</strong>从 20 gwei 连续 10 个满块后约 64.9 gwei。涨和跌不对称：连涨 5 块再连跌 5 块，回不到起点（1.125⁵ × 0.875⁵ ≈ 0.92）。</li>
+      <li><strong>拥堵时销毁加速。</strong>销毁 = 用量 × 基础费，两个因子同时变大。NFT 抢购预设里，几块满块的销毁量超过平静期几十块。</li>
+      <li><strong>小费不销毁。</strong>02 章示例中，0.000462 ETH 的总费用里 0.00042 ETH 被销毁，只有 0.000042 ETH 给验证者。</li>
+      <li><strong>"通缩"是状态，不是属性。</strong>Blob 后低费预设里销毁很小，净发行率转正。BSC 的销毁比例固定，费用低时销毁也低。</li>
+    </ol>
+  </div>
+  <p class="small muted">相关实验：<a href="tx-lifecycle-lab.html">交易生命周期实验</a>（小费太低时交易卡在内存池）。</p>
+
+  <footer class="note">参数为示例值，用于演示机制；不构成投资建议。公式取自 02 章 3.7 节（EIP-1559，2021 年 8 月伦敦升级）；区块 Gas 上限约 6,000 万（2025 年 11 月公开报道）。真实客户端用整数运算，结果与本页的小数计算有极小差异。BEP-95 比例公开资料称 10%（截至 2026 年 10 月），以 BNB Chain 官方为准。净发行默认值为示例，不是实时链上数据。</footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  var GWEI = 1e-9; // 1 gwei = 10^-9 ETH
+
+  // ---------- 核心计算 ----------
+  // 下一块基础费 = 当前基础费 × (1 + 1/8 × (本块用量 − 目标用量) / 目标用量)
+  function nextBaseFee(baseFee, gasUsed, target) {
+    return baseFee * (1 + (1 / 8) * (gasUsed - target) / target);
+  }
+  // 逐块模拟：utils 为每块使用率（0–1）
+  function simulate(base0, utils, gasLimit, tip) {
+    var target = gasLimit / 2, base = base0, rows = [], cumBurn = 0, cumTip = 0;
+    for (var i = 0; i < utils.length; i++) {
+      var used = gasLimit * utils[i];
+      var burn = used * base * GWEI;      // 本块销毁（ETH）= 用量 × 基础费
+      var tips = used * tip * GWEI;       // 本块小费（ETH）
+      cumBurn += burn; cumTip += tips;
+      var next = nextBaseFee(base, used, target);
+      rows.push({ i: i + 1, util: utils[i], base: base, burn: burn, cumBurn: cumBurn, next: next });
+      base = next;
+    }
+    return { rows: rows, end: base, cumBurn: cumBurn, cumTip: cumTip };
+  }
+  // 单笔交易：实际单价 = min(maxFee, 基础费 + 小费)
+  function txBreakdown(base, maxFee, tip, gas) {
+    if (maxFee < base) return { ok: false };
+    var price = Math.min(maxFee, base + tip);
+    return { ok: true, price: price,
+      fee: gas * price * GWEI,              // 交易费
+      burn: gas * base * GWEI,              // 销毁 = Gas × 基础费
+      tip: gas * (price - base) * GWEI,     // 小费 = Gas × (实际单价 − 基础费)
+      unused: gas * (maxFee - price) * GWEI // 未用上限，不扣
+    };
+  }
+  // 净发行 = 新增发行 − 销毁；净发行率 = 净发行 ÷ 期初总供给
+  function netIssuance(supply, issueYear, burnYear) {
+    var net = issueYear - burnYear;
+    return { net: net, rate: net / supply };
+  }
+  // BSC：费用 = Gas × 单价；销毁 = 费用 × 比例
+  function bscFee(gas, priceGwei, ratio) {
+    var fee = gas * priceGwei * GWEI;
+    return { fee: fee, burn: fee * ratio, val: fee * (1 - ratio) };
+  }
+
+  // ---------- 状态 ----------
+  var utils = [];
+  function setUniform(u, n) { utils = []; for (var i = 0; i < n; i++) utils.push(u); }
+  setUniform(0.5, 20);
+  var last = null;
+
+  function fmt(n, d) { return n.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }); }
+  function eth(n) {
+    if (n === 0) return '0 ETH';
+    var a = Math.abs(n);
+    var d = a >= 100 ? 2 : a >= 1 ? 4 : a >= 0.001 ? 6 : 9;
+    return fmt(n, d).replace(/(\.\d*?)0+$/, '$1').replace(/\.$/, '') + ' ETH';
+  }
+  function coin(n, sym) { return eth(n).replace(' ETH', ' ' + sym); }
+  function pct(x, d) { return (x * 100).toFixed(d === undefined ? 2 : d) + '%'; }
+
+  // ---------- (a) ----------
+  function runA() {
+    var base0 = Math.max(0.01, Number($('base0').value) || 20);
+    var gl = Math.max(1, Number($('limit').value) || 60000000);
+    var tip = Math.max(0, Number($('avgTip').value) || 0);
+    var r = simulate(base0, utils, gl, tip);
+    last = r;
+    var max = r.rows.reduce(function (m, x) { return Math.max(m, x.base, x.next); }, base0);
+    $('sEnd').textContent = fmt(r.end, 3) + ' gwei';
+    var chg = r.end / base0 - 1;
+    $('sChg').textContent = (chg >= 0 ? '+' : '') + pct(chg, 1);
+    $('sChg').className = 'v ' + (chg > 0.0005 ? 'down' : chg < -0.0005 ? 'up' : '');
+    $('sMax').textContent = fmt(max, 3) + ' gwei';
+    $('sBurn').textContent = eth(r.cumBurn);
+    $('sTip').textContent = eth(r.cumTip);
+    $('sShare').textContent = r.cumBurn + r.cumTip > 0 ? pct(r.cumBurn / (r.cumBurn + r.cumTip), 1) : '-';
+    var full = utils.filter(function (u) { return u > 0.5; }).length;
+    $('aNote').textContent = '共 ' + utils.length + ' 块，' + full + ' 块高于目标用量。时间跨度约 ' + (utils.length * 12) + ' 秒（每块 12 秒）。累计销毁 = Σ 每块用量 × 当块基础费。';
+    drawChart(r, base0, max);
+    $('tbody').innerHTML = r.rows.map(function (x) {
+      return '<tr><td>' + x.i + '</td><td class="num">' + Math.round(x.util * 100) + '%</td><td class="num">' + fmt(x.base, 3) +
+        '</td><td class="num">' + fmt(x.burn, 6) + '</td><td class="num">' + fmt(x.next, 3) + '</td></tr>';
+    }).join('');
+    runC();
+  }
+  var CH = { w: 640, h: 280, l: 46, r: 58, t: 24, b: 30 };
+  function el(tag, attrs, text) {
+    var e = document.createElementNS(SVGNS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+  function drawChart(r, base0, max) {
+    var svg = $('chart'); while (svg.firstChild) svg.removeChild(svg.firstChild);
+    var n = utils.length, pw = CH.w - CH.l - CH.r, ph = CH.h - CH.t - CH.b;
+    var bw = pw / n;
+    var yMax = max * 1.1, yMin = 0;
+    var bMax = Math.max(r.cumBurn * 1.1, 1e-9);
+    function yB(v) { return CH.t + ph - (v - yMin) / (yMax - yMin) * ph; }
+    function yU(u) { return CH.t + ph - u * ph; }
+    function yC(v) { return CH.t + ph - v / bMax * ph; }
+    // 网格与左轴
+    for (var g = 0; g <= 4; g++) {
+      var y = CH.t + ph * g / 4;
+      svg.appendChild(el('line', { x1: CH.l, x2: CH.w - CH.r, y1: y, y2: y, 'class': 'grid-line' }));
+      svg.appendChild(el('text', { x: CH.l - 6, y: y + 4, 'text-anchor': 'end', 'class': 't-axis' }, fmt(yMax * (1 - g / 4), yMax < 10 ? 2 : 1)));
+      svg.appendChild(el('text', { x: CH.w - CH.r + 6, y: y + 4, 'class': 't-axis' }, fmt(bMax * (1 - g / 4), bMax < 1 ? 4 : 2)));
+    }
+    // 使用率柱
+    utils.forEach(function (u, i) {
+      svg.appendChild(el('rect', { x: CH.l + i * bw + 1, y: yU(u), width: Math.max(1, bw - 2), height: CH.t + ph - yU(u), 'class': 'bar' + (u > 0.5 ? ' over' : '') }));
+    });
+    svg.appendChild(el('line', { x1: CH.l, x2: CH.w - CH.r, y1: yU(0.5), y2: yU(0.5), 'class': 'target' }));
+    // 基础费折线（每块的基础费，最后一点为第 N 块后的值）
+    var pts = r.rows.map(function (x, i) { return (CH.l + (i + 0.5) * bw).toFixed(1) + ',' + yB(x.base).toFixed(1); });
+    pts.push((CH.l + (n + 0.5) * bw - bw / 2).toFixed(1) + ',' + yB(r.end).toFixed(1));
+    svg.appendChild(el('polyline', { points: pts.join(' '), 'class': 'l-base' }));
+    // 累计销毁
+    var cp = r.rows.map(function (x, i) { return (CH.l + (i + 1) * bw).toFixed(1) + ',' + yC(x.cumBurn).toFixed(1); });
+    cp.unshift(CH.l + ',' + yC(0));
+    svg.appendChild(el('polyline', { points: cp.join(' '), 'class': 'l-burn' }));
+    // 横轴
+    var step = Math.ceil(n / 10);
+    for (var i = 0; i < n; i += step) svg.appendChild(el('text', { x: CH.l + (i + 0.5) * bw, y: CH.h - 10, 'text-anchor': 'middle', 'class': 't-axis' }, String(i + 1)));
+    svg.appendChild(el('text', { x: CH.l, y: CH.t - 10, "class": "t-axis" }, "gwei"));
+    svg.appendChild(el('text', { x: CH.w - CH.r + 6, y: CH.t - 10, 'class': 't-axis' }, 'ETH'));
+  }
+  // 点击 / 拖动图表修改单块使用率
+  (function () {
+    var svg = $('chart'), dragging = false;
+    function setFromEvent(e) {
+      var rect = svg.getBoundingClientRect();
+      var x = (e.clientX - rect.left) / rect.width * CH.w;
+      var y = (e.clientY - rect.top) / rect.height * CH.h;
+      var pw = CH.w - CH.r - CH.l, ph = CH.h - CH.t - CH.b;
+      var i = Math.floor((x - CH.l) / (pw / utils.length));
+      if (i < 0 || i >= utils.length) return;
+      var u = Math.round(Math.min(1, Math.max(0, (CH.t + ph - y) / ph)) * 20) / 20; // 5% 步进
+      utils[i] = u; runA();
+    }
+    svg.addEventListener('pointerdown', function (e) { dragging = true; svg.setPointerCapture(e.pointerId); setFromEvent(e); });
+    svg.addEventListener('pointermove', function (e) { if (dragging) setFromEvent(e); });
+    svg.addEventListener('pointerup', function () { dragging = false; });
+    svg.addEventListener('pointercancel', function () { dragging = false; });
+  })();
+
+  $('nBlocks').addEventListener('input', function () {
+    var n = Number(this.value); $('nOut').textContent = n;
+    var lastU = utils.length ? utils[utils.length - 1] : 0.5;
+    while (utils.length < n) utils.push(lastU);
+    utils.length = n; runA();
+  });
+  $('util').addEventListener('input', function () {
+    $('utilOut').textContent = this.value + '%'; setUniform(Number(this.value) / 100, Number($('nBlocks').value)); runA();
+  });
+  $('jamBtn').addEventListener('click', function () { $('util').value = 100; $('utilOut').textContent = '100%'; setUniform(1, Number($('nBlocks').value)); runA(); });
+  $('emptyBtn').addEventListener('click', function () { $('util').value = 0; $('utilOut').textContent = '0%'; setUniform(0, Number($('nBlocks').value)); runA(); });
+  ['base0', 'limit', 'avgTip'].forEach(function (id) { $(id).addEventListener('input', runA); });
+
+  // ---------- (b) ----------
+  function runB() {
+    var base = Number($('tBase').value) || 0, maxFee = Number($('tMax').value) || 0;
+    var tip = Number($('tTip').value) || 0, gas = Math.max(0, Number($('tGas').value) || 0);
+    var r = txBreakdown(base, maxFee, tip, gas);
+    if (!r.ok) {
+      $('bFormula').textContent = 'maxFeePerGas (' + maxFee + ') < 基础费 (' + base + ')';
+      $('stack').innerHTML = '';
+      $('bVerdict').innerHTML = '<span class="down">⚠️ 上限低于基础费：这笔交易不能被打包。</span>它会留在内存池，直到基础费跌到上限以下，或你提高上限替换它。';
+      runD(); return;
+    }
+    var p = r.price;
+    $('bFormula').textContent =
+      '实际单价 = min(' + maxFee + ', ' + base + ' + ' + tip + ') = ' + fmt(p, 4).replace(/\.?0+$/, '') + ' gwei\n' +
+      '交易费   = ' + gas.toLocaleString() + ' × ' + fmt(p, 4).replace(/\.?0+$/, '') + ' = ' + eth(r.fee) + '\n' +
+      '销毁     = ' + gas.toLocaleString() + ' × ' + base + ' = ' + eth(r.burn) + '\n' +
+      '小费     = ' + gas.toLocaleString() + ' × ' + fmt(p - base, 4).replace(/\.?0+$/, '') + ' = ' + eth(r.tip) + '\n' +
+      '未用上限 = ' + gas.toLocaleString() + ' × ' + fmt(maxFee - p, 4).replace(/\.?0+$/, '') + ' = ' + eth(r.unused) + '（不扣）';
+    var tot = r.burn + r.tip + r.unused || 1;
+    $('stack').innerHTML =
+      '<div class="s-burn" style="width:' + (r.burn / tot * 100) + '%">销毁 ' + pct(r.burn / tot, 0) + '</div>' +
+      '<div class="s-tip" style="width:' + (r.tip / tot * 100) + '%">小费</div>' +
+      '<div class="s-ref" style="width:' + (r.unused / tot * 100) + '%">未用</div>';
+    var capped = base + tip > maxFee;
+    $('bVerdict').innerHTML = '实际扣费中 <strong>' + pct(r.fee ? r.burn / r.fee : 0, 1) + '</strong> 被销毁。' +
+      (capped ? ' <span class="tag">上限封顶：小费被压缩为 ' + fmt(maxFee - base, 4).replace(/\.?0+$/, '') + ' gwei。</span>' : '');
+    runD();
+  }
+  ['tBase', 'tMax', 'tTip', 'tGas'].forEach(function (id) { $(id).addEventListener('input', runB); });
+  $('useEnd').addEventListener('click', function () { if (last) { $('tBase').value = Number(last.end.toFixed(4)); runB(); } });
+  $('useCh2').addEventListener('click', function () { $('tBase').value = 20; $('tMax').value = 30; $('tTip').value = 2; $('tGas').value = 21000; runB(); });
+
+  // ---------- (c) ----------
+  function runC() {
+    var supply = Number($('supply').value) || 1, issue = Number($('issue').value) || 0, burn = Number($('burn').value) || 0;
+    var burnY = $('burnUnit').value === 'day' ? burn * 365 : burn;
+    var r = netIssuance(supply, issue, burnY);
+    $('cBurnY').textContent = fmt(burnY, 0) + ' 枚';
+    $('cNet').textContent = (r.net >= 0 ? '+' : '') + fmt(r.net, 0) + ' 枚';
+    $('cRate').textContent = (r.rate >= 0 ? '+' : '') + pct(r.rate, 3);
+    $('cRate').className = 'v ' + (r.rate < 0 ? 'up' : r.rate > 0 ? 'down' : '');
+    $('cBE').textContent = fmt(issue / 365, 0) + ' 枚/天';
+    $('cVerdict').textContent = r.net > 0 ? '销毁少于新增发行：供给净增加（通胀）。' : r.net < 0 ? '销毁多于新增发行：供给净减少（通缩）。' : '销毁正好抵消发行：供给不变。';
+  }
+  ['supply', 'issue', 'burn', 'burnUnit'].forEach(function (id) { $(id).addEventListener('input', runC); });
+  $('fromSim').addEventListener('click', function () {
+    if (!last || !utils.length) return;
+    var perBlock = last.cumBurn / utils.length;
+    $('burnUnit').value = 'day';
+    $('burn').value = Math.round(perBlock * 7200 * 100) / 100; // 每天 7,200 块
+    runC();
+  });
+  $('ch13').addEventListener('click', function () {
+    // 13 章示例：总供给 1 亿，年增发 300 万，年销毁 200 万 → 净发行率 1%
+    $('supply').value = 100000000; $('issue').value = 3000000; $('burn').value = 2000000; $('burnUnit').value = 'year'; runC();
+  });
+
+  // ---------- (d) ----------
+  function runD() {
+    var gas = Number($('bscGas').value) || 0, price = Number($('bscPrice').value) || 0, ratio = Number($('bscRatio').value) / 100;
+    $('bscRatioOut').textContent = Math.round(ratio * 100) + '%';
+    var b = bscFee(gas, price, ratio);
+    var e = txBreakdown(Number($('tBase').value) || 0, Number($('tMax').value) || 0, Number($('tTip').value) || 0, Number($('tGas').value) || 0);
+    $('dFormula').textContent =
+      '费用 = ' + gas.toLocaleString() + ' × ' + price + ' gwei = ' + coin(b.fee, 'BNB') + '\n' +
+      '销毁 = 费用 × ' + Math.round(ratio * 100) + '% = ' + coin(b.burn, 'BNB') + '\n' +
+      '验证者及质押者 = ' + coin(b.val, 'BNB');
+    var rows = [
+      ['销毁规则', '基础费部分全部销毁', '按固定比例销毁'],
+      ['用户费用', e.ok ? eth(e.fee) : '无法打包', coin(b.fee, 'BNB')],
+      ['销毁', e.ok ? eth(e.burn) : '-', coin(b.burn, 'BNB')],
+      ['销毁占费用', e.ok && e.fee ? pct(e.burn / e.fee, 1) : '-', pct(ratio, 0)],
+      ['给出块者', e.ok ? eth(e.tip) : '-', coin(b.val, 'BNB')],
+      ['拥堵时价格', '协议自动上调基础费', '基础费为 0，靠单价竞价']
+    ];
+    $('dBody').innerHTML = rows.map(function (r) { return '<tr><td>' + r[0] + '</td><td class="num">' + r[1] + '</td><td class="num">' + r[2] + '</td></tr>'; }).join('');
+    $('dNote').textContent = '两条链计价币不同（ETH 与 BNB），金额不能直接比大小。比较的是"费用中有多大比例被销毁"。以太坊的比例由基础费与小费之比决定；BSC 的比例由治理设定。';
+  }
+  ['bscGas', 'bscPrice', 'bscRatio'].forEach(function (id) { $(id).addEventListener('input', runD); });
+
+  // ---------- 预设 ----------
+  function preset(name) {
+    var n, base, tip, arr = [];
+    if (name === 'calm') {        // 平静期：使用率在 50% 上下小幅波动
+      n = 24; base = 20; tip = 2;
+      for (var i = 0; i < n; i++) arr.push(Math.round((0.5 + 0.06 * Math.sin(i * 1.3) + 0.03 * Math.cos(i * 2.7)) * 100) / 100);
+    } else if (name === 'jam') {  // 拥堵：连续满块
+      n = 20; base = 20; tip = 3;
+      for (i = 0; i < n; i++) arr.push(1);
+    } else if (name === 'nft') {  // NFT 抢购：平静 → 10 个满块 → 回落低使用率
+      n = 36; base = 20; tip = 10;
+      for (i = 0; i < n; i++) arr.push(i < 6 ? 0.5 : i < 16 ? 1 : 0.25);
+    } else {                      // Blob 后低费：L2 数据移到 Blob，主网使用率偏低，基础费很低
+      n = 30; base = 1; tip = 0.05;
+      for (i = 0; i < n; i++) arr.push(Math.round((0.45 + 0.05 * Math.sin(i * 0.9)) * 100) / 100);
+    }
+    utils = arr;
+    $('nBlocks').value = n; $('nOut').textContent = n;
+    $('base0').value = base; $('avgTip').value = tip;
+    var avg = arr.reduce(function (a, b) { return a + b; }, 0) / n;
+    $('util').value = Math.round(avg * 100); $('utilOut').textContent = Math.round(avg * 100) + '%';
+    runA();
+    $('tBase').value = Number(last.end.toFixed(4)); $('tTip').value = tip; $('tMax').value = Math.max(30, Math.ceil(last.end * 2));
+    runB();
+    // 用模拟结果推算日均销毁
+    $('burnUnit').value = 'day';
+    $('burn').value = Math.round(last.cumBurn / n * 7200 * 100) / 100;
+    $('supply').value = 122000000; $('issue').value = 1000000;
+    runC();
+  }
+  $('presets').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) preset(b.getAttribute('data-p')); });
+
+  runA(); runB(); runC(); runD();
+})();
+</script>
+</body>
+</html>

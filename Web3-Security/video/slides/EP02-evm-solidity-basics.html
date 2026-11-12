@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EP02 EVM 与 Solidity 安全基础</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .ana .card { font-size: 29px; display: flex; flex-direction: column; gap: 10px; min-height: 230px; }
+  .ana .card .a { color: var(--text-2); font-size: 26px; }
+  .feat { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px 26px; }
+  .feat .card { font-size: 27px; padding: 16px 22px; display: grid; grid-template-columns: 60px 1fr; gap: 4px 14px; }
+  .feat .card .n { font-family: var(--mono); color: var(--gold); font-size: 38px; font-weight: 700; grid-row: span 3; }
+  .feat .card .mis { color: var(--sell); font-size: 25px; }
+  .feat .card .fact { color: var(--text-2); font-size: 25px; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="EP02" data-title="EVM 与 Solidity 安全基础：先看懂这台机器">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 主线 · EP02</div>
+    <h1>每一次调用，<br>都可能把<span class="hl">控制权</span>交给别人</h1>
+    <div class="grid3">
+      <div class="card" data-k="1" data-nocur><b>单线程</b><div class="muted fs28">一次只执行一个调用帧</div></div>
+      <div class="card" data-k="1" data-nocur><b>栈式计算机</b><div class="muted fs28">每个合约有自己的代码和存储</div></div>
+      <div class="card sell" data-k="2" data-nocur><b>消息调用</b><div class="muted fs28">调用对方时，执行权交出去</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到主线第2集，EVM 与 Solidity 安全基础。理解合约运行的这台机器，才能理解漏洞从哪里来。</li>
+      <li>先用一句话描述它。EVM 是一台单线程的栈式计算机。每个合约有自己的代码和自己的存储。</li>
+      <li>合约之间靠消息调用通信。每次你调用别人，都可能把控制权交给对方，而对方可以在你的事情办完之前，反过来调用你。本集讲四件事，调用上下文，三种调用，存储布局，以及八个最容易误解的语言特性。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="像一个政务大厅" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>EVM 像一个只有一个窗口的政务大厅</h2>
+    <div class="ana">
+      <div class="card" data-k="0"><b>每个合约是一个科室</b><div class="a">档案柜 + 办事规程</div><div class="hl">→ storage + code</div></div>
+      <div class="card info" data-k="1"><b>call：派人去 B 办事</b><div class="a">B 在 B 的档案柜上办</div><div class="hl">→ 改 B 的存储</div></div>
+      <div class="card sell" data-k="2"><b>delegatecall：借 B 的手册</b><div class="a">在 A 自己的档案柜上，按 B 的规程办</div><div class="hl">→ 改 A 的存储</div></div>
+    </div>
+    <div class="card warn fs30" data-k="3">比喻不准的地方：大厅里离开窗口就不能插队回来；EVM 里 B 办到一半可以<b>反过来再找 A</b>，而 A 的上一件事还没办完 —— 这就是重入。</div>
+    <ol class="say">
+      <li>打个比方，EVM 像一个只有一个窗口的政务大厅。每个合约是一个科室，有自己的档案柜，也就是存储，和自己的办事规程，也就是代码。</li>
+      <li>科室 A 要找科室 B 办事，就派人带着材料去 B 的窗口，这是 call。B 在自己的档案柜上办完，再回来。</li>
+      <li>delegatecall 是另一种方式。A 把 B 的规程手册借过来，在 A 自己的档案柜上，按 B 的规程操作。如果 B 的手册写着把第0号抽屉清空，被清空的是 A 的第0号抽屉。</li>
+      <li>比喻不准的地方在于，真实的大厅里，你离开窗口后就不能插队回来。EVM 里，科室 B 办事办到一半，可以反过来再找 A，而 A 的上一件事还没办完。这就是下一集要讲的重入。</li>
+    </ol>
+  </section>
+
+  <!-- 3 两类账户 -->
+  <section class="scene" data-title="两类账户" data-onstep="rowStep">
+    <div class="kicker">账户</div>
+    <h2>外部账户和合约账户</h2>
+    <table class="t">
+      <thead><tr><th>账户</th><th>有无代码</th><th>能否主动发起交易</th><th>控制者</th></tr></thead>
+      <tbody>
+        <tr><td>外部账户 EOA</td><td>无 <span class="muted fs26">（EIP-7702 委托后可以有）</span></td><td class="good">能</td><td>私钥</td></tr>
+        <tr><td>合约账户</td><td>有</td><td class="bad">不能，只能被调用</td><td>代码</td></tr>
+      </tbody>
+    </table>
+    <div class="card warn fs30" data-k="1">EIP-7702（2025 年 5 月 Pectra 升级）后，<code>extcodesize == 0</code> 和 <code>msg.sender == tx.origin</code> 都<b>不能</b>再证明"调用者是普通用户"。</div>
+    <ol class="say">
+      <li>以太坊上有两类账户。外部账户由私钥控制，没有代码，能主动发起交易。合约账户有代码，由代码控制，不能主动发起交易，只能被调用。</li>
+      <li>这里有一个新变化。2025年5月，以太坊的 Pectra 升级引入了 EIP-7702，允许外部账户委托执行一段合约代码。所以，过去常用的两种判断，地址没有代码，或者消息发送者等于交易发起人，都不能再证明调用者是一个普通用户。</li>
+    </ol>
+  </section>
+
+  <!-- 4 调用上下文 -->
+  <section class="scene" data-title="调用上下文的四个变量" data-onstep="ctxStep">
+    <div class="kicker">调用上下文 · 用户 → A → B → C</div>
+    <h2>C 看到的四个值</h2>
+    <svg id="ctx" width="1640" height="560" viewBox="0 0 1640 560"></svg>
+    <ol class="say">
+      <li>调用上下文里有四个变量。看一条调用链，用户发起交易调用合约 A，A 调用 B，B 再调用 C。我们站在 C 的位置看。</li>
+      <li>第一个，交易发起人，tx.origin，是发起整笔交易的外部账户，也就是用户。不管调用链多长，它都不变。</li>
+      <li>第二个，消息发送者，msg.sender，是直接调用当前函数的地址。对 C 来说，是 B。</li>
+      <li>第三个，msg.value，本次调用附带的原生币数量，是 B 转给 C 的数量。第四个，address(this)，当前执行代码的合约地址，就是 C 自己。</li>
+    </ol>
+  </section>
+
+  <!-- 5 tx.origin -->
+  <section class="scene" data-title="不要用 tx.origin 做权限判断" data-onstep="txoStep">
+    <div class="kicker">警告 · 机制示意</div>
+    <h2>owner 被骗去调用一个恶意合约之后</h2>
+    <svg id="txo" width="1640" height="520" viewBox="0 0 1640 520"></svg>
+    <ol class="say">
+      <li>为什么不能用交易发起人做权限判断？看一个机制示意。一个钱包合约这样写，要求交易发起人等于 owner，才能转出资金。</li>
+      <li>某天，owner 被诱导去调用一个看起来无害的合约，比如领取一个空投。</li>
+      <li>这个合约在内部转身调用了钱包的转账函数。此时，钱包看到的交易发起人，仍然是 owner，检查通过，资金被转走。</li>
+      <li>如果钱包检查的是消息发送者，看到的就是那个恶意合约，检查失败。所以权限判断用 msg.sender，不用 tx.origin。第4集还会详细讲。</li>
+    </ol>
+  </section>
+
+  <!-- 6 三种调用 -->
+  <section class="scene" data-title="三种调用方式" data-onstep="callStep">
+    <div class="kicker">call · delegatecall · staticcall</div>
+    <h2 id="callH">执行谁的代码？改谁的存储？</h2>
+    <svg id="call" width="1640" height="560" viewBox="0 0 1640 560"></svg>
+    <ol class="say">
+      <li>合约之间有三种调用方式。第一种是 call，最常见。执行 B 的代码，修改 B 的存储。B 看到的消息发送者是 A，当前地址是 B。</li>
+      <li>第二种是 delegatecall。执行 B 的代码，但修改的是 A 的存储。而且消息发送者和附带的币都保持不变，B 的代码看到的消息发送者，仍然是用户，当前地址是 A。代理合约和库合约都依赖它。</li>
+      <li>第三种是 staticcall，只读调用。任何写存储或者发事件的操作都会回滚。外部调用 view 函数时，用的就是它。</li>
+      <li>还有一点很重要。低级 call 失败时，不会自动回滚调用方，只返回一个 false。忘了检查这个返回值，是第6集的主题。手册里的存储与代理实验，可以一步步观察这四个变量的变化。</li>
+    </ol>
+  </section>
+
+  <!-- 7 delegatecall 示例 -->
+  <section class="scene" data-title="delegatecall 改了谁" data-onstep="dcStep">
+    <div class="kicker">练一练 · 思考题</div>
+    <h2>A 用 delegatecall 调用库 L，L 里写着 owner = msg.sender</h2>
+    <div class="row">
+      <div class="col" style="flex:1">
+        <div class="src"><span class="ln c">// 库合约 L</span><span class="ln" data-mark="1:bad"><span class="kw">address</span> owner;            <span class="c">// slot 0</span></span><span class="ln" data-mark="1:bad"><span class="kw">function</span> <span class="fn">init</span>() { owner = msg.sender; }</span></div>
+        <div class="card fs28" id="dcNote"></div>
+      </div>
+      <svg id="dc" width="820" height="520" viewBox="0 0 820 520"></svg>
+    </div>
+    <ol class="say">
+      <li>来做一道题。合约 A 用 delegatecall 调用库合约 L 的初始化函数。L 里只有一句，owner 等于消息发送者。owner 在 L 的布局里是第0个槽位。执行之后，哪个合约的哪个槽位被改了？消息发送者是谁？可以先暂停想一想。</li>
+      <li>答案是，被改的是 A 的第0个槽位，不是 L 的。因为 delegatecall 用的是调用方 A 的存储。</li>
+      <li>消息发送者是谁？是调用 A 的那个人，因为 delegatecall 保持消息发送者不变。</li>
+      <li>如果 A 的第0个槽位原本放的不是 owner，而是别的东西，比如实现地址，那它就被一个人的地址覆盖了。这正是代理合约存储冲突的原理。如果 L 的初始化函数谁都能调，那么谁调用，谁就成了 A 的 owner。</li>
+    </ol>
+  </section>
+
+  <!-- 8 槽位规则 -->
+  <section class="scene" data-title="存储槽的五条规则" data-onstep="marks">
+    <div class="kicker">存储布局</div>
+    <h2>一个巨大的键值表，每格 32 字节</h2>
+    <div class="steps c5">
+      <div class="card" data-k="0"><span class="n">1</span><b>按声明顺序</b><div class="d">从 slot 0 开始</div></div>
+      <div class="card" data-k="0"><span class="n">2</span><b>相邻打包</b><div class="d">合计不超过 32 字节就挤进同一槽</div></div>
+      <div class="card" data-k="1"><span class="n">3</span><b>映射</b><div class="d">本身占槽 p<br>m[k] 在 keccak256(k, p)</div></div>
+      <div class="card" data-k="1"><span class="n">4</span><b>动态数组</b><div class="d">槽 p 存长度<br>a[i] 在 keccak256(p) + i</div></div>
+      <div class="card" data-k="2"><span class="n">5</span><b>常量与不可变量</b><div class="d">不占存储槽</div></div>
+    </div>
+    <ol class="say">
+      <li>存储是每个合约持有的一个巨大键值表，键和值都是32字节，键叫槽位。规则有五条。第一，状态变量按声明顺序，从第0个槽位开始分配。第二，相邻变量合计不超过32字节，编译器会把它们打包进同一个槽。</li>
+      <li>第三，映射本身占一个槽位 p，里面是空的。元素放在 k 和 p 一起做哈希得到的位置。第四，动态数组占一个槽位 p，存的是长度，元素从 p 的哈希值开始依次往后放。</li>
+      <li>第五，常量和不可变量不占存储槽，它们直接写在代码里。下面用一个例子看打包。</li>
+    </ol>
+  </section>
+
+  <!-- 9 打包示例 -->
+  <section class="scene" data-title="打包示例" data-onstep="packStep">
+    <div class="kicker">打包 · 按"剩余空间能否放下"判断</div>
+    <h2 id="packH">20 + 1 + 12 = 33，放不下</h2>
+    <div class="row">
+      <div class="src" style="flex:0.85" id="packSrc"></div>
+      <svg id="pack" width="900" height="520" viewBox="0 0 900 520"></svg>
+    </div>
+    <ol class="say">
+      <li>看一个例子。第一个变量是地址 owner，20字节，放进第0个槽位。第二个是布尔值 paused，1字节，和 owner 一起，第0个槽位用了21字节。</li>
+      <li>第三个是 fee，类型是96位整数，12字节。21加12是33，超过了32，放不下。所以 fee 从第1个槽位开始。后面的 total 在第2个槽位，映射 bal 占第3个槽位。</li>
+      <li>如果把 fee 改成88位整数，11字节，20加1加11正好32，三个变量全部挤进第0个槽位。total 变成第1个，映射变成第2个。</li>
+      <li>看出问题了吗？只改了一个类型，后面所有变量的位置都变了。如果这是一个已经上线的可升级合约，新代码会按新位置去读旧数据，余额可能被当成地址。这就是第9集存储冲突的根源。</li>
+    </ol>
+  </section>
+
+  <!-- 10 布局为何是安全问题 -->
+  <section class="scene" data-title="存储布局为什么是安全问题" data-onstep="rowStep">
+    <div class="kicker">布局 · 安全</div>
+    <h2>四个场景，和一个"随机"槽位</h2>
+    <table class="t sm">
+      <thead><tr><th>场景</th><th>风险</th></tr></thead>
+      <tbody>
+        <tr><td>代理与实现的变量顺序不一致</td><td>实现写 owner，实际改写了代理的实现地址</td></tr>
+        <tr><td>升级时在中间插入新变量</td><td>后面的变量全部错位</td></tr>
+        <tr><td>private 变量存放密码或种子</td><td>任何人都能直接读出</td></tr>
+        <tr><td>delegatecall 不受信任的合约</td><td>对方能改写你的任何槽位</td></tr>
+      </tbody>
+    </table>
+    <div class="code" data-k="2" style="font-size:24px">EIP-1967 实现地址槽 = keccak256("eip1967.proxy.implementation") − 1
+= 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc</div>
+    <ol class="say">
+      <li>存储布局为什么是安全问题？四个场景。代理和实现的变量顺序不一致，实现合约以为自己在写 owner，实际改写了代理的实现地址。升级时在中间插入新变量，后面的变量全部错位。</li>
+      <li>用 private 变量存放密码或种子，上一集讲过，任何人都能直接读出。用 delegatecall 调用不受信任的合约，对方的代码可以改写你的任何槽位。</li>
+      <li>怎样避免代理和实现冲突？EIP-1967 为代理定义了固定的槽位，用一个字符串的哈希减一得到。这个位置几乎不可能和普通变量重合。看到这串以3608开头的数字，就知道这是一个标准代理的实现地址槽。</li>
+    </ol>
+  </section>
+
+  <!-- 11 八个特性（上） -->
+  <section class="scene" data-title="八个易误解的特性（上）" data-onstep="marks">
+    <div class="kicker">语言特性 · 误解 vs 事实</div>
+    <h2>前四个：可见性、转账、自毁、余额</h2>
+    <div class="feat">
+      <div class="card" data-k="0"><span class="n">1</span><b>private</b><span class="mis">误解：别人看不到</span><span class="fact">事实：只限制其他合约调用，存储完全公开</span></div>
+      <div class="card" data-k="1"><span class="n">2</span><b>receive / fallback</b><span class="mis">误解：转账只是改余额</span><span class="fact">事实：向合约转原生币会执行它的代码 → 重入入口</span></div>
+      <div class="card" data-k="2"><span class="n">3</span><b>selfdestruct</b><span class="mis">误解：可以删除合约</span><span class="fact">事实：Cancun 后只有同交易内创建的合约才被删除；其余只转走余额</span></div>
+      <div class="card" data-k="3"><span class="n">4</span><b>合约余额</b><span class="mis">误解：只能通过我的函数增加</span><span class="fact">事实：任何人可强制转入 → 用余额记账会被"捐赠"操纵</span></div>
+    </div>
+    <ol class="say">
+      <li>接下来是 Solidity 最容易误解的八个特性。第一，private。误解是别人看不到。事实是它只限制其他合约调用，存储完全公开，所以不能存秘密。</li>
+      <li>第二，接收函数和回退函数。误解是转账只是改一下余额。事实是向合约转原生币，会执行对方的代码。这就是重入的入口。</li>
+      <li>第三，自毁。误解是可以删除合约。2024年 Cancun 升级以后，只有在同一笔交易里创建的合约才会被真正删除，其他情况只是把余额转走。</li>
+      <li>第四，合约余额。误解是余额只能通过我的函数增加。事实是任何人都可以强制转入。所以用合约余额来记账，会被捐赠操纵。思考题来了，一个合约要求余额必须等于存款总额，攻击者只要强制转入1个最小单位，这个检查就永久失败了。</li>
+    </ol>
+  </section>
+
+  <!-- 12 八个特性（下） -->
+  <section class="scene" data-title="八个易误解的特性（下）" data-onstep="blkStep">
+    <div class="kicker">语言特性 · 误解 vs 事实</div>
+    <h2>后四个：算术、时间、区块、选择器</h2>
+    <div class="feat">
+      <div class="card" data-k="0"><span class="n">5</span><b>检查型算术</b><span class="mis">误解：0.8 以后不会出错</span><span class="fact">事实：unchecked、类型转换、除法截断都不报错</span></div>
+      <div class="card" data-k="0"><span class="n">6</span><b>block.timestamp</b><span class="mis">误解：精确时间</span><span class="fact">事实：出块者可小幅调整；L2 由排序器决定</span></div>
+      <div class="card gold" data-k="1"><span class="n">7</span><b>block.number</b><span class="mis">误解：每块固定时间</span><span class="fact" id="bn">事实：出块间隔会变</span></div>
+      <div class="card" data-k="3"><span class="n">8</span><b>函数选择器</b><span class="mis">误解：函数名唯一</span><span class="fact">事实：只有 4 字节，不同签名可能碰撞 · Poly Network</span></div>
+    </div>
+    <ol class="say">
+      <li>第五，检查型算术。误解是0.8版本以后算术不会出错。事实是溢出会回滚，但 unchecked 块、类型转换和除法截断都不会报错。第六，区块时间戳。误解是精确时间。事实是出块者可以小幅调整，二层网络上由排序器决定，不能做随机数，也不能做秒级判断。</li>
+      <li>第七，区块号。误解是每个区块的时间固定。算一个示例。一个合约要锁仓7天，按3秒一个块计算，写死了201600个块。</li>
+      <li>后来出块间隔缩短到0.75秒，这正是 BNB Chain 发生过的变化。同样是201600个块，现在只要42个小时，也就是1.75天，锁仓期缩短了四分之三。</li>
+      <li>第八，函数选择器。误解是函数名唯一。事实是选择器只有4个字节，不同的函数签名可能算出同一个选择器。2021年 Poly Network 事故的关键一步，就利用了这一点，第11集会讲。</li>
+    </ol>
+  </section>
+
+  <!-- 13 gas 与错误处理 -->
+  <section class="scene" data-title="Gas、回滚与错误处理" data-onstep="marks">
+    <div class="kicker">执行规则</div>
+    <h2>哪些失败会冒泡，哪些不会</h2>
+    <div class="grid2">
+      <div class="card" data-k="0"><b class="hl">会冒泡</b><div class="fs28">require、自定义错误 → 回滚当前调用并向上传<br>gas 用完 → 当前调用帧回滚</div></div>
+      <div class="card sell" data-k="1"><b class="down">不会冒泡</b><div class="fs28">低级 call 失败 → 只返回 false<br>try / catch 只捕获外部调用的失败</div></div>
+      <div class="card info" data-k="2"><b class="blue">63 / 64 规则</b><div class="fs28">外部调用最多转发 63/64 的剩余 gas<br>被调用方耗尽时，调用方还有 1/64 收尾</div></div>
+      <div class="card warn" data-k="3"><b style="color:var(--warn)">transfer / send 只转 2300 gas</b><div class="fs28">曾被当作防重入；gas 价格调整后，<br>接收方是合约钱包时会失败</div></div>
+    </div>
+    <ol class="say">
+      <li>再看错误处理。require 和自定义错误会回滚当前调用，并且向上冒泡，调用方也跟着回滚。gas 用完，当前调用帧回滚。</li>
+      <li>有两种情况不会冒泡。低级 call 失败时只返回 false，调用方继续执行。try catch 只能捕获外部调用的失败，不能捕获本合约内部的失败。</li>
+      <li>还有一条63分之64规则。外部调用最多转发剩余 gas 的63分之64，被调用方耗尽 gas 时，调用方还剩64分之1可以收尾。</li>
+      <li>最后，transfer 和 send 只转发2300 gas，曾经被当作防重入的手段。后来 gas 价格调整，接收方是合约钱包时，这种转账会直接失败。现在的推荐做法是用 call 转账，再用检查生效交互的顺序或重入锁来防重入。</li>
+    </ol>
+  </section>
+
+  <!-- 14 编译器 -->
+  <section class="scene" data-title="编译器与版本" data-onstep="rowStep">
+    <div class="kicker">编译器 · 据公开复盘</div>
+    <h2>编译器本身也会有 bug</h2>
+    <table class="t sm">
+      <thead><tr><th>版本</th><th>关键变化</th><th>安全含义</th></tr></thead>
+      <tbody>
+        <tr><td>&lt; 0.8.0</td><td>算术默认不检查溢出</td><td>必须用 SafeMath</td></tr>
+        <tr><td>≥ 0.8.0</td><td>算术默认检查，溢出回滚</td><td>unchecked 块内仍会回绕</td></tr>
+        <tr><td>≥ 0.8.24</td><td>支持瞬态存储</td><td>低成本重入锁；跨链要确认目标链支持</td></tr>
+      </tbody>
+    </table>
+    <div class="card sell fs30" data-k="2">2023-07 · Vyper 0.2.15 / 0.2.16 / 0.3.0 的重入锁实现错误 → 多个 Curve 池被重入，约 7,000 万$</div>
+    <ol class="say">
+      <li>最后是编译器。0.8.0之前的版本，算术默认不检查溢出，必须用 SafeMath 库。0.8.0以后默认检查，但 unchecked 块里仍然会回绕。</li>
+      <li>0.8.24以后支持瞬态存储，只在当前交易内有效，交易结束自动清零，可以实现低成本的重入锁。但部署到其他链时，要确认目标链支持这个操作。</li>
+      <li>编译器本身也会有 bug。据公开复盘，2023年7月，另一种合约语言 Vyper 的三个版本，重入锁的实现有错误，导致多个 Curve 池被重入，损失约7000万美元。所以编译器版本要锁定，并关注它的已知 bug 列表。</li>
+    </ol>
+  </section>
+
+  <!-- 15 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">权限用 <span class="hl">msg.sender</span>；delegatecall 执行别人的代码、<span class="hl">改自己的存储</span>。</li>
+      <li data-step="1">存储按槽位打包；改一个类型、插一个变量，<span class="hl">后面全部错位</span>。</li>
+      <li data-step="2">private 不保密、余额可被强制转入、区块时间会变、低级 call 失败<span class="hl">不冒泡</span>。</li>
+    </ul>
+    <h2 data-show="3">下一集：EP03 重入攻击</h2>
+    <div class="path" data-show="3">
+      <div class="card sell"><div class="n">4</div><b>四种重入</b><div class="d">单函数、跨函数、跨合约、只读</div></div>
+      <div class="card gold"><div class="n">CEI</div><b>检查 · 生效 · 交互</b><div class="d">顺序就是防线</div></div>
+      <div class="card info"><div class="n">锁</div><b>重入锁</b><div class="d">什么时候锁，锁谁</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，权限判断用消息发送者。delegatecall 执行的是别人的代码，改的是自己的存储。</li>
+      <li>第二，存储按槽位分配和打包。改一个类型，或者插入一个变量，后面的变量会全部错位。</li>
+      <li>第三，记住几个反直觉的事实。private 不保密，余额可以被强制转入，区块时间会变，低级 call 失败不会冒泡。</li>
+      <li>下一集讲最古老、也最常复发的合约漏洞，重入攻击。四种重入的形态，检查生效交互的顺序，以及重入锁该怎样用。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line } = K;
+
+  function ctxStep(el, st) {
+    const svg = el.querySelector('#ctx'); svg.innerHTML = '';
+    const N = [['用户 EOA', C.info], ['合约 A', C.text], ['合约 B', C.text], ['合约 C', C.gold]];
+    N.forEach(([t, c], i) => { box(svg, 20 + i * 420, 40, 300, 100, t, { stroke: i === 3 ? C.gold : C.info, fs: 34, bold: true, sw: i === 3 ? 5 : 3 }); if (i < 3) arrow(svg, 322 + i * 420, 90, 436 + i * 420, 90, C.t2, false, 4); });
+    T(svg, 1430, 170, '站在 C 的位置看', C.gold, 26, 'middle', true);
+    const R = [['tx.origin', '发起整笔交易的 EOA', '用户', 1], ['msg.sender', '直接调用当前函数的地址', 'B', 2], ['msg.value', '本次调用附带的原生币', 'B 转给 C 的数量', 3], ['address(this)', '当前执行代码的合约', 'C', 3]];
+    R.forEach(([k, d, v, s], i) => {
+      const y = 240 + i * 75, op = st >= s ? 1 : .12, cur = st === s;
+      rect(svg, 20, y - 30, 1600, 62, { fill: cur ? C.curFill : C.panel, stroke: cur ? C.gold : C.line, sw: 2, op });
+      T(svg, 50, y, k, C.gold, 30, 'start', true, op);
+      T(svg, 380, y, d, C.t2, 27, 'start', false, op);
+      T(svg, 1580, y, v, C.text, 30, 'end', true, op);
+    });
+  }
+
+  function txoStep(el, st) {
+    const svg = el.querySelector('#txo'); svg.innerHTML = '';
+    box(svg, 20, 200, 260, 110, ['owner', '外部账户'], { stroke: C.info, fs: 32 });
+    box(svg, 1270, 200, 350, 110, ['钱包合约', 'require(tx.origin == owner)'], { stroke: C.gold, fs: 32, ss: 22 });
+    if (st >= 1) { box(svg, 620, 200, 330, 110, ['"领空投"合约', '看起来无害'], { stroke: C.sell, fs: 32, fill: C.badFill }); arrow(svg, 282, 255, 616, 255, C.t2, false, 4); T(svg, 450, 230, '被诱导调用', C.t2, 26); }
+    if (st >= 2) {
+      arrow(svg, 952, 255, 1266, 255, C.sell, false, 5); T(svg, 1110, 230, '转身调用转账', C.sell, 26, 'middle', true);
+      rect(svg, 1270, 340, 350, 130, { fill: C.badFill, stroke: C.sell, sw: 3 });
+      T(svg, 1445, 380, 'tx.origin = owner', C.text, 28, 'middle', true); T(svg, 1445, 430, '✓ 检查通过 · 资金转走', C.sell, 28, 'middle', true);
+    }
+    if (st >= 3) {
+      rect(svg, 620, 380, 600, 100, { fill: C.goodFill, stroke: C.buy, sw: 3 });
+      T(svg, 920, 415, '改用 msg.sender == owner', C.buy, 30, 'middle', true); T(svg, 920, 455, 'msg.sender = 恶意合约 → ✗ 拒绝', C.text, 26);
+    }
+  }
+
+  function callStep(el, st) {
+    const svg = el.querySelector('#call'); svg.innerHTML = '';
+    const col = (x, title, codeOf, stoOf, sender, self, c, op, note) => {
+      rect(svg, x, 20, 500, 500, { fill: C.panel, stroke: c, sw: st >= 0 ? 4 : 2, op });
+      T(svg, x + 250, 65, title, c, 36, 'middle', true, op);
+      [['执行谁的代码', codeOf], ['改谁的存储', stoOf], ['msg.sender', sender], ['address(this)', self]].forEach(([k, v], i) => {
+        T(svg, x + 40, 150 + i * 80, k, C.t2, 27, 'start', false, op); T(svg, x + 460, 150 + i * 80, v, i === 1 && v === 'A' ? C.sell : C.text, 32, 'end', true, op);
+      });
+      if (note) T(svg, x + 250, 480, note, C.t2, 25, 'middle', false, op);
+    };
+    col(20, 'call', 'B', 'B', 'A', 'B', C.info, st === 0 || st === 3 ? 1 : .35, '最常见');
+    col(570, 'delegatecall', 'B', 'A', '用户', 'A', C.sell, st === 1 || st === 3 ? 1 : .35, '代理、库合约');
+    col(1120, 'staticcall', 'B', '不能写', 'A', 'B', C.buy, st === 2 || st === 3 ? 1 : .35, '写存储 / 发事件 → 回滚');
+    if (st >= 3) { rect(svg, 20, 530, 1600, 30, { fill: 'none' }); }
+    el.querySelector('#callH').textContent = st >= 3 ? '低级 call 失败只返回 false，不会自动回滚调用方' : '执行谁的代码？改谁的存储？';
+  }
+
+  function dcStep(el, st) {
+    marks(el, st);
+    const svg = el.querySelector('#dc'); svg.innerHTML = '';
+    box(svg, 20, 20, 320, 90, ['调用者', 'Alice'], { stroke: C.info, fs: 30 });
+    arrow(svg, 180, 112, 180, 168, C.t2, false, 3);
+    rect(svg, 20, 170, 320, 330, { fill: C.panel, stroke: C.gold, sw: 4 });
+    T(svg, 180, 205, '合约 A 的存储', C.gold, 28, 'middle', true);
+    const slot0 = st >= 1 ? (st >= 3 ? '被覆盖' : '= Alice') : '原值';
+    rect(svg, 40, 240, 280, 70, { fill: st >= 1 ? C.badFill : C.panel2, stroke: st >= 1 ? C.sell : C.line, sw: 3 });
+    T(svg, 60, 275, 'slot 0', C.t2, 24, 'start'); T(svg, 300, 275, slot0, st >= 1 ? C.sell : C.t2, 22, 'end', true);
+    rect(svg, 40, 320, 280, 70, { fill: C.panel2, stroke: C.line }); T(svg, 60, 355, 'slot 1', C.t2, 24, 'start');
+    box(svg, 500, 170, 300, 160, ['库合约 L', '只借出代码', '自己的存储不变'], { stroke: C.line, fs: 30, lh: 40 });
+    arrow(svg, 342, 250, 496, 250, C.sell, true, 4); T(svg, 420, 222, 'delegatecall', C.sell, 22);
+    if (st >= 2) { rect(svg, 500, 360, 300, 110, { fill: C.curFill, stroke: C.gold, sw: 3 }); T(svg, 650, 400, 'msg.sender', C.gold, 28, 'middle', true); T(svg, 650, 440, '= Alice（保持不变）', C.text, 26); }
+    el.querySelector('#dcNote').innerHTML = ['先自己想：改了谁的哪个槽？msg.sender 是谁？', '被改的是 <b class="down">A 的 slot 0</b>', 'msg.sender = <b class="hl">调用 A 的人</b>', '若 A 的 slot 0 本是实现地址 → <b class="down">被覆盖</b>；若初始化谁都能调 → 谁调谁是 owner'][st];
+  }
+
+  function packStep(el, st) {
+    const alt = st >= 2;
+    const src = el.querySelector('#packSrc');
+    src.innerHTML = [
+      ['<span class="kw">address</span> owner;', '20 B'], ['<span class="kw">bool</span>    paused;', '1 B'], [alt ? '<span class="kw">uint88</span>  fee;' : '<span class="kw">uint96</span>  fee;', alt ? '11 B' : '12 B'], ['<span class="kw">uint256</span> total;', '32 B'], ['<span class="kw">mapping</span>(..) bal;', '槽 p']
+    ].map(([c, b], i) => `<span class="ln${(st === 1 && i === 2) || (st >= 2 && i === 2) ? ' cur' : ''}">${c}  <span class="c">// ${b}</span></span>`).join('');
+    const svg = el.querySelector('#pack'); svg.innerHTML = '';
+    const W = 700, ox = 160, sc = W / 32;
+    const layout = alt ? [[['owner', 20, C.info], ['paused', 1, C.gold], ['fee', 11, C.buy]], [['total', 32, C.warn]], [['bal（映射）', 32, C.t2]]]
+                       : [[['owner', 20, C.info], ['paused', 1, C.gold]], [['fee', 12, C.buy]], [['total', 32, C.warn]], [['bal（映射）', 32, C.t2]]];
+    const show = st === 0 ? 1 : layout.length;
+    layout.slice(0, show).forEach((row, r) => {
+      const y = 40 + r * 110;
+      T(svg, 20, y + 40, 'slot ' + r, C.t2, 28, 'start', true);
+      rect(svg, ox, y, W, 80, { fill: C.panel2, stroke: C.line });
+      let x = ox;
+      row.forEach(([n, b, c]) => { rect(svg, x, y, b * sc, 80, { fill: c, op: .55, rx: 4 }); if (b >= 3) T(svg, x + b * sc / 2, y + 40, n + ' ' + (b < 32 ? b + 'B' : ''), '#0d0e10', 24, 'middle', true); else T(svg, x + b * sc / 2, y - 14, n + ' 1B', C.gold, 22, 'middle', true); x += b * sc; });
+      if (r === 0) { const used = row.reduce((a, [, b]) => a + b, 0); T(svg, ox + W + 10, y + 40, used + '/32', used === 32 ? C.buy : C.t2, 24, 'start', true); }
+    });
+    if (st === 1) { rect(svg, ox + 21 * sc, 40, 12 * sc, 80, { fill: 'none', stroke: C.sell, sw: 4 }); T(svg, ox + 27 * sc, 150, '21 + 12 = 33 > 32', C.sell, 24, 'middle', true); }
+    if (st >= 3) { rect(svg, 20, 470, 860, 46, { fill: C.badFill, stroke: C.sell, sw: 2 }); T(svg, 450, 493, '已上线的可升级合约里改类型 → 后面全部错位', C.sell, 26, 'middle', true); }
+    el.querySelector('#packH').textContent = ['20 + 1 = 21 字节，同一槽', '20 + 1 + 12 = 33，放不下', '改成 uint88：20 + 1 + 11 = 32，正好', '只改一个类型，后面全部换了位置'][st];
+  }
+
+  function blkStep(el, st) {
+    marks(el, st);
+    el.querySelector('#bn').innerHTML = st >= 2 ? '锁 7 天 = 201,600 块（按 3 秒）→ 出块变 0.75 秒后只要 <b class="down">42 小时</b>' : st >= 1 ? '锁 7 天 = 7 × 86,400 ÷ 3 = <b class="hl">201,600 块</b>' : '事实：出块间隔会变';
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

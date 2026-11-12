@@ -1,0 +1,7 @@
+{
+ "answers": [
+  "差一到两个数量级。章节的数字：写 1 KB 到 32 个新槽约 707,000 Gas，放进事件 data 约 8,600 Gas，相差约 80 倍（派生：707,000 ÷ 8,600）。一个空槽写入约 22,100 Gas。<br>只发事件的合约失去了「在链上读回并据此判断」的能力：日志只给链外看，合约读不回，也无法遍历这些订单。想列出订单就要靠索引器读事件。",
+  "变化的是 <code>openedAt</code>、<code>balances</code> 和 <code>orders</code>。<code>uint128</code> 占 16 字节，slot 1 里 20 + 1 + 16 = 37 字节，超过 32 字节，放不下，所以 <code>openedAt</code> 被挤到新的 slot 2，<code>balances</code> 顺延到 slot 3，<code>orders</code> 顺延到 slot 4（派生推算）。<br>而 <code>totalSales</code>（slot 0）和 <code>owner</code> + <code>paused</code>（slot 1）不变。你在 evm-storage-lab.html 中应该看到同样的结果。",
+  "不应该入账。<code>0xa9059cbb</code> 是 <code>transfer</code> 的选择器，topic0 <code>0xddf252ad…</code> 是 Transfer 事件签名，但日志的 address 是发出事件的合约。如果它不是你认可的 USDT 合约，这很可能是恶意合约发出的假 Transfer 事件，并没有真正转账。<br>充值系统必须核对合约地址白名单，只读成功交易的日志，必要时核对余额，再按确认数入账。"
+ ]
+}

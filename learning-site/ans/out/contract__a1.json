@@ -1,0 +1,6 @@
+{
+ "answers": [
+  "会变。新合约地址由部署者地址和该地址当时的 nonce 决定（CREATE 公式：地址 = keccak256(rlp(部署者, nonce)) 的后 20 字节）。先发一笔普通转账会让 nonce 加 1，部署用的 nonce 就变了，地址随之不同。你应该用 <code>cast compute-address &lt;部署者地址&gt; --nonce &lt;n&gt;</code> 先算出预测地址，部署后它应和 <code>Deployed to</code> 完全一致（n 取部署前的 nonce）。",
+  "你应该看到 <code>to</code> 在 Input Data 里是选择器 <code>0xa9059cbb</code> 之后的第一个 32 字节参数（左侧补零的地址），第二个 32 字节是数量。在 Logs 里，<code>to</code> 在 <code>Topics[2]</code>（<code>Topics[0]</code> 是事件签名哈希 <code>0xddf252ad…</code>，<code>Topics[1]</code> 是 from），Data 是数量。只扫 Input Data 会漏掉不是直接调用 transfer 的充值，如通过 <code>transferFrom</code> 的转入，以及合约内部转账：这些交易的 Input Data 里没有用户地址，但 Transfer 事件都会发出。"
+ ]
+}

@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C01 BNB Chain 专题</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .ana .card { font-size: 27px; display: flex; flex-direction: column; gap: 10px; min-height: 210px; }
+  .ana .card .a { color: var(--text-2); font-size: 25px; }
+  .ck { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; }
+  .ck .it { font-size: 25px; background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--gold); border-radius: 8px; padding: 10px 16px; }
+  .src { white-space: normal; flex-shrink: 0; } .src .ln { white-space: pre; }
+  .src .cm { color: #6f7682; }
+  .cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: start; }
+  .cards2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  .cards3 .card, .cards2 .card { font-size: 26px; padding: 20px 24px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="C01" data-title="BNB Chain 专题：我以为一样的地方">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 链专题 · C01</div>
+    <h1>字节码兼容，<br>但"<span class="hl">参数</span>"不一样</h1>
+    <div class="ana">
+      <div class="card info" data-k="1" data-nocur><b>出块更快</b><div class="a">12 秒 → 0.75 秒</div></div>
+      <div class="card info" data-k="1" data-nocur><b>精度不同</b><div class="a">BSC-USD 是 18 位</div></div>
+      <div class="card sell" data-k="2" data-nocur><b>验证者更少</b><div class="a">可协调暂停，权力也集中</div></div>
+      <div class="card gold" data-k="2" data-nocur><b>分叉更多</b><div class="a">改几处细节就上线</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，链专题第二集，BNB Chain。BSC 的字节码和以太坊兼容，以太坊的合约可以直接搬过来编译。但一句话理解，字节码兼容不代表参数一样。</li>
+      <li>它的出块更快，从十二秒级降到零点七五秒。代币精度不同，BSC-USD 是十八位，不是以太坊 USDT 的六位。</li>
+      <li>它的验证者更少，所以能协调暂停整条链，但这个权力也更集中。而且分叉项目特别多，照抄名协议改几处细节就上线。漏洞往往就藏在我以为一样的地方。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="同一套图纸的新城" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>BSC 像按以太坊同一套图纸建的新城</h2>
+    <div class="ana">
+      <div class="card" data-k="0"><b>街道一样</b><div class="a">字节码兼容，车能直接开进来</div></div>
+      <div class="card" data-k="1"><b>红绿灯快 16 倍</b><div class="a">按路口计时的司机会算错</div></div>
+      <div class="card" data-k="2"><b>同名店规格不同</b><div class="a">BSC-USD 18 位 ≠ USDT 6 位</div></div>
+      <div class="card" data-k="3"><b>很多山寨店</b><div class="a">照抄装修，改了细节（分叉）</div></div>
+    </div>
+    <div class="card warn fs29" data-k="4">比喻的局限：城市可以慢慢改规则。BSC 的参数通过<b>硬分叉一次性改变</b>，所有依赖旧参数的合约同时受影响。</div>
+    <ol class="say">
+      <li>打个比方。BSC 像一座按照以太坊同一套图纸建造的新城。街道布局一样，也就是 EVM 字节码兼容，所以以太坊的车，也就是合约，可以直接开进来。</li>
+      <li>但红绿灯的节奏快了十六倍，出块从十二秒级到零点七五秒。按每个路口等多久计时的司机，会算错时间。</li>
+      <li>同名的商店卖的东西规格不同，BSC-USD 是十八位精度，以太坊 USDT 是六位。</li>
+      <li>城里还有很多山寨店，照抄名店的装修，却改了几处细节，这就是分叉项目。</li>
+      <li>比喻的局限在于，城市可以慢慢改规则，但 BSC 的参数通过硬分叉一次性改变，所有依赖旧参数的合约同时受影响。</li>
+    </ol>
+  </section>
+
+  <!-- 3 出块参数 区块数计时 -->
+  <section class="scene" data-title="区块数计时的陷阱" data-onstep="blkStep">
+    <div class="kicker">差异一 · 出块间隔多次变化</div>
+    <h2 id="blkH">同样的"每区块奖励"，排放速度变成 4 倍</h2>
+    <svg id="blk" width="1620" height="480" viewBox="0 0 1620 480"></svg>
+    <ol class="say">
+      <li>先看最隐蔽的一个差异，区块数计时。BSC 的出块间隔一直在变。早期约三秒，2025 年 4 月 Lorentz 硬分叉降到一点五秒，6 月 Maxwell 硬分叉降到零点七五秒，快速最终性约一点八七五秒。Maxwell 公告明确提醒开发者，必须更新基于时间的逻辑。</li>
+      <li>为什么重要。很多 BSC 农场合约分叉自 SushiSwap 的 MasterChef，按每区块奖励发放代币。设计时假设三秒一个块，每天约二十八点八万枚。出块间隔降到零点七五秒后，同样的参数每天发放约一百一十五万枚，排放速度变成四倍。</li>
+      <li>后果很严重。如果奖励来自固定预算的国库，国库会提前耗尽。如果奖励是增发，通胀率翻四倍。借贷协议里的每区块利率也一样。这不是攻击，但造成的经济损失可能和攻击一样大。对策是，用时间戳计时，或者把每区块参数做成可治理调整的。</li>
+    </ol>
+  </section>
+
+  <!-- 4 与以太坊差异 -->
+  <section class="scene" data-title="与以太坊的六项差异" data-onstep="rowStep">
+    <div class="kicker">差异总表 · 我以为一样的地方</div>
+    <h2>每一项差异，都对应一个移植风险</h2>
+    <table class="t sm">
+      <thead><tr><th>差异</th><th>BSC</th><th>合约风险 → 对策</th></tr></thead>
+      <tbody>
+        <tr><td>出块间隔</td><td>0.75 秒（历史多变）</td><td>区块数计时翻倍 → 用时间戳</td></tr>
+        <tr><td>稳定币精度</td><td>BSC-USD 18 位</td><td>写死 1e6 偏差 10^12 倍 → 读 decimals()</td></tr>
+        <tr><td>资产性质</td><td>大量 Binance-Peg 映射资产</td><td>可冻结/脱锚 → 风险披露</td></tr>
+        <tr><td>验证者规模</td><td>少量活跃验证者</td><td>可协调暂停/审查 → 单独评估</td></tr>
+        <tr><td>生态构成</td><td>分叉协议多</td><td>改动点未审计 → 差异审计</td></tr>
+        <tr><td>gas 成本</td><td>低</td><td>试错便宜 → 不靠"攻击成本高"防御</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>把差异列成一张表。出块间隔零点七五秒而且历史多变，区块数计时会翻倍，对策是用时间戳。稳定币精度，BSC-USD 是十八位，写死 1e6 会偏差一万亿倍，对策是读取 decimals。资产性质，BSC 上有大量 Binance-Peg 映射资产，它们可能被冻结或脱锚，要做风险披露，不能把映射资产等同于原生资产。</li>
+      <li>验证者规模小，链可被协调暂停，也有审查风险，重大资产的最终性要单独评估。生态里分叉协议多，分叉时改动的代码往往没审计，必须做差异审计。</li>
+      <li>最后一条容易被忽略。BSC 的 gas 成本低，攻击者的试错成本也低，粉尘攻击和垃圾代币很多。所以在 BSC 上，绝对不能依赖攻击成本高来做防御。这六项，就是移植到 BSC 时最该检查的地方。</li>
+    </ol>
+  </section>
+
+  <!-- 5 Uranium 分叉改常数 -->
+  <section class="scene" data-title="Uranium：分叉改常数" data-onstep="marks">
+    <div class="kicker">案例一 · EP05 常数散落的代价</div>
+    <h2>改手续费漏改一个常数，k 检查失效</h2>
+    <div class="src sm" data-k="0"><div class="ln c"><span class="cm">// ❌ 余额项放大到 10000，右侧 k 仍按 1000**2 比较</span></div>
+<div class="ln bad">balance0Adj = balance0*10000 - amount0In*16;</div>
+<div class="ln bad">balance1Adj = balance1*10000 - amount1In*16;</div>
+<div class="ln bad">require(balance0Adj * balance1Adj &gt;= reserve0 * reserve1 * (1000**2));</div>
+<div class="ln ok">// ✅ 右侧应为 (10000**2)</div></div>
+    <div class="cards3">
+      <div class="card sell fs28" data-k="1"><b>被打破的不变量：</b>每次 swap 后仍应满足 x × y ≥ k。左侧放大了 100 倍、右侧没放大，检查几乎永远通过——攻击者投入极少代币就能取走约 99% 的储备。</div>
+      <div class="card gold fs28" data-k="2"><b>根因：</b>把手续费从 0.3% 改为 0.16% 时，常数散落在多处，只改了一半。</div>
+      <div class="card info fs28" data-k="3"><b>修复：</b>常数集中定义（FEE_DENOMINATOR）；分叉的每处改动做差异审计 + 不变量测试。损失约 5,000 万美元。</div>
+    </div>
+    <ol class="say">
+      <li>第一个案例，Uranium Finance。它分叉自 Uniswap V2，计划把手续费从千分之三改成千分之一点六。看这段简化代码，余额调整项被放大到一万倍，但右侧的 k 值仍然按一千的平方来比较。</li>
+      <li>被打破的不变量是，每次 swap 之后仍应满足 x 乘 y 大于等于 k。现在左侧放大了一百倍，右侧没放大，这个检查几乎永远通过。攻击者在每个交易对里投入极少量代币，调用 swap 就能取走约百分之九十九的储备。</li>
+      <li>根本原因是，改手续费时那个常数散落在代码的多处，开发者只改了一半。右侧其实应该是一万的平方。</li>
+      <li>修复有两条。常数必须集中定义成一个 FEE_DENOMINATOR，不能散落。分叉代码的每一处改动都要做差异审计，并用不变量测试验证 x 乘 y 大于等于 k 在每次 swap 后都成立。损失约五千万美元。这是第五集常数散落的典型。</li>
+    </ol>
+  </section>
+
+  <!-- 6 PancakeBunny -->
+  <section class="scene" data-title="PancakeBunny：LP 定价被操纵" data-onstep="marks">
+    <div class="kicker">案例二 · EP07 铸造的输入必须抗操纵</div>
+    <h2>按池子储备给 LP 估值，再据此铸造奖励</h2>
+    <div class="src sm" data-k="0"><div class="ln c"><span class="cm">// ❌ 用一笔交易内可变的池储备给 LP 定价</span></div>
+<div class="ln bad">lpValue = f(reserveWBNB, reserveUSDT);  <span class="cm">// 储备同交易内被扭曲</span></div>
+<div class="ln bad">bunnyToMint = reward(lpValue);          <span class="cm">// 据此"无中生有"铸币</span></div>
+<div class="ln">_mint(user, bunnyToMint);</div></div>
+    <div class="cards3">
+      <div class="card sell fs28" data-k="1"><b>被打破的不变量：</b>铸造奖励的输入必须是攻击者无法在同一交易内改写的量。这里 LP 估值直接取自被扭曲的池子储备。</div>
+      <div class="card warn fs28" data-k="2">铸出的大量 BUNNY 被抛售，价格从约 146 美元跌到约 6 美元。审计方事后表示，被利用的是其<b>审计之后上线的新版本</b>。</div>
+      <div class="card info fs28" data-k="3"><b>修复：</b>奖励铸造是"无中生有"的操作，它的输入必须完全抗操纵——用抗操纵预言机或内部记账，不用瞬时储备。约 4,500 万美元。</div>
+    </div>
+    <ol class="say">
+      <li>第二个案例，PancakeBunny。它的奖励铸造器按池子储备给 LP 和收益估值。看这段简化逻辑，LP 的价值直接由池子里 WBNB 和 USDT 的储备算出来，而储备可以在同一笔交易里被巨额兑换扭曲。然后据此铸造 BUNNY 奖励。</li>
+      <li>被打破的不变量是，铸造奖励的输入，必须是攻击者无法在同一交易内改写的量。但这里 LP 估值直接取自被扭曲的池子储备。</li>
+      <li>攻击者先扭曲储备，领取被高估的奖励，铸出大量 BUNNY 再抛售。BUNNY 价格从约一百四十六美元跌到约六美元。而且审计方事后表示，被利用的是其审计之后上线的新版本，这呼应了主线反复强调的，审计过只对那个版本成立。</li>
+      <li>修复的核心是，奖励铸造是无中生有的操作，它的输入必须完全抗操纵，要用抗操纵预言机或内部记账，绝不能用瞬时储备。损失约四千五百万美元。这是第七集预言机操纵在 BNB 链上的翻版。</li>
+    </ol>
+  </section>
+
+  <!-- 7 Venus 抵押品风险 -->
+  <section class="scene" data-title="Venus：抵押品风险" data-onstep="marks">
+    <div class="kicker">案例三 · EP10 抵押品的质量</div>
+    <h2>同一个协议，两次栽在抵押品上</h2>
+    <div class="vs">
+      <div class="card info" data-k="0"><h3>XVS 事件（2021-05）</h3><div class="fs27">抵押品 = 协议自有治理代币 XVS<br>价格短时从约 76 → 144 美元<br>借出大量 BTC/ETH，回落后清算不及<br><span class="hl">坏账超 9,500 万美元</span></div></div>
+      <div class="card sell" data-k="1"><h3>LUNA 事件（2022-05）</h3><div class="fs27">抵押品 = 崩盘中的 LUNA<br>喂价触及下限后停在约 0.1 美元<br>市场价远低于此 → 低价买入抵押借款<br><span class="hl">损失约 1,100 万美元</span></div></div>
+    </div>
+    <div class="card gold fs29" data-k="2"><b>两条教训：</b>低流动性/自有代币作抵押要设供应上限；喂价要检查上下限，熔断触底时要能快速暂停该市场——而不是继续用触底价放贷。</div>
+    <ol class="say">
+      <li>第三个案例，Venus，同一个协议两次栽在抵押品上。第一次是二零二一年五月的 XVS 事件。抵押品是协议自己的治理代币 XVS，价格短时间内从约七十六美元涨到约一百四十四美元，用户趁机借出大量 BTC 和 ETH，价格回落后清算不及，清算超过两亿美元，留下坏账超过九千五百万美元。</li>
+      <li>第二次是二零二二年五月的 LUNA 事件。抵押品是正在崩盘的 LUNA。喂价触及下限后停在约零点一美元，但市场价远低于此，于是有人在市场上低价买入 LUNA，再按零点一美元的喂价抵押借款，损失约一千一百万美元。</li>
+      <li>两条教训。低流动性或自有代币作抵押，要设供应上限。还有，喂价要检查上下限，当熔断触底时，要能快速暂停这个市场，而不是继续用触底的价格放贷。这正是第十集经济安全和第七集预言机下限的结合。以太坊上的 Inverse，是同一类问题。</li>
+    </ol>
+  </section>
+
+  <!-- 8 Qubit / Token Hub 系统层 -->
+  <section class="scene" data-title="跨链：系统层传导到应用层" data-onstep="marks">
+    <div class="kicker">案例四 · EP11 跨链风险要看两侧</div>
+    <h2>代码正确的借贷协议，接收了"凭空铸造"的抵押品</h2>
+    <div class="vs">
+      <div class="card info" data-k="0"><h3>Qubit Bridge（2022-01）</h3><div class="fs27">漏洞在<b>以太坊一侧</b>的存款合约<br>（对零地址 safeTransferFrom 返回成功）<br>损失却发生在 <b>BSC 一侧</b>的借贷池<br>→ 只审计 BSC 侧，看不到漏洞</div></div>
+      <div class="card sell" data-k="1"><h3>BSC Token Hub（2022-10）</h3><div class="fs27">被攻击的是<b>链的系统合约</b><br>IAVL 证明校验缺陷 → 伪造证明被接受<br>铸出 200 万 BNB，存入借贷池作抵押<br>→ 约 3 小时后验证者暂停 BSC</div></div>
+    </div>
+    <div class="card gold fs29" data-k="2"><b>共同教训：</b>系统层的漏洞会传导到应用层——借贷协议代码正确，却接收了凭空铸造的抵押品。跨链风险评估必须覆盖<b>两侧</b>。修复经 Moran 硬分叉完成。</div>
+    <ol class="say">
+      <li>第四组，跨链案例，看它们如何从系统层传导到应用层。先看 Qubit 桥，被利用的漏洞在以太坊一侧的存款合约，对零地址做 safeTransferFrom 返回了成功，但资金损失却发生在 BSC 一侧的借贷池，凭空铸造的代币被用作抵押。如果你只审计 BSC 侧的代码，根本看不到这个漏洞。</li>
+      <li>再看 BSC Token Hub，被攻击的不是某个 DeFi 协议，而是链的系统合约，也就是跨链桥本身。它的 IAVL 证明校验有缺陷，伪造的证明被接受，攻击者凭空铸造了两百万 BNB，存入 BSC 上的借贷协议作抵押，借出其他资产跨链转走。约三小时后验证者协调暂停了 BSC。</li>
+      <li>共同的教训是，系统层的漏洞会传导到应用层。借贷协议的代码完全正确，却接收了凭空铸造的抵押品。所以跨链风险评估必须覆盖两侧，不能只看自己这一侧。这次事故通过 Moran 硬分叉修复。注册即可成为中继者，和证明校验缺陷，这两类教训适用于所有跨链桥。</li>
+    </ol>
+  </section>
+
+  <!-- 9 分叉权限风险 -->
+  <section class="scene" data-title="分叉项目的权限风险" data-onstep="rowStep">
+    <div class="kicker">分叉即重审 · 高危 owner 函数</div>
+    <h2>照抄名协议，也照抄了高危权限</h2>
+    <table class="t sm">
+      <thead><tr><th>函数 / 设计</th><th>风险</th><th>审计时要问</th></tr></thead>
+      <tbody>
+        <tr><td>setMigrator()</td><td>owner 可把所有 LP 迁走</td><td>是否删除？是否经时间锁？</td></tr>
+        <tr><td>mint() 由 owner 直接调</td><td>无限增发</td><td>增发权是否只给农场合约？</td></tr>
+        <tr><td>setRewardPerBlock()</td><td>参数可瞬间改到极端值</td><td>是否有上限和时间锁？</td></tr>
+        <tr><td>可升级 + 单签 owner</td><td>随时替换实现</td><td>升级权限归属？</td></tr>
+        <tr><td>代币带黑名单/交易税开关</td><td>owner 可阻止卖出（貔貅盘）</td><td>税率上限？黑名单是否存在？</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>最后讲分叉项目的权限风险。BSC 上大量农场和 DEX 分叉自 SushiSwap 和 PancakeSwap，常常照抄了高危权限。比如 MasterChef 早期版本的 setMigrator，owner 可以把所有用户的 LP 迁移到任意合约，审计时要问它是否删除、是否经过时间锁。还有 owner 直接调用的 mint，可以无限增发，要问增发权是否只授予农场合约。</li>
+      <li>setRewardPerBlock 可以把参数瞬间改到极端值，要问有没有上限和时间锁。可升级加单签 owner，可以随时替换实现，要问升级权限归属。</li>
+      <li>还有一类特别坑，代币合约带黑名单或交易税开关，owner 可以阻止卖出，这就是貔貅盘，只能买不能卖。BSC 上 gas 便宜，这类垃圾代币和貔貅盘特别多。协议如果允许任意代币上架或作抵押，就要把这类代币当作攻击工具来建模。记住一句话，分叉即重审。</li>
+    </ol>
+  </section>
+
+  <!-- 10 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">字节码兼容 ≠ 参数一样：<span class="hl">区块数计时</span>和<span class="hl">代币精度</span>是最隐蔽的坑。</li>
+      <li data-step="1">分叉即重审：改动点做<span class="hl">差异审计</span>，常数集中定义，高危 owner 权限置于时间锁。</li>
+      <li data-step="2">系统层漏洞会<span class="hl">传导到应用层</span>；跨链风险评估覆盖两侧。</li>
+    </ul>
+    <h2 data-show="3">下一集：C02 TRON</h2>
+    <div class="path" data-show="3">
+      <div class="card sell"><div class="n">USDT</div><b>成功返回 false</b><div class="d">资金只进不出</div></div>
+      <div class="card gold"><div class="n">资源</div><b>能量 + 80ms</b><div class="d">失败也上链</div></div>
+      <div class="card info"><div class="n">账户</div><b>权限可改</b><div class="d">一地址 ≠ 一私钥</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，字节码兼容不等于参数一样。区块数计时和代币精度，是最隐蔽的两个坑，编译能过，运行会出经济问题。</li>
+      <li>第二，分叉即重审。改动点要做差异审计，常数集中定义，高危的 owner 权限要置于时间锁之后。</li>
+      <li>第三，系统层的漏洞会传导到应用层。即使你的协议代码完全正确，也可能接收到凭空铸造的抵押品，所以跨链风险评估必须覆盖两侧。</li>
+      <li>下一集是 C02，TRON。TRON 能跑 Solidity，但差异更大。USDT 转账成功也返回 false，会让资金只进不出。资源模型是能量加八十毫秒时限，失败的交易也会上链。还有账户权限可以被修改，一个地址不等于一把私钥。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line } = K;
+
+  function blkStep(el, st) {
+    marks(el, st);
+    const svg = el.querySelector('#blk'); svg.innerHTML = '';
+    // timeline of block intervals
+    const B = [['早期', '约 3 秒', C.info], ['Lorentz 2025-04', '1.5 秒', C.warn], ['Maxwell 2025-06', '0.75 秒', C.sell]];
+    B.forEach(([a, b, col], i) => {
+      const x = 60 + i * 360, on = 1;
+      rect(svg, x, 40, 320, 100, { fill: C.panel, stroke: col, sw: 3, op: on, rx: 8 });
+      T(svg, x + 160, 82, a, col, 26, 'middle', true);
+      T(svg, x + 160, 120, b, C.text, 28, 'middle', true);
+      if (i < 2) arrow(svg, x + 322, 90, x + 358, 90, C.t2, false, 3);
+    });
+    if (st >= 1) {
+      //排放对比
+      rect(svg, 60, 210, 680, 230, { fill: C.panel, stroke: C.info, sw: 3, rx: 10 });
+      T(svg, 400, 255, '设计时：3 秒/块', C.info, 28, 'middle', true);
+      T(svg, 400, 305, '每天约 28.8 万枚', C.text, 30, 'middle', true);
+      T(svg, 400, 360, 'rewardPerBlock = 10e18', C.t2, 24, 'middle');
+      T(svg, 400, 405, '国库按此预算', C.t2, 24, 'middle');
+
+      rect(svg, 880, 210, 680, 230, { fill: C.curFill, stroke: C.sell, sw: 4, rx: 10 });
+      T(svg, 1220, 255, '现在：0.75 秒/块', C.sell, 28, 'middle', true);
+      T(svg, 1220, 305, '每天约 115 万枚', C.gold, 30, 'middle', true);
+      T(svg, 1220, 360, '参数没改，排放 ×4', C.text, 26, 'middle', true);
+      T(svg, 1220, 405, '国库提前耗尽 / 通胀 ×4', C.t2, 24, 'middle');
+      arrow(svg, 745, 325, 875, 325, C.sell, false, 4);
+    }
+    el.querySelector('#blkH').textContent = st >= 1 ? '参数没改，排放速度却变成 4 倍' : '同样的"每区块奖励"，排放速度变成 4 倍';
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

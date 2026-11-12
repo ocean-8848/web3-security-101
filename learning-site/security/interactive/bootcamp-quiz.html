@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>训练营阶段测验</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 4px; }
+  .q { padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .q:last-of-type { border-bottom: 0; }
+  .q b { display: block; margin-bottom: 8px; line-height: 1.6; }
+  .opts label { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; color: var(--text); margin: 6px 0; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; }
+  .opts label input { margin-top: 4px; flex: none; }
+  .opts label.right { border-color: var(--buy); background: var(--buy-soft); }
+  .opts label.wrong { border-color: var(--sell); background: var(--sell-soft); }
+  .exp { display: none; font-size: 13px; line-height: 1.7; margin-top: 8px; padding: 8px 10px; background: var(--surface-2); border-radius: 8px; }
+  .done .exp { display: block; }
+  .score { font-size: 22px; font-weight: 650; font-family: var(--mono); }
+  .tab-pass::after { content: " ✓"; color: var(--buy); }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="back" href="index.html">← 交互实验目录</a>
+    <h1>训练营阶段测验</h1>
+  </header>
+  <p class="lead">选择一个阶段，答完全部题目。得分达到 80% 算通过。通过测验只是过关的一部分，你还要完成该阶段的交付物，见 <a href="../bootcamp/B00-roadmap.md">B00 路线图</a>。成绩只保存在本机浏览器中。</p>
+
+  <div class="card">
+    <h3>选择阶段</h3>
+    <div class="tabs" id="tabs"></div>
+    <p class="small muted" id="desc"></p>
+  </div>
+
+  <h2 id="title"></h2>
+  <div class="card" id="quiz"></div>
+  <div class="btn-row" style="margin-top:12px">
+    <button class="primary" id="submit">提交并查看解析</button>
+    <button id="retry">重新作答</button>
+  </div>
+  <div class="card" id="result" style="display:none;margin-top:12px" aria-live="polite"></div>
+
+  <h2>我的成绩</h2>
+  <div class="card">
+    <div class="table-wrap"><table>
+      <thead><tr><th>阶段</th><th class="num">最近得分</th><th class="num">最高得分</th><th>日期</th><th>状态</th></tr></thead>
+      <tbody id="scores"></tbody>
+    </table></div>
+    <div class="btn-row"><button id="clear">清除全部成绩</button></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const PASS = 0.8, KEY = 'w3s-bootcamp-quiz-v2';
+  const $ = id => document.getElementById(id);
+  const B = {
+    w02: ['B02-study-method.md', 'B02 学习心法与每日训练'], w03: ['B03-blockchain-basics.md', 'B03 区块链基础'], w04: ['B04-setup.md', 'B04 环境搭建'], w05: ['B05-first-contract.md', 'B05 第一个合约'], w06: ['B06-foundry-basics.md', 'B06 Foundry 基本功'],
+    w08: ['B08-tokens-and-vault.md', 'B08 代币与小金库'], w09: ['B09-reading-code-mindset.md', 'B09 读代码与攻击者思维'], w10: ['B10-ctf-practice.md', 'B10 CTF 入门关卡'],
+    w12: ['B12-foundry-advanced.md', 'B12 Foundry 进阶'], w13: ['B13-audit-1-notebox.md', 'B13 第 1 次审计：NoteBox'], w14: ['B14-writing-findings.md', 'B14 写好一个发现'], w15: ['B15-audit-2-luckypot.md', 'B15 第 2 次审计：LuckyPot'],
+    w17: ['B17-defi-basics.md', 'B17 DeFi 地图与头部协议'], w19: ['B19-audit-3-miniswap.md', 'B19 第 3 次审计：MiniSwap'], w20: ['B20-lending-cdp.md', 'B20 借贷与 CDP'], w21: ['B21-audit-4-flashdesk.md', 'B21 第 4 次审计：FlashDesk'], w22: ['B22-economics-governance.md', 'B22 经济模型风险'], w25: ['B25-capstone-minilend.md', 'B25 实战项目：MiniLend 审计与模型报告'],
+    w28: ['B27-what-is-audit.md', 'B27 专业审计流程'], w29: ['B28-bug-patterns.md', 'B28 高频漏洞模式库'], w30: ['B29-why-audits-miss.md', 'B29 为什么会漏掉漏洞'], w31: ['B30-think-aloud.md', 'B30 跟审实录'], w32: ['B31-automation-tools.md', 'B31 创造力与工程化'], w33: ['B32-audit-5-echobridge.md', 'B32 第 5 次审计：EchoBridge'], w34: ['B33-audit-6-guardvault.md', 'B33 毕业审计：GuardVault'],
+    w36: ['B35-case-method.md', 'B35 项目实例分析方法'], w38: ['B37-clamm-v4.md', 'B37 集中流动性与 V4 Hooks'], w39: ['B38-case-aave-v3.md', 'B38 Aave V3'], w40: ['B39-case-lido.md', 'B39 Lido stETH'], w41: ['B40-case-safe.md', 'B40 Safe 多签'], w42: ['B41-case-erc4626.md', 'B41 ERC-4626 金库'], w43: ['B42-perps.md', 'B42 永续合约'], w44: ['B43-audit-7-perplite.md', 'B43 第 7 次审计：PerpLite'],
+    w46: ['B45-yul-opcodes.md', 'B45 深入 EVM 与字节码审计'], w48: ['B46-calldata-memory.md', 'B46 calldata 与内存'], w49: ['B47-gas.md', 'B47 Gas 优化与 Gas 安全'], w50: ['B48-formal-verification.md', 'B48 形式化验证'],
+    w52: ['B50-solana-audit.md', 'B50 Solana 程序审计实战'], w53: ['B51-move-audit.md', 'B51 Move 审计实战'], w54: ['B52-ai-assisted-audit.md', 'B52 AI 辅助审计工作流'], w55: ['B53-contests-and-habits.md', 'B53 竞赛、赏金与每日训练'], w56: ['B54-expert.md', 'B54 求职与专家之路'], w57: ['B55-interview.md', 'B55 面试题库'],
+    w59: ['B57-wallet-key-practice.md', 'B57 钱包与私钥实操'], w60: ['B58-signing-phishing-practice.md', 'B58 读懂签名请求与本地链演练'], w62: ['B59-social-engineering-practice.md', 'B59 识破社工'], w63: ['B60-account-access-security.md', 'B60 账号、SIM 与权限'],
+    w65: ['B62-frontend-supply-chain-practice.md', 'B62 前端供应链与 DNS'], w67: ['B63-node-rpc-practice.md', 'B63 节点、RPC 与暴露面'], w69: ['B64-custody-ops-ir-practice.md', 'B64 热钱包水位、提现风控与多签复核'], w70: ['B65-incident-response-practice.md', 'B65 应急：检查链上委托、沙盘与 runbook'],
+    w71: ['B66-tracing-privacy-practice.md', 'B66 资金追踪与处置'], w73: ['B68-crypto-zk-bridge-practice.md', 'B68 密码学实现风险']
+  };
+  // 每题：[题干, [选项…], 正确下标, 解析, 章节键]
+  const STAGES = [
+    { name: '阶段 0 整装待发：环境与第一个合约', desc: '在自己的电脑上装好 Foundry，从空文件写出一个能收款、记账、提款的合约。', qs: [
+      ['按 B02 的每日学习循环，最后 10 分钟的学习日志要写什么？', ['今天读了多少页', '今天的假设、证据、错误', '今天用到的工具版本号', '只写今天的结论'], 1, '每日循环的最后一步是花 10 分钟写学习日志：今天的假设、证据、错误。没有运行过的知识，审计时用不出来。', 'w02'],
+      ['你发现一个线上合约有漏洞，负责任披露的第一步是？', ['在主网上小额"试一下"确认', '在本地 fork 复现，再通过私密渠道报告', '立刻在社交媒体公开细节', '先取走资金，事后归还'], 1, '先在本地 fork 复现，不碰主网资金；再通过私密渠道（项目方、赏金平台或安全团队）报告；协调修复后，在约定时间公开。在主网上"试一下"本身就可能构成攻击。', 'w02'],
+      ['未经授权测试别人已部署的合约，属于？', ['常规学习', '越过授权边界，可能违法', '官方鼓励', '无任何风险'], 1, '只测试自己部署的本地合约，或按赏金规则测试。授权必须事先取得并写明范围，代码开源不等于允许攻击。', 'w04'],
+      ['有人改动了一个历史区块里的一笔交易，会怎样？', ['只有这个区块的哈希变化', '这个区块之后所有区块的哈希都要重算', '链会自动改回原值', '没有任何变化'], 1, '每个区块的哈希既覆盖自己的内容，也覆盖上一个区块的哈希。改动历史区块，后面所有区块都要重算。局限：链只保证记下的东西不被改，不保证记下的东西是对的。', 'w03'],
+      ['EIP-1559 下，交易的 maxFeePerGas 低于当前 baseFee，会怎样？', ['按 maxFeePerGas 成交', '交易留在内存池，不被打包', '交易回滚并扣光 gas', '提议者补足差额'], 1, '有效单价 = min(maxFeePerGas, baseFee + maxPriorityFeePerGas)。maxFeePerGas 低于 baseFee 时交易不被打包。基础费被销毁，小费归提议者。', 'w03'],
+      ['forge build 报错找不到 forge-std，最可能的原因是？', ['网络太慢', '依赖库没有安装到 lib 目录', 'Solidity 语法错误', '钱包未连接'], 1, 'forge-std 是依赖库，放在 lib/ 下。下载 forge-std 失败，多半是网络连不上 GitHub。', 'w04'],
+      ['Solidity 中 msg.sender 表示什么？', ['交易最初的发起钱包', '当前这次调用的直接调用者', '合约的部署者', '矿工地址'], 1, 'msg.sender 是直接调用者。如果中间经过一个合约，msg.sender 就是这个合约。最初发起者是 tx.origin。', 'w05'],
+      ['运行 forge test 显示全部通过，最能说明什么？', ['合约没有任何漏洞', '当前写下的测试断言都成立', '合约已部署到主网', '合约的 gas 最优'], 1, '测试只能证明你写下的断言成立。没有写到的行为，测试不会告诉你任何事。', 'w06']
+    ]},
+    { name: '阶段 1 初窥门径：合约安全入门', desc: '写一个 ERC-20 代币和一个小金库，并说清 approve + transferFrom 的两步流程。', qs: [
+      ['ERC-20 的 approve 授权之后，谁能转走你的代币？', ['只有你', '被授权的地址，额度以内', '任何地址', '代币合约的部署者'], 1, 'approve 授予 spender 额度。spender 用 transferFrom 在额度内转账。', 'w08'],
+      ['金库按用户请求的金额记账，存入的代币转账时收 1% 手续费。两人各存 100 个，会怎样？', ['金库多收了手续费，有盈余', '账面记 200，实际只收到 198，最后取款的人取不出 100', '存款直接失败', '没有任何影响'], 1, '这是 B08 的破坏 B：按请求金额记账，账面大于真实余额。修复是按转账前后的余额差记账。', 'w08'],
+      ['一个问题的 PoC 跑不通，应该？', ['照样提交', '回去修正假设，确认后再提交', '提高严重性', '删掉测试'], 1, 'PoC 不通过通常意味着假设有错，或路径不完整。按最小审计流程，PoC 失败就回到代码重新读。', 'w09'],
+      ['审计笔记里的 // @audit-ok 表示什么？', ['已确认的问题', '查过了，没问题，并写明理由', '需要问项目方的问题', '工具自动生成的标记'], 1, '@audit-ok 和 @audit 同样重要。它记录你排除了什么，第二轮不用重复检查。', 'w09'],
+      ['侦察阶段，读代码之前先做什么？', ['从最长的函数开始逐行读', '读文档和规格，先理解它应该做什么', '先写报告框架', '先修改代码'], 1, '侦察顺序：读文档和规格 → 画角色和资产 → 列外部依赖 → 运行测试 → 运行静态分析。', 'w09'],
+      ['B09 要求对每一行代码问 3 个问题。下面哪一组是对的？', ['谁写的、何时写的、为什么写', '做了什么假设、假设由谁保证、假设不成立时谁损失什么', '用了多少 gas、能否更短、有没有注释', '有没有测试、覆盖率多少、能否编译'], 1, '攻击者思维用来找问题，防御者思维用来判断影响并给出能落地的修复。', 'w09'],
+      ['用 tx.origin 做权限判断的风险是？', ['gas 高', '受害者调用恶意合约时，判断仍然通过', '不能编译', '没有风险'], 1, 'tx.origin 是最初发起者，恶意中间合约可以借用它通过检查。这是 Ethernaut 第 4 关 Telephone 的考点。', 'w10'],
+      ['按 B10 的 CTF 解题方法，第一步是什么？', ['从第一行代码开始顺读', '读胜利条件：要改哪个状态', '先写 PoC', '先查别人的题解'], 1, '解题顺序：读胜利条件 → 找写入点 → 找守卫 → 破守卫 → 写 Foundry PoC。从胜利条件倒推比顺读快得多。', 'w10']
+    ]},
+    { name: '阶段 2 小试牛刀：能审小合约', desc: '独立审计一个 100–300 行的合约：范围 → 笔记 → 发现 → PoC → 报告。', qs: [
+      ['不变量测试里，处理器（Handler）的作用是？', ['替代被测合约', '把随机输入收窄成合法操作，避免大部分调用直接回滚', '自动修复失败的断言', '把测试部署到主网'], 1, '模糊器只调用处理器，处理器再调用被测合约。局限：处理器写得太窄，会漏掉 bug。', 'w12'],
+      ['合约里标为 private 的变量，谁能读到它的值？', ['只有合约自己', '只有 owner', '链上任何人，例如用 cast storage 读槽位', '没有人'], 2, 'private 只阻止其他合约读取。不要把密码或密钥放进合约存储。', 'w12'],
+      ['NoteBox 修复前，PoC 能执行到 setSecret 的每一行。覆盖率 100% 能说明什么？', ['这个函数没有 bug', '只说明代码运行过，不说明没有 bug', '函数已被形式化证明', '可以跳过人工审查'], 1, 'NB-01 的 bug 是"缺少一行代码"，覆盖率再高也看不出。覆盖率只能告诉你哪里你肯定没看过。', 'w13'],
+      ['发现一个函数没有访问控制，第一步应该？', ['直接标高危', '确认调用它能造成什么后果', '忽略', '改成 private'], 1, '先确认资产或权限影响，再写 PoC 和定级。', 'w13'],
+      ['一条合格发现必须有什么？', ['只有漂亮的标题', '根因、影响、PoC、修复建议', '只需要工具输出', '只需要严重性'], 1, '审阅者要能复核问题、判断后果并修复。', 'w14'],
+      ['严重性通常由哪两个维度决定？', ['代码行数和 gas', '影响和可能性', '作者资历和语言', '字体和格式'], 1, '严重性一般综合影响大小和发生的可能性。', 'w14'],
+      ['Slither 报告的内容都是漏洞吗？', ['是', '不一定，需要逐条确认和排除误报', '只有高危是', '工具绝不出错'], 1, '静态分析有误报和漏报。LuckyPot 的每条结果都要给出结论和理由，这叫误报分诊。', 'w15'],
+      ['合约用 block.timestamp 和地址哈希生成随机数，主要问题是？', ['太贵', '可被预测或影响，并非真正随机', '编译不通过', '无法存储'], 1, '区块参数和地址是公开的，调用合约可以先计算再决定是否参与。', 'w15']
+    ]},
+    { name: '阶段 3 渐入佳境：能审 DeFi', desc: '分析闪电贷、预言机操纵、存储冲突和经济模型风险，并写成可验证的发现。', qs: [
+      ['B17 用五个问题拆解一个协议。下面哪一个不在其中？', ['钱从哪来', '谁能动它', '价格从哪来', '团队有多少人'], 3, '五个问题：钱从哪来？存在哪里？谁能动它？价格从哪来？什么必须永远成立？', 'w17'],
+      ['恒定乘积 AMM 的不变量是？', ['x + y = k', 'x × y = k（不计手续费）', 'x / y = 1', 'k 恒为 0'], 1, 'x × y = k。加入手续费后，k 在交换中不应下降。', 'w19'],
+      ['不变量测试比单元测试多做了什么？', ['打印更多日志', '用随机调用序列反复检查性质', '自动修复代码', '部署到主网'], 1, '状态化模糊测试会探索调用序列，并检查不变量。还要看 reverts 列：回滚率高的 PASS 几乎没有测试价值。', 'w19'],
+      ['抵押 10 ETH，清算阈值 0.8，债务 12,000 美元。按 B20 的公式，清算价格是多少？', ['1,200 美元', '1,500 美元', '1,875 美元', '2,000 美元'], 1, '清算价格 = 债务 ÷ (抵押数量 × 清算阈值) = 12,000 ÷ (10 × 0.8) = 1,500。价格跌破它时 HF < 1，仓位可被清算。', 'w20'],
+      ['用 AMM 现货价格直接做抵押定价，主要风险是？', ['显示不准', '同一交易内可被大额交换操纵', '无法读取', '无风险'], 1, '现货价格在一笔交易内可变，可以被闪电贷推高或压低（FlashDesk 的 FD-ORA-1）。修复是改用带时效校验的外部喂价或 TWAP。', 'w21'],
+      ['可升级合约在实现合约中新增变量，应注意？', ['随便插入', '不能破坏原有存储布局', '必须删除旧变量', '与存储无关'], 1, '代理和实现共享存储布局。在中间插入变量会让后续变量错位：FlashDesk V2 的 feeBps 从 5 号槽移到 6 号槽，读到旧的 totalShares。用 forge inspect 比较升级前后的布局。', 'w21'],
+      ['判断一次价格操纵攻击是否可行，B22 的标准是？', ['只要价格能动就可行', '收益大于操纵成本', '协议 TVL 超过 1 亿美元', '预言机来自链上'], 1, '成本包括滑点损失、手续费、维持时间的资金成本和套利者反向交易的损失。报告里给出"操纵 X% 约需多少成本、可借出多少"更有说服力。', 'w22'],
+      ['修复复查不只是确认"改过了"。B25 要求回答哪三个问题？', ['改了几行、谁改的、何时改的', '根因是否消除、修复是否引入新问题、同类位置是否都改了', 'gas 是否更低、代码是否更短、注释是否更全', '客户是否满意、是否按时、是否付款'], 1, 'MiniLend 的 F-06 修复要检查是否覆盖了全部三处调用。', 'w25']
+    ]},
+    { name: '阶段 4 独当一面：独立审计', desc: '按专业流程接一个审计：判断准备度、确定范围、排期、内部评审、修复复查和交付终版报告。', qs: [
+      ['审计的范围文件有什么用？', ['没什么用', '约定审哪些文件和哪个代码版本', '只决定价格', '只给律师看'], 1, '范围决定结论适用于什么。代码版本要固定到提交哈希。', 'w28'],
+      ['修复复查的对象是什么？', ['只看客户标注的修改行', '修复提交与原提交的全部差异，并用原 PoC 验证修复后攻击失败', '只重新运行静态分析', '只读客户的修复说明'], 1, '每处差异都要对应到一条发现，无法对应的差异单独审计。终版报告的提交哈希必须等于部署的代码。', 'w28'],
+      ['合约用 ecrecover 验签并接受高 s 值，但用 nonce 防重放。签名可延展漏洞成立吗？', ['一定成立', '不成立：翻转 s 后 nonce 已变，摘要不同，重放验证失败', '只在 L2 上成立', '取决于编译器版本'], 1, '模式是提问的位置，不是答案。可延展性只在"用签名字节做防重放标记"时才能被利用。', 'w29'],
+      ['覆盖率 100%、测试全部通过，审计员因此相信行为正确。B29 把这种漏报机制叫什么？', ['范围盲区', '把测试当作真相', '疲劳', '发现第一个就停'], 1, '测试只验证作者想到的场景。对策：读测试，找出作者没有考虑什么；写一条跨操作的不变量测试。', 'w30'],
+      ['B30 怎样概括审计的节奏？', ['先写报告，再找证据', '不断写下一个可以被否定的猜测，再用最便宜的方法否定它', '把所有工具跑一遍再汇总', '只看最复杂的函数'], 1, '被否定的假设也有价值：它缩小范围，有时还会引出下一条线索。B30 的第一个发现就来自一个失败的假设。', 'w31'],
+      ['B31 认为哪一类问题没有工具能替你发现？', ['模式类问题', '不变量的反例', '偏离协议意图的业务逻辑漏洞', '可达的断言失败'], 2, '工具擅长发现模式，人擅长发现意图偏差。没有工具能理解"这个协议应该做什么"。', 'w32'],
+      ['跨链消息没有绑定来源链和目标链 ID，风险是？', ['费用更高', '消息可能在其他链上被重放', '无法编码', '无风险'], 1, '签名和消息要绑定链 ID、目标地址和 nonce。', 'w33'],
+      ['GuardVault 有多合约交互。8 小时时盒里，建议先做什么？', ['直接写 PoC', '读文档，画合约调用图和角色表，标出每一次外部调用', '打开 solution 目录对答案', '先写报告摘要'], 1, '建议用 1 小时读文档、画调用图和角色表。很多问题只有跨合约看才会出现。', 'w34']
+    ]},
+    { name: '阶段 5 庖丁解牛：头部协议与高级 DeFi', desc: '审计五类头部协议及其分叉或集成方：AMM、借贷、变化余额代币、多签、ERC-4626 金库。', qs: [
+      ['B35 的五份底稿中，回答"谁能做什么？权限由谁授予？有没有时间锁？"的是哪一份？', ['资产表', '角色表', '入口表', '集成方清单'], 1, '五份底稿：资产表、角色表、入口表、不变量、集成方清单。', 'w36'],
+      ['Uniswap V4 Hook 的 beforeSwap 里，msg.sender 和参数 sender 分别是谁？', ['都是最终用户', 'msg.sender 是 PoolManager，sender 通常是路由', 'msg.sender 是路由，sender 是 PoolManager', '都是 Hook 自己'], 1, 'sender 通常是路由，不代表用户，不能用来做用户鉴权。Hook 函数要用 onlyPoolManager 限制调用者。', 'w38'],
+      ['审计 Aave V3 分叉时，下面哪个操作也必须做健康因子校验？', ['查询利率', 'aToken.transfer（把抵押转给他人）', 'repay 还款', '读取储备数据'], 1, '核心不变量：每个让账户变得更危险的入口都经过同一套校验。aToken 转账在 finalizeTransfer 中调用 validateHFAndLtv。Euler 事件就是新增入口漏了健康度校验。', 'w39'],
+      ['集成方调用 stETH.transfer(x) 后，断言接收方余额恰好增加 x。常见结果是？', ['总是成立', '可能少 1–2 wei，断言失败', '余额翻倍', '交易必然回滚'], 1, 'stETH 余额是"份额 × 汇率"实时算出来的，有取整误差。按余额差记账，或使用 transferShares、wstETH。', 'w40'],
+      ['Safe 多签交易的 operation 字段为 1，意味着什么？', ['普通转账', 'DELEGATECALL：用目标代码改写 Safe 自身的存储', '批量签名', '取消交易'], 1, 'operation = 1 能改写实现地址、owners 和 threshold，日常转账永远不应该是 1。签名者要在另一台设备上独立重算 safeTxHash。', 'w41'],
+      ['ERC-4626 金库的首个存款人攻击依赖什么？', ['签名错误', '份额极少时通过捐赠抬高每份额价值，使后来者被取整', '重入', '权限缺失'], 1, '常见防护是虚拟份额偏移、死份额或最小初始存款。还要检查 totalAssets 是否依赖 balanceOf(this)，捐赠会不会改变每份额价格。', 'w42'],
+      ['多头开仓价 3,000，名义价值 3,000 美元，保证金 600 美元，维持保证金 1%。清算价是多少？', ['2,400 美元', '2,430 美元', '2,570 美元', '2,700 美元'], 1, '清算价 = 开仓价 × (1 − (保证金 − 维持保证金) ÷ 名义价值) = 3,000 × (1 − 570 ÷ 3,000) = 2,430。', 'w43'],
+      ['PerpLite 的 liquidate 读预言机价格时不检查 updatedAt，后果是？', ['没有影响', '喂价中断时，健康仓位会按旧价被清算', '清算奖励变少', '只影响事件日志'], 1, '修复：所有用价路径都检查最大价格年龄，超过时回滚。', 'w44']
+    ]},
+    { name: '阶段 6 追本溯源：EVM 底层与形式化', desc: '从字节码中找出分发器，手算映射槽位和 ERC-1967 槽，识别四类汇编审计陷阱。', qs: [
+      ['瞬态存储（EIP-1153，TLOAD / TSTORE）有什么特点？', ['永久保存，和 storage 一样', '交易结束自动清空，适合做重入锁', '每次调用结束就清空，和 memory 一样', '只有部署时可写'], 1, '瞬态存储在交易内有效。风险：在 multicall 或同一交易的多次调用中忘记清理，值会泄漏到后续调用。', 'w46'],
+      ['mapping 声明在 slot p，键 k 对应的值存在哪个槽？', ['slot p + k', 'keccak256(pad32(k) ‖ pad32(p))', 'slot p 本身', 'keccak256(p) + k'], 1, '动态类型的数据不在声明槽里，而在哈希算出的位置。手算结果可以用 cast index 核对。', 'w46'],
+      ['calldataload 读到的 address 为什么要掩码？', ['节省 gas', '高 12 字节可能不是零', '语法要求', '没必要'], 1, '汇编不做 ABI 校验。脏高位可能算出不同的存储槽。', 'w46'],
+      ['内联汇编 return 在带修饰器的函数中，会怎样？', ['只结束汇编块', '结束整个调用，修饰器尾部不执行', '编译报错', '自动回滚'], 1, '修饰器 _; 之后的代码被跳过，重入锁可能卡住。', 'w46'],
+      ['汇编中写内存后不更新 0x40，会怎样？', ['没有影响', 'Solidity 之后分配内存时可能覆盖数据', 'gas 增加 100 倍', '无法编译'], 1, '0x40 是空闲内存指针。不更新它，后续分配会使用同一段内存。B46 的 MemoryLab 写入 0xBEEF 后不移动指针，读回的是数组长度 1。', 'w48'],
+      ['EIP-150 的 63/64 规则可以被怎样利用？', ['让交易更便宜', '中继者给元交易刚好不够的 gas：内层调用失败，外层用剩下的 1/64 把请求标为已处理', '让合约无法部署', '重放别人的签名'], 1, '一次 CALL 最多转发剩余 gas 的 63/64。防御：调用前检查 gasleft() 足够，或在内层失败时整体回滚。', 'w49'],
+      ['Halmos 输出 TIMEOUT，表示？', ['性质已证明', '性质未证明，需要缩小边界或人工分析', '性质被推翻', '合约安全'], 1, '超时不是通过，报告中必须说明。', 'w50'],
+      ['Certora 规格中过强的 require 会造成什么？', ['运行更慢', '把真实漏洞排除在证明之外', '提高严重性', '无影响'], 1, '这叫过约束。审计规格时先看 require。', 'w50']
+    ]},
+    { name: '阶段 7 登堂入室：走向专家', desc: '审计 EVM 以外的程序：Solana 指令的账户校验，Move 的对象、能力和权限模型。', qs: [
+      ['Solana 程序用 Anchor 的 seeds + bump 校验了一个 PDA 账户。这能证明什么？', ['账户里的所有字段都正确', '账户地址由当前程序用这些种子派生，字段还要另外校验', '调用者是管理员', '账户已经初始化'], 1, 'PDA 只证明地址。账户内的字段要另外用 has_one 或 constraint 校验。', 'w52'],
+      ['Move 中的泛型类型混淆是怎样发生的？', ['编译器随机选择类型', '泛型类型参数由调用者指定，函数没有把类型与存储的状态绑定', 'Move 没有类型系统', '只在 EVM 上发生'], 1, '攻击者可以指定另一种类型。公开研究把"缺少泛型类型检查"列为 Aptos Move 的常见缺陷。', 'w53'],
+      ['两个不同的 AI 模型都说某处是高危。可以不写 PoC 直接提交吗？', ['可以，两个模型一致就够了', '不可以，模型一致只是信号，等级仍由证据决定', '再问第三个模型就够了', '附上提示词就够了'], 1, 'AI 的每个结论都只是疑点。两个模型可能共享训练语料或同样的误解。证据由 PoC、测试和人工推理提供。', 'w54'],
+      ['同一根因写成多条提交，通常结果是？', ['多份奖金', '被合并或只算一条', '严重性提高', '自动获奖'], 1, '评委按根因合并。建议合并成一条质量高的提交。', 'w55'],
+      ['想要复现历史事故，正确做法是？', ['直接攻击线上合约', '用本地玩具合约还原机制，并断言链 ID', '用真实私钥广播', '向测试网广播攻击'], 1, '本地复现只学习机制，不影响任何真实资金。', 'w55'],
+      ['持有被审项目的代币，正确做法是？', ['不说', '提前披露，必要时回避', '报告时给高分', '先卖出再说'], 1, '利益冲突要披露。发现漏洞后利用信息交易更是不可接受。', 'w56'],
+      ['建立个人方法最重要的反馈来源是？', ['收藏更多清单', '复盘自己漏掉的问题', '多买工具', '只看排名'], 1, '漏掉的问题最能揭示盲区，据此更新方法。', 'w56'],
+      ['B55 要求面试答案能说清哪三部分？', ['定义、历史、轶事', '原理、例子、修复', '工具、版本、命令', '标题、严重性、日期'], 1, '30 道题都按"原理 + 例子 + 修复"回答。', 'w57']
+    ]},
+    { name: '链下赛道 L1 守好家门', desc: '读懂钱包弹出的每一种签名请求，在签名前用本地链模拟结果，并撤销已有授权。', qs: [
+      ['助记词加了 BIP-39 密码（passphrase）后，同一组助记词会派生出？', ['相同的地址', '一组完全不同的地址', '无法恢复的钱包', '只少一个地址'], 1, '密码参与种子计算。忘记密码等于丢失这组地址，所以密码也要单独备份。', 'w59'],
+      ['一个靓号工具生成私钥的种子只有 32 位（约 43 亿种），风险是？', ['没有风险，私钥仍是 256 位', '攻击者看到公钥后可以枚举种子，反推出私钥', '只会让地址变长', '只影响交易速度'], 1, '私钥强度取决于种子空间，不取决于私钥长度。2022 年 Profanity 的种子只有 32 位，Wintermute 因此损失约 1.6 亿美元。', 'w59'],
+      ['钱包显示的交易 Data 以 0x095ea7b3 开头，金额字段是 64 个 f。这是什么请求？', ['普通转账', '无限额度的 approve 授权', 'NFT 全部授权 setApprovalForAll', '撤销授权'], 1, '0x095ea7b3 是 approve(address,uint256)，2²⁵⁶−1 即无限授权。0xa22cb465 是 setApprovalForAll，0xd505accf 是 permit。', 'w60'],
+      ['网页请求你签一条看不懂的 EIP-712 Permit 消息，它可能造成什么？', ['没有链上影响，签名不花 gas', '对方拿签名上链，在额度内转走你的代币', '只会登录网站', '只改变头像'], 1, 'Permit 签名就是授权。签名本身不花 gas，但别人可以提交它并转走代币。', 'w60'],
+      ['地址投毒攻击利用的是什么习惯？', ['用硬件钱包', '只核对地址开头和结尾几位，从历史记录复制地址', '使用多签', '小额测试'], 1, '攻击者生成首尾相同的地址并制造转账记录。要逐字比对完整地址，或使用地址簿。', 'w60'],
+      ['招聘方让你在本机运行一份"面试作业"仓库，最稳妥的做法是？', ['直接 npm install', '先在隔离环境检查脚本和依赖，用 --ignore-scripts 安装', '用公司电脑运行', '关掉杀毒软件'], 1, '假招聘常把恶意代码放在安装脚本里。先看再跑，并在隔离环境中进行。', 'w62'],
+      ['你在仿冒的交易所登录页输入了密码和 TOTP 验证码。攻击者能用吗？', ['不能，验证码绑定了真网站', '能，只要在约 30 秒内转发到真网站', '必须拿到你的手机才能用', '验证码只能用来找回密码'], 1, 'TOTP 只由"密钥 + 时间"算出，不知道你在哪个网站输入。硬件安全密钥（FIDO2 / 通行密钥）会把签名绑定到真实域名。', 'w63'],
+      ['上月离职的员工仍有 npm 发布权和多签签名人身份。应该怎样处理？', ['正常，离职员工可以保留', '属于离职回收遗漏：收回 npm 权限，确认阈值和剩余签名人后移除签名人', '只是文档问题，不用改', '只需改密码'], 1, 'Ledger Connect Kit 事件就是漏了 npm 权限。移除签名人前，先确认阈值和剩余签名人是否足够独立。', 'w63']
+    ]},
+    { name: '链下赛道 L2 固若金汤', desc: '为一个示例交易所定热钱包水位、写提现风控规则、在签名前重算多签哈希，并写出应急 runbook。', qs: [
+      ['lockfile 的 diff 里，某个依赖的版本号没变，integrity 却变了。说明什么？', ['正常的格式变化，可以忽略', '包的内容被换过，必须追问原因', '依赖被删除了', 'npm 自动升级了版本'], 1, 'npm 会接受新内容并写一个新的 integrity，不报错也不警告。lockfile 的 diff 是供应链的审计日志。', 'w65'],
+      ['给第三方脚本加上 SRI（integrity 属性）能防住什么？', ['DNS 被劫持后的所有攻击', 'CDN 上的文件被替换后仍被浏览器执行', '用户点钓鱼链接', '私钥泄露'], 1, '内容哈希不匹配时浏览器拒绝执行。它保护不了自己域名下的 HTML 被替换，所以还要配合 CSP 和发布比对。', 'w65'],
+      ['入账系统只信任一个 RPC 节点返回的回执，主要风险是？', ['费用更高', '节点出错或被篡改时会记入不存在或失败的存款', '速度太快', '无法查询余额'], 1, '要用多个独立来源交叉验证，并检查 status 和确认深度。', 'w67'],
+      ['你的节点 RPC 端口对外开放，节点上还有"解锁账户"。攻击者能做什么？', ['只能读区块高度', '不需要私钥，直接让节点签名，转走解锁账户里的资金', '只能看到交易池', '什么也做不了'], 1, '这是 2018 年 8545 端口盗币的路径。看到 0.0.0.0:8545 要立刻核对防火墙；在节点前加只读网关，只放行带令牌的白名单方法。', 'w67'],
+      ['把热钱包上限从 24M 降到 5M（低于平均日提现），代价是什么？', ['没有代价', '温钱包每天要补充多次，签名越频繁，审批越容易变成例行公事', '热钱包被清空时损失更大', '提现变得更快'], 1, '降上限能降低单次被清空的损失。水位是安全与运营频率之间的取舍，要和签前复核一起设计。', 'w69'],
+      ['发现热钱包异常，暂停提现后第一件该确认的是？', ['立刻发公告说资金安全', '攻击路径是否还开着，例如委托、授权或签名密钥', '先恢复提现', '删除日志'], 1, '暂停只挡住一条路。要确认授权、委托和密钥是否仍可被利用，同时保全证据。', 'w70'],
+      ['稳定币发行方冻结了地址 A。A 还能转出什么？', ['什么都转不出', '不能转出该稳定币，但仍能转出 ETH', '只能转出该稳定币', '全部都能转出，冻结无效'], 1, '冻结写在稳定币合约里，只管该合约的余额。ETH 是原生资产，没有合约能拦住它。真实冻结还有门槛和时延。', 'w71'],
+      ['同一个私钥用相同的 nonce k 签了两条不同消息，会怎样？', ['没有影响', '任何人都能从两个签名算出私钥', '签名变得更安全', '只是 gas 增加'], 1, 'ECDSA 的 k 必须唯一且不可预测。重复的 r 值是一个可以监控的信号。', 'w73']
+    ]}
+  ];
+
+  const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } };
+  const save = v => { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch (e) {} };
+  let results = load();
+  let cur = 0;
+  try { const c = +localStorage.getItem(KEY + '-cur'); if (c >= 0 && c < STAGES.length) cur = c; } catch (e) {}
+  let submitted = false;
+
+  function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function tabs() {
+    $('tabs').innerHTML = STAGES.map((s, i) => '<button data-i="' + i + '" class="' + (i === cur ? 'primary ' : '') + (results[i] && results[i].best >= PASS ? 'tab-pass' : '') + '">' + esc(s.name) + '</button>').join('');
+    $('desc').textContent = STAGES[cur].desc;
+  }
+  function render() {
+    submitted = false;
+    const s = STAGES[cur];
+    $('title').textContent = s.name + '（共 ' + s.qs.length + ' 题，通过线 ' + Math.ceil(s.qs.length * PASS) + ' 题）';
+    $('quiz').innerHTML = s.qs.map((q, i) => '<div class="q" id="q' + i + '"><b>' + (i + 1) + '. ' + esc(q[0]) + '</b><div class="opts">' + shuffle(q[1].map((o, j) => [o, j])).map(([o, j]) => '<label id="o' + i + '_' + j + '"><input type="radio" name="r' + i + '" value="' + j + '"><span>' + esc(o) + '</span></label>').join('') + '</div><div class="exp">' + esc(q[3]) + ' 相关章节：<a href="../bootcamp/' + B[q[4]][0] + '">' + esc(B[q[4]][1]) + '</a></div></div>').join('');
+    $('result').style.display = 'none';
+    $('submit').disabled = false;
+    tabs();
+  }
+  function grade() {
+    const s = STAGES[cur];
+    let ok = 0, miss = 0;
+    s.qs.forEach((q, i) => { const c = document.querySelector('input[name=r' + i + ']:checked'); if (!c) miss++; });
+    if (miss) { $('result').style.display = 'block'; $('result').textContent = '还有 ' + miss + ' 题未作答。'; return; }
+    s.qs.forEach((q, i) => {
+      const c = +document.querySelector('input[name=r' + i + ']:checked').value;
+      if (c === q[2]) ok++;
+      $('o' + i + '_' + q[2]).classList.add('right');
+      if (c !== q[2]) $('o' + i + '_' + c).classList.add('wrong');
+      $('q' + i).classList.add('done');
+      document.querySelectorAll('input[name=r' + i + ']').forEach(x => { x.disabled = true; });
+    });
+    submitted = true;
+    $('submit').disabled = true;
+    const pct = ok / s.qs.length, pass = pct >= PASS;
+    const prev = results[cur] || { best: 0 };
+    results[cur] = { last: pct, best: Math.max(prev.best, pct), date: new Date().toLocaleDateString('sv') };
+    save(results);
+    $('result').style.display = 'block';
+    $('result').innerHTML = '<div class="score">' + ok + ' / ' + s.qs.length + '（' + Math.round(pct * 100) + '%）</div><p><span class="pill ' + (pass ? 'buy' : 'sell') + '">' + (pass ? '通过' : '未通过') + '</span> ' + (pass ? '概念过关。别忘了完成阶段交付物。' : '展开每题解析，回到相关章节后再试。') + '</p>';
+    scores(); tabs();
+  }
+  function scores() {
+    $('scores').innerHTML = STAGES.map((s, i) => { const r = results[i]; return '<tr><td>' + esc(s.name) + '</td><td class="num">' + (r ? Math.round(r.last * 100) + '%' : '—') + '</td><td class="num">' + (r ? Math.round(r.best * 100) + '%' : '—') + '</td><td>' + (r ? r.date : '—') + '</td><td>' + (r ? (r.best >= PASS ? '<span class="pill buy">已通过</span>' : '<span class="pill sell">未通过</span>') : '<span class="pill info">未作答</span>') + '</td></tr>'; }).join('');
+  }
+  $('tabs').addEventListener('click', e => { const b = e.target.closest('[data-i]'); if (!b) return; cur = +b.dataset.i; try { localStorage.setItem(KEY + '-cur', String(cur)); } catch (er) {} render(); window.scrollTo(0, 0); });
+  $('submit').onclick = grade;
+  $('retry').onclick = render;
+  $('clear').onclick = () => { results = {}; save(results); scores(); tabs(); };
+  document.addEventListener('click', e => { const a = e.target.closest && e.target.closest('a[href]'); if (a && /\.md(#|$)/.test(a.getAttribute('href'))) { e.preventDefault(); window.parent.postMessage({ cexNavMd: a.getAttribute('href') }, '*'); } });
+  render(); scores();
+})();
+</script>
+</body>
+</html>

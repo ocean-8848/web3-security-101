@@ -1,0 +1,7 @@
+{
+"answers": [
+"手续费增长是单调累加的 uint256，长期会回绕。头寸只关心两个时点之间的差值，模 2^256 的减法在回绕后仍然得到正确差值。如果改成检查算术，一旦全局值回绕，或者 <code>outside</code> 比当前值大，减法会回滚，头寸就无法结算手续费，甚至无法平仓。本章 <code>test_feeGrowthInsideSurvivesWraparound</code> 用数字演示了这一点。",
+"结算检查只比较 PoolManager 的代币净额。Hook 内部可以有自己的账本：把资金记到错误的人名下，算错份额，或者错误地返回 Delta。这些错误不会让净额变成非零，所以检查能通过。Bunni 的取整问题和 Cork 的访问控制问题都不是 PoolManager 的缺陷。Hook 需要自己的账本不变量。",
+"示例一：对每个 PoolId，Hook 记录的 LP 份额总和等于份额代币的总供应量。示例二：Hook 内部记录的代币余额加上累计费用，等于 Hook 实际持有的余额加上 PoolManager 中该 Hook 的 Delta 净额。"
+]
+}

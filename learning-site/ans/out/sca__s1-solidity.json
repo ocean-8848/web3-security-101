@@ -1,0 +1,7 @@
+{
+ "answers": [
+  "用户（发起调用的 EOA）成了 A 的 owner，而不是 B。你应该看到 A 的 owner 变成用户地址，因为 delegatecall 用 B 的代码、改 A 的存储，且 <code>msg.sender</code> 保持为原始调用者（用户）。",
+  "因为 <code>Struct memory s = items[i]</code> 是把存储里的 struct 复制到 memory，<code>s.amount = 0</code> 只改了这份副本。存储里的值不变，余额没有清零，可能被重复领取。要改存储，必须写成 <code>Struct storage s = items[i]</code>，它是引用，修改会写回。",
+  "能记账约 N ETH，N 是循环里 delegatecall 的次数。delegatecall 保留原始的 <code>msg.value</code>，每次 <code>deposit()</code> 都读到同样的 1 ETH，所以只付一次钱，就“一份钱用多次”。例如循环 10 次，就记账 10 ETH。"
+ ]
+}

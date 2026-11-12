@@ -1,0 +1,405 @@
+# 章节：A2 测试网动手：TRON Nile 转一笔 TRC-20
+
+## 思考题（共 2 题，按顺序作答）
+Q1. 用第 12 步表格里的 N，算一算：如果一家支付商每天在主网处理 10 万笔 USDT 转账，全部燃烧 TRX 付费，每天要燃烧多少 TRX？如果改为质押换能量，需要质押多少 TRX（提示：用第 4 节脚本查主网的 TotalEnergyLimit 和 TotalEnergyWeight）？这和 X03 讲的能量租赁生意有什么关系？
+Q2. 在 3.4 节，把 consume_user_resource_percent 设为 0，部署者质押充足。普通用户调用 transfer 时还要付什么？如果部署者的能量耗尽，会发生什么？这种设计适合什么样的业务（提示：项目方"替用户付 Gas"），对照 08 章 5.2 节 的 Paymaster。
+
+## 章节正文
+
+# A2 测试网动手：TRON Nile 转一笔 TRC-20
+
+学习目标：做完本附录，你能——
+
+- 在 TronLink 切换到 Nile 测试网，领取测试 TRX 和测试 USDT。
+
+- 在 Nile Tronscan 上读懂一笔 TRC-20 转账的带宽、能量和燃烧的 TRX。
+
+- 用 Stake 2.0 质押换能量，对比"燃烧付费"和"能量付费"的差别。
+
+前置章节：02 区块链底层（TRON 费用模型）、05 非 EVM 模型（3.3 节）、06 代币标准（3.8 节）
+深潜对照：X03 TRON（能量租赁） ｜ 示例合约：examples/02-MinimalToken.sol（可选步骤）
+预计用时：45–75 分钟 ｜ 花费：0 元（只用测试币）
+
+## 1. 你将完成什么
+
+一句话：在 Nile 测试网转两笔测试 USDT，一笔燃烧 TRX 付费，一笔用质押换来的能量付费，然后在浏览器上对比两张"账单"。
+
+Nile：TRON 官方维护的开发测试网。地址格式、TVM、资源模型都和主网一致，测试币没有市场价值。
+
+完成后，你在 nile.tronscan.org 上能看到：
+
+ | 
+
+ | 位置
+ | 你会看到
+
+ | 账户页 → 资源
+ | 免费带宽 600、质押后获得的能量上限和已用量
+
+ | 第一笔转账详情
+ | 消耗能量 N、"燃烧 TRX 获得能量"的金额、带宽消耗
+
+ | 第二笔转账详情
+ | 同样消耗能量 N，但燃烧的 TRX 为 0
+
+ | 代币转账记录
+ | 两条 USDT 转账，事件 Transfer
+
+🎯 打个比方：TRON 的资源像手机套餐。
+
+- 免费带宽 = 套餐里每天赠送的短信条数，用完第二天恢复。
+
+- 能量 = 流量。质押 TRX = 办包月套餐，每天恢复固定额度。
+
+- 燃烧 TRX = 没套餐时按量计费，每 1 点能量 100 sun。
+
+比喻的局限：
+
+- 手机套餐的钱付出去就没了。质押的 TRX 只是锁定，解除质押后可以取回（主网等待 14 天）。
+
+- 套餐额度是固定的。TRON 每 TRX 换到的能量 = 全网能量总量 × 你的质押占比，全网质押越多，你分到的越少。
+
+[图]
+flowchart TD
+  T["一笔 TRC-20 transfer"] --> BW{"带宽够吗<br/>免费 600 或质押所得"}
+  BW -- "够" --> BW1["扣带宽点数"]
+  BW -- "不够" --> BW2["燃烧 TRX<br/>1,000 sun / 字节"]
+  T --> EN{"能量够吗<br/>质押或他人委托"}
+  EN -- "够" --> EN1["扣能量点数<br/>TRX 余额不变"]
+  EN -- "不够" --> EN2["差额燃烧 TRX<br/>100 sun / 能量"]
+  EN2 --> FL{"超过 fee_limit 吗"}
+  FL -- "是" --> R["交易失败<br/>已消耗资源不退"]
+
+[/图]
+
+读图要点：
+
+- 一笔 TRC-20 转账同时消耗两种资源：带宽按交易字节数算，能量按合约执行的指令算。
+
+- 本附录第一笔转账走右侧"燃烧"分支，第二笔走"扣能量"分支。两笔消耗的能量点数相同，付出的 TRX 不同。
+
+- 会出错的地方：TRX 余额不够燃烧，或 fee_limit 设得太低，交易失败且不退已消耗的资源。部署者分担比例见 05 章 3.3.3 节。
+
+## 2. 准备
+
+ | 
+
+ | 项目
+ | 要求
+ | 说明
+
+ | 浏览器
+ | Chrome 或兼容浏览器
+ | 安装 TronLink 插件（只从 tronlink.org 官网链接安装）
+
+ | 测试钱包
+ | TronLink 里新建的钱包
+ | 不要导入任何主网钱包
+
+ | 测试网
+ | Nile
+ | 浏览器 https://nile.tronscan.org；HTTP API https://nile.trongrid.io 或 https://api.nileex.io（TRON 开发者文档）
+
+ | 水龙头
+ | https://nileex.io/join/getJoinPage
+ | 见第 3 步；也可用官方 Telegram / Discord 机器人
+
+ | Node.js（可选）
+ | 18 以上
+ | 运行第 4 节的 TronWeb 只读脚本
+
+⚠️ 警告：只用新建的测试钱包。永远不要把主网助记词或私钥填进 TronLink 以外的任何网页、TronIDE、脚本或 .env。TRON 主网上有大量"权限被改"诈骗，原理见 08 章 4.2 节。
+
+⚠️ 警告：如果你写脚本需要私钥，私钥只放在本地 .env，并把 .env 加入 .gitignore。本附录的 TronWeb 示例只做只读查询，不需要私钥。
+
+## 3. 步骤
+
+### 3.1 钱包与测试币
+
+- 
+在 TronLink 里新建钱包。抄写助记词，只保存在离线纸上。
+   预期看到：一个 T 开头的 Base58 地址。
+
+- 
+切换到 Nile 测试网：点开 TronLink 顶部的网络选择器，选择 "Nile Testnet"（菜单名称以 TronLink 当前版本为准）。
+   预期看到：余额显示 0 TRX，网络名显示 Nile。
+
+- 
+复制你的地址，打开水龙头 https://nileex.io/join/getJoinPage。
+   预期看到：页面列出可领的测试币，包括 TRX、USDT、JST 等。
+
+- 
+在 TRX 一栏粘贴地址，完成人机验证，点 "Obtain"。
+   预期看到：几秒后 TronLink 显示测试 TRX。水龙头页面列出单次 1,000 TRX（截至 2026 年 10 月；TRON 开发者文档称金额会变化，以页面为准）。
+
+- 
+在 USDT 一栏重复第 4 步。
+   预期看到：测试 USDT 到账。水龙头页面显示其合约地址为 TXYZopYRdj2D9XRtbG411XZZ3kM5VkAeBf。这不是主网 USDT 合约（主网为 TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t）。
+
+💡 注意：TRON 开发者文档写明，网页水龙头每个钱包和每个 IP 每 24 小时每种代币只能领 1 次。领不到时，可以加入 TRON 官方开发者 Telegram 或 Discord 群，向 TronFAQBot 发送 !nile <地址> 领 TRX、!nile_usdt <地址> 领 USDT；文档称每种代币每 24 小时 2,000 个。
+
+- 在 TronLink 里添加 USDT 代币显示：搜索代币或粘贴上面的合约地址。
+   预期看到：USDT 余额。
+
+### 3.2 看资源，转第一笔（燃烧 TRX）
+
+- 
+准备一个收款地址：在 TronLink 里再建一个账户，复制它的地址。
+
+- 
+打开 https://nile.tronscan.org，搜索你的地址，进入账户页的资源区域。
+   预期看到：带宽 600 / 600（每日免费额度），能量 0。笔者于 2026-10-10 查询 Nile 链参数：getFreeNetLimit = 600，getEnergyFee = 100 sun，与主网一致。
+
+- 
+记下当前 TRX 余额，精确到小数点后 6 位。
+
+- 
+在 TronLink 中选择 USDT，向收款地址转 10 USDT。
+    预期看到：确认页显示预估资源消耗和最多燃烧的 TRX（即 fee_limit 相关信息）。
+
+- 
+确认发送，复制交易哈希，在 Nile Tronscan 打开交易详情。
+    预期看到：
+
+- 状态 SUCCESS。
+
+- 带宽消耗约 345 点，从免费带宽中扣除（示例量级，以实际为准）。
+
+- 能量消耗 N 点，全部由"燃烧 TRX"支付，金额 = N × 100 sun。
+
+- 
+用一张表记录这笔"账单"。
+
+ | 
+
+ | 字段
+ | 第一笔（燃烧）
+ | 第二笔（质押能量）
+
+ | 能量消耗 N
+ | 例如 3 万（示例）
+ | 填写
+
+ | 燃烧 TRX 换能量
+ | N × 100 sun = 3 TRX（示例）
+ | 填写
+
+ | 带宽消耗
+ | 从免费带宽扣
+ | 填写
+
+ | TRX 余额变化
+ | 填写
+ | 填写
+
+💡 注意：Nile 上的测试 USDT 合约代码不一定与主网 USDT 完全相同，所以 N 不一定等于主网数值。主网 USDT 转给已有余额的地址约 6.5 万能量，全额燃烧约 6.5 TRX（02 章）。公开资料称收款地址首次接收 USDT 时能量约翻倍，因为合约要新写一个存储槽。你可以向一个新地址再转一次，验证这一点。
+
+### 3.3 质押换能量，转第二笔
+
+- 
+在 TronLink 或 Nile Tronscan 的"质押 / Stake"入口，选择获取"能量"，质押 500 TRX。
+    预期看到：一笔 FreezeBalanceV2Contract 类型的交易。账户资源区域的能量上限从 0 变为一个正数。
+
+Stake 2.0：TRON 当前的质押机制。质押 TRX 换取能量或带宽，资源每天恢复；可以把资源委托给其他地址（05 章 3.3.2 节）。
+
+💡 注意：每 TRX 换多少能量 = 全网能量总量 ÷ 全网能量质押总量。笔者 2026-10-10 查询 Nile：TotalEnergyLimit 为 1,800 亿，TotalEnergyWeight 约 24.5 亿，即每 TRX 约 73 点能量/天，500 TRX 约 3.7 万点（示例，随全网质押变化）。主网的这个比值低得多。用第 4 节的脚本或 getAccountResources 接口可以查到当前值。
+
+- 
+如果能量上限仍小于第一笔的 N，再从水龙头领 TRX 并追加质押，直到能量上限大于 N。
+
+- 
+向同一个收款地址再转 10 USDT。
+
+- 
+打开第二笔交易详情，填写第 12 步的表格。
+    预期看到：能量消耗仍为 N 左右，但"燃烧 TRX"为 0；账户页的已用能量增加 N。
+
+- 
+（可选）解除质押：在同一入口选择 Unstake。
+    预期看到：一笔 UnfreezeBalanceV2Contract 交易，TRX 进入等待期。笔者查询 Nile 链参数 getUnfreezeDelayDays = 1，即测试网等 1 天；主网为 14 天（05 章）。
+
+### 3.4 可选：用 TronIDE 部署 MinimalToken 并设置能量分担
+
+- 
+打开 https://www.tronide.io，新建 MinimalToken.sol，粘贴示例合约。
+
+- 
+在编译面板选择 0.8.20 以上的 TRON Solidity 编译器版本，点击编译（可选版本以 TronIDE 列表为准）。
+
+- 
+在部署面板选择通过 TronLink 注入的环境，确认 TronLink 处于 Nile。
+
+- 
+填写构造参数 "Lab Token"、"LAB"、1000000000000000000000000。
+
+- 
+在部署选项中设置能量分担（字段名以 TronIDE 当前界面为准）：
+
+- consume_user_resource_percent（调用者承担比例）：例如 50。
+
+- origin_energy_limit（每笔调用部署者最多承担的能量）：例如 10,000。
+
+- fee_limit：例如 1,000 TRX（以 sun 填写时为 1,000,000,000）。
+
+- 
+点击部署，在 TronLink 中确认。
+    预期看到：Nile Tronscan 上出现新合约地址（T 开头）。合约页显示部署者和分担比例。
+
+- 
+用第二个账户调用 transfer，打开交易详情。
+    预期看到：能量消耗分成两部分，一部分记在部署者账户（若部署者有质押能量），一部分记在调用者账户。
+
+💡 注意：部署后，部署者可以用 TronWeb 的 transactionBuilder.updateSetting（改比例）和 transactionBuilder.updateEnergyLimit（改上限）调整这两个参数。如果部署者自己的能量不足，部署者份额会转给调用者承担（TRON 开发者文档）。
+
+## 4. 附：TronWeb 只读查询 TRC-20 余额
+
+以下脚本在 tronweb 6.5.1（npm 最新版，截至 2026-10-10）上实测通过。它只读不写，不需要私钥。
+
+// balance.mjs —— 运行：npm i tronweb && node balance.mjs <你的 Nile 地址>
+import { TronWeb } from 'tronweb'; // v6 使用具名导出
+
+const tronWeb = new TronWeb({ fullHost: 'https://nile.trongrid.io' });
+const USDT_NILE = 'TXYZopYRdj2D9XRtbG411XZZ3kM5VkAeBf'; // 以水龙头页面为准
+const holder = process.argv[2];
+
+tronWeb.setAddress(holder); // 只读调用也需要一个"调用方"地址
+
+const token = await tronWeb.contract().at(USDT_NILE);
+const raw = await token.balanceOf(holder).call();
+const decimals = await token.decimals().call();
+const symbol = await token.symbol().call();
+console.log(`${symbol} 余额: ${Number(raw) / 10 ** Number(decimals)}`);
+
+const trx = await tronWeb.trx.getBalance(holder); // 单位 sun
+console.log(`TRX 余额: ${tronWeb.fromSun(trx)}`);
+console.log(await tronWeb.trx.getAccountResources(holder)); // 带宽与能量
+
+💡 注意：TronWeb v5 的写法是 const TronWeb = require('tronweb') 默认导出；v6 改为 import { TronWeb } from 'tronweb'。网上旧教程的写法在 v6 下会报 "TronWeb is not a constructor"。
+
+## 5. 验证：在 Nile Tronscan 上核对
+
+ | 
+
+ | 检查项
+ | 在哪里看
+ | 应该是什么
+
+ | 测试币到账
+ | 账户页 → 代币列表
+ | TRX 和 USDT 余额大于 0
+
+ | 第一笔转账
+ | 交易详情 → 资源消耗
+ | 能量 N 点；燃烧 TRX = N × 100 sun
+
+ | 事件
+ | 交易详情 → 事件日志（Event Logs）
+ | Transfer(from, to, value)；value 为 10 × 10⁶（USDT 为 6 位小数）
+
+ | 质押交易
+ | 账户页 → 交易列表
+ | FreezeBalanceV2Contract，资源类型 ENERGY
+
+ | 第二笔转账
+ | 交易详情
+ | 能量来自质押；燃烧 TRX 为 0
+
+ | （可选）合约验证
+ | 合约页 → Contract 标签 → 验证并发布
+ | 填写主合约名 MinimalToken、编译器版本、优化设置，上传源码（04 章 3.6 节）
+
+## 6. 常见错误排查表
+
+ | 
+
+ | 错误信息（节选）
+ | 原因
+ | 解决
+
+ | 水龙头提示已领取 / 无响应
+ | 同一钱包或 IP 24 小时内已领过
+ | 等 24 小时；或使用官方 Telegram / Discord 机器人
+
+ | TronLink 余额为 0，但水龙头显示成功
+ | TronLink 停在主网或 Shasta 测试网
+ | 把网络切到 Nile
+
+ | 钱包里看不到 USDT
+ | 没有添加代币，或添加了主网合约地址
+ | 添加 Nile 测试 USDT 合约地址
+
+ | account does not exist / 账户未激活
+ | 新地址在链上还没有记录，不能作为发送方
+ | 先往该地址转一点 TRX 激活它
+
+ | OUT_OF_ENERGY / FAILED - OUT OF ENERGY
+ | 能量不足且 fee_limit 不够燃烧
+ | 提高 fee_limit，或先质押换能量
+
+ | balance is not sufficient
+ | TRX 余额不够燃烧带宽或能量
+ | 再领 TRX；或质押换资源
+
+ | 质押后能量仍不够一笔转账
+ | 质押量太小，按全网比例分到的能量少于 N
+ | 追加质押；或等资源每日恢复
+
+ | 解除质押后 TRX 没回到余额
+ | 处于等待期
+ | 等待期结束后，再执行一次提取（Withdraw）操作
+
+ | TronIDE 编译报版本错误
+ | 选择的编译器低于 ^0.8.20
+ | 选择 0.8.20 以上版本
+
+ | TronWeb 报 TronWeb is not a constructor
+ | 用了 v5 的默认导出写法
+ | 改为 import { TronWeb } from 'tronweb'
+
+ | TronWeb 只读调用报缺少 owner_address
+ | 没有设置调用方地址
+ | 先调用 tronWeb.setAddress(地址)
+
+## 7. 这一步对应手册哪一章
+
+ | 
+
+ | 本附录步骤
+ | 对应章节
+ | 回看什么
+
+ | 3.2 燃烧 TRX 付费
+ | 02 章 3.7 节
+ | 带宽 + 能量；能量单价 100 sun（第 104 号提案，2025-08-29 生效）
+
+ | 3.3 Stake 2.0 质押
+ | 05 章 3.3.2 节
+ | 质押、委托、14 天解锁
+
+ | 3.4 能量分担
+ | 05 章 3.3.3 节
+ | consume_user_resource_percent 与 origin_energy_limit
+
+ | TRC-20 与 USDT
+ | 06 章 3.8 节、4.1 节
+ | TRC-20 与 TRC-10；同名不同合约
+
+ | 能量为什么能卖钱
+ | X03 TRON
+ | 能量租赁市场、支付商的成本结构
+
+ | 部署与验证
+ | 04 章 4.2 节
+ | TRON 部署费用单位、Tronscan 验证
+
+ | 钱包安全
+ | 08 章 4.2 节
+ | 账户权限与"权限被改"诈骗
+
+## 8. 思考题
+
+- 用第 12 步表格里的 N，算一算：如果一家支付商每天在主网处理 10 万笔 USDT 转账，全部燃烧 TRX 付费，每天要燃烧多少 TRX？如果改为质押换能量，需要质押多少 TRX（提示：用第 4 节脚本查主网的 TotalEnergyLimit 和 TotalEnergyWeight）？这和 X03 讲的能量租赁生意有什么关系？
+
+- 在 3.4 节，把 consume_user_resource_percent 设为 0，部署者质押充足。普通用户调用 transfer 时还要付什么？如果部署者的能量耗尽，会发生什么？这种设计适合什么样的业务（提示：项目方"替用户付 Gas"），对照 08 章 5.2 节 的 Paymaster。
+
+上一篇：A1 测试网动手：以太坊 Sepolia 部署一个代币 ｜ 下一篇：A3 测试网动手：Solana devnet 调用一个程序

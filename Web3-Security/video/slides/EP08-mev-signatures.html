@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EP08 MEV 与签名安全</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .ana .card { font-size: 29px; display: flex; flex-direction: column; gap: 10px; min-height: 230px; }
+  .ana .card .a { color: var(--text-2); font-size: 26px; }
+  .fld { display: grid; grid-template-columns: 290px 1fr 1fr; gap: 10px; font-size: 27px; align-items: center; }
+  .fld > div { padding: 12px 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; transition: opacity .35s; }
+  .fld .h { background: transparent; border: 0; color: var(--text-2); font-size: 25px; }
+  .fld .mono { font-family: var(--mono); color: var(--gold); font-size: 24px; }
+  .chk { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; }
+  .chk .card { font-size: 27px; padding: 14px 22px; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="EP08" data-title="MEV 与签名安全：顺序可以被买，签名可以被重放">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 主线 · EP08</div>
+    <h1>顺序<span class="hl">可以被买</span>，<br>签名<span class="hl">可以被重放</span></h1>
+    <div class="ana">
+      <div class="card info" data-k="1" data-nocur><h3>MEV</h3><div class="a">交易在打包前是公开的，打包顺序由别人决定</div></div>
+      <div class="card sell" data-k="2" data-nocur><h3>签名重放</h3><div class="a">签名用过之后仍然存在，能否再用取决于你签了什么</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到主线第8集，MEV 与签名安全。一句话理解分两半。交易在被打包之前是公开的，打包的顺序由别人决定。签名在被使用之后仍然存在，能否再次使用，取决于你签了什么。</li>
+      <li>第一半是 MEV，最大可提取价值。区块生产者或者搜索者，通过调整、插入、排除交易，获得额外收益。</li>
+      <li>第二半是签名安全。链下签名用过之后不会消失，如果它绑定的字段不全，就能被重放。本集讲 MEV 的三种形态、防御，签名必须绑定的五个字段，以及签名界面的安全。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="拍卖会与支票" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>举牌前大声报价，与一张信息不全的支票</h2>
+    <div class="ana">
+      <div class="card sell" data-k="0"><h3>MEV</h3><div class="a">你举牌前大声说出最高出价<br>旁边的人抢先低价买下，再加价转卖给你</div><div class="hl">→ 三明治</div></div>
+      <div class="card warn" data-k="1"><h3>签名重放</h3><div class="a">你签了一张"付 100 元"的支票<br>没写日期、收款行、编号<br>拿到的人去每家银行各兑一次</div><div class="hl">→ 重放</div></div>
+    </div>
+    <div class="card warn fs30" data-k="2">比喻不准的地方：拍卖会上你能看到谁插了队。链上三明治和你的交易<b>在同一个区块里</b>，普通用户往往只看到"成交价比预期差"。</div>
+    <ol class="say">
+      <li>打个比方。MEV 像拍卖会上，你举牌之前就大声说出了你的最高出价。旁边的人抢先用低一点的价格买下，再加价转卖给你。这是三明治。</li>
+      <li>签名重放，像你签了一张付100元的支票，却没写日期、没写收款银行、没写支票编号。拿到支票的人可以复印它，去每一家银行各兑一次。</li>
+      <li>比喻不准的地方在于，拍卖会上你能看到谁插了队。链上的三明治交易，和你的交易在同一个区块里，普通用户往往只看到成交价比预期差了一点。</li>
+    </ol>
+  </section>
+
+  <!-- 3 三种 MEV -->
+  <section class="scene" data-title="MEV 的三种形态" data-onstep="rowStep">
+    <div class="kicker">MEV</div>
+    <h2>抢跑、三明治、尾随</h2>
+    <table class="t">
+      <thead><tr><th>类型</th><th>顺序</th><th>利用什么</th><th>受害者</th></tr></thead>
+      <tbody>
+        <tr><td>抢跑</td><td>攻击者 → 受害者</td><td>受害者交易的信息（如先到先得的奖励）</td><td>原交易者</td></tr>
+        <tr><td>三明治</td><td>攻击者买 → 受害者 → 攻击者卖</td><td>受害者的滑点容忍度</td><td>交易者</td></tr>
+        <tr><td>尾随</td><td>受害者 → 攻击者</td><td>受害者制造的价差或清算机会</td><td>通常无直接受害者</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>MEV 有三种形态。抢跑，攻击者把自己的交易排在受害者前面，利用受害者交易里的信息，比如先到先得的奖励。受害者是原来的交易者。</li>
+      <li>三明治，攻击者在受害者前面买，后面卖，把受害者夹在中间，利用的是受害者设置的滑点容忍度。</li>
+      <li>尾随，攻击者把交易排在受害者后面，利用受害者交易制造出的价差或者清算机会。尾随通常没有直接的受害者，比如正常的套利和清算。重点看三明治。</li>
+    </ol>
+  </section>
+
+  <!-- 4 三明治 -->
+  <section class="scene" data-title="三明治攻击" data-onstep="swStep">
+    <div class="kicker">三明治 · 数字为示例</div>
+    <h2 id="swH">滑点设得越宽，被夹得越狠</h2>
+    <svg id="sw" width="1640" height="520" viewBox="0 0 1640 520"></svg>
+    <ol class="say">
+      <li>看三明治的机制。受害者向公开内存池提交一笔交易，用10个 ETH 换 USDC，设置最少得到19000 USDC，也就是允许5%的滑点。这笔交易在打包前是公开的。</li>
+      <li>搜索者发现了它，构造一个捆绑，顺序是，自己先买，受害者的交易夹在中间，自己最后卖。</li>
+      <li>第一步，搜索者买入，推高了价格。第二步，受害者以更差的价格成交，刚好满足最小输出19000。注意，受害者的交易没有失败，只是以允许范围内最差的价格成交了。</li>
+      <li>第三步，搜索者卖回，赚取差价。搜索者的最大利润，由受害者的最小输出决定。滑点设得越宽，被夹得越狠。如果受害者设的是19800，搜索者的操作空间就小得多。</li>
+    </ol>
+  </section>
+
+  <!-- 5 MEV 防御 -->
+  <section class="scene" data-title="MEV 防御" data-onstep="rowStep">
+    <div class="kicker">防御 · 分四层</div>
+    <h2>minOut = 0 等于"我接受任何价格"</h2>
+    <table class="t sm">
+      <thead><tr><th>层级</th><th>措施</th></tr></thead>
+      <tbody>
+        <tr><td>用户</td><td>设置合理滑点；用私有交易通道</td></tr>
+        <tr><td>前端</td><td>默认滑点保守；按池深动态计算</td></tr>
+        <tr><td>合约</td><td>交换函数必须有 minOut 和 deadline；<b>不要在合约内部用现货价算 minOut</b></td></tr>
+        <tr><td>协议设计</td><td>提交-揭示；批量拍卖统一价格清算</td></tr>
+      </tbody>
+    </table>
+    <div class="card sell fs28" data-k="2">金库、自动复投、清算合约常犯：内部调用 DEX 时写 minOut = 0 → 等于告诉全世界"我接受任何价格"。</div>
+    <ol class="say">
+      <li>防御分四层。用户层，设置合理滑点，用私有交易通道，这样搜索者在打包前看不到交易。前端层，默认滑点要保守，按池子深度动态计算。</li>
+      <li>合约层，所有交换函数必须接受最小输出和截止时间两个参数。但注意一个关键点，不要在合约内部用现货价计算最小输出，那等于没有保护，因为现货价本身就能被操纵。协议设计层，可以用提交揭示，或者批量拍卖，同一批订单统一价格清算。</li>
+      <li>最常见的错误是，金库、自动复投合约、清算合约，在内部调用 DEX 时，把最小输出写成零。这等于告诉全世界，我接受任何价格，是三明治的活靶子。</li>
+    </ol>
+  </section>
+
+  <!-- 6 三链排序 -->
+  <section class="scene" data-title="三条链的排序机制" data-onstep="rowStep">
+    <div class="kicker">链差异 · 截至 2026 年公开资料</div>
+    <h2>"没有公开内存池"不等于"没有 MEV"</h2>
+    <table class="t sm">
+      <thead><tr><th>链</th><th>谁决定顺序</th><th>对 MEV 的影响</th></tr></thead>
+      <tbody>
+        <tr><td>BNB Chain</td><td>验证者轮流出块，出块约 0.75 秒</td><td>有公开内存池和构建者市场；出块更快，抢跑窗口更短，三明治仍在</td></tr>
+        <tr><td>TRON</td><td>27 个超级代表轮流出块</td><td>能量价格固定，没有优先费，不能靠"出更高 gas"插队；但出块者仍可决定顺序</td></tr>
+        <tr><td>Mantle</td><td>单一中心化排序器</td><td>排序器按自己的规则排序；L2BEAT：运营者可抢跑用户交易提取 MEV</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>三条链的排序机制不同。BNB Chain 由验证者轮流出块，出块约0.75秒，有公开内存池和区块构建者市场。出块更快，抢跑窗口更短，但三明治依然存在。</li>
+      <li>TRON 由27个超级代表轮流出块。它的能量价格是固定的网络参数，没有优先费，所以不能靠出更高的 gas 价来插队。但出块者本身，仍然可以决定顺序。</li>
+      <li>Mantle 是单一的中心化排序器，按自己的规则排序。L2BEAT 列出的风险是，运营者可以抢跑用户交易来提取 MEV。所以，没有公开内存池，不等于没有 MEV，它只是把排序权从市场，集中到了一个运营者手里。用户依赖运营者的诚实。</li>
+    </ol>
+  </section>
+
+  <!-- 7 五个字段 -->
+  <section class="scene" data-title="签名必须绑定的五个字段" data-onstep="sigStep">
+    <div class="kicker">签名安全 · 一份签名能被用几次</div>
+    <h2 id="sgH">少绑一个字段，就多一种重放</h2>
+    <div class="fld" id="flds"></div>
+    <div class="card gold fs28" data-k="4">EIP-712 把 chainId、合约地址合成"域分隔符"，把消息结构合成"类型哈希"，一次解决后四个字段。</div>
+    <ol class="say">
+      <li>链下签名在 DeFi 里很常见，免 gas 授权、元交易、订单、跨链验证、空投凭证。一份安全的签名，必须绑定五个字段。第一，nonce，每用一次递增。缺了它，同一个签名可以在同一个合约反复提交。</li>
+      <li>第二，chainId，链的编号。缺了它，签名在分叉链或者多链部署上同样有效，可以跨链重放。</li>
+      <li>第三，验证合约地址。缺了它，同一份代码部署两次，签名在两个合约上都有效，可以跨合约重放。</li>
+      <li>第四，deadline，过期时间。缺了它，签名永久有效，用户即使改了主意，签名仍能被用。第五，函数意图。缺了它，为 A 函数签的数据，被拿去调用 B 函数。</li>
+      <li>EIP-712 标准，把链 ID 和合约地址合成一个域分隔符，把消息结构合成一个类型哈希，正确使用就能一次解决后面四个字段。加上 nonce，五个字段就齐了。</li>
+    </ol>
+  </section>
+
+  <!-- 8 三个陷阱 -->
+  <section class="scene" data-title="签名的三个经典陷阱" data-onstep="marks">
+    <div class="kicker">签名陷阱</div>
+    <h2>零地址、可塑性、编码碰撞</h2>
+    <div class="grid3">
+      <div class="card sell" data-k="0"><h3>① ecrecover 零地址</h3><div class="fs28">无效签名 → 返回 <b>address(0)</b>，不回滚<br>admin 未初始化（也是 0）→ 任何无效签名通过</div></div>
+      <div class="card warn" data-k="1"><h3>② 签名可塑性</h3><div class="fs28">(r, s) 和 (r, n−s) 都有效<br>用"签名字节"做已用标记 → 翻转 s 得到"新"签名<br><b class="up">修复</b>：用 nonce / 消息哈希标记，拒绝高 s</div></div>
+      <div class="card info" data-k="2"><h3>③ encodePacked 碰撞</h3><div class="fs28">packed("ab","c") == packed("a","bc")<br>签多个动态类型 → 用 <b>abi.encode</b></div></div>
+    </div>
+    <ol class="say">
+      <li>签名有三个经典陷阱。第一，ecrecover 返回零地址。签名无效时，它不回滚，而是返回零地址。如果你比较的 admin 变量从没初始化，默认也是零，那么任何无效签名都能通过。所以一定要加零地址检查。</li>
+      <li>第二，签名可塑性。对同一个消息，一个签名和它的翻转版本都有效。如果你用签名本身的字节做已使用标记，攻击者翻转一下，就得到一个查不到的新签名。修复是用 nonce 或消息哈希做标记，并使用拒绝高 s 值的库。</li>
+      <li>第三，编码碰撞。encodePacked 把 ab 和 c 拼起来，和把 a 和 bc 拼起来，结果相同。签多个动态类型时，用 abi.encode，不用 encodePacked。</li>
+    </ol>
+  </section>
+
+  <!-- 9 permit 两面 -->
+  <section class="scene" data-title="permit 的两面" data-onstep="marks">
+    <div class="kicker">permit · 免 gas 授权</div>
+    <h2>便利的另一面是风险</h2>
+    <div class="vs">
+      <div class="card bad" data-k="0"><h3>抢跑型 DoS</h3><div class="fs28">用户提交 permitAndDeposit(签名)<br>攻击者从内存池复制签名，先单独调 permit<br>→ 用户交易因 nonce 已用而回滚<br><b class="up">修复</b>：permit 包在 try/catch，失败后检查授权是否已够</div></div>
+      <div class="card bad" data-k="1"><h3>钓鱼</h3><div class="fs28">permit 是链下签名，不花 gas<br>钱包界面常只显示一段十六进制<br>用户签下后，攻击者可随时执行</div></div>
+    </div>
+    <ol class="say">
+      <li>免 gas 授权 permit 很方便，但有两面。第一是抢跑型拒绝服务。用户提交一个组合交易，先授权再存款，签名在里面。攻击者从内存池复制这个签名，抢先单独调用授权函数。授权的 nonce 被用掉了，用户的交易因此回滚。修复是把授权包在 try catch 里，失败后检查授权额度是不是已经够了。</li>
+      <li>第二是钓鱼。permit 是链下签名，不花 gas，钱包界面常常只显示一段十六进制数据，用户看不懂。用户签下后，攻击者可以随时拿去执行。所以钱包解析签名内容、显示人类可读信息，很重要。</li>
+    </ol>
+  </section>
+
+  <!-- 10 TRON 签名差异 -->
+  <section class="scene" data-title="TRON 上的签名差异" data-onstep="rowStep">
+    <div class="kicker">链差异 · 据 TRON 官方开发文档</div>
+    <h2>合约层的防重放仍要自己实现</h2>
+    <table class="t sm">
+      <thead><tr><th>差异</th><th>影响</th></tr></thead>
+      <tbody>
+        <tr><td>CHAINID 返回创世区块后 4 字节（主网 728126428）</td><td>域分隔符仍能区分链；别写死以太坊风格链 ID</td></tr>
+        <tr><td>账户没有 nonce，交易用 TAPOS 防重放，默认 60 秒过期</td><td>交易层防重放不同；<b>合约层签名的 nonce 仍要自己实现</b></td></tr>
+        <tr><td>地址在链边界带 0x41 前缀，VM 内部是 20 字节</td><td>签名工具和合约对地址的编码必须一致</td></tr>
+        <tr><td>账户多权限（EP04）</td><td>一个地址可能需要多个签名人；用 ValidateMultiSign 预编译验证账户多签</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>部署到 TRON，签名有几个差异。第一，TRON 的链 ID 返回的是创世区块的后4字节，主网是一个很大的数。域分隔符仍然能区分链，但不要在代码里写死以太坊风格的小整数链 ID。</li>
+      <li>第二，TRON 账户没有 nonce，交易层用一种基于区块的机制防重放，默认60秒过期。但这是交易层的，合约层签名的防重放，仍然要你自己实现 nonce。</li>
+      <li>第三，地址在链边界带一个前缀字节，VM 内部是20字节。签名工具链和合约对地址的编码必须一致。第四，第4集讲过 TRON 账户多权限，一个地址可能需要多个签名人。合约里的 ecrecover 只能验证单个私钥签名，TRON 提供了一个预编译合约来验证账户多签。</li>
+    </ol>
+  </section>
+
+  <!-- 11 Bybit 签名界面 -->
+  <section class="scene" data-title="签名界面：Bybit" data-onstep="byStep">
+    <div class="kicker">真实案例 · 2025-02 · 据公开分析</div>
+    <h2>签名再安全，签名人也可能签错东西</h2>
+    <svg id="by" width="1640" height="520" viewBox="0 0 1640 520"></svg>
+    <ol class="say">
+      <li>签名本身再安全，签名人也可能签错东西。看 Bybit，以下据公开分析。攻击者篡改了多签前端的代码，只针对 Bybit 冷钱包的多签地址生效。</li>
+      <li>签名人看到的，是一笔正常的转账。但实际签名的交易，是一个委托调用，指向攻击者的合约，要把多签钱包的实现替换成恶意合约。</li>
+      <li>多签阈值满足后，钱包的实现被替换，攻击者转走约40万 ETH 及其他资产，总计约15亿美元。多签防的是单把私钥被盗，它防不了所有签名人看到同一个假界面。</li>
+      <li>防御是什么？用硬件钱包逐字段核对交易，用独立工具解码调用数据。看到委托调用，或者修改实现地址的操作，就是高危信号，要设白名单或额外审批。正常转账不需要委托调用。同类事故不罕见，2024年 WazirX 也是这样，约2.3亿美元。这部分在评估篇第3集深入讲过。</li>
+    </ol>
+  </section>
+
+  <!-- 12 审计检查点 -->
+  <section class="scene" data-title="审计检查点" data-onstep="marks">
+    <div class="kicker">审计清单</div>
+    <h2>八个检查点</h2>
+    <div class="chk">
+      <div class="card" data-k="0">① 交换函数有 minOut 和 deadline，且不是内部用现货价算的</div>
+      <div class="card" data-k="0">② 签名验证用 EIP-712，含 nonce、chainId、合约地址、deadline、typehash</div>
+      <div class="card" data-k="1">③ 用 OpenZeppelin ECDSA，拒绝零地址和高 s 值</div>
+      <div class="card" data-k="1">④ 已用标记基于 nonce 或消息哈希，不基于签名字节</div>
+      <div class="card" data-k="2">⑤ permit 调用有抢跑容错</div>
+      <div class="card" data-k="2">⑥ 动态类型签名用 abi.encode</div>
+      <div class="card" data-k="3">⑦ TRON 上签名工具链与合约对 chainId、地址格式处理一致</div>
+      <div class="card gold" data-k="3">⑧ 特权操作的签名流程有独立解码与核对</div>
+    </div>
+    <ol class="say">
+      <li>审计检查点八个。第一，交换函数有最小输出和截止时间，而且不是在合约内部用现货价算出来的。第二，签名验证用 EIP-712，包含五个字段。</li>
+      <li>第三，用 OpenZeppelin 的 ECDSA 库，拒绝零地址和高 s 值。第四，已使用标记基于 nonce 或消息哈希，不基于签名字节。</li>
+      <li>第五，permit 调用有抢跑容错。第六，动态类型的签名用 abi.encode。</li>
+      <li>第七，部署到 TRON 时，签名工具链和合约对链 ID、地址格式的处理一致。第八，特权操作的签名流程，有独立的交易解码与核对步骤。</li>
+    </ol>
+  </section>
+
+  <!-- 13 练一练 -->
+  <section class="scene" data-title="练一练" data-onstep="marks">
+    <div class="kicker">练一练 · 暂停视频想一想</div>
+    <h2>自动复投金库每小时换币，minOut = 现货价 × 99%</h2>
+    <div class="grid2">
+      <div class="card" data-k="0"><b>这个保护有效吗？</b></div>
+      <div class="card sell" data-k="1"><b>参考</b><div class="fs28"><b>无效。</b>现货价本身可被同一笔交易操纵。攻击者先推高/压低现货价，minOut 就跟着变成一个"离谱但自洽"的值，保护形同虚设。<br><b class="up">修复</b>：minOut 用<b>外部抗操纵价格</b>计算，或由发起方在链下传入。</div></div>
+    </div>
+    <ol class="say">
+      <li>来练一练。一个自动复投金库，每小时把奖励代币换成本金，最小输出用池子当前的现货价乘以99%计算。这个保护有效吗？</li>
+      <li>参考答案。无效。因为现货价本身可以被同一笔交易操纵。攻击者先推高或压低现货价，最小输出就跟着变成一个离谱但自洽的值，保护形同虚设。这正是第5集合约层那条警告。修复是，最小输出用外部的抗操纵价格计算，或者由发起方在链下传入。</li>
+    </ol>
+  </section>
+
+  <!-- 14 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">交换函数必有 <span class="hl">minOut 和 deadline</span>；不能内部用现货价算。</li>
+      <li data-step="1">签名绑定<span class="hl">五个字段</span>；用 EIP-712 + ECDSA，查零地址和高 s。</li>
+      <li data-step="2">"没有公开内存池"≠ 没有 MEV；<span class="hl">界面被篡改</span>比私钥被盗更难防。</li>
+    </ul>
+    <h2 data-show="3">下一集：EP09 可升级合约与代理</h2>
+    <div class="path" data-show="3">
+      <div class="card sell"><div class="n">3</div><b>三种代理模式</b><div class="d">透明、UUPS、Beacon</div></div>
+      <div class="card gold"><div class="n">slot</div><b>存储冲突</b><div class="d">升级把余额读成地址</div></div>
+      <div class="card info"><div class="n">init</div><b>初始化与 Nomad</b><div class="d">一个零值引发的事故</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，交换函数必须有最小输出和截止时间，而且不能在合约内部用现货价计算。</li>
+      <li>第二，签名绑定五个字段，用 EIP-712 加 ECDSA，检查零地址和高 s 值。</li>
+      <li>第三，没有公开内存池不等于没有 MEV。签名界面被篡改，比私钥被盗更难防。</li>
+      <li>下一集讲可升级合约与代理，留给自己的维修门，也是留给攻击者的门。三种代理模式，存储冲突，初始化，以及 Nomad 那个一个零值引发的事故。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line } = K;
+
+  function swStep(el, st) {
+    const svg = el.querySelector('#sw'); svg.innerHTML = '';
+    box(svg, 20, 40, 380, 100, ['受害者：10 ETH → USDC', '最少 19,000（滑点 5%）'], { stroke: C.info, fs: 26, ss: 24, op: st >= 0 ? 1 : .2 });
+    if (st >= 1) { box(svg, 20, 180, 380, 90, ['搜索者发现（公开内存池）'], { stroke: C.warn, fs: 28 }); arrow(svg, 210, 142, 210, 176, C.t2, false, 3); }
+    if (st >= 2) {
+      const S = [['① 搜索者买入', '推高价格', C.sell], ['② 受害者成交', '刚好满足 19,000', C.warn], ['③ 搜索者卖回', '赚差价', C.sell]];
+      S.forEach(([a, b, c], i) => box(svg, 520 + i * 380, 180, 340, 110, [a, b], { stroke: c, fs: 28, ss: 24, op: st >= 2 ? 1 : .2 }));
+      arrow(svg, 862, 235, 896, 235, C.t2, false, 3); arrow(svg, 1242, 235, 1276, 235, C.t2, false, 3);
+    }
+    if (st >= 3) {
+      rect(svg, 520, 330, 1100, 160, { fill: C.curFill, stroke: C.gold, sw: 3 });
+      T(svg, 1070, 375, '受害者交易没失败，只是以允许范围内最差价成交', C.gold, 28, 'middle', true);
+      T(svg, 1070, 425, '搜索者利润由受害者 minOut 决定', C.text, 27);
+      T(svg, 1070, 470, '若受害者设 19,800，搜索者空间就小得多', C.buy, 26, 'middle', true);
+    }
+    el.querySelector('#swH').textContent = st >= 3 ? '滑点设得越宽，被夹得越狠' : '捆绑：买 → 受害者 → 卖';
+  }
+
+  function sigStep(el, st) {
+    marks(el, st);
+    const F = [['字段', '缺了它会怎样', '重放方式'], ['nonce', '同一签名反复提交', '同一合约重放'], ['chainId', '分叉链、多链都有效', '跨链重放'], ['verifyingContract', '同代码两份都有效', '跨合约重放'], ['deadline', '签名永久有效', '撤销意图后仍被用'], ['函数意图 typehash', '为 A 签的拿去调 B', '跨函数重放']];
+    el.querySelector('#flds').innerHTML = F.map((r, i) => {
+      const k = [0, 0, 1, 2, 3, 3][i]; // reveal step for each row (narration order)
+      const op = i === 0 ? 1 : (st >= k ? 1 : .12), cur = i > 0 && st === k;
+      const cls = i === 0 ? 'h' : '';
+      return `<div class="${cls} ${i > 0 ? 'mono' : ''}" style="opacity:${op};${cur ? 'outline:2px solid var(--gold)' : ''}">${r[0]}</div><div class="${cls}" style="opacity:${op}">${r[1]}</div><div class="${cls}" style="opacity:${op}">${r[2]}</div>`;
+    }).join('');
+  }
+
+  function byStep(el, st) {
+    const svg = el.querySelector('#by'); svg.innerHTML = '';
+    box(svg, 20, 200, 320, 110, ['前端被篡改', '只针对 Bybit 冷钱包'], { stroke: C.sell, fill: C.badFill, fs: 28, ss: 24 });
+    if (st >= 1) {
+      box(svg, 460, 60, 400, 110, ['签名人看到', '一笔正常的转账'], { stroke: C.info, fs: 28, ss: 24 });
+      box(svg, 460, 330, 400, 110, ['实际签名', 'delegatecall → 恶意合约'], { stroke: C.sell, fill: C.badFill, fs: 28, ss: 24, sc: C.sell });
+      arrow(svg, 342, 230, 456, 130, C.t2, false, 3); arrow(svg, 342, 285, 456, 385, C.sell, false, 3);
+    }
+    if (st >= 2) {
+      box(svg, 960, 200, 340, 110, ['多签阈值满足', '钱包实现被替换'], { stroke: C.sell, fs: 28, ss: 24, op: 1 });
+      arrow(svg, 862, 120, 956, 240, C.t2, false, 3); arrow(svg, 862, 385, 956, 270, C.sell, false, 3);
+      box(svg, 1340, 200, 280, 110, ['转走全部', '约 15 亿$'], { stroke: C.sell, fill: C.badFill, fs: 30, tc: C.sell, bold: true });
+      arrow(svg, 1302, 255, 1336, 255, C.sell, false, 4);
+    }
+    if (st >= 3) {
+      rect(svg, 20, 360, 400, 140, { fill: C.curFill, stroke: C.gold, sw: 3 });
+      T(svg, 220, 400, '防御', C.gold, 28, 'middle', true);
+      T(svg, 220, 440, '硬件钱包逐字段核对', C.text, 24); T(svg, 220, 475, 'operation=delegatecall 高危', C.sell, 24, 'middle', true);
+    }
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

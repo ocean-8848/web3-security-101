@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EP04 访问控制与权限</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .ana .card { font-size: 27px; display: flex; flex-direction: column; gap: 10px; min-height: 230px; }
+  .ana .card .a { color: var(--text-2); font-size: 25px; }
+  .chk { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; }
+  .chk .card { font-size: 27px; padding: 14px 22px; }
+  .perm { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .perm .card { font-size: 28px; display: flex; flex-direction: column; gap: 8px; min-height: 190px; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="EP04" data-title="访问控制与权限：谁有权按这个按钮">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 主线 · EP04</div>
+    <h1>每个函数都要回答：<br><span class="hl">谁可以调用我？</span></h1>
+    <div class="hero">
+      <div class="card sell" data-k="1" data-nocur><div class="k">2017 · Parity 多签</div><div class="big">51 万 ETH</div><div>库合约未初始化 → 被自毁 → 永久冻结</div></div>
+      <div class="card warn" data-k="2" data-nocur><div class="k">2022 · Ronin</div><div class="big">约 6.2 亿$</div><div>一份早该撤销的签名授权</div></div>
+      <div class="card info" data-k="3" data-nocur><div class="k">2022 · BNB Token Hub</div><div class="big">200 万 BNB</div><div>付 100 BNB 押金就能当中继者</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到主线第4集，访问控制与权限。合约的每个状态修改函数，都必须回答一个问题，谁可以调用我？如果答案是任何人，就必须证明任何人调用都安全。</li>
+      <li>看三起事故，以下据公开报道。2017年，Parity 多签钱包依赖的库合约没有初始化，被一个用户接管后自毁，约51万个 ETH 被永久冻结。</li>
+      <li>2022年，Ronin 跨链桥，其中一份签名权，来自一个早就不需要、却没有撤销的授权。</li>
+      <li>同年，BNB Chain 的 Token Hub，只要付100个 BNB 的押金就能注册成跨链中继者，攻击者因此凭空铸造了200万个 BNB。三起事故，都是谁能做什么没有想清楚。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="像一栋写字楼" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>public 是大堂的门，onlyOwner 是机房的门</h2>
+    <div class="ana">
+      <div class="card sell" data-k="0"><b>机房门忘了装刷卡器</b><div class="hl">→ 缺少权限检查</div></div>
+      <div class="card sell" data-k="1"><b>刷卡器只看你从哪出来</b><div class="a">不看刷卡的是谁</div><div class="hl">→ tx.origin</div></div>
+      <div class="card sell" data-k="2"><b>第一个喊"我是经理"的人</b><div class="a">就成了经理</div><div class="hl">→ 未初始化</div></div>
+      <div class="card sell" data-k="3"><b>总裁门卡放在前台抽屉</b><div class="hl">→ 私钥管理</div></div>
+    </div>
+    <div class="card warn fs30" data-k="4">比喻不准的地方：写字楼可以换锁。合约如果不能升级，锁一旦装错就<b>永远是错的</b>。</div>
+    <ol class="say">
+      <li>打个比方，合约像一栋写字楼。公开函数是大堂的门，谁都能进。onlyOwner 函数是机房的门，要刷卡。漏洞一，机房门忘了装刷卡器，就是缺少权限检查。</li>
+      <li>漏洞二，刷卡器只检查刷卡的人是不是从总裁办公室出来的，不检查刷卡的到底是谁。这就是用 tx.origin 鉴权。</li>
+      <li>漏洞三，大楼刚建好时，第一个走进物业办公室、宣布我是经理的人，就成了经理。这是未初始化。</li>
+      <li>漏洞四，总裁的门卡一直放在前台抽屉里，这是私钥管理。</li>
+      <li>比喻不准的地方在于，写字楼的锁可以换。合约如果没有升级能力，锁一旦装错，就永远是错的。</li>
+    </ol>
+  </section>
+
+  <!-- 3 威胁模型 -->
+  <section class="scene" data-title="五种攻击者身份" data-onstep="rowStep">
+    <div class="kicker">威胁模型</div>
+    <h2>不只是"外部攻击者"</h2>
+    <table class="t sm">
+      <thead><tr><th>攻击者身份</th><th>能力</th><th>典型攻击</th></tr></thead>
+      <tbody>
+        <tr><td>任意外部地址</td><td>调用所有公开函数</td><td>调用未保护的 mint、setOwner、initialize</td></tr>
+        <tr><td>恶意合约</td><td>在 owner 交互时插入调用</td><td>利用 tx.origin 冒充 owner</td></tr>
+        <tr><td>被钓鱼的特权用户</td><td>签下自己看不懂的交易</td><td>前端篡改、盲签</td></tr>
+        <tr><td>拿到私钥的攻击者</td><td>完全等同于特权角色</td><td>验证者私钥泄露</td></tr>
+        <tr><td>内部人员</td><td>合法持有特权</td><td>跑路、恶意升级</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>权限问题的攻击者有五种身份。第一种，任意外部地址，可以调用所有公开函数。典型攻击是调用没有保护的增发、改 owner 或初始化函数。</li>
+      <li>第二种，恶意合约，在 owner 和它交互时插入调用，利用 tx.origin 冒充 owner。第三种，被钓鱼的特权用户，签下了自己看不懂的交易。</li>
+      <li>第四种，拿到私钥的攻击者，完全等同于特权角色。第五种，内部人员，合法持有特权，却跑路或者恶意升级。后三种，代码写得再对也防不住，要靠权限设计。</li>
+    </ol>
+  </section>
+
+  <!-- 4 缺陷 1-2 -->
+  <section class="scene" data-title="缺陷一、二：缺检查与 tx.origin" data-onstep="marks">
+    <div class="kicker">六种常见缺陷 · 1–2</div>
+    <h2>机房门没装刷卡器</h2>
+    <div class="vs">
+      <div class="card bad" data-k="0"><h3>① 缺少权限检查</h3><div class="src sm" style="background:transparent;border:0;padding:0"><span class="ln bad"><span class="kw">function</span> <span class="fn">mint</span>(to, amt) <span class="kw">external</span> {</span><span class="ln">  _mint(to, amt);   <span class="c">// 任何人都能增发</span></span><span class="ln">}</span></div></div>
+      <div class="card good" data-k="1"><h3>修复</h3><div class="src sm" style="background:transparent;border:0;padding:0"><span class="ln good"><span class="kw">function</span> <span class="fn">mint</span>(to, amt) <span class="kw">external</span></span><span class="ln good">    onlyRole(MINTER_ROLE) {</span><span class="ln">  _mint(to, amt);</span><span class="ln">}</span></div></div>
+    </div>
+    <div class="card warn fs28" data-k="2">0.5 之前函数默认 public：旧合约忘写可见性 = 把内部函数暴露给所有人。</div>
+    <div class="card info fs28" data-k="3">② tx.origin 鉴权 → 改用 msg.sender（机制见 EP02）</div>
+    <ol class="say">
+      <li>第一种缺陷，缺少权限检查。这个增发函数是外部可调用的，没有任何修饰器，任何人都能增发。</li>
+      <li>修复很简单，加上角色检查，只有拥有增发角色的地址才能调用。</li>
+      <li>注意一个历史问题。Solidity 0.5之前，函数默认可见性是 public。旧合约如果忘了写可见性，就等于把内部函数暴露给了所有人。审计老代码时要特别留意。</li>
+      <li>第二种缺陷，用 tx.origin 鉴权，第2集讲过机制。修复是改用 msg.sender。</li>
+    </ol>
+  </section>
+
+  <!-- 5 未初始化 -->
+  <section class="scene" data-title="缺陷三：未保护的初始化" data-onstep="marks">
+    <div class="kicker">六种常见缺陷 · 3</div>
+    <h2>第一个喊"我是经理"的人，就成了经理</h2>
+    <div class="vs">
+      <div class="card bad" data-k="0"><h3>漏洞</h3><div class="src sm" style="background:transparent;border:0;padding:0"><span class="ln bad"><span class="kw">function</span> <span class="fn">initialize</span>(owner_) <span class="kw">external</span> {</span><span class="ln">  owner = owner_;</span><span class="ln">}</span><span class="ln c">// 谁都能调，还能重复调</span></div></div>
+      <div class="card good" data-k="1"><h3>修复</h3><div class="src sm" style="background:transparent;border:0;padding:0"><span class="ln good"><span class="kw">function</span> <span class="fn">initialize</span>(owner_)</span><span class="ln good">    <span class="kw">external</span> initializer { ... }</span><span class="ln good"><span class="kw">constructor</span>() {</span><span class="ln good">  _disableInitializers();  <span class="c">// 锁死实现</span></span><span class="ln">}</span></div></div>
+    </div>
+    <div class="card gold fs28" data-k="2">两处都要锁：代理调用的初始化只能执行一次；<b>实现合约本身</b>也要在构造函数里锁死。</div>
+    <ol class="say">
+      <li>第三种缺陷，未保护的初始化函数。可升级合约和克隆合约，用初始化函数代替构造函数。如果它谁都能调用，或者可以重复调用，任何人都能把自己设为 owner。</li>
+      <li>修复有两处。第一，初始化函数加上 initializer 修饰器，保证只能执行一次。第二，在实现合约的构造函数里，调用禁用初始化，把实现合约本身锁死。</li>
+      <li>为什么实现合约本身也要锁？因为实现合约也是一个独立部署的合约，任何人都可以直接调用它。下面这起事故，就是两处都没锁好。</li>
+    </ol>
+  </section>
+
+  <!-- 6 Parity -->
+  <section class="scene" data-title="案例：Parity 的两次事故" data-onstep="parStep">
+    <div class="kicker">真实案例 · 2017 · 据公开复盘</div>
+    <h2 id="parH">同一个库，两次出事</h2>
+    <svg id="par" width="1640" height="560" viewBox="0 0 1640 560"></svg>
+    <ol class="say">
+      <li>来看 Parity 多签钱包，以下据公开复盘。每个钱包是一个很薄的合约，遇到不认识的调用，就用 delegatecall 转给一个共享的库合约。</li>
+      <li>2017年7月。库里的钱包初始化函数没有保护。攻击者通过钱包调用了它，delegatecall 改写的是钱包自己的存储，攻击者成了钱包的 owner，转走约15.3万个 ETH。</li>
+      <li>修复后，部署了一个新的库合约。但这个库合约本身没有初始化。</li>
+      <li>2017年11月，一个用户直接调用了这个库的初始化函数，成了库的 owner，然后调用了库的自毁函数。</li>
+      <li>库合约消失了。所有依赖它的钱包失去了代码逻辑，资金还在，却再也调不动，约51万个 ETH 被永久冻结。教训是，实现合约本身也必须初始化，或者在构造函数里锁死。</li>
+    </ol>
+  </section>
+
+  <!-- 7 缺陷 4-6 -->
+  <section class="scene" data-title="缺陷四至六" data-onstep="marks">
+    <div class="kicker">六种常见缺陷 · 4–6</div>
+    <h2>任意调用、单步转移、签名写错</h2>
+    <div class="grid3">
+      <div class="card sell" data-k="0"><h3>④ 任意外部调用</h3><div class="fs27 fs28"><code>execute(target, data)</code><br>合约持有授权时，data = transferFrom(受害者, 攻击者)<br>换成 delegatecall → 直接改写存储</div></div>
+      <div class="card warn" data-k="1"><h3>⑤ 单步所有权转移</h3><div class="fs28">输错地址 → 权限永久丢失<br><b class="up">两步式</b>：新 owner 必须主动 accept</div></div>
+      <div class="card info" data-k="2"><h3>⑥ 签名鉴权写错</h3><div class="fs28">无效签名 → ecrecover 返回 <b>address(0)</b><br>签名者变量未设置（也是 0）→ 检查通过</div></div>
+    </div>
+    <ol class="say">
+      <li>第四种缺陷，任意外部调用。一个执行函数，让用户指定目标地址和调用数据。如果这个合约持有别人给它的代币授权，攻击者就把调用数据构造成，从受害者转账给攻击者。如果这里用的是 delegatecall，攻击者的代码会直接改写本合约的存储。</li>
+      <li>第五种，单步所有权转移。owner 一步把权限转给新地址，输错一个字符，权限就永久丢失。修复是两步式，新 owner 必须主动调用接受函数。</li>
+      <li>第六种，签名鉴权写错。用签名代替消息发送者来鉴权时，ecrecover 对无效签名会返回零地址。如果被比较的签名者变量从没设置过，它默认也是零，检查就通过了。第8集会详细讲签名。</li>
+    </ol>
+  </section>
+
+  <!-- 8 最小权限 -->
+  <section class="scene" data-title="最小权限：拆分角色" data-onstep="rowStep">
+    <div class="kicker">防御 · 特权角色设计 · 延迟为示例</div>
+    <h2>暂停要快，升级要慢</h2>
+    <table class="t sm">
+      <thead><tr><th>角色</th><th>能做什么</th><th>建议持有者</th><th>建议延迟</th></tr></thead>
+      <tbody>
+        <tr><td>UPGRADER</td><td>升级实现合约</td><td>多签 + 时间锁</td><td class="num">≥ 48 小时</td></tr>
+        <tr><td>PARAM_ADMIN</td><td>调整费率、抵押率</td><td>多签 + 时间锁</td><td class="num">24 小时</td></tr>
+        <tr><td>PAUSER</td><td>紧急暂停</td><td>小型多签或监控机器人</td><td class="num">无延迟</td></tr>
+        <tr><td>MINTER</td><td>增发</td><td>只授予特定合约</td><td class="num">—</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>防御的核心是最小权限，把一个万能的 owner，拆成多个角色，每个角色只做一件事。升级角色负责升级实现合约，由多签加时间锁持有，示例延迟48小时以上。</li>
+      <li>参数管理员负责调整费率和抵押率，同样是多签加时间锁，示例延迟24小时。</li>
+      <li>暂停角色负责紧急暂停，由小型多签或者监控机器人持有，没有延迟。增发角色只授予特定的合约，不给任何人。</li>
+      <li>为什么暂停要快、升级要慢？暂停只能止损，不能转走资金。升级可以做任何事。所以权力越大，延迟越长。</li>
+    </ol>
+  </section>
+
+  <!-- 9 多签 + 时间锁 -->
+  <section class="scene" data-title="多签 + 时间锁" data-onstep="tlStep">
+    <div class="kicker">防御 · 示例</div>
+    <h2>时间锁给用户一个"退出窗口"</h2>
+    <svg id="tl" width="1640" height="560" viewBox="0 0 1640 560"></svg>
+    <ol class="say">
+      <li>多签加时间锁是这样工作的。提案者是一个5选3的多签，它不能直接修改目标合约，只能把操作提交到时间锁合约排队。</li>
+      <li>示例延迟48小时。这48小时里，排队的操作是公开的，监控和社区都能看到。</li>
+      <li>如果发现是恶意操作，守护者可以取消。注意权限是不对称的，守护者只能取消，不能发起。</li>
+      <li>用户如果不同意，可以在这48小时里撤出资金。延迟到期后，操作才被执行。</li>
+      <li>这套设计的局限是，如果多签的签名人被同时钓鱼，比如所有人都看到了同一个被篡改的界面，多签就防不住。它只能防单个私钥被盗。时间锁的价值，正在于给发现留出时间。</li>
+    </ol>
+  </section>
+
+  <!-- 10 Mantle L2 -->
+  <section class="scene" data-title="L2 视角：谁能升级桥" data-onstep="mtStep">
+    <div class="kicker">L2 信任假设 · 据 L2BEAT 公开页面</div>
+    <h2>不是代码漏洞，而是信任假设</h2>
+    <div class="row">
+      <svg id="mt" width="980" height="540" viewBox="0 0 980 540"></svg>
+      <div class="col" id="mtSide"></div>
+    </div>
+    <ol class="say">
+      <li>二层网络的桥合约，持有用户全部的跨链资产。谁能升级桥合约，谁就能决定这些资产的去向。看 Mantle，以下据 L2BEAT 截至2026年的公开页面。</li>
+      <li>Mantle 有一个安全多签，14个签名人，阈值是6。它可以没有延迟地升级一层网络上的桥和输出预言机合约。</li>
+      <li>算一下信任假设。6个签名就能升级，那么只要有6个人合谋或者同时被攻破，资产就不安全。反过来说，用户相信的是，14个人里至少有9个不会这样。</li>
+      <li>L2BEAT 把没有升级延迟、没有退出窗口，标为关键风险。这不是代码漏洞，而是信任假设。评估时，要把它写进剩余风险。链专题 C03 会详细讲。</li>
+    </ol>
+  </section>
+
+  <!-- 11 TRON 账户权限 -->
+  <section class="scene" data-title="账户层权限：TRON" data-onstep="tronStep">
+    <div class="kicker">账户层权限 · 据 TRON 官方文档与安全公司公开资料</div>
+    <h2 id="trH">在 TRON 上，"一个地址 = 一把私钥"不成立</h2>
+    <div class="perm" data-show="0-1">
+      <div class="card gold" data-k="0"><b>Owner</b><div class="muted fs26">最高权限，可修改其他权限，增删签名人</div></div>
+      <div class="card info" data-k="0"><b>Active</b><div class="muted fs26">日常操作：转账、质押、调合约；可限定操作类型</div></div>
+      <div class="card" data-k="0"><b>Witness</b><div class="muted fs26">超级代表出块相关</div></div>
+    </div>
+    <div class="card fs30" data-show="1-1">每个权限：一组地址 + 各自权重 + 阈值。权重之和达到阈值，操作才执行。</div>
+    <svg id="tr" width="1640" height="480" viewBox="0 0 1640 480" data-show="2"></svg>
+    <ol class="say">
+      <li>前面讲的都是合约层的权限。还有一种账户层的权限，以 TRON 为例。以太坊的外部账户只有一把私钥。TRON 账户原生支持多重权限，有 Owner、Active 和 Witness 三类。Owner 是最高权限，可以修改其他权限。Active 负责日常操作。</li>
+      <li>每个权限有一组地址，每个地址有权重，权限有阈值，权重之和达到阈值，操作才执行。</li>
+      <li>这带来一种诈骗。受害者在假钱包或钓鱼页泄露了私钥。攻击者不急着转钱，而是把账户的 Owner 和 Active 权限都改成自己的地址。</li>
+      <li>受害者仍然能看到余额，但已经转不出去了。转入不需要签名，所以新的 USDT 还在不断转进来。攻击者择机一次全部转走。</li>
+      <li>这类骗局常见于场外交易。骗子提供一个有余额却转不出来的账户私钥，诱导对方支付手续费。对开发者的含义是，在 TRON 上收到一个地址，不能假设它由单一私钥控制。</li>
+    </ol>
+  </section>
+
+  <!-- 12 Token Hub -->
+  <section class="scene" data-title="案例：押金就是权限" data-onstep="thStep">
+    <div class="kicker">真实案例 · 2022-10 · BNB Chain Token Hub · 据公开复盘</div>
+    <h2>100 BNB 的押金，换来 200 万 BNB</h2>
+    <div class="row">
+      <div class="col" style="flex:1" id="thL"></div>
+      <div class="col" style="flex:1" id="thR"></div>
+    </div>
+    <ol class="say">
+      <li>最后看 BNB Chain 的 Token Hub，以下据公开复盘。跨链消息要由中继者提交。当时，注册中继者只需要支付100个 BNB 的押金。</li>
+      <li>攻击者付了押金，成为中继者，再利用证明验证的一个缺陷，伪造了跨链消息。</li>
+      <li>凭空铸造了200万个 BNB，按当时价格约5.7亿美元。其中一亿多美元被转出链外，其余被冻结。</li>
+      <li>之后的修复硬分叉，把中继者改成了白名单。教训是，只要付押金就能注册，这本身就是一个权限决策。100个 BNB 的门槛，和它能控制的资产规模相比，太低了。</li>
+    </ol>
+  </section>
+
+  <!-- 13 审计检查点 + 练一练 -->
+  <section class="scene" data-title="审计检查点" data-onstep="marks">
+    <div class="kicker">审计清单</div>
+    <h2>八个检查点</h2>
+    <div class="chk">
+      <div class="card" data-k="0">① 每个状态修改函数都有权限检查，或"任何人可调"的安全论证</div>
+      <div class="card" data-k="0">② 没有任何地方用 tx.origin 鉴权</div>
+      <div class="card" data-k="1">③ 初始化有 initializer；实现构造函数调用 _disableInitializers</div>
+      <div class="card" data-k="1">④ 不存在用户可控的任意 call / delegatecall 目标</div>
+      <div class="card" data-k="2">⑤ 所有权转移是两步式</div>
+      <div class="card" data-k="2">⑥ 角色已拆分；升级与参数修改经过时间锁</div>
+      <div class="card" data-k="3">⑦ 特权私钥持有者、存放方式、阈值已文档化，有撤销流程</div>
+      <div class="card gold" data-k="3">⑧ 部署链的账户模型与以太坊一致吗？</div>
+    </div>
+    <ol class="say">
+      <li>审计检查点有八个。第一，每个修改状态的函数，都有明确的权限检查，或者有一份任何人调用都安全的论证。第二，没有任何地方用交易发起人鉴权。</li>
+      <li>第三，初始化函数有 initializer 修饰，实现合约的构造函数锁死了初始化。第四，不存在用户可以控制的任意调用或委托调用目标。</li>
+      <li>第五，所有权转移是两步式。第六，特权角色已经拆分，升级和参数修改经过时间锁。</li>
+      <li>第七，特权私钥由谁持有、怎样存放、阈值多少，都已文档化，并有撤销流程。Ronin 就缺了撤销这一步。第八，部署链的账户模型和以太坊是否一致，比如 TRON 的多权限账户。</li>
+    </ol>
+  </section>
+
+  <!-- 14 练一练 -->
+  <section class="scene" data-title="练一练" data-onstep="marks">
+    <div class="kicker">练一练 · 暂停视频想一想</div>
+    <h2>暂停角色可以暂停提款，没有时间锁。合理吗？</h2>
+    <div class="grid2">
+      <div class="card" data-k="0"><b>如果暂停私钥被盗，最坏情况是什么？</b></div>
+      <div class="card buy" data-k="1"><b>参考</b><div class="fs28">无延迟是<b>合理的</b>：暂停只能止损，不能转走资金。<br>最坏情况：攻击者<b>长期冻结提款</b>，造成恐慌或勒索。<br>缓解：暂停有<b>自动到期</b>；恢复由更高门槛的多签执行；暂停私钥可被快速撤换。</div></div>
+    </div>
+    <ol class="say">
+      <li>来练一练。一个协议的暂停角色可以暂停提款，没有时间锁。这个设计合理吗？如果暂停角色的私钥被盗，最坏情况是什么？</li>
+      <li>参考答案。没有延迟是合理的，因为暂停只能止损，不能转走资金。最坏情况是，攻击者长期冻结提款，造成恐慌，甚至以此勒索。缓解办法是，让暂停有自动到期时间，恢复由更高门槛的多签执行，并且暂停私钥可以被快速撤换。</li>
+    </ol>
+  </section>
+
+  <!-- 15 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">每个函数回答"<span class="hl">谁可以调用我</span>"；六种缺陷逐一排查。</li>
+      <li data-step="1">实现合约本身也要<span class="hl">锁死初始化</span>；所有权两步转移。</li>
+      <li data-step="2">最小权限 + 多签 + 时间锁；<span class="hl">撤销流程</span>和账户模型同样是权限。</li>
+    </ul>
+    <h2 data-show="3">下一集：EP05 算术与精度</h2>
+    <div class="path" data-show="3">
+      <div class="card sell"><div class="n">÷</div><b>舍入方向</b><div class="d">向谁取整，谁就吃亏</div></div>
+      <div class="card gold"><div class="n">4626</div><b>金库通胀攻击</b><div class="d">一笔捐赠拉高份额价格</div></div>
+      <div class="card info"><div class="n">6/18</div><b>三链 USDT 精度</b><div class="d">同一个币，小数位不同</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，每个函数都要回答谁可以调用我，六种缺陷逐一排查。</li>
+      <li>第二，实现合约本身也要锁死初始化，所有权转移用两步式。</li>
+      <li>第三，用最小权限、多签和时间锁设计特权角色。撤销流程和账户模型，同样是权限的一部分。</li>
+      <li>下一集讲算术与精度，数字算错了。舍入方向，金库通胀攻击，以及同一个 USDT 在三条链上不同的小数位。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line, circle } = K;
+
+  function parStep(el, st) {
+    const svg = el.querySelector('#par'); svg.innerHTML = '';
+    const wal = [40, 330, 620];
+    wal.forEach((x, i) => box(svg, x, 60, 250, 100, ['钱包 ' + (i + 1), st >= 4 ? '无法调用' : '薄合约'], { stroke: st >= 4 ? C.sell : C.info, fill: st >= 4 ? C.badFill : C.panel, fs: 30 }));
+    const libDead = st >= 4;
+    box(svg, 260, 330, 420, 130, [st >= 2 ? '新库合约' : '库合约', libDead ? '已自毁' : (st >= 2 ? '自身未初始化' : 'initWallet 无保护')], { stroke: libDead ? C.sell : C.gold, fill: libDead ? C.badFill : C.panel, fs: 34, sc: libDead || st === 1 || st === 2 ? C.sell : C.t2, op: libDead ? .6 : 1 });
+    wal.forEach((x, i) => arrow(svg, x + 125, 162, 370 + i * 100, 326, libDead ? C.sell : C.t2, true, 3, libDead ? .5 : 1));
+    T(svg, 482, 246, 'delegatecall', C.t2, 24, 'start');
+    const tl = [['2017-07', '通过钱包调用 initWallet → 成为钱包 owner', '约 15.3 万 ETH 被转走', 1], ['修复', '部署新库', '库本身没初始化', 2], ['2017-11', '直接调用库的 initWallet → 成为库 owner → kill', '库被自毁', 3], ['结果', '钱包失去代码逻辑', '约 51 万 ETH 永久冻结', 4]];
+    tl.forEach(([d, a, b, k], i) => {
+      const y = 30 + i * 130, op = st >= k ? 1 : .12, cur = st === k;
+      rect(svg, 960, y, 660, 114, { fill: cur ? C.curFill : C.panel, stroke: cur ? C.gold : (k === 4 ? C.sell : C.line), sw: cur ? 4 : 2, op });
+      T(svg, 985, y + 30, d, C.gold, 24, 'start', true, op); T(svg, 985, y + 64, a, C.text, 24, 'start', false, op); T(svg, 985, y + 96, b, k >= 3 ? C.sell : C.t2, 22, 'start', true, op);
+    });
+    el.querySelector('#parH').textContent = ['钱包把不认识的调用 delegatecall 给共享库', '第一次：库函数没保护，改的是钱包的存储', '修复后的新库，本身没有初始化', '第二次：有人成了库的 owner，并自毁了它', '库没了，钱还在，再也调不动'][st];
+  }
+
+  function tlStep(el, st) {
+    const svg = el.querySelector('#tl'); svg.innerHTML = '';
+    const op = k => st >= k ? 1 : .12;
+    box(svg, 20, 200, 300, 120, ['提案者', '多签 3/5'], { stroke: C.info, fs: 32 });
+    arrow(svg, 322, 260, 446, 260, C.t2, false, 4); T(svg, 384, 236, 'schedule', C.t2, 22);
+    box(svg, 450, 180, 380, 160, ['时间锁合约', '延迟 48 小时'], { stroke: C.gold, fs: 34, ss: 30, sc: C.gold, op: 1, bold: true });
+    arrow(svg, 832, 260, 1296, 260, C.buy, false, 4, op(3)); T(svg, 1060, 236, '到期后 execute', C.buy, 24, 'middle', true, op(3));
+    box(svg, 1300, 200, 320, 120, '目标合约', { stroke: C.buy, fs: 34, op: op(3) });
+    box(svg, 450, 20, 380, 90, ['监控与社区', '看得到排队的操作'], { stroke: C.info, fs: 28, op: op(1) }); arrow(svg, 640, 112, 640, 176, C.info, true, 3, op(1));
+    box(svg, 450, 410, 380, 90, ['守护者 Guardian', '只能 cancel，不能发起'], { stroke: C.sell, fs: 28, op: op(2) }); arrow(svg, 640, 406, 640, 344, C.sell, true, 3, op(2));
+    box(svg, 1300, 410, 320, 90, ['用户', '48 小时内可退出'], { stroke: C.warn, fs: 28, op: op(3) }); arrow(svg, 1460, 406, 1460, 324, C.warn, true, 3, op(3));
+    if (st >= 4) { rect(svg, 20, 30, 400, 130, { fill: C.badFill, stroke: C.sell, sw: 3 }); T(svg, 220, 70, '局限', C.sell, 28, 'middle', true); T(svg, 220, 110, '签名人同时看到假界面', C.text, 24); T(svg, 220, 140, '→ 多签防不住', C.text, 24); }
+  }
+
+  function mtStep(el, st) {
+    const svg = el.querySelector('#mt'); svg.innerHTML = '';
+    const cx = 330, cy = 280, R = 210;
+    const bad = st >= 2 ? 6 : 0;
+    for (let i = 0; i < 14; i++) {
+      const a = -Math.PI / 2 + i * 2 * Math.PI / 14, x = cx + R * Math.cos(a), y = cy + R * Math.sin(a);
+      circle(svg, x, y, 32, i < bad ? C.badFill : C.panel, { stroke: i < bad ? C.sell : C.info, sw: 3 });
+      T(svg, x, y, String(i + 1), C.text, 24);
+    }
+    T(svg, cx, cy - 20, '安全多签', C.t2, 28, 'middle', true);
+    T(svg, cx, cy + 26, '6 / 14', C.gold, 46, 'middle', true);
+    box(svg, 640, 180, 320, 130, ['L1 桥 · 输出预言机', st >= 1 ? '可被无延迟升级' : '持有全部跨链资产'], { stroke: st >= 1 ? C.sell : C.gold, fs: 28, sc: st >= 1 ? C.sell : C.t2 });
+    arrow(svg, 560, 245, 636, 245, st >= 1 ? C.sell : C.t2, false, 4);
+    const side = el.querySelector('#mtSide');
+    side.innerHTML = (st >= 1 ? '<div class="stat"><div class="k">升级延迟</div><div class="v down">0</div></div>' : '') +
+      (st >= 2 ? '<div class="card sell fs28">6 人合谋或同时被攻破 → 资产不安全</div><div class="card buy fs28">用户相信：14 人中<b>至少 9 人</b>不会这样</div>' : '') +
+      (st >= 3 ? '<div class="card warn fs28">L2BEAT：无升级延迟、无退出窗口 → 关键风险<br>评估时写进<b>剩余风险</b></div>' : '');
+  }
+
+  function tronStep(el, st) {
+    marks(el, st);
+    el.querySelector('#trH').textContent = st >= 2 ? '"多签诈骗"：改权限，不急着转钱' : '在 TRON 上，"一个地址 = 一把私钥"不成立';
+    const svg = el.querySelector('#tr'); svg.innerHTML = '';
+    if (st < 2) return;
+    const S = [['泄露私钥', '假钱包 / 钓鱼页', C.warn, 2], ['改账户权限', '改成攻击者的地址', C.sell, 2], ['看得到余额', '但转不出', C.info, 3], ['USDT 继续转入', '转入不需要签名', C.info, 3], ['择机全部转走', '', C.sell, 3]];
+    S.forEach(([a, b, c, k], i) => {
+      const x = 10 + i * 328, op = st >= k ? 1 : .12;
+      box(svg, x, 60, 290, 140, b ? [a, b] : a, { stroke: c, fs: 30, op, bold: true });
+      if (i < 4) arrow(svg, x + 292, 130, x + 324, 130, C.t2, false, 3, st >= S[i + 1][3] ? 1 : .12);
+    });
+    if (st >= 4) {
+      rect(svg, 10, 260, 1610, 150, { fill: C.curFill, stroke: C.gold, sw: 3 });
+      T(svg, 815, 305, '常见于场外交易：骗子提供"有余额但转不出"的私钥，诱你付"手续费"', C.gold, 28, 'middle', true);
+      T(svg, 815, 360, '开发者：TRON 上收到一个地址，不能假设它由单一私钥控制', C.text, 28);
+    }
+  }
+
+  function thStep(el, st) {
+    const L = el.querySelector('#thL'), R = el.querySelector('#thR');
+    L.innerHTML = '<div class="stat"><div class="k">注册中继者的门槛</div><div class="v hl">100 BNB</div></div>' + (st >= 1 ? '<div class="card warn fs28">付押金 → 成为中继者<br>+ 证明验证缺陷 → 伪造消息</div>' : '');
+    R.innerHTML = (st >= 2 ? '<div class="stat"><div class="k">凭空铸造</div><div class="v down">200 万 BNB</div></div><div class="card fs28">约 5.7 亿$ · 一亿多美元被转出，其余被冻结</div>' : '<div class="card fs28 muted">跨链消息由中继者提交</div>') +
+      (st >= 3 ? '<div class="card buy fs28">修复硬分叉：中继者改为<b>白名单</b><br>"付押金就行"本身就是一个权限决策</div>' : '');
+    R.style.opacity = st >= 0 ? 1 : .2;
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

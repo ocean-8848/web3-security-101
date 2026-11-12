@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A05 上币与合作项目尽调</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .ana .card { font-size: 28px; display: flex; flex-direction: column; gap: 10px; min-height: 240px; }
+  .ana .card .a { color: var(--text-2); font-size: 26px; }
+  .red { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 26px; }
+  .red .card { font-size: 28px; padding: 18px 24px; display: grid; grid-template-columns: 54px 1fr; gap: 6px 14px; align-items: start; }
+  .red .card .n { font-family: var(--mono); color: var(--sell); font-weight: 700; font-size: 36px; grid-row: span 2; }
+  .red .card .d { color: var(--text-2); font-size: 24px; }
+  .ladder { display: flex; flex-direction: column; gap: 12px; }
+  .ladder .r { display: grid; grid-template-columns: 90px 1fr; gap: 18px; align-items: center; background: var(--panel); border: 2px solid var(--line); border-radius: 12px; padding: 14px 22px; font-size: 30px; transition: all .35s; }
+  .ladder .r .s { font-family: var(--mono); font-size: 44px; font-weight: 700; }
+  .ladder .r.cur { border-color: var(--gold); background: #221e10; }
+  .q { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .q .card { font-size: 27px; padding: 18px 20px; min-height: 220px; display: flex; flex-direction: column; gap: 8px; }
+  .q .card b { font-size: 30px; }
+  .q .card .d { color: var(--text-2); font-size: 24px; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="A05" data-title="上币与合作项目尽调">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 评估篇 · A05</div>
+    <h1>五个工作日，<br>判断一个币<span class="hl">能不能上</span></h1>
+    <div class="grid3">
+      <div class="card" data-k="1" data-nocur><b>审不完</b><div class="muted fs28">代码几万行，时间只有几天</div></div>
+      <div class="card" data-k="1" data-nocur><b>改不了</b><div class="muted fs28">你没有权力让项目方改代码</div></div>
+      <div class="card sell" data-k="2" data-nocur><b>对方可能就是攻击者</b><div class="muted fs28">貔貅盘、跑路盘、后门</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到评估篇第5集，上币与合作项目尽调。设想一个场景。业务方转来一个上币申请，给你五个工作日，要一个结论，能不能上。</li>
+      <li>你面对两个限制。审不完，对方代码可能几万行，时间只有几天。改不了，你没有权力让项目方修改代码。</li>
+      <li>还有一点和审计完全不同。你要假设，项目方本人就可能是攻击者。所以尽调的任务不是证明代码安全，而是用有限的时间判断，上了这个币，用户和交易所会不会遭受不可接受的损失。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="像租客背景调查" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>尽调像房东查租客：只查决定性的几件事</h2>
+    <div class="ana">
+      <div class="card" data-k="0"><b>能不能按时付租</b><div class="hl">→ 经济模型</div></div>
+      <div class="card" data-k="0"><b>有没有前科</b><div class="hl">→ 链上劣迹</div></div>
+      <div class="card" data-k="1"><b>会不会转手卖房</b><div class="hl">→ 增发、转移所有权</div></div>
+      <div class="card" data-k="1"><b>钥匙在谁手里</b><div class="hl">→ 权限与锁仓</div></div>
+    </div>
+    <div class="card gold fs30" data-k="2">任何一条踩红线，直接拒绝，不需要查完其余。</div>
+    <div class="card warn fs30" data-k="3">比喻不准的地方：租客一般不会主动害你。尽调要假设项目方就是攻击者本人。</div>
+    <ol class="say">
+      <li>打个比方，尽调像房东查租客。房东不会把租客的人生查个底朝天，他没那个时间，也没那个权力。他只查几件决定性的事。能不能按时付租，对应经济模型。有没有前科，对应链上的劣迹。</li>
+      <li>这房子他会不会转手就卖了，对应代币能不能增发、所有权能不能转移。钥匙还在谁手里，对应权限和锁仓。</li>
+      <li>任何一条踩红线，直接拒绝，不需要查完其余。</li>
+      <li>比喻不准的地方在于，租客一般不会主动伤害你。上币尽调却要假设，项目方可能就是攻击者本人。</li>
+    </ol>
+  </section>
+
+  <!-- 3 四维度流程 -->
+  <section class="scene" data-title="四个维度，红线优先" data-onstep="flowStep">
+    <div class="kicker">尽调结构</div>
+    <h2>先过红线，再打分</h2>
+    <svg id="fl" width="1640" height="560" viewBox="0 0 1640 560"></svg>
+    <ol class="say">
+      <li>尽调有四个维度。第一是合约权限，谁能动代币和资金。第二是链上数据，部署时间、持仓、流动性和历史。</li>
+      <li>第三是团队与运营，身份、安全实践和审计。第四是经济模型，代币分配、释放和用途。四个维度的证据来源不同。权限和经济看代码和文档，链上数据看区块浏览器，团队运营靠问卷和公开信息。</li>
+      <li>注意顺序。红线检查在打分之前。任何一个维度踩了红线，直接否决，不进入评分。</li>
+      <li>没有红线，才用评分卡打分，得出风险结论。还有一点，尽调结论有时效。代币可以升级、可以增发时，今天的结论明天可能失效，这本身就是一个高风险项。</li>
+    </ol>
+  </section>
+
+  <!-- 4 红线 1-4 -->
+  <section class="scene" data-title="八条红线（上）" data-onstep="marks">
+    <div class="kicker">红线 · 任一命中即否决或暂缓</div>
+    <h2>八条红线：前四条</h2>
+    <div class="red">
+      <div class="card" data-k="0"><span class="n">1</span><b>可无限增发，且无时间锁</b><span class="d">读 mint 权限，看 owner 和 minter</span></div>
+      <div class="card" data-k="1"><span class="n">2</span><b>貔貅盘：能买不能卖</b><span class="d">分叉环境模拟买入再卖出；查转账税、黑名单、暂停</span></div>
+      <div class="card" data-k="2"><span class="n">3</span><b>owner 可冻结任意地址</b><span class="d">包括交易所的热钱包</span></div>
+      <div class="card" data-k="3"><span class="n">4</span><b>隐藏的所有权转移或升级后门</b><span class="d">代理、delegatecall、未初始化、自毁</span></div>
+    </div>
+    <ol class="say">
+      <li>来看八条红线，任一命中就否决或暂缓。第一条，代币可以无限增发，而且没有时间锁。项目方可以随时稀释，等于随时跑路。读一下增发函数的权限，看 owner 和 minter 是谁。</li>
+      <li>第二条，貔貅盘，就是能买不能卖。怎么查？在分叉环境里模拟一次买入，再模拟卖出。同时检查转账税、黑名单和暂停开关。</li>
+      <li>第三条，owner 可以暂停或冻结任意地址的转账。这包括交易所的热钱包。用户充进来的币，可能某天就提不出去了。</li>
+      <li>第四条，隐藏的所有权转移或者升级后门。检查代理合约、delegatecall、未初始化的合约和自毁函数。合约的行为可以被悄悄改变，就是红线。</li>
+    </ol>
+  </section>
+
+  <!-- 5 红线 5-8 -->
+  <section class="scene" data-title="八条红线（下）" data-onstep="marks">
+    <div class="kicker">红线 · 任一命中即否决或暂缓</div>
+    <h2>八条红线：后四条</h2>
+    <div class="red">
+      <div class="card" data-k="0"><span class="n">5</span><b>升级权是单签个人地址</b><span class="d">读实现槽、管理槽；无延迟可升级</span></div>
+      <div class="card" data-k="1"><span class="n">6</span><b>锁仓或流动性锁是假的</b><span class="d">核验锁仓合约、解锁时间、LP 是否真锁</span></div>
+      <div class="card" data-k="2"><span class="n">7</span><b>地址与官网、审计报告不一致</b><span class="d">逐一核对</span></div>
+      <div class="card" data-k="2"><span class="n">8</span><b>字节码与已验证源码不一致</b><span class="d">部署的不是审计的</span></div>
+    </div>
+    <div class="card warn fs30" data-k="3">所有检查都在<b>对方给出的部署地址</b>上做，不是在 GitHub 仓库上做。</div>
+    <ol class="say">
+      <li>第五条，代理合约可以升级，而且升级权是一个单签的个人地址，没有延迟。这把私钥一旦被盗，或者项目方作恶，就能全盘失控。</li>
+      <li>第六条，锁仓或流动性锁是假的。要核验锁仓合约的地址、金额和解锁时间，以及流动性代币是不是真的被锁住。</li>
+      <li>第七条，合约地址和官网、审计报告里的不一致，这是常见的调包手法。第八条，链上部署的字节码和已验证的源码不一致，部署的根本不是审计的那份代码。</li>
+      <li>注意，红线检查要在对方给出的部署地址上做，不能在 GitHub 仓库上做。用户交互的是部署在链上的合约，不是仓库里的代码。</li>
+    </ol>
+  </section>
+
+  <!-- 6 SQUID -->
+  <section class="scene" data-title="案例：能买不能卖" data-onstep="squidStep">
+    <div class="kicker">真实案例 · 2021-11 · SQUID 代币 · 据公开报道</div>
+    <h2>价格一路上涨，因为没人能卖</h2>
+    <div class="row">
+      <svg id="sq" width="1000" height="560" viewBox="0 0 1000 560"></svg>
+      <div class="col" id="sqSide"></div>
+    </div>
+    <ol class="say">
+      <li>来看一个真实案例，以下据公开报道。2021年秋天，一个借热门剧集名字的代币 SQUID 上线。几天内，价格从不到1美分，涨到2800多美元。</li>
+      <li>价格为什么能一直涨？因为合约限制了卖出，普通持有人只能买，不能卖。没有卖盘，价格自然只涨不跌。</li>
+      <li>11月1日，开发者把流动性池里的资金全部取走，价格在几分钟内跌到接近零。据报道，开发者卷走约338万美元。</li>
+      <li>这正是第二条红线。用一次模拟就能发现。在分叉环境里买入一小笔，再尝试卖出。卖出失败，或者卖出税高得离谱，尽调到此结束，结论是否决。</li>
+    </ol>
+  </section>
+
+  <!-- 7 四维权重 -->
+  <section class="scene" data-title="四维评分与权重" data-onstep="wtStep">
+    <div class="kicker">评分卡 · 权重为示例</div>
+    <h2>没有红线，再给四个维度打分</h2>
+    <svg id="wt" width="1640" height="560" viewBox="0 0 1640 560"></svg>
+    <ol class="say">
+      <li>红线全部通过，再用评分卡打分。示例权重是这样的。合约权限占30%，看增发、暂停、升级权限由谁持有，是个人地址、多签、时间锁，还是已经放弃。</li>
+      <li>链上数据占25%，看部署时长、持仓集中度、流动性深度和锁定，以及历史异常交易。</li>
+      <li>团队与运营占25%，看身份公开程度、私钥和多签实践、审计情况和漏洞赏金。经济模型占20%，看代币分配、解锁曲线，以及收益来源是否可持续。</li>
+      <li>注意，权重是示例。交易所应该按自己的风险偏好和上币层级来设定，然后固定下来。评分卡的价值在于一致性，不同项目用同一把尺子，而不在于绝对数值。</li>
+    </ol>
+  </section>
+
+  <!-- 8 锚点 -->
+  <section class="scene" data-title="打分锚点" data-onstep="ladStep">
+    <div class="kicker">锚点示例 · 合约权限 · 升级权限持有方</div>
+    <h2>每个分数都要对应一个具体情形</h2>
+    <div class="ladder">
+      <div class="r" data-s="4"><span class="s up">4</span>不可升级，或升级权已放弃</div>
+      <div class="r" data-s="3"><span class="s up">3</span>多签 + 时间锁 48 小时以上</div>
+      <div class="r" data-s="2"><span class="s hl">2</span>多签没有时间锁，或时间锁较短</div>
+      <div class="r" data-s="1"><span class="s" style="color:var(--warn)">1</span>单签多方，或时间锁少于 24 小时</div>
+      <div class="r" data-s="0"><span class="s down">0</span><span>单签个人地址，可无延迟升级 <span class="pill sell">已是红线</span></span></div>
+    </div>
+    <ol class="say">
+      <li>打分不能凭感觉，每个分数都要对应一个具体情形，这叫锚点。以合约权限里的升级权限为例。4分，合约不可升级，或者升级权已经放弃。</li>
+      <li>3分，多签加上48小时以上的时间锁。2分，多签但没有时间锁，或者时间锁较短。</li>
+      <li>1分，单签多方，或者时间锁少于24小时。0分，单签的个人地址，可以没有延迟地升级。这其实已经命中第五条红线了。</li>
+      <li>有了锚点，两个不同的评估人给同一个项目打分，结果会基本一致。这就是评分卡要的一致性。</li>
+    </ol>
+  </section>
+
+  <!-- 9 计算示例 -->
+  <section class="scene" data-title="算一个综合分" data-onstep="calcStep">
+    <div class="kicker">计算示例 · 数字为示例</div>
+    <h2>从各项得分到结论</h2>
+    <div class="row">
+      <table class="t" style="flex:1.2" id="calc">
+        <thead><tr><th>维度</th><th class="num">权重</th><th>各项得分</th><th class="num">得分率</th><th class="num">加权</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="col" style="flex:0.8" id="calcSide"></div>
+    </div>
+    <ol class="say">
+      <li>算一个示例。合约权限有两项，升级权2分，增发和暂停权3分，合计5分，满分8分，得分率62.5%，乘以权重30，得18.75分。</li>
+      <li>链上数据三项，部署时长1分，持仓集中度2分，流动性2分，合计5分，满分12分，得分率约41.7%，乘以25，约10.4分。</li>
+      <li>团队运营三项，合计6分，得分率50%，加权12.5分。经济模型两项，合计5分，得分率62.5%，加权12.5分。</li>
+      <li>四项加起来，约54.2分。示例规则是75分以上可以上线，55到75附条件，55以下暂缓。54分，结论是暂缓，列出需要补充的材料和整改项。</li>
+      <li>再强调一次。如果这个项目命中任何一条红线，哪怕综合分是90分，结论也是否决。红线优先于分数。</li>
+    </ol>
+  </section>
+
+  <!-- 10 链上数据 -->
+  <section class="scene" data-title="链上数据怎么查" data-onstep="rowStep">
+    <div class="kicker">链上取证 · 最省时、最难造假</div>
+    <h2>七项链上证据</h2>
+    <table class="t sm">
+      <thead><tr><th>查什么</th><th>怎么查</th><th>关注</th></tr></thead>
+      <tbody>
+        <tr><td>部署信息</td><td>创建交易、创建者、时间</td><td>刚部署几天，风险高</td></tr>
+        <tr><td>源码验证</td><td>浏览器验证状态；比对字节码</td><td>未验证或不一致</td></tr>
+        <tr><td>持仓集中度</td><td>前 10 / 前 50 地址占比</td><td>高度集中 → 砸盘风险</td></tr>
+        <tr><td>流动性</td><td>池子深度；LP 代币持有与锁定</td><td>浅池易被操纵</td></tr>
+        <tr><td>权限地址</td><td>读 owner、admin、minter</td><td>个人地址减分</td></tr>
+        <tr><td>历史行为</td><td>关联地址；是否与已知劣迹地址交互</td><td>跑路史、黑客地址</td></tr>
+        <tr><td>锁仓真实性</td><td>锁仓合约、金额、解锁时间</td><td>假锁仓</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>尽调中最省时间、也最难造假的证据，来自链上。第一，部署信息。看创建交易、创建者和时间。刚部署几天的项目，风险高。第二，源码验证状态，再比对一下字节码。</li>
+      <li>第三，持仓集中度，看前10和前50个地址的占比。高度集中，意味着砸盘风险。第四，流动性，看池子深度，以及流动性代币在谁手里，有没有锁。浅池子很容易被操纵价格。</li>
+      <li>第五，权限地址。读出 owner、admin 和 minter，看它们是个人地址还是多签。第六，历史行为，看关联地址的历史，有没有跑路史，有没有和已知黑客地址交互过。</li>
+      <li>第七，锁仓的真实性，核验锁仓合约、金额和解锁时间。另外，对方提供的审计报告也要独立核验。审计方可不可信，审的是不是这个版本，报告里有哪些已确认但没修的风险。</li>
+    </ol>
+  </section>
+
+  <!-- 11 团队运营问卷 -->
+  <section class="scene" data-title="团队运营问卷" data-onstep="marks">
+    <div class="kicker">团队与运营 · T05 问卷</div>
+    <h2>答不上来，本身就是风险信号</h2>
+    <div class="q">
+      <div class="card" data-k="0"><b>私钥与多签</b><div class="d">签名人几个？是否独立？硬件钱包、MPC、HSM？</div></div>
+      <div class="card" data-k="0"><b>部署与升级</b><div class="d">流水线谁能改？CI 密钥怎么管？</div></div>
+      <div class="card" data-k="1"><b>前端与域名</b><div class="d">托管、DNS、npm 依赖的保护</div></div>
+      <div class="card" data-k="1"><b>社会工程</b><div class="d">假招聘、假承包商的防范</div></div>
+      <div class="card" data-k="2"><b>应急能力</b><div class="d">有暂停开关吗？有预案吗？</div></div>
+    </div>
+    <div class="card warn fs30" data-k="3">合作越深 —— 共同部署、共享金库、提供流动性 —— 对方的运营安全越会<b>传导给交易所</b>。</div>
+    <ol class="say">
+      <li>团队与运营这一维，主要靠问卷。问五类问题。私钥和多签怎么管理，签名人有几个，是否独立，用不用硬件钱包。部署和升级的流水线，谁能改，持续集成的密钥怎么管。</li>
+      <li>前端托管、域名解析和依赖库怎么保护。团队对假招聘、假承包商这类社会工程，有没有防范。</li>
+      <li>还有应急能力，有没有暂停开关，有没有预案。</li>
+      <li>问卷答案很难完全核实。但答不上来，或者没有任何措施，本身就是风险信号。还要注意，合作越深，比如共同部署、共享金库、提供流动性，对方运营上的薄弱，就越会传导给交易所。</li>
+    </ol>
+  </section>
+
+  <!-- 12 交付物 -->
+  <section class="scene" data-title="尽调交付物" data-onstep="marks">
+    <div class="kicker">交付物 · 短小、可执行</div>
+    <h2>一页结论，加上线条件</h2>
+    <div class="steps c4">
+      <div class="card gold" data-k="0"><span class="n">1</span><b>一页结论</b><div class="d">上 / 附条件 / 暂缓 / 否决 + 一句话理由</div></div>
+      <div class="card" data-k="0"><span class="n">2</span><b>评分卡</b><div class="d">四维得分 + 红线检查结果</div></div>
+      <div class="card info" data-k="1"><span class="n">3</span><b>上线条件</b><div class="d">限额、观察区、监控、锁仓、补审计</div></div>
+      <div class="card" data-k="2"><span class="n">4</span><b>证据附录</b><div class="d">地址、权限读数、持仓截图、问卷答案</div></div>
+    </div>
+    <div class="card info fs28" data-k="1">附条件示例：先进观察区 · 单用户单日充值上限 · 监控 owner 与实现地址变更 · 项目方 30 天内补交审计</div>
+    <ol class="say">
+      <li>尽调的交付物短小、可执行。第一是一页结论，上、附条件上、暂缓或者否决，加一句话理由。第二是评分卡，四维得分和红线检查结果。</li>
+      <li>第三是上线条件，只在附条件时需要。举个示例，先进观察区，设单用户单日充值上限，监控 owner 和实现地址的变更，要求项目方30天内补交审计报告。</li>
+      <li>第四是证据附录，包括链上地址、权限读数、持仓截图和问卷答案。证据要带时间，因为链上状态会变。</li>
+    </ol>
+  </section>
+
+  <!-- 13 练一练 -->
+  <section class="scene" data-title="练一练" data-onstep="marks">
+    <div class="kicker">练一练 · 暂停视频想一想</div>
+    <h2>综合分 88，但升级权是一个单签个人地址</h2>
+    <div class="row">
+      <div class="card fs30" data-k="0" style="flex:1">经济模型漂亮、团队公开、两家审计、持仓分散。<br><br>唯独：代理合约的升级权在一个<b class="hl">单签个人地址</b>，没有时间锁。</div>
+      <div class="card sell fs30" data-k="1" style="flex:1"><span class="stamp sell">否决或暂缓</span><br><br>第五条红线命中。<br>其余 88 分都建立在"合约不会被改"的前提上 —— 而这个前提由一把私钥决定。</div>
+    </div>
+    <ol class="say">
+      <li>来练一练。一个项目综合评分88分。经济模型漂亮，团队公开，有两家审计，持仓也分散。唯独代理合约的升级权，在一个单签的个人地址上，没有时间锁。结论是什么？</li>
+      <li>结论是否决，或者暂缓到对方整改。因为第五条红线命中了。为什么一条红线能推翻88分？因为其余的分数，全都建立在合约不会被改这个前提上。而这个前提，由一把私钥决定。升级一次，审计、经济模型、持仓分布，全部可以作废。</li>
+    </ol>
+  </section>
+
+  <!-- 14 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">尽调的结论是<span class="hl">风险能否接受</span>，不是代码是否安全。</li>
+      <li data-step="1"><span class="hl">红线优先</span>于分数；所有检查在部署地址上做。</li>
+      <li data-step="2">评分卡靠<span class="hl">锚点</span>保证一致；附条件就写清限额与监控。</li>
+    </ul>
+    <h2 data-show="3">下一集：A06 运营与密钥安全</h2>
+    <div class="path" data-show="3">
+      <div class="card sell"><div class="n">4</div><b>四类链下根因</b><div class="d">私钥签名、前端供应链、部署运维、社会工程</div></div>
+      <div class="card gold"><div class="n">3</div><b>三种密钥方案</b><div class="d">多签、MPC、HSM 各自没解决什么</div></div>
+      <div class="card info"><div class="n">6</div><b>六起事故</b><div class="d">映射到可检查的评估项</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，尽调的结论是风险能不能接受，不是代码是否安全。</li>
+      <li>第二，红线优先于分数，所有检查都在部署地址上做。</li>
+      <li>第三，评分卡靠锚点保证一致性。附条件上线，就写清限额和监控。手册里的上币评分卡工具，可以直接用来练习。</li>
+      <li>下一集讲代码之外的战场，运营与密钥安全。四类链下根因，三种密钥方案各自没解决什么，再把六起事故映射到评估项上。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line, circle, fmt } = K;
+
+  function flowStep(el, st) {
+    const svg = el.querySelector('#fl'); svg.innerHTML = '';
+    box(svg, 20, 230, 220, 100, ['上币 / 合作', '申请'], { stroke: C.info, fs: 30 });
+    const D = [['① 合约权限', '代码 · 文档', 0], ['② 链上数据', '区块浏览器', 0], ['③ 团队与运营', '问卷 · 公开信息', 1], ['④ 经济模型', '代码 · 文档', 1]];
+    D.forEach(([a, b, k], i) => {
+      const y = 20 + i * 135, op = st >= k ? 1 : .15;
+      box(svg, 380, y, 340, 105, [a, b], { stroke: C.gold, fs: 32, op, bold: true });
+      arrow(svg, 242, 280, 376, y + 52, C.t2, false, 3, op);
+      arrow(svg, 722, y + 52, 880, 280, C.t2, false, 3, op);
+    });
+    const op2 = st >= 2 ? 1 : .15;
+    svg.appendChild(svgEl('polygon', { points: '1020,180 1150,280 1020,380 890,280', fill: st === 2 ? C.curFill : C.panel, stroke: st >= 2 ? C.sell : C.line, 'stroke-width': 4, opacity: op2 }));
+    T(svg, 1020, 280, '有红线？', C.text, 32, 'middle', true, op2);
+    arrow(svg, 1020, 176, 1020, 110, C.sell, false, 4, op2);
+    T(svg, 1050, 145, '是', C.sell, 28, 'start', true, op2);
+    box(svg, 900, 20, 240, 86, '一票否决', { stroke: C.sell, fill: C.badFill, fs: 34, tc: C.sell, bold: true, op: op2 });
+    const op3 = st >= 3 ? 1 : .15;
+    arrow(svg, 1152, 280, 1250, 280, C.buy, false, 4, op3);
+    T(svg, 1200, 255, '否', C.buy, 28, 'middle', true, op3);
+    box(svg, 1255, 220, 370, 120, ['评分卡打分', '→ 风险结论'], { stroke: C.buy, fill: C.goodFill, fs: 34, op: op3, bold: true });
+    if (st >= 3) { rect(svg, 900, 440, 725, 90, { fill: C.curFill, stroke: C.warn, sw: 3 }); T(svg, 1262, 485, '结论有时效：可升级、可增发 → 今天的结论明天可能失效', C.warn, 26, 'middle', true); }
+  }
+
+  function squidStep(el, st) {
+    const svg = el.querySelector('#sq'); svg.innerHTML = '';
+    const ox = 80, oy = 480, W = 860, H = 420;
+    line(svg, ox, oy, ox + W, oy, C.t2, 3); line(svg, ox, oy, ox, oy - H, C.t2, 3);
+    T(svg, ox + W, oy + 32, '时间', C.t2, 24, 'end'); T(svg, ox - 10, oy - H - 20, '价格（示意，对数刻度）', C.t2, 24, 'start');
+    const pts = [];
+    const nUp = 40;
+    for (let i = 0; i <= nUp; i++) pts.push([ox + i * (W - 120) / nUp, oy - 20 - (H - 60) * Math.pow(i / nUp, 1.6)]);
+    let d = 'M ' + pts.map(p => p.map(v => v.toFixed(1)).join(' ')).join(' L ');
+    svg.appendChild(svgEl('path', { d, fill: 'none', stroke: C.buy, 'stroke-width': 5 }));
+    if (st >= 2) {
+      const last = pts[pts.length - 1];
+      svg.appendChild(svgEl('path', { d: `M ${last[0]} ${last[1]} L ${last[0] + 30} ${oy - 8} L ${ox + W} ${oy - 6}`, fill: 'none', stroke: C.sell, 'stroke-width': 5 }));
+      T(svg, last[0] - 10, last[1] - 30, '撤走流动性', C.sell, 28, 'end', true);
+      T(svg, last[0] + 40, oy - 40, '≈ 0', C.sell, 32, 'start', true);
+    }
+    if (st >= 1 && st < 2) T(svg, 400, 200, '只有买盘，没有卖盘', C.gold, 32, 'middle', true);
+    const side = el.querySelector('#sqSide');
+    side.innerHTML = [
+      '<div class="stat"><div class="k">上线几天</div><div class="v up">&lt;1¢ → 2,800+$</div></div>',
+      '<div class="card warn fs30">合约限制卖出<br>持有人<b>只能买</b></div>',
+      '<div class="stat"><div class="k">2021-11-01</div><div class="v down">接近零</div></div><div class="stat"><div class="k">据报道开发者卷走</div><div class="v down">约 338 万$</div></div>',
+      '<div class="card buy fs30">红线 2 · 一次模拟就能发现：<br>分叉环境<b>小额买入 → 尝试卖出</b><br>失败或税率离谱 → 否决</div>'][st];
+  }
+
+  function wtStep(el, st) {
+    const svg = el.querySelector('#wt'); svg.innerHTML = '';
+    const D = [['合约权限', 30, C.sell, '增发 · 暂停 · 升级权限的持有方', 0], ['链上数据', 25, C.info, '部署时长 · 集中度 · 流动性 · 历史', 1], ['团队与运营', 25, C.gold, '身份 · 私钥实践 · 审计 · 赏金', 2], ['经济模型', 20, C.buy, '分配 · 解锁 · 收益来源', 2]];
+    let x = 20;
+    D.forEach(([n, w, c, d, k]) => {
+      const W = w / 100 * 1600, op = st >= k ? 1 : .15;
+      rect(svg, x, 80, W - 10, 130, { fill: c, op: op * .8, rx: 10 });
+      T(svg, x + (W - 10) / 2, 125, n, '#0d0e10', 34, 'middle', true, op);
+      T(svg, x + (W - 10) / 2, 175, w + '%', '#0d0e10', 40, 'middle', true, op);
+      T(svg, x + 6, 250, d, C.t2, 24, 'start', false, op);
+      x += W;
+    });
+    if (st >= 3) {
+      rect(svg, 20, 330, 1600, 170, { fill: C.curFill, stroke: C.gold, sw: 3 });
+      T(svg, 820, 385, '权重是示例：按风险偏好和上币层级设定，然后固定下来', C.gold, 32, 'middle', true);
+      T(svg, 820, 445, '评分卡的价值在于一致性，不在于绝对数值', C.text, 30);
+    }
+  }
+
+  function ladStep(el, st) {
+    const map = [[4], [3, 2], [1, 0], []][st];
+    el.querySelectorAll('.ladder .r').forEach(r => { const s = +r.dataset.s; r.classList.toggle('cur', map.includes(s)); r.style.opacity = (st >= 3 || [[4], [4, 3, 2], [4, 3, 2, 1, 0]][Math.min(st, 2)].includes(s)) ? 1 : .15; });
+  }
+
+  function calcStep(el, st) {
+    const R = [['合约权限', 30, '2 + 3 = 5 / 8', 62.5, 18.75], ['链上数据', 25, '1 + 2 + 2 = 5 / 12', 41.7, 10.42], ['团队与运营', 25, '3 + 2 + 1 = 6 / 12', 50, 12.5], ['经济模型', 20, '2 + 3 = 5 / 8', 62.5, 12.5]];
+    const n = [1, 2, 4, 4, 4][st];
+    el.querySelector('#calc tbody').innerHTML = R.slice(0, n).map((r, i) => `<tr class="${(st === 0 && i === 0) || (st === 1 && i === 1) || (st === 2 && i >= 2) ? 'cur' : ''}"><td>${r[0]}</td><td class="num">${r[1]}%</td><td class="mono">${r[2]}</td><td class="num">${r[3]}%</td><td class="num">${r[4].toFixed(2)}</td></tr>`).join('');
+    const tot = R.slice(0, n).reduce((a, r) => a + r[4], 0);
+    const side = el.querySelector('#calcSide');
+    let h = `<div class="stat"><div class="k">综合分（累计）</div><div class="v ${st >= 3 ? 'hl' : ''}">${tot.toFixed(1)}</div></div>`;
+    if (st >= 3) h += '<div class="card fs26">≥ 75 可上线 · 55–75 附条件 · &lt; 55 暂缓</div><div><span class="stamp warn">暂缓</span></div>';
+    if (st >= 4) h += '<div class="card sell fs28">命中任一红线 → 即使 90 分也<b>否决</b></div>';
+    side.innerHTML = h;
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

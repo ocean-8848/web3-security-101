@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EP11 跨链桥安全</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ways { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 26px; }
+  .ways .card { font-size: 28px; padding: 16px 22px; display: flex; flex-direction: column; gap: 6px; }
+  .ways .card .d { color: var(--text-2); font-size: 24px; }
+  .chk { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; }
+  .chk .card { font-size: 27px; padding: 14px 22px; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="EP11" data-title="跨链桥安全：两条链之间的那条缝">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 主线 · EP11</div>
+    <h1>B 链看不到 A 链，<br>只能<span class="hl">相信一种证明</span></h1>
+    <div class="hero">
+      <div class="card sell" data-k="1" data-nocur><div class="k">2021 · Poly Network</div><div class="big">约 6.1 亿$</div><div>用选择器碰撞换掉验证者公钥</div></div>
+      <div class="card warn" data-k="2" data-nocur><div class="k">2022 · Ronin</div><div class="big">约 6.2 亿$</div><div>验证者私钥</div></div>
+      <div class="card info" data-k="3" data-nocur><div class="k">2022 · Wormhole</div><div class="big">约 3.2 亿$</div><div>没校验传入的系统账户</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到主线第11集，跨链桥安全，损失最大的一类事故。一句话理解，跨链桥让 B 链上的合约相信，A 链上发生了某件事。B 链看不到 A 链，所以它只能相信某种证明。证明机制被骗，桥上的全部资产就被骗走。</li>
+      <li>看三起事故，以下据公开报道。2021年，Poly Network 约6.1亿美元，用一个选择器碰撞，换掉了验证者的公钥，后来攻击者归还了。</li>
+      <li>2022年，Ronin 约6.2亿美元，验证者私钥被拿到。</li>
+      <li>同年，Wormhole 约3.2亿美元，Solana 一侧没有校验传入的系统账户是否真实。跨链桥往往是整个系统里最大的一笔钱，所以是攻击者的首选目标。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="两座城市的银行" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>A 城收下金条开提货单，B 城凭单兑金券</h2>
+    <div class="ways">
+      <div class="card" data-k="0"><b>看 5 个公证人的签章</b><div class="d">多签 / MPC</div></div>
+      <div class="card" data-k="0"><b>派人常驻 A 城核对账本</b><div class="d">轻客户端</div></div>
+      <div class="card" data-k="1"><b>先兑付，留 7 天让人举报</b><div class="d">乐观证明</div></div>
+      <div class="card" data-k="1"><b>用数学不看账本也能确认</b><div class="d">零知识证明</div></div>
+    </div>
+    <div class="card sell fs30" data-k="2">公证人的印章被偷，或核对方法有漏洞 → B 城就会兑出不存在的金子。两城金库相加，往往是全系统<b>最大的一笔钱</b>。</div>
+    <ol class="say">
+      <li>打个比方。两座城市之间没有电话。A 城的银行收下你的金条，给你开一张提货单，你拿到 B 城银行兑换等值金券。B 城银行怎么知道提货单是真的？有四种办法。看5个公证人的签章，这是多签。自己派人常驻 A 城核对账本，这是轻客户端。</li>
+      <li>或者，先兑付，但留7天让任何人举报造假，这是乐观证明。还有，用一种数学方法，不看账本也能确认账本内容，这是零知识证明。</li>
+      <li>公证人的印章被偷，或者核对方法有漏洞，B 城银行就会兑出不存在的金子。而两座城的金库加起来，往往是整个系统里最大的一笔钱。这就是跨链桥。</li>
+    </ol>
+  </section>
+
+  <!-- 3 基本流程 -->
+  <section class="scene" data-title="锁定-铸造的消息流" data-onstep="flowStep">
+    <div class="kicker">基本流程 · 验证发生在哪里</div>
+    <h2 id="flH">第 5 步的验证，是唯一的信任边界</h2>
+    <svg id="flow" width="1640" height="520" viewBox="0 0 1640 520"></svg>
+    <ol class="say">
+      <li>看锁定铸造桥的基本流程。用户在 A 链存入100 USDT，被锁定。A 链的桥合约发出一个存款事件。</li>
+      <li>中继者观察 A 链，等待最终性，然后把消息和证明提交到 B 链的桥合约。这个证明，可能是签名、Merkle 证明或者零知识证明。</li>
+      <li>B 链的桥合约验证证明，并检查这个消息的序号没有被使用过。</li>
+      <li>验证通过，B 链铸造100个映射 USDT 给用户。关键在第5步，这是唯一的信任边界。B 链只能通过这一步的验证来判断真伪。它要同时检查三件事，证明有效，消息没被处理过，消息来自正确的源链和源合约。反向流程，销毁再解锁，有同样的风险，金额往往更大。</li>
+    </ol>
+  </section>
+
+  <!-- 4 四种验证 -->
+  <section class="scene" data-title="四种验证方式" data-onstep="rowStep">
+    <div class="kicker">验证方式 · 信任假设</div>
+    <h2>你到底在信任谁</h2>
+    <table class="t sm">
+      <thead><tr><th>验证方式</th><th>信任谁</th><th>典型风险</th><th>例子</th></tr></thead>
+      <tbody>
+        <tr><td>外部多签 / MPC</td><td>M-of-N 个验证者</td><td>私钥泄露、共谋、阈值过低</td><td>Ronin</td></tr>
+        <tr><td>轻客户端 / 原生证明</td><td>源链共识 + 验证代码</td><td>证明验证代码有漏洞</td><td>Token Hub</td></tr>
+        <tr><td>乐观证明</td><td>至少一个诚实挑战者</td><td>挑战期无人监控；挑战者被审查</td><td>乐观 Rollup 原生桥</td></tr>
+        <tr><td>零知识证明</td><td>数学 + 实现 + 可信设置</td><td>电路或验证器实现错误；路由被替换</td><td>部分 ZK Rollup 原生桥</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>四种验证方式，本质是你在信任谁。外部多签或 MPC，信任 M 选 N 个验证者，风险是私钥泄露、共谋或者阈值过低，例子是 Ronin。轻客户端或原生证明，信任源链的共识加上验证代码，风险是验证代码有漏洞，例子是 Token Hub。</li>
+      <li>乐观证明，信任至少有一个诚实的挑战者，风险是挑战期内无人监控，或者挑战者被审查。零知识证明，信任数学、实现和可信设置，风险是电路或验证器实现错误，或者验证器路由被替换。</li>
+      <li>注意，二层网络的原生桥，也是一种跨链桥。它的安全性，取决于证明系统和升级权限两者。据 L2BEAT，Mantle 用有效性证明，但输出预言机可由工程多签切换到乐观模式，桥合约可由安全多签无延迟升级。链专题 C03 会详细讲。</li>
+    </ol>
+  </section>
+
+  <!-- 5 四类根因 -->
+  <section class="scene" data-title="四类根因" data-onstep="rootStep">
+    <div class="kicker">根因分类</div>
+    <h2>私钥、验证逻辑、初始化、存款伪造</h2>
+    <svg id="root" width="1640" height="520" viewBox="0 0 1640 520"></svg>
+    <ol class="say">
+      <li>跨链桥事故可以归入四类根因。第一类，私钥与运营。Ronin 就是，9个验证者里5个签名放行，攻击者控制了5把私钥，其中4把属于同一机构，1把来自本应撤销的授权。阈值的意义，取决于签名人的独立性。4把钥匙放在同一个地方，等于1把。</li>
+      <li>第二类，验证逻辑。Token Hub，攻击者没偷任何私钥，而是利用了证明验证代码的缺陷，伪造消息铸造了200万 BNB。还有 Wormhole，Solana 一侧没有校验传入的系统账户是否真实。</li>
+      <li>第三类，初始化。Nomad，升级时把可信根设成零，任何消息都被视为已证明，第9集讲过。第四类，存款伪造。Qubit，对零地址调用转账返回成功，桥记录了不存在的存款，第6集讲过。</li>
+      <li>特别看 Poly Network，它属于验证逻辑类，手法很典型。跨链管理合约允许消息调用任意目标函数。攻击者构造一个函数名，让它的4字节选择器，和替换验证者公钥的那个函数相同，于是通过跨链消息，把验证者公钥换成了自己的，然后签发任意提款。所以，跨链消息执行器绝不能调用持有特权的合约，目标地址和函数选择器都要白名单化。</li>
+    </ol>
+  </section>
+
+  <!-- 6 CEX 充值即桥 -->
+  <section class="scene" data-title="交易所充值也是一座桥" data-onstep="rowStep">
+    <div class="kicker">同类风险 · 对应 CEX 充值</div>
+    <h2>相信链上发生了转账，然后在账本上记账</h2>
+    <table class="t sm">
+      <thead><tr><th>跨链桥风险</th><th>CEX 充值对应的风险</th><th>防御</th></tr></thead>
+      <tbody>
+        <tr><td>伪造存款事件</td><td>假币合约发出同名 Transfer 事件</td><td>校验代币合约地址，不是名称</td></tr>
+        <tr><td>消息未检查执行状态</td><td>交易失败却被误读为成功（TRON 能量不足 REVERT）</td><td>先检查回执状态为成功</td></tr>
+        <tr><td>重放</td><td>同一笔交易重复入账</td><td>(txHash, logIndex) 做幂等键</td></tr>
+        <tr><td>源链重组</td><td>入账后区块被回滚</td><td>等足够确认数或最终性</td></tr>
+        <tr><td>收税/变基代币</td><td>入账金额 ≠ 实收</td><td>以余额变化为准</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>这里插一个重要视角。交易所的充值系统，做的事情和跨链桥一样，相信链上发生了一笔转账，然后在内部账本上记账。所以它有同样的风险。伪造存款事件，对应假币合约发出同名的转账事件，防御是校验代币合约地址，不是名称。</li>
+      <li>消息未检查执行状态，对应交易执行失败却被误读为成功。比如 TRON 上能量不足导致交易回滚，但只看交易存在就入账，防御是先检查回执状态为成功。重放，对应同一笔交易重复入账，用交易哈希加日志序号做幂等键。</li>
+      <li>源链重组，对应入账后区块被回滚，要等足够确认数。收税变基代币，对应入账金额不等于实收，以余额变化为准。特别注意 TRON，失败的转账交易仍然会上链，还有交易哈希。只看交易存在就入账，就会产生假充值。这在评估篇第3集也讲过。</li>
+    </ol>
+  </section>
+
+  <!-- 7 防御清单 -->
+  <section class="scene" data-title="防御清单" data-onstep="marks">
+    <div class="kicker">防御</div>
+    <h2>六条</h2>
+    <div class="chk">
+      <div class="card" data-k="0">① 验证者：阈值高于 2/3；组织、地域、设施独立；定期审计</div>
+      <div class="card" data-k="0">② 消息格式：含源链、源合约、目标链、目标合约、nonce，逐项校验</div>
+      <div class="card" data-k="1">③ 消息执行：目标地址和函数白名单；不允许调用特权合约</div>
+      <div class="card" data-k="1">④ 限额：单笔、单位时间上限；超限进延迟队列</div>
+      <div class="card" data-k="2">⑤ 监控：两侧总供应量对账（锁定 ≥ 铸造）；异常自动暂停</div>
+      <div class="card gold" data-k="2">⑥ 升级：桥合约升级必须有时间锁；初始化参数必须审计</div>
+    </div>
+    <ol class="say">
+      <li>防御清单六条。第一，验证者集合，阈值高于三分之二，签名人在组织、地域和基础设施上独立，定期审计签名权清单。第二，消息格式包含源链 ID、源合约、目标链 ID、目标合约和序号，目标侧逐项校验。</li>
+      <li>第三，消息执行，目标地址和函数白名单，不允许调用特权合约，这是 Poly 的教训。第四，限额，单笔和单位时间的提款上限，超过上限进入延迟队列。</li>
+      <li>第五，监控，两侧总供应量对账，锁定量要大于等于铸造量，异常时自动暂停。第六，升级，桥合约升级必须有时间锁，初始化参数必须审计，这是 Nomad 的教训。</li>
+    </ol>
+  </section>
+
+  <!-- 8 审计检查点 -->
+  <section class="scene" data-title="审计检查点" data-onstep="marks">
+    <div class="kicker">审计清单</div>
+    <h2>七个检查点</h2>
+    <div class="chk">
+      <div class="card" data-k="0">① 消息哈希含源链、源合约、目标链、目标合约、nonce</div>
+      <div class="card" data-k="0">② 已处理消息有防重放标记</div>
+      <div class="card" data-k="1">③ 证明验证代码有独立审计和测试向量</div>
+      <div class="card" data-k="1">④ 零值、空数组、未初始化根不会被当作有效证明</div>
+      <div class="card" data-k="2">⑤ 原生币和 ERC-20 走不同路径，彼此不能混用</div>
+      <div class="card" data-k="2">⑥ 有速率限制和全局供应量对账</div>
+      <div class="card gold" data-k="2">⑦ 签名人清单、阈值、私钥存放方式已披露</div>
+    </div>
+    <ol class="say">
+      <li>审计检查点七个。第一，消息哈希包含源链、源合约、目标链、目标合约和序号。第二，已处理的消息有防重放标记。</li>
+      <li>第三，证明验证代码，比如 Merkle、签名、零知识验证器，有独立的审计和测试向量。第四，零值、空数组、未初始化的根，不会被当作有效证明，这是 Nomad。</li>
+      <li>第五，原生币和 ERC-20 走不同的路径，彼此不能混用，这是 Qubit。第六，有速率限制和全局供应量对账。第七，签名人清单、阈值、私钥存放方式已经披露。</li>
+    </ol>
+  </section>
+
+  <!-- 9 练一练 -->
+  <section class="scene" data-title="练一练" data-onstep="marks">
+    <div class="kicker">练一练 · 暂停视频想一想</div>
+    <h2>7 个验证者，阈值 4，其中 3 个由同一家云托管</h2>
+    <div class="grid2">
+      <div class="card" data-k="0"><b>实际的安全阈值是多少？</b></div>
+      <div class="card sell" data-k="1"><b>参考</b><div class="fs28">攻破那家云 = 一次拿到 <b>3 把</b>。还差 1 把 → 攻击者只需再攻破 <b>1 个</b>独立验证者，就凑够 4。<br>名义阈值 4，<b>实际阈值 ≈ 2</b>（1 次云 + 1 个人）。<br><b class="up">结论</b>：阈值要和签名人的<b>独立性</b>匹配，这正是 Ronin 的教训。</div></div>
+    </div>
+    <ol class="say">
+      <li>来练一练。一个桥有7个验证者，阈值4。这7个里有3个由同一家云服务商托管。实际的安全阈值是多少？</li>
+      <li>参考答案。攻破那家云服务商，就一次拿到3把钥匙。还差1把，攻击者只需要再攻破1个独立的验证者，就凑够4个。所以名义阈值是4，实际阈值大约是2，一次云加一个人。结论是，阈值要和签名人的独立性匹配，这正是 Ronin 的教训。</li>
+    </ol>
+  </section>
+
+  <!-- 10 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">桥只能相信证明；<span class="hl">验证那一步</span>要查证明有效、未重放、来源正确。</li>
+      <li data-step="1">四类根因：私钥、验证逻辑、初始化、存款伪造；消息执行器<span class="hl">不碰特权合约</span>。</li>
+      <li data-step="2">阈值要配<span class="hl">签名人独立性</span>；交易所充值就是一座桥，查地址、查回执、查幂等。</li>
+    </ul>
+    <h2 data-show="3">下一集：EP12 审计、测试与开发流程</h2>
+    <div class="path" data-show="3">
+      <div class="card sell"><div class="n">8</div><b>八个安全关口</b><div class="d">从设计到上线</div></div>
+      <div class="card gold"><div class="n">∀</div><b>模糊与不变量测试</b><div class="d">工具替你找序列</div></div>
+      <div class="card info"><div class="n">查</div><b>一页速查表</b><div class="d">把全系列浓缩成清单</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，桥只能相信证明。验证那一步，要查证明有效、未重放、来源正确。</li>
+      <li>第二，四类根因是私钥、验证逻辑、初始化、存款伪造。消息执行器绝不碰特权合约。</li>
+      <li>第三，阈值要配签名人的独立性。交易所的充值就是一座桥，要查地址、查回执、查幂等。</li>
+      <li>下一集讲审计、测试与开发流程，把前面所有知识变成一套可执行的流程。八个安全关口，模糊测试和不变量测试，以及一页速查表。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line } = K;
+
+  function flowStep(el, st) {
+    const svg = el.querySelector('#flow'); svg.innerHTML = '';
+    box(svg, 20, 200, 230, 100, 'A 链：桥合约', { stroke: C.info, fs: 28 });
+    box(svg, 300, 200, 230, 100, '中继者', { stroke: C.warn, fs: 28 });
+    box(svg, 580, 200, 260, 100, 'B 链：桥合约', { stroke: st >= 2 ? C.gold : C.info, fs: 28, sw: st >= 2 ? 5 : 3 });
+    box(svg, 900, 200, 230, 100, 'B 链：映射代币', { stroke: C.buy, fs: 28 });
+    const M = [['① 存入 100，锁定', 20, 170, C.t2, 0], ['② Deposit 事件', 20, 330, C.t2, 0], ['③ 观察 + 等最终性', 300, 330, C.warn, 1], ['④ 提交消息 + 证明', 300, 170, C.gold, 1], ['⑤ 验证 + 查 nonce', 580, 330, C.sell, 2], ['⑥ 铸造 100', 840, 170, C.buy, 3]];
+    M.forEach(([t, x, y, c, k]) => { if (st >= k) T(svg, x, y, t, c, 24, 'start', k === 2); });
+    arrow(svg, 252, 250, 298, 250, C.t2, false, 3);
+    if (st >= 1) arrow(svg, 532, 250, 578, 250, C.gold, false, 4);
+    if (st >= 3) arrow(svg, 842, 250, 898, 250, C.buy, false, 3);
+    if (st >= 2) {
+      rect(svg, 1180, 145, 440, 215, { fill: C.curFill, stroke: C.gold, sw: 3 });
+      T(svg, 1400, 188, '第 5 步要同时检查', C.gold, 28, 'middle', true);
+      ['证明有效', '消息未被处理过（防重放）', '来自正确的源链 / 源合约'].forEach((s, i) => T(svg, 1210, 240 + i * 42, '· ' + s, C.text, 25, 'start'));
+    }
+    if (st >= 3) T(svg, 820, 440, '反向流程（销毁 → 解锁）有同样的风险，金额往往更大', C.t2, 26, 'middle', true);
+    el.querySelector('#flH').textContent = st >= 2 ? 'B 链只能通过第 5 步判断真伪' : '第 5 步的验证，是唯一的信任边界';
+  }
+
+  function rootStep(el, st) {
+    const svg = el.querySelector('#root'); svg.innerHTML = '';
+    const Q = [['① 私钥与运营', ['Ronin：9 选 5，4 把同机构', '+ 1 把未撤销授权'], C.sell, 0, 20, 20],
+      ['② 验证逻辑', ['Token Hub：证明验证缺陷', 'Wormhole：没校验系统账户'], C.warn, 1, 840, 20],
+      ['③ 初始化', ['Nomad：可信根设为 0', '任何消息都"已证明"'], C.info, 2, 20, 245],
+      ['④ 存款伪造', ['Qubit：对 0x0 转账返回成功', '记录不存在的存款'], C.gold, 2, 840, 245]];
+    Q.forEach(([h, d, c, k, x, y]) => {
+      const op = st >= k ? 1 : .12;
+      rect(svg, x, y, 780, 200, { fill: C.panel, stroke: c, sw: 3, op });
+      T(svg, x + 30, y + 46, h, c, 34, 'start', true, op);
+      d.forEach((s, i) => T(svg, x + 30, y + 110 + i * 48, '· ' + s, C.text, 27, 'start', false, op));
+    });
+    if (st >= 3) {
+      rect(svg, 270, 466, 1100, 50, { fill: C.badFill, stroke: C.sell, sw: 2 });
+      T(svg, 820, 491, 'Poly：选择器碰撞 → 换掉验证者公钥 → 消息执行器绝不碰特权合约', C.sell, 26, 'middle', true);
+    }
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

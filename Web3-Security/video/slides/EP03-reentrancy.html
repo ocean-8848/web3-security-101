@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EP03 重入攻击</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .ana .card { font-size: 29px; display: flex; flex-direction: column; gap: 10px; min-height: 220px; }
+  .ana .card .a { color: var(--text-2); font-size: 26px; }
+  .chk { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; }
+  .chk .card { font-size: 27px; padding: 14px 22px; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="EP03" data-title="重入攻击：在你记账之前再取一次钱">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 主线 · EP03</div>
+    <h1>先给钱，后记账：<br>最古老、也最常<span class="hl">复发</span>的漏洞</h1>
+    <div class="hero">
+      <div class="card sell" data-k="1" data-nocur><div class="k">2016 · The DAO</div><div class="big">约 6,000 万$</div><div>以太坊因此硬分叉</div></div>
+      <div class="card warn" data-k="2" data-nocur><div class="k">2022 · Fei Rari</div><div class="big">约 8,000 万$</div><div>跨函数重入</div></div>
+      <div class="card info" data-k="3" data-nocur><div class="k">2023 · Curve / Vyper</div><div class="big">约 7,000 万$</div><div>编译器生成的锁是错的</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到主线第3集，重入攻击。一句话理解，合约在更新自己的账本之前，把控制权交给了外部地址。外部地址趁账本还是旧的，再次调用合约。</li>
+      <li>看三起事故，以下据公开报道。2016年，The DAO 被重入，约6000万美元。以太坊社区为此做了硬分叉，反对者继续维护原链，就是今天的以太坊经典。</li>
+      <li>六年后的2022年，借贷协议 Fei Rari 被跨函数重入，约8000万美元。</li>
+      <li>2023年，Curve 的几个池子被重入，约7000万美元。源码里写了重入锁，但编译器生成的锁是错的。重入在以太坊早期就被发现了，可至今仍在复发。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="银行柜员先给钱后改账" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>柜员先把现金递出去，然后才改账本</h2>
+    <div class="ana">
+      <div class="card" data-k="0"><b>你取 100 元</b><div class="a">柜员先递现金</div></div>
+      <div class="card sell" data-k="1"><b>接钱的瞬间</b><div class="a">同伴说："他要再取 100"</div><div class="hl">柜员查账：余额还是 100</div></div>
+      <div class="card sell" data-k="2"><b>一直重复</b><div class="a">直到金库空了</div><div class="hl">账本最后才清零</div></div>
+    </div>
+    <div class="card warn fs30" data-k="3">比喻不准的地方：现实中是两个人并行。EVM 是单线程的 —— 重入不是"并发"，而是<b>嵌套</b>：第二次取款完整地发生在第一次取款的中间。</div>
+    <ol class="say">
+      <li>打个比方。你去银行取100元，柜员先把现金递给你，然后才去改账本。</li>
+      <li>你接过现金的瞬间，同伴在旁边说，他要再取100元。柜员查账本，余额还是100，于是又给了一次。</li>
+      <li>只要柜员一直先给钱、后改账，你们就能一直取，直到金库空了。</li>
+      <li>比喻不准的地方在于，现实中是两个人并行办理。EVM 是单线程的，重入不是并发，而是嵌套，第二次取款完整地发生在第一次取款的中间。</li>
+    </ol>
+  </section>
+
+  <!-- 3 前提与入口 -->
+  <section class="scene" data-title="两个前提，六类入口" data-onstep="rowStep">
+    <div class="kicker">威胁模型 · 攻击者控制了什么</div>
+    <h2>函数中途交出控制权 + 状态还没更新</h2>
+    <table class="t sm">
+      <thead><tr><th>会交出控制权的操作</th><th>为什么</th></tr></thead>
+      <tbody>
+        <tr><td>向地址 call 转原生币</td><td>接收方是合约时，执行它的 receive / fallback</td></tr>
+        <tr><td>调用代币的 transfer</td><td>代币合约由攻击者部署时，代码任意</td></tr>
+        <tr><td>ERC-777 转账</td><td>触发接收方的钩子</td></tr>
+        <tr><td>NFT 的 safeTransferFrom、safeMint</td><td>触发接收方的 onERC721Received</td></tr>
+        <tr><td>闪电贷回调</td><td>设计上就是把控制权交给借款人</td></tr>
+        <tr><td>调用用户提供的任意地址</td><td>路由器、钩子、预言机</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>重入只需要两个前提。第一，合约在函数中途发起外部调用，被调用方受攻击者控制。第二，外部调用发生时，合约的状态还没有更新到最终值。哪些操作会交出控制权？最常见的是向一个地址转原生币，接收方如果是合约，就会执行它的接收函数。</li>
+      <li>调用代币的转账函数。如果代币合约是攻击者部署的，里面的代码可以是任何东西。ERC-777 代币转账时，会触发接收方的钩子函数。</li>
+      <li>NFT 的安全转账和安全铸造，会回调接收方。闪电贷回调，设计上就是把控制权交给借款人。最后，任何调用用户提供的地址的操作，比如路由器、钩子和预言机。审计时第一件事，就是把这六类位置全部列出来。</li>
+    </ol>
+  </section>
+
+  <!-- 4 单函数重入 -->
+  <section class="scene" data-title="单函数重入" data-onstep="stackStep">
+    <div class="kicker">漏洞机制 · 数字为示例</div>
+    <h2 id="stH">每一层都读到了旧余额</h2>
+    <div class="row">
+      <div class="col" style="flex:0.95">
+        <div class="src sm"><span class="ln c">// ❌ 先转账，后记账</span><span class="ln"><span class="kw">function</span> <span class="fn">withdraw</span>() <span class="kw">external</span> {</span><span class="ln" data-mark="1:good">  uint amt = balances[msg.sender];</span><span class="ln">  require(amt &gt; 0);</span><span class="ln" data-mark="1:bad">  msg.sender.call{value: amt}("");  <span class="c">// ① 交出控制权</span></span><span class="ln" data-mark="3:bad">  balances[msg.sender] = 0;         <span class="c">// ② 太晚了</span></span><span class="ln">}</span></div>
+        <div class="card fs28" id="stNote"></div>
+      </div>
+      <svg id="stk" width="700" height="560" viewBox="0 0 700 560"></svg>
+    </div>
+    <ol class="say">
+      <li>先看最基本的单函数重入。这个提款函数，先读出余额，检查大于零，然后转账，最后才把余额清零。示例里，银行合约有10个 ETH，攻击者的余额记录是1个。</li>
+      <li>攻击者调用提款。第一层读到余额1，转出1个 ETH。转账触发了攻击者合约的接收函数，控制权交了出去。</li>
+      <li>在接收函数里，攻击者再次调用提款。第二层读到的余额，还是1，因为清零那一行还没执行。于是又转出1个。如此反复，每一层都读到旧余额。</li>
+      <li>一直到第10层，银行余额耗尽，递归停止。然后各层依次返回，执行清零。可是钱已经全部转走了。存了1个，取走10个。</li>
+    </ol>
+  </section>
+
+  <!-- 5 CEI -->
+  <section class="scene" data-title="修复：CEI 顺序" data-onstep="ceiStep">
+    <div class="kicker">防御 · 首选</div>
+    <h2>检查 → 生效 → 交互</h2>
+    <div class="row">
+      <div class="col" style="flex:1">
+        <div class="src sm"><span class="ln c">// ✅ CEI</span><span class="ln"><span class="kw">function</span> <span class="fn">withdraw</span>() <span class="kw">external</span> {</span><span class="ln" data-mark="0:good">  uint amt = balances[msg.sender];   <span class="c">// Checks</span></span><span class="ln" data-mark="0:good">  require(amt &gt; 0);</span><span class="ln" data-mark="1:good">  balances[msg.sender] = 0;          <span class="c">// Effects</span></span><span class="ln" data-mark="2:good">  msg.sender.call{value: amt}("");   <span class="c">// Interactions</span></span><span class="ln">  require(ok);</span><span class="ln">}</span></div>
+      </div>
+      <div class="col" style="flex:0.9" id="ceiSide"></div>
+    </div>
+    <ol class="say">
+      <li>修复方法首选 CEI，就是检查、生效、交互三个单词的首字母。先做所有检查，读余额，确认大于零。</li>
+      <li>然后修改状态，把余额清零。</li>
+      <li>最后才做外部交互，转账。</li>
+      <li>同样的攻击再来一次。第一层清零后转账，攻击者在回调里再次调用提款。第二层读到的余额是零，检查失败，整个调用回滚。攻击直接失败，而且不需要任何额外的开销。</li>
+    </ol>
+  </section>
+
+  <!-- 6 跨函数重入 -->
+  <section class="scene" data-title="跨函数重入" data-onstep="xfnStep">
+    <div class="kicker">漏洞机制 · 数字为示例</div>
+    <h2>不回到 withdraw，而是进入另一个函数</h2>
+    <svg id="xfn" width="1640" height="560" viewBox="0 0 1640 560"></svg>
+    <ol class="say">
+      <li>只给提款函数加锁，够不够？看跨函数重入。合约里还有一个内部转账函数，没有加锁，和提款函数共享同一个余额表。</li>
+      <li>攻击者余额1个 ETH，调用提款。转账触发回调，此时余额记录还是1。</li>
+      <li>在回调里，攻击者不再调用提款，而是调用内部转账，把这1个 ETH 的余额，转给自己的同伙。转账函数检查余额是1，通过。</li>
+      <li>回调结束，提款函数继续执行，把攻击者的余额清零。结果是，1个 ETH 被提走了，同时同伙的账上又多了1个。存了1个，拿走2个。</li>
+      <li>所以，所有读写同一状态的函数，要么都加同一把锁，要么都遵循 CEI。据公开复盘，Fei Rari 就是这样，借款函数先发送 ETH 后记账，攻击者在回调里调用了一个没有被锁覆盖的退出市场函数，取回了全部抵押品。</li>
+    </ol>
+  </section>
+
+  <!-- 7 跨合约 + 只读 -->
+  <section class="scene" data-title="跨合约重入与只读重入" data-onstep="roStep">
+    <div class="kicker">漏洞机制</div>
+    <h2>锁挡不住的两种重入</h2>
+    <svg id="ro" width="1640" height="560" viewBox="0 0 1640 560"></svg>
+    <ol class="say">
+      <li>还有两种重入，普通的锁挡不住。第一种是跨合约重入。协议由多个合约组成，比如金库合约和份额代币合约，它们共享状态。合约 A 的锁，挡不住对合约 B 的调用。B 在此刻读到的，是 A 尚未更新的状态。</li>
+      <li>第二种是只读重入。攻击者在回调里不修改目标合约，而是让第三方协议去读目标合约的一个只读函数。看这张图。攻击者从一个 AMM 池子移除流动性。池子先转出代币，后更新总量。</li>
+      <li>在转出代币时，池子回调攻击者。此刻储备已经减少，总量还没减少，池子报出的价格是扭曲的。</li>
+      <li>攻击者在回调里调用一个借贷协议。借贷协议读取池子的价格函数，拿到扭曲的价格，按错误的价格放贷或清算。</li>
+      <li>池子自己的状态最终是对的，出错的是在中间时刻读数据的第三方。池子的只读函数通常没有加锁，所以挡不住。防御方在第三方，读取外部价格前，检查对方的重入锁状态，或者改用不受单笔交易影响的价格源。</li>
+    </ol>
+  </section>
+
+  <!-- 8 方案对比 -->
+  <section class="scene" data-title="四种防御方案" data-onstep="rowStep">
+    <div class="kicker">防御 · 对比</div>
+    <h2>CEI 是首选，锁是第二道防线</h2>
+    <table class="t sm">
+      <thead><tr><th>方案</th><th>优点</th><th>局限</th></tr></thead>
+      <tbody>
+        <tr><td>CEI</td><td>零开销，从根本上消除中间状态</td><td>复杂函数难以把交互都放最后</td></tr>
+        <tr><td>nonReentrant 存储锁</td><td>简单，覆盖整个函数</td><td>只保护加了锁的；不防只读；跨合约要共享锁</td></tr>
+        <tr><td>瞬态存储锁</td><td>gas 更低</td><td>目标链必须支持 EIP-1153</td></tr>
+        <tr><td>拉取式支付</td><td>合约只记账，用户自己来取</td><td>体验多一步</td></tr>
+      </tbody>
+    </table>
+    <div class="card info fs28" data-k="2">纵深防御：CEI 默认 · 共享状态的入口共用一把锁 · 不让 view 暴露中间态 · 不变量测试"余额 ≥ 用户余额之和"</div>
+    <ol class="say">
+      <li>四种防御方案对比一下。CEI 零开销，从根本上消除了中间状态，局限是复杂函数里，很难把所有交互都放在最后。重入锁简单，覆盖整个函数。但它只保护加了锁的函数，不防只读重入，跨合约时要共享同一把锁。</li>
+      <li>瞬态存储锁更省 gas，但目标链必须支持对应的操作，部署前要确认。拉取式支付，是合约只记账，由用户自己来取，代价是体验多一步。</li>
+      <li>实践中用纵深防御。把 CEI 当默认写法，所有修改共享状态的入口共用一把锁，不让只读函数暴露中间状态，再用不变量测试验证，合约余额在任何调用序列后都不小于用户余额之和。</li>
+    </ol>
+  </section>
+
+  <!-- 9 编译器案例 -->
+  <section class="scene" data-title="源码正确不等于字节码正确" data-onstep="marks">
+    <div class="kicker">真实案例 · 2023-07 · 据公开复盘</div>
+    <h2>源码写了锁，编译器生成的锁是错的</h2>
+    <div class="vs">
+      <div class="card good" data-k="0"><h3>源码</h3><div class="fs28">每个函数都标了 <code>@nonreentrant</code><br>审计读源码：看起来没问题</div></div>
+      <div class="card bad" data-k="1"><h3>字节码</h3><div class="fs28">Vyper 0.2.15 / 0.2.16 / 0.3.0<br>不同函数用了<b>不同的锁槽</b><br>→ 跨函数重入照样发生</div></div>
+    </div>
+    <div class="card warn fs30" data-k="2">教训：审计范围要包括<b>编译器版本</b>；关键协议要做<b>字节码层面</b>的测试。使用原生 ETH 的池子受影响，损失约 7,000 万$。</div>
+    <ol class="say">
+      <li>来看开场提到的 Curve 事故，以下据公开复盘。合约用 Vyper 语言写的，每个函数都标了重入锁。读源码的审计，看不出任何问题。</li>
+      <li>但 Vyper 的0.2.15、0.2.16和0.3.0三个版本，生成锁的代码有错，不同的函数用了不同的锁槽位。也就是说，每个函数有自己的锁，彼此不互斥，跨函数重入照样发生。</li>
+      <li>使用原生 ETH 的几个池子受到影响，损失约7000万美元。教训是，源码正确不等于字节码正确。审计范围要包括编译器版本，关键协议要做字节码层面的测试。</li>
+    </ol>
+  </section>
+
+  <!-- 10 回调入口扩展 -->
+  <section class="scene" data-title="允许任意代币 = 允许任意回调" data-onstep="marks">
+    <div class="kicker">扩展案例 · 据公开复盘</div>
+    <h2>上架流程本身就是安全边界</h2>
+    <div class="grid3">
+      <div class="card warn" data-k="0"><h3>BNB Chain 分叉项目</h3><div class="fs27 fs28">原协议只收白名单代币<br>分叉后"任意代币可上架"<br>存款函数没加锁 → 恶意代币在 transferFrom 里回调存款，<b>同一笔资产记账两次</b></div></div>
+      <div class="card sell" data-k="1"><h3>Penpie · 2024-09</h3><div class="fs28">无许可创建市场，使用恶意代币<br>批量领取奖励没有重入锁<br>回调里存入资产 → 存款"变成"奖励<br>约 2,700 万$</div></div>
+      <div class="card info" data-k="2"><h3>检查点</h3><div class="fs28">支持带钩子的代币吗？<br>不支持就<b>显式拒绝</b><br>任意代币入口 = 任意代码入口</div></div>
+    </div>
+    <ol class="say">
+      <li>再看一个反复出现的模式。BNB Chain 上很多项目分叉自以太坊协议。原协议只接受白名单代币，分叉项目放开成任意代币都能上架，却没给存款函数加锁。攻击者上架一个自己部署的代币，在它的转账函数里回调存款，同一笔资产被记账两次。</li>
+      <li>以太坊上的 Penpie，2024年9月，据公开复盘损失约2700万美元。攻击者无需许可就能创建一个市场，使用自己的恶意代币。Penpie 的批量领取奖励函数没有重入锁，攻击者在回调里存入资产，把存款变成了奖励。</li>
+      <li>所以，允许任意代币，就等于允许任意回调。上架流程本身是安全边界。协议如果不支持带钩子的代币，就要显式拒绝。</li>
+    </ol>
+  </section>
+
+  <!-- 11 链差异 -->
+  <section class="scene" data-title="三条链的回调入口不一样" data-onstep="rowStep">
+    <div class="kicker">链差异 · 详见链专题</div>
+    <h2>同一份代码，回调入口不一样</h2>
+    <table class="t">
+      <thead><tr><th>链</th><th>转原生币会触发 receive 吗</th></tr></thead>
+      <tbody>
+        <tr><td>以太坊</td><td>转 ETH → <b class="down">触发</b></td></tr>
+        <tr><td>TRON</td><td>系统交易转 TRX → <b class="up">不触发</b>；合约调用附带 callValue → <b class="down">触发</b></td></tr>
+        <tr><td>Mantle</td><td>ETH 是 ERC-20 形式 → <b class="up">不触发</b>；转原生币 MNT → <b class="down">触发</b></td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>同一份代码，在不同的链上，回调入口不一样。以太坊上，向合约转 ETH，一定会触发它的接收函数。</li>
+      <li>TRON 上，用系统交易直接转 TRX，不会执行接收合约的回退函数。但通过合约调用附带转账，就会执行。</li>
+      <li>Mantle 上，ETH 是以 ERC-20 代币的形式存在的，转 ETH 不触发接收函数。转原生币 MNT，才会触发。所以把以太坊上的重入分析搬到别的链，要重新列一遍回调入口。</li>
+    </ol>
+  </section>
+
+  <!-- 12 审计检查点 -->
+  <section class="scene" data-title="审计检查点" data-onstep="marks">
+    <div class="kicker">审计清单</div>
+    <h2>七个检查点</h2>
+    <div class="chk">
+      <div class="card" data-k="0">① 列出所有外部调用，包括代币、NFT、回调、低级 call</div>
+      <div class="card" data-k="0">② 每个外部调用之前，相关状态都已是最终值？</div>
+      <div class="card" data-k="1">③ 读写同一状态的入口，共享同一把锁？</div>
+      <div class="card" data-k="1">④ 有 view 函数在交互期间返回中间状态，并被别人当价格用？</div>
+      <div class="card" data-k="2">⑤ 支持带钩子的代币吗？不支持是否显式拒绝？</div>
+      <div class="card" data-k="2">⑥ 编译器版本有已知的锁 bug 吗？</div>
+      <div class="card gold" data-k="3" style="grid-column: span 2">⑦ 部署链上，原生币转账会触发回退函数吗？</div>
+    </div>
+    <ol class="say">
+      <li>最后是审计检查点，一共七个。第一，列出所有外部调用，包括代币转账、NFT 安全转账、回调和低级调用。第二，每个外部调用之前，相关状态是否都已经更新到最终值。</li>
+      <li>第三，所有读写同一状态的入口，是否共享同一把锁。第四，有没有只读函数在交互期间返回中间状态，并被其他协议当作价格使用。</li>
+      <li>第五，协议支不支持带钩子的代币，不支持的话是否显式拒绝。第六，编译器版本有没有已知的重入锁 bug。</li>
+      <li>第七，在部署的链上，原生币转账会不会触发回退函数。</li>
+    </ol>
+  </section>
+
+  <!-- 13 练一练 -->
+  <section class="scene" data-title="练一练" data-onstep="marks">
+    <div class="kicker">练一练 · 暂停视频想一想</div>
+    <h2>NFT 的 mint 先调用 _safeMint，再 totalMinted++</h2>
+    <div class="row">
+      <div class="src sm" style="flex:1.15"><span class="ln"><span class="kw">function</span> <span class="fn">mint</span>() <span class="kw">external</span> {</span><span class="ln">  require(totalMinted &lt; MAX);</span><span class="ln" data-mark="1:bad">  _safeMint(msg.sender, id); <span class="c">// 回调</span></span><span class="ln" data-mark="1:bad">  totalMinted++;</span><span class="ln">}</span></div>
+      <div class="card sell fs30" data-k="1" style="flex:1"><b>能多铸。</b><br>_safeMint 会回调接收方合约；回调里再次调用 mint，此时 totalMinted 还没加 1，供应上限检查读到的是旧值。<br><br><b class="up">修复</b>：先 totalMinted++，再 _safeMint；或加锁。</div>
+    </div>
+    <ol class="say">
+      <li>来练一练。一个 NFT 合约的铸造函数，先检查已铸数量小于上限，然后调用安全铸造，最后把已铸数量加一。攻击者能多铸造吗？</li>
+      <li>能。安全铸造会回调接收方合约。在回调里再次调用铸造函数，此时已铸数量还没加一，上限检查读到的是旧值。修复方法是先把数量加一，再做安全铸造，或者加一把锁。看到了吗？没有转一分钱的 ETH，重入照样发生，因为回调本身就是交出控制权。</li>
+    </ol>
+  </section>
+
+  <!-- 14 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">重入 = <span class="hl">交出控制权时状态还没更新</span>；先列出所有交出控制权的位置。</li>
+      <li data-step="1"><span class="hl">CEI</span> 是首选；锁要覆盖所有共享状态的入口；只读重入要在读方防。</li>
+      <li data-step="2">源码正确 ≠ 字节码正确；允许任意代币 = 允许<span class="hl">任意回调</span>。</li>
+    </ul>
+    <h2 data-show="3">下一集：EP04 访问控制与权限</h2>
+    <div class="path" data-show="3">
+      <div class="card sell"><div class="n">6</div><b>六种权限缺陷</b><div class="d">缺修饰器、tx.origin、未初始化…</div></div>
+      <div class="card gold"><div class="n">M/N</div><b>多签 + 时间锁</b><div class="d">权限怎样分层</div></div>
+      <div class="card info"><div class="n">TRX</div><b>TRON 账户权限</b><div class="d">链级的权限诈骗</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，重入就是交出控制权时，状态还没更新。审计的第一步，是列出所有交出控制权的位置。</li>
+      <li>第二，CEI 是首选。锁要覆盖所有共享状态的入口。只读重入，要在读数据的一方防。</li>
+      <li>第三，源码正确不等于字节码正确。允许任意代币，就等于允许任意回调。手册里的重入实验，可以一步步看调用栈怎样展开。</li>
+      <li>下一集讲访问控制与权限，不该调用的人调用了。六种权限缺陷，多签和时间锁怎样分层，以及 TRON 上链级的账户权限诈骗。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line } = K;
+
+  function stackStep(el, st) {
+    marks(el, st);
+    const svg = el.querySelector('#stk'); svg.innerHTML = '';
+    const layers = [0, 1, 3, 10][st];
+    const bank = Math.max(0, 10 - layers);
+    T(svg, 160, 26, '调用栈', C.t2, 26, 'middle', true);
+    const show = Math.min(layers, 6);
+    for (let i = 0; i < show; i++) {
+      const y = 470 - i * 70, lbl = (i === 5 && layers > 6) ? '… 第 ' + layers + ' 层' : '第 ' + (i + 1) + ' 层 withdraw';
+      rect(svg, 20, y, 300, 58, { fill: C.panel, stroke: st >= 3 ? C.sell : C.info, sw: 3 });
+      T(svg, 170, y + 29, lbl, C.text, 25);
+    }
+    rect(svg, 380, 60, 300, 400, { fill: C.panel, stroke: C.line, sw: 2 });
+    T(svg, 530, 40, '银行余额', C.t2, 26, 'middle', true);
+    const h = bank / 10 * 380;
+    rect(svg, 390, 450 - h, 280, h, { fill: 'rgba(240,185,11,.55)' });
+    T(svg, 530, 250, bank + ' ETH', C.text, 44, 'middle', true);
+    T(svg, 530, 500, '攻击者余额记录：' + (st >= 3 ? '最后才清零' : '仍是 1'), st >= 3 ? C.sell : C.gold, 26, 'middle', true);
+    el.querySelector('#stNote').innerHTML = ['示例：银行 10 ETH · 攻击者记录 1 ETH', '第 1 层读到 1，转出 1，<b>控制权交出</b>', '第 2 层读到的<b class="down">还是 1</b>……', '<b class="down">存了 1，取走 10</b>；清零在所有层返回之后'][st];
+    el.querySelector('#stH').textContent = ['先读余额，再转账，最后清零', '第 1 层：转账触发回调', '每一层都读到了旧余额', '金库空了，各层才依次清零'][st];
+  }
+
+  function ceiStep(el, st) {
+    marks(el, st);
+    const side = el.querySelector('#ceiSide');
+    side.innerHTML = st >= 3 ? '<div class="card fs28">第 1 层：清零 → 转账 → 回调</div><div class="card sell fs28">第 2 层：读到余额 <b>0</b> → require 失败 → <b>整笔回滚</b></div><div class="card buy fs30"><b>攻击失败 · 零额外开销</b></div>'
+      : '<div class="steps" style="grid-template-columns:1fr; gap:14px">' + [['C', '检查 Checks', 0], ['E', '生效 Effects', 1], ['I', '交互 Interactions', 2]].map(([a, b, k]) => `<div class="card ${st === k ? 'gold' : ''}" style="opacity:${st >= k ? 1 : .15}"><span class="n">${a}</span><b>${b}</b></div>`).join('') + '</div>';
+  }
+
+  function xfnStep(el, st) {
+    const svg = el.querySelector('#xfn'); svg.innerHTML = '';
+    const op = k => st >= k ? 1 : .12;
+    box(svg, 20, 30, 380, 110, ['withdraw()', '有锁 · 先转后清零'], { stroke: C.info, fs: 32 });
+    box(svg, 20, 190, 380, 110, ['transfer(to, amt)', '没加锁 · 共享 balances'], { stroke: C.warn, fs: 32 });
+    rect(svg, 460, 30, 520, 270, { fill: C.panel, stroke: C.line, sw: 2 });
+    T(svg, 720, 60, '余额表 balances', C.t2, 26, 'middle', true);
+    const atk = st >= 4 ? 0 : st >= 3 ? 0 : 1, acc = st >= 3 ? 1 : 0;
+    T(svg, 500, 130, '攻击者', C.text, 30, 'start'); T(svg, 940, 130, atk + ' ETH', atk ? C.text : C.sell, 34, 'end', true);
+    T(svg, 500, 210, '同伙', C.text, 30, 'start'); T(svg, 940, 210, acc + ' ETH', acc ? C.gold : C.text, 34, 'end', true);
+    const S = [['调用 withdraw', C.info, 1], ['转出 1 ETH → 回调', C.sell, 1], ['回调里调用 transfer → 同伙 +1', C.warn, 2], ['回调结束 → withdraw 清零（已是 0）', C.t2, 3]];
+    S.forEach(([t, c, k], i) => { box(svg, 1040, 30 + i * 80, 580, 64, t, { stroke: c, fs: 26, op: op(k) }); });
+    if (st >= 3) {
+      rect(svg, 20, 360, 960, 110, { fill: C.badFill, stroke: C.sell, sw: 4 });
+      T(svg, 500, 400, '提走 1 ETH + 同伙账上 1 ETH', C.sell, 34, 'middle', true);
+      T(svg, 500, 445, '存 1，拿走 2', C.text, 30);
+    }
+    if (st >= 4) {
+      rect(svg, 1040, 360, 580, 110, { fill: C.goodFill, stroke: C.buy, sw: 3 });
+      T(svg, 1330, 400, '共享状态的入口共用一把锁', C.buy, 28, 'middle', true);
+      T(svg, 1330, 440, '或全部遵循 CEI · Fei Rari', C.text, 26);
+    }
+  }
+
+  function roStep(el, st) {
+    const svg = el.querySelector('#ro'); svg.innerHTML = '';
+    if (st === 0) {
+      box(svg, 120, 120, 420, 150, ['金库合约 A', '有锁 · 状态更新中'], { stroke: C.info, fs: 34 });
+      box(svg, 1100, 120, 420, 150, ['份额代币 B', '读到 A 的旧状态'], { stroke: C.sell, fs: 34, fill: C.badFill });
+      arrow(svg, 542, 195, 1096, 195, C.sell, true, 4); T(svg, 820, 170, '共享状态 · A 的锁挡不住对 B 的调用', C.sell, 28, 'middle', true);
+      return;
+    }
+    const N = { A: [20, 230, '攻击者', C.info], P: [600, 30, 'AMM 池', C.gold], L: [1180, 230, '借贷协议', C.warn] };
+    Object.values(N).forEach(([x, y, t, c]) => box(svg, x, y, 420, 110, t === 'AMM 池' ? [t, '先转出代币，后更新总量'] : t, { stroke: c, fs: 34, ss: 24, lh: 44, bold: true }));
+    const E = [
+      [1, 230, 228, 596, 70, '① 移除流动性', C.t2, 390, 118, 'end'],
+      [2, 596, 116, 330, 228, '② 回调：储备已减、总量未减', C.sell, 480, 218, 'start'],
+      [3, 442, 300, 1176, 300, '③ 调用借贷协议', C.t2, 810, 276, 'middle'],
+      [3, 1370, 228, 1024, 116, '④ 读价格函数', C.warn, 1160, 218, 'end'],
+      [4, 1024, 70, 1470, 228, '⑤ 返回扭曲价格', C.sell, 1262, 108, 'start'],
+    ];
+    E.forEach(([k, x1, y1, x2, y2, t, c, lx, ly, an]) => { if (st >= k) { arrow(svg, x1, y1, x2, y2, c, false, 4); T(svg, lx, ly, t, c, 25, an, true); } });
+    if (st >= 4) {
+      rect(svg, 20, 430, 1100, 110, { fill: C.curFill, stroke: C.gold, sw: 3 });
+      T(svg, 570, 466, '池子最终是对的；错的是在中间时刻读数据的第三方', C.gold, 28, 'middle', true);
+      T(svg, 570, 510, '防御在读方：查对方锁状态 · 用不受单笔交易影响的价格', C.text, 26);
+    }
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

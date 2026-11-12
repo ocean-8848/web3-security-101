@@ -1,0 +1,48 @@
+[
+ {
+  "after": "3.1 密钥管理方案对比",
+  "title": "合法签名人被骗签名",
+  "mermaid": "sequenceDiagram\n  participant A as 攻击者\n  participant T as 签名终端 / 交易展示\n  participant S as 合法签名人\n  participant W as 多签 / MPC / HSM\n  participant C as 链上金库\n  A->>T: 入侵终端或篡改展示内容\n  T->>S: 显示一笔看似正常的交易\n  S->>W: 按流程批准签名\n  W->>C: 提交合法签名的恶意交易\n  C-->>A: 资金被转走\n  Note over S,W: 私钥从未被直接偷走\n  Note over T,S: 防线 独立工具解码核对交易",
+  "notes": [
+   [
+    "key",
+    "MPC 和 HSM 只保证私钥不完整落地，不管谁授权、签的是什么。"
+   ],
+   [
+    "fail",
+    "出错点在签名人看到的内容和实际签的内容不一致。"
+   ],
+   [
+    "risk",
+    "签名终端被入侵后，阈值再高也挡不住被骗的签名人。"
+   ],
+   [
+    "flow",
+    "所以签名流程评估对任何密钥方案都适用。"
+   ]
+  ]
+ },
+ {
+  "after": "4.2 案例:两种供应链攻击",
+  "title": "两条供应链攻击链",
+  "mermaid": "flowchart LR\n  subgraph SB[\"BadgerDAO\"]\n    B1[\"Cloudflare 账户<br/>API key 被获取\"] --> B2[\"前端被注入脚本\"]\n    B2 --> B3[\"诱导用户<br/>无限授权给攻击者\"]\n    B3 --> B4[\"500 个钱包中招\"]\n  end\n  subgraph SL[\"Ledger Connect Kit\"]\n    L1[\"前员工 npm 账户被钓鱼<br/>权限未撤销\"] --> L2[\"发布恶意版本<br/>1.1.5–1.1.7\"]\n    L2 --> L3[\"运行 Drainer\"]\n    L3 --> L4[\"用户资产被转走\"]\n  end\n  B4 -.-> D1[\"评估项：前端托管访问控制<br/>无限授权展示\"]\n  L4 -.-> D2[\"评估项：依赖锁定<br/>离职权限撤销 · SRI\"]",
+  "notes": [
+   [
+    "flow",
+    "两起事故都没碰合约代码，恶意内容经前端或依赖库直接送到用户面前。"
+   ],
+   [
+    "risk",
+    "用户一签授权，资产就流向攻击者。"
+   ],
+   [
+    "fail",
+    "Ledger 的入口是离职员工的 npm 权限没有及时撤销。"
+   ],
+   [
+    "key",
+    "每条攻击链都能映射成一条可检查的评估项。"
+   ]
+  ]
+ }
+]

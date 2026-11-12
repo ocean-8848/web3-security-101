@@ -1,0 +1,68 @@
+# 章节：深入阅读协议源码
+
+## 思考题（共 2 题，按顺序作答）
+Q1. 在逐行讲解中，为什么 swap 允许 amount0Out 和 amount1Out 同时大于 0？
+Q2. 如果把不变量检查里的 1000**2 改成 1000，会产生什么后果？
+
+## 章节正文
+
+倚门而歌 · 2.6
+
+# 深入阅读头部协议源码：从文档理解到逐行理解
+
+学习目标掌握一套读大型协议源码的顺序；能逐行解释 Uniswap V2 swap() 的每一个安全设计。
+
+前置章节2.2
+
+交互实验逐行源码讲解：UniswapV2Pair.swap
+
+## 1. 一句话理解
+
+DeFi 协议互相依赖、互相组合。头部协议是其他协议的地基。读懂地基的每一行，你才能判断上层协议对地基的假设是否成立。
+
+## 2. 读源码的顺序
+
+[图]
+flowchart TD
+  A["① 读文档和白皮书写下：资产、角色、核心公式"] --> B["② 跑通测试forge build / test / coverage"]
+  B --> C["③ 画合约关系图继承、调用、代理"]
+  C --> D["④ 列出所有外部入口public / external 函数表"]
+  D --> E["⑤ 列出所有状态变量每个变量：谁写？谁读？"]
+  E --> F["⑥ 追踪核心资金流存 → 计息 → 取 / 清算"]
+  F --> G["⑦ 写下不变量总量守恒、偿付能力、单调性"]
+  G --> H["⑧ 对每个入口问：能否打破某个不变量？"]
+  H --> I["⑨ 写 PoC 或说明为什么不能"]
+[/图]
+
+读图要点
+
+- 第 ⑤ 步的"变量读写表"是最有效的工具。一个变量被 5 个函数写、只有 4 个函数做了检查，第 5 个就是嫌疑人。
+
+- 第 ⑦ 步把"我觉得不对"变成"它违反了 X"。不变量也可以直接写成 Foundry 不变量测试（3.4）。
+
+- 工具辅助：Slither 的 --print function-summary、vars-and-auth、call-graph 打印器可以快速生成第 ③–⑤ 步的表格。
+
+## 3. 建议精读的源码
+
+ |  | 协议 | 重点文件 | 学到什么
+
+ | Uniswap V2 | UniswapV2Pair.sol、UniswapV2Library.sol | 最小的完整 AMM；闪电兑换；TWAP 累积
+
+ | Uniswap V3 | UniswapV3Pool.sol、TickMath、SqrtPriceMath、Position | 定点数学；tick 穿越；回调付款模式
+
+ | Compound V2 | CToken.sol、Comptroller.sol、JumpRateModel | 汇率模型；跨合约权限检查；被分叉最多的借贷代码
+
+ | Aave V3 | Pool.sol、logic/*.sol、ReserveLogic | 库合约拆分；缩放余额；eMode
+
+ | MakerDAO | vat.sol、dog.sol、clip.sol | 极简核心账本（Vat）；形式化风格的变量命名
+
+ | Curve | StableSwap 池（Vyper） | 牛顿迭代；Vyper 语法
+
+ | OpenZeppelin | token/、proxy/、access/、utils/cryptography | "标准答案"：别人的实现和它不同的地方就是审计点
+
+## 4. 思考题
+
+- 在逐行讲解中，为什么 swap 允许 amount0Out 和 amount1Out 同时大于 0？
+
+- 如果把不变量检查里的 1000**2 改成 1000，会产生什么后果？
+

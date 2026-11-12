@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>合约安全交互实验</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .lab { display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: var(--text); transition: border-color .15s, transform .15s; }
+  .lab:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .lab .num { font-family: var(--mono); font-size: 12px; color: var(--accent); font-weight: 700; }
+  .lab .t { font-size: 17px; font-weight: 650; }
+  .lab .d { color: var(--text-2); font-size: 13px; }
+  .lab .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+  .layer { margin-top: 28px; }
+  .layer h2 { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .layer h2 small { font-size: 13px; color: var(--text-2); font-weight: 400; }
+  @media (prefers-reduced-motion: reduce) { .lab, .lab:hover { transition: none; transform: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <h1>合约安全交互实验</h1>
+    <a class="back" href="../README.md">← 返回学习目录</a>
+  </header>
+  <p class="lead">每个实验对应一个章节。读结论不如亲手验证：单步执行攻击、拖动参数、切换防御方案，观察漏洞在哪一步被利用、防御在哪一步生效。所有参数均为<strong>示例值</strong>。</p>
+
+  <section class="layer">
+    <h2>基础 <small>先看懂这台机器</small></h2>
+    <div class="grid cols-3">
+      <a class="card lab" href="storage-proxy-lab.html">
+        <span class="num">第 02 / 09 章</span><span class="t">存储布局与 delegatecall</span>
+        <span class="d">对比升级前后同一组槽位的两种解释。体验朴素代理被一笔 initialize 劫持。自己声明变量，观察打包规则。</span>
+        <span class="tags"><span class="pill info">存储槽</span><span class="pill warn">代理升级</span><span class="pill accent">打包</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="layer">
+    <h2>经典漏洞 <small>代码层</small></h2>
+    <div class="grid cols-3">
+      <a class="card lab" href="reentrancy-lab.html">
+        <span class="num">第 03 章</span><span class="t">重入攻击单步模拟器</span>
+        <span class="d">逐行执行 withdraw 与攻击者回调，看调用栈嵌套和不变量被打破的瞬间。对比 CEI、单函数锁、全局锁。</span>
+        <span class="tags"><span class="pill sell">重入</span><span class="pill info">调用栈</span><span class="pill buy">CEI</span></span>
+      </a>
+      <a class="card lab" href="vault-inflation-lab.html">
+        <span class="num">第 05 章</span><span class="t">金库通胀攻击</span>
+        <span class="d">首存者捐赠让下一位存款人得到 0 份额。拖动 decimalsOffset，看攻击利润曲线沉到零线以下。附舍入方向练习。</span>
+        <span class="tags"><span class="pill warn">ERC-4626</span><span class="pill info">BigInt 精确计算</span><span class="pill accent">舍入</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="layer">
+    <h2>DeFi 攻击 <small>数据与顺序</small></h2>
+    <div class="grid cols-3">
+      <a class="card lab" href="oracle-manipulation-lab.html">
+        <span class="num">第 07 / 10 章</span><span class="t">闪电贷操纵预言机</span>
+        <span class="d">借闪电贷推高 AMM 现货价，按虚高价格借空协议。调节池子深度，切换 TWAP 与链下喂价。</span>
+        <span class="tags"><span class="pill sell">闪电贷</span><span class="pill info">x·y=k</span><span class="pill accent">TWAP</span></span>
+      </a>
+      <a class="card lab" href="signature-replay-lab.html">
+        <span class="num">第 08 / 11 章</span><span class="t">签名与重放</span>
+        <span class="d">勾选签名绑定的字段，尝试五种重放。附签名可塑性和 ecrecover 零地址两个陷阱。可切换到 TRON、Mantle 的链 ID。</span>
+        <span class="tags"><span class="pill info">EIP-712</span><span class="pill warn">nonce</span><span class="pill sell">重放</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="layer">
+    <h2>链专题与复盘 <small>以太坊 · BNB Chain · TRON · Mantle</small></h2>
+    <div class="grid cols-3">
+      <a class="card lab" href="chain-porting-lab.html">
+        <span class="num">C01 / C02 / C03 · 第 12 章</span><span class="t">链迁移风险检查器</span>
+        <span class="d">勾选代码中的"以太坊假设"，选择目标链，生成带严重度和修复建议的风险清单，可导出 Markdown。</span>
+        <span class="tags"><span class="pill accent">BNB Chain</span><span class="pill sell">TRON</span><span class="pill info">Mantle</span></span>
+      </a>
+      <a class="card lab" href="incident-explorer.html">
+        <span class="num">第 01 / 13 章 · C00</span><span class="t">事故浏览器</span>
+        <span class="d">36 起代表性事件，按链、根因、年份筛选。按类别对比损失，展开看根因、教训和章节链接。</span>
+        <span class="tags"><span class="pill warn">复盘</span><span class="pill info">筛选</span></span>
+      </a>
+      <a class="card lab" href="severity-calculator.html">
+        <span class="num">评估篇 A02 · T03</span><span class="t">风险评级计算器</span>
+        <span class="d">选择影响与可能性，得到建议等级，对照 Immunefi 口径，导出发现条目。</span>
+        <span class="tags"><span class="pill accent">评估</span></span>
+      </a>
+      <a class="card lab" href="listing-scorecard.html">
+        <span class="num">评估篇 A05 · T05</span><span class="t">上币尽调评分卡</span>
+        <span class="d">先过八条红线，再给四个维度打分，得到综合分与建议结论，可导出。</span>
+        <span class="tags"><span class="pill accent">评估</span><span class="pill sell">红线</span></span>
+      </a>
+    </div>
+  </section>
+
+  <footer class="note">本页仅用于学习安全原理，所有数值为示例；不要在未授权的合约上做任何测试。</footer>
+</div>
+<script>
+/* 在单文件阅读版（handbook.html）的 iframe 中打开时，把章节链接交给外层阅读器处理 */
+(function () {
+  if (window.parent === window) return;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href');
+    if (/\.md(#|$)/.test(h)) { e.preventDefault(); window.parent.postMessage({ cexNavMd: h }, '*'); }
+  });
+})();
+</script>
+</body>
+</html>

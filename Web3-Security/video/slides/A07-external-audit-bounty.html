@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A07 外部审计与漏洞赏金</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .ana .card { font-size: 30px; display: flex; flex-direction: column; gap: 10px; min-height: 230px; }
+  .ana .card .a { color: var(--text-2); font-size: 27px; }
+  .chk { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 26px; }
+  .chk .card { font-size: 28px; padding: 16px 22px; display: flex; flex-direction: column; gap: 6px; }
+  .chk .card .d { color: var(--text-2); font-size: 24px; }
+  .diff { font-family: var(--mono); font-size: 25px; line-height: 1.6; background: var(--code-bg); border: 1px solid var(--line); border-radius: 14px; padding: 18px 26px; white-space: pre; }
+  .diff .a { color: var(--buy); } .diff .r { color: var(--sell); } .diff .m { color: var(--text-2); }
+  .cover { background: #f4f1ea; color: #222; border-radius: 10px; padding: 34px 40px; font-family: var(--display); width: 560px; box-shadow: 0 10px 40px rgba(0,0,0,.5); }
+  .cover .t { font-size: 40px; font-weight: 800; } .cover .s { font-family: var(--sans); font-size: 26px; color: #555; margin-top: 10px; }
+  .cover .ok { margin-top: 26px; font-size: 34px; color: #1a7f4b; font-weight: 800; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="A07" data-title="外部审计与漏洞赏金管理">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 评估篇 · A07</div>
+    <div class="row center" style="gap:80px; justify-content:flex-start">
+      <div class="cover" data-k="0" data-nocur><div class="t">Security Audit Report</div><div class="s">Protocol X · v1.0 · 2 weeks</div><div class="ok">✓ 未发现严重问题</div></div>
+      <div class="col" style="gap:20px">
+        <h1 style="font-size:84px">这一页，<br>能当<span class="hl">上线依据</span>吗？</h1>
+        <div class="card fs30" data-k="1" data-nocur>审的是哪个提交？上线的是同一个吗？<br>哪些文件没审？"已确认风险"写了什么？</div>
+      </div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到评估篇第7集，外部审计与漏洞赏金。先看一个画面。项目方发来一份审计报告，封面写着，未发现严重问题。这一页，能当作上线依据吗？</li>
+      <li>答案是，还不能。你至少要问，审的是哪个提交，上线的是不是同一个，哪些文件没审，报告里的已确认风险写了什么。本集讲怎样选审计、界定范围、读报告，以及怎样设计漏洞赏金。整个立场是，外部审计是自评的补充，不是替代。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="像请第二位医生会诊" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>外部审计像会诊：你仍是主治医生</h2>
+    <div class="ana">
+      <div class="card gold" data-k="0"><b>主治医生</b><div class="a">最了解病人，对结果负责</div><div class="hl">→ 你，内部评估</div></div>
+      <div class="card info" data-k="1"><b>会诊医生</b><div class="a">第二双眼睛，发现盲区</div><div class="hl">→ 外部审计</div></div>
+      <div class="card" data-k="2"><b>会诊范围</b><div class="a">只看你给的检查结果和时间窗</div><div class="hl">→ 范围外的责任还在你</div></div>
+    </div>
+    <div class="card warn fs30" data-k="3">比喻不准的地方：医生有行医资质门槛。审计公司水平参差，范围和深度差异很大，<b>报告质量要自己判断</b>。</div>
+    <ol class="say">
+      <li>打个比方，外部审计像请第二位医生会诊。你是主治医生，最了解病人，也对结果负责。</li>
+      <li>请会诊，是因为第二双眼睛能发现你的盲区，而不是因为你不想看了。</li>
+      <li>会诊医生只看你给的检查结果，和约定时间内的情况。他看不到的，责任还在你。</li>
+      <li>比喻不准的地方在于，医生有行医资质的门槛。审计公司水平参差不齐，范围和深度差异很大，报告质量要你自己判断。</li>
+    </ol>
+  </section>
+
+  <!-- 3 五种外部检查 -->
+  <section class="scene" data-title="五种外部检查" data-onstep="rowStep">
+    <div class="kicker">什么时候用哪种</div>
+    <h2>五种方式互补，不互斥</h2>
+    <table class="t sm">
+      <thead><tr><th>方式</th><th>适合</th><th>特点</th><th>局限</th></tr></thead>
+      <tbody>
+        <tr><td>单家审计</td><td>常规上线</td><td>固定团队、深度审查</td><td>受团队经验限制</td></tr>
+        <tr><td>多家审计</td><td>核心协议、大额资金</td><td>不同团队侧重不同</td><td>成本高，可能重复</td></tr>
+        <tr><td>审计竞赛</td><td>需要广覆盖</td><td>大量审计者并行，按发现付费</td><td>深度不均，消化报告耗时</td></tr>
+        <tr><td>形式化验证</td><td>核心数学、清算、桥验证</td><td>数学证明覆盖所有输入</td><td>只证明写下的性质</td></tr>
+        <tr><td>漏洞赏金</td><td>上线后持续</td><td>真实攻击者视角，长期</td><td>被动，依赖奖金吸引力</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>外部检查有五种方式。单家审计适合常规上线，一个固定团队在固定时间里深度审查，局限是覆盖面受这个团队的经验限制。多家审计适合核心协议和大额资金，不同团队侧重不同，代价是成本高。</li>
+      <li>审计竞赛是大量审计者并行审查，按发现付费，覆盖面广。但深度不均，你还要花时间消化大量提交。形式化验证用数学证明覆盖所有输入，适合核心数学、清算和桥的验证逻辑。</li>
+      <li>注意形式化验证的局限，它只证明你写下的性质。性质写漏了，证明再严谨也没用。最后是漏洞赏金，上线后持续运行，用真实攻击者的视角补充一次性审计，但它是被动的。</li>
+    </ol>
+  </section>
+
+  <!-- 4 组合 -->
+  <section class="scene" data-title="一个核心协议的典型组合" data-onstep="comboStep">
+    <div class="kicker">典型组合 · 时间为示例</div>
+    <h2>自评在前，赏金在后，审计在中间</h2>
+    <svg id="combo" width="1640" height="510" viewBox="0 0 1640 510"></svg>
+    <ol class="say">
+      <li>一个核心协议的典型组合是这样的。第一步永远是自评，按前几集的方法，示例里两到三周。</li>
+      <li>然后是外部审计，一家或者两家，示例里各两到三周。两家可以并行，也可以串行，串行的好处是第二家能看到第一家修复后的代码。</li>
+      <li>对核心数学模块，比如清算和份额计算，再加上形式化验证。</li>
+      <li>修复之后要复审。上线后，漏洞赏金长期运行。注意，自评一定在审计之前。不要让审计方从零开始，花一半时间去理解你本该写清楚的东西。</li>
+    </ol>
+  </section>
+
+  <!-- 5 界定范围 -->
+  <section class="scene" data-title="界定审计范围" data-onstep="marks">
+    <div class="kicker">你给的材料，决定审计的质量</div>
+    <h2>交给审计方之前，六项写清</h2>
+    <div class="chk">
+      <div class="card" data-k="0"><b>提交哈希，不是分支</b><div class="d">审计期间代码冻结</div></div>
+      <div class="card" data-k="0"><b>范围内外的文件</b><div class="d">哪些外部依赖视为可信</div></div>
+      <div class="card" data-k="1"><b>规格与关键不变量</b><div class="d">让审计方知道"应该是什么样"</div></div>
+      <div class="card" data-k="1"><b>威胁模型与自评发现</b><div class="d">不从零开始，也不隐瞒已知问题</div></div>
+      <div class="card warn" data-k="2"><b>链下组件</b><div class="d">前端、签名、部署 · 默认应在范围内</div></div>
+      <div class="card warn" data-k="2"><b>部署脚本与初始化参数</b><div class="d">Nomad 类问题出在这里</div></div>
+    </div>
+    <ol class="say">
+      <li>你交给审计方的材料，决定了审计的质量。六项要写清。提交哈希，不是分支名，审计期间代码冻结。范围内和范围外的文件，以及哪些外部依赖视为可信。</li>
+      <li>规格文档和关键不变量，让审计方知道代码应该是什么样。你的威胁模型和自评发现，也一并给出。不要让审计方从零开始，也不要隐瞒已知问题，否则你花钱请人重复你的工作。</li>
+      <li>链下组件，比如前端、签名和部署，默认应该在范围内。部署脚本和初始化参数也必须在范围内，Nomad 那类问题就出在这里。</li>
+    </ol>
+  </section>
+
+  <!-- 6 差异审计 -->
+  <section class="scene" data-title="审计之后的改动" data-onstep="diffStep">
+    <div class="kicker">差异审计 · 示例</div>
+    <h2>"只改了一行"，也要审</h2>
+    <div class="row">
+      <div class="col" style="flex:1.1">
+        <div class="diff" id="diff"></div>
+      </div>
+      <div class="col" style="flex:0.9" id="diffSide"></div>
+    </div>
+    <ol class="say">
+      <li>审计结束到上线之间，代码常常还会改。来看一个示例。审计的是提交 a1b2，准备上线的是提交 e9f0。</li>
+      <li>两个提交之间有三处改动。一处改了常数，一处调整了函数顺序，还新增了一个管理函数。项目方说，都是小改动。</li>
+      <li>这时审计报告的结论，对 e9f0 已经不完全适用了。正确的做法是差异审计，只审这三处改动，以及它们影响的路径。工作量不大，但不能省。</li>
+      <li>第1集讲的 Uranium，就是改了一个常数。任何在审计之后、上线之前的改动，哪怕只有一行，都要走差异审计。上线前，再比对一次链上字节码和审计版本。</li>
+    </ol>
+  </section>
+
+  <!-- 7 读报告六步 -->
+  <section class="scene" data-title="读一份审计报告" data-onstep="marks">
+    <div class="kicker">读报告 · 按顺序</div>
+    <h2>六个步骤</h2>
+    <div class="steps c3">
+      <div class="card" data-k="0"><span class="n">1</span><b>范围与版本</b><div class="d">哪个提交？和上线的一样吗？哪些文件没审？</div></div>
+      <div class="card" data-k="1"><span class="n">2</span><b>方法与工时</b><div class="d">人工 + 哪些工具？投入多少人天？</div></div>
+      <div class="card" data-k="2"><span class="n">3</span><b>发现与修复状态</b><div class="d">等级、是否已修复、有没有复审</div></div>
+      <div class="card gold" data-k="3"><span class="n">4</span><b>已确认风险</b><div class="d">审计方指出、项目方选择不修</div></div>
+      <div class="card" data-k="4"><span class="n">5</span><b>假设与免责</b><div class="d">"假设预言机可信""假设 owner 不作恶"</div></div>
+      <div class="card" data-k="4"><span class="n">6</span><b>范围外提示</b><div class="d">"未审计 X" = 你的盲区</div></div>
+    </div>
+    <ol class="say">
+      <li>拿到一份报告，按六个步骤读。第一步，范围与版本。审的是哪个提交，和上线的是不是同一个，哪些文件没审。</li>
+      <li>第二步，方法与工时。人工审查加了哪些工具，投入多少人天。用第1集的速度估一下，工时太短的报告，覆盖必然有限。</li>
+      <li>第三步，每条发现的等级、是否已修复、有没有复审记录。</li>
+      <li>第四步，已确认风险。这是最容易被忽略、却最重要的部分，下一页单独讲。</li>
+      <li>第五步，假设与免责。报告假设了什么，比如假设预言机可信，假设 owner 不作恶。这些假设，就是你的剩余风险。第六步，范围外提示。报告里写着未审计的部分，就是你的盲区。</li>
+    </ol>
+  </section>
+
+  <!-- 8 已确认风险 -->
+  <section class="scene" data-title="已确认风险" data-onstep="marks">
+    <div class="kicker">重点 · Acknowledged Risk</div>
+    <h2>"已确认"不等于"已解决"</h2>
+    <table class="t sm">
+      <thead><tr><th>报告里的写法 · 示例</th><th>项目方回复</th><th>你要判断的</th></tr></thead>
+      <tbody>
+        <tr data-k="0"><td>owner 可随时暂停所有转账</td><td>"设计如此"</td><td>owner 是谁？交易所热钱包会被冻吗？</td></tr>
+        <tr data-k="1"><td>价格来自单一现货池</td><td>"后续版本改进"</td><td>上线时池子多深？闪电贷能推动吗？</td></tr>
+        <tr data-k="2"><td>升级无时间锁</td><td>"由多签控制"</td><td>多签几方独立？签名流程如何？</td></tr>
+      </tbody>
+    </table>
+    <div class="card gold fs30" data-k="3">审计方的职责到"指出"为止。<b>接不接受，是你的决定</b>，要按 A02 的流程独立判断。</div>
+    <ol class="say">
+      <li>已确认风险，是审计方指出了、项目方选择不修的问题。看三个示例。第一，owner 可以随时暂停所有转账，项目方回复设计如此。你要判断的是，owner 是谁，交易所的热钱包会不会被冻结。</li>
+      <li>第二，价格来自单一现货池，项目方回复后续版本改进。你要判断，上线时这个池子有多深，闪电贷能不能推动它。</li>
+      <li>第三，升级没有时间锁，项目方回复由多签控制。你要判断，这个多签有几方是独立的，签名流程怎样。</li>
+      <li>为什么这部分比已修复的发现更需要你亲自判断？因为审计方的职责到指出为止。接不接受这个风险，是你的决定，要按第2集的风险接受流程独立判断。</li>
+    </ol>
+  </section>
+
+  <!-- 9 红旗 -->
+  <section class="scene" data-title="报告的红旗" data-onstep="rowStep">
+    <div class="kicker">警惕</div>
+    <h2>五个红旗，"通过审计"可能只是营销</h2>
+    <table class="t sm">
+      <thead><tr><th>红旗</th><th>含义</th></tr></thead>
+      <tbody>
+        <tr><td>审计版本与上线版本不同</td><td>结论可能不适用</td></tr>
+        <tr><td>只有一句"无严重问题"</td><td>缺少过程，无法判断覆盖</td></tr>
+        <tr><td>工时极短、范围极大</td><td>走过场</td></tr>
+        <tr><td>全部"已修复"，但没有复审记录</td><td>修复可能引入新问题</td></tr>
+        <tr><td>不列假设，不列范围外</td><td>剩余风险不明</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>审计报告有五个红旗。第一，审计版本和上线版本不同，结论可能不适用。第二，整份报告只有一句无严重问题，缺少过程，你无法判断它覆盖了什么。</li>
+      <li>第三，工时极短而范围极大，比如两个人审三天，范围是两万行代码，基本是走过场。第四，所有发现都写着已修复，但没有复审记录，修复本身可能引入新问题。</li>
+      <li>第五，不列假设，不列范围外。剩余风险完全不明。做上币尽调时要特别注意，通过审计是一个常被滥用的营销说法。要核验报告本身，而不是听信已审计三个字。</li>
+    </ol>
+  </section>
+
+  <!-- 10 赏金要素 -->
+  <section class="scene" data-title="漏洞赏金计划的要素" data-onstep="rowStep">
+    <div class="kicker">漏洞赏金 · 上线后的持续防线</div>
+    <h2>七个要素</h2>
+    <table class="t sm">
+      <thead><tr><th>要素</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>范围</td><td>哪些合约、前端、基础设施；链上地址明确</td></tr>
+        <tr><td>严重度分级</td><td>与内部定级同一口径（A02）</td></tr>
+        <tr><td>奖金分级</td><td>严重级常按"可能损失的一定比例"并封顶</td></tr>
+        <tr><td>排除项</td><td>已知问题、测试网、需要不现实前提的攻击</td></tr>
+        <tr><td>提交与响应流程</td><td>接收渠道、响应时限、修复时限、付款流程</td></tr>
+        <tr><td>安全港</td><td>对善意研究者的法律豁免，鼓励上报而非利用</td></tr>
+        <tr><td>合规</td><td>付款前的身份与制裁检查</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>漏洞赏金是上线后的持续防线。一个赏金计划有七个要素。第一是范围，哪些合约、前端和基础设施在范围内，链上地址要写明确。第二是严重度分级，和内部定级用同一个口径。</li>
+      <li>第三是奖金分级，严重级通常按可能损失的一定比例计算，再设一个上限。第四是排除项，比如已知问题、测试网，以及需要不现实前提的攻击。</li>
+      <li>第五是提交和响应流程。白帽发现严重漏洞时，每一小时都可能有攻击者在找同一个洞，所以响应时限要写死。第六是安全港，给善意研究者法律豁免，鼓励他们上报而不是利用。第七是付款前的合规检查。</li>
+    </ol>
+  </section>
+
+  <!-- 11 奖金怎么定 -->
+  <section class="scene" data-title="奖金怎么定" data-onstep="bountyStep">
+    <div class="kicker">奖金设计 · 数字为示例</div>
+    <h2>和攻击者的收益比一比</h2>
+    <svg id="bty" width="1640" height="560" viewBox="0 0 1640 560"></svg>
+    <ol class="say">
+      <li>严重漏洞的奖金应该设多高？来算一个示例。协议锁仓1亿美元，一个严重漏洞最多能盗走其中2000万。</li>
+      <li>示例规则是，严重级奖金为可能损失的10%，上限200万美元。2000万的10%是200万，正好在上限内。</li>
+      <li>和攻击者比一比。攻击者利用这个漏洞，名义收益2000万。但他要洗钱，要承担被追踪、被冻结和法律的风险，实际能落袋的远少于此。白帽上报，拿到200万，合法、安全。</li>
+      <li>奖金太低，比如只给5万，有能力的研究者不会花时间看你的协议，发现了也可能被诱惑。奖金太高，预算失控，还会吸引大量低质量提交。原则是，让上报明显比利用更划算。</li>
+      <li>最后提醒，漏洞赏金不能替代审计和自评。它是被动的，依赖运气和奖金的吸引力，是最后一道网，不是第一道防线。</li>
+    </ol>
+  </section>
+
+  <!-- 12 职责边界 -->
+  <section class="scene" data-title="内外协作的职责边界" data-onstep="loopStep">
+    <div class="kicker">职责边界</div>
+    <h2>主责始终在内部</h2>
+    <svg id="loop" width="1640" height="350" viewBox="0 0 1640 350"></svg>
+    <div class="card warn fs28" data-k="3">内部没有能力读懂报告时，"外包安全"就变成了"外包责任的错觉"。</div>
+    <ol class="say">
+      <li>最后把内外协作串起来。内部评估是主责，负责界定范围、冻结版本，再交给外部审计或竞赛，做独立检查。</li>
+      <li>报告回来，由你批判性地阅读，判断剩余风险，然后做门禁结论。外部审计是输入，不是决策。</li>
+      <li>上线之后，漏洞赏金持续运行。新的发现回流到内部评估，触发修复，必要时重新评估。</li>
+      <li>这条链有一个前提，内部有能力读懂和判断审计报告。能力不足时，外包安全就变成了外包责任的错觉。这正是整个评估篇想帮你避免的。</li>
+    </ol>
+  </section>
+
+  <!-- 12b 练一练 -->
+  <section class="scene" data-title="练一练" data-onstep="marks">
+    <div class="kicker">练一练 · 暂停视频想一想</div>
+    <h2>报告结论"未发现严重问题"，上线前核对哪五件事？</h2>
+    <div class="steps c5">
+      <div class="card" data-k="1"><span class="n">1</span><b>版本</b><div class="d">审计提交 = 上线提交 = 链上字节码</div></div>
+      <div class="card" data-k="1"><span class="n">2</span><b>范围</b><div class="d">没审的文件、链下组件、部署脚本</div></div>
+      <div class="card" data-k="2"><span class="n">3</span><b>工时</b><div class="d">人天与代码量是否匹配</div></div>
+      <div class="card gold" data-k="2"><span class="n">4</span><b>已确认风险</b><div class="d">逐条独立判断，必要时走风险接受</div></div>
+      <div class="card" data-k="3"><span class="n">5</span><b>假设</b><div class="d">每条假设都是剩余风险，写进门禁</div></div>
+    </div>
+    <ol class="say">
+      <li>来练一练。你收到一份审计报告，结论是未发现严重问题。在把它作为上线依据之前，你要核对哪五件事？可以先暂停想一想。</li>
+      <li>参考答案。第一，版本，审计的提交、上线的提交和链上字节码三者一致。第二，范围，哪些文件没审，链下组件和部署脚本在不在范围内。</li>
+      <li>第三，工时，投入的人天和代码量是否匹配。第四，已确认风险，逐条独立判断，必要时走风险接受流程。</li>
+      <li>第五，假设。报告里的每一条假设，都是你的剩余风险，要写进门禁结论。做到这五件事，那一页封面才真正有意义。</li>
+    </ol>
+  </section>
+
+  <!-- 13 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">外部审计是<span class="hl">补充</span>：范围写死提交哈希，审计后的改动走差异审计。</li>
+      <li data-step="1">读报告重点看<span class="hl">已确认风险、假设、范围外</span>，并独立判断。</li>
+      <li data-step="2">赏金让<span class="hl">上报比利用更划算</span>；它是最后一道网。</li>
+    </ul>
+    <h2 data-show="3">下一集：A08 事故分析与防御性验证</h2>
+    <div class="path" data-show="3">
+      <div class="card info"><div class="n">5</div><b>五步读攻击交易</b><div class="d">定位、资金流、调用树、找假设、翻译成检查项</div></div>
+      <div class="card gold"><div class="n">∀</div><b>事故 → 不变量</b><div class="d">把事故写成可测试的性质</div></div>
+      <div class="card buy"><div class="n">✓</div><b>证明修复有效</b><div class="d">修复前失败、修复后通过</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，外部审计是补充。范围里写死提交哈希，审计之后的任何改动走差异审计。</li>
+      <li>第二，读报告重点看已确认风险、假设和范围外，并且独立判断。</li>
+      <li>第三，漏洞赏金要让上报明显比利用更划算。它是最后一道网。</li>
+      <li>下一集讲事故分析与防御性验证。怎样用五个步骤读懂一笔攻击交易，怎样把事故翻译成不变量，以及怎样证明一个修复真的有效。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line } = K;
+
+  function comboStep(el, st) {
+    const svg = el.querySelector('#combo'); svg.innerHTML = '';
+    const S = [['自评', '2–3 周', C.gold, 0, 0, 220, 260], ['审计 A', '2–3 周', C.info, 1, 320, 140, 260], ['审计 B', '2–3 周', C.info, 1, 320, 300, 260], ['形式化验证', '核心数学', C.warn, 2, 660, 30, 260], ['修复 + 复审', '', C.buy, 3, 980, 220, 260], ['上线', '赏金长期运行', C.buy, 3, 1320, 220, 300]];
+    S.forEach(([a, b, c, k, x, y, w]) => box(svg, x, y, w, 110, b ? [a, b] : a, { stroke: c, fs: 32, op: st >= k ? 1 : .12, bold: true }));
+    const op1 = st >= 1 ? 1 : .12, op2 = st >= 2 ? 1 : .12, op3 = st >= 3 ? 1 : .12;
+    arrow(svg, 262, 255, 316, 205, C.t2, false, 3, op1); arrow(svg, 262, 295, 316, 345, C.t2, false, 3, op1);
+    arrow(svg, 582, 195, 976, 258, C.t2, false, 3, op3); arrow(svg, 582, 355, 976, 292, C.t2, false, 3, op3);
+    arrow(svg, 880, 142, 1030, 216, C.t2, true, 3, op2);
+    arrow(svg, 1242, 275, 1316, 275, C.t2, false, 3, op3);
+    if (st >= 3) { rect(svg, 2, 444, 1626, 60, { fill: C.curFill, stroke: C.gold, sw: 3 }); T(svg, 815, 474, '自评一定在审计之前：不让审计方从零开始', C.gold, 30, 'middle', true); }
+  }
+
+  function diffStep(el, st) {
+    const d = el.querySelector('#diff');
+    const L = [
+      ['m', 'audited  a1b2  →  deploy  e9f0'],
+      ['m', '3 files changed, 14 insertions, 6 deletions'],
+      ['r', '-  uint256 constant FEE = 30;'], ['a', '+  uint256 constant FEE = 25;'],
+      ['r', '-  _update(); _transferOut();'], ['a', '+  _transferOut(); _update();'],
+      ['a', '+  function setRouter(address r) external onlyOwner'],
+    ];
+    const n = [2, 7, 7, 7][st];
+    d.innerHTML = L.slice(0, n).map(([c, t]) => `<span class="${c}">${t.replace(/</g, '&lt;')}</span>`).join('\n');
+    const side = el.querySelector('#diffSide');
+    side.innerHTML = [
+      '<div class="stat"><div class="k">审计的提交</div><div class="v">a1b2</div></div><div class="stat"><div class="k">准备上线的提交</div><div class="v hl">e9f0</div></div>',
+      '<div class="card fs28">改常数 · 调顺序 · 新增管理函数<br><span class="muted">"都是小改动"</span></div><div class="card warn fs28">第二处把转账挪到了状态更新之前</div>',
+      '<div class="card info fs28">差异审计：只审这三处改动<br>和它们影响的路径</div>',
+      '<div class="card sell fs28">一行也要审 · Uranium（A01）</div><div class="card buy fs28">上线前再比对一次<br><b>链上字节码 = 审计版本</b></div>'][st];
+  }
+
+  function bountyStep(el, st) {
+    const svg = el.querySelector('#bty'); svg.innerHTML = '';
+    const sc = 0.4; // px per 10k$ → 1亿 = 10000 units*0.04... use millions
+    const M = m => m * 13; // px per million
+    const ox = 60, y0 = 470;
+    const bar = (x, m, c, t1, t2, op) => { rect(svg, x, y0 - M(m), 200, M(m), { fill: c, op: op ?? 1, rx: 8 }); T(svg, x + 100, y0 - M(m) - 26, t1, C.text, 28, 'middle', true, op ?? 1); T(svg, x + 100, y0 + 34, t2, C.t2, 26, 'middle', false, op ?? 1); };
+    line(svg, 20, y0, 1620, y0, C.t2, 3);
+    bar(ox, 30, 'rgba(91,156,255,.35)', '锁仓 1 亿（截断）', '协议锁仓');
+    T(svg, ox + 100, y0 - M(30) + 30, '…', C.t2, 40);
+    bar(ox + 280, 20, 'rgba(246,70,93,.6)', '2,000 万', '最多可盗走');
+    if (st >= 1) bar(ox + 560, 2, 'rgba(46,189,133,.85)', '200 万', '奖金 = 10%，上限 200 万');
+    if (st >= 2) {
+      bar(ox + 840, 20, 'rgba(246,70,93,.25)', '名义 2,000 万', '攻击者名义收益');
+      rect(svg, ox + 840, y0 - M(20), 200, M(20), { fill: 'none', stroke: C.sell, sw: 3 });
+      T(svg, ox + 940, y0 - M(10), '洗钱 · 追踪', C.t2, 26); T(svg, ox + 940, y0 - M(10) + 36, '冻结 · 法律', C.t2, 26);
+    }
+    if (st >= 3) {
+      rect(svg, 1180, 40, 440, 300, { fill: C.panel, stroke: C.gold, sw: 3 });
+      T(svg, 1400, 90, '太低（如 5 万）', C.sell, 30, 'middle', true);
+      T(svg, 1400, 135, '没人看 · 发现了也可能被诱惑', C.text, 25);
+      T(svg, 1400, 200, '太高', C.warn, 30, 'middle', true);
+      T(svg, 1400, 245, '预算失控 · 低质量提交', C.text, 25);
+      T(svg, 1400, 305, '让上报明显比利用更划算', C.gold, 28, 'middle', true);
+    }
+    if (st >= 4) { rect(svg, 1180, 370, 440, 70, { fill: C.badFill, stroke: C.sell, sw: 3 }); T(svg, 1400, 405, '赏金不替代审计与自评', C.sell, 28, 'middle', true); }
+  }
+
+  function loopStep(el, st) {
+    marks(el, st);
+    const svg = el.querySelector('#loop'); svg.innerHTML = '';
+    const N = [['内部评估', '主责', C.gold, 0], ['界定范围', '冻结版本', C.gold, 0], ['外部审计', '独立检查', C.info, 0], ['批判性阅读', '判断剩余风险', C.gold, 1], ['门禁结论', '由你做', C.gold, 1], ['上线 → 赏金', '持续', C.buy, 2]];
+    N.forEach(([a, b, c, k], i) => {
+      const x = 2 + i * 274;
+      box(svg, x, 40, 230, 120, [a, b], { stroke: c, fs: 32, op: st >= k ? 1 : .12, bold: true });
+      if (i < 5) arrow(svg, x + 234, 100, x + 270, 100, C.t2, false, 3, st >= N[i + 1][3] ? 1 : .12);
+    });
+    if (st >= 2) {
+      svg.appendChild(svgEl('path', { d: 'M 1487 162 C 1487 320, 117 320, 117 164', fill: 'none', stroke: C.buy, 'stroke-width': 4, 'stroke-dasharray': '10 8' }));
+      arrow(svg, 120, 200, 117, 164, C.buy, false, 4);
+      T(svg, 802, 324, '新发现回流 → 修复 → 必要时重评', C.buy, 28, 'middle', true);
+    }
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

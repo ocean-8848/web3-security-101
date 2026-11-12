@@ -1,0 +1,44 @@
+[
+ {
+  "after": "4. PoC 模板",
+  "title": "重入 PoC 的执行过程",
+  "mermaid": "sequenceDiagram\n  participant T as ExploitTest\n  participant A as Attacker\n  participant V as Vault\n  T->>T: createSelectFork 固定区块 19_000_000\n  T->>A: new Attacker(vault)\n  T->>A: attack() 附带 1 ether\n  A->>V: deposit() 1 ether\n  A->>V: withdraw(AMT)\n  V->>A: 转出 ETH 触发 receive()\n  loop 金库余额 >= AMT\n    A->>V: 再次 withdraw(AMT)\n    V->>A: 再转出 ETH\n  end\n  T->>T: assertGt 攻击者余额 > 1 ether\n  T->>T: assertLt 金库余额比之前少",
+  "notes": [
+   [
+    "flow",
+    "资金路径：测试合约给攻击合约 1 ether，攻击合约反复从金库取出更多。"
+   ],
+   [
+    "key",
+    "固定区块号让结果可复现，断言资金变化让结论可验证。"
+   ],
+   [
+    "fail",
+    "断言不通过就说明利用失败，高危结论不成立。"
+   ],
+   [
+    "limit",
+    "好 PoC 一条命令能跑通，不依赖私钥或主网交易。"
+   ]
+  ]
+ },
+ {
+  "after": "5. Fuzz 与不变量测试",
+  "title": "模糊测试与不变量测试",
+  "mermaid": "flowchart TB\n  subgraph FZ[\"模糊测试 Fuzz\"]\n    F1[\"Foundry 随机生成 amount\"] --> F2[\"deposit 后 withdraw\"]\n    F2 --> F3[\"断言金库余额为 0\"]\n  end\n  subgraph IV[\"不变量测试 Invariant\"]\n    I1[\"handler 限制调用范围\"] --> I2[\"随机调用序列\"]\n    I3[\"ghost 变量记录期望值\"] --> I4\n    I2 --> I4[\"每步后检查<br/>balance >= totalDeposits\"]\n  end\n  F3 -->|\"断言失败\"| BUG[\"测试失败 = 发现问题\"]\n  I4 -->|\"断言失败\"| BUG",
+  "notes": [
+   [
+    "key",
+    "模糊测试随机化一次调用的输入，不变量测试随机化整段调用序列。"
+   ],
+   [
+    "flow",
+    "handler 限制调用范围，ghost 变量提供期望值，断言写清失败信息。"
+   ],
+   [
+    "limit",
+    "不变量只检查你写下的性质，没写的性质测不出来。"
+   ]
+  ]
+ }
+]

@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>风险评级计算器</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .opts { display: flex; flex-direction: column; gap: 6px; }
+  .opt { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; cursor: pointer; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; color: var(--text); margin: 0; }
+  .opt input { margin-top: 4px; accent-color: var(--accent); }
+  .opt:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+  .opt .d { display: block; font-size: 12.5px; color: var(--text-2); }
+  .matrix { table-layout: fixed; }
+  .matrix td, .matrix th { text-align: center; }
+  .matrix td.hit { outline: 2px solid var(--accent); outline-offset: -2px; font-weight: 700; }
+  .lvl-严重 { background: var(--sell-soft); color: var(--sell); }
+  .lvl-高 { background: var(--warn-soft); color: var(--warn); }
+  .lvl-中 { background: var(--accent-soft); color: var(--accent); }
+  .lvl-低 { background: var(--info-soft); color: var(--info); }
+  .lvl-信息 { background: var(--surface-2); color: var(--text-2); }
+  .result { font-size: 30px; font-weight: 750; padding: 6px 18px; border-radius: 10px; display: inline-block; }
+  textarea { font: inherit; width: 100%; min-height: 150px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-family: var(--mono); font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="back" href="index.html">← 交互实验目录</a>
+    <h1>风险评级计算器</h1>
+  </header>
+  <p class="lead">选择发现的“影响”和“可能性”，得到建议等级，并可调整（运营安全薄弱、已有缓解等）。配套章节：<a href="../assessment/A02-risk-rating-reporting.md">A02 风险评级与报告</a> ｜ 模板：<a href="../templates/T03-finding-report.md">T03 发现报告</a>。</p>
+
+  <div class="grid cols-2">
+    <div class="card">
+      <h3>影响（Impact）</h3>
+      <div class="opts" id="impact"></div>
+    </div>
+    <div class="card">
+      <h3>可能性（Likelihood）</h3>
+      <div class="opts" id="like"></div>
+    </div>
+  </div>
+
+  <h2>结果</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <div><span class="result" id="res">—</span></div>
+      <p class="small muted" id="explain">请先选择影响和可能性。</p>
+      <label class="opt" style="border:0;padding:4px 0"><input type="checkbox" id="adjUp"> 特权角色的密钥/运营安全薄弱（可能性上调一档）</label>
+      <label class="opt" style="border:0;padding:4px 0"><input type="checkbox" id="adjDown"> 已有有效的独立缓解（限额、时间锁、监控；可能性下调一档）</label>
+      <div class="callout info small" id="immunefi">—</div>
+    </div>
+    <div class="card">
+      <h3>矩阵</h3>
+      <div class="table-wrap"><table class="matrix" id="matrix"></table></div>
+    </div>
+  </div>
+
+  <h2>导出</h2>
+  <div class="card">
+    <label for="title">发现标题</label>
+    <input type="text" id="title" placeholder="例如：提币路径未检查授权额度">
+    <textarea id="out" readonly></textarea>
+    <div class="btn-row"><button id="copy">复制 Markdown</button></div>
+    <p class="small muted">等级是建议值，最终定级由评估人结合上下文判断，并在报告中写明理由。</p>
+  </div>
+
+  <footer class="note">本页仅用于学习，矩阵与描述取自本手册 A02，所有数值为示例。</footer>
+</div>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const IMPACT = [
+    ['严重', '直接盗取/永久冻结大量用户资金；协议资不抵债；治理被接管'],
+    ['高', '盗取未领取收益；临时冻结资金；部分用户受损'],
+    ['中', '功能不可用（DoS）；偷 gas；需特定条件才有限损失'],
+    ['低', '无资金损失的异常；偏离规格但无价值损失']
+  ];
+  const LIKE = [
+    ['高', '任何人、一笔交易、无特殊前提即可触发'],
+    ['中', '需要资本、特定市场条件、抢跑或多步骤'],
+    ['低', '需要特权角色、极端条件，或已被其他机制部分缓解']
+  ];
+  const M = { '高': ['严重', '高', '中', '低'], '中': ['高', '高', '中', '低'], '低': ['中', '中', '低', '信息'] };
+  const IMMU = {
+    '严重': 'Immunefi 智能合约严重：直接盗取用户资金、永久冻结资金、治理被操纵、协议资不抵债等。',
+    '高': 'Immunefi 智能合约高危：盗取未领取收益、临时冻结资金等。',
+    '中': 'Immunefi 智能合约中危：合约无法交付承诺的收益、偷 gas、DoS 等。',
+    '低': 'Immunefi 智能合约低危：合约无法交付承诺的收益但不损失价值等。',
+    '信息': '信息项：不影响安全，作为建议记录。'
+  };
+  const iNames = IMPACT.map(x => x[0]), lNames = ['高', '中', '低'];
+  function radios(id, list, name) {
+    $(id).innerHTML = list.map(([n, d], i) => '<label class="opt"><input type="radio" name="' + name + '" value="' + n + '"><span><strong>' + n + '</strong><span class="d">' + d + '</span></span></label>').join('');
+  }
+  radios('impact', IMPACT, 'i'); radios('like', LIKE, 'l');
+  function val(name) { const c = document.querySelector('input[name=' + name + ']:checked'); return c ? c.value : null; }
+  function shiftLike(l) {
+    let i = lNames.indexOf(l);
+    if ($('adjUp').checked) i = Math.max(0, i - 1);
+    if ($('adjDown').checked) i = Math.min(2, i + 1);
+    return lNames[i];
+  }
+  function drawMatrix(hitL, hitI) {
+    let h = '<tr><th></th>' + iNames.map(n => '<th>影响：' + n + '</th>').join('') + '</tr>';
+    for (const l of lNames) {
+      h += '<tr><th>可能性：' + l + '</th>' + M[l].map((v, j) => '<td class="lvl-' + v + (l === hitL && iNames[j] === hitI ? ' hit' : '') + '">' + v + '</td>').join('') + '</tr>';
+    }
+    $('matrix').innerHTML = h;
+  }
+  function update() {
+    const i = val('i'), l0 = val('l');
+    if (!i || !l0) { drawMatrix(null, null); return; }
+    const l = shiftLike(l0), lvl = M[l][iNames.indexOf(i)];
+    $('res').textContent = lvl; $('res').className = 'result lvl-' + lvl;
+    $('explain').textContent = '影响 ' + i + ' × 可能性 ' + l0 + (l !== l0 ? '（调整后：' + l + '）' : '') + ' → ' + lvl;
+    $('immunefi').textContent = IMMU[lvl];
+    drawMatrix(l, i);
+    const t = $('title').value.trim() || '（填写标题）';
+    $('out').value = '### ' + t + '\n\n- 严重度：' + lvl + '\n- 影响：' + i + '\n- 可能性：' + l0 + (l !== l0 ? ' → ' + l + '（已调整，写明理由）' : '') + '\n- 位置：\n- 描述：\n- 建议：\n- 状态：未处理\n';
+  }
+  document.addEventListener('change', update);
+  $('title').addEventListener('input', update);
+  $('copy').addEventListener('click', () => { $('out').select(); try { navigator.clipboard.writeText($('out').value); } catch (e) { document.execCommand('copy'); } });
+  drawMatrix(null, null);
+})();
+</script>
+<script>
+/* 在单文件阅读版（handbook.html）的 iframe 中打开时，把章节链接交给外层阅读器处理 */
+(function () {
+  if (window.parent === window) return;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href');
+    if (/\.md(#|$)/.test(h)) { e.preventDefault(); window.parent.postMessage({ cexNavMd: h }, '*'); }
+  });
+})();
+</script>
+</body>
+</html>

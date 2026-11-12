@@ -1,0 +1,309 @@
+# 章节：08 MEV 与签名安全：顺序可以被买，签名可以被重放
+
+## 思考题（共 3 题，按顺序作答）
+Q1. 打开 signature-replay-lab.html，只保留 nonce 和 deadline。哪两种重放仍然成功？
+Q2. 一个自动复投金库每小时把奖励代币换成本金，amountOutMin 用池子当前价格乘以 99% 计算。这个保护有效吗？
+Q3. 在 Mantle 上，用户交易不进入公开内存池。三明治攻击还可能发生吗？谁有能力发起？
+
+## 章节正文
+
+# 08 MEV 与签名安全：顺序可以被买，签名可以被重放
+
+学习目标：读完本章，你能——
+
+- 解释抢跑、三明治、尾随三种 MEV，并说出用户侧和协议侧的防御。
+
+- 列出一份安全签名消息必须包含的 5 个字段，并解释缺少每个字段会被怎样重放。
+
+- 比较 BNB Chain、TRON、Mantle 三条链的交易排序机制对 MEV 的影响。
+
+前置章节：07 预言机与闪电贷交互实验：signature-replay-lab.html ｜ 示例合约：examples/06-SignatureReplay.sol
+
+## 1. 一句话理解
+
+交易在被打包之前是公开的，打包顺序由别人决定；签名在被使用之后仍然存在，能否再次使用取决于你签了什么。
+
+MEV（Maximal Extractable Value，最大可提取价值）：区块生产者或搜索者通过调整、插入、排除交易所能获得的额外收益。
+
+🎯 打个比方：
+
+- MEV：你在拍卖会上举牌前，大声说出了你的最高出价。旁边的人抢先用低一点的价格买下，再加价转卖给你（三明治）。
+
+- 签名重放：你签了一张"支付 100 元"的支票，没写日期、没写收款银行、没写支票编号。拿到支票的人可以复印它，去每一家银行各兑一次。
+
+比喻的局限：拍卖会上你能看到谁插了队。链上的三明治交易和你的交易在同一个区块里，普通用户往往只看到"成交价比预期差"。
+
+## 2. MEV 的三种形态
+
+ | 
+
+ | 类型
+ | 顺序
+ | 攻击者利用什么
+ | 受害者
+
+ | 抢跑（Front-running）
+ | 攻击者 → 受害者
+ | 受害者交易的信息（例如"先到先得"的奖励）
+ | 原交易者
+
+ | 三明治（Sandwich）
+ | 攻击者买 → 受害者买 → 攻击者卖
+ | 受害者设置的滑点容忍度
+ | 交易者
+
+ | 尾随（Back-running）
+ | 受害者 → 攻击者
+ | 受害者交易制造的价差或清算机会
+ | 通常无直接受害者
+
+### 2.1 三明治攻击
+
+[图]
+sequenceDiagram
+  autonumber
+  participant V as 受害者
+  participant M as 公开内存池
+  participant S as 搜索者
+  participant B as 区块构建者
+  participant P as AMM 池
+  V->>M: swap 10 ETH → USDC，最少得到 19,000 USDC（滑点 5%，示例）
+  S->>M: 发现这笔交易
+  S->>B: 捆绑：[S 买入, V 的交易, S 卖出]
+  B->>P: ① S 买入 USDC，推高价格
+  B->>P: ② V 以更差价格成交，刚好满足最小输出
+  B->>P: ③ S 卖回，赚取差价
+[/图]
+
+读图要点：
+
+- 搜索者的最大利润由受害者的 amountOutMin 决定。滑点设得越宽，被夹得越狠。
+
+- 受害者的交易没有失败。它只是以允许范围内最差的价格成交。
+
+- 局限：如果受害者通过私有通道提交交易，搜索者在打包前看不到它。
+
+### 2.2 防御
+
+ | 
+
+ | 层级
+ | 措施
+
+ | 用户
+ | 设置合理滑点；使用私有交易通道（如 Flashbots Protect 一类服务）
+
+ | 前端
+ | 默认滑点保守；按池子深度动态计算
+
+ | 合约
+ | 所有交换函数必须接受 minOut 和 deadline 参数；不要在合约内部用现货价计算 minOut（那等于没有保护）
+
+ | 协议设计
+ | 提交-揭示（Commit-Reveal）；批量拍卖（同一批订单统一价格清算）
+
+⚠️ 警告：合约内部调用 DEX 时写 amountOutMin = 0，等于告诉全世界"我接受任何价格"。金库、自动复投合约、清算合约常犯这个错误。
+
+### 2.3 三条链的排序机制
+
+ | 
+
+ | 链
+ | 谁决定顺序
+ | 对 MEV 的影响（截至 2026 年公开资料）
+
+ | BNB Chain
+ | 验证者轮流出块（PoSA）；出块间隔经 Lorentz、Maxwell 硬分叉缩短到 0.75 秒
+ | 有公开内存池和区块构建者市场；出块更快，抢跑窗口更短，但三明治依然存在
+
+ | TRON
+ | 27 个超级代表轮流出块
+ | 能量价格是固定的网络参数，没有 EIP-1559 优先费（TRON 官方文档），所以不能靠"出更高 gas 价"插队；但出块者本身仍可以决定顺序
+
+ | Mantle
+ | 单一中心化排序器
+ | 排序器按自己的规则排序。L2BEAT 列出风险："运营者可以抢跑用户交易提取 MEV"。用户依赖运营者的诚实
+
+💡 注意："没有公开内存池"不等于"没有 MEV"。它只是把排序权从市场集中到了一个运营者手里。
+
+## 3. 签名安全：一份签名能被用几次
+
+链下签名在 DeFi 中很常见：permit（免 gas 授权）、元交易（Meta-transaction）、订单簿签名订单、跨链桥验证者签名、空投领取凭证。
+
+### 3.1 签名必须绑定的五个字段
+
+ | 
+
+ | 字段
+ | 缺少它会怎样
+ | 被重放的方式
+
+ | nonce
+ | 同一签名可以反复提交
+ | 同一合约重放
+
+ | chainId
+ | 签名在分叉链或多链部署上同样有效
+ | 跨链重放
+
+ | verifyingContract
+ | 同一代码部署两次，签名在两个合约都有效
+ | 跨合约重放
+
+ | deadline
+ | 签名永久有效
+ | 用户撤销意图后仍被使用
+
+ | 函数意图（typehash）
+ | 为 A 函数签的数据被拿去调用 B 函数
+ | 跨函数重放
+
+EIP-712 把 name、version、chainId、verifyingContract 合成"域分隔符"（Domain Separator），把消息结构合成"类型哈希"（typehash）。正确使用 EIP-712 可以一次解决后四个字段。
+
+// ❌ 漏洞：只签了 to 和 amount
+bytes32 h = keccak256(abi.encodePacked(to, amount));
+address signer = ecrecover(toEthSigned(h), v, r, s);
+require(signer == admin);
+
+// ✅ 修复：EIP-712 + nonce + deadline + OpenZeppelin ECDSA
+bytes32 structHash = keccak256(abi.encode(
+    CLAIM_TYPEHASH, to, amount, nonces[to]++, deadline));
+bytes32 digest = _hashTypedDataV4(structHash);   // 含 chainId 与合约地址
+address signer = ECDSA.recover(digest, sig);       // 拒绝高 s 值与零地址
+require(signer == admin && block.timestamp <= deadline);
+
+去 signature-replay-lab.html，逐个勾掉字段，看哪种重放会成功。
+
+### 3.2 三个经典陷阱
+
+- ecrecover 返回零地址：签名无效时 ecrecover 返回 address(0)，不会回滚。如果 admin 未初始化（默认为 0），任何无效签名都能通过。
+
+- 签名可塑性（Malleability）：对同一消息，(r, s) 和 (r, n − s) 都是有效签名。如果用"签名本身"作为已使用标记，攻击者翻转 s 就得到一个"新"签名。修复：用 nonce 或消息哈希做标记，并使用拒绝高 s 值的库。
+
+- abi.encodePacked 碰撞：encodePacked("ab", "c") 和 encodePacked("a", "bc") 结果相同。签名多个动态类型时使用 abi.encode。
+
+### 3.3 permit 的两面
+
+- 抢跑型 DoS：用户提交 permitAndDeposit(签名)。攻击者从内存池复制签名，先单独调用 token.permit(...)。用户的交易因 nonce 已使用而回滚。修复：把 permit 包在 try/catch 里，失败后检查授权额度是否已经足够。
+
+- 钓鱼：permit 是链下签名，不花 gas，钱包界面常常只显示一段十六进制数据。用户签下后，攻击者可以随时拿去执行。
+
+### 3.4 TRON 上的签名差异
+
+TRON 官方开发文档列出了几个和签名相关的 TVM 差异：
+
+ | 
+
+ | 差异
+ | 影响
+
+ | CHAINID 返回创世区块 ID 的后 4 字节（主网 728126428），而不是一个小整数
+ | EIP-712 域分隔符仍然能区分链，但不要在代码里写死以太坊风格的链 ID
+
+ | 账户没有 nonce；交易用 TAPOS 防重放，默认 60 秒过期
+ | 交易层的防重放机制不同；合约层的签名防重放仍然要自己实现 nonce
+
+ | 地址在链边界带 0x41 前缀，VM 内部是 20 字节
+ | 链下签名工具和合约对地址的编码必须一致
+
+💡 注意：账户多权限（04 章）意味着一个 TRON 地址可能需要多个签名人。合约里用 ecrecover 只能验证单个私钥签名；TRON 提供了 ValidateMultiSign 预编译合约用于验证账户多签（TRON 官方文档）。
+
+## 4. 签名界面的安全：Bybit（2025 年 2 月）
+
+签名再安全，签名人也可能签错东西。公开分析报告（Sygnia、Verichains 等）指出：
+
+- 攻击者篡改了 Safe{Wallet} 的前端代码，只针对 Bybit 的冷钱包多签地址生效。
+
+- 签名人看到的是一笔正常的转账。实际签名的交易是 delegatecall 到攻击者合约，把多签钱包的实现合约替换成恶意合约。
+
+- 多签阈值满足后，攻击者转走约 40 万 ETH 及其他资产，总计约 15 亿美元。公开报道归因于朝鲜 Lazarus 组织。
+
+[图]
+flowchart LR
+  A["前端被篡改"] --> B["签名人看到：普通转账"]
+  A --> C["实际签名：delegatecall → 恶意合约"]
+  B & C --> D["多签阈值满足"]
+  D --> E["钱包实现被替换"]
+  E --> F["攻击者转走全部资产"]
+[/图]
+
+读图要点：
+
+- 多签防的是"单把私钥被盗"。它防不了"所有签名人看到同一个假界面"。
+
+- operation = delegatecall 是高危信号。正常转账不需要 delegatecall。
+
+- 防御：用硬件钱包逐字段核对交易；独立工具解码 calldata；对 delegatecall 和修改实现地址的操作设白名单或额外审批。
+
+同类事故并不罕见。2024 年 7 月，印度交易所 WazirX 的 4/6 多签冷钱包被盗约 2.3 亿美元：签名人在界面上看到的是日常交易，硬件钱包签下的却是升级多签的恶意数据（公开分析）。2025 年 EIP-7702 上线后，又出现了诱导用户签署"委托授权"的钓鱼方式。两者见 C00 以太坊专题 4.9、4.10 节。
+
+💡 注意：这起事故的后续有一个 Mantle 生态的防御案例。攻击者把部分资产换成 Mantle 上 mETH 协议的 cmETH 并尝试提取。mETH 协议有 8 小时提款延迟，团队在延迟期内暂停合约，追回 15,000 cmETH（约 4,300 万美元）（The Block 报道）。见 C03。
+
+## 5. 审计检查点
+
+-  所有交换函数都有 minOut 和 deadline 参数，且不是在合约内部用现货价计算的。
+
+-  所有签名验证使用 EIP-712，包含 nonce、chainId、合约地址、deadline、typehash。
+
+-  使用 OpenZeppelin ECDSA，拒绝零地址和高 s 值。
+
+-  已使用标记基于 nonce 或消息哈希，不基于签名字节。
+
+-  permit 调用有抢跑容错。
+
+-  动态类型签名使用 abi.encode，不使用 encodePacked。
+
+-  部署到 TRON 时，签名工具链和合约对 chainId、地址格式的处理一致。
+
+-  特权操作的签名流程有独立的交易解码与核对步骤。
+
+## 6. 术语表
+
+ | 
+
+ | 术语
+ | 英文
+ | 定义
+
+ | 最大可提取价值
+ | MEV
+ | 通过控制交易顺序获得的额外收益
+
+ | 搜索者
+ | Searcher
+ | 寻找 MEV 机会并提交交易捆绑的人或程序
+
+ | 三明治攻击
+ | Sandwich Attack
+ | 在受害者交易前后各插入一笔交易获利
+
+ | 滑点容忍度
+ | Slippage Tolerance
+ | 用户愿意接受的最差成交价偏离
+
+ | 签名重放
+ | Signature Replay
+ | 把已使用的签名再次提交
+
+ | 域分隔符
+ | Domain Separator
+ | EIP-712 中绑定链 ID 和合约地址的哈希
+
+ | 签名可塑性
+ | Signature Malleability
+ | 同一消息存在多个有效签名
+
+ | 盲签
+ | Blind Signing
+ | 签名人无法看懂自己所签内容
+
+## 7. 思考题
+
+- 打开 signature-replay-lab.html，只保留 nonce 和 deadline。哪两种重放仍然成功？
+
+- 一个自动复投金库每小时把奖励代币换成本金，amountOutMin 用池子当前价格乘以 99% 计算。这个保护有效吗？
+
+- 在 Mantle 上，用户交易不进入公开内存池。三明治攻击还可能发生吗？谁有能力发起？
+
+下一章：09 可升级合约与代理 —— 留给自己的维修门，也是留给攻击者的门。
+

@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>钱包方案对比器</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .scen { display: flex; flex-wrap: wrap; gap: 6px; }
+  .scen button[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); font-weight: 600; }
+  .w-row { display: grid; grid-template-columns: 7.5em minmax(0, 1fr) 2.5em; gap: 8px; align-items: center; font-size: 13px; margin: 4px 0; }
+  .w-row output { font-family: var(--mono); text-align: right; }
+  .bar-cell { position: relative; height: 18px; background: var(--surface-2); border-radius: 4px; overflow: hidden; min-width: 80px; }
+  .bar-cell span { position: absolute; inset: 0 auto 0 0; background: var(--accent); border-radius: 4px; }
+  .rank td { vertical-align: middle; }
+  .rank tr.top td { background: var(--accent-soft); }
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 2px; vertical-align: middle; background: var(--border); }
+  .dot.on { background: var(--info); }
+  .note-list { margin: 6px 0 0; padding-left: 18px; font-size: 13px; }
+  .note-list li { margin: 3px 0; }
+  .redline { color: var(--sell); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="back" href="index.html">← 交互实验目录</a>
+    <h1>钱包方案对比器</h1>
+  </header>
+  <p class="lead">五种密钥方案：助记词软件钱包、硬件钱包、多签、MPC、HSM。先选使用场景，再调整你在意的维度权重，看哪种方案更合适、红线在哪里。配套章节：<a href="../18-wallet-key-management.md">18 钱包与密钥管理</a>、<a href="../23-custody-exchange-ops.md">23 托管与交易所运营</a>、<a href="../15-account-abstraction-wallets.md">15 账户抽象与新型钱包</a>。</p>
+
+  <div class="card">
+    <p class="small muted" style="margin:0">评分（1–5 分）是本手册对各方案<strong>典型实现</strong>的定性判断，用于讨论，不是对任何产品的测评。实现质量和运营流程对结果的影响，往往大于方案本身。</p>
+  </div>
+
+  <h2>1. 选场景</h2>
+  <div class="card">
+    <div class="scen" id="scen"></div>
+    <p class="small" id="scenDesc" style="margin:10px 0 0"></p>
+  </div>
+
+  <h2>2. 调权重</h2>
+  <div class="grid cols-2">
+    <div class="card" id="weights"></div>
+    <div class="card">
+      <h3>维度说明</h3>
+      <ul class="note-list" id="dimDesc"></ul>
+    </div>
+  </div>
+
+  <h2>3. 结果</h2>
+  <div class="card">
+    <div class="table-wrap"><table class="rank"><thead><tr><th>方案</th><th>加权得分</th><th style="min-width:120px"></th><th>红线检查</th></tr></thead><tbody id="rank"></tbody></table></div>
+    <div id="advice" style="margin-top:12px"></div>
+  </div>
+
+  <h2>4. 评分矩阵</h2>
+  <div class="card">
+    <div class="table-wrap"><table><thead id="mHead"></thead><tbody id="mBody"></tbody></table></div>
+    <p class="small muted">每个圆点 = 1 分。点击表头的方案名，可以看它的主要风险和真实案例方向。</p>
+    <div id="schemeNote"></div>
+  </div>
+
+  <footer class="note">评分是定性示例。真实选型需要结合资产规模、团队、合规要求和供应商尽调。</footer>
+</div>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const DIMS = [
+    ['spof', '单点失陷抗性', '一把钥匙、一台设备或一个人被攻破，资产是否就会丢失。'],
+    ['blind', '盲签与社工抗性', '签名人能否在可信设备上看懂自己签的内容；骗签一个人是否足够。'],
+    ['speed', '签名速度', '从发起到上链需要多少人、多少步。热钱包要求秒级。'],
+    ['cost', '运营成本（高分=便宜）', '采购、托管、值班、演练和人员的成本。'],
+    ['recover', '可恢复性', '设备丢失、人员离职、供应商停服后，能否在不泄密的前提下恢复。'],
+    ['audit', '审计与合规', '谁在何时批准了什么，能否留痕、能否满足审计和监管要求。'],
+    ['chains', '链覆盖', '对多链、非 EVM 链、新代币标准的支持程度。'],
+  ];
+  const SCHEMES = {
+    seed: { name: '助记词软件钱包', s: { spof: 1, blind: 1, speed: 5, cost: 5, recover: 3, audit: 1, chains: 5 },
+      risk: ['助记词是唯一的单点：被截屏、被上传到日志、被恶意扩展读取，资产就会丢失。', '浏览器扩展和移动端的发布链路本身是攻击面。'],
+      cases: '方向：Slope 钱包把助记词写入日志（2022）；Trust Wallet 扩展恶意版本导出助记词（2025）。见 18 章。' },
+    hw: { name: '硬件钱包', s: { spof: 3, blind: 3, speed: 3, cost: 4, recover: 3, audit: 2, chains: 4 },
+      risk: ['私钥不离开设备，但签名人仍可能在屏幕上批准一个看不懂的哈希（盲签）。', '助记词备份的物理保管仍是单点。'],
+      cases: '方向：设备本身较少被直接攻破；更多损失来自盲签和助记词备份被盗。见 18、19 章。' },
+    msig: { name: '多签（如 Safe）', s: { spof: 4, blind: 3, speed: 2, cost: 3, recover: 4, audit: 5, chains: 3 },
+      risk: ['阈值的意义取决于签名人的独立性。所有签名人使用同一个前端，前端被篡改就等于一个单点。', '只有部分链有成熟的多签合约；非 EVM 链要另选方案。'],
+      cases: '方向：Bybit（2025，前端被篡改）、WazirX（2024，界面与签名内容不一致）、Radiant（2024，签名人终端被控）。见 18、20、21 章。' },
+    mpc: { name: 'MPC 门限签名', s: { spof: 4, blind: 3, speed: 4, cost: 3, recover: 3, audit: 3, chains: 5 },
+      risk: ['链上只看到一个普通地址，阈值和签名人在链下，外部无法验证。', '如果所有分片服务器在同一个人或同一个云账户下，"门限"只是名义上的。', '依赖供应商的协议实现和密钥刷新流程。'],
+      cases: '方向：Multichain（2023，MPC 节点集中在 CEO 个人云账户）。见 18 章。' },
+    hsm: { name: 'HSM 硬件安全模块', s: { spof: 3, blind: 2, speed: 5, cost: 1, recover: 4, audit: 4, chains: 3 },
+      risk: ['HSM 保护私钥不被导出，但不判断交易是否合理。调用 HSM 的签名服务被攻破，攻击者可以合法地让 HSM 签任何交易。', '需要专门的运维团队和机房或云 HSM 合同。'],
+      cases: '方向：交易所热钱包事故多数不是"私钥被导出"，而是签名服务或审批流程被绕过。见 23 章。' },
+  };
+  const SCEN = {
+    retailSmall: { name: '个人 · 日常小额', desc: '金额小，交互频繁，单人操作。', w: { spof: 2, blind: 4, speed: 5, cost: 5, recover: 3, audit: 0, chains: 3 } },
+    retailBig: { name: '个人 · 大额长期持有', desc: '金额大，很少动用，单人或家庭。', w: { spof: 5, blind: 4, speed: 1, cost: 3, recover: 5, audit: 1, chains: 2 } },
+    treasury: { name: '项目方金库', desc: '金额大，多人共管，需要对社区公开透明。', w: { spof: 5, blind: 5, speed: 2, cost: 2, recover: 4, audit: 5, chains: 3 } },
+    hot: { name: '交易所热钱包', desc: '7×24 自动提币，延迟要求秒级，余额应只占总资产的一小部分。', w: { spof: 3, blind: 2, speed: 5, cost: 3, recover: 4, audit: 4, chains: 5 } },
+    cold: { name: '交易所冷钱包', desc: '大部分用户资产，低频补充热钱包，必须多人审批。', w: { spof: 5, blind: 5, speed: 1, cost: 2, recover: 5, audit: 5, chains: 4 } },
+  };
+  const RED = {
+    retailBig: { seed: '大额长期资产不应只存在软件钱包里。' },
+    treasury: { seed: '金库不能由单把助记词控制。', hw: '单个硬件钱包仍是单人控制。' },
+    cold: { seed: '冷钱包不能是软件钱包。', hw: '单个硬件钱包没有多人审批。' },
+    hot: { seed: '热钱包私钥不能以明文助记词形式存在服务器上。' },
+  };
+  let cur = 'treasury', w = { ...SCEN[cur].w };
+
+  $('scen').innerHTML = Object.entries(SCEN).map(([k, v]) => '<button data-s="' + k + '">' + v.name + '</button>').join('');
+  $('scen').querySelectorAll('button').forEach(b => b.onclick = () => { cur = b.dataset.s; w = { ...SCEN[cur].w }; buildWeights(); render(); });
+  $('dimDesc').innerHTML = DIMS.map(([, n, d]) => '<li><strong>' + n + '</strong>：' + d + '</li>').join('');
+
+  function buildWeights() {
+    $('weights').innerHTML = '<h3>维度权重（0–5）</h3>' + DIMS.map(([k, n]) => '<div class="w-row"><label for="w-' + k + '" style="margin:0">' + n + '</label><input type="range" min="0" max="5" id="w-' + k + '" value="' + w[k] + '"><output>' + w[k] + '</output></div>').join('') +
+      '<div class="btn-row"><button id="resetW">恢复场景默认权重</button></div>';
+    DIMS.forEach(([k]) => { const el = $('w-' + k); el.oninput = () => { w[k] = +el.value; el.nextElementSibling.textContent = el.value; render(); }; });
+    $('resetW').onclick = () => { w = { ...SCEN[cur].w }; buildWeights(); render(); };
+  }
+  function render() {
+    $('scen').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.s === cur));
+    $('scenDesc').textContent = SCEN[cur].desc;
+    const tw = DIMS.reduce((a, [k]) => a + w[k], 0) || 1;
+    const red = RED[cur] || {};
+    const rows = Object.entries(SCHEMES).map(([k, v]) => ({ k, v, score: DIMS.reduce((a, [d]) => a + w[d] * v.s[d], 0) / tw, red: red[k] }));
+    rows.sort((a, b) => (!!a.red - !!b.red) || b.score - a.score);
+    $('rank').innerHTML = rows.map((r, i) => '<tr class="' + (i === 0 && !r.red ? 'top' : '') + '"><td><strong>' + r.v.name + '</strong></td><td class="num">' + r.score.toFixed(2) + '</td><td><div class="bar-cell"><span style="width:' + (r.score / 5 * 100) + '%"></span></div></td><td>' + (r.red ? '<span class="redline">✗ ' + r.red + '</span>' : '<span class="pill buy">通过</span>') + '</td></tr>').join('');
+    const best = rows.find(r => !r.red), second = rows.filter(r => !r.red)[1];
+    const tips = [];
+    if (cur === 'cold' || cur === 'treasury') tips.push('冷钱包和金库的常见组合：多签或 MPC 做审批，每个签名人使用硬件钱包，并在硬件屏幕上独立核对交易内容。');
+    if (cur === 'hot') tips.push('热钱包的常见组合：HSM 或 MPC 保护私钥，签名服务前加独立的风控规则引擎（限额、白名单、速率），余额设上限，定期从冷钱包补充。');
+    if (cur === 'retailBig') tips.push('个人大额：硬件钱包 + 离线保管的助记词备份。金额更大时考虑 2-of-3 多签，把钥匙分散在不同地点。');
+    if (cur === 'retailSmall') tips.push('日常小额：软件钱包可以接受，但只放可以承受损失的金额，大额资产放在另一个硬件钱包地址。');
+    tips.push('得分接近时，决定因素是实现质量和运营流程：签名人独立性、可信显示、演练和供应商尽调。');
+    $('advice').innerHTML = '<div class="callout info small"><strong>建议首选：' + best.v.name + '</strong>' + (second ? '；备选：' + second.v.name : '') + '<ul class="note-list">' + tips.map(t => '<li>' + t + '</li>').join('') + '</ul></div>';
+  }
+  function matrix() {
+    $('mHead').innerHTML = '<tr><th>维度</th>' + Object.entries(SCHEMES).map(([k, v]) => '<th><a href="#" data-k="' + k + '">' + v.name + '</a></th>').join('') + '</tr>';
+    $('mBody').innerHTML = DIMS.map(([d, n]) => '<tr><td>' + n + '</td>' + Object.values(SCHEMES).map(v => '<td>' + [1, 2, 3, 4, 5].map(i => '<span class="dot' + (i <= v.s[d] ? ' on' : '') + '"></span>').join('') + '</td>').join('') + '</tr>').join('');
+    $('mHead').querySelectorAll('a').forEach(a => a.onclick = e => { e.preventDefault(); const v = SCHEMES[a.dataset.k]; $('schemeNote').innerHTML = '<div class="callout warn small"><strong>' + v.name + ' 的主要风险</strong><ul class="note-list">' + v.risk.map(r => '<li>' + r + '</li>').join('') + '</ul><div>' + v.cases + '</div></div>'; });
+  }
+  buildWeights(); render(); matrix();
+})();
+</script>
+<script>
+/* 在单文件阅读版的 iframe 中打开时，把章节链接交给外层阅读器处理 */
+(function () {
+  if (window.parent === window) return;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href');
+    if (/\.md(#|$)/.test(h)) { e.preventDefault(); window.parent.postMessage({ cexNavMd: h }, '*'); }
+  });
+})();
+</script>
+</body>
+</html>

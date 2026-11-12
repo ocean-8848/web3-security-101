@@ -1,0 +1,7 @@
+{
+ "answers": [
+  "至少有这些环节：<br>1. 终端安全：签名人的电脑不是专机，能收文件、装软件，被木马入侵（Radiant 就是收到伪装成前承包商的文件）。<br>2. 盲签：硬件钱包不解析 Safe 交易，签名人看不懂所签内容，却签了 <code>transferOwnership</code>。<br>3. 独立性与阈值：7 人是否实际由少数人控制，4/7 能否被同时钓鱼；还有缺少带外确认、高危操作审批、时间锁与限额。",
+  "做法是用独立于构造系统的工具，自己解码 calldata，逐字段核对，再签名。要核对：目标合约地址、调用的函数、金额与收款地址，以及是不是 <code>delegatecall</code>。<br>出现 <code>delegatecall</code>、升级实现、换签名人、<code>transferOwnership</code> 这类高危操作时，应当立即高度警惕，并走带外确认（电话、线下确认交易哈希）。",
+  "因为三起事故的合约本身都没有新漏洞，失守的是「人签了什么」。Bybit：Safe 前端被篡改，签名数据是恶意的，用 <code>delegatecall</code> 替换了实现。WazirX：界面与实际签名数据不一致。Radiant：终端被木马入侵，盲签 <code>transferOwnership</code>。<br>这三起即使阈值很高、合约很标准也挡不住，所以本章建议把 60% 精力放在签名流程上。"
+ ]
+}

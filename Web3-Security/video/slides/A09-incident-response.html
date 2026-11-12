@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A09 应急响应</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .ana .card { font-size: 30px; display: flex; flex-direction: column; gap: 10px; min-height: 220px; }
+  .ana .card .a { color: var(--text-2); font-size: 27px; }
+  .sep { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .sep .card { font-size: 29px; display: flex; flex-direction: column; gap: 12px; min-height: 340px; }
+  .sep .card h3 { margin: 0; font-size: 40px; }
+  .sep .card .kv { display: grid; grid-template-columns: 150px 1fr; gap: 8px 14px; font-size: 28px; }
+  .sep .card .kv span:nth-child(odd) { color: var(--text-2); }
+  .pm { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .pm .card { font-size: 27px; padding: 16px 20px; min-height: 150px; display: flex; flex-direction: column; gap: 6px; }
+  .pm .card .n { font-family: var(--mono); color: var(--gold); font-weight: 700; font-size: 32px; }
+  .pm .card .d { color: var(--text-2); font-size: 24px; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="A09" data-title="应急响应：评估之后，出事了怎么办">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="openStep">
+    <div class="kicker">合约安全 · 评估篇 · A09</div>
+    <h1>事故中最稀缺的，<br>是<span class="hl">时间</span></h1>
+    <div class="row" style="gap:28px">
+      <div class="card col" id="o5" style="flex:1"></div>
+      <div class="card col" id="o60" style="flex:1"></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到评估篇第9集，应急响应。前面八集都在防止事故。这一集假设，防线已经被突破了。先记住一句话，事故中最稀缺的，是时间。</li>
+      <li>算一个示例。一个合约被攻击，攻击者每分钟能转走50万美元。如果你在5分钟内发现并暂停，损失是250万。</li>
+      <li>如果60分钟后才发现，损失是3000万，差了12倍。而能在几分钟内暂停合约、联系对的人、做出决定，这些能力必须平时准备好。事故中，来不及临时发明。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="像大楼的消防预案" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>应急响应像消防预案：火起来时没人有空翻手册</h2>
+    <div class="ana">
+      <div class="card" data-k="0"><b>提前划好疏散路线</b><div class="hl">→ 预案与决策树</div></div>
+      <div class="card" data-k="0"><b>装好喷淋</b><div class="hl">→ 自动限额、自动暂停</div></div>
+      <div class="card" data-k="1"><b>平时做演习</b><div class="hl">→ 桌面推演</div></div>
+    </div>
+    <div class="card warn fs30" data-k="2">比喻不准的地方：火灾蔓延有物理速度；链上攻击可能<b>在一个区块内完成</b>。所以"喷淋"比"人工拉警报"更关键。</div>
+    <ol class="say">
+      <li>打个比方，应急响应像大楼的消防预案。火灾时没人有空翻手册。所以要提前划好疏散路线，对应预案和决策树。要装好喷淋，对应链上的自动限额和自动暂停。</li>
+      <li>还要平时做演习，真起火时，大家的动作才是肌肉记忆。对应的是桌面推演。</li>
+      <li>比喻不准的地方在于，火灾蔓延有物理速度。链上攻击可能在一个区块，也就是几秒内完成。所以链上的喷淋，也就是限额和自动暂停，比人工拉警报更关键。</li>
+    </ol>
+  </section>
+
+  <!-- 3 准备项 -->
+  <section class="scene" data-title="上线前必须就绪" data-onstep="rowStep">
+    <div class="kicker">准备阶段 · 写进上线门禁 T04</div>
+    <h2>七个准备项</h2>
+    <table class="t sm">
+      <thead><tr><th>准备项</th><th>要求</th></tr></thead>
+      <tbody>
+        <tr><td>暂停能力</td><td>有紧急暂停开关，且与升级权限<b class="hl">分离</b></td></tr>
+        <tr><td>暂停权限持有人</td><td>少数可信角色，24 小时可响应</td></tr>
+        <tr><td>链上限额</td><td>单笔、单位时间的提取与铸造上限</td></tr>
+        <tr><td>监控与告警</td><td>每条告警有负责人和响应时限</td></tr>
+        <tr><td>联系人清单</td><td>值班、审计方、安全公司、交易所、发行方、桥、预言机</td></tr>
+        <tr><td>预案手册</td><td>角色、权限、决策树、沟通模板</td></tr>
+        <tr><td>紧急密钥流程</td><td>紧急操作的密钥保管与启用流程</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>上线之前，有七项必须就绪，它们都写进上线门禁。第一，暂停能力。有紧急暂停开关，而且和升级权限分离，下一页专门讲为什么。第二，暂停权限的持有人，少数可信角色，24小时都能响应。</li>
+      <li>第三，链上限额，单笔和单位时间的提取、铸造上限。第四，监控和告警，每一条告警都有负责人和响应时限。</li>
+      <li>第五，联系人清单。内部值班、外部审计方、安全公司，还有交易所、稳定币发行方、跨链桥和预言机的运营方。出事时没有时间去找邮箱。</li>
+      <li>第六，预案手册，写清角色、权限、决策树和沟通模板。第七，紧急密钥的保管和启用流程。不要在事故中，才发现关键的密钥找不到。</li>
+    </ol>
+  </section>
+
+  <!-- 4 暂停 vs 升级 -->
+  <section class="scene" data-title="暂停与升级为什么要分离" data-onstep="marks">
+    <div class="kicker">设计要点 · 示例配置</div>
+    <h2>一个要快，一个要慢</h2>
+    <div class="sep">
+      <div class="card sell" data-k="0"><h3>暂停 · 要快</h3>
+        <div class="kv"><span>目的</span><span>止血，可逆</span><span>持有人</span><span>小多签，如 2/4 值班</span><span>延迟</span><span class="down"><b>无延迟</b></span><span>恢复</span><span>需要更高门槛</span></div></div>
+      <div class="card info" data-k="1"><h3>升级 · 要慢</h3>
+        <div class="kv"><span>目的</span><span>改变合约逻辑</span><span>持有人</span><span>大多签 + 时间锁</span><span>延迟</span><span class="blue"><b>如 48 小时</b></span><span>可见性</span><span>公开，用户可退出</span></div></div>
+    </div>
+    <div class="card warn fs30" data-k="2">混在一起：要么暂停要等 48 小时，要么升级也能秒级完成 —— <b>两头都不安全</b>。</div>
+    <ol class="say">
+      <li>为什么暂停和升级要分离？因为它们一个要快，一个要慢。暂停的目的是止血，而且可逆。示例配置是一个小多签，比如4个值班人里任意2个，没有延迟。恢复则需要更高的门槛。</li>
+      <li>升级的目的是改变合约逻辑，影响巨大，不可轻易撤回。示例配置是大多签加上48小时时间锁，公开可见，让用户有时间退出。</li>
+      <li>如果两者混在一起，要么暂停也要等48小时，事故中完全来不及；要么升级也能秒级完成，攻击者拿到这个权限就能改写一切。两头都不安全。</li>
+    </ol>
+  </section>
+
+  <!-- 5 监控 -->
+  <section class="scene" data-title="监控什么" data-onstep="rowStep">
+    <div class="kicker">监控与告警</div>
+    <h2>七类信号，发现要比攻击者快</h2>
+    <table class="t sm">
+      <thead><tr><th>监控项</th><th>触发条件 · 示例</th><th>对应风险</th></tr></thead>
+      <tbody>
+        <tr><td>大额转出</td><td>单笔或单位时间超阈值</td><td>资金被盗</td></tr>
+        <tr><td>权限变更</td><td>owner、admin、签名人、实现地址变化</td><td>夺权、后门</td></tr>
+        <tr><td>升级与初始化</td><td>任何 upgrade、initialize 事件</td><td>升级攻击</td></tr>
+        <tr><td>价格异常</td><td>与参考价偏离、喷价</td><td>操纵</td></tr>
+        <tr><td>供应异常</td><td>增发、桥两侧供应不一致</td><td>伪造铸造</td></tr>
+        <tr><td>授权激增</td><td>大量用户授权给同一陌生地址</td><td>前端被劫持</td></tr>
+        <tr><td>冷钱包异动</td><td>任何一笔交易</td><td>签名被骗</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>监控什么？七类信号。大额转出，单笔或单位时间超过阈值，对应资金被盗。权限变更，owner、管理员、签名人或者实现地址发生变化，对应夺权和后门。</li>
+      <li>升级和初始化事件，任何一次都要告警。价格异常，和参考价偏离，或者突然喷价，对应操纵。</li>
+      <li>供应异常，代币增发，或者跨链桥两侧的供应量对不上，对应伪造铸造。授权激增，大量用户突然授权给同一个陌生地址，往往意味着前端被劫持了。</li>
+      <li>最后是冷钱包异动。冷钱包平时几乎不动，任何一笔交易都应该告警。还要记住，告警发到没人看的频道，等于没有告警。每条告警都要有负责人和响应时限。</li>
+    </ol>
+  </section>
+
+  <!-- 6 决策树 -->
+  <section class="scene" data-title="响应决策树" data-onstep="treeStep">
+    <div class="kicker">响应阶段 · 决策树</div>
+    <h2>先止血，后调查</h2>
+    <svg id="tree" width="1640" height="600" viewBox="0 0 1640 600"></svg>
+    <ol class="say">
+      <li>告警来了，按决策树走。第一个问题，是真实事件吗？目标是5到15分钟内判断。是误报，记录下来并调整阈值。</li>
+      <li>是真实事件，或者无法排除，就问第二个问题，能暂停吗？能，立刻暂停合约，先止血。暂停几乎总是对的第一步，它的代价是业务中断，通常远小于继续失血。</li>
+      <li>不能暂停，就降低暴露。比如撤出流动性、撤销授权，或者让交易所下架充提。</li>
+      <li>然后评估范围和损失，再问，资金还在被转走吗？如果是，马上联系交易所、稳定币发行方和桥，请求冻结和监控。被盗资金要变现，通常要经过它们。</li>
+      <li>之后是沟通与调查，再决定是否与攻击者谈判，最后修复、复审、恢复，以及事后复盘。注意，确认真实这一步不要拖太久。宁可暂停后发现是误报，也不要观望到资金流出。</li>
+    </ol>
+  </section>
+
+  <!-- 7 损失窗口 + 限额 -->
+  <section class="scene" data-title="限额把损失封顶" data-onstep="winStep">
+    <div class="kicker">数字为示例</div>
+    <h2>发现要快，限额要在</h2>
+    <svg id="win" width="1640" height="560" viewBox="0 0 1640 560"></svg>
+    <ol class="say">
+      <li>把开场的数字画出来。横轴是时间，纵轴是累计损失。攻击者每分钟转走50万，没有任何限额。</li>
+      <li>5分钟发现并暂停，损失250万。60分钟才暂停，损失3000万。</li>
+      <li>现在加上一条链上限额，示例里每小时最多转出500万。同样是60分钟才发现，损失也不会超过500万。</li>
+      <li>这就是喷淋的意义。人工响应决定你能多快止血，限额决定最坏的情况是多少。两者都要有。</li>
+    </ol>
+  </section>
+
+  <!-- 8 暂停之后 + 谈判 -->
+  <section class="scene" data-title="暂停之后与对攻击者沟通" data-onstep="marks">
+    <div class="kicker">预先回答的问题</div>
+    <h2>暂停不是终点</h2>
+    <div class="grid3">
+      <div class="card" data-k="0"><b>暂停期间能提款吗？</b><div class="muted fs26">同时冻结提款，可能引发恐慌</div></div>
+      <div class="card" data-k="0"><b>谁有权恢复？条件是什么？</b><div class="muted fs26">恢复前要完成哪些验证</div></div>
+      <div class="card" data-k="0"><b>是否需要补偿或分期恢复？</b><div class="muted fs26">积压请求一次放开会冲垮流动性</div></div>
+    </div>
+    <div class="card gold fs30" data-k="1"><b>白帽协议</b>：链上留言，提出"归还大部分、保留一笔赏金、不追究"。<br>是否这样做、怎样措辞 —— <b>法务与管理层决定</b>，提前沟通，不由技术人员临时决定。</div>
+    <div class="card warn fs28" data-k="2">对方若是有组织的国家级团队，谈判成功率低 → 重点转向追踪与联合冻结。所有沟通留痕。</div>
+    <ol class="say">
+      <li>暂停不是终点。有三个问题要在预案里预先回答。暂停期间，用户能不能提款？如果同时冻结提款，可能引发恐慌。谁有权恢复，条件是什么，恢复前要完成哪些验证？是否需要补偿，或者分期恢复？积压的请求一次放开，可能冲垮流动性。</li>
+      <li>还有一个问题，要不要和攻击者沟通。部分事故中，项目方会在链上给攻击者留言，提出白帽协议。通常是归还大部分资金，保留一笔赏金，并承诺不追究。这是常见做法，但是否这样做、怎样措辞，是法务和管理层的决定。要提前沟通好，不能由技术人员临时拍板。</li>
+      <li>另外，如果对方是有组织的国家级团队，谈判的成功率很低，重点要转向链上追踪和联合冻结。所有沟通都要留痕。</li>
+    </ol>
+  </section>
+
+  <!-- 9 对外沟通 -->
+  <section class="scene" data-title="对外沟通" data-onstep="rowStep">
+    <div class="kicker">沟通对象与原则</div>
+    <h2>只说已确认的事实，固定更新节奏</h2>
+    <table class="t sm">
+      <thead><tr><th>对象</th><th>内容</th><th>时机</th></tr></thead>
+      <tbody>
+        <tr><td>内部值班与管理层</td><td>事实、已采取措施、下一步</td><td>立即</td></tr>
+        <tr><td>用户</td><td>已知情况、风险提示、建议操作（如撤销授权）、下次更新时间</td><td>确认后尽快</td></tr>
+        <tr><td>合作方与相关协议</td><td>影响范围、需要它们做的动作</td><td>尽早</td></tr>
+        <tr><td>监管与执法</td><td>法务主导</td><td>按合规要求</td></tr>
+        <tr><td>公众</td><td>事后复盘</td><td>事态稳定后</td></tr>
+      </tbody>
+    </table>
+    <div class="card info fs28" data-k="2">原则：已确认的才说 · 不确定就说"正在调查" · 没有证据不指责具体对象 · 固定更新节奏，如每 2 小时</div>
+    <ol class="say">
+      <li>技术之外还有沟通。对内部值班和管理层，立即同步事实、已采取的措施和下一步。对用户，确认后尽快发布，说清已知情况、风险提示和建议操作，比如撤销对某个合约的授权，并承诺下一次更新的时间。</li>
+      <li>对合作方和相关协议，尽早说清影响范围，以及需要它们做什么。监管和执法由法务主导。公众层面的完整复盘，等事态稳定后再发。</li>
+      <li>沟通有四条原则。只陈述已确认的事实。不确定的，明说正在调查。没有证据时，不指责具体对象。固定更新的节奏，比如每两小时一次，并且做到。</li>
+    </ol>
+  </section>
+
+  <!-- 10 桌面推演 -->
+  <section class="scene" data-title="桌面推演" data-onstep="ttStep">
+    <div class="kicker">演练 · 60 到 90 分钟</div>
+    <h2>不动真实系统，围着桌子"演"一次事故</h2>
+    <div class="row">
+      <div class="col" style="flex:1;gap:14px" id="ttFlow"></div>
+      <div class="card col" style="flex:0.9" id="ttBank"></div>
+    </div>
+    <ol class="say">
+      <li>预案要靠演练才能保持可用。性价比最高的是桌面推演，不动真实系统，大家围着桌子演一次事故，60到90分钟。第一步，选一个场景。比如，监控发现冷钱包向陌生地址发起一笔大额转账，签名人说自己没有操作。</li>
+      <li>第二步，主持人逐步释放信息，每10分钟一条新情况。资金还在转吗？前端被改了吗？有人说自己可能被钓鱼了。</li>
+      <li>第三步，参与者按预案行动，并说出理由。谁拉暂停，联系谁，对用户怎么说。</li>
+      <li>第四步，记录卡点。谁不知道联系人在哪，谁没有权限，预案哪里没写。第五步，复盘后更新预案，每一项指定负责人和期限。</li>
+      <li>右边是一个题库，可以轮流演。冷钱包异常转出，代币被升级后增发砸盘，接入的第三方协议被攻破，前端被劫持，预言机喂价异常，关键开发者的电脑被入侵。</li>
+    </ol>
+  </section>
+
+  <!-- 11 事后复盘 -->
+  <section class="scene" data-title="事后复盘" data-onstep="marks">
+    <div class="kicker">Post-mortem · 目的是学习，不是追责</div>
+    <h2>七个部分，最后一部分最重要</h2>
+    <div class="pm">
+      <div class="card" data-k="0"><span class="n">1</span>摘要<div class="d">发生了什么，影响多大</div></div>
+      <div class="card" data-k="0"><span class="n">2</span>时间线<div class="d">精确到分钟：检测、决策、行动</div></div>
+      <div class="card" data-k="1"><span class="n">3</span>根因<div class="d">技术根因 + 流程根因</div></div>
+      <div class="card" data-k="1"><span class="n">4</span>影响<div class="d">资金、用户、业务</div></div>
+      <div class="card" data-k="2"><span class="n">5</span>做得好 / 不好</div>
+      <div class="card" data-k="2"><span class="n">6</span>改进项<div class="d">每项有负责人和截止日期</div></div>
+      <div class="card gold" data-k="3" style="grid-column: span 2"><span class="n">7</span>回流到评估体系<div class="d">暴露了哪个缺失的检查项？更新 A01 清单与 T01</div></div>
+    </div>
+    <ol class="say">
+      <li>事故处理完，要写复盘。目的是学习，不是追责。一份合格的复盘有七个部分。摘要，发生了什么，影响多大。时间线，精确到分钟，包括检测、决策和行动。</li>
+      <li>根因，分技术根因和流程根因。流程根因回答的是，为什么没有被提前发现。然后是影响，资金、用户和业务。</li>
+      <li>做得好的和做得不好的。改进项，每一项都有负责人和截止日期。</li>
+      <li>最后一部分最重要，回流到评估体系。这起事故暴露了哪个缺失的检查项？更新评估清单和资料清单。无论是自家的事故还是行业的事故，每一起都应该至少产生一个新的检查项或者不变量。否则，复盘只是一份文档。</li>
+    </ol>
+  </section>
+
+  <!-- 12 练一练 -->
+  <section class="scene" data-title="练一练" data-onstep="marks">
+    <div class="kicker">练一练 · 暂停视频想一想</div>
+    <h2>凌晨 3 点，冷钱包异动告警，值班人联系不上签名人</h2>
+    <div class="grid2">
+      <div class="card" data-k="0"><b>预案里缺了什么？</b><div class="muted fs28">先自己想三条</div></div>
+      <div class="card buy" data-k="1"><b>参考</b><div class="fs28">· 每个签名人有<b>备份联系人</b>与轮值表<br>· 暂停权限不依赖冷钱包签名人<br>· 冷钱包大额转出有<b>时间锁</b>，给人留出反应时间<br>· 推演里从未演过"夜间 + 联系不上"</div></div>
+    </div>
+    <ol class="say">
+      <li>来练一练。凌晨3点，监控发出冷钱包异动告警。值班人员打电话给签名人，一个都联系不上。你的预案里缺了什么？可以先暂停想一想。</li>
+      <li>参考答案。每个签名人要有备份联系人和轮值表。暂停权限不应该依赖冷钱包的签名人。冷钱包的大额转出要有时间锁，给人留出反应时间。还有，桌面推演里，可能从来没演过夜间加联系不上这种情况。下一次推演，就演它。</li>
+    </ol>
+  </section>
+
+  <!-- 13 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">能力在<span class="hl">上线前</span>备好：暂停与升级分离、限额、有人响应的告警。</li>
+      <li data-step="1"><span class="hl">先止血，后调查</span>；宁可误停，不要观望。谈判由法务和管理层决定。</li>
+      <li data-step="2">推演保持预案可用；复盘必须<span class="hl">回流成新的检查项</span>。</li>
+    </ul>
+    <h2 data-show="3">下一集：A10 实例分析 · 钱包里的 Audit 页</h2>
+    <div class="path" data-show="3">
+      <div class="card info"><div class="n">?</div><b>信息从哪来</b><div class="d">已公开的与推断的</div></div>
+      <div class="card gold"><div class="n">8</div><b>对照八条红线</b><div class="d">扫描能发现什么，发现不了什么</div></div>
+      <div class="card buy"><div class="n">0</div><b>第 0 步分诊</b><div class="d">怎样把扫描用在尽调里</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，应急能力要在上线前备好。暂停和升级权限分离，链上限额，以及有人响应的告警。</li>
+      <li>第二，先止血，后调查。宁可误停，也不要观望。是否和攻击者谈判，由法务和管理层决定。</li>
+      <li>第三，用桌面推演保持预案可用。每一次复盘，都要回流成新的检查项。</li>
+      <li>下一集是评估篇的最后一集，一个实例分析。钱包里代币页面上的 Audit 信息是怎么来的，能发现什么、发现不了什么，以及怎样把它用作尽调的第0步。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line, circle } = K;
+
+  function openStep(el, st) {
+    const a = el.querySelector('#o5'), b = el.querySelector('#o60');
+    a.innerHTML = '<div class="muted fs28">5 分钟内发现并暂停</div><div class="big" style="font-size:72px">' + (st >= 1 ? '<span class="up">250 万$</span>' : '—') + '</div><div class="muted fs26">每分钟 50 万 × 5</div>';
+    b.innerHTML = '<div class="muted fs28">60 分钟后才暂停</div><div class="big" style="font-size:72px">' + (st >= 2 ? '<span class="down">3,000 万$</span>' : '—') + '</div><div class="muted fs26">每分钟 50 万 × 60 · 差 12 倍</div>';
+    a.style.opacity = st >= 1 ? 1 : .15; b.style.opacity = st >= 2 ? 1 : .15;
+  }
+
+  function treeStep(el, st) {
+    const svg = el.querySelector('#tree'); svg.innerHTML = '';
+    const op = k => st >= k ? 1 : .12;
+    const dia = (cx, cy, t, k, hot) => { svg.appendChild(svgEl('polygon', { points: `${cx},${cy - 70} ${cx + 150},${cy} ${cx},${cy + 70} ${cx - 150},${cy}`, fill: hot ? C.curFill : C.panel, stroke: hot ? C.gold : C.line, 'stroke-width': hot ? 5 : 3, opacity: op(k) })); t.forEach((s, i) => T(svg, cx, cy + (i - (t.length - 1) / 2) * 32, s, C.text, 26, 'middle', i === 0, op(k))); };
+    box(svg, 10, 40, 200, 80, '告警 / 报告', { stroke: C.info, fs: 28 });
+    arrow(svg, 212, 80, 254, 80, C.t2, false, 3);
+    dia(410, 80, ['真实事件？', '5–15 分钟'], 0, st === 0);
+    arrow(svg, 410, 152, 410, 200, C.t2, false, 3, op(0)); T(svg, 430, 180, '误报', C.t2, 24, 'start', false, op(0));
+    box(svg, 300, 205, 220, 64, '记录 · 调阈值', { stroke: C.line, fs: 26, op: op(0) });
+    arrow(svg, 562, 80, 640, 80, C.sell, false, 4, op(1)); T(svg, 600, 56, '真实', C.sell, 24, 'middle', true, op(1));
+    dia(800, 80, ['能暂停吗？'], 1, st === 1);
+    arrow(svg, 952, 80, 1030, 80, C.buy, false, 4, op(1)); T(svg, 990, 56, '能', C.buy, 24, 'middle', true, op(1));
+    box(svg, 1035, 35, 260, 90, ['暂停合约', '先止血'], { stroke: C.buy, fill: C.goodFill, fs: 32, op: op(1), bold: true });
+    arrow(svg, 800, 152, 800, 205, C.warn, false, 4, op(2)); T(svg, 820, 180, '不能', C.warn, 24, 'start', true, op(2));
+    box(svg, 640, 210, 320, 90, ['降低暴露', '撤池 · 撤授权 · 下架充提'], { stroke: C.warn, fs: 30, op: op(2) });
+    arrow(svg, 1165, 127, 1165, 330, C.t2, false, 3, op(3)); arrow(svg, 962, 255, 1080, 340, C.t2, false, 3, op(3));
+    dia(1165, 400, ['资金仍在流出？'], 3, st === 3);
+    arrow(svg, 1317, 400, 1380, 400, C.sell, false, 4, op(3)); T(svg, 1350, 376, '是', C.sell, 24, 'middle', true, op(3));
+    box(svg, 1385, 345, 245, 110, ['联系交易所', '发行方 · 桥', '请求冻结'], { stroke: C.sell, fs: 28, op: op(3), lh: 32 });
+    const tail = [['沟通与调查', 4], ['是否谈判', 4], ['修复 · 复审 · 恢复', 4], ['事后复盘', 4]];
+    const TX = [[10, 200], [250, 170], [460, 280], [780, 170]];
+    tail.forEach(([t, k], i) => { const [x, w] = TX[i]; box(svg, x, 500, w, 70, t, { stroke: C.info, fs: 27, op: op(k) }); if (i < 3) arrow(svg, x + w + 4, 535, TX[i + 1][0] - 4, 535, C.t2, false, 3, op(k)); });
+    if (st >= 4) { rect(svg, 1010, 500, 620, 70, { fill: C.curFill, stroke: C.gold, sw: 3 }); T(svg, 1320, 535, '宁可误停，也不要观望', C.gold, 30, 'middle', true); }
+  }
+
+  function winStep(el, st) {
+    const svg = el.querySelector('#win'); svg.innerHTML = '';
+    const ox = 120, oy = 480, W = 1100, H = 420, maxM = 30, maxT = 60;
+    const X = t => ox + t / maxT * W, Y = m => oy - m / maxM * H;
+    line(svg, ox, oy, ox + W + 20, oy, C.t2, 3); line(svg, ox, oy, ox, oy - H - 20, C.t2, 3);
+    [0, 10, 20, 30].forEach(m => { T(svg, ox - 16, Y(m), m ? m + '00 万' : '0', C.t2, 22, 'end'); line(svg, ox, Y(m), ox + W, Y(m), C.line, 1); });
+    [0, 5, 15, 30, 45, 60].forEach(t => T(svg, X(t), oy + 30, t + ' 分', C.t2, 22));
+    svg.appendChild(svgEl('path', { d: `M ${X(0)} ${Y(0)} L ${X(60)} ${Y(30)}`, stroke: C.sell, 'stroke-width': 5, fill: 'none', opacity: st >= 2 ? .35 : 1 }));
+    T(svg, X(34), Y(22), '每分钟 50 万，无限额', C.sell, 26, 'end', true, st >= 2 ? .5 : 1);
+    if (st >= 1) {
+      circle(svg, X(5), Y(2.5), 12, C.buy); T(svg, X(14), Y(1.6), '← 5 分钟暂停 · 250 万', C.buy, 26, 'start', true);
+      circle(svg, X(60), Y(30), 12, C.sell); T(svg, X(60) - 20, Y(30) - 30, '60 分钟 · 3,000 万', C.sell, 26, 'end', true);
+    }
+    if (st >= 2) {
+      svg.appendChild(svgEl('path', { d: `M ${X(0)} ${Y(0)} L ${X(10)} ${Y(5)} L ${X(60)} ${Y(5)}`, stroke: C.gold, 'stroke-width': 6, fill: 'none' }));
+      T(svg, X(36), Y(5) - 28, '链上限额：每小时 ≤ 500 万', C.gold, 28, 'middle', true);
+      circle(svg, X(60), Y(5), 12, C.gold);
+    }
+    if (st >= 3) {
+      rect(svg, 1260, 120, 370, 260, { fill: C.panel, stroke: C.gold, sw: 3 });
+      T(svg, 1445, 175, '人工响应', C.text, 30, 'middle', true); T(svg, 1445, 215, '决定多快止血', C.t2, 26);
+      T(svg, 1445, 285, '链上限额', C.gold, 30, 'middle', true); T(svg, 1445, 325, '决定最坏是多少', C.t2, 26);
+    }
+  }
+
+  function ttStep(el, st) {
+    const S = [['选场景', '冷钱包向陌生地址大额转账，签名人称未操作'], ['逐步释放信息', '每 10 分钟一条：还在转？前端被改？有人被钓鱼？'], ['按预案行动', '谁拉暂停 · 联系谁 · 对用户怎么说'], ['记录卡点', '找不到联系人？没有权限？预案没写？'], ['更新预案', '每项有负责人和期限']];
+    const n = [1, 2, 3, 5, 5][st];
+    el.querySelector('#ttFlow').innerHTML = S.map(([a, b], i) => `<div class="card ${i === n - 1 && st < 4 ? 'gold' : ''}" style="padding:9px 22px;font-size:27px;line-height:1.45;opacity:${i < n ? 1 : .12}"><b class="hl mono">${i + 1}</b> <b>${a}</b><div class="muted fs26">${b}</div></div>`).join('');
+    const bank = el.querySelector('#ttBank');
+    bank.style.opacity = st >= 4 ? 1 : .12;
+    bank.innerHTML = '<b class="fs34">题库</b><div class="fs28" style="line-height:1.7">· 冷钱包异常转出<br>· 代币被升级后增发砸盘<br>· 接入的第三方协议被攻破<br>· 前端被劫持，用户在授权<br>· 预言机喂价异常，出现坏账<br>· 关键开发者终端被入侵</div>';
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

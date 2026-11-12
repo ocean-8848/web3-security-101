@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EP10 DeFi 经济安全</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .ana .card { font-size: 29px; display: flex; flex-direction: column; gap: 10px; min-height: 230px; }
+  .ana .card .a { color: var(--text-2); font-size: 26px; }
+  .chk { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; }
+  .chk .card { font-size: 27px; padding: 14px 22px; }
+  .hero .card .big { font-size: 52px; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="EP10" data-title="DeFi 经济安全：代码没错，规则错了">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 主线 · EP10</div>
+    <h1>代码没错，<br><span class="hl">规则</span>错了</h1>
+    <div class="hero">
+      <div class="card sell" data-k="1" data-nocur><div class="k">2023 · Euler</div><div class="big">约 1.97 亿$</div><div>一个函数漏了健康检查</div></div>
+      <div class="card warn" data-k="2" data-nocur><div class="k">2022 · Beanstalk</div><div class="big">约 1.8 亿$</div><div>投票权能借、提案能当场执行</div></div>
+      <div class="card info" data-k="3" data-nocur><div class="k">2021 · Venus XVS</div><div class="big">坏账超 9,500 万$</div><div>自有代币作抵押品的反身性</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到主线第10集，DeFi 经济安全。一句话理解，经济攻击不依赖代码 bug。攻击者严格按照协议规则操作，只是组合了设计者没想到的顺序、规模或时间。</li>
+      <li>看三起事故，以下据公开报道。2023年，Euler 约1.97亿美元，根因是一个函数漏了健康检查。</li>
+      <li>2022年，Beanstalk 约1.8亿美元，根因是投票权能借，提案又能当场执行。</li>
+      <li>2021年，Venus 的 XVS 事件，用自己的治理代币作抵押品，坏账超过9500万美元。这些都不是代码写错了，是规则本身可以被套利。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="超市的无理由退货" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>"7 天无理由退货，按当前标价退款"</h2>
+    <div class="ana">
+      <div class="card" data-k="0"><b>规则本身没有 bug</b><div class="a">退货退款，合情合理</div></div>
+      <div class="card sell" data-k="1"><b>但如果能先让标价翻倍</b><div class="a">退货前操纵价格；或同一天买入、改价、退货（闪电贷）</div><div class="hl">超市就亏钱</div></div>
+    </div>
+    <div class="card warn fs30" data-k="2">比喻不准的地方：超市可以改规则、拒绝可疑退货。合约规则一旦部署，只能靠升级或<b>治理</b>修改 —— 而治理本身也可以被攻击。</div>
+    <ol class="say">
+      <li>打个比方。一家超市规定，任何商品7天无理由退货，退货时按当前标价退款。这条规则本身没有 bug，退货退款合情合理。</li>
+      <li>但如果有人能在退货前让标价翻倍，也就是操纵价格，或者在同一天买入、改价、退货，也就是闪电贷，超市就会亏钱。注意，他没有违反任何规则。</li>
+      <li>比喻不准的地方在于，超市可以修改规则并拒绝可疑退货。合约规则一旦部署，只能靠升级或者治理修改，而治理本身也可以被攻击。</li>
+    </ol>
+  </section>
+
+  <!-- 3 偿付不变量 -->
+  <section class="scene" data-title="偿付能力不变量" data-onstep="solvStep">
+    <div class="kicker">借贷协议 · 核心不变量</div>
+    <h2 id="svH">资产永远要盖得住债权</h2>
+    <div class="row">
+      <div class="col" style="flex:1" id="solvL"></div>
+      <svg id="solv" width="760" height="520" viewBox="0 0 760 520"></svg>
+    </div>
+    <ol class="say">
+      <li>借贷协议有两条核心不变量。对每个账户，加权后的抵押品价值，要大于等于借款价值，否则这个账户可以被清算。这个比值就是健康因子，小于1时账户可被清算。</li>
+      <li>对整个协议，所有资产的总和，要大于等于所有存款人的债权，否则协议资不抵债。</li>
+      <li>坏账从哪里来？看这张图。抵押品价格快速下跌，或者预言机延迟熔断，都会让健康因子小于1。这时如果清算及时，协议安全。</li>
+      <li>但如果清算不及时，或者抵押品流动性不足，清算人无法以合理价格卖出，抵押品的真实价值就跌破了借款，产生坏账，由存款人或保险基金承担。注意，坏账不一定来自攻击，市场暴跌也会产生。</li>
+    </ol>
+  </section>
+
+  <!-- 4 Venus XVS 反身性 -->
+  <section class="scene" data-title="反身性：自有代币作抵押品" data-onstep="xvsStep">
+    <div class="kicker">案例 · 2021-05 · Venus XVS · 据公开报道</div>
+    <h2>价格涨 → 借款增 → 卖压增 → 价格跌</h2>
+    <svg id="xvs" width="1640" height="520" viewBox="0 0 1640 520"></svg>
+    <ol class="say">
+      <li>先看一类特别的风险，反身性。Venus 允许用户用自己的治理代币 XVS 作为抵押品。XVS 的价格在短时间内，从约76美元涨到约144美元。</li>
+      <li>抵押能力随之上升，有人借出了大量 BTC 和 ETH。</li>
+      <li>然后 XVS 价格回落。抵押品价值跌破借款，清算超过2亿美元，仍然留下超过9500万美元的坏账。项目方称价格可能被操纵。</li>
+      <li>这就是反身性，价格上涨让借款增加，借出后产生卖压，卖压又让价格下跌，形成循环。协议自己的治理代币作抵押品，是典型的反身性风险。低流动性抵押品，必须有供应上限和更低的抵押率。</li>
+    </ol>
+  </section>
+
+  <!-- 5 Euler -->
+  <section class="scene" data-title="案例：Euler" data-onstep="eulerStep">
+    <div class="kicker">案例 · 2023-03 · 据公开复盘</div>
+    <h2>每个函数单独看都"正确"</h2>
+    <div class="row">
+      <svg id="euler" width="1000" height="520" viewBox="0 0 1000 520"></svg>
+      <div class="col" id="eulerSide"></div>
+    </div>
+    <ol class="say">
+      <li>看 Euler，以下据公开复盘。Euler 有一个捐赠函数，允许用户把自己的存款捐给协议储备。但这个函数，没有检查捐赠之后账户的健康因子。</li>
+      <li>来看被打破的不变量。一个正常账户，抵押品减债务后是正的，健康。</li>
+      <li>当有人通过这个捐赠函数，捐出大量存款，账户的抵押品减少了，而债务不变。账户变得严重资不抵债，健康因子远小于1。</li>
+      <li>而 Euler 的清算折扣，随着资不抵债的程度增大。于是用另一个账户去清算这个账户，就能以极大的折扣拿走抵押品。攻击者获利约1.97亿美元，后来归还了大部分。</li>
+      <li>关键在于，每个函数单独审计都正确。漏洞在于，这个新增的捐赠函数，改变了账户状态，却没有走所有其他函数都会走的健康检查。记住，任何会减少抵押品或增加债务的路径，都必须在结束时检查健康因子。</li>
+    </ol>
+  </section>
+
+  <!-- 6 治理攻击 Beanstalk -->
+  <section class="scene" data-title="治理攻击：Beanstalk" data-onstep="beanStep">
+    <div class="kicker">案例 · 2022-04 · 据公开复盘 · 数字为示例</div>
+    <h2 id="bnH">投票权按当前存款算，提案又能当场执行</h2>
+    <svg id="bean" width="1640" height="520" viewBox="0 0 1640 520"></svg>
+    <ol class="say">
+      <li>治理攻击，是攻击者获得足够的投票权，通过一个恶意提案，合法地转走协议资产。看 Beanstalk，以下据公开复盘。攻击者提前一天，提交了一个恶意提案，因为紧急执行有一天的最短等待期。</li>
+      <li>一天后，攻击者用闪电贷借入约10亿美元的资产，存入协议，瞬间获得了多数投票权。因为投票权是按当前存款计算的，没有历史快照。</li>
+      <li>在同一笔交易里，攻击者用紧急通道通过并执行了提案，把国库资产转出，然后归还闪电贷。获利约8000万美元，协议损失约1.8亿美元。</li>
+      <li>两个缺陷叠加，投票权按当前存款算，而且有可以同一笔交易执行的紧急提案通道。修复是，投票权用过去区块的快照，提案通过后必须经过时间锁才能执行。这样，借来的票就不算数，执行前也有反应时间。</li>
+    </ol>
+  </section>
+
+  <!-- 7 治理防御 -->
+  <section class="scene" data-title="治理防御清单" data-onstep="rowStep">
+    <div class="kicker">治理防御</div>
+    <h2>五条</h2>
+    <table class="t sm">
+      <thead><tr><th>风险</th><th>防御</th></tr></thead>
+      <tbody>
+        <tr><td>闪电贷借票</td><td>投票权快照在提案创建之前的区块</td></tr>
+        <tr><td>低投票率下被少数人通过</td><td>法定人数要求</td></tr>
+        <tr><td>恶意提案通过后立即执行</td><td>执行时间锁 + 守护者否决</td></tr>
+        <tr><td>提案内容难以理解</td><td>附带可读的 calldata 解码</td></tr>
+        <tr><td>治理代币集中在交易所</td><td>监控大额转入和委托变化</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>治理防御五条。闪电贷借票，防御是投票权快照取在提案创建之前的区块，借来的票不算数。低投票率下被少数人通过，防御是设法定人数要求。</li>
+      <li>恶意提案通过后立即执行，防御是执行时间锁，加上守护者否决。提案内容难以理解，防御是提案必须附带可读的调用数据解码，让投票者知道自己在投什么。</li>
+      <li>还有一点，治理代币如果大量集中在交易所，攻击者可能借到，要监控大额转入和委托变化。</li>
+    </ol>
+  </section>
+
+  <!-- 8 奖励分发 -->
+  <section class="scene" data-title="奖励分发的无风险套利" data-onstep="rowStep">
+    <div class="kicker">奖励分发</div>
+    <h2>"存入即领奖"是活靶子</h2>
+    <table class="t sm">
+      <thead><tr><th>缺陷</th><th>说明</th><th>修复</th></tr></thead>
+      <tbody>
+        <tr><td>存入即领奖</td><td>按存款时点余额算，闪电贷存入、领奖、取出</td><td>奖励随时间累积；存入后最短锁定期</td></tr>
+        <tr><td>奖励代币 = 质押代币</td><td>balanceOf 同时含奖励和质押，份额算错</td><td>质押量用内部变量记录</td></tr>
+        <tr><td>奖励速率可被调用者影响</td><td>按本区块成交量或池价算奖励</td><td>参数由治理设定，不读可变数据</td></tr>
+        <tr><td>按 LP 价值铸币</td><td>PancakeBunny</td><td>公平储备定价</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>奖励分发也容易被无风险套利。第一个缺陷，存入即领奖。奖励按存款时点的余额计算，攻击者就用闪电贷存入、领奖、取出，一笔交易薅走奖励。修复是奖励随时间累积，存入后设最短锁定期。</li>
+      <li>第二，奖励代币和质押代币相同。合约的余额同时包含奖励和质押，计算份额就出错。修复是质押量用内部变量记录，不读余额，这和第5集金库通胀是一个道理。</li>
+      <li>第三，奖励速率可被调用者影响，比如按本区块成交量或池子价格算。修复是参数由治理设定，不读一笔交易内可变的数据。第四，按 LP 价值铸币，就是 PancakeBunny，要用公平储备定价。</li>
+    </ol>
+  </section>
+
+  <!-- 9 延迟作为安全参数 -->
+  <section class="scene" data-title="延迟作为安全参数" data-onstep="delayStep">
+    <div class="kicker">流动性质押 · Mantle mETH · 据公开报道</div>
+    <h2>延迟把"攻击时间"从一笔交易拉长到几小时</h2>
+    <div class="row">
+      <svg id="delay" width="1000" height="500" viewBox="0 0 1000 500"></svg>
+      <div class="col" id="delaySide"></div>
+    </div>
+    <ol class="say">
+      <li>最后讲一个正面的设计，延迟作为安全参数。流动性质押里，用户质押 ETH，拿到可交易的凭证。凭证可以在 DEX 交易，好处是用户无需等待就能退出，风险是凭证可能脱锚。</li>
+      <li>而赎回有一个延迟队列。这对用户体验是负面的，要等待。但它给协议留出了反应时间。</li>
+      <li>2025年 Bybit 被盗后，攻击者把部分资产换成 Mantle 上的重质押凭证，尝试赎回。mETH 协议有8小时的提款延迟，让团队有时间暂停合约，追回了约4300万美元。</li>
+      <li>所以，延迟是一种安全参数，不只是体验问题。它把攻击者完成攻击的时间，从一笔交易，拉长到若干小时，让监控和人工响应有机会介入。代价是正常用户也要等待。</li>
+    </ol>
+  </section>
+
+  <!-- 10 审计检查点 -->
+  <section class="scene" data-title="审计检查点" data-onstep="marks">
+    <div class="kicker">审计清单</div>
+    <h2>七个检查点</h2>
+    <div class="chk">
+      <div class="card" data-k="0">① 写出协议级偿付不变量，用不变量测试验证</div>
+      <div class="card" data-k="0">② 所有减少抵押或增加债务的路径，最后都检查健康因子</div>
+      <div class="card" data-k="1">③ 清算奖励在极端行情仍有吸引力；清算折扣有上限</div>
+      <div class="card" data-k="1">④ 低流动性抵押品有供应上限；自有代币作抵押有额外限制</div>
+      <div class="card" data-k="2">⑤ 投票权用历史快照；提案执行经过时间锁</div>
+      <div class="card" data-k="2">⑥ 奖励计算不依赖一笔交易内可变的数据</div>
+      <div class="card gold" data-k="3">⑦ 提款/赎回是否需要延迟？延迟期内谁能暂停？</div>
+    </div>
+    <ol class="say">
+      <li>审计检查点七个。第一，写出协议级的偿付不变量，用不变量测试验证。第二，所有减少抵押品或增加债务的路径，最后都检查健康因子，这是 Euler 的教训。</li>
+      <li>第三，清算奖励在极端行情下仍有吸引力，清算折扣有上限。第四，低流动性抵押品有供应上限，协议自有代币作抵押品时有额外限制。</li>
+      <li>第五，投票权用历史快照，提案执行经过时间锁。第六，奖励计算不依赖一笔交易内可变的数据。</li>
+      <li>第七，提款和赎回是否需要延迟，延迟期内谁能暂停。</li>
+    </ol>
+  </section>
+
+  <!-- 11 练一练 -->
+  <section class="scene" data-title="练一练" data-onstep="marks">
+    <div class="kicker">练一练 · 暂停视频想一想</div>
+    <h2>Euler 的捐赠函数最后加一行健康检查，攻击还成立吗？</h2>
+    <div class="grid2">
+      <div class="card" data-k="0"><b>还需要检查什么？</b></div>
+      <div class="card buy" data-k="1"><b>参考</b><div class="fs28">这一行能挡住这条路径：捐赠后账户资不抵债就回滚。<br>但要系统地防，还得问：<b>所有其他减少抵押/增加债务的入口</b>都检查了吗？清算折扣<b>有上限</b>吗？<br>修一个函数不够，要修<b>这类不变量</b>。</div></div>
+    </div>
+    <ol class="say">
+      <li>来练一练。Euler 的捐赠函数，如果在最后加一行，要求调用者的健康因子大于等于1，攻击还能成功吗？还需要检查什么？</li>
+      <li>参考答案。这一行确实能挡住这条路径，捐赠后账户资不抵债就回滚。但要系统地防，还得问两件事。第一，所有其他会减少抵押品或增加债务的入口，都检查了吗？第二，清算折扣有上限吗？修一个函数不够，要修的是这一类不变量，确保它在每个入口都成立。这就是经济安全和单点修补的区别。</li>
+    </ol>
+  </section>
+
+  <!-- 12 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">经济攻击"每步都合法"；先写出<span class="hl">偿付不变量</span>，再验证每个入口都守住它。</li>
+      <li data-step="1">投票权用<span class="hl">历史快照</span>，提案<span class="hl">经时间锁执行</span>；奖励不读可变数据。</li>
+      <li data-step="2"><span class="hl">延迟是安全参数</span>；自有代币作抵押品有反身性风险。</li>
+    </ul>
+    <h2 data-show="3">下一集：EP11 跨链桥安全</h2>
+    <div class="path" data-show="3">
+      <div class="card sell"><div class="n">4</div><b>四种验证方式</b><div class="d">多签、乐观、轻客户端、ZK</div></div>
+      <div class="card gold"><div class="n">4</div><b>四类根因</b><div class="d">验证、消息、铸造、初始化</div></div>
+      <div class="card info"><div class="n">CEX</div><b>充值即"桥"</b><div class="d">交易所也是一座桥</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，经济攻击每一步都合法。先写出偿付不变量，再验证每个入口都守住它。</li>
+      <li>第二，投票权用历史快照，提案经时间锁执行。奖励计算不读一笔交易内可变的数据。</li>
+      <li>第三，延迟是一种安全参数。协议自己的代币作抵押品，有反身性风险。</li>
+      <li>下一集讲跨链桥安全，损失最大的一类事故。四种验证方式，四类根因，以及为什么交易所的充值提币，本质上也是一座桥。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line } = K;
+
+  function solvStep(el, st) {
+    const L = el.querySelector('#solvL');
+    L.innerHTML = '<div class="formula" style="font-size:27px">账户：Σ(抵押 × 清算阈值) ≥ Σ(借款)<br><span class="muted fs26">否则可被清算</span></div>' +
+      '<div class="formula" style="font-size:27px">协议：Σ(所有资产) ≥ Σ(所有债权)<br><span class="muted fs26">否则资不抵债</span></div>' +
+      (st >= 2 ? '<div class="card warn fs28">坏账不一定来自攻击：<br>市场暴跌、流动性枯竭也会产生</div>' : '');
+    const svg = el.querySelector('#solv'); svg.innerHTML = '';
+    if (st < 2) { T(svg, 380, 260, '坏账从哪里来？', C.dim, 32); return; }
+    const N = [['价格快速下跌', C.sell, 40, 40], ['预言机延迟/熔断', C.sell, 40, 150], ['抵押品流动性不足', C.warn, 40, 260]];
+    N.forEach(([t, c, x, y]) => box(svg, x, y, 300, 80, t, { stroke: c, fs: 26 }));
+    svg.appendChild(svgEl('polygon', { points: '500,170 620,230 500,290 380,230', fill: C.panel, stroke: C.gold, 'stroke-width': 3 }));
+    T(svg, 500, 230, '清算及时？', C.text, 24, 'middle', true);
+    arrow(svg, 342, 80, 376, 215, C.t2, false, 3); arrow(svg, 342, 190, 376, 228, C.t2, false, 3);
+    box(svg, 420, 360, 300, 80, ['否 → 抵押 < 借款', '→ 坏账'], { stroke: C.sell, fill: C.badFill, fs: 26, ss: 24 });
+    arrow(svg, 500, 292, 500, 356, C.sell, false, 3);
+    if (st >= 3) { arrow(svg, 342, 300, 430, 390, C.sell, true, 3); T(svg, 600, 470, '由存款人 / 保险基金承担', C.sell, 24, 'middle', true); }
+    el.querySelector('#svH').textContent = '资产永远要盖得住债权';
+  }
+
+  function xvsStep(el, st) {
+    const svg = el.querySelector('#xvs'); svg.innerHTML = '';
+    const W = 340, H = 86;
+    // ring: top row left→right, then down, bottom row right→left, then back up
+    const N = [['XVS 价格 76 → 144', C.buy, 0, 20, 30], ['抵押能力上升', C.warn, 0, 450, 30], ['借出大量 BTC/ETH', C.warn, 1, 880, 30], ['XVS 回落', C.sell, 2, 880, 300], ['抵押 < 借款', C.sell, 2, 20, 300]];
+    const op = k => st >= k ? 1 : .12;
+    N.forEach(([t, c, k, x, y]) => box(svg, x, y, W, H, t, { stroke: c, fs: 27, op: op(k) }));
+    arrow(svg, 364, 73, 446, 73, C.t2, false, 3, op(0));
+    arrow(svg, 794, 73, 876, 73, C.t2, false, 3, op(1));
+    arrow(svg, 1050, 120, 1050, 296, C.sell, false, 3, op(2)); T(svg, 1070, 208, '卖压', C.sell, 24, 'start', true, op(2));
+    arrow(svg, 876, 343, 364, 343, C.sell, false, 3, op(2));
+    arrow(svg, 190, 296, 190, 120, C.sell, true, 3, op(3));
+    if (st >= 2) T(svg, 620, 210, '反身性', C.sell, 40, 'middle', true);
+    if (st >= 3) {
+      rect(svg, 1300, 140, 320, 160, { fill: C.badFill, stroke: C.sell, sw: 3 });
+      T(svg, 1460, 190, '清算 > 2 亿$', C.text, 26, 'middle', true);
+      T(svg, 1460, 245, '坏账 > 9,500 万$', C.sell, 28, 'middle', true);
+      rect(svg, 20, 420, 1600, 80, { fill: C.curFill, stroke: C.gold, sw: 2 });
+      T(svg, 820, 460, '自有代币作抵押 → 反身性；低流动性抵押品要有供应上限和更低抵押率', C.gold, 27, 'middle', true);
+    }
+  }
+
+  function eulerStep(el, st) {
+    const svg = el.querySelector('#euler'); svg.innerHTML = '';
+    // health bar
+    const draw = (y, coll, debt, label, c) => {
+      T(svg, 40, y - 26, label, C.t2, 24, 'start');
+      rect(svg, 40, y, coll * 3, 50, { fill: 'rgba(91,156,255,.5)', rx: 4 });
+      if (coll * 3 >= 140) T(svg, 40 + coll * 3 / 2, y + 25, '抵押 ' + coll, '#fff', 24);
+      else T(svg, 40 + coll * 3 + 14, y + 25, '抵押 ' + coll, C.info, 24, 'start', true);
+      rect(svg, 500, y, debt * 3, 50, { fill: 'rgba(246,70,93,.5)', rx: 4 }); T(svg, 500 + debt * 3 / 2, y + 25, '债务 ' + debt, '#fff', 24);
+      const hf = (coll / debt).toFixed(2);
+      T(svg, 900, y + 25, 'HF ' + hf, hf >= 1 ? C.buy : C.sell, 30, 'middle', true);
+    };
+    if (st >= 1) draw(90, 100, 70, '正常账户', C.info);
+    if (st >= 2) draw(230, 30, 70, '捐出大量存款后（抵押↓，债务不变）', C.sell);
+    if (st >= 3) {
+      rect(svg, 40, 340, 920, 70, { fill: C.badFill, stroke: C.sell, sw: 3 });
+      T(svg, 500, 375, '清算折扣随资不抵债程度增大 → 极大折扣拿走抵押品', C.sell, 26, 'middle', true);
+    }
+    if (st >= 4) { rect(svg, 40, 430, 920, 70, { fill: C.curFill, stroke: C.gold, sw: 3 }); T(svg, 500, 465, '新增函数改了账户状态，却没走健康检查', C.gold, 27, 'middle', true); }
+    if (st === 0) T(svg, 480, 250, '捐赠函数：没检查捐赠后的健康因子', C.dim, 28);
+    const side = el.querySelector('#eulerSide');
+    side.innerHTML = ['<div class="card fs28 muted">捐赠函数把存款捐给储备</div>',
+      '<div class="card fs28">正常账户：HF > 1</div>',
+      '<div class="card sell fs28">捐赠后：抵押↓ 债务不变<br>→ 严重资不抵债</div>',
+      '<div class="card sell fs28">清算折扣随程度增大<br>→ 极低价拿走抵押品<br>约 1.97 亿$</div>',
+      '<div class="card buy fs28">任何减少抵押 / 增加债务的路径，<br>最后都要检查健康因子</div>'][Math.min(st, 4)];
+  }
+
+  function beanStep(el, st) {
+    const svg = el.querySelector('#bean'); svg.innerHTML = '';
+    const S = [[['提前 1 天', '提交恶意提案'], C.warn, 0], [['闪电贷借约 10 亿', '→ 存入协议'], C.sell, 1], [['获得多数投票权', '（按当前存款）'], C.sell, 1], [['同一笔交易', '通过并执行'], C.sell, 2], [['转出国库', '→ 归还闪电贷'], C.sell, 2]];
+    S.forEach(([t, c, k], i) => {
+      const x = 10 + i * 327, op = st >= k ? 1 : .12;
+      box(svg, x, 100, 280, 120, t, { stroke: c, fs: 27, ss: 25, lh: 40, op });
+      if (i < 4) arrow(svg, x + 284, 160, x + 322, 160, C.t2, false, 3, st >= S[i + 1][2] ? 1 : .12);
+    });
+    if (st >= 3) {
+      rect(svg, 20, 300, 1600, 180, { fill: C.curFill, stroke: C.gold, sw: 3 });
+      T(svg, 820, 345, '两个缺陷叠加：投票权按当前存款 + 可同交易执行的紧急提案', C.gold, 28, 'middle', true);
+      T(svg, 820, 395, '获利约 8,000 万$ · 协议损失约 1.8 亿$', C.text, 27);
+      T(svg, 820, 445, '修复：投票权用历史快照 + 提案经时间锁执行', C.buy, 27, 'middle', true);
+    }
+    el.querySelector('#bnH').textContent = st >= 3 ? '借来的票不算数，执行前有反应时间' : '投票权按当前存款算，提案又能当场执行';
+  }
+
+  function delayStep(el, st) {
+    const svg = el.querySelector('#delay'); svg.innerHTML = '';
+    // timeline: attack in one tx vs stretched to hours
+    T(svg, 500, 40, '赎回延迟把攻击时间拉长', C.t2, 28, 'middle', true);
+    rect(svg, 40, 90, 200, 60, { fill: 'rgba(246,70,93,.5)', stroke: C.sell });
+    T(svg, 140, 120, '无延迟：一笔交易', C.text, 24);
+    if (st >= 1) {
+      rect(svg, 40, 200, 880, 60, { fill: 'rgba(240,185,11,.2)', stroke: C.gold, sw: 2 });
+      T(svg, 480, 230, '8 小时提款延迟', C.gold, 28, 'middle', true);
+      for (let i = 1; i < 8; i++) line(svg, 40 + i * 110, 200, 40 + i * 110, 260, C.line, 1);
+    }
+    if (st >= 2) {
+      box(svg, 300, 320, 400, 90, ['团队在延迟期内暂停合约', '追回约 4,300 万$'], { stroke: C.buy, fill: C.goodFill, fs: 26, ss: 24 });
+      arrow(svg, 480, 262, 480, 316, C.buy, false, 3);
+    }
+    const side = el.querySelector('#delaySide');
+    side.innerHTML = ['<div class="card fs28 muted">凭证可交易：无需等待退出<br>赎回有延迟队列</div>',
+      '<div class="card warn fs28">延迟 = 给协议反应时间</div>',
+      '<div class="card buy fs28">2025 Bybit 被盗后：<br>攻击者赎 cmETH → 8 小时延迟<br>→ 团队暂停，追回 4,300 万$</div>',
+      '<div class="card gold fs28"><b>延迟是安全参数</b><br>把攻击时间从一笔交易<br>拉长到若干小时</div>'][Math.min(st, 3)];
+    side.style.opacity = 1;
+    if (st >= 3) el.querySelector('#delaySide').innerHTML += '';
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

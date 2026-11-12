@@ -1,0 +1,6 @@
+{
+"answers": [
+"因为 <code>operation = 1</code> 是 DELEGATECALL，目标代码在 Safe 代理的存储上下文中运行。代理的 slot 0 存放实现地址。恶意目标只需写 slot 0，就能把实现换成攻击者的合约，也能改 owners、threshold。之后 Safe 的所有逻辑都由攻击者决定，资产可以全部转走。这种破坏不需要再取得签名。日常转账永远不应该使用 1，并应用 Guard 拒绝 DELEGATECALL 或非白名单目标。",
+"增加一步独立复核。每位签名者在另一台设备上，用独立工具从原始字段重算 <code>safeTxHash</code>，和硬件钱包显示的哈希比对。同时解码 <code>to</code>、<code>value</code>、<code>data</code>、<code>operation</code> 和 nonce，确认与变更单一致，并通过独立渠道和发起者确认意图。有条件时使用能显示可读字段的硬件钱包。再用 Guard 强制拒绝危险操作，把流程纪律变成合约约束。"
+]
+}

@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EP12 审计、测试与开发流程</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .ana .card { font-size: 27px; display: flex; flex-direction: column; gap: 10px; min-height: 230px; }
+  .ana .card .a { color: var(--text-2); font-size: 25px; }
+  .cheat { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; }
+  .cheat .it { display: grid; grid-template-columns: 150px 1fr; gap: 12px; font-size: 26px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 18px; align-items: center; }
+  .cheat .it b { color: var(--gold); }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="EP12" data-title="审计、测试与开发流程：把安全写进流水线">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 主线 · EP12</div>
+    <h1>审计不是起点，<br>也不是<span class="hl">终点</span></h1>
+    <div class="ana">
+      <div class="card info" data-k="1" data-nocur><b>之前</b><div class="a">设计 + 测试</div></div>
+      <div class="card gold" data-k="2" data-nocur><b>审计</b><div class="a">流水线上的一个关口</div></div>
+      <div class="card info" data-k="2" data-nocur><b>之后</b><div class="a">监控 + 应急</div></div>
+      <div class="card sell" data-k="3" data-nocur><b>PancakeBunny</b><div class="a">被利用的是审计之后新上线的版本</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到主线第12集，审计、测试与开发流程。把前面所有知识，变成一套可执行的流程。一句话理解，审计不是安全的起点，也不是终点。</li>
+      <li>审计只是流水线上的一个关口。它之前要有设计和测试。</li>
+      <li>它之后要有监控和应急。</li>
+      <li>据公开报道，PancakeBunny 被利用的，是审计之后新上线、未经审计的合约版本。所以记住，审计过，只对审计时的那个版本成立。本集讲八个关口、测试三层和链特定测试。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="造一架飞机" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>合约开发像造一架飞机</h2>
+    <div class="ana">
+      <div class="card" data-k="0"><b>画图纸</b><div class="a">写出"机翼不能断"</div><div class="hl">→ 规格 + 不变量</div></div>
+      <div class="card" data-k="0"><b>零件进风洞吹</b><div class="a">各种极端风向</div><div class="hl">→ 模糊测试</div></div>
+      <div class="card" data-k="1"><b>适航认证抽查</b><div class="a">不查每颗螺丝</div><div class="hl">→ 审计</div></div>
+      <div class="card" data-k="2"><b>黑匣子 + 地面雷达</b><div class="a">出问题有应急程序</div><div class="hl">→ 监控 + 应急</div></div>
+    </div>
+    <div class="card warn fs30" data-k="3">比喻不准的地方：飞机出厂后可以召回维修。<b>不可升级的合约出厂后就不能改了</b>，所以前面的关口必须更严。</div>
+    <ol class="say">
+      <li>打个比方。合约开发像造一架飞机。设计阶段，画图纸，并写出任何情况下机翼不能断，这是不变量。制造阶段，每个零件出厂前都测，并把零件放进风洞里用各种极端风向吹，这是模糊测试。</li>
+      <li>适航认证，外部机构检查，这是审计。认证不检查每一颗螺丝，只抽查关键系统。</li>
+      <li>投入运营，飞行中有黑匣子和地面雷达，这是监控，出了问题有应急程序。</li>
+      <li>比喻不准的地方在于，飞机出厂后可以召回维修。不可升级的合约出厂后就不能改了，所以前面的关口必须更严。</li>
+    </ol>
+  </section>
+
+  <!-- 3 八个关口 -->
+  <section class="scene" data-title="八个安全关口" data-onstep="gateStep">
+    <div class="kicker">流程 · 越靠左修复越便宜</div>
+    <h2>从设计到上线后监控</h2>
+    <svg id="gate" width="1640" height="520" viewBox="0 0 1640 520"></svg>
+    <ol class="say">
+      <li>合约安全有八个关口。第一，规格与威胁模型。第二，安全编码规范。第三，静态分析。第四，单元、模糊、不变量测试。越靠左的关口，修复成本越低。规格阶段发现的问题，只需要改文档。</li>
+      <li>第五，关键模块的形式化验证。第六，外部审计或竞赛。第三到第五是自动化关口，每次提交代码都应该运行。</li>
+      <li>第七，安全部署与权限移交。第八，上线后的监控、漏洞赏金和应急响应。</li>
+      <li>两条关键原则。审计发现的问题，要反向补充到第四步的测试里，防止回归。还有，发现问题后回流到第一步。所有关口都依赖你想到了要检查什么，经济攻击常常需要专门的经济审计。</li>
+    </ol>
+  </section>
+
+  <!-- 3b 关口一 -->
+  <section class="scene" data-title="规格与威胁模型" data-onstep="marks">
+    <div class="kicker">关口一 · 修复成本最低的地方</div>
+    <h2>动手写代码之前，先写下四样东西</h2>
+    <div class="steps c4">
+      <div class="card info" data-k="0"><div class="n">1</div><b>前置 / 后置条件</b><div class="d">每个函数调用前必须满足什么，调用后必须变成什么</div></div>
+      <div class="card info" data-k="0"><div class="n">2</div><b>系统不变量</b><div class="d">例：银行余额 ≥ 存款总和</div></div>
+      <div class="card warn" data-k="1"><div class="n">3</div><b>外部依赖</b><div class="d">代币、预言机、DEX、跨链桥、目标链特性</div></div>
+      <div class="card sell" data-k="1"><div class="n">4</div><b>特权角色</b><div class="d">每个角色的最大破坏力</div></div>
+    </div>
+    <div class="card gold fs28" data-k="1">这里写下的不变量，会直接变成关口四里测试的<b>断言</b>。</div>
+    <ol class="say">
+      <li>先展开第一个关口，规格与威胁模型。它要写下四样东西。第一，每个函数的前置条件和后置条件，也就是调用前必须满足什么，调用后必须变成什么。第二，系统不变量，比如银行余额永远不少于存款总和，第1集讲过。</li>
+      <li>第三，列出外部依赖，代币、预言机、DEX、跨链桥，还有目标链的特性。第四，列出所有特权角色，以及每个角色最大能造成多大破坏。这一步写下的不变量，后面会直接变成测试里的断言。</li>
+    </ol>
+  </section>
+
+  <!-- 4 静态分析 -->
+  <section class="scene" data-title="静态分析" data-onstep="rowStep">
+    <div class="kicker">关口三 · 每次提交都跑</div>
+    <h2>不追求零告警，追求每个告警都有结论</h2>
+    <table class="t sm">
+      <thead><tr><th>工具</th><th>类型</th><th>能发现什么</th></tr></thead>
+      <tbody>
+        <tr><td>Slither</td><td>静态分析</td><td>重入模式、未检查返回值、未初始化变量、可见性</td></tr>
+        <tr><td>Aderyn 等</td><td>静态分析</td><td>常见模式检查，输出 Markdown 报告</td></tr>
+        <tr><td>SMTChecker</td><td>编译器内置</td><td>断言违背、溢出（需启用）</td></tr>
+        <tr><td>forge inspect storage-layout</td><td>布局导出</td><td>升级前后存储布局对比</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>静态分析是第三个关口，每次提交都应该跑。常用工具 Slither，发现重入模式、未检查返回值、未初始化变量和可见性问题。还有 Aderyn 这类，做常见模式检查，输出报告。</li>
+      <li>编译器内置的 SMTChecker，能发现断言违背和溢出，需要启用。forge inspect 的存储布局导出，用于升级前后对比，第9集讲过。</li>
+      <li>一个重要原则，静态分析的误报率高。不要追求零告警，要追求每个告警都有结论，是真问题还是误报，并写明理由。</li>
+    </ol>
+  </section>
+
+  <!-- 5 测试三层 -->
+  <section class="scene" data-title="测试三层" data-onstep="testStep">
+    <div class="kicker">关口四 · 单元 → 模糊 → 不变量</div>
+    <h2 id="tsH">从"我想到的"到"工具替我找"</h2>
+    <svg id="test" width="1640" height="520" viewBox="0 0 1640 520"></svg>
+    <ol class="say">
+      <li>测试分三层。第一层，单元测试，验证我想到的情况。比如存100应该得多少份额，我写死预期值去验证。它只覆盖我想到的场景。</li>
+      <li>第二层，模糊测试。让工具生成大量随机输入，验证一个性质在所有输入下都成立。比如，存款后立即取款，用户不能获利。工具会用成千上万个随机金额去试。</li>
+      <li>第三层，不变量测试。让工具生成随机的调用序列，每一步之后检查不变量。比如，银行永远有足够的 ETH 偿付所有存款。工具随机地组合存款、取款、转账，寻找打破这条不变量的序列。这正是评估篇第8集讲的方法。</li>
+      <li>但要记住一条警告。不变量测试只检查你写下的不变量。Euler 那条健康因子的不变量，如果没写进测试，模糊工具也不会发现。你写性质，工具找序列，但性质要你写对。</li>
+    </ol>
+  </section>
+
+  <!-- 5b 关口五 -->
+  <section class="scene" data-title="形式化验证" data-onstep="marks">
+    <div class="kicker">关口五 · 关键模块</div>
+    <h2>不是多试一些输入，而是证明所有输入都成立</h2>
+    <div class="vs">
+      <div class="card info" data-k="0"><h3>工具</h3><div class="fs28">Certora Prover<br>Halmos（符号执行）<br>K Framework</div></div>
+      <div class="card warn" data-k="1"><h3>适用场景</h3><div class="fs28">核心数学库<br>清算逻辑<br>代币会计<br>桥的证明验证</div></div>
+    </div>
+    <div class="card sell fs28" data-k="1">代价：规格编写成本高，需要专门人才 → 只对<b>关键模块</b>做。</div>
+    <ol class="say">
+      <li>第五个关口，形式化验证。模糊测试是用大量输入去试，形式化验证是用数学方法证明，代码在所有输入和所有状态下都满足规格。常见工具有 Certora Prover，做符号执行的 Halmos，还有 K Framework。</li>
+      <li>它适合用在最关键的地方，核心数学库、清算逻辑、代币会计，以及跨链桥的证明验证。代价是规格编写成本高，需要专门的人才。所以一般只对关键模块做，不是整个项目都做。</li>
+    </ol>
+  </section>
+
+  <!-- 6 外部审计做法 -->
+  <section class="scene" data-title="外部审计的做法" data-onstep="rowStep">
+    <div class="kicker">关口六</div>
+    <h2>"审计过"只对审计时的那个版本成立</h2>
+    <table class="t sm">
+      <thead><tr><th>做法</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>冻结代码</td><td>审计对象是某个提交哈希，审计期间不改</td></tr>
+        <tr><td>提供文档</td><td>规格、威胁模型、已知风险、测试覆盖率</td></tr>
+        <tr><td>多家审计</td><td>关键协议请 2 家以上，侧重不同</td></tr>
+        <tr><td>修复复审</td><td>修复本身可能引入新漏洞，必须复审</td></tr>
+        <tr><td>编译器版本</td><td>记录并审查已知 bug（Vyper 2023）</td></tr>
+        <tr><td>范围外代码</td><td>明确标出；部署前不得修改范围内代码</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>外部审计有几条做法。冻结代码，审计对象是某个提交哈希，审计期间不改。提供文档，规格、威胁模型、已知风险和测试覆盖率都给审计方。</li>
+      <li>多家审计，关键协议请两家以上，侧重不同。修复复审，修复本身可能引入新漏洞，必须复审。</li>
+      <li>编译器版本，记录并审查它的已知 bug，这是 Vyper 事故的教训。范围外的代码明确标出，部署前不得修改范围内的代码。这部分在评估篇第7集讲得更细。核心是，审计过只对审计时的那个版本成立。</li>
+    </ol>
+  </section>
+
+  <!-- 7 安全部署与监控 -->
+  <section class="scene" data-title="安全部署与应急" data-onstep="marks">
+    <div class="kicker">关口七、八</div>
+    <h2>应急能力要事先设计进合约</h2>
+    <div class="vs">
+      <div class="card info" data-k="0"><h3>⑦ 安全部署</h3><div class="fs27 fs28">脚本部署，脚本评审<br>部署与初始化同一笔交易<br>浏览器验证源码 + 读参数核对<br>权限移交多签时间锁，撤销部署账户角色</div></div>
+      <div class="card sell" data-k="1"><h3>⑧ 监控与应急</h3><div class="fs28">TVL 骤降、闪电贷交互、特权调用、价格偏离、升级、跨链对账 → 告警<br>发现 → 确认 → 暂停 → 作战室 → 白帽救援 / 联系冻结 → 公告复盘</div></div>
+    </div>
+    <div class="card gold fs28" data-k="2">mETH 在 Bybit 事故中追回，靠三样：协议有提款延迟 + 团队有暂停权 + 外部安全社区快速牵线 —— 都是<b>事先</b>设计的。</div>
+    <ol class="say">
+      <li>第七个关口，安全部署。用脚本部署，脚本本身要评审。部署和初始化在同一笔交易完成。部署后在浏览器验证源码，读取所有关键参数和预期对比。最后把权限移交给多签和时间锁，撤销部署账户的所有角色。</li>
+      <li>第八个关口，监控与应急。监控合约 TVL 骤降、闪电贷与本协议的交互、特权调用、价格偏离、升级、跨链对账，触发告警。应急流程是，发现异常，值班确认，触发暂停，组建作战室，评估白帽救援或联系交易所冻结，最后公告和复盘。</li>
+      <li>一个正面例子。mETH 协议在 Bybit 事故中追回资产，靠的是三样东西，协议本身有提款延迟，团队有暂停权限，外部安全社区快速牵线。这三样，都是事先设计进去的。应急能力不能等出事了才有。评估篇第9集专门讲应急。</li>
+    </ol>
+  </section>
+
+  <!-- 7b 监控告警 -->
+  <section class="scene" data-title="监控告警示例" data-onstep="rowStep">
+    <div class="kicker">关口八 · 告警条件示例</div>
+    <h2>每条告警都要有人值班响应</h2>
+    <table class="t sm">
+      <thead><tr><th>监控项</th><th>告警条件（示例）</th></tr></thead>
+      <tbody>
+        <tr><td>合约 TVL 变化</td><td>10 分钟内下降 &gt; 10%</td></tr>
+        <tr><td>闪电贷 + 本协议交互</td><td>同一交易出现大额闪电贷与本协议调用</td></tr>
+        <tr><td>特权调用</td><td>任何 owner / admin 函数被调用</td></tr>
+        <tr><td>预言机</td><td>价格偏离其他来源 &gt; 5%；超过心跳未更新</td></tr>
+        <tr><td>升级</td><td>实现地址变化；时间锁队列新增操作</td></tr>
+        <tr><td>跨链</td><td>两侧锁定量与铸造量不一致</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>监控具体怎么设告警？给几个示例阈值。合约 TVL，10分钟内下降超过10%。闪电贷，同一笔交易里出现大额闪电贷和本协议的调用。特权调用，任何管理员函数被调用，都要告警。</li>
+      <li>预言机，价格偏离其他来源超过5%，或者超过心跳时间没有更新。升级，实现地址变化，或者时间锁队列新增操作。跨链，两侧锁定量和铸造量不一致。阈值要按协议调整，关键是每条告警都有人值班响应。</li>
+    </ol>
+  </section>
+
+  <!-- 8 链特定测试 -->
+  <section class="scene" data-title="链特定测试项" data-onstep="rowStep">
+    <div class="kicker">链差异 · "在以太坊上测过"≠"目标链能跑"</div>
+    <h2>部署前在目标链的测试网或分叉上跑一遍</h2>
+    <table class="t sm">
+      <thead><tr><th>链</th><th>必测项</th></tr></thead>
+      <tbody>
+        <tr><td>BNB Chain</td><td>代币精度（BSC-USD 18 位）；基于区块数的时间计算；分叉代码的改动点</td></tr>
+        <tr><td>TRON</td><td>USDT 推送返回值；能量与 80ms 时限；CHAINID、地址前缀；硬分叉开关；TransferContract 绕过 fallback</td></tr>
+        <tr><td>Mantle</td><td>msg.value 是 MNT；ETH 是 ERC-20；L1 数据费；排序器宕机；跨链消息延迟</td></tr>
+      </tbody>
+    </table>
+    <div class="card info fs26" data-k="2" data-nocur>工具提示：BNB Chain 用 Foundry / Hardhat 主网分叉 · TRON 用 TronBox、TRON IDE，在 Nile / Shasta 测试网实测 · Mantle 用 Foundry 主网分叉，L1↔L2 消息用官方 SDK 测试</div>
+    <ol class="say">
+      <li>链特定测试，在以太坊上测过，不代表在目标链上能跑。部署前，要在目标链的测试网或者主网分叉上，跑一遍完整测试。BNB Chain 上必测，代币精度，BSC-USD 是18位，基于区块数的时间计算，因为出块间隔变了，还有分叉代码的改动点。</li>
+      <li>TRON 上必测，USDT 推送转账的返回值，能量和80毫秒的时限，链 ID 和地址前缀，目标操作码的硬分叉开关是否开启，以及直接转账绕过回退函数。而且要在 TRON 的测试网实测，不要只用本地 EVM。</li>
+      <li>Mantle 上必测，收到的原生币是 MNT，ETH 是 ERC-20 形式，一层数据费，排序器宕机场景，以及跨链消息延迟。手册里的链迁移检查器，可以根据目标链和你的代码假设，生成一份迁移风险清单。链专题会逐一展开。</li>
+    </ol>
+  </section>
+
+  <!-- 9 速查表 -->
+  <section class="scene" data-title="一页审计速查表" data-onstep="cheatStep">
+    <div class="kicker">一页速查表 · 把全系列浓缩成清单</div>
+    <h2>十类，每类一个关键问题</h2>
+    <div class="cheat" id="cheat"></div>
+    <ol class="say">
+      <li>最后是一页审计速查表，把整个主线浓缩成一张清单。重入，外部调用前状态是否已更新，共享状态是否共享锁。权限，每个状态修改函数谁能调用，初始化是否受保护。算术，舍入方向对协议有利，精度从合约读取。外部调用，返回值检查，无代码地址，非标准代币。</li>
+      <li>预言机，价格一笔交易内可变吗，时效和上下限检查。MEV 和签名，有最小输出和截止时间吗，EIP-712 加 nonce。升级，存储布局，实现合约已锁死，时间锁。</li>
+      <li>经济，偿付不变量，治理快照，清算激励。跨链，消息字段完整，防重放，限额。最后是链差异，目标链和以太坊有哪些行为差异。这张表，就是前面十一集的提炼。把它贴在显示器旁边。</li>
+    </ol>
+  </section>
+
+  <!-- 9b 练一练 -->
+  <section class="scene" data-title="练一练" data-onstep="marks">
+    <div class="kicker">练一练 · 暂停视频想一想</div>
+    <h2>两家审计已通过，上线前一周要把手续费从 0.3% 改成 0.25%</h2>
+    <div class="grid2">
+      <div class="card" data-k="0"><b>只改一个数字，可以直接上线吗？</b></div>
+      <div class="card sell" data-k="1"><b>参考</b><div class="fs28">不能。改完就是<b>新版本</b>，审计结论不再覆盖它。<br>① 找审计方复审这次改动<br>② 把不变量补进测试：每次兑换后 k 不减少<br>③ 搜遍所有用到费率的地方<br><b class="up">Uranium Finance</b>：只改了一处常数，漏改另一处，k 检查失效，约 5,000 万$。</div></div>
+    </div>
+    <ol class="say">
+      <li>来练一练。你的协议通过了两家审计。上线前一周，产品要求把手续费从0.3%改成0.25%。只是改一个数字，可以直接上线吗？</li>
+      <li>参考答案。不能直接上线。改完之后就是一个新版本，审计结论不再覆盖它。要做三件事。第一，找审计方对这次改动做复审。第二，把相关不变量补进测试，比如每次兑换后乘积 k 不减少，让模糊测试去跑。第三，搜遍代码里所有用到这个费率的地方。Uranium Finance 就是改手续费时，只改了一处常数，漏改了另一处，k 检查失效，据公开报道损失约5000万美元。</li>
+    </ol>
+  </section>
+
+  <!-- 10 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">审计只是<span class="hl">一个关口</span>；越靠左修复越便宜，发现回流到设计和测试。</li>
+      <li data-step="1">测试三层：单元、模糊、<span class="hl">不变量</span>；工具找序列，但性质要你写对。</li>
+      <li data-step="2">"审计过"只对<span class="hl">那个版本</span>成立；应急能力要事先设计进合约。</li>
+    </ul>
+    <h2 data-show="3">下一集：EP13 事故案例库</h2>
+    <div class="path" data-show="3">
+      <div class="card sell"><div class="n">30+</div><b>分类总表</b><div class="d">按链、按根因</div></div>
+      <div class="card gold"><div class="n">7</div><b>七种反复模式</b><div class="d">同样的错一犯再犯</div></div>
+      <div class="card info"><div class="n">∑</div><b>复盘模板</b><div class="d">每起事故 → 一个检查项</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，审计只是一个关口。越靠左修复越便宜，发现的问题要回流到设计和测试。</li>
+      <li>第二，测试三层，单元、模糊、不变量。工具替你找序列，但性质要你写对。</li>
+      <li>第三，审计过只对那个版本成立。应急能力要事先设计进合约。</li>
+      <li>下一集是主线的最后一集，事故案例库。三十多起事故的分类总表，七种反复出现的模式，以及复盘模板。让每一起事故，都变成你清单上的一个检查项。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line } = K;
+
+  function gateStep(el, st) {
+    const svg = el.querySelector('#gate'); svg.innerHTML = '';
+    const G = ['① 规格与威胁模型', '② 安全编码规范', '③ 静态分析', '④ 单元+模糊+不变量', '⑤ 形式化验证', '⑥ 外部审计/竞赛', '⑦ 安全部署与移交', '⑧ 监控+赏金+应急'];
+    const hi = { 0: [0, 1, 2, 3], 1: [4, 5], 2: [6, 7], 3: [] }[st] || [];
+    const auto = [2, 3, 4];
+    const on = i => hi.length ? hi.includes(i) : true;
+    const X = i => 40 + (i % 4) * 412, Y = i => 30 + Math.floor(i / 4) * 180, W = 360, H = 110;
+    G.forEach((g, i) => {
+      const x = X(i), y = Y(i), op = on(i) ? 1 : .3;
+      box(svg, x, y, W, H, g, { stroke: auto.includes(i) ? C.warn : C.info, fs: 27, op });
+      if (i % 4 < 3) arrow(svg, x + W + 4, y + H / 2, x + 410, y + H / 2, C.t2, false, 3, on(i) && on(i + 1) ? 1 : .3);
+    });
+    // ④ → ⑤：换行连接
+    const cOp = on(3) || on(4) ? 1 : .3, cx4 = X(3) + W / 2, cx5 = X(4) + W / 2;
+    line(svg, cx4, Y(3) + H + 2, cx4, 175, C.t2, 3, false, cOp);
+    line(svg, cx4, 175, cx5, 175, C.t2, 3, false, cOp);
+    arrow(svg, cx5, 175, cx5, Y(4) - 3, C.t2, false, 3, cOp);
+    // ⑧ → ①：发现问题回流
+    const lc = st >= 3 ? C.gold : C.t2, lw = st >= 3 ? 4 : 3, lop = st >= 3 || hi.includes(7) ? 1 : .55, cx8 = X(7) + W / 2, ly = 368;
+    line(svg, cx8, Y(7) + H + 2, cx8, ly, lc, lw, true, lop);
+    line(svg, cx8, ly, 14, ly, lc, lw, true, lop);
+    line(svg, 14, ly, 14, Y(0) + H / 2, lc, lw, true, lop);
+    arrow(svg, 14, Y(0) + H / 2, X(0) - 3, Y(0) + H / 2, lc, false, lw, lop);
+    T(svg, 820, 344, '⑧ 发现问题 → 回流到 ① 规格与威胁模型', lc, 25, 'middle', st >= 3, lop);
+    if (st >= 3) {
+      rect(svg, 20, 400, 1600, 84, { fill: C.curFill, stroke: C.gold, sw: 2 });
+      T(svg, 820, 428, '③④⑤ 每次提交都跑 · ⑥ 审计发现反补到 ④ 的测试 · 发现问题回流到 ①', C.gold, 26, 'middle', true);
+      T(svg, 820, 464, '橙色 = 自动化关口', C.warn, 24);
+    }
+  }
+
+  function testStep(el, st) {
+    const svg = el.querySelector('#test'); svg.innerHTML = '';
+    const L = [['单元测试', '验证"我想到的情况"', '存 100 → 预期 X 份', C.info, 0],
+      ['模糊测试', '随机输入，验证性质', '任意金额：往返不获利', C.warn, 1],
+      ['不变量测试', '随机调用序列后检查', '银行余额 ≥ 存款总和', C.sell, 2]];
+    L.forEach(([a, b, c, col, k], i) => {
+      const y = 40 + i * 150, op = st >= k ? 1 : .12, cur = st === k;
+      rect(svg, 20, y, 1100, 130, { fill: cur ? C.curFill : C.panel, stroke: cur ? C.gold : col, sw: cur ? 4 : 3, op });
+      T(svg, 50, y + 40, a, col, 32, 'start', true, op);
+      T(svg, 50, y + 90, b, C.text, 27, 'start', false, op);
+      T(svg, 1090, y + 65, c, C.t2, 24, 'end', false, op);
+      // coverage arrow
+      const w = [180, 500, 900][i];
+      rect(svg, 1160, y + 50, w / 2, 30, { fill: col, op: op * .6, rx: 4 });
+    });
+    T(svg, 1400, 20, '覆盖面', C.t2, 24, 'middle');
+    if (st >= 3) {
+      rect(svg, 20, 490, 1600, 20, { fill: 'none' });
+      T(svg, 820, 500, '不变量测试只检查你写下的不变量：Euler 的健康因子没写进去，工具也不会发现', C.gold, 25, 'middle', true);
+    }
+    el.querySelector('#tsH').textContent = st >= 2 ? '你写性质，工具找序列' : '从"我想到的"到"工具替我找"';
+  }
+
+  function cheatStep(el, st) {
+    marks(el, st);
+    const C2 = [['重入', '外部调用前状态更新？共享状态共享锁？'], ['权限', '每个改状态函数谁能调？初始化受保护？'], ['算术', '舍入对协议有利？精度从合约读？'], ['外部调用', '返回值？无代码地址？非标准代币？DoS？'], ['预言机', '价格一笔交易内可变？时效与上下限？'], ['MEV/签名', 'minOut、deadline？EIP-712 + nonce？'], ['升级', '存储布局？实现锁死？时间锁？'], ['经济', '偿付不变量？治理快照？清算激励？'], ['跨链', '消息字段完整？防重放？限额？'], ['链差异', '目标链和以太坊有哪些行为差异？']];
+    el.querySelector('#cheat').innerHTML = C2.map(([a, b]) => `<div class="it"><b>${a}</b><span>${b}</span></div>`).join('');
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+
+# 05-StablecoinLike.sol
+⚠️ 警告：教学示例，未经审计，不可用于生产。路径：examples/05-StablecoinLike.sol
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+/// @title StablecoinLike：仿 USDT / USDC 结构的中心化稳定币
+/// @notice 教学示例，仿 USDT/USDC 结构，未经审计，不可用于生产。
+/// @dev 配套章节：Contract/projects/X06-stablecoins-rwa.md
+///      函数名沿用以太坊 USDT（TetherToken）的公开源码：
+///      issue / redeem / addBlackList / removeBlackList / destroyBlackFunds / pause / unpause。
+///      真实 USDT 还有 deprecate（把调用转发到新合约）和手续费参数，这里省略。
+///      真实 USDC 把权限拆成 masterMinter / minter / blacklister / pauser 多个角色，这里只用一个 owner。
+contract StablecoinLike {
+    // ───────────── 1. 基本信息 ─────────────
+    string public constant name = "Teaching USD";
+    string public constant symbol = "tUSD";
+    uint8 public constant decimals = 6; // 和 USDT、USDC 一样：1 个代币 = 10^6 个最小单位
+
+    uint256 public totalSupply;
+    mapping(address => uint256) public balanceOf;
+    mapping(address => mapping(address => uint256)) public allowance;
+
+    // ───────────── 2. 发行方权力 ─────────────
+    address public owner; // 发行方。真实项目里通常是多签钱包
+    bool public paused; // 全局暂停开关
+    mapping(address => bool) public isBlackListed; // 黑名单
+
+    // ───────────── 3. 事件 ─────────────
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+    event Issue(uint256 amount); // 发行方铸造
+    event Redeem(uint256 amount); // 发行方销毁
+    event AddedBlackList(address indexed user);
+    event RemovedBlackList(address indexed user);
+    event DestroyedBlackFunds(address indexed user, uint256 amount);
+    event Paused();
+    event Unpaused();
+
+    // ───────────── 4. 错误 ─────────────
+    error NotOwner();
+    error IsPaused();
+    error BlackListed(address account);
+    error NotBlackListed(address account);
+    error InsufficientBalance(uint256 balance, uint256 needed);
+    error InsufficientAllowance(uint256 allowed, uint256 needed);
+    error ZeroAddress();
+
+    // ───────────── 5. 修饰器 ─────────────
+    modifier onlyOwner() {
+        if (msg.sender != owner) revert NotOwner();
+        _;
+    }
+
+    modifier whenNotPaused() {
+        if (paused) revert IsPaused();
+        _;
+    }
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    // ───────────── 6. 发行与赎回 ─────────────
+    // 链下流程：客户把美元汇给发行方 → 发行方确认到账 → 调用 issue。
+    // issue 只把新币铸造到 owner 名下。owner 再用 transfer 发给客户。
+    function issue(uint256 amount) external onlyOwner {
+        totalSupply += amount;
+        balanceOf[owner] += amount;
+        emit Issue(amount);
+        emit Transfer(address(0), owner, amount);
+    }
+
+    // 链下流程：客户把代币转回发行方 → 发行方调用 redeem 销毁 → 发行方汇出美元。
+    // redeem 只能销毁 owner 自己的余额。
+    function redeem(uint256 amount) external onlyOwner {
+        uint256 bal = balanceOf[owner];
+        if (bal < amount) revert InsufficientBalance(bal, amount);
+        balanceOf[owner] = bal - amount;
+        totalSupply -= amount;
+        emit Redeem(amount);
+        emit Transfer(owner, address(0), amount);
+    }
+
+    // ───────────── 7. 黑名单（冻结） ─────────────
+    function addBlackList(address user) external onlyOwner {
+        isBlackListed[user] = true;
+        emit AddedBlackList(user);
+    }
+
+    function removeBlackList(address user) external onlyOwner {
+        isBlackListed[user] = false;
+        emit RemovedBlackList(user);
+    }
+
+    // 销毁黑名单地址的全部余额。总供应同步减少。
+    // 发行方随后可在新地址上重新 issue 等额代币，交给执法机构或受害人。
+    function destroyBlackFunds(address user) external onlyOwner {
+        if (!isBlackListed[user]) revert NotBlackListed(user);
+        uint256 amount = balanceOf[user];
+        balanceOf[user] = 0;
+        totalSupply -= amount;
+        emit DestroyedBlackFunds(user, amount);
+        emit Transfer(user, address(0), amount);
+    }
+
+    // ───────────── 8. 暂停 ─────────────
+    function pause() external onlyOwner {
+        paused = true;
+        emit Paused();
+    }
+
+    function unpause() external onlyOwner {
+        paused = false;
+        emit Unpaused();
+    }
+
+    // ───────────── 9. ERC-20 转账：先查暂停，再查黑名单 ─────────────
+    // 和 USDT 一致：只检查转出方（以及 transferFrom 的调用者）。
+    // USDC 更严格：转出方、接收方、调用者三者都不能在黑名单里。
+    function transfer(address to, uint256 value) external whenNotPaused returns (bool) {
+        if (isBlackListed[msg.sender]) revert BlackListed(msg.sender);
+        _transfer(msg.sender, to, value);
+        return true;
+    }
+
+    function transferFrom(address from, address to, uint256 value) external whenNotPaused returns (bool) {
+        if (isBlackListed[from]) revert BlackListed(from);
+        if (isBlackListed[msg.sender]) revert BlackListed(msg.sender);
+        uint256 allowed = allowance[from][msg.sender];
+        if (allowed < value) revert InsufficientAllowance(allowed, value);
+        allowance[from][msg.sender] = allowed - value;
+        _transfer(from, to, value);
+        return true;
+    }
+
+    function approve(address spender, uint256 value) external returns (bool) {
+        allowance[msg.sender][spender] = value;
+        emit Approval(msg.sender, spender, value);
+        return true;
+    }
+
+    function _transfer(address from, address to, uint256 value) internal {
+        if (to == address(0)) revert ZeroAddress();
+        uint256 bal = balanceOf[from];
+        if (bal < value) revert InsufficientBalance(bal, value);
+        balanceOf[from] = bal - value;
+        balanceOf[to] += value;
+        emit Transfer(from, to, value);
+    }
+}
+

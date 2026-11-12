@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AMM 兑换实验</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin: 8px 0; }
+  .stats .stat .v { font-size: 17px; word-break: break-all; }
+  .chart { width: 100%; height: auto; display: block; background: var(--surface-2); border-radius: 8px; }
+  .chart .grid-line { stroke: var(--border); stroke-width: 1; }
+  .chart .t-axis { fill: var(--text-2); font-size: 11px; }
+  .chart .curve { stroke: var(--accent); stroke-width: 2.2; fill: none; }
+  .chart .curve2 { stroke: var(--text-2); stroke-width: 1.2; fill: none; stroke-dasharray: 4 4; }
+  .chart .il { stroke: var(--sell); stroke-width: 2.2; fill: none; }
+  .chart .net { stroke: var(--buy); stroke-width: 2; fill: none; }
+  .chart .zero { stroke: var(--text-2); stroke-width: 1; }
+  .chart .move { stroke: var(--warn); stroke-width: 2; stroke-dasharray: 5 3; fill: none; }
+  .chart .grad { stroke: var(--sell); stroke-width: 1.4; stroke-dasharray: 5 4; }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--text-2); margin-top: 6px; }
+  .legend i { display: inline-block; width: 14px; height: 3px; vertical-align: middle; margin-right: 4px; border-radius: 2px; }
+  .formula { font-family: var(--mono); font-size: 13px; background: var(--surface-2); border-radius: 8px; padding: 10px; overflow-x: auto; white-space: pre; }
+  .seg { display: flex; gap: 6px; } .seg button { flex: 1; }
+  .presets button.on { border-color: var(--accent); background: var(--accent-soft); }
+  .bar { height: 12px; border-radius: 6px; background: var(--surface-2); overflow: hidden; }
+  .bar > div { height: 100%; background: var(--accent); transition: width .3s; }
+  @media (prefers-reduced-motion: reduce) { .bar > div { transition: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <h1>AMM 兑换实验</h1>
+    <a class="back" href="../07-defi-primitives.md">配套章节：07 DeFi 原语</a>
+    <a class="back" href="../examples/03-SimpleAMM.sol">示例合约：03-SimpleAMM.sol</a>
+    <a class="back" href="../apps/Y01-uniswap.md">Y01 Uniswap</a>
+    <a class="back" href="../apps/Y06-pumpfun.md">Y06 Pump.fun</a>
+  </header>
+  <p class="lead">在恒定乘积池 x·y = k 里买卖 ETH，看实付、手续费、价格冲击和 k 的变化；设置 minOut 体验回滚；再站到 LP 一侧，比较无常损失和手续费收入。</p>
+
+  <div class="callout">
+    <strong>怎么玩</strong>
+    <ol style="margin:6px 0 0; padding-left:20px;">
+      <li>点"07 章示例"：池子 100 ETH / 300,000 USDT，买 10 ETH。</li>
+      <li>改买卖数量，看曲线上交易前后两个点怎样移动。</li>
+      <li>在"② 滑点保护"里加一笔抢跑交易，看 minOut 何时触发回滚。</li>
+      <li>在"③ LP 视角"拖动价格倍数 r，比较"持有"和"做 LP"。</li>
+      <li>在"④ 联合曲线"一路买到"毕业"，看池子怎样迁移到 AMM。</li>
+    </ol>
+  </div>
+
+  <h2>预设场景</h2>
+  <div class="btn-row presets" id="presets">
+    <button type="button" data-p="ch07" class="on">07 章示例</button>
+    <button type="button" data-p="dump">大单砸盘</button>
+    <button type="button" data-p="lp2x">价格翻倍的 LP</button>
+    <button type="button" data-p="grad">联合曲线毕业</button>
+  </div>
+  <p class="small muted" id="presetNote"></p>
+
+  <!-- ============ ① 兑换 ============ -->
+  <h2>① 兑换</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <h3>池子与交易</h3>
+      <label for="rx">ETH 储备 x</label>
+      <input id="rx" type="number" value="100" min="1" step="1">
+      <label for="ry">USDT 储备 y</label>
+      <input id="ry" type="number" value="300000" min="1" step="1000">
+      <label for="fee">手续费率</label>
+      <div class="range-row"><input id="fee" type="range" min="0" max="1" step="0.05" value="0.3"><output id="feeOut"></output></div>
+      <label>方向</label>
+      <div class="seg">
+        <button type="button" id="dirBuy" class="buy">买入 ETH（指定数量）</button>
+        <button type="button" id="dirSell">卖出 ETH（指定数量）</button>
+      </div>
+      <label for="amt">ETH 数量</label>
+      <div class="range-row"><input id="amt" type="range" min="0.1" max="60" step="0.1" value="10"><output id="amtOut"></output></div>
+      <div class="btn-row">
+        <button type="button" class="primary" id="execBtn">执行兑换（更新池子）</button>
+        <button type="button" id="resetPool">重置池子</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>报价</h3>
+      <div class="stats">
+        <div class="stat"><span class="k" id="kPay">实付 USDT</span><span class="v" id="sPay">-</span></div>
+        <div class="stat"><span class="k">手续费</span><span class="v" id="sFee">-</span></div>
+        <div class="stat"><span class="k">成交均价</span><span class="v" id="sAvg">-</span></div>
+        <div class="stat"><span class="k">价格冲击（均价 vs 现货）</span><span class="v" id="sImp">-</span></div>
+        <div class="stat"><span class="k">交易后现货价</span><span class="v" id="sSpot">-</span></div>
+        <div class="stat"><span class="k">新的 k</span><span class="v" id="sK">-</span></div>
+      </div>
+      <div class="formula" id="swapFormula"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3>曲线 x · y = k</h3>
+    <svg id="curve" class="chart" viewBox="0 0 640 300" role="img" aria-label="恒定乘积曲线"></svg>
+    <div class="legend">
+      <span><i style="background:var(--accent)"></i>交易前曲线</span>
+      <span><i style="background:var(--text-2)"></i>交易后曲线（k 因手续费略大）</span>
+      <span><i style="background:var(--info)"></i>交易前点位</span>
+      <span><i style="background:var(--sell)"></i>交易后点位</span>
+    </div>
+  </div>
+
+  <!-- ============ ② 滑点保护 ============ -->
+  <h2>② 滑点保护：minOut</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <p class="small muted">合约 swap 是"已知入金求出金"。你签名时按当前池子报价，设定滑点容忍度，得到 minOut。上链前若有人先买，你的出金变少；低于 minOut 就整笔回滚。</p>
+      <label for="usdIn">你付出 USDT</label>
+      <input id="usdIn" type="number" value="33433.63" min="1" step="100">
+      <label for="tol">滑点容忍度</label>
+      <div class="range-row"><input id="tol" type="range" min="0" max="10" step="0.1" value="1"><output id="tolOut"></output></div>
+      <label for="front">你之前被打包的别人买入（USDT）</label>
+      <div class="range-row"><input id="front" type="range" min="0" max="60000" step="500" value="0"><output id="frontOut"></output></div>
+      <div class="btn-row"><button type="button" class="primary" id="slipBtn">提交交易</button></div>
+    </div>
+    <div class="card">
+      <div class="stats">
+        <div class="stat"><span class="k">签名时报价</span><span class="v" id="qOut">-</span></div>
+        <div class="stat"><span class="k">minOut</span><span class="v" id="qMin">-</span></div>
+        <div class="stat"><span class="k">实际出金</span><span class="v" id="qAct">-</span></div>
+        <div class="stat"><span class="k">结果</span><span class="v" id="qRes">-</span></div>
+      </div>
+      <div class="formula" id="slipFormula"></div>
+    </div>
+  </div>
+
+  <!-- ============ ③ LP ============ -->
+  <h2>③ LP 视角：无常损失 vs 手续费</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <label for="lpEth">存入 ETH（按 3,000 USDT/ETH 配等值 USDT）</label>
+      <input id="lpEth" type="number" value="10" min="0.1" step="1">
+      <label for="r">价格变化倍数 r = 新价格 / 存入时价格</label>
+      <div class="range-row"><input id="r" type="range" min="-2" max="2" step="0.01" value="1"><output id="rOut"></output></div>
+      <label for="apr">手续费年化（示例）</label>
+      <div class="range-row"><input id="apr" type="range" min="0" max="60" step="1" value="10"><output id="aprOut"></output></div>
+      <label for="days">持有天数</label>
+      <div class="range-row"><input id="days" type="range" min="0" max="730" step="5" value="180"><output id="daysOut"></output></div>
+      <div class="stats">
+        <div class="stat"><span class="k">一直持有</span><span class="v" id="lHold">-</span></div>
+        <div class="stat"><span class="k">做 LP（不含手续费）</span><span class="v" id="lLP">-</span></div>
+        <div class="stat"><span class="k">无常损失</span><span class="v down" id="lIL">-</span></div>
+        <div class="stat"><span class="k">累计手续费</span><span class="v up" id="lFee">-</span></div>
+        <div class="stat"><span class="k">LP 净结果 vs 持有</span><span class="v" id="lNet">-</span></div>
+      </div>
+      <div class="formula" id="lpFormula"></div>
+    </div>
+    <div class="card">
+      <svg id="ilChart" class="chart" viewBox="0 0 520 300" role="img" aria-label="无常损失曲线"></svg>
+      <div class="legend">
+        <span><i style="background:var(--sell)"></i>IL = 2√r/(1+r) − 1</span>
+        <span><i style="background:var(--buy)"></i>IL + 手续费</span>
+        <span><i style="background:var(--accent)"></i>当前 r</span>
+      </div>
+      <p class="small muted">横轴为对数刻度：0.25 和 4 到中心（r = 1）距离相同，曲线左右对称。</p>
+    </div>
+  </div>
+
+  <!-- ============ ④ 联合曲线 ============ -->
+  <h2>④ 联合曲线（Pump.fun 风格）</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <p class="small muted">参数为示例：总量 10 亿枚，曲线上可卖 7.931 亿枚，用虚拟储备 30 SOL / 10.73 亿枚做恒定乘积。卖完即"毕业"：募到的 SOL 和预留的 2.069 亿枚迁入 AMM 池。未计平台手续费和迁移费。</p>
+      <label for="bcBuy">本次买入（SOL）</label>
+      <input id="bcBuy" type="number" value="5" min="0.1" step="1">
+      <div class="btn-row">
+        <button type="button" class="buy" id="bcBtn">买入</button>
+        <button type="button" id="bcAll">一键买到毕业</button>
+        <button type="button" id="bcReset">重置</button>
+      </div>
+      <div class="bar" aria-label="毕业进度"><div id="bcBar" style="width:0%"></div></div>
+      <div class="stats">
+        <div class="stat"><span class="k">已募集 SOL</span><span class="v" id="bSol">-</span></div>
+        <div class="stat"><span class="k">已售代币</span><span class="v" id="bSold">-</span></div>
+        <div class="stat"><span class="k">当前价格（SOL/枚）</span><span class="v" id="bPrice">-</span></div>
+        <div class="stat"><span class="k">状态</span><span class="v" id="bState">-</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <svg id="bcChart" class="chart" viewBox="0 0 520 260" role="img" aria-label="联合曲线价格"></svg>
+      <div class="legend">
+        <span><i style="background:var(--accent)"></i>价格随已售量上升</span>
+        <span><i style="background:var(--sell)"></i>毕业线</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>事件日志</h3>
+    <div class="log" id="log"></div>
+  </div>
+
+  <h2>观察要点</h2>
+  <ul>
+    <li>07 章示例：买 10 ETH 实付 33,433.63 USDT，其中手续费 100.30；均价 3,343.36，比现货贵 11.45%；交易后现货价 3,704.82。</li>
+    <li>手续费留在池里，k 从 30,000,000 变成约 30,009,027。LP 取回时按份额分到它。</li>
+    <li>价格翻倍（r = 2）时 IL = −5.72%。r = 0.5 时损失相同：IL 只看偏离多少，不看方向。</li>
+    <li>联合曲线上价格只由已售量决定。毕业时曲线终点价与新 AMM 池的开盘价基本相等（约 4.11×10⁻⁷ SOL/枚），价格不会跳变。</li>
+  </ul>
+
+  <footer class="note">参数为示例值，用于演示机制；不构成投资建议。兑换公式与 examples/03-SimpleAMM.sol 的 getAmountOut 一致（手续费 0.3%）。联合曲线参数参照 Pump.fun 公开资料的结构（截至 2026 年 10 月），只作示例，以官方文档为准。</footer>
+</div>
+
+<script src="assets/handbook-nav.js"></script>
+<script>
+// ===== CORE-BEGIN：核心计算 =====
+// 已知入金求出金（与 SimpleAMM.getAmountOut 相同）：出金 = 入金×(1−f)×储备_出 / (储备_入 + 入金×(1−f))
+function getAmountOut(amountIn, rIn, rOut, f) {
+  const inWithFee = amountIn * (1 - f);
+  return inWithFee * rOut / (rIn + inWithFee);
+}
+// 已知出金求入金：(rIn + Δin×(1−f)) × (rOut − Δout) = rIn × rOut ⇒ Δin = (rIn×rOut/(rOut−Δout) − rIn) / (1−f)
+function getAmountIn(amountOut, rIn, rOut, f) {
+  if (amountOut >= rOut) return Infinity;
+  return (rIn * rOut / (rOut - amountOut) - rIn) / (1 - f);
+}
+// 买入 dx 个 ETH（池子 x ETH / y USDT）
+function quoteBuy(x, y, dx, f) {
+  const pay = getAmountIn(dx, y, x, f);
+  const fee = pay * f;
+  const nx = x - dx, ny = y + pay;            // 手续费也计入储备
+  const spot0 = y / x, avg = pay / dx;
+  return { pay, fee, avg, impact: avg / spot0 - 1, nx, ny, spot1: ny / nx, k: nx * ny };
+}
+// 卖出 dx 个 ETH
+function quoteSell(x, y, dx, f) {
+  const out = getAmountOut(dx, x, y, f);
+  const fee = dx * f;                          // 手续费以 ETH 计，留在池里
+  const nx = x + dx, ny = y - out;
+  const spot0 = y / x, avg = out / dx;
+  return { out, fee, avg, impact: avg / spot0 - 1, nx, ny, spot1: ny / nx, k: nx * ny };
+}
+// 无常损失：IL = 2√r/(1+r) − 1；LP 价值 = V0×√r，持有价值 = V0×(1+r)/2（V0 为存入时总价值，两边各半）
+function impermanentLoss(r) { return 2 * Math.sqrt(r) / (1 + r) - 1; }
+function lpVsHold(eth, p0, r) {
+  const usd = eth * p0, p1 = p0 * r;
+  const hold = eth * p1 + usd;
+  const lpEth = eth / Math.sqrt(r), lpUsd = usd * Math.sqrt(r);
+  return { hold, lp: lpEth * p1 + lpUsd, lpEth, lpUsd, il: (lpEth * p1 + lpUsd) / hold - 1 };
+}
+// 联合曲线（虚拟储备恒定乘积）：买入 sol 得到的代币 = vTok − k / (vSol + sol)
+const BC = { vSol0: 30, vTok0: 1073000000, sellable: 793100000, reserved: 206900000 };
+function bcBuy(state, sol) {
+  const k = state.vSol * state.vTok;
+  let vSol = state.vSol + sol, vTok = k / vSol;
+  let got = state.vTok - vTok;
+  const left = BC.sellable - state.sold;
+  let used = sol;
+  if (got >= left) {                          // 只卖到毕业线为止，多出的 SOL 不收
+    got = left; vTok = state.vTok - left; vSol = k / vTok; used = vSol - state.vSol;
+  }
+  return { vSol, vTok, sold: state.sold + got, raised: state.raised + used, got, used };
+}
+function bcPrice(state) { return state.vSol / state.vTok; }
+// ===== CORE-END =====
+
+const $ = id => document.getElementById(id);
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fmt = (n, d = 2) => Number.isFinite(n) ? n.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '∞';
+const sgnPct = (x, d = 2) => (x >= 0 ? '+' : '') + (x * 100).toFixed(d) + '%';
+function log(msg, cls) { const d = document.createElement('div'); if (cls) d.className = cls; d.textContent = msg; $('log').prepend(d); }
+
+let dir = 'buy';
+let pool = { x: 100, y: 300000 };
+let prevPool = null;
+
+// ---------- ① 兑换 ----------
+function f() { return +$('fee').value / 100; }
+function quote() {
+  const dx = +$('amt').value;
+  return dir === 'buy' ? quoteBuy(pool.x, pool.y, dx, f()) : quoteSell(pool.x, pool.y, dx, f());
+}
+function renderSwap() {
+  $('feeOut').textContent = (+$('fee').value).toFixed(2) + '%';
+  $('amt').max = dir === 'buy' ? Math.max(1, Math.floor(pool.x * 0.9)) : 200;
+  const dx = +$('amt').value;
+  $('amtOut').textContent = dx.toFixed(1) + ' ETH';
+  $('dirBuy').className = dir === 'buy' ? 'buy' : ''; $('dirSell').className = dir === 'sell' ? 'sell' : '';
+  const q = quote();
+  const spot0 = pool.y / pool.x;
+  if (dir === 'buy') {
+    $('kPay').textContent = '实付 USDT';
+    $('sPay').textContent = fmt(q.pay);
+    $('sFee').textContent = fmt(q.fee) + ' USDT';
+    $('swapFormula').textContent =
+      `k = ${fmt(pool.x, 4)} × ${fmt(pool.y)} = ${fmt(pool.x * pool.y)}\n` +
+      `需要的 USDT 储备 = k / (${fmt(pool.x, 4)} − ${dx}) = ${fmt(pool.x * pool.y / (pool.x - dx))}\n` +
+      `不含费入金 = ${fmt(pool.x * pool.y / (pool.x - dx) - pool.y)}；实付 = 不含费 / ${(1 - f()).toFixed(4)} = ${fmt(q.pay)}`;
+  } else {
+    $('kPay').textContent = '得到 USDT';
+    $('sPay').textContent = fmt(q.out);
+    $('sFee').textContent = fmt(q.fee, 4) + ' ETH';
+    $('swapFormula').textContent =
+      `出金 = ${dx} × ${(1 - f()).toFixed(4)} × ${fmt(pool.y)} / (${fmt(pool.x, 4)} + ${dx} × ${(1 - f()).toFixed(4)}) = ${fmt(q.out)}`;
+  }
+  $('sAvg').textContent = fmt(q.avg);
+  $('sImp').textContent = sgnPct(q.impact);
+  $('sImp').className = 'v ' + (Math.abs(q.impact) > 0.05 ? 'down' : '');
+  $('sSpot').textContent = fmt(q.spot1);
+  $('sK').textContent = fmt(q.k, 2);
+  drawCurve(q, spot0);
+}
+function drawCurve(q) {
+  const W = 640, H = 300, L = 66, R = 14, T = 12, B = 30;
+  const k0 = pool.x * pool.y;
+  const xmin = Math.min(pool.x, q.nx) * 0.5, xmax = Math.max(pool.x, q.nx) * 1.6;
+  const ymin = k0 / xmax, ymax = k0 / xmin;
+  const X = v => L + (v - xmin) / (xmax - xmin) * (W - L - R);
+  const Y = v => H - B - (v - ymin) / (ymax - ymin) * (H - T - B);
+  let s = '';
+  for (let i = 0; i <= 4; i++) {
+    const yv = ymin + (ymax - ymin) * i / 4, xv = xmin + (xmax - xmin) * i / 4;
+    s += `<line class="grid-line" x1="${L}" x2="${W - R}" y1="${Y(yv)}" y2="${Y(yv)}"/>`;
+    s += `<text class="t-axis" x="${L - 6}" y="${Y(yv) + 4}" text-anchor="end">${fmt(yv / 1000, 0)}k</text>`;
+    s += `<text class="t-axis" x="${X(xv)}" y="${H - 12}" text-anchor="middle">${fmt(xv, 0)}</text>`;
+  }
+  s += `<text class="t-axis" x="${W - R}" y="${H - 1}" text-anchor="end">ETH 储备 x →</text><text class="t-axis" x="4" y="12">USDT 储备 y</text>`;
+  const path = k => { let d = ''; for (let i = 0; i <= 160; i++) { const xv = xmin + (xmax - xmin) * i / 160; const yv = Math.min(ymax, Math.max(ymin, k / xv)); d += (i ? 'L' : 'M') + X(xv).toFixed(1) + ' ' + Y(yv).toFixed(1); } return d; };
+  s += `<path class="curve" d="${path(k0)}"/><path class="curve2" d="${path(q.k)}"/>`;
+  s += `<path class="move" d="M${X(pool.x)} ${Y(pool.y)} L${X(q.nx)} ${Y(Math.min(ymax, q.ny))}"/>`;
+  s += `<circle cx="${X(pool.x)}" cy="${Y(pool.y)}" r="6" style="fill:var(--info)"/>`;
+  s += `<text x="${X(pool.x) + 8}" y="${Y(pool.y) - 8}" style="font-size:11px;fill:var(--info)">前 (${fmt(pool.x, 1)}, ${fmt(pool.y, 0)})</text>`;
+  s += `<circle cx="${X(q.nx)}" cy="${Y(Math.min(ymax, q.ny))}" r="6" style="fill:var(--sell)"/>`;
+  s += `<text x="${X(q.nx) + 8}" y="${Y(Math.min(ymax, q.ny)) + 16}" style="font-size:11px;fill:var(--sell)">后 (${fmt(q.nx, 1)}, ${fmt(q.ny, 0)})</text>`;
+  $('curve').innerHTML = s;
+}
+$('dirBuy').addEventListener('click', () => { dir = 'buy'; renderSwap(); });
+$('dirSell').addEventListener('click', () => { dir = 'sell'; renderSwap(); });
+['amt', 'fee'].forEach(id => $(id).addEventListener('input', renderSwap));
+['rx', 'ry'].forEach(id => $(id).addEventListener('change', () => { pool = { x: +$('rx').value, y: +$('ry').value }; renderSwap(); renderSlip(); }));
+$('execBtn').addEventListener('click', () => {
+  const q = quote(), dx = +$('amt').value;
+  if (dir === 'buy') log(`Swap：买 ${dx} ETH，付 ${fmt(q.pay)} USDT（手续费 ${fmt(q.fee)}），均价 ${fmt(q.avg)}，冲击 ${sgnPct(q.impact)}。`, 'ok');
+  else log(`Swap：卖 ${dx} ETH，得 ${fmt(q.out)} USDT，均价 ${fmt(q.avg)}，冲击 ${sgnPct(q.impact)}。`, 'ok');
+  log(`池子：${fmt(q.nx, 4)} ETH / ${fmt(q.ny)} USDT，现货价 ${fmt(q.spot1)}，k = ${fmt(q.k)}`, 'note');
+  pool = { x: q.nx, y: q.ny }; $('rx').value = +q.nx.toFixed(6); $('ry').value = +q.ny.toFixed(2);
+  renderSwap(); renderSlip();
+});
+$('resetPool').addEventListener('click', () => { pool = { x: 100, y: 300000 }; $('rx').value = 100; $('ry').value = 300000; renderSwap(); renderSlip(); log('池子重置为 100 ETH / 300,000 USDT。', 'note'); });
+
+// ---------- ② 滑点 ----------
+function slip() {
+  const usd = +$('usdIn').value, tol = +$('tol').value / 100, front = +$('front').value;
+  const quoteOut = getAmountOut(usd, pool.y, pool.x, f());
+  const minOut = quoteOut * (1 - tol);
+  // 抢跑者先用 front USDT 买 ETH，池子变化
+  let x = pool.x, y = pool.y;
+  if (front > 0) { const o = getAmountOut(front, y, x, f()); x -= o; y += front; }
+  const actual = getAmountOut(usd, y, x, f());
+  return { usd, tol, front, quoteOut, minOut, actual, ok: actual >= minOut };
+}
+function renderSlip() {
+  const s = slip();
+  $('tolOut').textContent = (s.tol * 100).toFixed(1) + '%';
+  $('frontOut').textContent = fmt(s.front, 0);
+  $('qOut').textContent = fmt(s.quoteOut, 4) + ' ETH';
+  $('qMin').textContent = fmt(s.minOut, 4) + ' ETH';
+  $('qAct').textContent = fmt(s.actual, 4) + ' ETH';
+  $('qRes').innerHTML = s.ok ? '<span class="pill buy">成交</span>' : '<span class="pill sell">revert</span>';
+  $('slipFormula').textContent = `minOut = 报价 × (1 − ${(s.tol * 100).toFixed(1)}%) = ${fmt(s.minOut, 4)}\n` +
+    (s.ok ? `实际 ${fmt(s.actual, 4)} ≥ minOut → 成交` : `revert InsufficientOutput(${fmt(s.actual, 4)}, ${fmt(s.minOut, 4)})`);
+}
+['usdIn', 'tol', 'front'].forEach(id => $(id).addEventListener('input', renderSlip));
+$('slipBtn').addEventListener('click', () => {
+  const s = slip();
+  if (s.ok) log(`swap(USDT, ${fmt(s.usd)}, minOut ${fmt(s.minOut, 4)})：成交，得 ${fmt(s.actual, 4)} ETH。`, 'ok');
+  else log(`swap 回滚：InsufficientOutput(out=${fmt(s.actual, 4)}, minOut=${fmt(s.minOut, 4)})。整笔交易撤销，只损失 Gas。`, 'err');
+});
+
+// ---------- ③ LP ----------
+function rVal() { return Math.pow(2, +$('r').value); } // 滑块 −2..2 对应 r = 0.25..4（对数刻度）
+function renderLP() {
+  const r = rVal(), eth = +$('lpEth').value, apr = +$('apr').value / 100, days = +$('days').value;
+  $('rOut').textContent = r.toFixed(2) + '×'; $('aprOut').textContent = (apr * 100).toFixed(0) + '%'; $('daysOut').textContent = days + ' 天';
+  const v = lpVsHold(eth, 3000, r);
+  const V0 = eth * 3000 * 2;
+  const feeIncome = V0 * apr * days / 365;      // 简化：按存入时价值计提，不计复利
+  const net = (v.lp + feeIncome) / v.hold - 1;
+  $('lHold').textContent = fmt(v.hold); $('lLP').textContent = fmt(v.lp);
+  $('lIL').textContent = sgnPct(v.il); $('lFee').textContent = fmt(feeIncome);
+  $('lNet').textContent = sgnPct(net); $('lNet').className = 'v ' + (net >= 0 ? 'up' : 'down');
+  $('lpFormula').textContent =
+    `价格 3,000 → ${fmt(3000 * r)}（r = ${r.toFixed(4)}）\n` +
+    `LP 持有：${fmt(v.lpEth, 4)} ETH + ${fmt(v.lpUsd)} USDT = ${fmt(v.lp)}\n` +
+    `一直持有：${eth} ETH × ${fmt(3000 * r)} + ${fmt(eth * 3000)} = ${fmt(v.hold)}\n` +
+    `IL = 2√r/(1+r) − 1 = ${sgnPct(impermanentLoss(r))}`;
+  drawIL(r, feeIncome / V0);
+}
+function drawIL(r, feeFrac) {
+  const W = 520, H = 300, L = 48, R = 12, T = 12, B = 30;
+  const lo = -0.25, hi = 0.15;
+  const X = lr => L + (lr + 2) / 4 * (W - L - R);   // lr = log2(r)
+  const Y = v => H - B - (v - lo) / (hi - lo) * (H - T - B);
+  let s = '';
+  for (let v = -0.25; v <= 0.151; v += 0.05) {
+    s += `<line class="${Math.abs(v) < 1e-9 ? 'zero' : 'grid-line'}" x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}"/>`;
+    s += `<text class="t-axis" x="${L - 6}" y="${Y(v) + 4}" text-anchor="end">${Math.round(v * 100)}%</text>`;
+  }
+  [0.25, 0.5, 1, 2, 4].forEach(t => s += `<text class="t-axis" x="${X(Math.log2(t))}" y="${H - 12}" text-anchor="middle">${t}</text>`);
+  s += `<text class="t-axis" x="${W - R}" y="${H - 1}" text-anchor="end">价格倍数 r（对数）</text>`;
+  let d1 = '', d2 = '';
+  for (let i = 0; i <= 200; i++) {
+    const lr = -2 + 4 * i / 200, rr = Math.pow(2, lr);
+    const il = impermanentLoss(rr);
+    // 手续费相对"持有价值"的比例：fee / hold = feeFrac × 2 / (1 + r)
+    const net = (1 + il) * 1 + feeFrac * 2 / (1 + rr) - 1;
+    d1 += (i ? 'L' : 'M') + X(lr).toFixed(1) + ' ' + Y(Math.max(lo, il)).toFixed(1);
+    d2 += (i ? 'L' : 'M') + X(lr).toFixed(1) + ' ' + Y(Math.max(lo, Math.min(hi, net))).toFixed(1);
+  }
+  s += `<path class="il" d="${d1}"/><path class="net" d="${d2}"/>`;
+  const il = impermanentLoss(r);
+  s += `<line x1="${X(Math.log2(r))}" x2="${X(Math.log2(r))}" y1="${T}" y2="${H - B}" style="stroke:var(--accent);stroke-width:1.4"/>`;
+  s += `<circle cx="${X(Math.log2(r))}" cy="${Y(Math.max(lo, il))}" r="5" style="fill:var(--sell)"/>`;
+  s += `<text x="${X(Math.log2(r)) + 6}" y="${Y(Math.max(lo, il)) + 16}" style="font-size:11px;fill:var(--sell)">${sgnPct(il)}</text>`;
+  $('ilChart').innerHTML = s;
+}
+['lpEth', 'r', 'apr', 'days'].forEach(id => $(id).addEventListener('input', renderLP));
+
+// ---------- ④ 联合曲线 ----------
+let bc;
+function bcInit() { bc = { vSol: BC.vSol0, vTok: BC.vTok0, sold: 0, raised: 0, graduated: false }; }
+function renderBC() {
+  const prog = bc.sold / BC.sellable;
+  $('bcBar').style.width = (prog * 100).toFixed(1) + '%';
+  $('bSol').textContent = fmt(bc.raised, 3);
+  $('bSold').textContent = fmt(bc.sold / 1e6, 2) + 'M';
+  $('bPrice').textContent = bcPrice(bc).toExponential(3);
+  $('bState').innerHTML = bc.graduated ? '<span class="pill buy">已毕业 → AMM</span>' : `<span class="pill info">${(prog * 100).toFixed(1)}%</span>`;
+  $('bcBtn').disabled = bc.graduated; $('bcAll').disabled = bc.graduated;
+  // 价格曲线：价格 = vSol/vTok，随已售量 s：vTok = vTok0 − s，vSol = k / vTok
+  const W = 520, H = 260, L = 64, R = 12, T = 12, B = 30;
+  const k = BC.vSol0 * BC.vTok0;
+  const pAt = s => (k / (BC.vTok0 - s)) / (BC.vTok0 - s);
+  const pmax = pAt(BC.sellable) * 1.1;
+  const X = s => L + s / 1e9 * (W - L - R);
+  const Y = p => H - B - p / pmax * (H - T - B);
+  let sv = '';
+  for (let i = 0; i <= 4; i++) { const p = pmax * i / 4; sv += `<line class="grid-line" x1="${L}" x2="${W - R}" y1="${Y(p)}" y2="${Y(p)}"/><text class="t-axis" x="${L - 4}" y="${Y(p) + 4}" text-anchor="end">${(p * 1e8).toFixed(1)}</text>`; }
+  sv += `<text class="t-axis" x="4" y="12">价格 ×10⁻⁸ SOL</text>`;
+  [0, 250, 500, 750, 1000].forEach(m => sv += `<text class="t-axis" x="${X(m * 1e6)}" y="${H - 12}" text-anchor="middle">${m}M</text>`);
+  let d = '';
+  for (let i = 0; i <= 120; i++) { const s = BC.sellable * i / 120; d += (i ? 'L' : 'M') + X(s).toFixed(1) + ' ' + Y(pAt(s)).toFixed(1); }
+  sv += `<path class="curve" d="${d}"/>`;
+  sv += `<line class="grad" x1="${X(BC.sellable)}" x2="${X(BC.sellable)}" y1="${T}" y2="${H - B}"/><text x="${X(BC.sellable) + 4}" y="${T + 12}" style="font-size:11px;fill:var(--sell)">毕业</text>`;
+  if (bc.graduated) sv += `<line x1="${X(BC.sellable)}" x2="${W - R}" y1="${Y(pAt(BC.sellable))}" y2="${Y(pAt(BC.sellable))}" style="stroke:var(--buy);stroke-width:2;stroke-dasharray:4 3"/><text x="${W - R - 4}" y="${Y(pAt(BC.sellable)) + 14}" text-anchor="end" style="font-size:11px;fill:var(--buy)">AMM 开盘价</text>`;
+  sv += `<circle cx="${X(bc.sold)}" cy="${Y(bcPrice(bc))}" r="5" style="fill:var(--accent)"/>`;
+  $('bcChart').innerHTML = sv;
+}
+function doBcBuy(sol) {
+  if (bc.graduated) return;
+  const r = bcBuy(bc, sol);
+  Object.assign(bc, { vSol: r.vSol, vTok: r.vTok, sold: r.sold, raised: r.raised });
+  log(`联合曲线：付 ${fmt(r.used, 3)} SOL，得 ${fmt(r.got / 1e6, 3)}M 枚，价格 ${bcPrice(bc).toExponential(3)} SOL/枚。`, 'ok');
+  if (bc.sold >= BC.sellable - 1e-6) {
+    bc.graduated = true;
+    const ammPrice = bc.raised / BC.reserved;
+    log(`毕业：募集 ${fmt(bc.raised, 2)} SOL。迁入 AMM：${fmt(bc.raised, 2)} SOL + ${BC.reserved / 1e6}M 枚，开盘价 ${ammPrice.toExponential(3)}，曲线终点价 ${bcPrice(bc).toExponential(3)}（示例，未扣迁移费）。`, 'note');
+  }
+  renderBC();
+}
+$('bcBtn').addEventListener('click', () => doBcBuy(+$('bcBuy').value));
+$('bcAll').addEventListener('click', () => {
+  if (reduce) { doBcBuy(1000); return; }
+  const t = setInterval(() => { if (bc.graduated) clearInterval(t); else doBcBuy(10); }, 200);
+});
+$('bcReset').addEventListener('click', () => { bcInit(); renderBC(); log('联合曲线重置。', 'note'); });
+
+// ---------- 预设 ----------
+const PRESETS = {
+  ch07: { note: '07 章示例：100 ETH / 300,000 USDT，买 10 ETH。对照：实付 33,433.63、手续费 100.30、均价 3,343.36、冲击 +11.45%、现货价 3,704.82。', dir: 'buy', amt: 10, r: 0 },
+  dump: { note: '大单砸盘：一次卖出 30 ETH（池子的 30%）。得到约 69,071 USDT，均价约 2,302，比现货低约 23%。再到 ② 看滑点保护。', dir: 'sell', amt: 30, r: 0 },
+  lp2x: { note: '价格翻倍的 LP：存 10 ETH + 30,000 USDT，ETH 涨到 6,000。持有 90,000，LP 84,852.81，IL −5.72%。拖动年化或天数，看手续费能否覆盖。', dir: 'buy', amt: 10, r: 1 },
+  grad: { note: '联合曲线毕业：一路买入，价格随已售量上升。卖完 7.931 亿枚约募集 85 SOL，迁入 AMM。', dir: 'buy', amt: 10, r: 0 },
+};
+function loadPreset(k) {
+  const p = PRESETS[k];
+  document.querySelectorAll('#presets button').forEach(b => b.classList.toggle('on', b.dataset.p === k));
+  $('presetNote').textContent = p.note;
+  pool = { x: 100, y: 300000 }; $('rx').value = 100; $('ry').value = 300000; $('fee').value = 0.3;
+  dir = p.dir; $('amt').max = 200; $('amt').value = p.amt;
+  $('usdIn').value = 33433.63; $('tol').value = 1; $('front').value = 0;
+  $('lpEth').value = 10; $('r').value = p.r; $('apr').value = 10; $('days').value = 180;
+  $('log').innerHTML = '';
+  bcInit();
+  renderSwap(); renderSlip(); renderLP(); renderBC();
+  log('加载预设：' + document.querySelector(`#presets button[data-p="${k}"]`).textContent, 'note');
+  if (k === 'grad') $('bcAll').click();
+  if (k === 'lp2x') document.getElementById('ilChart').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+}
+document.querySelectorAll('#presets button').forEach(b => b.addEventListener('click', () => loadPreset(b.dataset.p)));
+loadPreset('ch07');
+</script>
+</body>
+</html>

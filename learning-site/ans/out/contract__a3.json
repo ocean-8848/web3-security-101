@@ -1,0 +1,6 @@
+{
+ "answers": [
+  "默认情况下，关闭 ATA 时押金退给关闭它的人，也就是 Bob 的钱包；只有用 <code>--recipient</code> 指定其他地址才会改变。也就是说，你垫付的押金最终是 Bob 的，不会回到你手里。（<code>close</code> 的默认接收方是我依据通常行为写的，请用 <code>spl-token close --help</code> 核对。）<br>空投 10 万个新地址时，押金由项目方付：约 0.0015 SOL × 100,000 ≈ 150 SOL（派生估算，以 <code>solana rent 165</code> 为准）。这笔钱不会给验证者，而是锁在每个新 ATA 里作为租金押金，由 ATA 的持有人在关闭时拿走。",
+  "持有升级权限的人可以替换程序代码，所以他可以改写程序逻辑，动用 owner 为该程序的账户里的用户资金。无代理的以太坊合约代码不可变，没有这种后门。<br>用户应在 Explorer 的程序页检查：<code>Upgradeable</code>（是否可升级）和 <code>Upgrade Authority</code>（谁持有升级权限，是单签地址、多签，还是已被设为 <code>--final</code> 的空）。章节指出 <code>--final</code> 后程序永久不可升级，且不可撤销。"
+ ]
+}

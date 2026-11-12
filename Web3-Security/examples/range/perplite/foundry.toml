@@ -1,0 +1,27 @@
+[profile.default]
+src = "src"
+test = "test"
+out = "out"
+libs = ["lib"]
+solc = "0.8.28"
+optimizer = true
+optimizer_runs = 200
+evm_version = "cancun"
+remappings = ["forge-std/=lib/forge-std/src/"]
+
+[invariant]
+runs = 128
+depth = 60
+fail_on_revert = false
+
+# 只用于演示：对有漏洞的版本跑同一组不变量。预期失败。
+[profile.vuln]
+src = "src"
+test = "demo"
+out = "out-vuln"
+libs = ["lib"]
+solc = "0.8.28"
+optimizer = true
+optimizer_runs = 200
+evm_version = "cancun"
+remappings = ["forge-std/=lib/forge-std/src/"]

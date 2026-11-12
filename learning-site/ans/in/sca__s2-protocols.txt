@@ -1,0 +1,80 @@
+# 章节：其他头部协议速览
+
+## 思考题（共 2 题，按顺序作答）
+Q1. 一个金库集成 stETH，用 transfer(amount) 后断言接收方余额增加了 amount。为什么这个断言偶尔会失败？
+Q2. Yearn 的"盈利逐步释放"机制防御的是哪一种攻击？
+
+## 章节正文
+
+倚门而歌 · 2.5
+
+# 其他头部协议：收益、衍生品、保险、NFT、指数、质押
+
+学习目标用同一张"协议卡"拆解路线图列出的其余头部协议：资金流、核心不变量、审计重点。
+
+前置章节2.2–2.4
+
+## 1. 协议卡
+
+每个协议都用五个问题拆解：钱从哪来？存在哪里？谁能动它？价格从哪来？什么必须永远成立？
+
+ |  | 协议 | 类别 | 核心机制 | 必须成立的不变量 | 审计重点
+
+ | Convex Finance | 收益增强 | 用户存入 Curve LP，Convex 统一质押到 Curve gauge，用自己锁定的 veCRV 提高收益，分发 CRV + CVX | 每个用户的待领奖励之和 ≤ 合约持有奖励 | 奖励累计（rewardPerToken）更新顺序；包装代币转让时奖励归属
+
+ | Yearn Finance | 收益聚合器 | Vault 接收存款，分配给多个 Strategy；harvest 时结算盈亏，盈利逐步释放 | 份额价格只在真实盈利时上升 | harvest 可被夹击（存款→harvest→取款）；策略亏损报告；V3 采用 ERC-4626
+
+ | GMX | 永续合约 | V1：GLP 池作为所有交易者的对手方，按预言机价格成交，无滑点 | 池子价值 = 资产 − 交易者未实现盈亏 | 预言机延迟套利；空头均价计算；2025 年 7 月 V1 因重入导致空头均价被操纵，损失约 4,200 万美元
+
+ | Nexus Mutual | 保险（互助） | 成员购买保障，理赔由成员评估；NXM 通过协议定价买卖 | 资本池 ≥ 最低资本要求 | 理赔投票操纵；定价公式；会员白名单绕过
+
+ | OpenSea Seaport | NFT 市场 | 订单离线签名，链上撮合；支持条件（criteria）、zone、conduit 授权代理 | 每个订单的成交量不超过签名允许的量 | 签名与订单哈希；部分成交的分数计算；conduit 授权范围；旧订单未取消导致低价成交（2022 年 Wyvern 迁移期间的旧挂单事件）
+
+ | Set Protocol | 指数 / 资产管理 | SetToken 持有一篮子资产；Manager 通过模块（发行、交易、再平衡）调整 | 每单位 SetToken 的成分 × 份额 = 实际持仓 | 发行/赎回取整；模块权限；Manager 恶意调仓
+
+ | Lido | 流动性质押 | 用户存 ETH 得 stETH（rebase）；预言机委员会每日报告信标链余额；提款走队列 | stETH 总量 = 协议控制的 ETH | rebase 代币 1–2 wei 取整误差；集成方应使用 wstETH；预言机报告异常；提款队列 NFT
+
+💡 项目实例：C3 Lido stETH 集成审计 · C5 ERC-4626 金库审计。
+
+## 2. 奖励累计算法（多个协议通用）
+
+Synthetix StakingRewards 的"每代币奖励累积"算法被 Convex、Sushi MasterChef 等大量复用：
+
+rewardPerTokenStored += (now - lastUpdate) * rewardRate * 1e18 / totalSupply;
+earned[user] = balance[user] * (rewardPerTokenStored - userPaid[user]) / 1e18 + rewards[user];
+// 任何改变 balance 或 totalSupply 的操作之前，必须先 updateReward(user)
+
+- 在 stake / withdraw / transfer 前忘记 updateReward → 新用户领到历史奖励。
+
+- totalSupply == 0 时奖励去向未定义 → 奖励永久卡在合约里。
+
+- rewardRate 精度：奖励代币小数位低（例如 USDC 6 位）且总质押量大时，每秒奖励被取整为 0。
+
+## 3. 组合风险图
+
+[图]
+flowchart LR
+  ETH["用户 ETH"] --> LIDO["Lido → stETH"]
+  LIDO --> CURVE["Curve stETH/ETH 池"]
+  CURVE --> CVX["Convex 增强收益"]
+  LIDO --> AAVE["Aave 抵押 wstETH"]
+  AAVE --> LOOP["循环借 ETH 再质押杠杆质押"]
+  LOOP --> LIDO
+  CURVE -. "stETH 折价" .-> AAVE
+  AAVE -. "清算抛售 stETH" .-> CURVE
+[/图]
+
+读图要点
+
+- 虚线是反馈回路：stETH 在 Curve 折价 → Aave 中的杠杆头寸被清算 → 清算人在 Curve 抛售 stETH → 折价更深。
+
+- 2022 年 6 月 stETH 曾出现约 5% 的折价，部分杠杆质押头寸被清算。
+
+- 审计单个协议时，要问：我的预言机用的是 stETH 的市场价，还是按 1:1 兑换率？两种选择各有被攻击的方式。
+
+## 4. 思考题
+
+- 一个金库集成 stETH，用 transfer(amount) 后断言接收方余额增加了 amount。为什么这个断言偶尔会失败？
+
+- Yearn 的"盈利逐步释放"机制防御的是哪一种攻击？
+

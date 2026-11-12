@@ -1,0 +1,7 @@
+{
+ "answers": [
+  "Handler 要包含存款、取款，以及会触发回调的动作，才能随机生成跨函数重入序列。具体是：<code>deposit</code>、<code>withdraw</code>、<code>transfer</code>（若 Bank 有的话），再加一个带 <code>receive()</code> 回调的攻击者角色，在回调里随机调用其他入口。用 ghost 变量记录 <code>sumOfBalances</code>，不变量写成 <code>address(bank).balance >= handler.sumOfBalances()</code>，重入造成少记账时即会被发现。",
+  "不能直接上线，要当作新代码重新走流程。0.3% 改 0.25% 看似小，但审计只对审计时的版本成立。Uranium Finance 正是分叉时改手续费常数，却漏改了比较式右侧的 <code>1000**2</code>，损失约 5,000 万美元。应集中定义常数，补跑单元、模糊和不变量测试（x × y ≥ k），请审计方对这处改动做差异审计并复审，再部署。",
+  "三项例子：一是 USDT 推送转账的返回值，二是能量与 80 ms CPU 时间上限，三是 CREATE2 地址前缀和 CHAINID。本地 EVM 覆盖不到，因为这些是 TRON 链自己的资源计费、虚拟机和代币实现差异，以太坊本地环境不会模拟。应在 Nile / Shasta 测试网实测，本章明确说不要只用本地 EVM。"
+ ]
+}

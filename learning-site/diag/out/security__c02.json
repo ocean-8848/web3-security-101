@@ -1,0 +1,24 @@
+[
+  {
+    "after": "3.1 槽位规则",
+    "title": "Layout 合约的槽位分配",
+    "mermaid": "flowchart TB\n  O[\"owner：20 字节\"] --> S0[\"slot 0<br/>owner + paused\"]\n  P[\"paused：1 字节\"] --> S0\n  F[\"fee：12 字节\"] -->|\"20+1+12 = 33 > 32<br/>放不下\"| S1[\"slot 1：fee\"]\n  T[\"total：uint256\"] --> S2[\"slot 2：total\"]\n  B[\"bal：mapping\"] --> S3[\"slot 3：本身为空\"]\n  S3 -->|\"keccak256(abi.encode(k, p))\"| H[\"bal 元素在哈希位置\"]\n  C[\"constant / immutable\"] -->|\"不占槽\"| N[\"写进代码\"]",
+    "notes": [
+      ["flow", "状态变量按声明顺序从 slot 0 开始依次分配。"],
+      ["key", "能否打包只看当前槽剩余空间放不放得下。"],
+      ["limit", "mapping 的槽位本身是空的，元素散落在哈希算出的位置。"],
+      ["risk", "变量顺序一变，后面所有槽位都会错位，这是升级漏洞的根源。"]
+    ]
+  },
+  {
+    "after": "5. Gas、回滚与错误处理",
+    "title": "不同失败方式如何传播",
+    "mermaid": "flowchart TB\n  E[\"调用中出错\"] --> Q{\"哪种失败？\"}\n  Q -->|\"require / revert\"| R1[\"回滚当前调用\"]\n  R1 --> R1b[\"向上冒泡给调用方\"]\n  Q -->|\"低级 call 失败\"| R2[\"不冒泡\"]\n  R2 --> R2b[\"只返回 false 和 returndata\"]\n  R2b --> K[\"调用方必须自己检查\"]\n  Q -->|\"gas 用完\"| R3[\"当前调用帧回滚\"]\n  R3 --> R3b[\"调用方还剩 1/64 gas 收尾\"]\n  Q -->|\"想用 try/catch\"| T[\"只能捕获外部调用失败\"]",
+    "notes": [
+      ["flow", "require 和自定义错误会一路向上冒泡，整条调用链一起回滚。"],
+      ["fail", "低级 call 失败时外层照常往下执行，除非你检查返回值。"],
+      ["limit", "try/catch 抓不到本合约内部的失败。"],
+      ["key", "EIP-150 只转发 63/64 的 gas，所以调用方总能留一点 gas 收尾。"]
+    ]
+  }
+]

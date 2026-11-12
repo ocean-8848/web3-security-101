@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A02 风险评级与报告</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .lv { display: grid; gap: 20px; }
+  .lv.c4 { grid-template-columns: repeat(4, 1fr); } .lv.c3 { grid-template-columns: repeat(3, 1fr); }
+  .lv .card { display: flex; flex-direction: column; gap: 10px; min-height: 330px; font-size: 28px; }
+  .lv .card h3 { font-size: 44px; margin: 0; }
+  .lv .card .d { color: var(--text-2); font-size: 26px; line-height: 1.5; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .who { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .who .card { font-size: 30px; display: flex; flex-direction: column; gap: 10px; }
+  .fields { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .fields .card { font-size: 28px; padding: 18px 22px; min-height: 170px; display: flex; flex-direction: column; gap: 6px; }
+  .fields .card .n { font-family: var(--mono); color: var(--gold); font-size: 34px; font-weight: 700; }
+  .fields .card .d { color: var(--text-2); font-size: 24px; }
+  .pair { display: grid; grid-template-columns: 1fr 70px 1.6fr; gap: 0; align-items: center; margin-bottom: 18px; }
+  .pair .card { font-size: 28px; padding: 18px 24px; }
+  .pair .ar { text-align: center; font-size: 48px; color: var(--text-2); }
+  .ver { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .ver .card { font-size: 30px; display: flex; flex-direction: column; gap: 12px; min-height: 330px; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="A02" data-title="风险评级与报告：把发现变成决策依据">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 评估篇 · A02</div>
+    <h1>同一个发现，<br>为什么两个人评出<span class="hl">两种等级</span>？</h1>
+    <div class="card fs34" data-k="1" data-nocur style="max-width:1500px">发现：攻击者需要控制 <b class="hl">5 把多签私钥中的 3 把</b>，才能无限增发代币。</div>
+    <div class="who">
+      <div class="card info" data-k="2" data-nocur><b>评估人甲：低危</b><span class="muted">"拿到三把私钥？几乎不可能。"</span></div>
+      <div class="card sell" data-k="3" data-nocur><b>评估人乙：严重</b><span class="muted">"增发等于清零所有持有人。"</span></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到评估篇第2集，风险评级与报告。先看一个真实工作中常见的场景。</li>
+      <li>有一条发现。攻击者需要控制5把多签私钥里的3把，才能无限增发代币。</li>
+      <li>评估人甲说，这是低危。拿到三把私钥，几乎不可能。</li>
+      <li>评估人乙说，这是严重。增发等于把所有持有人的价值清零。两个人都有道理，问题出在哪？出在他们各自只看了一个维度。本集就讲怎样用两个维度定级，怎样写报告，以及不修的风险由谁签字。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="定级像医院分诊" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>定级像分诊：病情多重 × 恶化多快</h2>
+    <div class="two">
+      <div class="card gold" data-k="0"><h3>分诊护士</h3><div class="fs30">不治病，只决定谁先进抢救室<br><span class="muted">→ 定级不修漏洞，只决定修复顺序</span></div></div>
+      <div class="card info" data-k="1"><h3>两个依据</h3><div class="fs30">病情多重 → <b class="hl">影响</b><br>恶化多快、多容易触发 → <b class="hl">可能性</b></div></div>
+    </div>
+    <div class="card fs30" data-k="2">大出血即使暂时稳定也优先；轻微擦伤即使在流血也排后面。</div>
+    <div class="card warn fs30" data-k="3">比喻不准的地方：病情是客观的；漏洞的影响依赖<b>攻击者能力假设</b>。定级必须写清假设。</div>
+    <ol class="say">
+      <li>打个比方，定级像医院分诊。分诊护士不治病，她只决定谁先进抢救室。定级也一样，它不修漏洞，只决定修复的顺序和上线的门槛。</li>
+      <li>分诊看两件事。病情多重，这是影响。恶化多快、多容易触发，这是可能性。</li>
+      <li>大出血的病人，即使暂时稳定，也要优先。轻微擦伤，即使正在流血，也排在后面。</li>
+      <li>比喻不准的地方在于，病情是客观的。漏洞的影响，却依赖你假设攻击者有什么能力，有多少钱，能不能抢跑。所以定级时必须把假设写清楚，否则同一个发现，在不同人手里会评出不同等级。</li>
+    </ol>
+  </section>
+
+  <!-- 3 影响 -->
+  <section class="scene" data-title="维度一：影响" data-onstep="marks">
+    <div class="kicker">维度一 · 影响 Impact</div>
+    <h2>如果被成功利用，最坏会怎样</h2>
+    <div class="lv c4">
+      <div class="card sell" data-k="0"><h3 class="down">严重</h3><div class="d">直接盗取用户或协议资金<br>资金被永久冻结<br>协议资不抵债<br>未授权增发 · 治理被夺取</div></div>
+      <div class="card warn" data-k="1"><h3 style="color:var(--warn)">高</h3><div class="d">盗取未领取收益<br>临时冻结资金<br>部分用户受损</div></div>
+      <div class="card gold" data-k="2"><h3 class="hl">中</h3><div class="d">功能不可用<br>偷 gas<br>特定条件下的有限损失</div></div>
+      <div class="card info" data-k="2"><h3 class="blue">低</h3><div class="d">不造成资金损失的异常<br>偏离规格但无价值损失</div></div>
+    </div>
+    <ol class="say">
+      <li>先看第一个维度，影响。影响回答的问题是，如果被成功利用，最坏会怎样。严重级包括，直接盗取用户或协议的资金，资金被永久冻结，协议资不抵债，未授权增发，以及治理被夺取。</li>
+      <li>高级包括，盗取用户还没领取的收益，临时冻结资金，或者部分用户受损。</li>
+      <li>中级通常是功能不可用，偷 gas，或者在特定条件下造成有限损失。低级是不造成资金损失的异常，比如偏离规格，但没有价值损失。</li>
+    </ol>
+  </section>
+
+  <!-- 4 可能性 -->
+  <section class="scene" data-title="维度二：可能性" data-onstep="marks">
+    <div class="kicker">维度二 · 可能性 Likelihood</div>
+    <h2>被利用的门槛有多高</h2>
+    <div class="lv c3">
+      <div class="card sell" data-k="0"><h3 class="down">高</h3><div class="d">任何人<br>一笔交易<br>不需要特殊前提</div><div class="fs26 hl">例：公开函数缺少权限检查</div></div>
+      <div class="card warn" data-k="1"><h3 style="color:var(--warn)">中</h3><div class="d">需要一定资本<br>特定市场条件<br>抢跑或多步骤</div><div class="fs26 hl">例：需要闪电贷和浅流动性</div></div>
+      <div class="card info" data-k="2"><h3 class="blue">低</h3><div class="d">需要特权角色<br>极端条件<br>已被其他机制部分缓解</div><div class="fs26 hl">例：需要多签私钥</div></div>
+    </div>
+    <div class="card gold fs28" data-k="3">注意：闪电贷让"需要大量资本"在一笔交易内成为现实 —— 资本门槛往往比看起来低。</div>
+    <ol class="say">
+      <li>第二个维度是可能性，就是被利用的门槛。高可能性是指，任何人，用一笔交易，不需要特殊前提就能触发。比如一个公开函数缺少权限检查。</li>
+      <li>中等可能性需要一些条件，比如一定的资本，特定的市场条件，抢跑，或者多个步骤。</li>
+      <li>低可能性需要特权角色，或者极端条件，或者已经被其他机制部分缓解了。比如开场那个例子，需要多签私钥。</li>
+      <li>这里有个容易低估的地方。闪电贷让攻击者在一笔交易内借到巨额资金，用完马上还。所以需要大量资本这个门槛，往往比看起来低得多。</li>
+    </ol>
+  </section>
+
+  <!-- 5 矩阵 -->
+  <section class="scene" data-title="评级矩阵与两个例子" data-onstep="mxStep">
+    <div class="kicker">评级矩阵 · 例子为示例</div>
+    <h2 id="mxH">两个维度一交叉，等级就出来了</h2>
+    <div class="row">
+      <svg id="mx" width="980" height="560" viewBox="0 0 980 560"></svg>
+      <div class="col" id="mxSide"></div>
+    </div>
+    <ol class="say">
+      <li>把两个维度交叉，就得到这张矩阵。横轴是影响，纵轴是可能性。右上角，影响严重、可能性高，是严重级。左下角，影响低、可能性低，只是信息项。</li>
+      <li>来定第一个例子。一个已经部署的空投合约，任何人调用领取函数，都能领走不属于自己的份额。奖池里有100万美元。</li>
+      <li>影响是什么？直接盗取资金，最多100万美元，属于严重。可能性呢？任何人，一笔交易，没有前提，属于高。矩阵给出严重级，立即处理。</li>
+      <li>第二个例子，就是开场那条。增发的影响是严重。需要5把里的3把私钥，可能性按表应该是低。矩阵给出中危。</li>
+      <li>但矩阵只是起点。假如我们发现，这5把私钥里有3把，由同一个团队保管在同一类电脑上，那么拿到三把并不比拿到一把难多少。</li>
+      <li>这时可能性要上调一档到中，等级就变成高危。所以开场的甲和乙都不全对。定级要结合运营安全的实际情况，并且在报告里写清这个判断依据。</li>
+    </ol>
+  </section>
+
+  <!-- 5b 常见错误 -->
+  <section class="scene" data-title="定级的四个常见错误" data-onstep="marks">
+    <div class="kicker">常见误区</div>
+    <h2>四种定级错误，最后都会变成上线事故</h2>
+    <div class="steps c4">
+      <div class="card sell" data-k="0"><span class="n">1</span><b>按修复难度定级</b><div class="d">"改一行就好，算低危"<br>→ 等级只看后果和门槛，不看修起来难不难</div></div>
+      <div class="card sell" data-k="1"><span class="n">2</span><b>因为"已知"而降级</b><div class="d">"以前审计说过，项目方知道"<br>→ 已知不等于已缓解</div></div>
+      <div class="card sell" data-k="2"><span class="n">3</span><b>假设攻击者很穷</b><div class="d">"要一亿资金才能操纵"<br>→ 闪电贷一笔交易就能借到</div></div>
+      <div class="card sell" data-k="3"><span class="n">4</span><b>只看链上</b><div class="d">"合约没问题，所以安全"<br>→ 签名界面、前端同样有严重级</div></div>
+    </div>
+    <ol class="say">
+      <li>定级有四种常见错误。第一种，按修复难度定级。有人说，这个改一行就好，算低危吧。不对。等级只看后果和门槛，不看修起来难不难。一行就能修的严重漏洞，仍然是严重。</li>
+      <li>第二种，因为已知而降级。以前的审计说过，项目方也知道。可是已知不等于已经缓解。只要还能被利用，等级就不变，最多走风险接受流程。</li>
+      <li>第三种，假设攻击者很穷。比如说，要操纵这个价格，需要一亿美元资金，所以可能性低。但闪电贷可以在一笔交易里借到这些钱，门槛几乎为零。</li>
+      <li>第四种，只看链上。合约没问题，就认为整体安全。可是签名界面和前端同样有严重级。下面我们就看外部口径怎么分。</li>
+    </ol>
+  </section>
+
+  <!-- 6 Immunefi 合约 -->
+  <section class="scene" data-title="对照外部口径：智能合约" data-onstep="rowStep">
+    <div class="kicker">外部口径 · Immunefi 严重度分级 v2.3 · 摘录，以官方页面为准</div>
+    <h2>和漏洞赏金平台对齐口径</h2>
+    <table class="t sm">
+      <thead><tr><th style="width:160px">等级</th><th>智能合约的代表影响</th></tr></thead>
+      <tbody>
+        <tr><td class="bad">严重</td><td>直接盗取用户资金 · 永久冻结资金 · 协议资不抵债 · 未授权增发 · 治理投票被操纵</td></tr>
+        <tr><td style="color:var(--warn);font-weight:700">高</td><td>盗取未领取收益 · 永久冻结未领取收益 · 临时冻结资金</td></tr>
+        <tr><td class="hl" style="font-weight:700">中</td><td>缺少代币导致合约无法运作 · 区块填塞 · 无获利的破坏 · 偷 gas</td></tr>
+        <tr><td class="blue" style="font-weight:700">低</td><td>合约未能兑现承诺的收益，但不损失价值</td></tr>
+      </tbody>
+    </table>
+    <div class="card info fs28" data-k="2">为什么要对齐：内部定级和赏金计划用同一把尺子，白帽报告来了才不会争论等级。</div>
+    <ol class="say">
+      <li>内部定级最好和外部口径对齐。业界常用的参照，是漏洞赏金平台 Immunefi 的严重度分级，公开资料目前是2点3版。它按资产类型分别给出示例。先看智能合约。</li>
+      <li>严重级包括直接盗取用户资金，永久冻结资金，协议资不抵债，未授权增发，以及治理投票被操纵。高级包括盗取或永久冻结还没领取的收益，以及临时冻结资金。中级和低级，主要是不造成直接价值损失的问题。</li>
+      <li>为什么要对齐？因为你上线后会运行漏洞赏金计划。内部定级和赏金计划用同一把尺子，白帽提交报告时，双方才不会为等级争论。</li>
+    </ol>
+  </section>
+
+  <!-- 7 Immunefi 网站 -->
+  <section class="scene" data-title="对照外部口径：网站与应用" data-onstep="rowStep">
+    <div class="kicker">外部口径 · 网站与应用 · 摘录</div>
+    <h2>前端和后端，有自己的严重级</h2>
+    <table class="t sm">
+      <thead><tr><th style="width:160px">等级</th><th>网站与应用的代表影响</th></tr></thead>
+      <tbody>
+        <tr><td class="bad">严重</td><td>执行任意系统命令 · 读取服务器私钥 · <b class="hl">替换交易参数或合约地址</b> · 代替用户执行操作</td></tr>
+        <tr><td style="color:var(--warn);font-weight:700">高</td><td>持久内容篡改 · 一键修改他人敏感信息 · 泄露用户机密信息</td></tr>
+        <tr><td class="hl" style="font-weight:700">中</td><td>一键修改他人非敏感信息 · 反射型注入 · 开放重定向</td></tr>
+      </tbody>
+    </table>
+    <div class="card sell fs30" data-k="1">近年最大的损失多来自这一类：前端被注入、签名界面被篡改。<b>评估范围不覆盖链下，等于只验收了主体结构，没验收门锁。</b></div>
+    <ol class="say">
+      <li>同一套分级里，网站与应用是独立的一类。严重级里有一条特别值得注意，替换交易参数或者合约地址。还有读取服务器上的私钥，以及代替用户执行改状态的操作。</li>
+      <li>为什么强调这一类？因为近年交易所和协议最大的损失，很多来自这里。比如前端被注入恶意脚本，签名界面被篡改。如果评估范围只覆盖合约，不覆盖链下，就等于只验收了大楼的主体结构，没验收门锁。这部分在第6集详细讲。</li>
+    </ol>
+  </section>
+
+  <!-- 8 发现报告字段 -->
+  <section class="scene" data-title="一条发现的八个字段" data-onstep="marks">
+    <div class="kicker">发现报告 · T03 模板</div>
+    <h2>每条发现，八个字段一个不少</h2>
+    <div class="fields">
+      <div class="card" data-k="0"><span class="n">1</span>标题<div class="d">一句话说清问题</div></div>
+      <div class="card" data-k="0"><span class="n">2</span>等级<div class="d">标注影响与可能性</div></div>
+      <div class="card" data-k="1"><span class="n">3</span>位置<div class="d">文件、行号、函数、提交哈希</div></div>
+      <div class="card" data-k="1"><span class="n">4</span>描述<div class="d">为什么现有代码会出错</div></div>
+      <div class="card" data-k="2"><span class="n">5</span>影响<div class="d">具体数字或场景 + 攻击者能力假设</div></div>
+      <div class="card" data-k="2"><span class="n">6</span>证据<div class="d">回归测试或链上读数</div></div>
+      <div class="card" data-k="3"><span class="n">7</span>修复建议<div class="d">具体到代码层面</div></div>
+      <div class="card" data-k="3"><span class="n">8</span>状态<div class="d">待修复 / 已修复 / 部分 / 接受</div></div>
+    </div>
+    <ol class="say">
+      <li>定好级，要写成报告。每条发现有八个字段。第一是标题，一句话说清问题。第二是等级，同时标出影响和可能性各是多少。</li>
+      <li>第三是位置，文件、行号、函数，还有提交哈希。第四是描述，解释为什么现有代码会出错。</li>
+      <li>第五是影响，用具体数字或场景，并写明攻击者能力假设。第六是证据。严重和高危，要附一个能运行的证明，比如一条回归测试，或者链上读数。否则容易被开发者一句理论上不可能驳回。</li>
+      <li>第七是修复建议，要具体到代码层面。第八是状态，待修复、已修复、部分修复，或者风险接受，并附上复核记录。</li>
+    </ol>
+  </section>
+
+  <!-- 9 反例正例 -->
+  <section class="scene" data-title="三条原则与反例" data-onstep="marks">
+    <div class="kicker">写报告的三条原则 · 反例 → 正例</div>
+    <h2>可复现 · 可决策 · 可执行</h2>
+    <div class="pair" data-k="0"><div class="card sell">"存在重入风险"</div><div class="ar">→</div><div class="card buy fs26"><code>withdraw</code> 先转账、后清零余额；外部合约可在回调中再次进入，取走全部 ETH。附回归测试。</div></div>
+    <div class="pair" data-k="1"><div class="card sell">"k 值检查失效"</div><div class="ar">→</div><div class="card buy fs26">交换后校验弱了 100 倍：池子约 <b>九成储备</b>可被取走（示例池 100 万$ → 约 90 万$）。</div></div>
+    <div class="pair" data-k="2"><div class="card sell">"建议加强权限控制"</div><div class="ar">→</div><div class="card buy fs26"><code>setFeeTo</code> 缺少权限修饰器，任何人可改手续费接收地址；加 <code>onlyRole(ADMIN)</code>。</div></div>
+    <ol class="say">
+      <li>写报告有三条原则。第一是可复现。存在重入风险，这句话等于没说。正例是，指出哪个函数，先转账后清零，外部合约可以在回调里再次进入，后果是取走全部 ETH，并附一条回归测试。</li>
+      <li>第二是可决策。影响要写给不懂技术的决策者看。k 值检查失效，管理层看不懂。换成池子约九成储备可以被取走，示例里100万美元的池子，损失约90万美元，决策者马上就明白了。</li>
+      <li>第三是可执行。建议加强权限控制，开发者不知道改哪里。正例是，指出哪个函数缺少权限修饰器，后果是什么，再直接给出应该加的那一行。</li>
+    </ol>
+  </section>
+
+  <!-- 10 风险接受 -->
+  <section class="scene" data-title="风险接受" data-onstep="accStep">
+    <div class="kicker">风险接受 · 不是所有发现都要修</div>
+    <h2>不修可以，但要走正式流程</h2>
+    <svg id="acc" width="1640" height="560" viewBox="0 0 1640 560"></svg>
+    <ol class="say">
+      <li>有些发现不修也能上线，但必须走正式流程，不能口头略过。第一个问题是，能在上线前修复吗？能，就修复，复核，关闭。</li>
+      <li>修不了，就问第二个问题，剩余风险可以接受吗？不可接受，阻断上线。</li>
+      <li>可以接受，就进入风险接受。注意三件事。第一，签字的是业务负责人，也就是有权承担后果的人，不是评估人员。</li>
+      <li>第二，要记录缓解措施，比如限额、监控或保险。第三，要写复查日期，到期重新评估，并纳入监控。</li>
+      <li>为什么评估人员不能自己签？评估人员的职责是把风险说清楚，并给出建议。接不接受，是业务决策。两者分开，责任才清楚。如果同一个人既评估又接受，就没有任何制衡。</li>
+    </ol>
+  </section>
+
+  <!-- 11 两个版本 -->
+  <section class="scene" data-title="报告的两个版本" data-onstep="marks">
+    <div class="kicker">报告结构</div>
+    <h2>一份报告，两类读者</h2>
+    <div class="ver">
+      <div class="card gold" data-k="0"><h3>摘要版 · 放最前面，一页以内</h3><span class="muted">读者：管理层、业务</span>风险概览 · 门禁结论<br>剩余风险 · 上线条件<div class="hl">回答一个问题：能不能上，有什么条件</div></div>
+      <div class="card info" data-k="1"><h3>技术版</h3><span class="muted">读者：开发、审计</span>全部发现 · 代码位置<br>证据 · 修复建议 · 复核记录</div>
+    </div>
+    <div class="card sell fs30" data-k="2">诚实写出<b>未覆盖的范围</b>和<b>接受的风险</b>。把问题藏起来的报告，比没有报告更危险。</div>
+    <ol class="say">
+      <li>最后是报告的结构。一份报告有两类读者，所以分两个版本。摘要版放在最前面，一页以内，给管理层和业务看。它只回答一个问题，能不能上，有什么条件。</li>
+      <li>技术版给开发和审计看，包括全部发现、代码位置、证据、修复建议，以及复核记录。</li>
+      <li>两个版本都要诚实，特别是诚实写出本次没覆盖的范围，和已经接受的风险。一份把问题藏起来的报告，比没有报告更危险，因为它给了决策者虚假的安全感。</li>
+    </ol>
+  </section>
+
+  <!-- 12 工具 -->
+  <section class="scene" data-title="工具：评级计算器" data-onstep="marks">
+    <div class="kicker">配套工具 · 手册交互实验</div>
+    <h2>评级计算器：选两项，出等级，导出条目</h2>
+    <div class="steps c4">
+      <div class="card" data-k="0"><span class="n">1</span><b>选影响</b><div class="d">严重 / 高 / 中 / 低，各有描述</div></div>
+      <div class="card" data-k="0"><span class="n">2</span><b>选可能性</b><div class="d">高 / 中 / 低</div></div>
+      <div class="card" data-k="1"><span class="n">3</span><b>调整</b><div class="d">运营安全薄弱 → 上调一档<br>有独立缓解 → 下调一档</div></div>
+      <div class="card" data-k="2"><span class="n">4</span><b>导出</b><div class="d">生成发现条目，粘进报告</div></div>
+    </div>
+    <div class="card warn fs28" data-k="3">等级是建议值。最终定级由评估人结合上下文判断，并在报告里写明理由。</div>
+    <ol class="say">
+      <li>手册里配了一个评级计算器。选择影响，再选择可能性，矩阵上会标出对应的格子。</li>
+      <li>它还有两个调整开关。特权角色的运营安全薄弱，可能性上调一档。已经有有效的独立缓解，比如限额和时间锁，下调一档。正好对应刚才第二个例子。</li>
+      <li>最后可以导出一条发现条目，直接粘进报告。</li>
+      <li>注意，计算器给的是建议值。最终定级由评估人结合上下文判断，并在报告里写明理由。</li>
+    </ol>
+  </section>
+
+  <!-- 12b 练习 -->
+  <section class="scene" data-title="练一练" data-onstep="marks">
+    <div class="kicker">练一练 · 暂停视频，先自己定级</div>
+    <h2>三道题，答案在讲解里</h2>
+    <div class="steps c3">
+      <div class="card" data-k="0"><span class="n">1</span><b>价格操纵</b><div class="d">借贷协议用一个浅池子的现货价给抵押品估值。池子深度约 50 万$。</div><div class="fs26 hl" data-show="3">影响严重 × 可能性高 → 严重</div></div>
+      <div class="card" data-k="1"><span class="n">2</span><b>管理员改费率</b><div class="d">owner 可把手续费设到 100%，owner 是 3/5 多签 + 48 小时时间锁。</div><div class="fs26 hl" data-show="3">影响高 × 可能性低 → 中，写清假设</div></div>
+      <div class="card" data-k="2"><span class="n">3</span><b>事件缺失</b><div class="d">修改关键参数时不发事件，监控无法发现变更。</div><div class="fs26 hl" data-show="3">低，但列入监控需求</div></div>
+    </div>
+    <ol class="say">
+      <li>来练一练，可以先暂停视频，自己定级。第一题。一个借贷协议，用一个浅池子的现货价格给抵押品估值。这个池子的深度大约50万美元。</li>
+      <li>第二题。合约的管理员可以把手续费设到百分之百。管理员是5选3的多签，改费率要经过48小时时间锁。</li>
+      <li>第三题。合约修改关键参数时不发出事件，所以监控系统无法发现参数被改了。</li>
+      <li>来看参考答案。第一题，闪电贷可以轻松推动50万美元深度的池子，抵押品价值被虚高，可以超额借出。影响严重，可能性高，是严重级。第二题，影响是高，但多签加时间锁让可能性低，定中危，并写清楚依赖多签和时间锁这个假设。第三题本身是低危，但要写进上线的监控需求里。</li>
+    </ol>
+  </section>
+
+  <!-- 13 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">定级 = <span class="hl">影响 × 可能性</span>；矩阵是起点，结合运营实际调整，并写清假设。</li>
+      <li data-step="1">好的发现<span class="hl">可复现、可决策、可执行</span>；口径对齐外部分级，链下也有严重级。</li>
+      <li data-step="2">风险接受由<span class="hl">业务负责人签字</span>，带缓解措施和复查日期。</li>
+    </ul>
+    <h2 data-show="3">下一集：A03 交易所自有合约与钱包</h2>
+    <div class="path" data-show="3">
+      <div class="card sell"><div class="n">1</div><b>攻击面</b><div class="d">热钱包、冷钱包、充值归集、提币</div></div>
+      <div class="card gold"><div class="n">2</div><b>签名流程评估</b><div class="d">比多签阈值更重要的东西</div></div>
+      <div class="card info"><div class="n">3</div><b>三起事故映射</b><div class="d">Bybit、WazirX、Radiant</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，定级等于影响乘以可能性。矩阵是起点，要结合运营安全的实际情况调整，并且写清假设。</li>
+      <li>第二，好的发现可复现、可决策、可执行。口径对齐外部分级，而且别忘了，链下也有严重级。</li>
+      <li>第三，不修的风险由业务负责人签字，并且带上缓解措施和复查日期。</li>
+      <li>下一集，我们进入第一类评估对象，交易所自己的合约和钱包。会讲攻击面，讲比多签阈值更重要的签名流程，再把 Bybit、WazirX 和 Radiant 三起事故映射到评估项上。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect } = K;
+  const LV = { '严重': C.sell, '高': C.warn, '中': C.gold, '低': C.info, '信息': C.t2 };
+  const M = [['严重', '高', '中', '低'], ['高', '高', '中', '低'], ['中', '中', '低', '信息']]; // rows: 可能性 高/中/低; cols: 影响 严重/高/中/低
+
+  function mxStep(el, st) {
+    const svg = el.querySelector('#mx'); svg.innerHTML = '';
+    const ox = 170, oy = 70, cw = 190, ch = 150;
+    ['严重', '高', '中', '低'].forEach((s, j) => T(svg, ox + j * cw + cw / 2, 40, '影响：' + s, C.t2, 26));
+    ['高', '中', '低'].forEach((s, i) => T(svg, 90, oy + i * ch + ch / 2, '可能性：' + s, C.t2, 26));
+    let hit = null, from = null;
+    if (st >= 2 && st <= 2) hit = [0, 0];
+    if (st === 3 || st === 4) hit = [2, 0];
+    if (st >= 5) { hit = [1, 1 - 1]; from = [2, 0]; }
+    M.forEach((row, i) => row.forEach((v, j) => {
+      const isHit = hit && hit[0] === i && hit[1] === j;
+      const c = LV[v];
+      rect(svg, ox + j * cw + 4, oy + i * ch + 4, cw - 8, ch - 8, { fill: isHit ? c : C.panel, stroke: isHit ? C.gold : c, sw: isHit ? 6 : 2, op: isHit || !hit ? 1 : .45 });
+      T(svg, ox + j * cw + cw / 2, oy + i * ch + ch / 2, v, isHit ? '#0d0e10' : c, 40, 'middle', true, isHit || !hit ? 1 : .6);
+    }));
+    if (from) {
+      rect(svg, ox + from[1] * cw + 4, oy + from[0] * ch + 4, cw - 8, ch - 8, { fill: 'none', stroke: C.info, sw: 4 });
+      arrow(svg, ox + cw / 2, oy + from[0] * ch + 18, ox + cw / 2, oy + 1 * ch + ch - 18, C.gold, false, 5);
+    }
+    const side = el.querySelector('#mxSide');
+    const ex1 = `<div class="card ${st >= 2 ? 'sell' : ''}"><b>例 1 · 空投领取</b><div class="fs26 muted">任何人可领走他人份额，奖池 100 万$</div>` +
+      (st >= 2 ? '<div class="fs28">影响 <b class="down">严重</b> × 可能性 <b class="down">高</b> → <b class="down">严重</b></div>' : '') + '</div>';
+    const ex2 = `<div class="card ${st >= 5 ? 'warn' : ''}"><b>例 2 · 多签增发</b><div class="fs26 muted">需要 5 把中的 3 把私钥</div>` +
+      (st >= 3 ? '<div class="fs28">影响 <b class="down">严重</b> × 可能性 <b class="blue">低</b> → <b class="hl">中</b></div>' : '') +
+      (st >= 4 ? '<div class="fs26">但 3 把私钥由<b>同一团队、同类电脑</b>保管</div>' : '') +
+      (st >= 5 ? '<div class="fs28">可能性上调到 <b style="color:var(--warn)">中</b> → <b style="color:var(--warn)">高危</b></div>' : '') + '</div>';
+    side.innerHTML = (st >= 1 ? ex1 : '') + (st >= 3 ? ex2 : '') + (st === 0 ? '<div class="card fs28">右上最重，左下最轻。<br>先看两个例子。</div>' : '');
+  }
+
+  function accStep(el, st) {
+    const svg = el.querySelector('#acc'); svg.innerHTML = '';
+    const on = (k) => st >= k ? 1 : .15;
+    box(svg, 10, 220, 170, 90, '发现', { stroke: C.info, fs: 32, bold: true });
+    arrow(svg, 182, 265, 250, 265, C.t2);
+    // diamond 1
+    const dia = (cx, cy, t, op, hot) => { svg.appendChild(svgEl('polygon', { points: `${cx},${cy - 90} ${cx + 170},${cy} ${cx},${cy + 90} ${cx - 170},${cy}`, fill: hot ? C.curFill : C.panel, stroke: hot ? C.gold : C.line, 'stroke-width': hot ? 5 : 3, opacity: op })); t.forEach((s, i) => T(svg, cx, cy + (i - (t.length - 1) / 2) * 36, s, C.text, 28, 'middle', i === 0, op)); };
+    dia(420, 265, ['上线前', '能修复吗？'], 1, st === 0);
+    arrow(svg, 420, 175, 420, 110, C.buy, false, 4);
+    T(svg, 450, 140, '能', C.buy, 26, 'start', true);
+    box(svg, 260, 20, 320, 86, ['修复 → 复核 → 关闭'], { stroke: C.buy, fill: C.goodFill, fs: 30 });
+    arrow(svg, 592, 265, 700, 265, C.t2, false, 4, on(1));
+    T(svg, 645, 240, '不能', C.t2, 26, 'middle', false, on(1));
+    dia(880, 265, ['剩余风险', '可接受吗？'], on(1), st === 1);
+    arrow(svg, 880, 355, 880, 430, C.sell, false, 4, on(1));
+    T(svg, 910, 395, '否', C.sell, 26, 'start', true, on(1));
+    box(svg, 760, 435, 240, 86, '阻断上线', { stroke: C.sell, fill: C.badFill, fs: 32, op: on(1), tc: C.sell, bold: true });
+    arrow(svg, 1052, 265, 1130, 265, C.gold, false, 4, on(2));
+    T(svg, 1090, 240, '是', C.gold, 26, 'middle', true, on(2));
+    rect(svg, 1135, 60, 495, 410, { fill: st >= 2 ? C.curFill : C.panel, stroke: st >= 2 ? C.gold : C.line, sw: 4, op: on(2) });
+    T(svg, 1382, 105, '风险接受', C.gold, 36, 'middle', true, on(2));
+    const items = [['业务负责人签字', 2], ['缓解措施：限额 / 监控 / 保险', 3], ['复查日期 · 纳入监控', 3]];
+    items.forEach(([s, k], i) => T(svg, 1165, 185 + i * 70, (st >= k ? '✓ ' : '· ') + s, st >= k ? C.text : C.dim, 29, 'start', false, on(2)));
+    if (st >= 4) {
+      rect(svg, 1135, 480, 495, 70, { fill: C.badFill, stroke: C.sell, sw: 3 });
+      T(svg, 1382, 515, '评估人员不签：评估 ≠ 接受', C.sell, 28, 'middle', true);
+    }
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

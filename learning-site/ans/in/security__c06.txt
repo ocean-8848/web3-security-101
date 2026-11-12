@@ -1,0 +1,347 @@
+# 章节：06 外部调用与代币兼容性：对方未必按标准出牌
+
+## 思考题（共 3 题，按顺序作答）
+Q1. 一个收益协议在以太坊上运行良好，部署到 TRON 后所有提款都失败了，但存款正常。最可能的原因是什么？
+Q2. 一个协议按 amount 参数记账，并接受一个 2% 转账税的代币。存入 100 枚、再取出 100 枚，会发生什么？如果所有用户都这样做呢？
+Q3. 打开 chain-porting-lab.html，选择"TRON"并勾选"使用 SafeERC20 推送 USDT"。实验页给出了什么风险？
+
+## 章节正文
+
+# 06 外部调用与代币兼容性：对方未必按标准出牌
+
+学习目标：读完本章，你能——
+
+- 说出低级调用的 4 个陷阱，包括"调用无代码地址也返回成功"。
+
+- 列出 8 类非标准代币行为，并给出兼容方案。
+
+- 识别由外部调用引起的拒绝服务（DoS）。
+
+前置章节：03 重入攻击交互实验：chain-porting-lab.html ｜ 示例合约：examples/05-SafeTokenOps.sol
+
+## 1. 一句话理解
+
+每一个外部调用都是一次"把命运交给别人"。对方可能失败、可能撒谎、可能拖延、可能根本不存在。
+
+🎯 打个比方：你让快递员把包裹送到某个地址，然后在登记簿上写"已送达"。
+
+- 快递员没回话（返回值没检查），你就当作送到了。
+
+- 地址是一块空地（目标地址没有代码），快递员说"送到了"——因为空地不会拒收。
+
+- 收件人收件时扣下 10% 当"小费"（转账收税代币），你的登记簿上却写着全额。
+
+- 收件人故意拒收（回滚），而你要把 100 个包裹按顺序送完，第 1 个被拒，后面 99 个都送不出去（DoS）。
+
+比喻的局限：快递员只会出一种错。外部合约可以同时撒谎、回调、耗尽 gas。
+
+## 2. 低级调用的四个陷阱
+
+ | 
+
+ | #
+ | 陷阱
+ | 说明
+ | 修复
+
+ | ①
+ | 不检查返回值
+ | addr.call(...) 失败只返回 false
+ | (bool ok, ) = ...; require(ok);
+
+ | ②
+ | 目标地址没有代码
+ | 对无代码地址 call 返回 true，返回数据为空
+ | 调用前检查 addr.code.length > 0
+
+ | ③
+ | 返回数据炸弹
+ | 对方返回超大数据，复制到内存耗尽 gas
+ | 限制复制长度（如 ExcessivelySafeCall）
+
+ | ④
+ | gas 不足型失败
+ | 调用方故意给刚好不够的 gas，让内部调用失败而外层继续
+ | 检查 gasleft()；关键调用失败时整体回滚
+
+### 2.1 案例：Qubit Finance 跨链桥（2022 年 1 月，以太坊 → BNB Chain）
+
+Qubit 的桥把以太坊上的存款映射为 BNB Chain 上的 qXETH，再用作借贷抵押品。SlowMist 公开分析的根因：
+
+- 桥为原生 ETH 配置的代币地址是 address(0)。ETH 存款本应走 depositETH()，它会检查 msg.value。
+
+- 攻击者调用普通的 deposit()，传入 ETH 对应的资源 ID。白名单检查通过。
+
+- deposit() 对 tokenAddress = address(0) 执行 safeTransferFrom。
+
+- address(0) 没有代码。低级调用返回成功、返回数据为空。旧版的安全转账库把"空返回"当作成功（为了兼容不返回值的 USDT）。
+
+- 桥记录了一笔"ETH 存款"。BNB Chain 一侧铸造了大量 qXETH。攻击者用它借空了借贷池，损失约 8,000 万美元。
+
+[图]
+flowchart LR
+  A["deposit(ETH 资源 ID)"] --> B{"资源 ID 在白名单?"}
+  B -- 是 --> C["safeTransferFrom(address(0), ...)"]
+  C --> D{"目标有代码?"}
+  D -- "没检查" --> E["空返回 = 成功"]
+  E --> F["记录存款 → BSC 铸造 qXETH"]
+  F --> G["抵押 qXETH 借空资金池"]
+[/图]
+
+读图要点：
+
+- 每一步单独看都"合理"。漏洞来自组合：零地址 + 兼容性妥协 + 缺少原生币检查。
+
+- OpenZeppelin 的 SafeERC20 现在会在返回数据为空时检查目标是否有代码。
+
+- 教训：白名单只告诉你"这个 ID 被允许"，不告诉你"这个 ID 对应什么类型的资产"。
+
+## 3. 非标准代币：八种行为
+
+ERC-20 标准只规定了接口，没有规定行为。真实世界的代币五花八门：
+
+ | 
+
+ | #
+ | 行为
+ | 代表
+ | 风险
+ | 兼容方案
+
+ | 1
+ | transfer 不返回值
+ | 以太坊 USDT、BNB
+ | 按接口解码返回值时回滚
+ | SafeERC20
+
+ | 2
+ | transfer 成功却返回 false
+ | TRON 上的 USDT
+ | SafeERC20 判定失败，交易回滚
+ | 用余额差判断（见 3.1）
+
+ | 3
+ | 转账收税（Fee-on-transfer）
+ | 部分 BSC 社区代币
+ | 记账金额 > 实收金额，协议资不抵债
+ | 记账用余额差 after - before
+
+ | 4
+ | 余额自动变化（Rebasing）
+ | stETH、AMPL
+ | 缓存的余额失效
+ | 用份额记账（如 wstETH）
+
+ | 5
+ | 黑名单 / 冻结
+ | USDT、USDC
+ | 某地址被冻结，整个批量操作失败
+ | 拉取式支付；单笔失败不影响全局
+
+ | 6
+ | 可暂停
+ | 多数中心化稳定币
+ | 清算或提款暂停
+ | 风险披露；设计降级路径
+
+ | 7
+ | 转账钩子
+ | ERC-777、ERC-1363
+ | 重入
+ | CEI + 重入锁（03 章）
+
+ | 8
+ | 可升级
+ | USDT、USDC 等
+ | 代币行为未来可能改变
+ | 监控升级事件
+
+### 3.1 TRON USDT：成功却返回 false
+
+OpenZeppelin 在 2026 年公开的一份 Across 协议 TRON 部署审计中写道：TRON 上部署的 USDT 合约，transfer 在转账成功时也返回 false。后果是：
+
+图 · TRON USDT 推送：两种写法对比新增图解
+
+[图]
+sequenceDiagram
+  autonumber
+  participant P as 协议合约
+  participant T as TRON USDT
+  participant R as 接收方
+  Note over P,R: 写法一 SafeERC20.safeTransfer
+  P->>T: safeTransfer(to, amt)
+  T->>R: 余额增加 amt
+  T-->>P: 返回 false
+  Note over P: 判定失败 整笔回滚
+  Note over P,R: 写法二 余额差判断
+  P->>T: balanceOf(to) 记为 before
+  P->>T: call transfer 忽略返回值
+  T->>R: 余额增加 amt
+  T-->>P: 调用未回滚 ok 为 true
+  P->>T: 再读 balanceOf(to)
+  Note over P: 差额等于 amt 才算成功
+[/图]
+
+读图要点：
+
+- 出错点：TRON USDT 转账成功也返回 false，SafeERC20 推送一律回滚。
+- 数据流：余额差写法不看返回值，只看接收方余额是否真的增加了 amt。
+- 局限：该审计认为 transferFrom 和 approve 正常，所以只有推送方向要单独处理。
+- 风险：Tether 保留了开启手续费的能力，一旦开启，等于 amt 的检查会失败。
+
+- 使用 SafeERC20.safeTransfer 推送 USDT 的代码，在 TRON 上一律回滚。
+
+- 项目方为 TRON 单独实现了 TronTransferLib：转账后检查接收方余额是否增加了对应金额，不读取返回值。
+
+- 该审计认为 transferFrom 和 approve 在 TRON USDT 上行为正常，所以拉取方向保持不变。
+
+// ✅ 以余额差判断转账结果（适用于 TRON USDT 推送场景）
+function _pushUSDT(IERC20 token, address to, uint256 amt) internal {
+    uint256 before = token.balanceOf(to);
+    // 忽略返回值：TRON USDT 成功时也返回 false
+    (bool ok, ) = address(token).call(abi.encodeCall(IERC20.transfer, (to, amt)));
+    require(ok, "call reverted");
+    require(token.balanceOf(to) - before == amt, "transfer not credited");
+}
+
+⚠️ 警告：余额差方案假设代币没有转账税。Tether 在 TRON 上保留了开启转账手续费、黑名单和暂停的能力（同一审计报告）。如果手续费被开启，== amt 的检查会失败。设计时要明确选择：是"失败即回滚"，还是"按实收金额记账"。
+
+### 3.2 收税代币的记账方式
+
+// ❌ 按参数记账
+token.safeTransferFrom(msg.sender, address(this), amount);
+deposits[msg.sender] += amount;
+// ✅ 按实收记账（注意：要配合重入锁，防止 transferFrom 中的回调扭曲余额差）
+uint256 before = token.balanceOf(address(this));
+token.safeTransferFrom(msg.sender, address(this), amount);
+uint256 received = token.balanceOf(address(this)) - before;
+deposits[msg.sender] += received;
+
+## 4. 外部调用导致的拒绝服务
+
+拒绝服务（DoS, Denial of Service）：攻击者让合约的某个功能永久或长期无法使用。
+
+图 · 推送式与拉取式支付新增图解
+
+[图]
+flowchart TB
+  subgraph S1["推送式：合约逐个转账"]
+    A1["循环给每个接收方转账"] --> A2["某个接收方回滚<br/>或地址被冻结"]
+    A2 --> A3["整笔交易回滚"]
+    A3 --> A4["所有人都收不到"]
+  end
+  subgraph S2["拉取式：只记账"]
+    B1["给每人记下应得金额"] --> B2["收款人自己来提取"]
+    B2 --> B3["一人失败只影响自己"]
+  end
+[/图]
+
+读图要点：
+
+- 出错点：推送支付中只要一个接收方拒收，整个批量操作就失败。
+- 风险：攻击者部署一个 receive() 总是回滚的合约，就能永久卡死拍卖退款。
+- 关键：拉取式支付把失败隔离在单个收款人身上。
+- 局限：无界循环即使无人捣乱，用户数增长后也会超过区块 gas 上限，要分页处理。
+
+ | 
+
+ | 模式
+ | 例子
+ | 修复
+
+ | 推送支付中某个接收方回滚
+ | 拍卖退款给上一个出价者，对方合约 receive() 总是回滚，新出价永远失败
+ | 拉取式支付
+
+ | 无界循环
+ | 遍历所有用户发奖励，用户数增长后超过区块 gas 上限
+ | 分页处理；累计奖励因子（如 MasterChef 的 accRewardPerShare）
+
+ | 黑名单地址卡住批量操作
+ | 批量分发 USDT，其中一个地址被冻结
+ | 逐个 try/catch，失败记账待领取
+
+ | 依赖强制余额等式
+ | require(balance == recorded)，被人强制转入 1 wei
+ | 用 >=，或不依赖实际余额
+
+ | TRON：能量 / CPU 时间耗尽
+ | 单笔 TVM 执行超过 80 毫秒 CPU 时间，返回 OUT_OF_TIME
+ | 控制单笔计算量；不在一笔交易里遍历大数组
+
+⚠️ 警告：以太坊上的 Akutars NFT（2022 年 4 月）同时有两个出口缺陷：推送退款可被一个拒收合约卡死；项目方提款的条件比较了错误的变量，永远不成立。11,539.5 ETH 被永久锁定。见 C00 4.3 节。
+
+💡 注意：TRON 的执行限制不只是"能量（Energy）"。TRON 官方文档说明，每次 TVM 执行有 80 毫秒 CPU 时间上限。在以太坊上 gas 足够的循环，在 TRON 上可能因超时失败。详见 C02。
+
+## 5. 授权（Approve）相关风险
+
+- 无限授权：用户给协议 approve(type(uint256).max)。协议被攻破后，攻击者可以转走用户钱包里的全部该代币——即使用户没有存进协议。
+
+- 授权钓鱼：钓鱼网站诱导用户签 approve 或 permit（链下签名授权）。TRON 上的 USDT 授权钓鱼和以太坊上的 permit 钓鱼原理相同。
+
+- 任意调用 + 授权：路由合约持有用户授权，又允许用户指定任意调用目标（04 章 3.4 节）。攻击者让路由合约调用 token.transferFrom(受害者, 攻击者, 金额)。
+
+⚠️ 警告：持有用户授权的合约（路由器、聚合器）必须禁止用户指定任意调用目标和任意 calldata。这是聚合器被盗的最常见根因之一。
+
+案例：Sushi RouteProcessor2（2023 年 4 月，约 330 万美元）。路由里的池子地址由用户填写；攻击者填入自己的"池子"，在回调中把任意授权用户设为付款人。回调校验只检查"是不是刚才调用的地址"，没有检查"是不是真实池子"。见 C00 4.7 节与 examples/08-RouterCallback.sol。
+
+## 6. 审计检查点
+
+-  所有低级 call 都检查了返回值。
+
+-  调用目标可能是零地址或无代码地址时，已显式检查。
+
+-  代币操作使用 SafeERC20；部署到 TRON 时，USDT 推送单独处理。
+
+-  支持任意代币时，按实收金额记账；不支持的类型（收税、变基）显式拒绝。
+
+-  批量转账和退款使用拉取模式，或单笔失败不影响整体。
+
+-  没有依赖用户规模增长的无界循环。
+
+-  持有授权的合约不允许任意 calldata。
+
+-  代币精度从合约读取（05 章）。
+
+## 7. 术语表
+
+ | 
+
+ | 术语
+ | 英文
+ | 定义
+
+ | 低级调用
+ | Low-level call
+ | address.call / delegatecall / staticcall，失败不自动回滚
+
+ | 收税代币
+ | Fee-on-transfer Token
+ | 转账时扣除一部分作为手续费的代币
+
+ | 变基代币
+ | Rebasing Token
+ | 持有者余额按规则自动增减的代币
+
+ | 拒绝服务
+ | DoS
+ | 让合约功能无法使用的攻击
+
+ | 拉取式支付
+ | Pull Payment
+ | 只记账，由收款人主动提取
+
+ | 授权
+ | Allowance / Approve
+ | 允许另一个地址代为转出自己代币的额度
+
+## 8. 思考题
+
+- 一个收益协议在以太坊上运行良好，部署到 TRON 后所有提款都失败了，但存款正常。最可能的原因是什么？
+
+- 一个协议按 amount 参数记账，并接受一个 2% 转账税的代币。存入 100 枚、再取出 100 枚，会发生什么？如果所有用户都这样做呢？
+
+- 打开 chain-porting-lab.html，选择"TRON"并勾选"使用 SafeERC20 推送 USDT"。实验页给出了什么风险？
+
+下一章：07 预言机与闪电贷 —— 合约相信了一个一笔交易就能改写的价格。
+

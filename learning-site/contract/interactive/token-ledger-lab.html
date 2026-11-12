@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>代币账本实验</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .presets button.on { border-color: var(--accent); background: var(--accent-soft); }
+  .op-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+  td.flash { animation: flash 1.2s ease-out; }
+  td.flash-bad { animation: flashBad 1.2s ease-out; }
+  @keyframes flash { from { background: var(--buy-soft); } to { background: transparent; } }
+  @keyframes flashBad { from { background: var(--sell-soft); } to { background: transparent; } }
+  @media (prefers-reduced-motion: reduce) { td.flash, td.flash-bad { animation: none; } }
+  .supply { font-family: var(--mono); font-size: 20px; font-weight: 650; }
+  .result { margin-top: 10px; padding: 8px 10px; border-radius: 8px; font-family: var(--mono); font-size: 13px; word-break: break-all; }
+  .result.ok { background: var(--buy-soft); color: var(--buy); }
+  .result.err { background: var(--sell-soft); color: var(--sell); }
+  .formula { font-family: var(--mono); font-size: 13px; background: var(--surface-2); border-radius: 8px; padding: 10px; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+  .big { word-break: break-all; font-family: var(--mono); }
+  .steps-list li.on { font-weight: 650; color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <h1>代币账本实验</h1>
+    <a class="back" href="../06-token-standards.md">配套章节：06 代币标准</a>
+    <a class="back" href="../examples/02-MinimalToken.sol">示例合约：02-MinimalToken.sol</a>
+  </header>
+  <p class="lead">代币不在钱包里，在合约的账本里。本实验把一个 ERC-20 合约的内部状态摊开：余额表、授权表、总供应量、事件日志。你来调用函数，看哪一格被改、哪一步 revert。</p>
+
+  <div class="callout">
+    <strong>怎么玩</strong>
+    <ol style="margin:6px 0 0; padding-left:20px;">
+      <li>先点"正常买币两步流程"，按"下一步"走完 approve → transferFrom。</li>
+      <li>在"调用合约"里自己选调用者（msg.sender）、函数和参数。</li>
+      <li>试错误分支：余额不足、授权不足、非 owner mint，读 revert 的错误名。</li>
+      <li>点"无限授权被盗"，看 DEX 被攻破后你的余额怎样被转走。</li>
+      <li>在"decimals 换算器"里比较 6 位和 18 位。</li>
+    </ol>
+  </div>
+
+  <h2>预设场景</h2>
+  <div class="btn-row presets" id="presets">
+    <button type="button" data-p="buy" class="on">正常买币两步流程</button>
+    <button type="button" data-p="short">授权不足</button>
+    <button type="button" data-p="inf">无限授权被盗</button>
+    <button type="button" data-p="dec">精度错配</button>
+  </div>
+  <div class="card" id="scriptCard">
+    <p class="small" id="presetNote" style="margin-top:0"></p>
+    <ol class="steps-list small" id="scriptSteps"></ol>
+    <div class="btn-row"><button type="button" class="primary" id="nextBtn">下一步</button><button type="button" id="restartBtn">重来</button></div>
+  </div>
+
+  <h2>① 合约内部状态</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <h3>balanceOf（余额表）</h3>
+      <div class="table-wrap"><table id="balTable"></table></div>
+      <p class="small muted" style="margin-bottom:0">totalSupply</p>
+      <div class="supply" id="supply"></div>
+      <p class="small muted">核对：所有余额之和 = <span id="sumCheck"></span></p>
+    </div>
+    <div class="card">
+      <h3>allowance[持有人][被授权人]（授权表）</h3>
+      <div class="table-wrap"><table id="alwTable"></table></div>
+      <p class="small muted">无限授权显示为 MAX（2²⁵⁶ − 1）。合约对 MAX 不扣减（与 02-MinimalToken.sol 一致）。</p>
+    </div>
+  </div>
+
+  <h2>② 调用合约</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <div class="op-grid">
+        <div><label for="caller">调用者 msg.sender</label><select id="caller"></select></div>
+        <div><label for="fn">函数</label>
+          <select id="fn">
+            <option value="transfer">transfer(to, value)</option>
+            <option value="approve">approve(spender, value)</option>
+            <option value="transferFrom">transferFrom(from, to, value)</option>
+            <option value="mint">mint(to, value)（扩展）</option>
+            <option value="burn">burn(value)（扩展）</option>
+          </select></div>
+        <div id="fFrom"><label for="from">from</label><select id="from"></select></div>
+        <div id="fTo"><label for="to" id="toLabel">to</label><select id="to"></select></div>
+        <div><label for="val">value（代币个数，可写 max）</label><input id="val" type="text" value="100"></div>
+      </div>
+      <div class="btn-row"><button type="button" class="primary" id="callBtn">发送交易</button><button type="button" id="resetBtn">重置合约</button></div>
+      <div id="result" class="result" style="display:none"></div>
+      <p class="small muted">MinimalToken 本身没有 mint / burn。这里按常见扩展演示：mint 仅 owner（失败报 NotOwner，与 05-StablecoinLike.sol 同名），burn 余额不足报 InsufficientBalance。</p>
+    </div>
+    <div class="card">
+      <h3>事件日志（链上 log）</h3>
+      <div class="log" id="events"></div>
+    </div>
+  </div>
+
+  <h2>③ decimals 换算器</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <label for="raw">链上原始整数</label>
+      <input id="raw" type="text" value="1000000">
+      <div class="table-wrap" style="margin-top:10px"><table id="decTable"></table></div>
+      <div class="formula" id="decFormula" style="margin-top:10px"></div>
+    </div>
+    <div class="card">
+      <h3>跨链搬运：以太坊 USDT（6 位）→ BSC-USD（18 位）</h3>
+      <label for="human">用户在以太坊上存入（USDT）</label>
+      <input id="human" type="number" value="1" min="0" step="1">
+      <div class="table-wrap" style="margin-top:10px"><table id="bridgeTable"></table></div>
+      <div class="callout warn small">⚠️ 原样记账时，6 位的整数被当成 18 位读：用户只得到 10⁻¹² 倍。反方向原样记账，会凭空放大 10¹² 倍。</div>
+    </div>
+  </div>
+
+  <h2>观察要点</h2>
+  <ul>
+    <li>一次 transfer 只改余额表里两格，再发一条 Transfer 事件。钱包显示的余额是读出来的数字。</li>
+    <li>approve 只改授权表，不动余额。transferFrom 的调用者是 DEX 合约，代币合约只检查它有没有额度。</li>
+    <li>任何 revert 都不改状态，也不发事件。错误名（InsufficientBalance、InsufficientAllowance、NotOwner、ZeroAddress）就是前端解码出的失败原因。</li>
+    <li>无限授权不会被扣减。DEX 被攻破后，攻击者能一次拿走你钱包里该代币的全部余额。精确授权用完即归零，攻击失败。</li>
+  </ul>
+
+  <footer class="note">参数为示例值，用于演示机制；不构成投资建议。decimals 数据：以太坊 USDT 为 6 位，BNB Chain 上 BSC-USD 为 18 位（06 章，截至 2026 年 10 月链上读数）。地址为示意名称。</footer>
+</div>
+
+<script src="assets/handbook-nav.js"></script>
+<script>
+// ===== CORE-BEGIN：ERC-20 账本（与 02-MinimalToken.sol 逻辑一致，金额用 BigInt 最小单位） =====
+const DEC = 18n;
+const UNIT = 10n ** DEC;
+const MAX = 2n ** 256n - 1n;                   // type(uint256).max
+const ZERO = '0x0（零地址）';
+class RevertError extends Error { constructor(name, args) { super(`${name}(${args.join(', ')})`); this.errName = name; } }
+function newToken(owner, initial) {
+  const t = { owner, totalSupply: 0n, balanceOf: {}, allowance: {}, events: [] };
+  // 构造函数：部署者拿到全部初始供应；from = 0 表示铸造
+  t.totalSupply = initial; t.balanceOf[owner] = initial;
+  t.events.push({ name: 'Transfer', from: ZERO, to: owner, value: initial });
+  return t;
+}
+const bal = (t, a) => t.balanceOf[a] || 0n;
+const alw = (t, o, s) => (t.allowance[o] && t.allowance[o][s]) || 0n;
+function _transfer(t, from, to, value) {
+  if (to === ZERO) throw new RevertError('ZeroAddress', []);
+  const fb = bal(t, from);
+  if (fb < value) throw new RevertError('InsufficientBalance', [from, fb, value]);
+  t.balanceOf[from] = fb - value;
+  t.balanceOf[to] = bal(t, to) + value;
+  t.events.push({ name: 'Transfer', from, to, value });
+}
+// 每个外部函数先复制状态，revert 时丢弃副本 → 与 EVM 的"失败不改状态"一致
+function call(t, sender, fn, args) {
+  const s = structuredClone(t);
+  const before = s.events.length;
+  if (fn === 'transfer') _transfer(s, sender, args.to, args.value);
+  else if (fn === 'approve') {
+    if (args.to === ZERO) throw new RevertError('ZeroAddress', []);
+    s.allowance[sender] = s.allowance[sender] || {};
+    s.allowance[sender][args.to] = args.value;
+    s.events.push({ name: 'Approval', owner: sender, spender: args.to, value: args.value });
+  } else if (fn === 'transferFrom') {
+    const a = alw(s, args.from, sender);
+    if (a !== MAX) {                           // 无限授权不扣减
+      if (a < args.value) throw new RevertError('InsufficientAllowance', [sender, a, args.value]);
+      s.allowance[args.from][sender] = a - args.value;
+    }
+    _transfer(s, args.from, args.to, args.value);
+  } else if (fn === 'mint') {                  // 扩展：onlyOwner
+    if (sender !== s.owner) throw new RevertError('NotOwner', []);
+    if (args.to === ZERO) throw new RevertError('ZeroAddress', []);
+    s.totalSupply += args.value; s.balanceOf[args.to] = bal(s, args.to) + args.value;
+    s.events.push({ name: 'Transfer', from: ZERO, to: args.to, value: args.value });
+  } else if (fn === 'burn') {                  // 扩展：销毁自己的余额
+    const b = bal(s, sender);
+    if (b < args.value) throw new RevertError('InsufficientBalance', [sender, b, args.value]);
+    s.balanceOf[sender] = b - args.value; s.totalSupply -= args.value;
+    s.events.push({ name: 'Transfer', from: sender, to: ZERO, value: args.value });
+  }
+  return { state: s, newEvents: s.events.slice(before) };
+}
+// 把"显示值"字符串转成最小单位整数：parseUnits("1.5", 18)
+function parseUnits(str, dec) {
+  str = String(str).trim();
+  if (/^max$/i.test(str)) return MAX;
+  if (!/^\d+(\.\d+)?$/.test(str)) throw new Error('数量格式错误');
+  const [i, f = ''] = str.split('.');
+  if (f.length > Number(dec)) throw new Error(`小数位超过 ${dec} 位`);
+  return BigInt(i) * 10n ** BigInt(dec) + BigInt((f + '0'.repeat(Number(dec))).slice(0, Number(dec)) || '0');
+}
+// 最小单位 → 显示值：formatUnits(1000000n, 6) = "1"
+function formatUnits(v, dec) {
+  dec = BigInt(dec);
+  if (v === MAX) return 'MAX';
+  const base = 10n ** dec, i = v / base, f = v % base;
+  let fs = f.toString().padStart(Number(dec), '0').replace(/0+$/, '');
+  return i.toLocaleString('en-US') + (fs ? '.' + fs : '');
+}
+// ===== CORE-END =====
+
+const $ = id => document.getElementById(id);
+const ACCTS = ['发行方 Owner', 'Alice', 'Bob', 'DEX 路由合约', '资金池合约', '攻击者'];
+let tok, prev = null;
+const show = v => v === MAX ? 'MAX' : formatUnits(v, DEC);
+
+function fillSelects() {
+  const opts = (list) => list.map(a => `<option>${a}</option>`).join('');
+  $('caller').innerHTML = opts(ACCTS);
+  $('from').innerHTML = opts(ACCTS);
+  $('to').innerHTML = opts([...ACCTS, ZERO]);
+}
+function syncFields() {
+  const fn = $('fn').value;
+  $('fFrom').style.display = fn === 'transferFrom' ? '' : 'none';
+  $('fTo').style.display = fn === 'burn' ? 'none' : '';
+  $('toLabel').textContent = fn === 'approve' ? 'spender' : 'to';
+}
+function render(changed = {}, bad = false) {
+  let h = '<tr><th>地址</th><th class="num">余额（个）</th><th class="num">最小单位</th></tr>';
+  ACCTS.forEach(a => {
+    const v = bal(tok, a);
+    const cls = changed['b:' + a] ? (bad ? 'flash-bad' : 'flash') : '';
+    h += `<tr><td>${a}${a === tok.owner ? ' <span class="pill accent">owner</span>' : ''}</td><td class="num ${cls}">${show(v)}</td><td class="num ${cls}">${v.toString()}</td></tr>`;
+  });
+  $('balTable').innerHTML = h;
+  $('supply').textContent = show(tok.totalSupply);
+  $('supply').className = 'supply' + (changed.supply ? ' up' : '');
+  const sum = ACCTS.reduce((s, a) => s + bal(tok, a), 0n);
+  $('sumCheck').textContent = show(sum) + (sum === tok.totalSupply ? ' ✓' : ' ✗');
+  let a = '<tr><th>持有人</th><th>被授权人</th><th class="num">额度</th></tr>';
+  let any = false;
+  Object.keys(tok.allowance).forEach(o => Object.keys(tok.allowance[o]).forEach(s => {
+    any = true;
+    const v = tok.allowance[o][s];
+    const cls = changed['a:' + o + ':' + s] ? 'flash' : '';
+    a += `<tr><td>${o}</td><td>${s}</td><td class="num ${cls}">${v === MAX ? '<span class="pill warn">MAX</span>' : show(v)}</td></tr>`;
+  }));
+  if (!any) a += '<tr><td colspan="3" class="muted">空：还没有人授权</td></tr>';
+  $('alwTable').innerHTML = a;
+}
+function renderEvents() {
+  $('events').innerHTML = tok.events.slice().reverse().map(e => e.name === 'Transfer'
+    ? `<div class="ok">Transfer(from=${e.from}, to=${e.to}, value=${show(e.value)})</div>`
+    : `<div class="note">Approval(owner=${e.owner}, spender=${e.spender}, value=${show(e.value)})</div>`).join('');
+}
+function doCall(sender, fn, args) {
+  const r = $('result'); r.style.display = '';
+  const sig = fn === 'transferFrom' ? `transferFrom(${args.from}, ${args.to}, ${show(args.value)})`
+    : fn === 'burn' ? `burn(${show(args.value)})` : `${fn}(${args.to}, ${show(args.value)})`;
+  try {
+    const old = tok;
+    const out = call(tok, sender, fn, args);
+    tok = out.state;
+    const changed = {};
+    ACCTS.forEach(a => { if (bal(old, a) !== bal(tok, a)) changed['b:' + a] = 1; });
+    Object.keys(tok.allowance).forEach(o => Object.keys(tok.allowance[o]).forEach(s => { if (alw(old, o, s) !== alw(tok, o, s)) changed['a:' + o + ':' + s] = 1; }));
+    if (old.totalSupply !== tok.totalSupply) changed.supply = 1;
+    r.className = 'result ok';
+    r.textContent = `✓ ${sender} → ${sig} 成功。新增事件 ${out.newEvents.length} 条。`;
+    render(changed); renderEvents();
+    return true;
+  } catch (e) {
+    r.className = 'result err';
+    if (e instanceof RevertError) {
+      const pretty = e.message.replace(/\d{6,}/g, m => show(BigInt(m)) + ' 个');
+      r.textContent = `✗ ${sender} → ${sig}\nrevert ${pretty}\n状态未改变，没有事件。`;
+    } else r.textContent = '✗ 输入错误：' + e.message;
+    render(); renderEvents();
+    return false;
+  }
+}
+$('fn').addEventListener('change', syncFields);
+$('callBtn').addEventListener('click', () => {
+  let value;
+  try { value = parseUnits($('val').value, DEC); } catch (e) { $('result').style.display = ''; $('result').className = 'result err'; $('result').textContent = '✗ ' + e.message; return; }
+  doCall($('caller').value, $('fn').value, { from: $('from').value, to: $('to').value, value });
+});
+function reset() {
+  // 部署：发行方拿到 1,000,000 个；再分给 Alice 5,000 个（示例初始状态）
+  tok = newToken('发行方 Owner', parseUnits('1000000', DEC));
+  tok = call(tok, '发行方 Owner', 'transfer', { to: 'Alice', value: parseUnits('5000', DEC) }).state;
+  $('result').style.display = 'none';
+  render(); renderEvents();
+}
+$('resetBtn').addEventListener('click', reset);
+
+// ---------- decimals 换算 ----------
+function renderDec() {
+  let raw;
+  try { raw = BigInt($('raw').value.replace(/[,_\s]/g, '')); } catch { $('decFormula').textContent = '请输入非负整数'; return; }
+  const rows = [['USDT（以太坊 / TRON / Solana）', 6], ['BSC-USD（BNB Chain）', 18], ['MinimalToken', 18]];
+  $('decTable').innerHTML = '<tr><th>代币</th><th class="num">decimals</th><th class="num">代表多少个</th></tr>' +
+    rows.map(([n, d]) => `<tr><td>${n}</td><td class="num">${d}</td><td class="num big">${formatUnits(raw, d)}</td></tr>`).join('');
+  $('decFormula').textContent = `显示值 = 链上整数 ÷ 10^decimals\n${raw} ÷ 10^6 = ${formatUnits(raw, 6)}\n${raw} ÷ 10^18 = ${formatUnits(raw, 18)}\n两者相差 10^12 倍`;
+}
+function renderBridge() {
+  let h;
+  try { h = parseUnits(String($('human').value || '0'), 6); } catch { return; }
+  const raw6 = h;                         // 以太坊上的原始整数
+  const wrong = raw6;                     // 错误：原样记到 18 位代币
+  const right = raw6 * 10n ** 12n;        // 正确：乘 10^(18−6)
+  $('bridgeTable').innerHTML = '<tr><th>做法</th><th class="num">BSC 上记的整数</th><th class="num">用户看到</th></tr>' +
+    `<tr><td>以太坊原始值</td><td class="num big">${raw6}</td><td class="num">${formatUnits(raw6, 6)} USDT</td></tr>` +
+    `<tr><td><span class="pill sell">原样记账</span></td><td class="num big">${wrong}</td><td class="num big down">${formatUnits(wrong, 18)}</td></tr>` +
+    `<tr><td><span class="pill buy">× 10¹²</span></td><td class="num big">${right}</td><td class="num up">${formatUnits(right, 18)}</td></tr>`;
+}
+$('raw').addEventListener('input', renderDec);
+$('human').addEventListener('input', renderBridge);
+
+// ---------- 预设脚本 ----------
+const U = s => parseUnits(s, DEC);
+const SCRIPTS = {
+  buy: { note: '正常买币：Alice 用 100 个代币在 DEX 买 ETH。第一笔交易只改授权表；第二笔由 DEX 路由合约代扣。', steps: [
+    ['Alice 调 approve(DEX 路由合约, 100)', () => doCall('Alice', 'approve', { to: 'DEX 路由合约', value: U('100') })],
+    ['DEX 路由合约调 transferFrom(Alice, 资金池合约, 100)', () => doCall('DEX 路由合约', 'transferFrom', { from: 'Alice', to: '资金池合约', value: U('100') })],
+    ['再调一次同样的 transferFrom：额度已用完', () => doCall('DEX 路由合约', 'transferFrom', { from: 'Alice', to: '资金池合约', value: U('100') })],
+  ] },
+  short: { note: '授权不足与其他错误分支：额度 50 却要扣 100；Bob 余额 0 却要转出；非 owner 调 mint。', steps: [
+    ['Alice 调 approve(DEX 路由合约, 50)', () => doCall('Alice', 'approve', { to: 'DEX 路由合约', value: U('50') })],
+    ['DEX 路由合约调 transferFrom(Alice, 资金池合约, 100) → InsufficientAllowance', () => doCall('DEX 路由合约', 'transferFrom', { from: 'Alice', to: '资金池合约', value: U('100') })],
+    ['Bob 调 transfer(Alice, 10) → InsufficientBalance', () => doCall('Bob', 'transfer', { to: 'Alice', value: U('10') })],
+    ['Alice 调 mint(Alice, 1000) → NotOwner', () => doCall('Alice', 'mint', { to: 'Alice', value: U('1000') })],
+    ['发行方调 mint(Bob, 1000)：totalSupply 增加', () => doCall('发行方 Owner', 'mint', { to: 'Bob', value: U('1000') })],
+  ] },
+  inf: { note: '无限授权被盗：Alice 图省事授权 MAX，只用了 100。之后 DEX 路由合约被攻破，攻击者借它的身份调 transferFrom。', steps: [
+    ['Alice 调 approve(DEX 路由合约, MAX)', () => doCall('Alice', 'approve', { to: 'DEX 路由合约', value: MAX })],
+    ['正常使用：DEX 代扣 100 → 额度仍是 MAX', () => doCall('DEX 路由合约', 'transferFrom', { from: 'Alice', to: '资金池合约', value: U('100') })],
+    ['DEX 被攻破：transferFrom(Alice, 攻击者, Alice 全部余额)', () => doCall('DEX 路由合约', 'transferFrom', { from: 'Alice', to: '攻击者', value: bal(tok, 'Alice') })],
+    ['对照：Bob 只精确授权 100（先由发行方给 Bob 发 500）', () => { doCall('发行方 Owner', 'transfer', { to: 'Bob', value: U('500') }); return doCall('Bob', 'approve', { to: 'DEX 路由合约', value: U('100') }); }],
+    ['DEX 代扣 Bob 100 → 额度归零', () => doCall('DEX 路由合约', 'transferFrom', { from: 'Bob', to: '资金池合约', value: U('100') })],
+    ['攻击者再试 transferFrom(Bob, 攻击者, 400) → InsufficientAllowance', () => doCall('DEX 路由合约', 'transferFrom', { from: 'Bob', to: '攻击者', value: U('400') })],
+  ] },
+  dec: { note: '精度错配：同样的 1,000,000，在 6 位的 USDT 里是 1 个，在 18 位的 BSC-USD 里是 0.000000000001 个。', steps: [
+    ['换算器填入 1,000,000', () => { $('raw').value = '1000000'; renderDec(); $('raw').scrollIntoView({ block: 'center' }); }],
+    ['换算器填入 1,000,000,000,000,000,000（10¹⁸）', () => { $('raw').value = '1000000000000000000'; renderDec(); }],
+    ['跨链：用户存入 1,000 USDT，看原样记账的结果', () => { $('human').value = 1000; renderBridge(); }],
+  ] },
+};
+let cur = null, idx = 0;
+function renderScript() {
+  const s = SCRIPTS[cur];
+  $('presetNote').textContent = s.note;
+  $('scriptSteps').innerHTML = s.steps.map((st, i) => `<li class="${i < idx ? 'muted' : i === idx ? 'on' : ''}">${st[0]}${i < idx ? ' ✓' : ''}</li>`).join('');
+  $('nextBtn').disabled = idx >= s.steps.length;
+}
+function loadPreset(k) {
+  document.querySelectorAll('#presets button').forEach(b => b.classList.toggle('on', b.dataset.p === k));
+  cur = k; idx = 0; reset();
+  $('raw').value = '1000000'; $('human').value = 1; renderDec(); renderBridge();
+  renderScript();
+}
+$('nextBtn').addEventListener('click', () => { const s = SCRIPTS[cur]; if (idx < s.steps.length) { s.steps[idx][1](); idx++; renderScript(); } });
+$('restartBtn').addEventListener('click', () => loadPreset(cur));
+document.querySelectorAll('#presets button').forEach(b => b.addEventListener('click', () => loadPreset(b.dataset.p)));
+
+fillSelects(); syncFields();
+$('caller').value = 'Alice'; $('to').value = 'Bob';
+loadPreset('buy');
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+/* Shared components for the contract-security video decks.
+   Loaded after player.css. Do not edit per episode; put page-specific rules in the deck's <style>. */
+:root { --code-bg: #111317; }
+.scene > h2 { font-size: 58px; }
+svg text { font-size: 28px; }
+
+/* generic step marks (driven by kit.js marks()) */
+[data-k] { transition: opacity .4s, box-shadow .4s, border-color .4s, background .4s; }
+[data-k].pend { opacity: .12 !important; }
+.card[data-k].cur, .nd[data-k].cur { box-shadow: 0 0 0 6px var(--gold-soft); border-color: var(--gold) !important; }
+[data-show]:not(.on) { display: none !important; }
+
+/* source code with per-line highlight */
+.src { font-family: var(--mono); font-size: 27px; line-height: 1.55; background: var(--code-bg); border: 1px solid var(--line);
+  border-radius: 14px; padding: 18px 0; white-space: pre; overflow: hidden; }
+.src .ln { display: block; padding: 0 28px; border-left: 6px solid transparent; transition: background .3s, opacity .3s, border-color .3s; }
+.src .ln.pend { opacity: .25 !important; }
+.src .ln.cur { background: rgba(240,185,11,.16); border-left-color: var(--gold); }
+.src .ln.bad { background: rgba(246,70,93,.16); border-left-color: var(--sell); }
+.src .ln.good { background: rgba(46,189,133,.16); border-left-color: var(--buy); }
+.src .c { color: #6f7682; } .src .kw { color: #c792ea; } .src .fn { color: #82aaff; } .src .s { color: #c3e88d; } .src .n { color: #f78c6c; }
+.src.sm { font-size: 24px; }
+
+/* compare columns */
+.vs { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.vs > .card h3 { display: flex; align-items: center; gap: 12px; }
+.vs .bad h3 { color: var(--sell); } .vs .good h3 { color: var(--buy); }
+
+/* numbered steps across */
+.steps { display: grid; gap: 22px; }
+.steps.c3 { grid-template-columns: repeat(3, 1fr); } .steps.c4 { grid-template-columns: repeat(4, 1fr); }
+.steps.c5 { grid-template-columns: repeat(5, 1fr); } .steps.c6 { grid-template-columns: repeat(6, 1fr); } .steps.c7 { grid-template-columns: repeat(7, 1fr); }
+.steps .card { display: flex; flex-direction: column; gap: 8px; font-size: 28px; padding: 22px 24px; }
+.steps .card .n { font-family: var(--mono); font-size: 46px; font-weight: 700; color: var(--gold); line-height: 1; }
+.steps .card b { font-size: 32px; }
+.steps .card .d { color: var(--text-2); font-size: 26px; line-height: 1.45; }
+
+/* key-value ledger with mono numbers */
+table.t tr { transition: background .3s, opacity .3s; }
+table.t tr.cur td { background: var(--gold-soft); }
+table.t tr.pend { opacity: .15; }
+table.t td.bad { color: var(--sell); font-weight: 700; } table.t td.good { color: var(--buy); font-weight: 700; }
+table.t.sm { font-size: 27px; } table.t.sm th, table.t.sm td { padding: 10px 16px; }
+
+/* verdict stamp */
+.stamp { display: inline-block; font-family: var(--display); font-weight: 800; font-size: 54px; padding: 8px 30px; border: 5px solid; border-radius: 14px; transform: rotate(-3deg); }
+.stamp.sell { color: var(--sell); border-color: var(--sell); } .stamp.buy { color: var(--buy); border-color: var(--buy); } .stamp.warn { color: var(--warn); border-color: var(--warn); } .stamp.gold { color: var(--gold); border-color: var(--gold); }
+
+/* small helpers */
+.fs26 { font-size: 26px; } .fs28 { font-size: 28px; } .fs30 { font-size: 30px; } .fs34 { font-size: 34px; } .fs40 { font-size: 40px; }
+.gap12 { gap: 12px; } .gap16 { gap: 16px; }
+.center { align-items: center; justify-content: center; }
+.note { font-size: 26px; color: var(--text-2); }
+.tagline { font-family: var(--display); font-size: 44px; line-height: 1.45; }
+.pill { display: inline-block; padding: 2px 14px; border-radius: 999px; font-size: 24px; font-weight: 600; vertical-align: middle; }
+.pill.sell { background: var(--sell-soft); color: var(--sell); } .pill.buy { background: var(--buy-soft); color: var(--buy); }
+.pill.gold { background: var(--gold-soft); color: var(--gold); } .pill.info { background: var(--info-soft); color: var(--info); } .pill.warn { background: var(--warn-soft); color: var(--warn); }
+.path { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.path .card { font-size: 30px; display: flex; flex-direction: column; gap: 10px; min-height: 280px; }
+.path .card .n { font-family: var(--mono); font-size: 52px; font-weight: 700; color: var(--gold); line-height: 1; }
+.path .card .d { color: var(--text-2); font-size: 27px; line-height: 1.5; }
+.labs { display: flex; flex-wrap: wrap; gap: 16px; }
+.labs .chip { font-size: 28px; padding: 8px 22px; }
+.hero { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.hero .card { display: flex; flex-direction: column; gap: 8px; min-height: 220px; }
+.hero .card .k { font-size: 26px; color: var(--text-2); }
+.hero .card .big { font-size: 60px; }
+table.t th, table.t td.num { white-space: nowrap; }

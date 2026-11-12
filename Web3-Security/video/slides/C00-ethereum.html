@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C00 以太坊专题</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .ana .card { font-size: 27px; display: flex; flex-direction: column; gap: 10px; min-height: 210px; }
+  .ana .card .a { color: var(--text-2); font-size: 25px; }
+  .ck { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; }
+  .src { white-space: normal; flex-shrink: 0; } .src .ln { white-space: pre; }
+  .src .cm { color: #6f7682; }
+  .cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: start; }
+  .cards2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  .cards3 .card, .cards2 .card { font-size: 26px; padding: 20px 24px; line-height: 1.5; }
+  table.t.xs { font-size: 25px; } table.t.xs th, table.t.xs td { padding: 6px 16px; }
+  .ck .it { font-size: 25px; background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--gold); border-radius: 8px; padding: 10px 16px; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="C00" data-title="以太坊专题：合约案例深潜">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 链专题 · C00</div>
+    <h1>以太坊是所有 EVM 链的<span class="hl">原件</span></h1>
+    <div class="ana">
+      <div class="card info" data-k="1" data-nocur><b>最早出现</b><div class="a">漏洞模式在主网首发</div></div>
+      <div class="card info" data-k="1" data-nocur><b>最全复盘</b><div class="a">公开报告、审计、链上数据</div></div>
+      <div class="card gold" data-k="2" data-nocur><b>被修复</b><div class="a">教训沉淀成最佳实践</div></div>
+      <div class="card sell" data-k="2" data-nocur><b>别处复发</b><div class="a">换参数，在新链上重演</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到链专题第一集，以太坊。主线讲通用的漏洞和防御，链专题把这些方法落到每条链的具体差异上。第一站当然是以太坊。</li>
+      <li>一句话理解，以太坊是所有 EVM 链的原件。绝大多数合约漏洞模式，最早在以太坊主网上出现，这里的复盘也最全，公开报告、审计、链上数据都有。</li>
+      <li>这些漏洞被复盘、被修复，教训沉淀成最佳实践。而其他链上的事故，多数是这些模式换了参数后复发。所以读懂以太坊的病历，你在任何 EVM 链上都能更快认出症状。本集深潜十起主网事故。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="百年病历的大医院" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>以太坊像一座有百年病历档案的大医院</h2>
+    <div class="ana">
+      <div class="card" data-k="0"><b>病例最多</b><div class="a">记录最全，全部公开</div></div>
+      <div class="card" data-k="1"><b>同一套教材</b><div class="a">别的医院用一样的医学教材</div></div>
+      <div class="card" data-k="1"><b>病大同小异</b><div class="a">所以症状能互相印证</div></div>
+      <div class="card" data-k="2"><b>读懂病历</b><div class="a">到哪家医院都认得出症状</div></div>
+    </div>
+    <div class="card warn fs29" data-k="3">比喻的局限：病历只记录<b>被发现</b>的病。很多以太坊漏洞在被利用前已存在数月甚至数年，期间无人察觉。</div>
+    <ol class="say">
+      <li>打个比方。以太坊像一座有百年病历档案的大医院。这里的病例最多、记录最全，而且全部公开。</li>
+      <li>别的医院，BNB Chain、Mantle 这些 EVM 链，用的是同一套医学教材，所以病人得的病大同小异，症状能互相印证。</li>
+      <li>读懂这里的病历，你在任何一家医院都能更快认出症状。这就是为什么我们先深潜以太坊。</li>
+      <li>比喻的局限在于，病历只记录被发现的病。很多以太坊漏洞在被利用之前，已经存在了数月甚至数年，期间没有人察觉。没出事不等于安全。</li>
+    </ol>
+  </section>
+
+  <!-- 3 参照环境 协议升级 -->
+  <section class="scene" data-title="参照环境：协议升级" data-onstep="rowStep">
+    <div class="kicker">参照环境 · 协议升级改变了安全假设</div>
+    <h2>五个升级，每个都动了合约安全的地基</h2>
+    <table class="t sm">
+      <thead><tr><th>升级</th><th>改变了什么</th><th>对安全的影响</th></tr></thead>
+      <tbody>
+        <tr><td>EIP-150（2016）</td><td>外部调用最多转发 63/64 gas</td><td>调用方总能留一点 gas 收尾</td></tr>
+        <tr><td>EIP-2929（2021）</td><td>提高 SLOAD 等 gas</td><td>依赖 2300 gas 的 transfer 可能失败</td></tr>
+        <tr><td>EIP-1153（2024）</td><td>瞬态存储 TSTORE/TLOAD</td><td>低成本重入锁；新的交易内状态语义</td></tr>
+        <tr><td>EIP-6780（2024）</td><td>SELFDESTRUCT 只在同交易内创建的合约删码</td><td>Parity 式自毁库不再能删码；强制转 ETH 仍可行</td></tr>
+        <tr><td>EIP-7702（2025）</td><td>EOA 可委托一段合约代码</td><td>tx.origin==msg.sender 不再代表普通钱包</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>先看以太坊作为参照环境的几个关键升级。EIP-150，外部调用最多转发 63/64 的剩余 gas，所以调用方总能保留一点 gas 收尾。EIP-2929 提高了 SLOAD 等操作的 gas，这导致依赖 2300 gas 的 transfer 可能失败，这是第六集讲过的坑。</li>
+      <li>EIP-1153 引入瞬态存储，可以做低成本的重入锁，但也带来新的交易内状态语义。EIP-6780 改了自毁，SELFDESTRUCT 只在同一交易内创建的合约上删除代码，Parity 式的自毁库合约不再能删码，但强制转入 ETH 仍然可行。</li>
+      <li>最重要的是 EIP-7702，EOA 可以签名委托一段合约代码。这意味着 tx.origin 等于 msg.sender 不再代表调用者是普通钱包。记住这几个升级，它们动的是合约安全的地基，后面的案例会反复用到。</li>
+    </ol>
+  </section>
+
+  <!-- 4 案例总览 -->
+  <section class="scene" data-title="十起案例总览" data-onstep="rowStep">
+    <div class="kicker">案例总览 · 同一模式，不同外衣</div>
+    <h2>十起主网事故，全部归入主线漏洞类别</h2>
+    <table class="t xs">
+      <thead><tr><th>事故</th><th>模式</th><th>主线章节</th></tr></thead>
+      <tbody>
+        <tr><td>Fei Rari（2022）</td><td>跨函数重入，锁没覆盖全部函数</td><td>EP03</td></tr>
+        <tr><td>Penpie（2024）</td><td>无许可注册 + 领奖无锁</td><td>EP03·06</td></tr>
+        <tr><td>Akutars（2022）</td><td>逻辑错误 + 推送退款 DoS</td><td>EP06</td></tr>
+        <tr><td>KyberSwap（2023）</td><td>舍入方向与注释相反</td><td>EP05</td></tr>
+        <tr><td>Harvest（2020）</td><td>份额价格被池价操纵（单交易）</td><td>EP07</td></tr>
+        <tr><td>Inverse（2022）</td><td>浅池 TWAP 被持续操纵（多区块）</td><td>EP07</td></tr>
+        <tr><td>Sushi RP2（2023）</td><td>回调校验只认上次调用的地址</td><td>EP04·06</td></tr>
+        <tr><td>Compound 62（2021）</td><td>升级引入 bug + 无紧急开关</td><td>EP09·10</td></tr>
+        <tr><td>WazirX（2024）</td><td>签名界面与实际交易不一致</td><td>EP08</td></tr>
+        <tr><td>EIP-7702 钓鱼（2025）</td><td>诱导签署委托代码</td><td>EP08</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>本集深潜十起事故。它们大多不是主线里的代表案例，但模式完全一致。重入这一类，Fei Rari 是跨函数重入，锁没覆盖全部函数。Penpie 是无许可注册加领奖函数无锁。外部调用这一类，Akutars 是逻辑错误加推送退款 DoS。</li>
+      <li>算术，KyberSwap 是舍入方向和注释相反。预言机，Harvest 是份额价格在单笔交易内被操纵，Inverse 则是浅池 TWAP 被多区块持续操纵，这两个要对比着看。权限，Sushi 的路由器回调校验只认上次调用的地址。</li>
+      <li>升级，Compound 提案 62 是升级引入 bug 又没有紧急开关。签名，WazirX 是签名界面和实际交易不一致，EIP-7702 钓鱼是诱导签署委托代码。下面挑几个讲透。注意，这些代码片段都是根据公开复盘整理的简化示意，用于说明根因，不是原始合约的逐行复制。</li>
+    </ol>
+  </section>
+
+  <!-- 5 Fei Rari 跨函数重入 -->
+  <section class="scene" data-title="Fei Rari：跨函数重入" data-onstep="marks">
+    <div class="kicker">案例一 · EP03 跨函数重入的真实版本</div>
+    <h2>把 transfer 改成 call，就改变了重入面</h2>
+    <div class="src sm" data-k="0"><div class="ln c"><span class="cm">// ❌ borrow 先转出 ETH，后更新借款记录</span></div>
+<div class="ln">function borrowFresh(...) internal {</div>
+<div class="ln">  require(comptroller.borrowAllowed(...) == 0);</div>
+<div class="ln bad">  doTransferOut(borrower, amount); <span class="cm">// ① call{value:} 交出控制权</span></div>
+<div class="ln bad">  accountBorrows[borrower].principal = newDebt; <span class="cm">// ② 太晚</span></div>
+<div class="ln">}</div></div>
+    <div class="cards3">
+      <div class="card sell fs28" data-k="1"><b>被打破的不变量：</b>外部调用返回前，账本应已反映这笔借款。回调中 Comptroller 读到的借款记录还是 0，于是允许退出抵押市场并取回抵押品。</div>
+      <div class="card gold fs28" data-k="2"><b>根本原因：</b>Compound 原版用 transfer（只转发 2300 gas）发 ETH，恰好挡住回调；被攻击的 Fuse 版本改用低级 call，却没同步改成 CEI。<b>锁也没覆盖 exitMarket。</b></div>
+      <div class="card info fs28" data-k="3"><b>修复：</b>改转账方式必须同时改成先记账后交互；所有读写借贷状态的入口共用一把锁。损失约 8,000 万美元。</div>
+    </div>
+    <ol class="say">
+      <li>第一个案例，Fei Rari。它是基于 Compound 分叉的借贷池。看这段简化示意，borrow 函数先调用 doTransferOut 把 ETH 转给借款人，这一步对 ETH 市场是一个 call，交出了控制权。然后才更新借款记录，太晚了。</li>
+      <li>被打破的不变量是，外部调用返回之前，账本应该已经反映了这笔借款。但攻击者在收到 ETH 的回调里，去退出抵押市场，此时 Comptroller 读到的借款记录还是零，于是允许退出并取回全部抵押品。</li>
+      <li>根本原因很有意思。Compound 原版用 transfer 发 ETH，只转发 2300 gas，恰好挡住了回调重入。而被攻击的 Fuse 版本改用了低级 call，把足够的 gas 和控制权交给了接收方，状态更新顺序却没同步调整。而且据公开分析，那把重入锁没有覆盖 exitMarket 函数。这正是第三集跨函数重入的真实版本。</li>
+      <li>修复就是，修改转账方式必须同时改成先记账后交互，并且让所有读写借贷状态的入口共用一把锁。教训是，改转账方式就是改重入面。损失约八千万美元。</li>
+    </ol>
+  </section>
+
+  <!-- 6 Akutars 逻辑错误 -->
+  <section class="scene" data-title="Akutars：一个变量名锁死资金" data-onstep="marks">
+    <div class="kicker">案例二 · EP06 不可升级合约的上线门槛</div>
+    <h2>11,539 ETH 被永久锁死，起因是比较错了变量</h2>
+    <div class="src sm" data-k="0"><div class="ln c"><span class="cm">// ❌ 缺陷 2：比较对象写错</span></div>
+<div class="ln">function claimProjectFunds() external onlyOwner {</div>
+<div class="ln bad">  require(refundProgress &gt;= totalBids, "..."); <span class="cm">// totalBids 是 NFT 总数</span></div>
+<div class="ln">  <span class="cm">// refundProgress 最多等于出价笔数 _bidIndex &lt; totalBids</span></div>
+<div class="ln bad">  <span class="cm">// → 条件永远不成立，资金永远提不出</span></div>
+<div class="ln">  payable(owner).transfer(address(this).balance);</div>
+<div class="ln">}</div></div>
+    <div class="cards3">
+      <div class="card warn fs28" data-k="1"><b>缺陷 1（DoS 入口）：</b>退款用推送方式，任何一个出价者合约拒收，整笔回滚，所有人都退不了款。</div>
+      <div class="card sell fs28" data-k="2"><b>直接原因：</b>totalBids 是 NFT 数量之和，大于出价笔数；refundProgress 最多到出价笔数，条件永远不成立。合约不可升级，无法修复。</div>
+      <div class="card info fs28" data-k="3"><b>修复：</b>退款改拉取式；资金出口条件必须有端到端测试——写一个"退款完成后项目方能提取"的测试，它会立刻失败。</div>
+    </div>
+    <ol class="say">
+      <li>第二个案例，Akutars，一个荷兰式拍卖的 NFT 项目。它有两个缺陷。先看提款函数，claimProjectFunds 要求 refundProgress 大于等于 totalBids 才能提款。但 totalBids 是 NFT 数量之和，而 refundProgress 最多等于出价的笔数，出价笔数小于 NFT 总数。</li>
+      <li>还有第一个缺陷，退款用的是推送方式，任何一个出价者的合约拒收 ETH，整笔退款就回滚，所有人都退不了款，这是一个 DoS 入口。</li>
+      <li>直接锁死资金的是第二个缺陷。那个比较条件永远不成立，项目方永远提不出钱。一万一千多个 ETH，当时超过三千四百万美元，被永久锁在合约里。合约不可升级，无法修复。</li>
+      <li>修复有两条。退款改成拉取式。更重要的是，资金出口的条件必须有端到端测试，写一个退款完成后项目方能提取的测试，它会立刻失败，上线前就能发现。教训是，不可升级合约没有维修门，就只能一次做对。</li>
+    </ol>
+  </section>
+
+  <!-- 7 Harvest vs Inverse -->
+  <section class="scene" data-title="Harvest vs Inverse" data-onstep="marks">
+    <div class="kicker">案例三 · EP07 单交易操纵 vs 多区块操纵</div>
+    <h2>TWAP 挡得住闪电贷，挡不住有资本的持续操纵</h2>
+    <div class="vs">
+      <div class="card info" data-k="0"><h3>Harvest（单笔交易）</h3><div class="fs27">闪电贷压低 Curve 池内 USDC 价<br>→ 份额价格 = 持仓估值 ÷ 份额<br>→ 低价存入、恢复后赎回<br><span class="hl">约 3,380 万美元</span></div></div>
+      <div class="card sell" data-k="1"><h3>Inverse（多区块）</h3><div class="fs27">自有资金推高浅池 INV 价<br>+ 垃圾交易压制套利回拉<br>→ TWAP 被持续抬高数个区块<br><span class="hl">约 1,560 万美元</span></div></div>
+    </div>
+    <div class="card gold fs29" data-k="2"><b>关键区别：</b>TWAP 能挡住单笔交易的闪电贷操纵，但挡不住有资本、能持续数个区块的操纵——尤其是浅池。低流动性代币不作高抵押率抵押品。</div>
+    <ol class="say">
+      <li>第三组案例，Harvest 和 Inverse，都是价格操纵，但要对比着看。Harvest 是单笔交易操纵。它的金库份额价格，等于持仓估值除以份额总数，而持仓估值依赖 Curve 池内的稳定币价格。攻击者用闪电贷在一笔交易里压低 USDC 价格，以偏低的份额价格存入，价格恢复后再高价赎回。损失约三千三百八十万美元。</li>
+      <li>Inverse 不一样，它是多区块操纵，而且项目方强调是资本密集型、非闪电贷。攻击者投入大量自有资金在流动性很浅的 INV 池里推高价格，同时发大量垃圾交易压制套利机器人把价格拉回，于是 TWAP 窗口内的价格被持续抬高了好几个区块。然后以 INV 高价抵押借走约一千五百六十万美元。</li>
+      <li>关键区别就在这里。很多人以为用了 TWAP 就安全，但 TWAP 只能挡住单笔交易的闪电贷操纵，挡不住有资本、能持续数个区块的操纵，尤其是浅池。所以低流动性的治理代币，不能作为高抵押率的抵押品。这和 BNB 链上的 Venus XVS 是同一个教训。</li>
+    </ol>
+  </section>
+
+  <!-- 8 Sushi RouteProcessor2 -->
+  <section class="scene" data-title="Sushi RP2：回调校验" data-onstep="marks">
+    <div class="kicker">案例四 · EP06 持有授权就是持有钥匙</div>
+    <h2>"回调来自我刚调用的地址"≠"那是真实的池子"</h2>
+    <div class="src sm" data-k="0"><div class="ln bad">address pool = readAddress(route); <span class="cm">// ❌ 池子地址来自用户输入</span></div>
+<div class="ln">lastCalledPool = pool; IUniswapV3Pool(pool).swap(...); <span class="cm">// 恶意池回调</span></div>
+<div class="ln c"><span class="cm">// —— 回调里 ——</span></div>
+<div class="ln bad">require(msg.sender == lastCalledPool); <span class="cm">// 只证明"是我刚调用的"</span></div>
+<div class="ln bad">(address tokenIn, address from) = decode(data); <span class="cm">// from 可为任意授权用户</span></div>
+<div class="ln">IERC20(tokenIn).safeTransferFrom(from, msg.sender, amt);</div></div>
+    <div class="cards2">
+      <div class="card sell fs28" data-k="1"><b>被打破的不变量：</b>只有真实的 Uniswap 池才能触发回调。校验只认"上一次调用的地址"，而那个地址正是攻击者自己部署的假池子。</div>
+      <div class="card info fs28" data-k="2"><b>修复：</b>用工厂地址和代币对<b>计算</b>出合法池子地址再比较（CallbackValidation）。持有用户授权的合约，任何"用户可控地址"都是攻击入口。约 330 万美元，波及 14 条链。</div>
+    </div>
+    <ol class="say">
+      <li>第四个案例，Sushi 的路由合约 RouteProcessor2，上线仅四天。用户要先给它授权，它才能代用户交换代币。看代码，交换函数里的池子地址来自用户输入的路由，没有校验是不是真实池子。攻击者填入自己部署的假池子，假池子立即回调。</li>
+      <li>回调函数里确实有校验，要求 msg.sender 等于 lastCalledPool。但这只证明了回调来自我刚才调用的地址，而那个地址正是攻击者自己的假池子。校验通过后，它解码出的 from 可以是任意一个授权过的用户，于是把别人的代币转给了自己。</li>
+      <li>被打破的不变量是，只有真实的 Uniswap 池才能触发回调。正确做法是用工厂地址和代币对，计算出合法的池子地址再比较，这是 Uniswap V3 的 CallbackValidation 思路。核心教训，持有用户授权的合约，等于持有用户钱包的钥匙，它的任何用户可控地址都必须视为攻击入口。约三百三十万美元被盗，风险波及十四条链。用户侧，只授权需要的额度，不用的及时撤销。</li>
+    </ol>
+  </section>
+
+  <!-- 9 Compound 62 升级无刹车 -->
+  <section class="scene" data-title="Compound 62：升级无刹车" data-onstep="compStep">
+    <div class="kicker">案例五 · EP09/10 时间锁的两面性</div>
+    <h2>同一把时间锁，挡住恶意升级，也挡住快速修复</h2>
+    <svg id="comp" width="1600" height="400" viewBox="0 0 1600 400"></svg>
+    <div class="card gold fs29" data-k="3"><b>教训：</b>把权限分两类——可快速执行、只能"停"的守护者权限；必须经时间锁、可以"改"的升级权限。升级前在主网分叉跑不变量："每个用户累计领取 ≤ 按份额应得"。</div>
+    <ol class="say">
+      <li>第五个案例，Compound 提案 62。治理提案升级了 COMP 奖励分发逻辑，但奖励索引的计算有误。</li>
+      <li>升级生效后，部分用户可以领取远超应得的 COMP，可领取量约十六万八千 COMP，创始人估计最坏情况约二十八万 COMP，相当于八千万美元。</li>
+      <li>问题是，协议没有任何管理员开关或社区工具可以停止 COMP 分发。任何修复都必须走治理流程，到生产环境需要约七天。在这七天窗口期里，被错误发放的 COMP 只能被动等待。</li>
+      <li>教训很深刻。时间锁本来是保护用户免受恶意升级的，但当升级本身有 bug 时，同一把时间锁也阻止了快速修复。所以要把权限分成两类，一类是可以快速执行、只能停的守护者权限，一类是必须经过时间锁、可以改的升级权限。而且升级前应该在主网分叉环境里跑奖励分发的不变量测试，每个用户累计领取不超过按份额应得的，上线前就能发现。</li>
+    </ol>
+  </section>
+
+  <!-- 10 WazirX / Bybit / 7702 签名 -->
+  <section class="scene" data-title="签名界面与委托" data-onstep="rowStep">
+    <div class="kicker">案例六 · EP08 签名人看不懂所签内容</div>
+    <h2>同一种攻击，7 个月内两次命中大型交易所</h2>
+    <table class="t sm">
+      <thead><tr><th></th><th>WazirX（2024-07）</th><th>Bybit（2025-02）</th></tr></thead>
+      <tbody>
+        <tr><td>钱包</td><td>4/6 多签 + 托管服务商</td><td>Safe 多签</td></tr>
+        <tr><td>被篡改的环节</td><td>签名界面（位置有争议）</td><td>Safe{Wallet} 前端</td></tr>
+        <tr><td>恶意交易做了什么</td><td>升级多签，去掉签名要求</td><td>delegatecall 替换多签实现</td></tr>
+        <tr><td>约损失</td><td>2.3 亿美元</td><td>15 亿美元</td></tr>
+      </tbody>
+    </table>
+    <div class="card warn fs28" data-k="2"><b>EIP-7702 之后新警告：</b>用"是不是 EOA"来防重入、防闪电贷的代码都要重新审视——委托后的 EOA 带代码、会回调、也会在收 ETH 时执行逻辑。链上超 80% 的 7702 委托指向复制粘贴的"清扫合约"。</div>
+    <ol class="say">
+      <li>第六组，签名界面事故。WazirX 是印度交易所，用的是四选六多签加一个托管服务商。签名人以为在签一笔日常交易，界面显示的也是正常内容，但发送到硬件钱包签名的数据是恶意的，这笔交易把多签升级成了攻击者控制的版本，约两亿三千万美元被盗。</li>
+      <li>七个月后，Bybit 几乎是同一种攻击。Safe 钱包的前端被篡改，签名人盲签了一笔 delegatecall，替换了多签的实现合约，损失高达十五亿美元。同一种攻击，七个月内两次命中大型交易所。防御就是第八集讲的，独立解码 calldata，硬件钱包逐字段核对，对升级和 delegatecall 类操作设置额外审批。</li>
+      <li>最后提醒一个新风险。EIP-7702 之后，任何用是不是 EOA 来防重入、防闪电贷或限制调用者的代码，都需要重新审视。因为委托后的 EOA 带有代码、会回调，收到 ETH 时也会执行逻辑。链上统计显示，超过百分之八十的 7702 委托指向复制粘贴的清扫合约，根本问题还是私钥泄露，但 7702 让清扫更便宜、更自动化。</li>
+    </ol>
+  </section>
+
+  <!-- 11 检查清单 -->
+  <section class="scene" data-title="主网开发检查清单" data-onstep="ckStep">
+    <div class="kicker">在以太坊主网开发 · 一页清单</div>
+    <h2>把十起事故，变成九条检查项</h2>
+    <div class="ck" id="ck"></div>
+    <ol class="say">
+      <li>把这十起事故浓缩成一页检查清单。重入分析要覆盖所有回调来源，原生 ETH、代币钩子、闪电贷回调、用户指定的池子和路由，还有 EIP-7702 委托的 EOA。不要用 tx.origin 等于 msg.sender 或者 code.length 等于零来判断调用者是普通用户。用瞬态存储锁时确认编译器版本，并对锁做跨函数测试。</li>
+      <li>价格来源要区分单笔交易可操纵和多区块可操纵，浅池资产不作高抵押率抵押品。回调校验基于计算出的合法地址，不基于上一次调用的地址。资金出口，提款、项目方领取、退款，都要有端到端测试，不可升级合约尤其如此。</li>
+      <li>守护者暂停权和升级权要分离，奖励和铸币类功能要有独立的紧急开关。所有交换有 minOut 和 deadline，关键交易考虑私有通道。多签操作有独立的 calldata 解码与核对流程。这九条，就是这十起事故换来的。</li>
+    </ol>
+  </section>
+
+  <!-- 12 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">以太坊是<span class="hl">原件</span>：读懂主网病历，到哪条链都认得出症状。</li>
+      <li data-step="1">协议升级会<span class="hl">移动安全假设</span>：EIP-7702 之后，"是不是 EOA"不再可靠。</li>
+      <li data-step="2">改转账方式=改重入面；<span class="hl">同一模式不同外衣</span>，把新事故对应到已知模式。</li>
+    </ul>
+    <h2 data-show="3">下一集：C01 BNB Chain</h2>
+    <div class="path" data-show="3">
+      <div class="card sell"><div class="n">分叉</div><b>Uranium</b><div class="d">改一行，k 检查失效</div></div>
+      <div class="card gold"><div class="n">精度</div><b>BSC-USD</b><div class="d">18 位，不是 6 位</div></div>
+      <div class="card info"><div class="n">经济</div><b>Venus</b><div class="d">治理代币作抵押</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，以太坊是原件。读懂主网的病历，你到任何一条 EVM 链都能更快认出症状。</li>
+      <li>第二，协议升级会移动安全假设。EIP-7702 之后，用是不是 EOA 来做判断不再可靠，老代码要重新审视。</li>
+      <li>第三，改转账方式就是改重入面。更重要的是养成同一模式不同外衣的视角，把每一起新事故快速对应到已知模式上。</li>
+      <li>下一集是 C01，BNB Chain。我们会看到以太坊的坑如何在 BNB 链上重演。Uranium 分叉 Uniswap 时改了一行导致 k 检查失效，BSC-USD 是 18 位精度而不是 6 位，还有 Venus 用治理代币作抵押的经济风险。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line } = K;
+
+  function compStep(el, st) {
+    marks(el, st);
+    const svg = el.querySelector('#comp'); svg.innerHTML = '';
+    const steps = [
+      ['治理提案升级奖励逻辑', C.info, 0],
+      ['奖励索引计算有误 → 部分用户可超额领取', C.warn, 1],
+      ['能否紧急暂停？只有治理权限', C.sell, 2]
+    ];
+    steps.forEach(([t, col, k], i) => {
+      const y = 20 + i * 130, on = st >= k ? 1 : .15, cur = st === k;
+      rect(svg, 40, y, 1000, 84, { fill: cur ? C.curFill : C.panel, stroke: cur ? C.gold : col, sw: cur ? 4 : 3, op: on, rx: 10 });
+      T(svg, 70, y + 43, t, C.text, 30, 'start', true, on);
+      if (i < 2) arrow(svg, 540, y + 86, 540, y + 126, C.t2, false, 3, on);
+    });
+    if (st >= 2) {
+      rect(svg, 1110, 190, 470, 190, { fill: C.curFill, stroke: C.sell, sw: 3, rx: 10 });
+      T(svg, 1345, 236, '修复需走治理 ≈ 7 天', C.sell, 30, 'middle', true);
+      T(svg, 1345, 288, '窗口期内持续流失', C.text, 27, 'middle');
+      T(svg, 1345, 338, '最坏 ≈ 28 万 COMP', C.gold, 27, 'middle', true);
+      arrow(svg, 1046, 302, 1106, 302, C.sell, false, 4);
+    }
+  }
+
+  function ckStep(el, st) {
+    marks(el, st);
+    const items = [
+      '重入分析覆盖所有回调来源（含 7702 委托 EOA）',
+      '不用 tx.origin==msg.sender / code.length==0 判断普通用户',
+      '瞬态存储锁确认编译器版本 + 跨函数测试',
+      '区分单交易操纵与多区块操纵；浅池不作高抵押品',
+      '回调校验基于"计算出的合法地址"',
+      '资金出口都有端到端测试（不可升级尤其）',
+      '守护者暂停权与升级权分离；铸币有紧急开关',
+      '所有交换有 minOut 与 deadline',
+      '多签操作有独立 calldata 解码与核对'
+    ];
+    el.querySelector('#ck').innerHTML = items.map(t => `<div class="it">${t}</div>`).join('');
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

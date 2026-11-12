@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A10 实例：钱包里的 Audit 页</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .phone { width: 470px; background: #0b0c0e; border: 3px solid #333; border-radius: 40px; padding: 26px 22px; display: flex; flex-direction: column; gap: 12px; }
+  .phone .tabs { display: flex; gap: 22px; font-size: 24px; color: var(--text-2); border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .phone .tabs b { color: var(--gold); border-bottom: 3px solid var(--gold); padding-bottom: 6px; }
+  .phone .it { display: flex; justify-content: space-between; font-size: 25px; padding: 8px 6px; border-bottom: 1px dashed var(--line); }
+  .phone .lvl { font-family: var(--mono); font-size: 36px; font-weight: 700; color: var(--buy); }
+  .ana { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .ana .card { font-size: 30px; display: flex; flex-direction: column; gap: 10px; min-height: 220px; }
+  .ana .card .a { color: var(--text-2); font-size: 27px; }
+  .tag { font-size: 22px; padding: 2px 12px; border-radius: 999px; font-weight: 700; margin-left: 10px; }
+  .tag.pub { background: var(--buy-soft); color: var(--buy); } .tag.inf { background: var(--warn-soft); color: var(--warn); }
+  .blind { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .blind .card { font-size: 28px; display: flex; flex-direction: column; gap: 10px; min-height: 280px; }
+  .blind .card .n { font-family: var(--mono); color: var(--sell); font-size: 46px; font-weight: 700; line-height: 1; }
+  .blind .card .d { color: var(--text-2); font-size: 25px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="A10" data-title="实例分析：钱包里的 Audit 页是怎么来的">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 评估篇 · A10 · 实例分析</div>
+    <div class="row" style="gap:70px; align-items:center">
+      <div class="phone" data-k="0" data-nocur>
+        <div class="tabs"><span>行情</span><span>持仓</span><b>Audit</b><span>信息</span></div>
+        <div class="it"><span>风险等级</span><span class="lvl">LOW</span></div>
+        <div class="it"><span>貔貅风险</span><span class="up">✓ 未发现</span></div>
+        <div class="it"><span>可增发</span><span class="up">✓ 未发现</span></div>
+        <div class="it"><span>买 / 卖税</span><span class="up">0% / 0%</span></div>
+        <div class="it"><span>源码已验证</span><span class="up">✓</span></div>
+      </div>
+      <div class="col" style="gap:24px">
+        <h1 style="font-size:86px">全部绿勾，<br>就能<span class="hl">上币</span>吗？</h1>
+        <div class="card fs30" data-k="1" data-nocur>这些信息<b>从哪里来</b>？<br>能发现什么？<b>发现不了什么</b>？</div>
+      </div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到评估篇第10集，也是评估篇的最后一集，一个实例分析。打开钱包，点开一个代币，有一个 Audit 标签。上面写着风险等级低，一排绿勾。全部绿勾，就能上币吗？</li>
+      <li>要回答这个问题，先要知道这些信息从哪里来，它能发现什么，发现不了什么。本集用币安钱包的 Audit 页做实例。先说明，下面标已公开的，来自公开文档和公告；标推断的，是我们根据这些材料的推断。相关产品会更新，请以最新的公开资料为准。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="像机场安检门" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>Audit 页是安检门，不是人工审计</h2>
+    <div class="ana">
+      <div class="card buy" data-k="0"><b>能快速发现金属</b><div class="a">典型特征</div><div class="hl">→ 貔貅、高税率、可增发</div></div>
+      <div class="card sell" data-k="1"><b>查不出新型危险品</b><div class="a">规则没收录的</div><div class="hl">→ 业务逻辑漏洞、新后门</div></div>
+      <div class="card" data-k="2"><b>过了安检门</b><div class="a">不等于乘客可信</div><div class="hl">→ 绿勾只是最低门槛</div></div>
+    </div>
+    <div class="card warn fs30" data-k="3">比喻不准的地方：安检是即时的；代币合约在你检查之后<b>还能被项目方改</b>。今天通过，不等于明天通过。</div>
+    <ol class="say">
+      <li>先打个比方。Audit 页像机场的安检门。它能快速发现金属物品，对应貔貅盘、过高的税率、可以增发这类典型特征。</li>
+      <li>它查不出藏在行李里的新型危险品，对应业务逻辑漏洞，以及规则还没收录的后门写法。</li>
+      <li>过了安检门，不等于这个乘客可信。没过，就大概率值得多看一眼。</li>
+      <li>比喻不准的地方在于，安检是即时的。代币合约在你检查之后，项目方还能升级、改税率、限制流动性。今天通过，不等于明天通过。</li>
+    </ol>
+  </section>
+
+  <!-- 3 页面结构 -->
+  <section class="scene" data-title="页面上有什么" data-onstep="rowStep">
+    <div class="kicker">已公开 · 币安技能库"查询代币审计"文档</div>
+    <h2>五层结构</h2>
+    <table class="t sm">
+      <thead><tr><th>层级</th><th>字段</th><th>含义</th></tr></thead>
+      <tbody>
+        <tr><td>是否有结果</td><td class="mono">hasResult · isSupported</td><td>两者都为真，结果才有效</td></tr>
+        <tr><td>总体等级</td><td class="mono">riskLevelEnum · riskLevel</td><td>LOW / MEDIUM / HIGH，数值 0–5</td></tr>
+        <tr><td>附加信息</td><td class="mono">buyTax · sellTax · isVerified</td><td>买卖税率、源码是否已验证</td></tr>
+        <tr><td>风险分类</td><td class="mono">CONTRACT · TRADE · SCAM</td><td>合约风险、交易风险、骗局风险</td></tr>
+        <tr><td>每条细则</td><td class="mono">isHit · riskType</td><td>是否命中；RISK 严重 / CAUTION 警告</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>先看页面上有什么。币安在公开的技能库里，有一份查询代币审计的接口文档，给出了字段结构，可以分五层。第一层，是否有结果。两个字段，有没有审计数据，这个代币支不支持审计。两者都为真，结果才有效。</li>
+      <li>第二层，总体等级，低、中、高三档，对应0到5的数值。第三层，附加信息，买入税、卖出税，以及合约源码是否已验证。</li>
+      <li>第四层，风险分为三类，合约风险、交易风险和骗局风险。第五层，每一条细则有是否命中，以及严重程度，分为风险和警告两种。</li>
+    </ol>
+  </section>
+
+  <!-- 4 怎么读等级与税率 -->
+  <section class="scene" data-title="怎么读等级与税率" data-onstep="taxStep">
+    <div class="kicker">已公开 · 文档给出的指引 · 示例代币为虚构</div>
+    <h2>等级四档，税率三档</h2>
+    <div class="row">
+      <table class="t" style="flex:1" id="lv">
+        <thead><tr><th>数值</th><th>等级</th><th>文档指引</th></tr></thead>
+        <tbody>
+          <tr><td class="num">0–1</td><td class="good">LOW</td><td>谨慎推进，自己研究</td></tr>
+          <tr><td class="num">2–3</td><td style="color:var(--warn);font-weight:700">MEDIUM</td><td>仔细看每个命中项</td></tr>
+          <tr><td class="num">4</td><td class="bad">HIGH</td><td>避免交易</td></tr>
+          <tr><td class="num">5</td><td class="bad">HIGH</td><td>阻止交易</td></tr>
+        </tbody>
+      </table>
+      <div class="col" style="flex:1" id="taxSide"></div>
+    </div>
+    <ol class="say">
+      <li>等级怎么读？文档给出的指引是这样的。0到1是低，谨慎推进，自己做研究。2到3是中，要仔细看每一个命中项。4是高，避免交易。5也是高，直接阻止交易。</li>
+      <li>税率也有口径。卖出税或买入税高于10%属于严重，5%到10%是警告，低于5%可以接受。</li>
+      <li>来看一个虚构的示例代币。买入税3%，在可接受范围。卖出税12%，超过10%，属于严重。</li>
+      <li>算一下影响。用户买入1000美元，扣3%，到手970美元的代币。如果价格不变就卖出，再扣12%，只剩约853美元，一买一卖损失了接近15%。卖出税远高于买入税，往往是貔貅盘的前兆。</li>
+      <li>文档里还有一句很重要的话。低等级不等于安全，结果只是某个时刻的快照。</li>
+    </ol>
+  </section>
+
+  <!-- 5 数据链路 -->
+  <section class="scene" data-title="信息从哪里来" data-onstep="pipeStep">
+    <div class="kicker">数据链路 · 已公开 与 推断</div>
+    <h2>从链上数据，到你看到的绿勾</h2>
+    <svg id="pipe" width="1640" height="540" viewBox="0 0 1640 540"></svg>
+    <ol class="say">
+      <li>信息从哪里来？起点是链上和公开的数据，合约的字节码和已验证的源码，交易和持仓的历史，以及部署者的历史地址。</li>
+      <li>这些数据进入一个自动化的扫描引擎。它用一组风险规则去检查，有些检查还会模拟交易，比如模拟一次买入再卖出。</li>
+      <li>扫描结果通过钱包的安全接口返回，最后显示在 Audit 标签页上，变成绿勾、红标和说明文字。</li>
+      <li>扫描能力从哪里来？已公开的是，2025年7月，CertiK 发布公告，说币安钱包集成了它的 Skynet 代币扫描，在代币页新增了 Audit 标签。</li>
+      <li>需要注意的是，币安的接口文档没有写明数据供应商。所以，所有链、所有代币，包括 Alpha 代币的结果，是不是都由这一家产生，有没有同时使用别的数据源，都属于推断，不能当作已确认的事实引用。</li>
+    </ol>
+  </section>
+
+  <!-- 6 CertiK 公告 -->
+  <section class="scene" data-title="公告里说了什么" data-onstep="marks">
+    <div class="kicker">已公开 · CertiK 公告 · 2025-07-17</div>
+    <h2>"持续检查数十个关键风险向量"</h2>
+    <div class="grid3">
+      <div class="card sell" data-k="0"><h3>恶意代码</h3><div class="fs28">增发供应<br>修改余额<br>提高交易税</div></div>
+      <div class="card warn" data-k="1"><h3>中心化风险</h3><div class="fs28">隐藏权限<br>可冻结资金<br>可改变代币机制</div></div>
+      <div class="card info" data-k="2"><h3>高风险钱包</h3><div class="fs28">部署者曾关联<br>高风险或欺诈发币</div></div>
+    </div>
+    <div class="card fs28" data-k="3">展示方式：未命中的风险显示<b class="up">绿勾</b>，可能有问题的显示<b class="down">红标</b>，每条附风险说明。</div>
+    <ol class="say">
+      <li>公告里说了什么？它说这个扫描持续检查数十个关键风险向量，并举了三类例子。第一类是恶意代码，比如能增发供应、修改余额、提高交易税的函数。</li>
+      <li>第二类是中心化风险，也就是隐藏的权限，可以冻结资金，或者改变代币的机制。</li>
+      <li>第三类是高风险钱包，部署者曾经关联过高风险或者欺诈性的发币。</li>
+      <li>展示方式是，没有命中的风险显示绿勾，可能有问题的显示红标，每一条都附有说明。注意，公告没有列出完整的检查项清单。接口文档也只点名了一项，貔貅风险，也就是能买不能卖。</li>
+    </ol>
+  </section>
+
+  <!-- 7 别混淆 -->
+  <section class="scene" data-title="扫描不是审计" data-onstep="marks">
+    <div class="kicker">别混淆</div>
+    <h2>这里的 "Audit" 是扫描，不是审计报告</h2>
+    <div class="vs">
+      <div class="card info" data-k="0"><h3>自动扫描</h3><div class="fs28">广度：每个代币都能跑<br>规则驱动，秒级出结果<br>时间点快照<br>不对结论承担审计责任</div></div>
+      <div class="card gold" data-k="1"><h3>人工审计报告</h3><div class="fs28">深度：一个项目、一个版本<br>人工审查业务逻辑<br>有范围、方法、发现、假设<br>见 A07 的读法</div></div>
+    </div>
+    <div class="card warn fs30" data-k="2">Audit 页是<b>用户保护提示</b>，不代表交易所对该代币做了人工审计背书。Alpha 与主站上币的审核流程也不同。</div>
+    <ol class="say">
+      <li>这里要特别注意一个用词。页面上叫 Audit，但它是自动扫描，不是审计报告。自动扫描是广度覆盖，每个代币都能跑，规则驱动，秒级出结果，是一个时间点的快照。</li>
+      <li>人工审计报告是深度覆盖，针对一个项目的一个版本，人工审查业务逻辑，有范围、方法、发现和假设，读法在第7集讲过。两者的深度、范围和责任完全不同。</li>
+      <li>所以，Audit 页是给用户的保护提示，不代表交易所对这个代币做了人工审计背书。另外，Alpha 是早期项目的发现和交易入口，它和主站上币的审核流程也不一样。</li>
+    </ol>
+  </section>
+
+  <!-- 8 对照红线 -->
+  <section class="scene" data-title="对照八条红线" data-onstep="rowStep">
+    <div class="kicker">能发现什么 · 对照 A05</div>
+    <h2>八条红线，扫描能覆盖几条？</h2>
+    <table class="t sm">
+      <thead><tr><th>A05 红线</th><th>扫描通常能否发现</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>可无限增发且无时间锁</td><td class="good">通常能</td><td>时间锁是否真实有效，要人工看</td></tr>
+        <tr><td>貔貅盘</td><td class="good">通常能</td><td>文档明确列出的检查项</td></tr>
+        <tr><td>owner 可冻结任意地址</td><td class="good">通常能</td><td>属于中心化风险</td></tr>
+        <tr><td>隐藏后门 / 升级后门</td><td style="color:var(--warn);font-weight:700">部分</td><td>代理的实现可后续替换，扫描只看当前版本</td></tr>
+        <tr><td>升级权为单签个人地址</td><td style="color:var(--warn);font-weight:700">部分</td><td>能读地址类型；看不出"多签其实一人控制"</td></tr>
+        <tr><td>锁仓 / 流动性锁是假的</td><td class="bad">较弱</td><td>要核验锁仓合约与解锁条件</td></tr>
+        <tr><td>地址与官网不一致</td><td class="bad">不能</td><td>要人工比对官方渠道</td></tr>
+        <tr><td>字节码与源码不一致</td><td style="color:var(--warn);font-weight:700">部分</td><td>"已验证"≠"和审计版本一致"</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>把扫描能力对照第5集的八条红线。前三条，可无限增发、貔貅盘、owner 可冻结任意地址，扫描通常能发现。但增发有没有真实有效的时间锁，还要人工看。</li>
+      <li>后门和升级后门，只能部分发现。代理合约的实现可以以后再替换，扫描只能看到当前版本。升级权的持有方，扫描能读出地址类型，却看不出一个多签其实由一个人控制。</li>
+      <li>锁仓和流动性锁是否真实，扫描能力较弱，要人工核验锁仓合约和解锁条件。合约地址和官网是否一致，扫描不能发现，必须人工比对官方渠道。</li>
+      <li>最后，源码已验证，只说明有一份验证过的源码，不等于它和审计报告里的版本一致。八条里，扫描能可靠覆盖的大约三条。</li>
+    </ol>
+  </section>
+
+  <!-- 9 结构性盲区 -->
+  <section class="scene" data-title="任何扫描都有的盲区" data-onstep="snapStep">
+    <div class="kicker">结构性盲区</div>
+    <h2>四个盲区，不是哪一家的问题</h2>
+    <div class="blind">
+      <div class="card" data-k="0"><span class="n">1</span><b>快照</b><div class="d">只反映检查时刻</div><div id="snap" class="fs26"></div></div>
+      <div class="card" data-k="1"><span class="n">2</span><b>规则覆盖</b><div class="d">只发现已知模式；经济攻击、新写法不在其内</div></div>
+      <div class="card" data-k="2"><span class="n">3</span><b>缺少上下文</b><div class="d">看不到项目方的私钥管理和签名流程</div></div>
+      <div class="card" data-k="3"><span class="n">4</span><b>没有结果</b><div class="d">"不支持"或"无数据"不能当作"没风险"</div></div>
+    </div>
+    <ol class="say">
+      <li>任何自动扫描，都有四个结构性盲区，这不是哪一家产品的问题。第一是快照。比如上午10点检查，等级低，税率为零。下午2点，项目方升级合约，把卖出税改成99%。上午的绿勾已经失效。</li>
+      <li>第二是规则覆盖。扫描只能发现已知的模式。新的后门写法，复杂的业务逻辑漏洞，以及第10章讲的经济攻击，都不在其内。</li>
+      <li>第三是缺少上下文。扫描看不到项目方的私钥怎么管理、签名流程怎样，而第6集讲过，这是损失最大的来源。</li>
+      <li>第四是没有结果的情形。显示不支持审计，或者没有数据时，没有任何结论。千万不能把它当作没有风险。</li>
+    </ol>
+  </section>
+
+  <!-- 10 第0步分诊 -->
+  <section class="scene" data-title="第 0 步分诊" data-onstep="triStep">
+    <div class="kicker">怎样用在尽调里</div>
+    <h2>扫描结果是分诊，不是结论</h2>
+    <svg id="tri" width="1640" height="560" viewBox="0 0 1640 560"></svg>
+    <ol class="say">
+      <li>那么评估人员该怎么用它？把它当作尽调的第0步分诊，放在流程的最前面。拿到上币申请，先看扫描结果。</li>
+      <li>命中严重项，可以快速按红线处理。但要独立复现，比如读源码，在分叉环境里模拟买卖，因为扫描也会误报。</li>
+      <li>没有命中，只说明通过了最低门槛，仍然要走完第5集的全流程，权限、链上数据、运营和经济四个维度。</li>
+      <li>显示不支持或者无数据，就当作未评估，必须人工评估。三条路最后都汇到评分卡，结论由你签字。把扫描结果直接当上币依据，等于把交易所的责任外包给一个你无法控制、也没看过规则的黑盒。</li>
+    </ol>
+  </section>
+
+  <!-- 11 独立验证清单 -->
+  <section class="scene" data-title="独立验证清单" data-onstep="marks">
+    <div class="kicker">对扫描的每类结论，用自己的方法再确认</div>
+    <h2>七项独立验证</h2>
+    <div class="steps c4">
+      <div class="card" data-k="0"><span class="n">1</span><b>源码与字节码</b><div class="d">浏览器验证 + 比对部署字节码</div></div>
+      <div class="card" data-k="0"><span class="n">2</span><b>权限地址</b><div class="d">owner、admin、minter；多签阈值、时间锁</div></div>
+      <div class="card" data-k="1"><span class="n">3</span><b>代理实现槽</b><div class="d">可否升级、谁可升级</div></div>
+      <div class="card" data-k="1"><span class="n">4</span><b>模拟买卖</b><div class="d">分叉环境小额，核对实际税率</div></div>
+      <div class="card" data-k="2"><span class="n">5</span><b>部署者历史</b><div class="d">是否部署过被标记的合约</div></div>
+      <div class="card" data-k="2"><span class="n">6</span><b>持仓与流动性</b><div class="d">前 10 / 前 50 集中度、流动性锁</div></div>
+      <div class="card gold" data-k="3" style="grid-column: span 2"><span class="n">7</span><b>存证带时间</b><div class="d">扫描结果、查询时间、链上读数一起放进证据附录</div></div>
+    </div>
+    <ol class="say">
+      <li>对扫描给出的每一类结论，都用自己的方法再确认一遍。第一，在区块浏览器确认源码已验证，并比对部署的字节码。第二，读出 owner、admin 和 minter，看是个人地址还是多签，阈值和时间锁是多少。</li>
+      <li>第三，查看代理的实现槽，确认能不能升级，谁能升级。第四，在分叉环境里小额模拟买入再卖出，核对实际税率和扫描结果是否一致。</li>
+      <li>第五，查部署者地址的历史，是否部署过已被标记的合约。第六，查持仓前10和前50的集中度，以及流动性的锁定。</li>
+      <li>第七，存证要带时间。扫描是快照，所以把扫描结果、查询时间和链上读数，一起放进证据附录。</li>
+    </ol>
+  </section>
+
+  <!-- 12 练一练 -->
+  <section class="scene" data-title="练一练" data-onstep="marks">
+    <div class="kicker">练一练 · 暂停视频想一想</div>
+    <h2>LOW、全部绿勾，但可升级代理的 admin 是单签个人地址</h2>
+    <div class="grid2">
+      <div class="card" data-k="0"><b>按 A05，结论是什么？</b><div class="muted fs28">Audit 页为什么没拦住？</div></div>
+      <div class="card sell" data-k="1"><span class="stamp sell">否决或暂缓</span><div class="fs28" style="margin-top:16px">命中第 5 条红线。<br>扫描看的是<b>当前实现</b>；升级权决定的是<b>下一个实现</b>。<br>绿勾说的是"现在"，红线说的是"以后"。</div></div>
+    </div>
+    <ol class="say">
+      <li>最后练一练。一个代币的 Audit 页显示等级低，全部绿勾。但它是一个可升级的代理合约，管理员是一个单签的个人地址。按第5集，你的结论是什么？Audit 页为什么没有拦住它？</li>
+      <li>结论是否决，或者暂缓到对方整改，因为命中了第五条红线。Audit 页没拦住，是因为扫描看的是当前的实现，而升级权决定的，是下一个实现。绿勾说的是现在，红线说的是以后。</li>
+    </ol>
+  </section>
+
+  <!-- 13 评估篇完结 -->
+  <section class="scene" data-title="评估篇小结" data-onstep="marks">
+    <div class="kicker">评估篇 · 完结</div>
+    <h2 data-show="0-2">本集三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">先问<span class="hl">信息从哪来</span>：区分已公开与推断；回答不了，就只能当提示。</li>
+      <li data-step="1"><span class="hl">扫描 ≠ 审计</span>；快照要带时间；"无结果"归入未评估。</li>
+      <li data-step="2">扫描是<span class="hl">第 0 步分诊</span>；结论由你按评分卡得出并签字。</li>
+    </ul>
+    <h2 data-show="3">接下来：主线 13 集 + 链专题 4 集</h2>
+    <div class="path" data-show="3">
+      <div class="card info"><div class="n">EP</div><b>主线 EP01–EP13</b><div class="d">从安全全景、EVM 基础，到重入、预言机、代理、跨链与审计流程</div></div>
+      <div class="card gold"><div class="n">C</div><b>链专题 C00–C03</b><div class="d">以太坊、BNB Chain、TRON、Mantle 的差异与真实案例</div></div>
+      <div class="card buy"><div class="n">⌘</div><b>手册与实验</b><div class="d">九个交互实验、五个评估模板</div></div>
+    </div>
+    <ol class="say">
+      <li>本集三件事。第一，看到任何风险信息，先问它从哪里来，区分已公开和推断。回答不了数据来源、规则和更新频率，就只能当作提示。</li>
+      <li>第二，扫描不等于审计。自动结论要带检查时间，无结果要归入未评估。</li>
+      <li>第三，扫描是尽调的第0步分诊。外部扫描是输入，结论由你按评分卡得出，并且签字。</li>
+      <li>评估篇十集到这里讲完了。它讲的是怎样做评估。接下来的主线13集，讲每一类漏洞的机制和防御，链专题4集，讲以太坊、BNB Chain、TRON 和 Mantle 的差异。配合手册里的交互实验和评估模板一起使用。我们主线见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line } = K;
+
+  function taxStep(el, st) {
+    const rows = [...el.querySelectorAll('#lv tbody tr')];
+    rows.forEach((r, i) => { r.classList.toggle('cur', st === 0); r.classList.remove('pend'); });
+    const side = el.querySelector('#taxSide');
+    const tax = '<table class="t"><thead><tr><th>税率</th><th>口径</th></tr></thead><tbody><tr><td class="num">&gt; 10%</td><td class="bad">严重</td></tr><tr><td class="num">5–10%</td><td style="color:var(--warn);font-weight:700">警告</td></tr><tr><td class="num">&lt; 5%</td><td class="good">可接受</td></tr></tbody></table>';
+    const ex = '<div class="card fs30"><b>示例代币</b><br>买入税 <b class="up">3%</b> · 卖出税 <b class="down">12%</b></div>';
+    const calc = '<div class="formula" style="font-size:30px">1,000 × 0.97 = 970<br>970 × 0.88 ≈ <b class="down">853.6</b><br><span class="muted">一买一卖损失约 15%</span></div>';
+    side.innerHTML = [ '', tax, tax + ex, ex + calc, '<div class="card warn fs30">"LOW 不等于安全；<br>结果是时间点快照。"</div>' + ex ][st];
+  }
+
+  function pipeStep(el, st) {
+    const svg = el.querySelector('#pipe'); svg.innerHTML = '';
+    const op = k => st >= k ? 1 : .12;
+    const S = [['合约字节码与源码', 60], ['交易与持仓历史', 190], ['部署者历史地址', 320]];
+    S.forEach(([t, y]) => box(svg, 20, y, 330, 100, t, { stroke: C.info, fs: 29 }));
+    T(svg, 185, 30, '链上与公开数据', C.info, 26, 'middle', true);
+    box(svg, 520, 160, 330, 160, ['自动化扫描引擎', '规则 + 模拟交易'], { stroke: C.gold, fs: 32, op: op(1), bold: true });
+    S.forEach(([, y]) => arrow(svg, 352, y + 50, 516, 240, C.t2, false, 3, op(1)));
+    box(svg, 960, 180, 300, 120, ['钱包安全接口', '/security/token/audit'], { stroke: C.line, fs: 30, op: op(2), ss: 22 });
+    arrow(svg, 852, 240, 956, 240, C.t2, false, 3, op(2));
+    box(svg, 1340, 160, 280, 160, ['Audit 标签页', '绿勾 · 红标 · 说明'], { stroke: C.buy, fs: 32, op: op(2), bold: true });
+    arrow(svg, 1262, 240, 1336, 240, C.t2, false, 3, op(2));
+    if (st >= 3) {
+      box(svg, 520, 376, 330, 116, ['CertiK Skynet', 'Token Scan'], { stroke: C.buy, fill: C.goodFill, fs: 30 });
+      arrow(svg, 685, 374, 685, 324, C.buy, true, 4);
+      T(svg, 880, 408, '已公开：2025-07 公告"已集成"', C.buy, 26, 'start', true);
+    }
+    if (st >= 4) {
+      rect(svg, 880, 436, 740, 90, { fill: 'rgba(240,163,64,.12)', stroke: C.warn, sw: 3 });
+      T(svg, 1250, 464, '推断：是否覆盖所有链和代币？是否另有数据源？', C.warn, 26, 'middle', true);
+      T(svg, 1250, 502, '接口文档未写明供应商 → 不当作已确认事实', C.text, 25);
+    }
+  }
+
+  function snapStep(el, st) {
+    marks(el, st);
+    el.querySelector('#snap').innerHTML = st >= 0 ? '<div style="margin-top:8px"><span class="mono">10:00</span> LOW · 卖出税 <b class="up">0%</b><br><span class="mono">14:00</span> 升级 → 卖出税 <b class="down">99%</b></div>' : '';
+  }
+
+  function triStep(el, st) {
+    const svg = el.querySelector('#tri'); svg.innerHTML = '';
+    const op = k => st >= k ? 1 : .12;
+    box(svg, 20, 30, 300, 90, '上币 / 合作申请', { stroke: C.info, fs: 30 });
+    arrow(svg, 322, 75, 400, 75, C.t2, false, 3);
+    box(svg, 405, 20, 420, 110, ['第 0 步：扫描结果', 'Audit 页 / 同类扫描'], { stroke: C.gold, fill: st === 0 ? C.curFill : C.panel, fs: 32, bold: true, sw: st === 0 ? 5 : 3 });
+    const B = [
+      ['命中严重项', '按红线处理 + 独立复现', C.sell, 1, 140],
+      ['未命中', '≠ 安全 · 走完 A05 全流程', C.buy, 2, 615],
+      ['不支持 / 无数据', '视为未评估 · 必须人工评估', C.warn, 3, 1090],
+    ];
+    B.forEach(([a, b, c, k, x]) => {
+      arrow(svg, 615, 132, x + 220, 236, c, false, 4, op(k));
+      box(svg, x, 240, 440, 120, [a, b], { stroke: c, fs: 32, op: op(k), bold: true, sw: st === k ? 5 : 3 });
+      arrow(svg, x + 220, 362, 820, 436, C.t2, false, 3, op(3));
+    });
+    box(svg, 570, 440, 500, 90, ['评分卡 → 结论由你签字'], { stroke: C.gold, fs: 32, op: op(3), bold: true });
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

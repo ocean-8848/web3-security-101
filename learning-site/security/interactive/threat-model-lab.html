@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>威胁建模实验</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .sys-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+  .sys-row button { text-align: left; min-height: 44px; }
+  .sys-row button.on { background: var(--accent-soft); border-color: var(--accent); font-weight: 600; }
+  .comp { margin-bottom: 12px; }
+  .comp h3 { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 4px; }
+  .chips { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; margin-top: 8px; }
+  .chips button { padding: 0; min-height: 44px; font-family: var(--mono); font-weight: 650; }
+  .chips button.dim { opacity: .55; }
+  .chips button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #1d1d1b; opacity: 1; }
+  .fb { margin-top: 8px; display: grid; gap: 6px; }
+  .fb div { font-size: 13px; padding: 6px 10px; border-radius: 8px; background: var(--surface-2); overflow-wrap: anywhere; }
+  .fb .ok { background: var(--buy-soft); } .fb .miss { background: var(--sell-soft); } .fb .warn { background: var(--warn-soft); }
+  textarea { width: 100%; min-height: 220px; font-family: var(--mono); font-size: 12px; padding: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-2); color: var(--text); }
+  .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 4px 12px; font-size: 13px; margin: 0; padding: 0; list-style: none; }
+  .big { font-size: 22px; font-weight: 650; font-family: var(--mono); }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="back" href="index.html">← 交互实验目录</a>
+    <h1>威胁建模实验</h1>
+  </header>
+  <p class="lead">选择一个系统，为每个组件标记 STRIDE 威胁，然后查看反馈并导出 Markdown 表格。配套章节：<a href="../assessment/A01-methodology.md">A01 评估方法论</a>、<a href="../templates/T02-threat-model.md">T02 威胁建模模板</a>。</p>
+
+  <h2>1. 选择系统</h2>
+  <div class="card">
+    <div class="sys-row" id="sys"></div>
+    <p class="small muted" id="sysDesc" style="margin-bottom:0"></p>
+  </div>
+
+  <h2>2. 标记威胁</h2>
+  <div class="card">
+    <ul class="legend">
+      <li><b>S</b> 仿冒：冒充身份</li><li><b>T</b> 篡改：改动数据或代码</li><li><b>R</b> 否认：事后无法追责</li>
+      <li><b>I</b> 信息泄露：读取机密</li><li><b>D</b> 拒绝服务：让系统不可用</li><li><b>E</b> 权限提升：做了无权做的事</li>
+    </ul>
+    <p class="small muted" style="margin-bottom:0">颜色较深的按钮是该元素类型通常要检查的类别。颜色较浅的按钮也可以选择，但要准备好理由。</p>
+  </div>
+  <div id="comps" style="margin-top:12px"></div>
+  <div class="btn-row">
+    <button class="primary" id="check">检查我的模型</button>
+    <button id="reset">清空本系统</button>
+  </div>
+
+  <h2>3. 反馈</h2>
+  <div class="card">
+    <div class="stat"><span class="k">重点威胁命中</span><span class="big" id="score">—</span></div>
+    <p class="small" id="summary" style="margin-bottom:0">点击"检查我的模型"后显示结果。</p>
+  </div>
+
+  <h2>4. 导出 Markdown 威胁表</h2>
+  <div class="card">
+    <p class="small muted">表格包含你选择的威胁。把它贴到 <a href="../templates/T02-threat-model.md">T02</a> 第 5 节，再补充现有缓解和剩余风险。</p>
+    <label for="md">Markdown</label>
+    <textarea id="md" readonly spellcheck="false"></textarea>
+    <div class="btn-row"><button id="copy">复制</button></div>
+    <p class="small muted" id="copyOut" aria-live="polite"></p>
+  </div>
+
+  <footer class="note">系统结构和威胁都是教学示例，不对应任何真实系统。本页离线运行，选择只保存在这台浏览器中。</footer>
+</div>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const L = ['S', 'T', 'R', 'I', 'D', 'E'];
+  const NAME = { S: '仿冒', T: '篡改', R: '否认', I: '信息泄露', D: '拒绝服务', E: '权限提升' };
+  const TYPE = { ext: ['外部实体', 'SR', 'info'], proc: ['处理过程', 'STRIDE', 'accent'], store: ['数据存储', 'TID', 'warn'], flow: ['数据流', 'TID', 'buy'] };
+  const CH = {
+    c09: ['../09-mev-signatures.md', '09 MEV 与签名'], c12: ['../12-cross-chain-bridges.md', '12 跨链桥'], c16: ['../16-consensus-chain-security.md', '16 共识安全'],
+    c17: ['../17-node-rpc-infrastructure.md', '17 节点与 RPC'], c18: ['../18-wallet-key-management.md', '18 钱包与密钥'], c19: ['../19-user-scams.md', '19 用户侧诈骗'],
+    c20: ['../20-frontend-dns-supply-chain.md', '20 前端与供应链'], c21: ['../21-social-engineering-insiders.md', '21 社工与内部人'], c22: ['../22-physical-account-security.md', '22 人身与账号'], c23: ['../23-custody-exchange-ops.md', '23 托管运营'], c10: ['../10-upgradeable-proxy.md', '10 可升级代理']
+  };
+  const SYS = {
+    wallet: { name: '热钱包服务', desc: '用户发起提币。API 把请求交给策略引擎。策略引擎请求签名服务，HSM 完成签名。', comps: [
+      { id: 'user', n: '提币用户', t: 'ext', d: '通过账号发起提币', k: { S: ['攻击者盗用账号发起提币', '多因素认证；新地址冷却期', 'c22'], R: ['用户否认曾发起提币', '记录设备、时间和二次确认', 'c23'] } },
+      { id: 'policy', n: '策略引擎', t: 'proc', d: '校验限额、白名单和风控结果', k: { T: ['注入配置，改动限额规则', '配置签名和变更审批', 'c23'], E: ['管理接口绕过审批', '权限分离；双人审批', 'c23'] } },
+      { id: 'req', n: '待签交易请求', t: 'flow', d: '从业务内网进入密钥区', k: { T: ['内网攻击者改动收款地址', '请求端到端签名；签名服务重新校验', 'c18'], I: ['请求内容暴露提币计划', '双向 TLS；日志脱敏', 'c18'] } },
+      { id: 'hsm', n: 'HSM 密钥', t: 'store', d: '保存热钱包私钥', k: { I: ['私钥被导出', '不可导出策略；访问审计', 'c18'], D: ['HSM 不可用，提币停止', '异地备份；故障切换演练', 'c18'] } },
+      { id: 'audit', n: '审计日志', t: 'store', d: '保存所有操作记录', k: { T: ['内部人员删除或改动记录', '追加写入；异地保存', 'c21'] } },
+      { id: 'rpc', n: 'RPC 节点', t: 'ext', d: '提供链上状态并广播交易', k: { S: ['伪造节点返回虚假入账', '多源比对；确认深度', 'c17'] } }
+    ] },
+    bridge: { name: '跨链桥', desc: '用户在源链锁定资产。守护者签署消息。中继者把消息提交到目标链，合约铸造资产。', comps: [
+      { id: 'relayer', n: '中继者', t: 'ext', d: '提交已签消息，不应被信任', k: { S: ['伪造来源事件或签名', '目标链独立验证签名和来源', 'c12'] } },
+      { id: 'msg', n: '跨链消息', t: 'flow', d: '携带金额、接收人和链 ID', k: { T: ['改动金额、接收人或目标链', '签名覆盖全部字段和域分隔符', 'c12'], D: ['中继者不提交消息', '允许任何人提交；多个中继者', 'c12'] } },
+      { id: 'watch', n: '守护者监听服务', t: 'proc', d: '读取源链事件并生成待签消息', k: { S: ['假 RPC 喂入虚假事件', '自建多源节点；等待最终确定', 'c17'], D: ['重组或节点故障造成处理错误', '最终性规则；重试幂等', 'c16'] } },
+      { id: 'mint', n: '目标链铸造合约', t: 'proc', d: '验证消息后铸造资产', k: { E: ['校验缺陷造成任意铸造', '不变量测试；单位时间上限', 'c12'], T: ['恶意升级替换逻辑', '多签 + 时间锁', 'c10'] } },
+      { id: 'keys', n: '守护者密钥', t: 'store', d: '门限签名所需的密钥', k: { I: ['多把密钥被同一攻击者获取', '独立运营方；独立基础设施', 'c18'] } },
+      { id: 'seen', n: '已处理消息集合', t: 'store', d: '记录已经执行的消息 ID', k: { T: ['状态被绕过，消息被重放', '每个消息 ID 只能使用一次', 'c09'] } }
+    ] },
+    validator: { name: '验证者节点', desc: '共识客户端驱动执行客户端。验证者客户端通过签名服务签署投票和区块。', comps: [
+      { id: 'peer', n: 'P2P 对等节点', t: 'ext', d: '公开网络中的其他节点', k: { S: ['恶意对端占满连接，形成日蚀攻击', '对端多样性；连接数告警', 'c16'] } },
+      { id: 'cl', n: '共识客户端', t: 'proc', d: '跟踪链头并处理共识消息', k: { D: ['客户端缺陷或资源耗尽导致离线', '客户端多样性；灰度升级', 'c16'] } },
+      { id: 'engine', n: 'Engine API 连接', t: 'flow', d: '共识客户端到执行客户端，端口 8551', k: { I: ['JWT 密钥或连接被窃听', '仅本机或私有网段', 'c17'], T: ['JWT 不防重放，连接被改动', '不要跨越不可信网络', 'c17'] } },
+      { id: 'key', n: '验证者签名密钥', t: 'store', d: '签署投票和区块', k: { I: ['主机被入侵，密钥外泄', '远程签名；最小权限', 'c17'] } },
+      { id: 'sp', n: '防罚没数据库', t: 'store', d: '记录已经签过的消息', k: { T: ['迁移时丢失历史，造成重复签名', '迁移时导入历史；禁止双开', 'c17'], D: ['数据库损坏后无法安全签名', '备份；恢复前保持停止状态', 'c17'] } },
+      { id: 'signer', n: '远程签名服务', t: 'proc', d: '持有密钥并执行签名', k: { S: ['伪造验证者请求', '双向 TLS；私有网段', 'c18'], E: ['越权签署任意数据', '只接受预期消息类型', 'c18'] } }
+    ] },
+    dex: { name: 'DEX 前端', desc: '用户打开网页，页面组装交易，请求钱包签名。代码由构建流水线发布到 CDN。', comps: [
+      { id: 'user', n: '用户', t: 'ext', d: '使用钱包批准交易', k: { S: ['钓鱼站点冒充官方前端', '书签；域名保护；反钓鱼提示', 'c19'] } },
+      { id: 'cdn', n: '域名与 CDN 分发', t: 'flow', d: '把脚本送到用户浏览器', k: { T: ['DNS 或 CDN 被劫持后替换脚本', 'DNSSEC；注册商锁；SRI；CSP', 'c20'] } },
+      { id: 'app', n: '前端应用', t: 'proc', d: '组装交易和展示内容', k: { T: ['恶意依赖改动收款地址', '依赖锁定；发布审查', 'c20'], I: ['第三方脚本读取地址和行为', '减少第三方脚本；隐私审查', 'c20'] } },
+      { id: 'walletreq', n: '钱包签名请求', t: 'flow', d: '页面发给钱包的交易或签名', k: { T: ['页面显示的内容和实际请求不同', '钱包模拟；结构化签名；用户核对', 'c19'] } },
+      { id: 'pipeline', n: '构建与发布流水线', t: 'proc', d: '生成并发布前端产物', k: { E: ['CI 令牌泄露后取得发布权限', '最小权限令牌；分支保护', 'c20'], T: ['构建产物被替换', '产物签名；部署告警', 'c20'] } },
+      { id: 'rpc', n: '前端 RPC 服务', t: 'ext', d: '返回价格、余额和报价', k: { S: ['错误 RPC 返回虚假报价', '可信来源；链上校验；滑点限制', 'c17'] } }
+    ] }
+  };
+  const load = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } };
+  const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+  const KEY = 'w3s-threat-model-lab';
+  const raw = load(KEY, {});
+  const state = { cur: SYS[raw.cur] ? raw.cur : 'wallet', picks: raw.picks && typeof raw.picks === 'object' ? raw.picks : {} };
+  let checked = false;
+  const persist = () => save(KEY, state);
+  const picks = () => {
+    if (!state.picks[state.cur] || typeof state.picks[state.cur] !== 'object') state.picks[state.cur] = {};
+    return state.picks[state.cur];
+  };
+  const on = (c, l) => (typeof picks()[c.id] === 'string' ? picks()[c.id] : '').indexOf(l) >= 0;
+  const link = id => '<a href="' + CH[id][0] + '">' + CH[id][1] + '</a>';
+
+  function renderSys() {
+    $('sys').innerHTML = Object.keys(SYS).map(k => '<button data-s="' + k + '" aria-pressed="' + (k === state.cur) + '" class="' + (k === state.cur ? 'on' : '') + '">' + SYS[k].name + '</button>').join('');
+    $('sysDesc').textContent = SYS[state.cur].desc;
+  }
+  function fbHtml(c) {
+    if (!checked) return '';
+    const rows = [], fit = TYPE[c.t][1];
+    L.forEach(l => {
+      const hit = on(c, l), key = c.k[l];
+      if (key && hit) rows.push('<div class="ok">✅ <b>' + l + ' ' + NAME[l] + '</b>：' + key[0] + '。缓解：' + key[1] + '。参见 ' + link(key[2]) + '</div>');
+      else if (key) rows.push('<div class="miss">❌ 漏掉 <b>' + l + ' ' + NAME[l] + '</b>：' + key[0] + '。缓解：' + key[1] + '。参见 ' + link(key[2]) + '</div>');
+      else if (hit && fit.indexOf(l) < 0) rows.push('<div class="warn">⚠️ <b>' + l + '</b> 通常不分配给' + TYPE[c.t][0] + '。这类威胁通常记录在相连的处理过程或数据流上。如果你保留它，请写明具体场景。</div>');
+      else if (hit) rows.push('<div>⚪ <b>' + l + '</b> 适用于该元素类型，但不是本页的重点。写出具体威胁和影响后再保留。</div>');
+    });
+    return rows.length ? '<div class="fb">' + rows.join('') + '</div>' : '';
+  }
+  function renderComps() {
+    const s = SYS[state.cur];
+    $('comps').innerHTML = s.comps.map(c => '<div class="card comp"><h3>' + c.n + ' <span class="pill ' + TYPE[c.t][2] + '">' + TYPE[c.t][0] + '</span></h3><div class="small muted">' + c.d + '</div><div class="chips">' +
+      L.map(l => '<button data-c="' + c.id + '" data-l="' + l + '" aria-label="' + c.n + '：' + NAME[l] + '" aria-pressed="' + on(c, l) + '" class="' + (TYPE[c.t][1].indexOf(l) < 0 ? 'dim' : '') + '">' + l + '</button>').join('') +
+      '</div>' + fbHtml(c) + '</div>').join('');
+  }
+  function renderMd() {
+    const s = SYS[state.cur], rows = [];
+    s.comps.forEach(c => L.forEach(l => {
+      if (!on(c, l)) return;
+      const key = c.k[l];
+      rows.push('| ' + (rows.length + 1) + ' | ' + l + ' ' + NAME[l] + ' | ' + c.n + '（' + TYPE[c.t][0] + '） | ' + (key ? key[0] : '待补充：写出具体威胁') + ' | ' + (key ? key[1] : '待补充') + ' | 待评估 | ' + (key ? CH[key[2]][1] : '') + ' |');
+    }));
+    $('md').value = '### 威胁清单：' + s.name + '\n\n| # | STRIDE | 元素 | 威胁 | 建议缓解 | 剩余风险 | 对应章节 |\n|---|---|---|---|---|---|---|\n' + (rows.length ? rows.join('\n') : '| 1 | | | | | | |') + '\n';
+  }
+  function score() {
+    const s = SYS[state.cur];
+    let total = 0, hit = 0;
+    s.comps.forEach(c => Object.keys(c.k).forEach(l => { total++; if (on(c, l)) hit++; }));
+    $('score').textContent = hit + ' / ' + total;
+    const pct = hit / total;
+    $('summary').textContent = pct >= 0.8 ? '覆盖较好。下一步：为每个威胁写出现有缓解和测试方法。' : pct >= 0.5 ? '覆盖了一部分。先看红色条目，它们通常位于穿过信任边界的连接上。' : '覆盖不足。按元素类型逐项检查：数据流看 T、I、D，处理过程看全部六类。';
+  }
+  function all() {
+    renderSys(); renderComps(); renderMd();
+    if (checked) score(); else { $('score').textContent = '—'; $('summary').textContent = '点击"检查我的模型"后显示结果。'; }
+  }
+  $('sys').addEventListener('click', e => { const b = e.target.closest('[data-s]'); if (b) { state.cur = b.dataset.s; checked = false; persist(); all(); } });
+  $('comps').addEventListener('click', e => {
+    const b = e.target.closest('[data-c]');
+    if (!b) return;
+    const m = picks(), c = b.dataset.c, l = b.dataset.l;
+    const v = typeof m[c] === 'string' ? m[c] : '';
+    m[c] = v.indexOf(l) >= 0 ? v.replace(l, '') : v + l;
+    persist(); all();
+  });
+  $('check').onclick = () => { checked = true; all(); };
+  $('reset').onclick = () => { state.picks[state.cur] = {}; checked = false; persist(); all(); };
+  $('copy').onclick = () => {
+    const done = t => { $('copyOut').textContent = t; };
+    const manual = () => { $('md').focus(); $('md').select(); done('浏览器不允许自动复制。文本已选中，请手动复制。'); };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText($('md').value).then(() => done('已复制。'), manual);
+      else manual();
+    } catch (e) { manual(); }
+  };
+  all();
+})();
+</script>
+<script>
+/* 在单文件阅读版的 iframe 中打开时，把章节链接交给外层阅读器处理 */
+(function () {
+  if (window.parent === window) return;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href');
+    if (/\.md(#|$)/.test(h)) { e.preventDefault(); window.parent.postMessage({ cexNavMd: h }, '*'); }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EP05 算术与精度</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .ana .card { font-size: 29px; display: flex; flex-direction: column; gap: 10px; min-height: 230px; }
+  .ana .card .a { color: var(--text-2); font-size: 26px; }
+  .odo { font-family: var(--mono); font-size: 34px; letter-spacing: .02em; background: var(--code-bg); border: 1px solid var(--line); border-radius: 12px; padding: 18px 24px; white-space: pre; line-height: 1.5; }
+  .chk { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; }
+  .chk .card { font-size: 27px; padding: 14px 22px; }
+  sup { font-size: .58em; vertical-align: super; line-height: 0; letter-spacing: 0; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="EP05" data-title="算术与精度：差一个 wei，丢一个金库">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 主线 · EP05</div>
+    <h1>EVM 只有整数，<br>丢掉的余数<span class="hl">归谁</span>？</h1>
+    <div class="hero">
+      <div class="card sell" data-k="1" data-nocur><div class="k">2018 · BEC 代币</div><div class="big">2<sup>256</sup> → 0</div><div>乘法溢出，凭空增发</div></div>
+      <div class="card warn" data-k="2" data-nocur><div class="k">2023 · KyberSwap</div><div class="big">超 4,800 万$</div><div>向下取整，本该向上</div></div>
+      <div class="card info" data-k="3" data-nocur><div class="k">2025 · Balancer V2</div><div class="big">约 1.28 亿$</div><div>舍入误差被批量放大</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到主线第5集，算术与精度。一句话理解，EVM 只有整数，每一次除法都会丢掉余数。丢掉的余数归谁，决定了谁能从协议里慢慢抠出钱。</li>
+      <li>看三起事故，以下据公开报道。2018年，BEC 代币的一次乘法溢出，结果回绕成零，攻击者凭空增发了天量代币。</li>
+      <li>2023年，KyberSwap 损失超过4800万美元。一处本该向上取整的地方，写成了向下取整。</li>
+      <li>2025年，成熟协议 Balancer 损失约1.28亿美元。单步可以忽略的舍入误差，在批量交换里被放大了。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="披萨店切披萨" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>一张披萨切 8 块，你付了 1/3 张的钱</h2>
+    <div class="ana">
+      <div class="card" data-k="0"><b>给 2 块还是 3 块？</b><div class="a">8 × 1/3 = 2.67</div><div class="hl">→ 舍入方向</div></div>
+      <div class="card sell" data-k="1"><b>店员总往多了给</b><div class="a">聪明顾客反复买 1/3 张</div><div class="hl">→ 往返套利</div></div>
+      <div class="card sell" data-k="2"><b>整张只切 1 块，再塞进 100 张</b><div class="a">下个顾客付 99 张，分不到一块</div><div class="hl">→ 金库通胀攻击</div></div>
+    </div>
+    <div class="card warn fs30" data-k="3">比喻不准的地方：披萨店会被投诉。合约里，每次多拿 1 个最小单位的操作，可以在<b>一笔交易里重复几千次</b>。</div>
+    <ol class="say">
+      <li>打个比方。一家披萨店按块卖，一张披萨切8块。你付了三分之一张的钱，8乘以三分之一是2.67块。店员必须决定，给你2块还是3块。这就是舍入方向。</li>
+      <li>如果店员总是往多了给，聪明的顾客就会反复买三分之一张，每次多拿一点。这就是往返套利。</li>
+      <li>更狠的是，第一个顾客买下整张披萨，只让切成1块，然后往盒子里偷偷塞进100张披萨。下一个顾客付了99张的钱，因为1块的价值是101张，他一块也分不到。这就是后面要讲的金库通胀攻击。</li>
+      <li>比喻不准的地方在于，披萨店会被投诉。合约里，每次多拿一个最小单位的操作，可以在一笔交易里重复几千次。</li>
+    </ol>
+  </section>
+
+  <!-- 3 五类缺陷 -->
+  <section class="scene" data-title="五类数学缺陷" data-onstep="rowStep">
+    <div class="kicker">分类</div>
+    <h2>五类缺陷</h2>
+    <table class="t sm">
+      <thead><tr><th>缺陷</th><th>例子</th><th>后果</th></tr></thead>
+      <tbody>
+        <tr><td>① 溢出 / 下溢</td><td>0.8 之前的 a × b；之后的 unchecked</td><td>回绕成极大值或 0</td></tr>
+        <tr><td>② 类型截断</td><td>uint128(x)、有符号转无符号</td><td>静默丢掉高位</td></tr>
+        <tr><td>③ 先除后乘</td><td>a / b × c</td><td>精度损失被放大 c 倍</td></tr>
+        <tr><td>④ 舍入方向错误</td><td>存款时份额向上取整</td><td>每次操作泄漏 1 单位</td></tr>
+        <tr><td>⑤ 单位不一致</td><td>6 位精度当 18 位算</td><td>偏差 10¹² 倍</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>数学缺陷可以分五类。第一，溢出和下溢，比如0.8版本之前的乘法，或者0.8之后写在 unchecked 块里的运算，结果会回绕成极大值或零。第二，类型截断，比如把一个大整数转成128位，高位被静默丢掉。</li>
+      <li>第三，先除后乘，精度损失会被放大。第四，舍入方向错误，比如存款时份额向上取整，每次操作都向用户泄漏一个单位。</li>
+      <li>第五，单位不一致，比如把6位精度的 USDT 当成18位来算，偏差是10的12次方倍。下面一类一类用数字看。</li>
+    </ol>
+  </section>
+
+  <!-- 4 BEC -->
+  <section class="scene" data-title="溢出：BEC" data-onstep="becStep">
+    <div class="kicker">真实案例 · 2018-04 · 据公开报道</div>
+    <h2 id="becH">2 × 2<sup>255</sup> = 2<sup>256</sup>，回绕成 0</h2>
+    <div class="row">
+      <div class="col" style="flex:1.1">
+        <div class="src sm"><span class="ln c">// Solidity 0.4，无溢出检查</span><span class="ln" data-mark="1:bad">uint256 amount = cnt * _value;</span><span class="ln" data-mark="2:bad">require(balances[msg.sender] &gt;= amount);</span><span class="ln">balances[msg.sender] -= amount;</span><span class="ln" data-mark="3:bad">for (...) balances[r[i]] += _value;</span></div>
+        <div class="card fs28" id="becNote"></div>
+      </div>
+      <div class="col" style="flex:0.9" id="becSide"></div>
+    </div>
+    <ol class="say">
+      <li>先看溢出。2018年的 BEC 代币有一个批量转账函数。它先算出总金额，等于接收人数乘以每人金额，检查发送者余额够不够，扣掉总金额，再给每个接收人加上金额。</li>
+      <li>攻击者传入2个接收地址，每人金额是2的255次方。2乘以2的255次方，等于2的256次方。256位整数的上限是2的256次方减1，所以结果回绕成了零。</li>
+      <li>零小于等于任何余额，检查通过。发送者被扣掉零。</li>
+      <li>然后循环给两个接收人，每人加上2的255次方。凭空铸出了天量代币，多家交易所因此暂停了充提。0.8以后默认检查溢出，但 unchecked 块、内联汇编和类型转换仍会静默回绕，审计时要逐一检查这三处。</li>
+    </ol>
+  </section>
+
+  <!-- 5 先除后乘 -->
+  <section class="scene" data-title="先除后乘" data-onstep="divStep">
+    <div class="kicker">精度 · 数字为示例</div>
+    <h2>除法要放在最后</h2>
+    <div class="row">
+      <div class="col" style="flex:1" id="divL"></div>
+      <div class="col" style="flex:1" id="divR"></div>
+    </div>
+    <ol class="say">
+      <li>第二个例子，先除后乘。本金1950，年利率5%，用基点表示是500。错误的写法是，本金先除以100，再乘以500，再除以100。</li>
+      <li>一步步算。1950除以100，整数除法得19，余数50被丢掉了。19乘以500除以100，得95。</li>
+      <li>正确的写法是先乘后除，1950乘以500，再除以10000，得97.5，向下取整是97。差了2。看起来不多，但这个误差被乘数放大了，而且每笔都发生。</li>
+      <li>更好的做法是用 mulDiv 函数。它的中间结果有512位，不会溢出，还可以显式指定舍入方向。</li>
+    </ol>
+  </section>
+
+  <!-- 6 USDT 精度 -->
+  <section class="scene" data-title="单位不一致：三条链上的 USDT" data-onstep="decStep">
+    <div class="kicker">精度 · 以链上合约 decimals() 为准</div>
+    <h2>同一个"USDT"，小数位不同</h2>
+    <div class="row">
+      <table class="t" style="flex:1" id="dec">
+        <thead><tr><th>链</th><th>代币</th><th class="num">decimals()</th></tr></thead>
+        <tbody>
+          <tr><td>以太坊</td><td>Tether USD</td><td class="num">6</td></tr>
+          <tr><td>BNB Chain</td><td>Binance-Peg BSC-USD</td><td class="num hl">18</td></tr>
+          <tr><td>TRON</td><td>Tether USD (TRC-20)</td><td class="num">6</td></tr>
+        </tbody>
+      </table>
+      <div class="col" style="flex:1" id="decSide"></div>
+    </div>
+    <ol class="say">
+      <li>第五类，单位不一致。同一个 USDT，在不同链上精度不同。以太坊和 TRON 上是6位小数，BNB Chain 上的 BSC-USD 是18位。</li>
+      <li>算一下会发生什么。用户在 BNB Chain 上存入100个 USDT，链上记录的数字是100乘以10的18次方。</li>
+      <li>如果代码是从以太坊搬过来的，写死了按6位精度换算，它会把这个数理解成100乘以10的12次方个 USDT，也就是一百万亿。放大了10的12次方倍。</li>
+      <li>所以，永远从合约读取精度，不要写死。跨链桥两端精度不同时，要在桥合约里显式换算，并且处理换算后的余数。</li>
+    </ol>
+  </section>
+
+  <!-- 7 舍入方向 -->
+  <section class="scene" data-title="舍入方向：永远对协议有利" data-onstep="rowStep">
+    <div class="kicker">规则只有一条</div>
+    <h2>余数归协议，不归调用者</h2>
+    <table class="t">
+      <thead><tr><th>操作</th><th>用户给出</th><th>用户得到</th><th>取整方向</th><th>理由</th></tr></thead>
+      <tbody>
+        <tr><td>deposit(资产)</td><td>资产</td><td>份额</td><td class="good">向下</td><td>少给份额</td></tr>
+        <tr><td>mint(份额)</td><td>资产（算出）</td><td>份额</td><td class="bad">向上</td><td>多收资产</td></tr>
+        <tr><td>withdraw(资产)</td><td>份额（算出）</td><td>资产</td><td class="bad">向上</td><td>多扣份额</td></tr>
+        <tr><td>redeem(份额)</td><td>份额</td><td>资产</td><td class="good">向下</td><td>少给资产</td></tr>
+      </tbody>
+    </table>
+    <div class="card warn fs28" data-k="2">方向反了 → 往返套利：反复 mint 1 份再 redeem，每次净赚 1 单位；没有手续费时一笔交易可循环上千次。</div>
+    <ol class="say">
+      <li>舍入方向的规则只有一条，余数归协议，不归调用者。看金库的四个操作。存款，用户给资产、得份额，份额向下取整，少给份额。铸造指定份额，算用户要付多少资产，向上取整，多收资产。</li>
+      <li>提取指定资产，算要扣多少份额，向上取整，多扣份额。赎回份额，算给多少资产，向下取整，少给资产。记住一个口诀，给用户的向下，收用户的向上。</li>
+      <li>方向反了会怎样？攻击者可以做往返套利，反复铸造1份再赎回，每次净赚一个单位的舍入误差。单次很小，但没有手续费时，一笔交易里可以循环上千次。</li>
+    </ol>
+  </section>
+
+  <!-- 8 批量放大 -->
+  <section class="scene" data-title="单步可忽略，批量被放大" data-onstep="loopStep">
+    <div class="kicker">案例 · 据公开分析</div>
+    <h2>Balancer 与 KyberSwap</h2>
+    <div class="row">
+      <svg id="loop" width="900" height="540" viewBox="0 0 900 540"></svg>
+      <div class="col" id="loopSide"></div>
+    </div>
+    <ol class="say">
+      <li>舍入误差为什么能造成上亿美元的损失？因为它可以被批量放大。看 Balancer V2，以下据多家安全公司的公开分析。2025年11月，一种稳定池的批量交换函数存在舍入误差。</li>
+      <li>攻击者在一笔批量交换里，串联了大量小额交换，让每一步的舍入都朝对自己有利的方向累积。单步只差一点点，几千步累积下来，池子的不变量和份额价格就被操纵了。损失约1.28亿美元，涉及多条链上的部署。</li>
+      <li>再看 KyberSwap，2023年11月，以下据 BlockSec 的公开分析。一处流动性计算用了向下取整，而代码注释写着应该向上取整。这个偏差让池子在价格已经越过某个刻度时，误判为没有越过，同一段流动性被计算了两次。损失超过4800万美元。</li>
+      <li>两条教训。第一，舍入误差在单步测试里可以忽略，在可批量、可循环的路径里会被放大，所以要对重复 N 次同一操作做模糊测试。第二，代码和注释不一致时，要把它当作漏洞线索，而不是文档瑕疵。</li>
+    </ol>
+  </section>
+
+  <!-- 9 4626 通胀 -->
+  <section class="scene" data-title="金库首存者通胀攻击" data-onstep="infStep">
+    <div class="kicker">ERC-4626 · 数字为示例</div>
+    <h2 id="infH">份额 = 资产 × 总份额 ÷ 总资产，向下取整</h2>
+    <div class="row">
+      <table class="t" style="flex:1.15" id="inf"><thead><tr><th>步骤</th><th class="num">总资产</th><th class="num">总份额</th></tr></thead><tbody></tbody></table>
+      <div class="col" style="flex:0.85" id="infSide"></div>
+    </div>
+    <ol class="say">
+      <li>现在看金库通胀攻击。金库标准 ERC-4626，份额等于存入的资产乘以总份额，再除以总资产，向下取整。问题在于，总资产通常直接读合约的代币余额，而任何人都可以直接转账增加它。</li>
+      <li>金库刚部署，是空的。攻击者先存入1个最小单位，拿到1份。</li>
+      <li>然后不走存款函数，直接向金库转入10000 USDC。总份额还是1，总资产变成约10000。</li>
+      <li>受害者存入9999 USDC。份额等于9999乘以1，再除以约10000，结果小于1，向下取整得零。受害者拿到零份。</li>
+      <li>攻击者赎回他的1份，取回金库全部资产，约19999 USDC。受害者的存款，被捐赠给了这1份。攻击者通常会抢跑受害者的第一笔存款交易。这个攻击只在金库几乎为空时有效。</li>
+    </ol>
+  </section>
+
+  <!-- 10 防御 -->
+  <section class="scene" data-title="四种防御" data-onstep="offStep">
+    <div class="kicker">防御 · 数字为示例</div>
+    <h2>让捐赠变得不划算</h2>
+    <div class="row">
+      <table class="t sm" style="flex:1.1">
+        <thead><tr><th>方案</th><th>做法</th></tr></thead>
+        <tbody>
+          <tr data-k="0"><td>虚拟份额与偏移</td><td>计算时加入 10^偏移 个虚拟份额</td></tr>
+          <tr data-k="2"><td>初始存款销毁</td><td>部署时存一笔，份额发给死地址</td></tr>
+          <tr data-k="2"><td>内部记账</td><td>状态变量记总资产，不读余额</td></tr>
+          <tr data-k="3"><td>最小份额检查</td><td>份额为 0 就回滚；用户设最小份额</td></tr>
+        </tbody>
+      </table>
+      <div class="col" style="flex:0.9" id="offSide"></div>
+    </div>
+    <ol class="say">
+      <li>防御有四种。第一种是虚拟份额和偏移，OpenZeppelin 4.9以后的金库默认支持。计算份额时，总份额额外加上10的偏移次方个虚拟份额，总资产加1。</li>
+      <li>效果是什么？偏移为3时，攻击者要造成同样的损失，需要捐赠大约1000倍的资金。原来捐1万就够，现在要捐1000万，攻击变得不划算。手册里的金库实验，可以拖动偏移滑块，看着攻击者的利润从正变负。</li>
+      <li>第二种，部署时先存入一笔资金，把份额发给一个死地址，让金库永远不为空。第三种，内部记账，用状态变量记录总资产，不读余额，捐赠就不会改变份额价格。</li>
+      <li>第四种，最小份额检查。份额为零就回滚，用户侧再设一个最小份额参数，受害者的交易会失败，而不是拿到零份。Uniswap V2 用的也是类似思路，首次添加流动性时，永久锁定1000份 LP 代币。</li>
+    </ol>
+  </section>
+
+  <!-- 11 分叉代码 -->
+  <section class="scene" data-title="修改过的分叉代码等于新代码" data-onstep="marks">
+    <div class="kicker">扩展案例 · BNB Chain · 2021-04 · 据公开分析</div>
+    <h2>"这是 Uniswap 的代码，已经审计过了"</h2>
+    <div class="src sm" data-k="0"><span class="ln c">// Uniswap V2 原版：两处都是 1000</span><span class="ln">balance0Adjusted = balance0 × <span class="n">1000</span> − amount0In × 3;</span><span class="ln">require(adj0 × adj1 ≥ reserve0 × reserve1 × <span class="n">1000²</span>);</span><span class="ln c">// ❌ Uranium：调整项放大到 10000，右侧仍是 1000²</span><span class="ln bad">balance0Adjusted = balance0 × <span class="n">10000</span> − amount0In × 16;</span><span class="ln bad">require(adj0 × adj1 ≥ reserve0 × reserve1 × <span class="n">1000²</span>);</span></div>
+    <div class="card warn fs30" data-k="1">左边放大 100 倍，右边没有 → x·y ≥ k 退化成 x·y ≥ k/100 · 约 5,000 万$ · <b>修改过的分叉代码 = 新代码</b></div>
+    <ol class="say">
+      <li>再回顾一下第1集讲过的 Uranium，这次看代码。Uniswap V2 原版里，调整余额乘以1000，校验右边乘以1000的平方，两处一致。Uranium 把手续费改了，调整项放大到10000，校验右边却仍是1000的平方。</li>
+      <li>左边放大了100倍，右边没有。不变量 x 乘 y 不小于 k，退化成了不小于 k 的百分之一。损失约5000万美元。分叉项目的修改往往只有几行，审计却最容易被跳过。记住，修改过的分叉代码，等于新代码。</li>
+    </ol>
+  </section>
+
+  <!-- 12 审计检查点 -->
+  <section class="scene" data-title="审计检查点" data-onstep="marks">
+    <div class="kicker">审计清单</div>
+    <h2>八个检查点</h2>
+    <div class="chk">
+      <div class="card" data-k="0">① 每个 unchecked 块都有不会溢出的证明</div>
+      <div class="card" data-k="0">② 向下类型转换都用了 SafeCast</div>
+      <div class="card" data-k="1">③ 乘除混合都是先乘后除，或用 mulDiv</div>
+      <div class="card" data-k="1">④ 每个份额 ↔ 资产换算的舍入都对协议有利</div>
+      <div class="card" data-k="2">⑤ 金库首存者攻击已防御</div>
+      <div class="card" data-k="2">⑥ 不写死精度；跨链换算处理了余数</div>
+      <div class="card" data-k="3">⑦ 分叉代码改过的常数，所有使用位置都已同步</div>
+      <div class="card gold" data-k="3">⑧ 模糊测试覆盖"同一操作重复 N 次"</div>
+    </div>
+    <ol class="say">
+      <li>审计检查点八个。第一，每个 unchecked 块都有不会溢出的证明。第二，所有向下的类型转换都用了安全转换库。</li>
+      <li>第三，乘除混合运算都先乘后除，或者用 mulDiv。第四，每个份额和资产的换算，舍入方向都对协议有利。</li>
+      <li>第五，金库首存者攻击已经防御。第六，不写死代币精度，跨链换算处理了余数。</li>
+      <li>第七，分叉代码里修改过的常数，所有使用位置都已同步。第八，模糊测试覆盖了同一操作重复 N 次的路径。</li>
+    </ol>
+  </section>
+
+  <!-- 13 练一练 -->
+  <section class="scene" data-title="练一练" data-onstep="marks">
+    <div class="kicker">练一练 · 暂停视频想一想</div>
+    <h2>借贷协议算利息时，对借款人的应还金额向下取整</h2>
+    <div class="grid2">
+      <div class="card" data-k="0"><b>攻击者可以怎样利用？</b><div class="muted fs28">提示：把一笔大借款拆成很多笔小借款</div></div>
+      <div class="card sell" data-k="1"><b>参考</b><div class="fs28">把借款拆成许多极小的头寸，让每笔的利息都<b>向下取整为 0</b> → 长期零利息借款。<br><b class="up">修复</b>：对借款人应还金额<b>向上</b>取整；设最小借款额。</div></div>
+    </div>
+    <ol class="say">
+      <li>来练一练。一个借贷协议计算利息时，对借款人的应还金额向下取整。攻击者可以怎样利用？提示一下，把一笔大借款拆成很多笔小借款。</li>
+      <li>参考答案。攻击者把借款拆成许多极小的头寸，让每一笔的利息都向下取整为零，相当于长期零利息借款。修复是对借款人的应还金额向上取整，收用户的向上，并且设一个最小借款额。</li>
+    </ol>
+  </section>
+
+  <!-- 14 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">先乘后除，用 mulDiv；unchecked、汇编、类型转换<span class="hl">逐一检查</span>。</li>
+      <li data-step="1"><span class="hl">给用户的向下，收用户的向上</span>；对"重复 N 次"做模糊测试。</li>
+      <li data-step="2">精度从合约读取，不写死；金库要防<span class="hl">首存者通胀</span>。</li>
+    </ul>
+    <h2 data-show="3">下一集：EP06 外部调用与代币兼容性</h2>
+    <div class="path" data-show="3">
+      <div class="card sell"><div class="n">false</div><b>返回值</b><div class="d">TRON 上的 USDT 返回 false</div></div>
+      <div class="card gold"><div class="n">8</div><b>八类非标准代币</b><div class="d">收税、变基、黑名单…</div></div>
+      <div class="card info"><div class="n">call</div><b>低级调用陷阱</b><div class="d">失败不冒泡、地址无代码</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，先乘后除，用 mulDiv。unchecked 块、内联汇编和类型转换，逐一检查。</li>
+      <li>第二，舍入方向的口诀，给用户的向下，收用户的向上。对重复 N 次的路径做模糊测试。</li>
+      <li>第三，精度从合约读取，不要写死。金库要防首存者通胀攻击。</li>
+      <li>下一集讲外部调用与代币兼容性。你调用的那个合约，未必按你想的方式工作。返回值陷阱，八类非标准代币，以及 TRON 上的 USDT 为什么会返回 false。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line, circle, fmt } = K;
+
+  function becStep(el, st) {
+    marks(el, st);
+    el.querySelector('#becNote').innerHTML = ['总金额 = 人数 × 每人金额', 'cnt = 2，_value = 2<sup>255</sup> → amount = 2<sup>256</sup> → <b class="down">0</b>', '0 ≤ 任何余额 → <b class="down">检查通过</b>，扣掉 0', '两人各收到 <b class="down">2<sup>255</sup></b> · 多家交易所暂停充提'][st];
+    el.querySelector('#becSide').innerHTML = st >= 1 ? '<div class="odo">  2<sup>255</sup> × 2\n= 2<sup>256</sup>\n= 1 0000…0000  <span class="muted">(257 位)</span>\n→ 保留低 256 位\n= <span class="hl">0</span></div><div class="card warn fs26">类比：里程表 999999 再走 1 公里 → 000000</div>'
+      : '<div class="card fs28 muted">256 位整数上限 = 2<sup>256</sup> − 1</div>';
+    el.querySelector('#becH').innerHTML = st >= 1 ? '2 × 2<sup>255</sup> = 2<sup>256</sup>，回绕成 0' : '一个批量转账函数';
+  }
+
+  function divStep(el, st) {
+    const L = el.querySelector('#divL'), R = el.querySelector('#divR');
+    L.innerHTML = '<div class="card sell"><b>❌ 先除后乘</b><div class="formula" style="font-size:30px;margin-top:10px">1950 ÷ 100 × 500 ÷ 100' + (st >= 1 ? '<br>= <b>19</b> × 500 ÷ 100 <span class="muted fs26">（余数 50 丢了）</span><br>= <b class="down">95</b>' : '') + '</div></div>';
+    R.innerHTML = st >= 2 ? '<div class="card buy"><b>✅ 先乘后除</b><div class="formula" style="font-size:30px;margin-top:10px">1950 × 500 ÷ 10000<br>= 975000 ÷ 10000<br>= 97.5 → <b class="up">97</b></div></div><div class="card warn fs28">差 2 · 误差被乘数放大，而且每笔都发生</div>' : '<div class="card fs28 muted">本金 1950 · 年利率 5% = 500 基点</div>';
+    if (st >= 3) R.innerHTML += '<div class="card info fs28"><b>mulDiv</b>：中间结果 512 位，不溢出，可指定舍入方向</div>';
+  }
+
+  function decStep(el, st) {
+    const rows = [...el.querySelectorAll('#dec tbody tr')];
+    rows.forEach((r, i) => r.classList.toggle('cur', st >= 1 && i === 1));
+    const side = el.querySelector('#decSide');
+    side.innerHTML = st === 0 ? '<div class="card fs28 muted">同名代币，小数位不同</div>' :
+      '<div class="stat"><div class="k">BNB Chain 上存入 100 USDT，链上记为</div><div class="v" style="font-size:44px">100 × 10<sup>18</sup></div></div>' +
+      (st >= 2 ? '<div class="stat"><div class="k">写死按 6 位换算，被理解成</div><div class="v down" style="font-size:44px">100 × 10<sup>12</sup> 个</div></div><div class="card sell fs28">= 一百万亿 USDT · 放大 10¹² 倍</div>' : '') +
+      (st >= 3 ? '<div class="card buy fs28">永远读 <code>decimals()</code>；跨链两端显式换算并处理余数</div>' : '');
+  }
+
+  function loopStep(el, st) {
+    const svg = el.querySelector('#loop'); svg.innerHTML = '';
+    const ox = 80, oy = 470, W = 780, H = 400;
+    line(svg, ox, oy, ox + W, oy, C.t2, 3); line(svg, ox, oy, ox, oy - H, C.t2, 3);
+    T(svg, ox + W, oy + 32, '交换次数', C.t2, 24, 'end'); T(svg, ox, 50, '累积偏差', C.t2, 24, 'start');
+    if (st >= 0) {
+      for (let i = 0; i < 40; i++) {
+        const h = st >= 1 ? (i + 1) / 40 * (H - 40) : 6;
+        rect(svg, ox + 8 + i * 19, oy - h, 14, h, { fill: st >= 1 ? 'rgba(246,70,93,.7)' : 'rgba(240,185,11,.7)', rx: 2 });
+      }
+    }
+    T(svg, ox + W / 2, oy - H + 10, st >= 1 ? '每步只差一点，几千步累积' : '单步：几乎看不见', st >= 1 ? C.sell : C.gold, 30, 'middle', true);
+    const side = el.querySelector('#loopSide');
+    side.innerHTML =
+      '<div class="card ' + (st >= 1 ? 'sell' : '') + '"><b>Balancer V2 · 2025-11</b><div class="fs26 muted">批量交换中串联大量小额交换 → 操纵不变量与份额价格 · 约 1.28 亿$</div></div>' +
+      (st >= 2 ? '<div class="card warn"><b>KyberSwap · 2023-11</b><div class="fs26 muted">注释说向上，代码向下 → 越过刻度被误判 → 同一段流动性算两次 · 超 4,800 万$</div></div>' : '') +
+      (st >= 3 ? '<div class="card buy fs26">① 对"重复 N 次"做模糊测试<br>② 代码与注释不一致 = 漏洞线索</div>' : '');
+  }
+
+  function infStep(el, st) {
+    const R = [['空金库', '0', '0'], ['攻击者存 1 个最小单位', '1', '1'], ['攻击者直接转入 10,000 USDC', '≈ 10,000', '1'], ['受害者存 9,999 → 9,999 × 1 ÷ 10,000 ≈ 0.9999 → <b class="down">0 份</b>', '≈ 19,999', '1'], ['攻击者赎回 1 份 → <b class="down">取走 ≈ 19,999</b>', '0', '0']];
+    const n = st + 1;
+    el.querySelector('#inf tbody').innerHTML = R.slice(0, n).map((r, i) => `<tr class="${i === n - 1 ? 'cur' : ''}"><td>${r[0]}</td><td class="num">${r[1]}</td><td class="num">${r[2]}</td></tr>`).join('');
+    const side = el.querySelector('#infSide');
+    side.innerHTML = ['<div class="card warn fs28">总资产 = 读合约余额<br>→ 任何人可直接转账抬高</div>',
+      '<div class="card fs28">1 份 = 全部资产</div>',
+      '<div class="card warn fs28">捐赠不发份额，<br>却抬高了每份价值</div>',
+      '<div class="card sell fs28">受害者：存 9,999，得 <b>0 份</b></div>',
+      '<div class="card sell fs28">受害者的存款被"捐给"了那 1 份</div><div class="card fs26 muted">通常抢跑第一笔存款 · 只在金库几乎为空时有效</div>'][st];
+    el.querySelector('#infH').textContent = st >= 3 ? '9,999 × 1 ÷ 10,000 = 0.9999 → 向下取整 = 0' : '份额 = 资产 × 总份额 ÷ 总资产，向下取整';
+  }
+
+  function offStep(el, st) {
+    marks(el, st);
+    const side = el.querySelector('#offSide');
+    side.innerHTML = st === 0 ? '<div class="formula" style="font-size:28px">份额 = 资产 × (总份额 + 10^偏移)<br>÷ (总资产 + 1)</div>' :
+      st === 1 ? '<table class="t"><thead><tr><th>偏移</th><th class="num">同样损失需捐赠</th></tr></thead><tbody><tr><td>0</td><td class="num">≈ 1 万</td></tr><tr class="cur"><td>3</td><td class="num">≈ <b class="up">1,000 万</b></td></tr></tbody></table><div class="card buy fs28">攻击者利润由正变负</div>' :
+      '<div class="card buy fs28">金库永远不为空 / 捐赠不改变份额价格</div>' + (st >= 3 ? '<div class="card info fs28">Uniswap V2：首次添加流动性时<br>永久锁定 1000 份 LP</div>' : '');
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

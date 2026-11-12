@@ -1,0 +1,72 @@
+# 章节：进阶 CTF：Damn Vulnerable DeFi 等
+
+## 思考题（共 2 题，按顺序作答）
+Q1. Side Entrance 中，池子的哪个不变量被打破了？写成一句话。
+Q2. Climber 的根因是"先执行，后检查"。它违反了 1.6 章的哪条原则？
+
+## 章节正文
+
+倚门而歌 · 2.9
+
+# 进阶 CTF：在模拟 DeFi 里当一次攻击者
+
+学习目标把 Damn Vulnerable DeFi 每一关映射到 DeFi 漏洞模式；了解路线图列出的其他 CTF 平台。
+
+前置章节2.1–2.8
+
+## 1. Damn Vulnerable DeFi（v4，Foundry 版）
+
+ |  | 关卡 | 考点
+
+ | Unstoppable | 余额严格相等检查 → 捐赠造成 DoS（ERC-4626 闪电贷金库）
+
+ | Naive Receiver | 闪电贷接收方不校验发起者；meta-transaction 中 _msgSender 伪造
+
+ | Truster | 闪电贷执行任意调用 → 让池子给自己 approve
+
+ | Side Entrance | 闪电贷回调中把借来的钱"存回"池子，记成自己的存款
+
+ | The Rewarder | Merkle 分发重复领取
+
+ | Selfie | 闪电贷借治理票 → 提案提取资金
+
+ | Compromised | 泄露的预言机私钥 → 操纵喂价
+
+ | Puppet / Puppet V2 / Puppet V3 | 用 Uniswap V1 / V2 现货 / V3 短窗口 TWAP 当预言机
+
+ | Free Rider | NFT 市场用 msg.value 支付多个 NFT；付款给"新 owner"
+
+ | Backdoor | Safe 钱包创建时的 setup 模块注入
+
+ | Climber | 时间锁"先执行后检查"→ 在执行中给自己授权
+
+ | Wallet Mining | CREATE2 地址预测、代理初始化、跨链部署
+
+ | ABI Smuggling | 手工构造 calldata 偏移绕过选择器权限检查
+
+ | Shards | 分数计算取整
+
+ | Curvy Puppet | Curve 只读重入 + 借贷清算
+
+ | Withdrawal | L2 → L1 提款证明与桥的操作员权限
+
+## 2. 其他平台
+
+ |  | 平台 | 特点
+
+ | Paradigm CTF | 年度高难度赛，题目覆盖 EVM 底层、DeFi、Solana；往届题目与官方题解公开
+
+ | Curta | 链上谜题，按解题速度排名；题目偏 EVM 与数学
+
+ | EtherHack（Positive）、SI Blockchain CTF（Security Innovation） | 经典入门到中级题
+
+ | QuillCTF、Cipher Shastra、unhackedctf | 中级题集，侧重 DeFi 与真实漏洞改编
+
+每完成一关，写一个 Foundry 测试作为题解，放进 GitHub 仓库。这个仓库就是你的作品集（见"求职"章）。
+
+## 3. 思考题
+
+- Side Entrance 中，池子的哪个不变量被打破了？写成一句话。
+
+- Climber 的根因是"先执行，后检查"。它违反了 1.6 章的哪条原则？
+

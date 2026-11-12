@@ -1,0 +1,425 @@
+# 章节：A3 测试网动手：Solana devnet 调用一个程序
+
+## 思考题（共 2 题，按顺序作答）
+Q1. 第 11 步的押金是你付的，但 ATA 归 Bob 所有。如果 Bob 以后把代币转光并关闭这个 ATA，押金会退给谁？用 spl-token close --help 查看 --recipient 参数，再想一想：空投项目方给 10 万个新地址发币，押金成本由谁承担，这笔钱最后流向哪里？
+Q2. 在 3.4 节，你的个人测试地址是 counter 程序的升级权限。假设这是一个主网 DeFi 程序，用户资金放在 owner 为该程序的账户里。持有升级权限的人能做什么？对比以太坊上"没有代理的合约"，用户应该在 Explorer 上检查哪两个字段？对照 04 章 3.8 节。
+
+## 章节正文
+
+# A3 测试网动手：Solana devnet 调用一个程序
+
+学习目标：做完本附录，你能——
+
+- 用 Solana CLI 在 devnet 上发行一个 SPL 代币，并亲眼看到 Mint 账户、代币账户（ATA）和租金押金。
+
+- 在 Solana Explorer 上分清两个"owner"：账户的所有者程序，和代币账户里记录的持有人。
+
+- （可选）用 Anchor 部署 counter 程序，查看升级权限（Upgrade Authority）。
+
+前置章节：04 合约生命周期（4.3 节）、05 非 EVM 模型（3.2 节）、06 代币标准（3.6 节）
+示例程序：examples/anchor/counter.rs ｜ 深潜对照：X07 Solana
+预计用时：45 分钟（不含可选部分）；可选部分另需 30–60 分钟 ｜ 花费：0 元（只用 devnet SOL）
+
+## 1. 你将完成什么
+
+一句话：在 devnet 上创建一种代币，给自己铸 1,000 个，转 10 个给一个"从没碰过这种代币"的新地址，然后在浏览器上找出这笔转账新建了哪个账户、押了多少 SOL。
+
+devnet：Solana 的开发测试网。SOL 可以免费空投，没有市场价值。程序（Program）对应以太坊的合约。
+
+完成后，你在 Solana Explorer（devnet） 上能看到：
+
+ | 
+
+ | 位置
+ | 你会看到
+
+ | Mint 账户页
+ | 供应量 1,000、Decimals 9、Mint Authority 为你的地址；账户 Owner 为 Token Program
+
+ | 你的代币账户（ATA）页
+ | 余额 990；Token 数据里的 Owner 是你的钱包地址
+
+ | 转账交易页
+ | 一条 "Create Associated Token Account" 指令 + 一条 "Transfer" 指令
+
+ | 收款方的 ATA 页
+ | 余额 10；账户里押着约 0.0015 SOL 的租金押金
+
+🎯 打个比方：Solana 的代币像银行里的"一币一折"存折。
+
+- Mint 账户 = 银行对这种币的总登记簿：发了多少，谁有权印新钞。
+
+- 代币账户（ATA）= 某个人这种币的专用存折。一个人十种币，就有十本存折。
+
+- 开存折要交工本押金 = 创建 ATA 要付租金押金，销户时退回。
+
+- 银行柜员 = Token Program。所有存折都由它记账，你的钱包私钥只能"签字授权"。
+
+比喻的局限：
+
+- 银行替你开户。Solana 上谁转账谁可以替收款人开存折，押金由开户人付，不一定是收款人。
+
+- 银行柜员是人。Token Program 是一段公共代码，所有代币共用，没人能为某个代币单独改它（Token-2022 扩展见 06 章）。
+
+[图]
+flowchart LR
+  W1["你的钱包<br/>owner = System Program"] -- "推导" --> A1["你的 ATA<br/>owner = Token Program<br/>持有人 = 你"]
+  W2["新地址 Bob<br/>0 SOL"] -- "推导" --> A2["Bob 的 ATA<br/>本次转账新建"]
+  M["Mint 账户<br/>owner = Token Program"]
+  A1 -- "所属 Mint" --> M
+  A2 -- "所属 Mint" --> M
+  A1 -- "transfer 10" --> A2
+  W1 -. "支付押金<br/>--fund-recipient" .-> A2
+
+[/图]
+
+读图要点：
+
+- 余额不在钱包地址里，在 ATA 里。转账的"从"和"到"都是 ATA，不是钱包地址。
+
+- Bob 的 ATA 原本不存在。--fund-recipient 让你替 Bob 创建它，押金从你的 SOL 里扣。
+
+- 会出错的地方：账户页有两个"Owner"。账户级 Owner 是"哪个程序能改它"；Token 数据里的 Owner 是"谁能花这些币"。
+
+## 2. 准备
+
+ | 
+
+ | 项目
+ | 要求
+ | 获取方式
+
+ | 操作系统
+ | macOS、Linux，或 Windows 的 WSL
+ | —
+
+ | Solana CLI
+ | Agave 客户端的 CLI（本附录在 solana-cli 3.1.13 / spl-token-cli 5.5.0 上核对命令）
+ | sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"（Solana 官方安装文档，截至 2026 年 10 月）
+
+ | spl-token
+ | 随 CLI 安装；如果没有，用 cargo install spl-token-cli
+ | 以官方文档为准
+
+ | 测试钱包
+ | 一个新建的、只用于 devnet 的密钥文件
+ | 第 3 步生成
+
+ | devnet SOL
+ | 2 SOL 足够做必做部分
+ | solana airdrop 或网页水龙头
+
+ | Anchor（可选）
+ | Anchor CLI，用 AVM 管理版本
+ | 见 3.4 节；以官方文档为准
+
+Agave：Anza 公司维护的 Solana 验证者客户端。官方 CLI 由它发布。安装后如果找不到 solana，把 $HOME/.local/share/solana/install/active_release/bin 加入 PATH。
+
+⚠️ 警告：只用新建的测试密钥。永远不要把 Phantom、Solflare 等主网钱包的助记词或私钥导入 CLI、Anchor 配置或任何脚本。Solana 的密钥文件是明文 JSON，任何能读这个文件的程序都能拿走你的资产。
+
+⚠️ 警告：密钥文件和 .env 必须加入 .gitignore。Anchor 项目的 target/deploy/*-keypair.json 是程序地址的私钥，同样不要提交到公开仓库。
+
+## 3. 步骤
+
+### 3.1 配置 CLI 与测试钱包
+
+- 
+确认版本。
+   bash
+   solana --version && spl-token --version
+   预期看到：solana-cli 3.x.x (… client:Agave) 和 spl-token-cli 5.x.x。
+
+- 
+把 CLI 指向 devnet。
+   bash
+   solana config set --url devnet
+   预期看到：RPC URL: https://api.devnet.solana.com。
+
+- 
+生成一个专用测试密钥。用独立文件名，避免覆盖已有的 id.json。
+   bash
+   solana-keygen new --outfile ~/.config/solana/devnet-lab.json
+   solana config set --keypair ~/.config/solana/devnet-lab.json
+   预期看到：pubkey: … 和一组 12 个词的助记词。如果目标文件已存在，命令会拒绝覆盖，除非你加 --force。不要加。
+
+- 
+领取 devnet SOL。
+   bash
+   solana airdrop 2
+   solana balance
+   预期看到：2 SOL。如果提示限流，改用网页水龙头 https://faucet.solana.com：选 devnet，粘贴地址。页面规定每 8 小时最多 2 次请求，登录 GitHub 可以提高额度（截至 2026 年 10 月，以页面为准）。
+
+- 
+再生成一个收款地址"Bob"，只取地址，不往里打 SOL。
+   bash
+   solana-keygen new --no-bip39-passphrase --outfile ~/devnet-bob.json
+   solana address -k ~/devnet-bob.json
+   预期看到：Bob 的公钥。记为 BOB。
+
+### 3.2 发行代币
+
+- 
+创建 Mint 账户。
+   bash
+   spl-token create-token
+   预期看到：Creating token <MINT地址> under program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA，Decimals: 9。记为 MINT。默认使用原版 Token Program；加 --program-2022 则使用 Token-2022。
+
+- 
+为自己创建代币账户（ATA）。
+   bash
+   spl-token create-account $MINT
+   预期看到：Creating account <ATA地址>。这个地址由"你的钱包地址 + MINT"推导，记为 MY_ATA。
+
+- 
+铸造 1,000 个代币到自己的 ATA。
+   bash
+   spl-token mint $MINT 1000
+   spl-token supply $MINT
+   预期看到：Minting 1000 tokens；供应量 1000。
+
+- 
+查看押金价格。
+   bash
+   solana rent 82    # Mint 账户 82 字节
+   solana rent 165   # 代币账户 165 字节
+   预期看到：笔者 2026-10-10 在 devnet 实测分别为 0.0010668 SOL 和 0.00148844 SOL。
+
+💡 注意：06 章 写的"代币账户押金约 0.002 SOL"是旧单价（每字节 6,960 lamports）下的数。公开资料称 SIMD-0437 正在分步下调单价（05 章 3.2.3 节）。上面的实测值对应每字节约 5,080 lamports：(165 + 128) × 5,080 = 1,488,440 lamports。以 solana rent 返回为准。
+
+### 3.3 转给一个新地址，观察 ATA 创建
+
+- 
+先不加参数试转一次。
+    bash
+    spl-token transfer $MINT 10 $BOB
+    预期看到：报错。大意是收款方的关联代币账户不存在，需要加 --fund-recipient。这一步故意失败，CLI 在本地就拦下，不上链。
+
+- 
+记下当前 SOL 余额（solana balance），然后替 Bob 开户并转账。
+    bash
+    spl-token transfer $MINT 10 $BOB --fund-recipient --allow-unfunded-recipient
+    预期看到：Recipient associated token account: <BOB_ATA>、Funding recipient: <BOB_ATA> 和一个交易签名。--allow-unfunded-recipient 的作用：Bob 的钱包地址没有 SOL，CLI 默认会拦下，以防转错地址。
+
+- 
+再看 SOL 余额。
+    预期看到：减少约 0.0015 SOL（Bob ATA 的押金）+ 0.000005 SOL（每签名 5,000 lamports 的基础费）。
+
+- 
+列出自己的代币账户，查看 Bob 的 ATA 详情。
+    bash
+    spl-token accounts
+    spl-token display <BOB_ATA>
+    solana account <BOB_ATA>
+    预期看到：你的余额 990；spl-token display 显示 Bob ATA 的 Mint、Owner（Bob 的钱包地址）和余额 10；solana account 显示 Owner: TokenkegQfeZ…、Length: 165 (0xa5) bytes、Balance 等于第 9 步的押金。
+
+### 3.4 可选：用 Anchor 部署 counter 程序
+
+本节命令以 Solana / Anchor 官方文档为准。笔者在 anchor-cli 0.32.1 上核对了 anchor init 和 anchor keys sync；anchor build 需要下载 Solana 平台工具链，本次未在本机完成，部署和测试也未实际执行。官方安装文档截至 2026 年 10 月以 Anchor 1.x 为例，命令写法相同。
+
+- 
+安装 Anchor（任选其一，以官方文档为准）：用 AVM 执行 avm install latest && avm use latest；或不装 AVM，直接 cargo install --git https://github.com/solana-foundation/anchor anchor-cli --locked（可加 --tag 指定版本）。
+    预期看到：anchor --version 输出版本号。
+
+- 
+新建项目，替换程序代码。
+    bash
+    anchor init counter && cd counter
+    cp <手册路径>/Contract/examples/anchor/counter.rs programs/counter/src/lib.rs
+    anchor keys sync
+    预期看到：All program id declarations are synced.。declare_id! 里的占位地址被换成 target/deploy/counter-keypair.json 对应的地址。
+
+- 
+编辑 Anchor.toml：把 [provider] 的 cluster 改成 "devnet"，wallet 改成 "~/.config/solana/devnet-lab.json"；把 [programs.localnet] 一节复制为 [programs.devnet]。
+
+- 
+编译并部署。
+    bash
+    anchor build
+    solana rent $(wc -c < target/deploy/counter.so)   # 估算程序押金
+    anchor deploy
+    预期看到：Program Id: <PROGRAM_ID> 和 Deploy success。程序押金按 .so 文件大小计算，通常是本附录最大的一笔 SOL 开支；不够时再空投。
+
+- 
+把 tests/counter.ts 改成下面的内容（import 行以 anchor init 生成的模板为准），然后运行 anchor test --skip-deploy。
+    ```typescript
+    import * as anchor from "@coral-xyz/anchor";
+    import { Program } from "@coral-xyz/anchor";
+    import { Counter } from "../target/types/counter";
+    import { assert } from "chai";
+
+describe("counter", () => {
+  const provider = anchor.AnchorProvider.env();
+  anchor.setProvider(provider);
+  const program = anchor.workspace.counter as Program;
+  const counter = anchor.web3.Keypair.generate(); // 新的 Counter 数据账户
+  const accs = { counter: counter.publicKey, authority: provider.wallet.publicKey };
+
+it("initialize then increment", async () => {
+    await program.methods.initialize().accountsPartial(accs).signers([counter]).rpc();
+    await program.methods.increment().accountsPartial(accs).rpc();
+    const data = await program.account.counter.fetch(counter.publicKey);
+    assert.equal(data.count.toNumber(), 1);
+  });
+});
+``
+预期看到：1 passing`。
+
+- 
+查看升级权限。
+    bash
+    solana program show <PROGRAM_ID>
+    预期看到：Owner: BPFLoaderUpgradeab1e11111111111111111111111、ProgramData Address、Authority: <你的测试地址>、Data Length 和 Balance。Authority 就是 04 章 4.3 节 讲的升级权限。
+
+- 
+（只读理解，不必执行）两条改变升级权限的命令：
+
+- solana program set-upgrade-authority <PROGRAM_ID> --new-upgrade-authority <新地址>：移交给多签等地址。
+
+- solana program set-upgrade-authority <PROGRAM_ID> --final：设为空，程序永久不可升级，不可撤销。
+
+- 
+练习结束后可以收回押金：solana program close <PROGRAM_ID> --bypass-warning。关闭后这个程序地址不能再部署。
+
+## 4. 验证：在 Solana Explorer（devnet）上核对
+
+打开 https://explorer.solana.com/address/<地址>?cluster=devnet。确认页面右上角的网络是 Devnet。
+
+ | 
+
+ | 检查项
+ | 打开哪个地址
+ | 应该看到什么
+
+ | Mint 账户
+ | MINT
+ | Supply 1,000；Decimals 9；Mint Authority 为你；账户 Owner 为 Token Program
+
+ | 你的 ATA
+ | MY_ATA
+ | Token Balance 990；Token 数据里的 Owner 为你的钱包地址；账户 Owner 为 Token Program
+
+ | Bob 的 ATA
+ | BOB_ATA
+ | Token Balance 10；Owner 为 Bob；SOL Balance 等于押金
+
+ | Bob 的钱包
+ | BOB
+ | SOL 余额 0；Tokens 标签里能看到 10 个代币（Explorer 通过推导 ATA 显示）
+
+ | 转账交易
+ | 第 11 步的签名
+ | 指令 1：Associated Token Program 创建账户；指令 2：Token Program Transfer（或 TransferChecked）；Fee 0.000005 SOL
+
+ | 余额变化
+ | 同一交易页的 Account Input(s)
+ | 你的 SOL 减少 = 押金 + 手续费；Bob ATA 的 SOL 从 0 变为押金
+
+ | （可选）程序
+ | PROGRAM_ID
+ | Executable: Yes；Upgradeable: Yes；Upgrade Authority 为你
+
+ | （可选）Counter 账户
+ | 测试日志或交易页中的 counter 地址
+ | 账户 Owner 为 PROGRAM_ID；Data 长度 48 字节（8 + 32 + 8）
+
+💡 注意：Counter 账户的 Owner 是你的程序，不是你的钱包。这正是 05 章 3.2.1 节 的规则：只有 owner 程序能改 data。你的私钥只负责签名。
+
+## 5. 常见错误排查表
+
+ | 
+
+ | 错误信息（节选）
+ | 原因
+ | 解决
+
+ | command not found: solana
+ | PATH 未包含安装目录
+ | 把 ~/.local/share/solana/install/active_release/bin 加入 PATH，重开终端
+
+ | airdrop request failed / 429 Too Many Requests
+ | devnet 空投限流
+ | 改用 faucet.solana.com；或换时间再试；每次少要一些，例如 solana airdrop 1
+
+ | Error: … Attempt to debit an account but found no record of a prior credit
+ | 当前密钥没有 SOL，或 CLI 仍指向别的网络
+ | solana config get 检查 URL 和密钥路径；先空投
+
+ | Error: Recipient's associated token account does not exist
+ | 收款方没有该代币的 ATA
+ | 加 --fund-recipient，由你付押金创建
+
+ | 提示收款地址没有 SOL、拒绝转账
+ | CLI 防误转检查
+ | 确认地址无误后加 --allow-unfunded-recipient
+
+ | Error: Account … not found
+ | 地址在别的网络上（例如 mainnet），或复制错了
+ | 检查 Explorer 右上角网络和 CLI 的 --url
+
+ | 余额显示 0.000000001 这类数字
+ | 混淆了最小单位和代币数量；Decimals 为 9
+ | spl-token 命令用代币数量，不用最小单位
+
+ | Refusing to overwrite … without --force
+ | 密钥文件已存在
+ | 换一个文件名，不要用 --force 覆盖已有密钥
+
+ | anchor build 报 declared program id does not match
+ | declare_id! 与 target/deploy 密钥不一致
+ | 运行 anchor keys sync 后重新编译
+
+ | anchor deploy 报余额不足
+ | 程序押金按 .so 大小计算，金额较大
+ | 多次空投；或用 solana rent 先估算
+
+ | anchor test 又部署了一次或连接本地
+ | 没有加 --skip-deploy，或 Anchor.toml 仍为 localnet
+ | 检查 [provider] cluster；加 --skip-deploy
+
+ | Error: Account … has insufficient funds for rent
+ | 新账户的 lamports 低于免租最低余额
+ | 让付款方多付押金；用 solana rent <字节数> 核对
+
+## 6. 这一步对应手册哪一章
+
+ | 
+
+ | 本附录步骤
+ | 对应章节
+ | 回看什么
+
+ | 3.2 Mint 与 ATA
+ | 06 章 3.6 节
+ | Mint 账户、代币账户、ATA；Token-2022 扩展
+
+ | 3.2 第 9 步 押金
+ | 05 章 3.2.3 节
+ | 租金豁免公式；SIMD-0437 下调单价
+
+ | 3.3 两个 owner
+ | 05 章 3.2.1 节
+ | 账户四字段：lamports、owner、data、executable
+
+ | 交易手续费
+ | 02 章 3.7 节
+ | 基础费每签名 5,000 lamports，一半销毁；优先费全部给验证者
+
+ | 3.4 counter 程序
+ | 05 章 3.2.5 节
+ | #[derive(Accounts)] 账户清单；has_one 检查
+
+ | 3.4 升级权限
+ | 04 章 4.3 节
+ | Solana 程序默认可升级；--final 后永久不可变
+
+ | 生态与费用市场
+ | X07 Solana
+ | SPL 生态、优先费与 Jito
+
+## 7. 思考题
+
+- 第 11 步的押金是你付的，但 ATA 归 Bob 所有。如果 Bob 以后把代币转光并关闭这个 ATA，押金会退给谁？用 spl-token close --help 查看 --recipient 参数，再想一想：空投项目方给 10 万个新地址发币，押金成本由谁承担，这笔钱最后流向哪里？
+
+- 在 3.4 节，你的个人测试地址是 counter 程序的升级权限。假设这是一个主网 DeFi 程序，用户资金放在 owner 为该程序的账户里。持有升级权限的人能做什么？对比以太坊上"没有代理的合约"，用户应该在 Explorer 上检查哪两个字段？对照 04 章 3.8 节。
+
+上一篇：A2 测试网动手：TRON Nile 转一笔 TRC-20 ｜ 下一篇：A4 项目尽调模板

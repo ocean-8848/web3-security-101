@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A08 事故分析与防御性验证</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .ana .card { font-size: 30px; display: flex; flex-direction: column; gap: 10px; min-height: 230px; }
+  .ana .card .a { color: var(--text-2); font-size: 27px; }
+  .rules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .rules .card { font-size: 29px; display: flex; flex-direction: column; gap: 12px; min-height: 300px; }
+  .rules .card .n { font-family: var(--mono); color: var(--gold); font-size: 52px; font-weight: 700; line-height: 1; }
+  .rules .card .d { color: var(--text-2); font-size: 26px; line-height: 1.5; }
+  .mx { display: grid; grid-template-columns: 260px 1fr 1fr; gap: 14px; font-size: 30px; }
+  .mx > div { background: var(--panel); border: 2px solid var(--line); border-radius: 12px; padding: 18px 22px; transition: opacity .35s; }
+  .mx .h { background: transparent; border: 0; color: var(--text-2); font-size: 26px; padding: 6px 10px; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="A08" data-title="事故分析与防御性验证">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 评估篇 · A08</div>
+    <h1>不需要会"发起攻击"，<br>需要会<span class="hl">读懂攻击、证明防御</span></h1>
+    <div class="grid2">
+      <div class="card info" data-k="1" data-nocur><b>读懂一起事故</b><div class="muted fs28">免费上一堂课 → 变成新的检查项</div></div>
+      <div class="card buy" data-k="2" data-nocur><b>证明一个修复有效</b><div class="muted fs28">给上线门禁加一条硬证据</div></div>
+    </div>
+    <div class="card warn fs28" data-k="3" data-nocur>本集边界：只分析已公开的事故、验证防御。不对未授权的合约做任何尝试。</div>
+    <ol class="say">
+      <li>大家好，欢迎来到评估篇第8集，事故分析与防御性验证。先说结论。评估人员不需要会发起攻击，需要会读懂攻击，以及证明防御。</li>
+      <li>读懂一起事故，等于免费上了一堂课。它最终要变成你评估清单上的一个新检查项。</li>
+      <li>证明一个修复有效，等于给上线门禁加了一条硬证据。</li>
+      <li>先说清本集的边界。我们只分析已经公开的事故，只验证防御。不在任何未授权的合约和主网上做尝试。评估工作需要的是证明问题存在并且修好了，通常不需要一个可运行的攻击程序。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="像消防员复盘火灾" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>消防员不放火，他们复盘火灾</h2>
+    <div class="ana">
+      <div class="card" data-k="0"><b>到现场看</b><div class="a">起火点、蔓延路径、哪道门没关</div><div class="hl">→ 读攻击交易，还原时间线</div></div>
+      <div class="card" data-k="1"><b>复盘后做两件事</b><div class="a">写进检查表 · 演练验证新措施</div><div class="hl">→ 新检查项 + 防御性测试</div></div>
+    </div>
+    <div class="card warn fs30" data-k="2">比喻不准的地方：火灾现场会被破坏；链上现场<b>永久公开、可逐笔回放</b>。所以更容易"事后诸葛"——要问的是<b>事前有什么信号</b>。</div>
+    <ol class="say">
+      <li>打个比方，这像消防员复盘火灾。他们不会为了学习去放火，而是到现场看起火点、蔓延路径，哪道防火门没关。</li>
+      <li>复盘之后做两件事。把起火点写进检查表，以后专门查同类隐患。再做演练，验证新措施有效。</li>
+      <li>比喻不准的地方在于，火灾现场会被破坏，链上现场却永久公开，可以逐笔回放。所以复盘比消防更精确，也更容易事后诸葛亮。你要问的不是当时为什么没想到，而是事前有什么信号。</li>
+    </ol>
+  </section>
+
+  <!-- 3 五步法 -->
+  <section class="scene" data-title="读一笔攻击交易：五步法" data-onstep="fiveStep">
+    <div class="kicker">方法 · 拿到一个交易哈希之后</div>
+    <h2>五步，从"发生了什么"到"我怎么提前发现"</h2>
+    <svg id="five" width="1640" height="560" viewBox="0 0 1640 560"></svg>
+    <ol class="say">
+      <li>拿到一个攻击交易的哈希，按五步读。第一步，定位。交易在哪个区块，发起人是谁，受害的是哪个合约。</li>
+      <li>第二步，看资金流。谁付出了，谁收到了，多少。发起地址的资金来源，常常是混币器或者刚创建的新地址。前两步只需要区块浏览器。</li>
+      <li>第三步，看调用树。哪个函数被调用，顺序和深度是什么。这一步需要交易追踪工具，或者浏览器自带的内部交易视图。看调用树，比看反编译代码快得多。</li>
+      <li>第四步是核心，找出不该发生的那一步。用一句话写出，协议原本假设了什么，这个假设在哪里不成立。</li>
+      <li>第五步，翻译成检查项。我的评估，怎样能提前发现它。没有这一步，复盘只是看热闹。</li>
+    </ol>
+  </section>
+
+  <!-- 4 调用树示例 -->
+  <section class="scene" data-title="示例：读一棵调用树" data-onstep="treeStep">
+    <div class="kicker">示例 · 简化自公开复盘的借贷事故 · 结构示意</div>
+    <h2>在调用树里找"不该发生的一步"</h2>
+    <div class="row">
+      <svg id="tree" width="1060" height="580" viewBox="0 0 1060 580"></svg>
+      <div class="col" id="treeSide"></div>
+    </div>
+    <ol class="say">
+      <li>来看一棵简化的调用树，结构来自一起公开复盘过的借贷事故。最外层是攻击合约的入口，它先借了一笔闪电贷。</li>
+      <li>接下来是一串对借贷协议的正常调用。存入、借出，每一步单独看都合法，余额和事件也都符合预期。</li>
+      <li>然后出现了这一步，调用捐赠函数，把一部分抵押品捐给储备金。注意它后面没有任何健康因子的检查。账户从这里开始资不抵债。</li>
+      <li>这就是不该发生的一步。写成一句话，协议假设所有减少抵押品的路径都会检查健康，而这个新函数打破了它。之后的清算和归还闪电贷，只是把这个缺口兑现成利润。</li>
+    </ol>
+  </section>
+
+  <!-- 5 复盘表 -->
+  <section class="scene" data-title="一张复盘表" data-onstep="rowStep">
+    <div class="kicker">复盘表 · 每起事故同一表头</div>
+    <h2>表头固定，才能横向比较</h2>
+    <table class="t sm">
+      <thead><tr><th style="width:230px">字段</th><th>示例：Euler Finance</th></tr></thead>
+      <tbody>
+        <tr><td>事故 · 日期 · 损失</td><td>2023-03 · 约 1.97 亿$</td></tr>
+        <tr><td>漏洞类别</td><td>缺少健康检查 · 第 10 章</td></tr>
+        <tr><td>被打破的假设</td><td>任何减少抵押品的路径最后都检查健康因子</td></tr>
+        <tr><td>事前信号</td><td class="hl">新增函数 · 该模块审计覆盖情况</td></tr>
+        <tr><td>对应检查项</td><td>A04 借贷清单第 3 项</td></tr>
+        <tr><td>对应不变量</td><td>任何操作后，账户健康因子 ≥ 1</td></tr>
+        <tr><td>修复</td><td>补上检查</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>每起事故用同一张表记录。表头固定，才能把不同事故横向比较。以刚才那起为例。事故是 Euler Finance，2023年3月，损失约1.97亿美元。漏洞类别是缺少健康检查。</li>
+      <li>被打破的假设，任何减少抵押品的路径最后都检查健康因子。事前信号，这是一个新增的函数。</li>
+      <li>对应的检查项，是第4集借贷清单的第三项。对应的不变量，任何操作之后，账户健康因子不小于1。</li>
+      <li>事前信号这一栏最难填，也最有价值。很多事故的信号其实早就公开了，比如未审计的新代码，单签权限，过短的时间锁，被忽视的审计发现。修复一栏反而最简单。</li>
+    </ol>
+  </section>
+
+  <!-- 6 事故 → 不变量 -->
+  <section class="scene" data-title="从事故到不变量" data-onstep="rowStep">
+    <div class="kicker">不变量 · 任何操作序列后都必须成立</div>
+    <h2>几乎每起事故，都是一条被打破的不变量</h2>
+    <table class="t sm">
+      <thead><tr><th>事故类型</th><th>被打破的不变量（业务语言）</th></tr></thead>
+      <tbody>
+        <tr><td>重入</td><td>外部调用返回时，账本余额与实际余额一致</td></tr>
+        <tr><td>金库通胀</td><td>每份价值不会因一笔捐赠而大幅跳变</td></tr>
+        <tr><td>借贷坏账</td><td>任何操作后，健康因子不低于清算线</td></tr>
+        <tr><td>预言机操纵</td><td>同一区块内价格偏离参考价不超过阈值</td></tr>
+        <tr><td>桥伪造</td><td>目标链铸造总量 ≤ 源链锁定总量</td></tr>
+        <tr><td>权限</td><td>只有授权角色能改权限和升级实现</td></tr>
+        <tr><td>AMM</td><td>每次交换后恒定乘积不减</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>不变量，是任何操作序列之后都必须成立的条件。几乎每一起事故，都能翻译成一条被打破的不变量。重入，打破的是外部调用返回时，账本余额和实际余额一致。金库通胀，打破的是每份价值不会因一笔捐赠而大幅跳变。</li>
+      <li>借贷坏账，健康因子不低于清算线。预言机操纵，同一区块内价格偏离参考价不超过某个阈值。</li>
+      <li>跨链桥伪造，目标链铸造的总量，不超过源链锁定的总量。这条特别好，它和代码怎么写无关，只和账能不能对上有关。</li>
+      <li>权限类，只有授权的角色能修改权限和升级实现。AMM，每次交换后恒定乘积不减。第1集的 Uranium，正是这一条。</li>
+    </ol>
+  </section>
+
+  <!-- 7 三条规则 -->
+  <section class="scene" data-title="写不变量的三条规则" data-onstep="marks">
+    <div class="kicker">写不变量</div>
+    <h2>先用业务语言写一句话</h2>
+    <div class="rules">
+      <div class="card" data-k="0"><span class="n">1</span><b>先业务语言，再代码断言</b><div class="d">写不出一句话，说明还没理解协议</div></div>
+      <div class="card" data-k="1"><span class="n">2</span><b>覆盖所有入口函数</b><div class="d">不只是你担心的那一个 · Euler 的问题就在"另一个"函数</div></div>
+      <div class="card" data-k="2"><span class="n">3</span><b>不依赖实现细节</b><div class="d">描述"什么必须永远为真"，不是"这行怎么写"</div></div>
+    </div>
+    <ol class="say">
+      <li>写不变量有三条规则。第一，先用业务语言写一句话，再翻译成代码断言。如果你写不出这一句话，说明你还没理解这个协议。</li>
+      <li>第二，不变量要覆盖所有入口函数，而不是只覆盖你担心的那一个。Euler 的问题，恰恰出在另一个函数上。</li>
+      <li>第三，好的不变量不依赖实现细节。它描述的是什么必须永远为真，而不是这一行代码应该怎么写。这样，代码重构了，不变量依然有效。</li>
+    </ol>
+  </section>
+
+  <!-- 8 模糊测试 -->
+  <section class="scene" data-title="让模糊测试器去找序列" data-onstep="fuzzStep">
+    <div class="kicker">不变量测试 · 示意</div>
+    <h2>你负责把性质写对，工具负责乱调用</h2>
+    <svg id="fz" width="1640" height="560" viewBox="0 0 1640 560"></svg>
+    <ol class="say">
+      <li>写好不变量之后，交给模糊测试器。它会随机地组合调用各个入口函数，随机的参数，随机的顺序。</li>
+      <li>每一次调用之后，它都检查一遍你写的不变量。成千上万条序列跑下去，大部分都是绿的。</li>
+      <li>某一条序列里，不变量突然不成立了。工具会把这条序列保存下来，并且自动缩短，找出最短的那几步。这几步，就是一条需要你分析的发现。</li>
+      <li>注意分工。你的工作是把性质写对，而不是手工构造攻击步骤。这正是防御性验证和写攻击程序的区别。</li>
+    </ol>
+  </section>
+
+  <!-- 9 验证修复 -->
+  <section class="scene" data-title="验证修复的六步" data-onstep="marks">
+    <div class="kicker">验证修复 · 最小流程</div>
+    <h2>"已修复"需要证据</h2>
+    <div class="steps c3">
+      <div class="card" data-k="0"><span class="n">1</span><b>读补丁差异</b><div class="d">只改了必要部分？顺手改了别的？</div></div>
+      <div class="card" data-k="0"><span class="n">2</span><b>跑原有测试</b><div class="d">没有回归</div></div>
+      <div class="card gold" data-k="1"><span class="n">3</span><b>补一条回归测试</b><div class="d">修复前失败、修复后通过</div></div>
+      <div class="card" data-k="2"><span class="n">4</span><b>不变量持续运行</b><div class="d">覆盖修复周围的路径</div></div>
+      <div class="card" data-k="2"><span class="n">5</span><b>分叉环境核对配置</b><div class="d">已部署合约的权限、参数、实现地址</div></div>
+      <div class="card" data-k="3"><span class="n">6</span><b>复审入档</b><div class="d">报告里标明验证方式</div></div>
+    </div>
+    <ol class="say">
+      <li>项目方说已修复，你需要证据。最小流程有六步。第一，读修复补丁，只看相对审计版本的差异。补丁是否只改了必要的部分，有没有顺手改了别的。第二，跑原有测试，确认没有回归。</li>
+      <li>第三，补一条针对这个发现的回归测试，用断言表达这个性质现在成立。这条测试应该在修复前失败，修复后通过。下一页专门讲为什么。</li>
+      <li>第四，让不变量和模糊测试跑足够久，覆盖修复周围的路径。第五，对已经部署的合约，在主网分叉环境里读取权限、参数和实现地址，确认和预期一致。</li>
+      <li>第六，复审结论入档，写进报告的修复状态一栏，并标明是用什么方式验证的。</li>
+    </ol>
+  </section>
+
+  <!-- 10 修复前失败 -->
+  <section class="scene" data-title="修复前失败，修复后通过" data-onstep="mxStep">
+    <div class="kicker">关键 · 回归测试的标准</div>
+    <h2>只"修复后通过"的测试，可能什么都没测到</h2>
+    <div class="mx">
+      <div class="h"></div><div class="h">修复前的代码</div><div class="h">修复后的代码</div>
+      <div class="h" style="font-size:30px;color:var(--text)">测试 A</div><div id="a0"></div><div id="a1"></div>
+      <div class="h" style="font-size:30px;color:var(--text)">测试 B</div><div id="b0"></div><div id="b1"></div>
+    </div>
+    <div class="card fs30" id="mxNote"></div>
+    <ol class="say">
+      <li>为什么强调修复前失败、修复后通过？看两条测试。</li>
+      <li>测试 A，在修复后的代码上跑，通过了。项目方说，你看，测试是绿的。</li>
+      <li>但把测试 A 拿到修复前的代码上跑，它也通过了。这说明什么？说明它根本没有触及那个问题。它是绿的，和修复无关。</li>
+      <li>测试 B，在修复前的代码上失败，在修复后的代码上通过。只有这样，才能证明测试确实捕捉到了这个问题，而修复确实解决了它。</li>
+      <li>最后提醒一个局限。测试只能证明你想到的性质成立。它不能证明不存在其他问题。所以复审不是测试全绿就结束。</li>
+    </ol>
+  </section>
+
+  <!-- 11 验证等级 -->
+  <section class="scene" data-title="报告里怎么写已验证" data-onstep="rowStep">
+    <div class="kicker">验证等级</div>
+    <h2>不同风险，需要不同强度的证据</h2>
+    <table class="t sm">
+      <thead><tr><th>验证等级</th><th>含义</th><th>用在哪</th></tr></thead>
+      <tbody>
+        <tr><td>已读代码</td><td>人工审查，认为已修复</td><td>低风险发现</td></tr>
+        <tr><td>已回归测试</td><td>修复前失败、修复后通过</td><td>中、高风险</td></tr>
+        <tr><td>已不变量验证</td><td>对应性质被持续测试覆盖</td><td>高危、严重</td></tr>
+        <tr><td>已分叉验证</td><td>已部署合约在分叉环境确认</td><td>上线门禁</td></tr>
+        <tr><td class="bad">未验证</td><td>只有项目方声明</td><td class="bad">门禁中视为未关闭</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>报告里写已修复时，要写清验证到什么程度。最弱的是已读代码，人工看过，认为修好了，用于低风险发现。</li>
+      <li>中高风险至少要已回归测试，有一条修复前失败、修复后通过的测试。高危和严重的发现，要已不变量验证，对应的性质被持续的测试覆盖。</li>
+      <li>上线门禁，还要已分叉验证，在分叉环境里确认已部署合约的配置和行为。</li>
+      <li>最后一种是未验证，只有项目方一句口头声明。它必须在报告里明确标注，并且在门禁里视为没有关闭。</li>
+    </ol>
+  </section>
+
+  <!-- 12 合法练习 -->
+  <section class="scene" data-title="合法的练习路径" data-onstep="marks">
+    <div class="kicker">练手 · 只用专门设计的靶场</div>
+    <h2>在靶场练，不拿真实协议开刀</h2>
+    <div class="grid3">
+      <div class="card" data-k="0"><b>Ethernaut</b><div class="muted fs26">入门 · 带漏洞的小关卡 · 测试网</div></div>
+      <div class="card" data-k="0"><b>Damn Vulnerable DeFi</b><div class="muted fs26">进阶 · 借贷、治理、闪电贷场景</div></div>
+      <div class="card" data-k="0"><b>审计竞赛公开报告</b><div class="muted fs26">学别人怎样描述和定级</div></div>
+      <div class="card" data-k="1"><b>官方事后报告</b><div class="muted fs26">项目方或安全公司的复盘</div></div>
+      <div class="card" data-k="1"><b>本手册交互实验</b><div class="muted fs26">浏览器内模拟，不碰真实合约</div></div>
+      <div class="card warn" data-k="2"><b>三条规则</b><div class="fs26">只在靶场、本地或测试网<br>不"测试"未授权的主网合约<br>发现真实漏洞 → 走披露流程</div></div>
+    </div>
+    <ol class="say">
+      <li>想提高读代码、识别漏洞的熟练度，用专门设计的靶场。入门可以用 Ethernaut，一系列带漏洞的小关卡。进阶可以用 Damn Vulnerable DeFi，覆盖借贷、治理和闪电贷场景。还可以读审计竞赛的公开报告，学别人怎样描述问题、怎样定级。</li>
+      <li>已修复事故的官方事后报告，是最好的教材。手册里的七个交互实验，也都在浏览器里模拟，不涉及真实合约。</li>
+      <li>练习有三条规则。只在靶场、本地环境或测试网里练。不对未授权的主网合约做任何测试，即使你认为是善意的，也可能触犯法律。发现真实漏洞，通过项目的赏金计划或安全联系渠道报告，不要自行利用。</li>
+    </ol>
+  </section>
+
+  <!-- 13 事前信号练习 -->
+  <section class="scene" data-title="练一练：事前信号" data-onstep="rowStep">
+    <div class="kicker">练一练 · 不看结果，只看事前信息</div>
+    <h2>如果是你做评估，会怎么判？</h2>
+    <table class="t sm">
+      <thead><tr><th>案例</th><th>事前可见的信息</th><th>你的评估结论</th></tr></thead>
+      <tbody>
+        <tr><td>Nomad 桥 · 2022</td><td>一次升级把某个初始化值设成了零值</td><td>初始化参数评审：零值会不会被当作"已证明"</td></tr>
+        <tr><td>Ronin · 2022</td><td>9 选 5，多把由同一机构控制；临时授权未撤销</td><td>签名人独立性不足</td></tr>
+        <tr><td>Bybit · 2025</td><td>Safe 多签，签名人依赖网页界面展示交易</td><td>签名流程：独立解码、带外确认</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>最后练一练事前信号。规则是不看结果，只看事前能看到的信息。第一个，Nomad 桥，2022年。一次升级里，把某个初始化值设成了零值。你的评估结论应该是，初始化参数要评审，特别是零值会不会被当作已经证明。</li>
+      <li>第二个，Ronin，9选5，多把钥匙由同一机构控制，一份临时授权没有撤销。结论是签名人独立性不足。</li>
+      <li>第三个，Bybit，Safe 多签，签名人依赖网页界面来展示交易内容。结论是签名流程缺少独立解码和带外确认。用手册的事故浏览器按类别筛选，对比同类事故的事前信号，比记住单个案例更有用。</li>
+    </ol>
+  </section>
+
+  <!-- 14 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">五步读交易，核心是找出<span class="hl">被打破的假设</span>，并写回检查项。</li>
+      <li data-step="1">把事故翻译成<span class="hl">不变量</span>；你写性质，工具找序列。</li>
+      <li data-step="2">修复的证据是<span class="hl">修复前失败、修复后通过</span>；未验证即未关闭。</li>
+    </ul>
+    <h2 data-show="3">下一集：A09 应急响应</h2>
+    <div class="path" data-show="3">
+      <div class="card sell"><div class="n">停</div><b>先止血</b><div class="d">暂停能力、权限分离、限额</div></div>
+      <div class="card gold"><div class="n">?</div><b>决策树</b><div class="d">暂停、冻结、谈判由谁决定</div></div>
+      <div class="card info"><div class="n">演</div><b>桌面推演</b><div class="d">平时演练，事故中才有肌肉记忆</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，用五步读懂一笔攻击交易，核心是找出被打破的假设，并写回你的检查项。</li>
+      <li>第二，把事故翻译成不变量。你负责把性质写对，工具负责寻找违反它的序列。</li>
+      <li>第三，修复的证据是修复前失败、修复后通过的测试。未验证的修复，在门禁里视为没有关闭。</li>
+      <li>下一集是评估篇的应急响应。评估之后真出事了怎么办。上线前要备好的暂停能力和限额，事故中的决策树，以及平时的桌面推演。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line, circle } = K;
+
+  function fiveStep(el, st) {
+    const svg = el.querySelector('#five'); svg.innerHTML = '';
+    const S = [['① 定位', ['区块 · 发起人', '受害合约']], ['② 资金流', ['谁付出 · 谁收到', '资金来源']], ['③ 调用树', ['函数 · 顺序 · 深度', '追踪工具']], ['④ 找那一步', ['被打破的假设', '一句话写出']], ['⑤ 翻译', ['我怎样提前发现', '→ 检查项']]];
+    S.forEach(([h, d], i) => {
+      const x = 10 + i * 328, op = st >= i ? 1 : .15, cur = st === i, core = i === 3;
+      rect(svg, x, 80, 290, 300, { fill: cur ? C.curFill : C.panel, stroke: cur ? C.gold : (core ? C.sell : C.info), sw: cur ? 5 : 3, op });
+      T(svg, x + 145, 140, h, core ? C.sell : C.gold, 36, 'middle', true, op);
+      d.forEach((s, j) => T(svg, x + 145, 220 + j * 52, s, j ? C.t2 : C.text, j ? 26 : 29, 'middle', false, op));
+      if (i < 4) arrow(svg, x + 292, 230, x + 324, 230, C.t2, false, 3, st > i ? 1 : .15);
+    });
+    if (st >= 1) { line(svg, 10, 430, 620, 430, C.info, 4, false, st >= 1 ? 1 : .2); T(svg, 315, 465, '区块浏览器就够', C.info, 28, 'middle', true); }
+    if (st >= 2) { line(svg, 666, 430, 950, 430, C.warn, 4); T(svg, 808, 465, '交易追踪工具', C.warn, 28, 'middle', true); }
+    if (st >= 4) { rect(svg, 994, 410, 620, 100, { fill: C.goodFill, stroke: C.buy, sw: 3 }); T(svg, 1304, 460, '没有第 ⑤ 步，复盘只是看热闹', C.buy, 30, 'middle', true); }
+  }
+
+  function treeStep(el, st) {
+    const svg = el.querySelector('#tree'); svg.innerHTML = '';
+    const N = [
+      [0, '外部入口', C.info, 0], [1, '借入闪电贷', C.info, 0],
+      [2, '借贷协议 · 存入', C.text, 1], [2, '借贷协议 · 借出', C.text, 1], [2, '借贷协议 · 再存入 / 再借出', C.text, 1],
+      [2, '捐赠抵押品给储备金', C.sell, 2], [3, '（没有健康检查）', C.sell, 2],
+      [2, '清算 · 获得折价抵押品', C.warn, 3], [1, '归还闪电贷', C.info, 3],
+    ];
+    N.forEach(([d, t, c, k], i) => {
+      const y = 30 + i * 60, x = 30 + d * 70, op = st >= k ? 1 : .12;
+      if (d > 0) { line(svg, x - 40, y - 30, x - 40, y + 2, C.line, 3, false, op); line(svg, x - 40, y + 2, x - 8, y + 2, C.line, 3, false, op); }
+      const hot = (st >= 2 && c === C.sell);
+      rect(svg, x, y - 22, 560 - d * 30, 48, { fill: hot ? C.badFill : C.panel, stroke: hot ? C.sell : C.line, sw: hot ? 4 : 2, op });
+      T(svg, x + 18, y + 2, t, c, 27, 'start', hot, op);
+    });
+    if (st >= 3) { arrow(svg, 900, 330, 640, 340, C.gold, false, 5); T(svg, 900, 300, '被打破的假设', C.gold, 28, 'middle', true); }
+    const side = el.querySelector('#treeSide');
+    side.innerHTML = [
+      '<div class="card info fs28">最外层：入口 + 闪电贷<br><span class="muted">本金不是门槛</span></div>',
+      '<div class="card fs28">一串正常调用<br><span class="muted">单独看每一步都合法</span></div>',
+      '<div class="card sell fs28">减少抵押品<br>→ <b>没有健康检查</b><br>账户从这里资不抵债</div>',
+      '<div class="card gold fs28">一句话：<br>"所有减少抵押品的路径都检查健康"<br><b>被这个新函数打破</b></div><div class="card fs26 muted">之后的清算与归还，只是把缺口兑现成利润</div>'][st];
+  }
+
+  function fuzzStep(el, st) {
+    const svg = el.querySelector('#fz'); svg.innerHTML = '';
+    const fns = ['deposit', 'withdraw', 'borrow', 'repay', 'donate', 'liquidate'];
+    let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+    const rows = st === 0 ? 1 : 6;
+    for (let r = 0; r < rows; r++) {
+      const y = 44 + r * 72;
+      T(svg, 20, y, '序列 ' + (r + 1), C.t2, 24, 'start');
+      for (let c = 0; c < 6; c++) {
+        const f = fns[Math.floor(rnd() * fns.length)], x = 150 + c * 210;
+        const bad = st >= 2 && r === 4 && c === 3;
+        rect(svg, x, y - 24, 150, 46, { fill: bad ? C.badFill : C.panel, stroke: bad ? C.sell : C.line, sw: 2 });
+        T(svg, x + 75, y, f, bad ? C.sell : C.text, 24);
+        if (st >= 1) {
+          const ok = !(st >= 2 && r === 4 && c === 3);
+          T(svg, x + 172, y, ok ? '✓' : '✗', ok ? C.buy : C.sell, 30, 'middle', true, (st >= 2 && r === 4 && c > 3) ? 0 : 1);
+        }
+        if (st >= 2 && r === 4 && c > 3) { rect(svg, x, y - 24, 150, 46, { fill: '#0d0e10', op: .7 }); }
+      }
+    }
+    if (st >= 2) {
+      rect(svg, 140, 474, 900, 64, { fill: C.badFill, stroke: C.sell, sw: 3 });
+      T(svg, 590, 506, '不变量不成立 → 保存序列 → 自动缩短到最短几步', C.sell, 28, 'middle', true);
+    }
+    if (st >= 3) {
+      rect(svg, 1076, 456, 544, 100, { fill: C.curFill, stroke: C.gold, sw: 3 });
+      T(svg, 1348, 488, '你：把性质写对', C.gold, 30, 'middle', true);
+      T(svg, 1348, 528, '工具：寻找违反它的序列', C.text, 28);
+    }
+  }
+
+  function mxStep(el, st) {
+    const cell = (id, txt, cls, on) => { const n = el.querySelector('#' + id); n.innerHTML = txt; n.style.borderColor = cls === 'ok' ? 'var(--buy)' : cls === 'bad' ? 'var(--sell)' : 'var(--line)'; n.style.background = cls === 'ok' ? 'var(--buy-soft)' : cls === 'bad' ? 'var(--sell-soft)' : 'var(--panel)'; n.style.opacity = on ? 1 : .15; };
+    cell('a1', '✓ 通过', 'ok', st >= 1);
+    cell('a0', '✓ 通过 <span class="muted fs26">← 也是绿的</span>', 'warn', st >= 2);
+    cell('b0', '✗ 失败', 'bad', st >= 3);
+    cell('b1', '✓ 通过', 'ok', st >= 3);
+    const note = el.querySelector('#mxNote');
+    note.className = 'card fs30 ' + (st === 2 ? 'sell' : st === 3 ? 'buy' : st === 4 ? 'warn' : '');
+    note.innerHTML = ['两条测试，各在两份代码上跑一次。', '测试 A 在修复后通过 —— 看起来不错。', '测试 A 在修复前也通过 → <b>它根本没触及问题</b>', '测试 B：修复前失败、修复后通过 → <b>证明问题存在、修复有效</b>', '局限：测试只证明你想到的性质；复审不是"测试全绿就结束"。'][st];
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+
+# counter.rs
+⚠️ 警告：教学示例，未经审计，不可用于生产。路径：examples/anchor/counter.rs
+
+// ============================================================
+// counter.rs —— 最小 Anchor 计数器程序（Solana）
+// 用途：配合《Web3 合约与项目学习手册》05 章，演示"程序与账户分离"。
+// 状态：阅读示例，未部署，未经审计。不可用于生产。
+// 写法：Anchor 0.30+ / 1.0（lib.rs 风格，单文件）。
+// ============================================================
+use anchor_lang::prelude::*;
+
+// 程序地址占位符（示例值）。真实项目由 `anchor keys sync` 写入。
+declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+
+// 关键点 1：程序（Program）本身不存数据。
+// 下面的函数只读写"调用者传进来的账户"，函数之间不共享任何全局变量。
+#[program]
+pub mod counter {
+    use super::*;
+
+    // 创建一个新的 Counter 数据账户，并记录谁有权加一。
+    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
+        let counter = &mut ctx.accounts.counter;
+        counter.authority = ctx.accounts.authority.key();
+        counter.count = 0;
+        Ok(())
+    }
+
+    // 计数加一。只有 authority 签名才能成功。
+    pub fn increment(ctx: Context<Increment>) -> Result<()> {
+        let counter = &mut ctx.accounts.counter;
+        counter.count = counter.count.checked_add(1).ok_or(CounterError::Overflow)?;
+        Ok(())
+    }
+}
+
+// 关键点 2：账户必须在交易里预先声明。
+// 下面的结构体就是"这条指令要用到哪些账户、哪些可写、谁要签名"的清单。
+// 运行时据此判断两笔交易是否冲突，不冲突的交易可以并行执行（Sealevel）。
+#[derive(Accounts)]
+pub struct Initialize<'info> {
+    // init：由 System Program 创建账户；payer 付租金押金；space 决定数据大小。
+    // 8 字节是 Anchor 的账户鉴别符（discriminator）。
+    #[account(init, payer = authority, space = 8 + Counter::INIT_SPACE)]
+    pub counter: Account<'info, Counter>,
+    // mut：authority 的 lamports 会减少（付押金），所以要可写。
+    #[account(mut)]
+    pub authority: Signer<'info>,
+    // 创建账户必须调用系统程序，所以它也要出现在清单里。
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct Increment<'info> {
+    // mut：要写 count；has_one：检查 counter.authority == authority.key()。
+    #[account(mut, has_one = authority)]
+    pub counter: Account<'info, Counter>,
+    // Signer：authority 必须对这笔交易签名。
+    pub authority: Signer<'info>,
+}
+
+// 关键点 3：数据住在 Counter 账户里，账户的 owner 是本程序。
+// 只有 owner 程序可以修改 data 字段。
+#[account]
+#[derive(InitSpace)]
+pub struct Counter {
+    pub authority: Pubkey, // 32 字节
+    pub count: u64,        // 8 字节
+}
+
+#[error_code]
+pub enum CounterError {
+    #[msg("计数溢出")]
+    Overflow,
+}
+

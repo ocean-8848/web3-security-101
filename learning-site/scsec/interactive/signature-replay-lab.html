@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>签名与重放实验</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .fields { display: flex; flex-direction: column; gap: 6px; }
+  .fld { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; cursor: pointer; }
+  .fld input { margin-top: 4px; accent-color: var(--accent); }
+  .fld code { font-size: 12px; }
+  .msg { font-family: var(--mono); font-size: 12px; background: var(--surface-2); border-radius: 8px; padding: 10px; white-space: pre-wrap; word-break: break-all; }
+  .att { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--border); }
+  .att:last-child { border-bottom: 0; }
+  .att .why { font-size: 12.5px; color: var(--text-2); }
+  .res { font-weight: 700; font-size: 13px; padding: 2px 10px; border-radius: 999px; white-space: nowrap; }
+  .res.pass { background: var(--sell-soft); color: var(--sell); }
+  .res.block { background: var(--buy-soft); color: var(--buy); }
+  .res.ok { background: var(--info-soft); color: var(--info); }
+  .score { font-size: 15px; font-weight: 650; margin: 8px 0 0; }
+  .toggle { display: flex; gap: 8px; align-items: center; font-size: 14px; margin: 6px 0; cursor: pointer; }
+  .toggle input { accent-color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="back" href="index.html">← 交互实验目录</a>
+    <h1>签名与重放实验</h1>
+  </header>
+  <p class="lead">管理员链下签发一张"向 Alice 发放 100 USDT"的领取凭证。签名里绑定了哪些字段，决定了攻击者能把它重放几次、重放到哪里。配套章节：<a href="../08-mev-signatures.md">08 MEV 与签名安全</a>、<a href="../11-cross-chain-bridges.md">11 跨链桥</a>、<a href="../chains/C02-tron.md">C02 TRON</a> ｜ 示例合约：<a href="../examples/06-SignatureReplay.sol">06-SignatureReplay.sol</a>。</p>
+
+  <div class="card">
+    <h3>怎么玩</h3>
+    <ol class="small">
+      <li>在左侧勾选签名要绑定的字段，选择部署的链。</li>
+      <li>点"签名并首次领取"。然后点"尝试全部重放"。</li>
+      <li>红色"重放成功"表示资金被重复领取。逐个勾上字段，直到全部变绿。</li>
+    </ol>
+    <p class="small muted">本页的"签名"用 FNV-1a 哈希模拟，只演示"签名覆盖了哪些字段"。它不是真实的 ECDSA。</p>
+  </div>
+
+  <h2>1. 签名者</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <label for="chain">部署的链</label>
+      <select id="chain">
+        <option value="eth">以太坊（chainId 1）</option>
+        <option value="bsc">BNB Chain（chainId 56）</option>
+        <option value="tron">TRON 主网（chainId 728126428）</option>
+        <option value="mantle">Mantle（chainId 5000）</option>
+      </select>
+      <label>签名绑定的字段</label>
+      <div class="fields" id="fields">
+        <label class="fld"><input type="checkbox" checked disabled> <span><code>to</code>、<code>amount</code>（基本内容，总是包含）</span></label>
+        <label class="fld"><input type="checkbox" data-f="nonce"> <span><code>nonce</code>：每个用户的递增计数器</span></label>
+        <label class="fld"><input type="checkbox" data-f="chainId"> <span><code>chainId</code>：链 ID（EIP-712 域）</span></label>
+        <label class="fld"><input type="checkbox" data-f="contract"> <span><code>verifyingContract</code>：合约地址（EIP-712 域）</span></label>
+        <label class="fld"><input type="checkbox" data-f="deadline"> <span><code>deadline</code>：过期时间</span></label>
+        <label class="fld"><input type="checkbox" data-f="typehash"> <span><code>typehash</code>：函数意图 <code>Claim(...)</code></span></label>
+      </div>
+      <div class="btn-row">
+        <button id="allOn">一键全部勾选（EIP-712 完整版）</button>
+        <button id="allOff">全部取消</button>
+      </div>
+    </div>
+    <div class="card">
+      <label>被签名的消息</label>
+      <div class="msg" id="msg"></div>
+      <label>模拟签名</label>
+      <div class="msg" id="sig"></div>
+      <div class="btn-row">
+        <button class="primary" id="signBtn">签名并首次领取</button>
+        <button class="sell" id="replayBtn" disabled>尝试全部重放</button>
+      </div>
+    </div>
+  </div>
+
+  <h2>2. 攻击者的五种重放</h2>
+  <div class="card">
+    <div id="attempts"><p class="small muted">先签名并首次领取。</p></div>
+    <div class="score" id="score"></div>
+  </div>
+
+  <h2>3. 两个经典陷阱</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <h3>签名可塑性</h3>
+      <p class="small">对同一消息，ECDSA 签名 (r, s) 和 (r, n − s) 都有效。攻击者不需要私钥，就能把一个已用过的签名"翻转"成另一个有效签名。</p>
+      <label class="toggle"><input type="radio" name="mark" value="sig" checked> 已使用标记 = 签名字节的哈希</label>
+      <label class="toggle"><input type="radio" name="mark" value="nonce"> 已使用标记 = nonce（或消息哈希）</label>
+      <label class="toggle"><input type="checkbox" id="lowS"> 验证时拒绝高 s 值（OpenZeppelin ECDSA）</label>
+      <div class="btn-row"><button id="malBtn">提交翻转后的签名 (r, n − s)</button></div>
+      <div class="callout" id="malOut">点击按钮查看结果。</div>
+    </div>
+    <div class="card">
+      <h3>ecrecover 返回零地址</h3>
+      <p class="small">签名无效时，<code>ecrecover</code> 不回滚，而是返回 <code>address(0)</code>。</p>
+      <label class="toggle"><input type="checkbox" id="signerSet" checked> 构造函数设置了 signer（非零）</label>
+      <label class="toggle"><input type="checkbox" id="zeroCheck"> 验证时检查 <code>recovered != address(0)</code></label>
+      <div class="btn-row"><button id="zeroBtn">提交一个随机垃圾签名</button></div>
+      <div class="callout" id="zeroOut">点击按钮查看结果。</div>
+    </div>
+  </div>
+
+  <footer class="note">本页仅用于学习安全原理，所有数值为示例；不要在未授权的合约上做任何测试。</footer>
+</div>
+
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const CH = {
+    eth: { id: 1, name: '以太坊', addr: '0x5AFE000000000000000000000000000000C1A1A1' },
+    bsc: { id: 56, name: 'BNB Chain', addr: '0x5AFE000000000000000000000000000000C1A1A1' },
+    tron: { id: 728126428, name: 'TRON', addr: '41 5AFE000000000000000000000000000000C1A1A1（Base58 以 T 开头）' },
+    mantle: { id: 5000, name: 'Mantle', addr: '0x5AFE000000000000000000000000000000C1A1A1' }
+  };
+  const fnv = s => { let h = 0xcbf29ce484222325n; for (const c of new TextEncoder().encode(s)) { h ^= BigInt(c); h = (h * 0x100000001b3n) & 0xffffffffffffffffn; } return h.toString(16).padStart(16, '0'); };
+  const F = () => Object.fromEntries([...document.querySelectorAll('[data-f]')].map(x => [x.dataset.f, x.checked]));
+  let signed = null;
+
+  function message(ctx, f) {
+    const parts = [];
+    if (f.typehash) parts.push('typehash = keccak256("' + ctx.fn + '(address to,uint256 amount,...)")');
+    if (f.chainId) parts.push('chainId = ' + ctx.chainId);
+    if (f.contract) parts.push('verifyingContract = ' + ctx.contract);
+    parts.push('to = Alice', 'amount = 100 USDT');
+    if (f.nonce) parts.push('nonce = ' + ctx.nonce);
+    if (f.deadline) parts.push('deadline = 2026-10-10 12:00');
+    return parts.join('\n');
+  }
+  function base() { const c = CH[$('chain').value]; return { chainId: c.id, contract: 'Claim@' + c.addr, nonce: 0, fn: 'Claim', now: '11:30' }; }
+  function render() {
+    const f = F(), ctx = base();
+    $('msg').textContent = message(ctx, f);
+    $('sig').textContent = '0x' + fnv(message(ctx, f)) + fnv('k' + message(ctx, f)) + '…（模拟）';
+  }
+  function verify(sig, ctx, f, expired) {
+    // contract recomputes digest from its own context; signature valid iff digest matches what was signed
+    const digest = fnv(message(ctx, f));
+    if (digest !== sig.digest) return false;
+    if (f.deadline && expired) return 'expired';
+    return true;
+  }
+  $('signBtn').addEventListener('click', () => {
+    const f = F(), ctx = base();
+    signed = { f, ctx, digest: fnv(message(ctx, f)) };
+    $('replayBtn').disabled = false;
+    $('attempts').innerHTML = '<div class="att"><div><strong>首次领取（合法）</strong><div class="why">合约在 ' + CH[$('chain').value].name + ' 上验证签名，向 Alice 转出 100 USDT。' + (f.nonce ? 'nonce 从 0 增加到 1。' : '') + '</div></div><span class="res ok">成功</span></div>';
+    $('score').textContent = '';
+  });
+  $('replayBtn').addEventListener('click', () => {
+    if (!signed) return;
+    const { f, ctx } = signed;
+    const A = [
+      ['① 在同一合约上再次提交', { ...ctx, nonce: f.nonce ? 1 : 0 }, false, 'nonce', '合约中的 nonce 已变为 1，签名里是 0，摘要不匹配。', '签名不含 nonce，合约无法区分第一次和第二次。'],
+      ['② 在另一条链上同地址的合约提交（多链部署 / 分叉链）', { ...ctx, chainId: ctx.chainId === 1 ? 56 : 1 }, false, 'chainId', '另一条链的 chainId 不同，摘要不匹配。', '签名不含 chainId。同一份代码以相同地址部署在多条链上时，签名到处有效。'],
+      ['③ 在同一条链上、同一份代码的另一个部署提交', { ...ctx, contract: 'Claim@0xC0FFEE…（另一个部署）' }, false, 'contract', '合约地址不同，摘要不匹配。', '签名不含合约地址。项目方升级时部署了新合约、旧合约仍有余额，签名两边都能用。'],
+      ['④ 过期后（例如 3 天后）提交', ctx, true, 'deadline', '已超过 deadline，合约拒绝。', '签名永久有效。用户或管理员撤销意图后，签名仍能被使用。'],
+      ['⑤ 把签名提交给另一个函数 claimBonus()', { ...ctx, fn: 'ClaimBonus' }, false, 'typehash', '函数的 typehash 不同，摘要不匹配。', '签名不含函数意图。为 A 函数签的数据被拿去调用 B 函数。']
+    ];
+    let pass = 0;
+    $('attempts').innerHTML = A.map(([title, c, exp, key, whyB, whyP]) => {
+      const r = verify(signed, c, f, exp);
+      const ok = r === true;
+      if (ok) pass++;
+      return '<div class="att"><div><strong>' + title + '</strong><div class="why">' + (ok ? whyP : whyB) + '</div></div><span class="res ' + (ok ? 'pass' : 'block') + '">' + (ok ? '重放成功 ✗' : '已拦截 ✓') + '</span></div>';
+    }).join('');
+    $('score').textContent = pass ? '有 ' + pass + ' 种重放成功：Alice（或任何拿到签名的人）可以多领 ' + pass * 100 + ' USDT 以上。' : '全部拦截 ✓ —— 这就是 EIP-712 + nonce + deadline 的完整形态。';
+    $('score').style.color = pass ? 'var(--sell)' : 'var(--buy)';
+  });
+  document.querySelectorAll('[data-f]').forEach(x => x.addEventListener('change', () => { signed = null; $('replayBtn').disabled = true; $('attempts').innerHTML = '<p class="small muted">字段已修改，请重新签名。</p>'; $('score').textContent = ''; render(); }));
+  $('chain').addEventListener('change', () => { signed = null; $('replayBtn').disabled = true; render(); });
+  $('allOn').addEventListener('click', () => { document.querySelectorAll('[data-f]').forEach(x => x.checked = true); document.querySelector('[data-f]').dispatchEvent(new Event('change')); });
+  $('allOff').addEventListener('click', () => { document.querySelectorAll('[data-f]').forEach(x => x.checked = false); document.querySelector('[data-f]').dispatchEvent(new Event('change')); });
+  render();
+
+  $('malBtn').addEventListener('click', () => {
+    const mark = document.querySelector('input[name=mark]:checked').value, lowS = $('lowS').checked;
+    const el = $('malOut');
+    if (lowS) { el.className = 'callout info'; el.textContent = '✅ 拦截：翻转后的 s 大于 n/2，验证库直接拒绝。'; }
+    else if (mark === 'nonce') { el.className = 'callout info'; el.textContent = '✅ 拦截：签名本身有效，但它对应的 nonce 已经用过。已使用标记不依赖签名字节，翻转无效。'; }
+    else { el.className = 'callout warn'; el.textContent = '❌ 重放成功：翻转后的签名字节不同，哈希不同，"已使用"表里查不到它；ecrecover 仍恢复出管理员地址。修复：用 nonce 或消息哈希作标记，并拒绝高 s 值。'; }
+  });
+  $('zeroBtn').addEventListener('click', () => {
+    const set = $('signerSet').checked, zc = $('zeroCheck').checked, el = $('zeroOut');
+    if (zc) { el.className = 'callout info'; el.textContent = '✅ 拦截：ecrecover 返回 address(0)，被零地址检查拒绝。'; }
+    else if (set) { el.className = 'callout info'; el.textContent = '✅ 拦截（侥幸）：ecrecover 返回 address(0)，与非零的 signer 不相等。但只要 signer 某天被设成 0，这里就会失守。'; }
+    else { el.className = 'callout warn'; el.textContent = '❌ 通过：ecrecover 返回 address(0)，未初始化的 signer 也是 address(0)，二者相等。任何人用垃圾签名都能领取。'; }
+  });
+})();
+</script>
+<script>
+/* 在单文件阅读版（handbook.html）的 iframe 中打开时，把章节链接交给外层阅读器处理 */
+(function () {
+  if (window.parent === window) return;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href');
+    if (/\.md(#|$)/.test(h)) { e.preventDefault(); window.parent.postMessage({ cexNavMd: h }, '*'); }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+"answers": [
+"检测器的条件是 <code>fn.is_protected() or fn.modifiers</code>。<code>nonReentrant</code> 也是修饰器，所以 <code>fn.modifiers</code> 非空，函数被放行。修复方法是去掉 <code>or fn.modifiers</code>，只用 <code>fn.is_protected()</code>。本机测试中，修改后 <code>nonReentrant</code> 的 setter 被报告，而带 <code>onlyOwner</code> 修饰器的 setter 和函数内 <code>require(msg.sender == owner)</code> 的 setter 都不被报告。",
+"<code>invariant_solvent</code> 只检查真实 ETH 是否足够支付用户余额之和。漏洞只少扣 <code>totalDeposits</code>，不影响真实资金，所以它通过。<code>invariant_totalMatchesGhostSum</code> 检查账本变量和期望值是否一致，所以它失败。启发：不变量要分层写，偿付能力、账本一致性和业务规则各写一条。一条较弱的不变量通过，不代表其他性质也成立。",
+"锁定版本解决<b>可复现</b>问题：同一提交得到同样的结果，审计底稿可以被复核。自动升级解决<b>新检测器覆盖</b>问题：能及时获得新规则和缺陷修复。两者可以分开：主分支 CI 用锁定版本决定是否阻止合并；另设一个每周任务，用最新版本运行，只产生报告。结果差异经过人工确认后，再提交升级锁定版本的变更。"
+]
+}

@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>地址投毒比对</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .hist { width: 100%; }
+  .hist td { vertical-align: middle; }
+  .hist tr.pick { cursor: pointer; }
+  .hist tr.pick:hover td { background: var(--surface-2); }
+  .hist tr.sel td { background: var(--accent-soft); }
+  .addr { font-family: var(--mono); font-size: 12.5px; word-break: break-all; }
+  .diff { font-family: var(--mono); font-size: 13px; line-height: 1.9; word-break: break-all; background: var(--surface-2); border-radius: 8px; padding: 8px 10px; }
+  .diff .d { background: var(--sell-soft); color: var(--sell); font-weight: 700; border-radius: 2px; }
+  .diff .s { color: var(--buy); }
+  .tag { font-size: 11.5px; }
+  input.addrin { font-family: var(--mono); font-size: 12.5px; }
+  .big { font-size: 22px; font-weight: 650; font-family: var(--mono); }
+  .verdict { font-weight: 650; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="back" href="index.html">← 交互实验目录</a>
+    <h1>地址投毒比对</h1>
+  </header>
+  <p class="lead">地址投毒（Address Poisoning）：攻击者生成一个首尾字符与你常用地址相同的地址，再往你的交易记录里塞一笔小额或零额转账。你下次从记录里复制地址，就可能复制到攻击者的地址。配套章节：<a href="../19-user-scams.md">19 用户侧诈骗</a>、<a href="../23-custody-exchange-ops.md">23 托管与交易所运营</a>。</p>
+
+  <h2>1. 从交易记录里复制地址</h2>
+  <div class="card">
+    <p class="small">场景（示例）：你上周给合作方转过 50,000 USDT。今天要再转一次。钱包只显示地址的前 6 位和后 4 位。<strong>点击你认为应该复制的那一行。</strong></p>
+    <div class="table-wrap"><table class="hist">
+      <thead><tr><th>时间</th><th>方向</th><th>对方地址（钱包显示）</th><th>代币</th><th class="num">数额</th></tr></thead>
+      <tbody id="hist"></tbody>
+    </table></div>
+    <div id="histOut" class="small muted" style="margin-top:8px">还没有选择。</div>
+  </div>
+
+  <h2>2. 逐字比对两个地址</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <label for="a1">地址 A（你确认过的地址，例如地址簿里的）</label>
+      <input type="text" class="addrin" id="a1" spellcheck="false" autocomplete="off">
+      <label for="a2">地址 B（你准备粘贴的地址）</label>
+      <input type="text" class="addrin" id="a2" spellcheck="false" autocomplete="off">
+      <div class="btn-row"><button id="loadPoison">载入投毒示例</button><button id="loadSame">载入相同地址</button><button id="loadCase">只差大小写</button></div>
+    </div>
+    <div class="card">
+      <label>A</label><div class="diff" id="dA"></div>
+      <label>B</label><div class="diff" id="dB"></div>
+      <p class="verdict" id="cmpOut"></p>
+      <p class="small muted" id="cmpNote"></p>
+    </div>
+  </div>
+
+  <h2>3. 伪造一个相似地址要多久</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <label for="k">要匹配的十六进制字符数（前缀 + 后缀）</label>
+      <div class="range-row"><input type="range" id="k" min="4" max="16" value="8"><output id="kOut"></output></div>
+      <label for="rate">生成速度（每秒地址数，示例）</label>
+      <select id="rate">
+        <option value="1e6">10⁶ / 秒：普通 CPU</option>
+        <option value="1e9" selected>10⁹ / 秒：一张高端 GPU（示例量级）</option>
+        <option value="1e11">10¹¹ / 秒：100 张 GPU</option>
+      </select>
+      <p class="small muted">每个十六进制字符有 16 种取值。匹配 k 个字符，平均要试 16<sup>k</sup> 次。速度是示例量级，不是某个工具的实测值。</p>
+    </div>
+    <div class="card">
+      <div class="stat"><span class="k">平均尝试次数</span><span class="big" id="tries"></span></div>
+      <div class="stat" style="margin-top:10px"><span class="k">平均耗时</span><span class="big" id="time"></span></div>
+      <p class="small" id="timeNote"></p>
+    </div>
+  </div>
+
+  <h2>4. 防御清单</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <h3>用户</h3>
+      <ol class="small">
+        <li>不从交易记录复制地址。用地址簿或收款方从安全渠道发来的地址。</li>
+        <li>核对完整地址，至少再核对中间的一段字符。</li>
+        <li>大额转账先发一笔测试金额。<strong>测试之后仍然从地址簿取地址</strong>：投毒常在测试转账之后几分钟内出现。</li>
+        <li>钱包里隐藏零额转账和未知代币。</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>交易所 / 钱包产品</h3>
+      <ol class="small">
+        <li>提币地址白名单，新增地址设置冷却期。</li>
+        <li>提币前比对：目标地址与用户历史地址"首尾相同、中间不同"时强提示。</li>
+        <li>交易记录默认折叠零额转账和非白名单代币。</li>
+        <li>把已知投毒地址加入风控名单，并与威胁情报共享。</li>
+      </ol>
+    </div>
+  </div>
+
+  <footer class="note">所有地址都是本页随机生成的示例，不对应真实账户。</footer>
+</div>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  let seed = 20261108;
+  const rnd = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+  const hex = n => Array.from({ length: n }, () => '0123456789abcdef'[Math.floor(rnd() * 16)]).join('');
+  const real = '0x' + hex(40);
+  const poison = '0x' + real.slice(2, 6) + hex(32) + real.slice(-4);
+  const other = '0x' + hex(40);
+  const short = a => a.slice(0, 6) + '…' + a.slice(-4);
+  const rows = [
+    { t: '今天 10:42', dir: '转出', a: poison, tok: 'USDT', amt: '0', why: '零额转账：攻击者调用 USDT 的 transferFrom，从你的地址"转出" 0 USDT 到他的相似地址。数额为 0 时不需要你的授权。', bad: true },
+    { t: '今天 10:41', dir: '转入', a: poison, tok: 'USDT（假）', amt: '50,000', why: '假代币：攻击者部署了名称和符号都是 USDT 的假代币，从相似地址给你"转入"了 50,000。目的是让这一行看起来像正常往来。', bad: true },
+    { t: '上周三 15:20', dir: '转出', a: real, tok: 'USDT', amt: '50,000', why: '正确：这是你上周真正转给合作方的记录，地址完整一致。但最好的做法仍是从地址簿或合作方发来的地址取。', bad: false },
+    { t: '上周一 09:03', dir: '转入', a: other, tok: 'ETH', amt: '1.2', why: '无关：这是另一笔充值，对方地址首尾都不同。', bad: false, unrelated: true },
+  ];
+  $('hist').innerHTML = rows.map((r, k) => '<tr class="pick" data-k="' + k + '"><td>' + r.t + '</td><td>' + r.dir + '</td><td class="addr">' + short(r.a) + '</td><td>' + r.tok + '</td><td class="num">' + r.amt + '</td></tr>').join('');
+  document.querySelectorAll('#hist tr').forEach(tr => tr.addEventListener('click', () => {
+    document.querySelectorAll('#hist tr').forEach(x => x.classList.remove('sel'));
+    tr.classList.add('sel');
+    const r = rows[+tr.dataset.k];
+    $('histOut').className = 'callout ' + (r.bad ? 'warn' : 'info') + ' small';
+    $('histOut').innerHTML = (r.bad ? '❌ 你复制了攻击者的地址。' : r.unrelated ? '⚪ 选错了对象。' : '✅ 地址正确。') + ' ' + r.why +
+      '<div style="margin-top:6px">完整地址：<span class="addr">' + r.a + '</span></div>' +
+      (r.bad ? '<div>真实地址：<span class="addr">' + real + '</span>。下面第 2 节已载入这两个地址，可以逐字比对。</div>' : '');
+    if (r.bad) { $('a1').value = real; $('a2').value = r.a; cmp(); }
+  }));
+
+  function cmp() {
+    const A = $('a1').value.trim(), B = $('a2').value.trim();
+    const a = A.toLowerCase(), b = B.toLowerCase();
+    const n = Math.max(A.length, B.length);
+    let hA = '', hB = '', diff = 0;
+    for (let i = 0; i < n; i++) {
+      const same = a[i] === b[i] && a[i] !== undefined;
+      if (!same) diff++;
+      hA += A[i] === undefined ? '' : '<span class="' + (same ? 's' : 'd') + '">' + A[i] + '</span>';
+      hB += B[i] === undefined ? '' : '<span class="' + (same ? 's' : 'd') + '">' + B[i] + '</span>';
+    }
+    $('dA').innerHTML = hA || '<span class="muted">（空）</span>'; $('dB').innerHTML = hB || '<span class="muted">（空）</span>';
+    const valid = x => /^0x[0-9a-fA-F]{40}$/.test(x);
+    let pre = 0; while (pre < Math.min(a.length, b.length) && a[pre] === b[pre]) pre++;
+    let suf = 0; while (suf < Math.min(a.length, b.length) - pre && a[a.length - 1 - suf] === b[b.length - 1 - suf]) suf++;
+    const out = $('cmpOut'), note = $('cmpNote');
+    if (!A || !B) { out.textContent = ''; note.textContent = '输入两个地址开始比对。'; return; }
+    if (!valid(A) || !valid(B)) { out.style.color = 'var(--warn)'; out.textContent = '⚠️ 至少一个地址格式不对（应为 0x + 40 个十六进制字符）。'; note.textContent = ''; return; }
+    if (diff === 0) {
+      out.style.color = 'var(--buy)';
+      out.textContent = A === B ? '✅ 完全一致。' : '✅ 地址相同，只是大小写不同。';
+      note.textContent = A === B ? '' : 'EVM 地址不区分大小写；大小写只用于 EIP-55 校验和。如果钱包提示校验和错误，说明地址被手工改动过，应重新获取。';
+      return;
+    }
+    out.style.color = 'var(--sell)';
+    out.textContent = '❌ 不是同一个地址：' + diff + ' 个字符不同。';
+    note.textContent = (pre > 2 || suf > 0) ? '前 ' + Math.max(0, pre - 2) + ' 位和后 ' + suf + ' 位相同、中间不同，这是典型的投毒地址特征。只看首尾无法发现。' : '首尾也不同。';
+  }
+  $('a1').addEventListener('input', cmp); $('a2').addEventListener('input', cmp);
+  $('loadPoison').onclick = () => { $('a1').value = real; $('a2').value = poison; cmp(); };
+  $('loadSame').onclick = () => { $('a1').value = real; $('a2').value = real; cmp(); };
+  $('loadCase').onclick = () => { $('a1').value = real; $('a2').value = '0x' + real.slice(2).replace(/[a-f]/g, (c, i) => i % 2 ? c.toUpperCase() : c); cmp(); };
+  cmp();
+
+  function fmtTime(s) {
+    if (s < 1) return '< 1 秒';
+    const u = [['年', 31536000], ['天', 86400], ['小时', 3600], ['分钟', 60], ['秒', 1]];
+    for (const [n, v] of u) if (s >= v) { const x = s / v; return (x >= 1e6 ? x.toExponential(1) : x.toFixed(x < 10 ? 1 : 0)) + ' ' + n; }
+  }
+  function calc() {
+    const k = +$('k').value, rate = +$('rate').value;
+    $('kOut').textContent = k + ' 个';
+    const tries = Math.pow(16, k), sec = tries / rate;
+    $('tries').textContent = '16^' + k + ' ≈ ' + tries.toExponential(2);
+    $('time').textContent = fmtTime(sec);
+    $('timeNote').textContent = k <= 10 ? '钱包只显示首尾 ' + k + ' 个字符时，攻击者用很低的成本就能伪造出"看起来一样"的地址。' : '匹配的字符越多，伪造成本按 16 倍递增。所以核对完整地址，或至少再核对中间一段，能让投毒失效。';
+  }
+  $('k').addEventListener('input', calc); $('rate').addEventListener('change', calc);
+  calc();
+})();
+</script>
+<script>
+/* 在单文件阅读版的 iframe 中打开时，把章节链接交给外层阅读器处理 */
+(function () {
+  if (window.parent === window) return;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href');
+    if (/\.md(#|$)/.test(h)) { e.preventDefault(); window.parent.postMessage({ cexNavMd: h }, '*'); }
+  });
+})();
+</script>
+</body>
+</html>

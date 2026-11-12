@@ -1,0 +1,25 @@
+# 新手训练营 B01–B06 的配套工程。只跑本地玩具合约。
+[profile.default]
+src = "src"
+test = "test"
+script = "script"
+out = "out"
+libs = ["lib"]
+solc = "0.8.30"
+evm_version = "prague"
+remappings = [
+  "forge-std/=lib/forge-std/src/",
+  "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+]
+
+[fuzz]
+runs = 256
+
+[invariant]
+runs = 64
+depth = 32
+fail_on_revert = false
+
+# B03 的“故意失败”演示：FOUNDRY_PROFILE=demo forge test
+[profile.demo]
+test = "demo-fail"

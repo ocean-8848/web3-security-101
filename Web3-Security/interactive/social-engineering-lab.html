@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>社工场景判断</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); }
+  .msg { background: var(--surface-2); border-radius: 8px; padding: 12px; white-space: pre-wrap; word-break: break-word; }
+  .opt { display: block; width: 100%; text-align: left; margin: 6px 0; }
+  .opt.sel { border-color: var(--accent); background: var(--accent-soft); }
+  .opt.good { border-color: var(--buy); background: var(--buy-soft); }
+  .opt.badc { border-color: var(--sell); background: var(--sell-soft); }
+  .bar { height: 8px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--accent); }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="back" href="index.html">← 交互实验目录</a>
+    <h1>社工场景判断</h1>
+  </header>
+  <p class="lead">攻击者先攻破人。下面 11 个场景都是虚构的，手法来自公开事件。有的场景是正常业务：把正常请求都当成攻击，流程也走不下去。配套章节：<a href="../21-social-engineering-insiders.md">21 社工与内部人</a>。</p>
+
+  <div class="callout info small">
+    <strong>怎么玩：</strong>
+    1. 读场景，判断它属于“恶意”“需核实”还是“正常”。
+    2. 选择你实际会做的动作。
+    3. 点“提交”，看得分和解释。分类 1 分；动作最高 2 分；每题满分 3 分。
+    4. 做完后看手法分项，找到自己的弱项。
+  </div>
+
+  <h2>场景 <span id="idx"></span></h2>
+  <div class="bar" aria-hidden="true"><i id="prog" style="width:0"></i></div>
+  <div class="card" style="margin-top:10px">
+    <p class="small muted" id="meta"></p>
+    <div class="msg" id="body"></div>
+    <h3>这是什么？</h3>
+    <div id="cls"></div>
+    <h3>你会怎么做？</h3>
+    <div id="act"></div>
+    <div class="btn-row"><button id="submit" class="primary" disabled>提交</button><button id="next" disabled>下一题</button></div>
+    <div id="fb"></div>
+  </div>
+
+  <div id="final" style="display:none">
+    <h2>结果</h2>
+    <div class="grid cols-2">
+      <div class="card">
+        <div class="stat"><span class="k">总分</span><span class="v" id="score"></span></div>
+        <p class="small" id="grade"></p>
+        <p class="small muted" id="best"></p>
+        <div class="btn-row"><button id="again">再做一次</button></div>
+      </div>
+      <div class="card">
+        <h3>手法分项</h3>
+        <div class="table-wrap"><table><thead><tr><th>手法</th><th class="num">得分</th></tr></thead><tbody id="cat"></tbody></table></div>
+      </div>
+    </div>
+  </div>
+
+  <h2>反思</h2>
+  <div class="card">
+    <ol class="small">
+      <li>过去三个月，你收到过哪一个与这里相似的请求？你当时是怎么核实的？</li>
+      <li>你的团队有预先登记的带外确认渠道吗？新员工知道它在哪里吗？</li>
+      <li>如果你已经点了链接，你知道第一步该找谁吗？报告会被惩罚吗？</li>
+    </ol>
+  </div>
+
+  <footer class="note">全部人名、公司和消息都是示例。本页不发送任何数据。历史最高分只保存在你的浏览器。</footer>
+</div>
+<script>
+/*LOGIC*/
+const CLS = [{ id: 'mal', t: '恶意' }, { id: 'ver', t: '需核实：不能确定，先走独立渠道' }, { id: 'ok', t: '正常业务' }];
+const SC = [
+  { cat: '假招聘', ch: 'LinkedIn，陌生招聘者', body: '您好，我们是一家新成立的 DeFi 基金，月薪 2.5 万美元。第一轮是代码作业：请 clone 这个 GitHub 仓库，npm install 后运行测试，今晚 12 点前把结果发给我。', cls: 'mal',
+    acts: [['在工作电脑上跑，反正只是测试', 0], ['在日常电脑上打开，只看代码不运行', 1], ['不在任何存放凭证的设备上运行；需要时用一次性虚拟机，先审 postinstall 和 .vscode/tasks.json，并上报', 2], ['拒绝并删掉消息，不告诉任何人', 1]],
+    ex: '外部作业仓库是最常见的入口。npm 的 postinstall、VS Code 的 tasks.json 能在打开或安装时执行代码。只看代码也不够：编辑器可能自动运行任务。上报能帮公司发现同一批攻击。' },
+  { cat: '假会议', ch: 'Telegram，投资人（首次联系）', body: '会议马上开始。你的 Zoom 版本过低，声音会有问题。请安装这个更新包：zoom-sdk-update.pkg。其他合伙人都已经在等了。', cls: 'mal',
+    acts: [['立即安装，不能让投资人等', 0], ['关闭链接，只从官网或系统应用商店更新；或改用浏览器入会；上报', 2], ['让对方换一个链接再安装', 0], ['先装到手机上试试', 0]],
+    ex: '正规会议软件不会让你从聊天里下载更新包。“马上开始”“别人在等”是在压缩你的思考时间。' },
+  { cat: '紧急签名', ch: 'Telegram，显示名是你的 CFO', body: '项目上线卡住了，需要你现在签一下这笔多签。Safe 链接在这里。不用看细节，是常规升级，我在飞机上马上断网，别打电话。', cls: 'mal',
+    acts: [['打开链接直接签', 0], ['在日常电脑上打开，看模拟结果，正常就签', 0], ['不签。用预先登记的电话联系 CFO，并用专用设备独立解码 calldata', 2], ['回复问一下是不是本人', 0]],
+    ex: '紧急、绕过流程、拒绝电话，三个信号同时出现。在同一渠道追问没有用：账号可能已被盗。终端被控制时，模拟结果也可能是假的。' },
+  { cat: '远程控制', ch: 'Zoom 访谈，自称财经媒体', body: '访谈进行到一半，屏幕上弹出：“Zoom 请求控制你的屏幕”。对方说这是录制功能需要的授权。', cls: 'mal',
+    acts: [['点同意，反正是 Zoom 的提示', 0], ['拒绝，结束会议，检查授权并上报；公司设备默认关闭远程控制', 2], ['先同意，出问题再断开', 0], ['拒绝，继续访谈，事后不上报', 1]],
+    ex: '攻击者可以把显示名改成 “Zoom”，让弹窗看起来像系统提示。一旦同意，几秒内就能打开钱包或密码管理器。' },
+  { cat: '收款变更', ch: '邮件，来自合作方财务（域名看起来相同）', body: '因银行审计，我们的 USDT 收款地址已更换，请本月起使用新地址 0x7a3f…c91e。附件是盖章的通知函。', cls: 'ver',
+    acts: [['按新地址转账', 0], ['回复这封邮件确认', 0], ['用此前登记的电话联系对方财务，核对完整地址；发起变更审批和冷却期', 2], ['先转一小笔测试，没问题就全转', 0]],
+    ex: '邮件可能是真的，所以分类是“需核实”。回复原邮件是在同一渠道确认。小额测试只能证明地址能收钱，不能证明地址属于对方。' },
+  { cat: '恶意文件', ch: 'Telegram，自称前承包商', body: '我们复盘了上周那起事故，整理了一份 PDF，想听听你的看法。压缩包里有文档：Incident_Review.zip。', cls: 'mal',
+    acts: [['解压打开，文档看看没事', 0], ['转给同事，让他先看', 0], ['不在工作或签名设备上打开；通过公司渠道核实身份；交给安全团队在隔离环境分析', 2], ['用手机打开', 1]],
+    ex: '2024 年 Radiant Capital 的入口就是这样的压缩包：一个伪装成 PDF 的 macOS 程序。签名设备绝不处理外部文件。' },
+  { cat: '假客服', ch: '电话，用户侧；来电显示官方号码', body: '您好，这里是交易所安全中心。您尾号 4821 的账户在 3 分钟前有异地登录，余额 12.4 BTC。您上周还提交过一张工单。为了保护资产，请转到我们给您生成的安全钱包。', cls: 'mal',
+    acts: [['对方知道这么多细节，按指示转', 0], ['让对方发官方邮件后再转', 0], ['挂断。从官方 App 内联系客服，开启提币白名单；不转资产', 2], ['转一半，降低风险', 0]],
+    ex: '说得出真实细节，不代表是真客服；数据可能已经泄露。来电号码可以伪造。交易所不会要求你转到“安全钱包”。' },
+  { cat: '正常流程', ch: '公司工单系统，安全团队（已登录内网）', body: '年度钓鱼演练通知：下周进行。本工单只说明时间安排，不需要点击任何链接，也不需要提供凭证。有问题请在工单内回复。', cls: 'ok',
+    acts: [['当成钓鱼，投诉安全团队', 0], ['阅读并照常工作，有疑问在工单内回复', 2], ['转发到外部群提醒大家', 0], ['立刻改所有密码', 1]],
+    ex: '它来自已认证的内部系统，不要求点链接或交凭证。安全意识不等于拒绝一切；否则真正的告警也会被忽略。' },
+  { cat: '冒名受雇', ch: '招聘流程，远程开发候选人', body: '技术面表现优秀。候选人一直不开摄像头，说网络不好；要求把公司笔记本寄到与简历城市不同的地址；薪资希望用 USDT 发到第三方地址。', cls: 'ver',
+    acts: [['技术这么好，直接录用', 0], ['录用，但给较少权限', 1], ['暂停录用。要求视频实时核验身份证件，核实设备地址和履历，并通知安全团队', 2], ['直接拒绝，不留记录', 1]],
+    ex: '这些都是冒名受雇的公开特征。证据不足以定性，所以“需核实”。记录能帮助发现同一批候选人。' },
+  { cat: '正常流程', ch: '多签队列 + 登记电话，运维负责人', body: '变更单 CHG-2041 已审批。运维负责人从登记电话打来，告诉你本次签名的 nonce、目标合约和 safeTxHash 前后缀，并请你在专用设备上独立解码后签名。', cls: 'ok',
+    acts: [['不看内容，既然打电话了就签', 0], ['在专用设备独立解码，核对 hash 与变更单一致后再签', 2], ['全部拒绝，等下周', 0], ['让对方在 Telegram 上再发一次', 0]],
+    ex: '流程走对了：有变更单、带外确认、独立解码。这时候正确的动作是核对后签名，不是继续怀疑。' },
+  { cat: '内部人收买', ch: 'Telegram 私信，发给外包客服', body: '兄弟，我这边有个数据项目。你在客服后台查一下这份名单的余额，一条 20 美元，每天结算，没人发现。', cls: 'mal',
+    acts: [['查几条试试，反正只是看', 0], ['拒绝，保留截图，通过匿名渠道上报安全团队', 2], ['拒绝，不告诉任何人', 1], ['问对方能给多少', 0]],
+    ex: '2025 年 Coinbase 泄露就来自被收买的外包客服。上报不只保护自己：对方往往同时接触多名员工。' },
+];
+function scoreOne(s, cls, act) { const c = cls === s.cls ? 1 : 0, a = s.acts[act][1]; return { c, a, total: c + a }; }
+function summarize(rows) {
+  const total = rows.reduce((x, r) => x + r.total, 0), max = rows.length * 3, cats = {};
+  rows.forEach(r => { cats[r.cat] = cats[r.cat] || [0, 0]; cats[r.cat][0] += r.total; cats[r.cat][1] += 3; });
+  const pct = total / max;
+  return { total, max, cats, pct, grade: pct >= 0.9 ? '稳健：能区分攻击和正常流程。' : pct >= 0.7 ? '基本可靠：回头看失分的手法。' : pct >= 0.45 ? '有明显缺口：先练“换渠道核实”。' : '高风险：先把带外确认和专用设备变成习惯。' };
+}
+/*END*/
+(function () {
+  const $ = id => document.getElementById(id);
+  const KEY = 'web3sec.socialLab.best';
+  let i = 0, rows = [], pickC = null, pickA = null, done = false;
+  const rd = () => { try { return localStorage.getItem(KEY); } catch (e) { return null; } };
+  const wr = v => { try { localStorage.setItem(KEY, String(v)); } catch (e) {} };
+  function draw() {
+    const s = SC[i]; pickC = pickA = null; done = false;
+    $('idx').textContent = (i + 1) + ' / ' + SC.length;
+    $('prog').style.width = (i / SC.length * 100) + '%';
+    $('meta').textContent = '渠道：' + s.ch + '（示例）';
+    $('body').textContent = s.body;
+    $('cls').innerHTML = CLS.map(c => '<button class="opt" data-c="' + c.id + '">' + c.t + '</button>').join('');
+    $('act').innerHTML = s.acts.map((a, k) => '<button class="opt" data-a="' + k + '">' + a[0] + '</button>').join('');
+    $('fb').innerHTML = ''; $('submit').disabled = true; $('next').disabled = true; $('next').textContent = i + 1 === SC.length ? '看结果' : '下一题';
+    document.querySelectorAll('[data-c]').forEach(b => b.onclick = () => { if (done) return; pickC = b.dataset.c; mark(); });
+    document.querySelectorAll('[data-a]').forEach(b => b.onclick = () => { if (done) return; pickA = +b.dataset.a; mark(); });
+  }
+  function mark() {
+    document.querySelectorAll('[data-c]').forEach(b => b.classList.toggle('sel', b.dataset.c === pickC));
+    document.querySelectorAll('[data-a]').forEach(b => b.classList.toggle('sel', +b.dataset.a === pickA));
+    $('submit').disabled = pickC === null || pickA === null;
+  }
+  $('submit').onclick = () => {
+    const s = SC[i], r = scoreOne(s, pickC, pickA); done = true;
+    rows.push({ cat: s.cat, total: r.total });
+    document.querySelectorAll('[data-c]').forEach(b => { b.classList.remove('sel'); if (b.dataset.c === s.cls) b.classList.add('good'); else if (b.dataset.c === pickC) b.classList.add('badc'); });
+    document.querySelectorAll('[data-a]').forEach(b => { const v = s.acts[+b.dataset.a][1]; b.classList.remove('sel'); if (v === 2) b.classList.add('good'); else if (+b.dataset.a === pickA) b.classList.add('badc'); });
+    const best = CLS.find(c => c.id === s.cls).t;
+    $('fb').innerHTML = '<div class="callout ' + (r.total === 3 ? 'info' : 'warn') + ' small"><strong>本题 ' + r.total + ' / 3 分</strong>（分类 ' + r.c + '，动作 ' + r.a + '）。正确分类：' + best + '。<br>' + s.ex + '</div>';
+    $('submit').disabled = true; $('next').disabled = false;
+  };
+  $('next').onclick = () => { if (i + 1 < SC.length) { i++; draw(); } else finish(); };
+  function finish() {
+    $('prog').style.width = '100%';
+    const res = summarize(rows), prev = parseInt(rd() || '0', 10);
+    if (res.total > prev) wr(res.total);
+    $('final').style.display = '';
+    $('score').textContent = res.total + ' / ' + res.max;
+    $('grade').textContent = res.grade;
+    $('best').textContent = '本浏览器历史最高：' + Math.max(res.total, prev) + ' / ' + res.max;
+    $('cat').innerHTML = Object.entries(res.cats).sort((a, b) => a[1][0] / a[1][1] - b[1][0] / b[1][1]).map(([k, v]) => '<tr><td>' + k + '</td><td class="num">' + v[0] + ' / ' + v[1] + '</td></tr>').join('');
+    $('final').scrollIntoView({ behavior: 'smooth' });
+  }
+  $('again').onclick = () => { i = 0; rows = []; $('final').style.display = 'none'; draw(); window.scrollTo(0, 0); };
+  draw();
+})();
+</script>
+<script>
+/* 在单文件阅读版的 iframe 中打开时，把章节链接交给外层阅读器处理 */
+(function () {
+  if (window.parent === window) return;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href');
+    if (/\.md(#|$)/.test(h)) { e.preventDefault(); window.parent.postMessage({ cexNavMd: h }, '*'); }
+  });
+})();
+</script>
+</body>
+</html>

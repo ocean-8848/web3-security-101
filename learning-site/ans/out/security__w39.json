@@ -1,0 +1,6 @@
+{
+"answers": [
+"按 <code>withdraw</code> 和 <code>aToken.transfer</code> 的标准校验，因为捐赠同样减少捐赠者的抵押。要求是：如果该资产被用作抵押，捐赠后必须调用 <code>validateHFAndLtv</code>，保证 HF 不低于 1，并遵守 LTV 约束。执行前先调用 <code>ReserveLogic.updateState</code> 结算利息，同时检查储备未暂停或冻结，并确认捐赠不会被用来操纵流动性指数。Euler 事件的根因正是新增捐赠入口缺少健康度校验。",
+"因为 aToken 就是抵押物本身。转出 aToken 会减少发送方的抵押，但债务不变。如果这个入口不校验，借款人可以把抵押转到干净地址，在原地址留下无抵押债务，协议只能承担坏账。所以 V3 在 <code>finalizeTransfer</code> 中调用 <code>validateHFAndLtv</code>。审计分叉时，要把代币转账也列入风险增加的入口，而不是只看 Pool 的函数。"
+]
+}

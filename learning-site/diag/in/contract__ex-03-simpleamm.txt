@@ -1,0 +1,170 @@
+
+# 03-SimpleAMM.sol
+⚠️ 警告：教学示例，未经审计，不可用于生产。路径：examples/03-SimpleAMM.sol
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+/// @title SimpleAMM：两个 ERC-20 代币的恒定乘积池（x · y = k）
+/// @notice 教学示例，未经审计，不可用于生产。
+/// @dev 配套章节：Contract/07-defi-primitives.md
+///      只演示三件事：恒定乘积报价、0.3% 手续费、LP 份额记账。
+///      不支持转账扣费代币（fee-on-transfer）；不做价格预言机；份额只记在内部 mapping 里。
+
+/// @dev 最小 ERC-20 接口：本合约只用到这三个函数。
+interface IERC20 {
+    function transfer(address to, uint256 amount) external returns (bool);
+    function transferFrom(address from, address to, uint256 amount) external returns (bool);
+    function balanceOf(address account) external view returns (uint256);
+}
+
+contract SimpleAMM {
+    IERC20 public immutable token0;
+    IERC20 public immutable token1;
+
+    // 储备用状态变量记账，不直接读 balanceOf。
+    // 好处：别人直接转币进来（"捐赠"）不会改变报价。
+    uint256 public reserve0;
+    uint256 public reserve1;
+
+    // LP 份额：谁出了多少比例的流动性
+    uint256 public totalShares;
+    mapping(address => uint256) public sharesOf;
+
+    uint256 private constant FEE_NUM = 997; // 扣 0.3% 手续费后，997/1000 参与报价
+    uint256 private constant FEE_DEN = 1000;
+    uint256 private constant MINIMUM_LIQUIDITY = 1000; // 首次添加时永久锁定，防止份额价格被抬到极端
+    bool private locked;
+
+    error ZeroAmount();
+    error InvalidToken();
+    error InsufficientOutput(uint256 out, uint256 minOut);
+    error InsufficientLiquidity();
+    error TransferFailed();
+    error Reentrant();
+
+    event LiquidityAdded(address indexed provider, uint256 amount0, uint256 amount1, uint256 shares);
+    event LiquidityRemoved(address indexed provider, uint256 amount0, uint256 amount1, uint256 shares);
+    event Swap(address indexed trader, address indexed tokenIn, uint256 amountIn, uint256 amountOut);
+
+    modifier nonReentrant() {
+        if (locked) revert Reentrant();
+        locked = true;
+        _;
+        locked = false;
+    }
+
+    constructor(IERC20 _token0, IERC20 _token1) {
+        token0 = _token0;
+        token1 = _token1;
+    }
+
+    // ───────────── 1. 报价：恒定乘积公式 ─────────────
+    // (rIn + 入金×0.997) × (rOut − 出金) = rIn × rOut
+    // 解出：出金 = 入金×997 × rOut / (rIn×1000 + 入金×997)
+    function getAmountOut(uint256 amountIn, uint256 reserveIn, uint256 reserveOut)
+        public
+        pure
+        returns (uint256)
+    {
+        if (amountIn == 0) revert ZeroAmount();
+        if (reserveIn == 0 || reserveOut == 0) revert InsufficientLiquidity();
+        uint256 amountInWithFee = amountIn * FEE_NUM;
+        return (amountInWithFee * reserveOut) / (reserveIn * FEE_DEN + amountInWithFee);
+    }
+
+    // ───────────── 2. 兑换：带 minOut 滑点保护 ─────────────
+    function swap(address tokenIn, uint256 amountIn, uint256 minOut)
+        external
+        nonReentrant
+        returns (uint256 amountOut)
+    {
+        bool zeroForOne;
+        if (tokenIn == address(token0)) zeroForOne = true;
+        else if (tokenIn != address(token1)) revert InvalidToken();
+
+        (uint256 rIn, uint256 rOut) = zeroForOne ? (reserve0, reserve1) : (reserve1, reserve0);
+        amountOut = getAmountOut(amountIn, rIn, rOut);
+        if (amountOut < minOut) revert InsufficientOutput(amountOut, minOut); // 价格变差就整笔回滚
+
+        // 手续费留在池子里：入金全部计入储备，所以 k 会缓慢变大，LP 由此赚钱
+        if (zeroForOne) {
+            reserve0 = rIn + amountIn;
+            reserve1 = rOut - amountOut;
+        } else {
+            reserve1 = rIn + amountIn;
+            reserve0 = rOut - amountOut;
+        }
+        emit Swap(msg.sender, tokenIn, amountIn, amountOut);
+
+        _safeTransferFrom(IERC20(tokenIn), msg.sender, amountIn);
+        _safeTransfer(zeroForOne ? token1 : token0, msg.sender, amountOut);
+    }
+
+    // ───────────── 3. 添加流动性 ─────────────
+    function addLiquidity(uint256 amount0, uint256 amount1) external nonReentrant returns (uint256 shares) {
+        if (amount0 == 0 || amount1 == 0) revert ZeroAmount();
+        if (totalShares == 0) {
+            // 首次：份额 = sqrt(x·y)，与初始价格无关；锁定 MINIMUM_LIQUIDITY 给 address(0)
+            shares = _sqrt(amount0 * amount1) - MINIMUM_LIQUIDITY;
+            sharesOf[address(0)] = MINIMUM_LIQUIDITY;
+            totalShares = MINIMUM_LIQUIDITY;
+        } else {
+            // 之后：按两边中较小的比例给份额。多给的一边相当于送给现有 LP
+            uint256 s0 = (amount0 * totalShares) / reserve0;
+            uint256 s1 = (amount1 * totalShares) / reserve1;
+            shares = s0 < s1 ? s0 : s1;
+        }
+        if (shares == 0) revert InsufficientLiquidity();
+
+        sharesOf[msg.sender] += shares;
+        totalShares += shares;
+        reserve0 += amount0;
+        reserve1 += amount1;
+        emit LiquidityAdded(msg.sender, amount0, amount1, shares);
+
+        _safeTransferFrom(token0, msg.sender, amount0);
+        _safeTransferFrom(token1, msg.sender, amount1);
+    }
+
+    // ───────────── 4. 移除流动性：按份额比例取回两种代币 ─────────────
+    function removeLiquidity(uint256 shares) external nonReentrant returns (uint256 amount0, uint256 amount1) {
+        if (shares == 0) revert ZeroAmount();
+        amount0 = (shares * reserve0) / totalShares;
+        amount1 = (shares * reserve1) / totalShares;
+        if (amount0 == 0 || amount1 == 0) revert InsufficientLiquidity();
+
+        sharesOf[msg.sender] -= shares; // 份额不足时 0.8 版本自动回滚
+        totalShares -= shares;
+        reserve0 -= amount0;
+        reserve1 -= amount1;
+        emit LiquidityRemoved(msg.sender, amount0, amount1, shares);
+
+        _safeTransfer(token0, msg.sender, amount0);
+        _safeTransfer(token1, msg.sender, amount1);
+    }
+
+    // ───────────── 5. 工具函数 ─────────────
+    function _safeTransfer(IERC20 token, address to, uint256 amount) private {
+        if (!token.transfer(to, amount)) revert TransferFailed();
+    }
+
+    function _safeTransferFrom(IERC20 token, address from, uint256 amount) private {
+        if (!token.transferFrom(from, address(this), amount)) revert TransferFailed();
+    }
+
+    /// @dev 巴比伦法求整数平方根（向下取整）
+    function _sqrt(uint256 y) private pure returns (uint256 z) {
+        if (y > 3) {
+            z = y;
+            uint256 x = y / 2 + 1;
+            while (x < z) {
+                z = x;
+                x = (y / x + x) / 2;
+            }
+        } else if (y != 0) {
+            z = 1;
+        }
+    }
+}
+

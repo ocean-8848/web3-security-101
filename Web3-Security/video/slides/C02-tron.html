@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C02 TRON 专题</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .ana .card { font-size: 27px; display: flex; flex-direction: column; gap: 10px; min-height: 210px; }
+  .ana .card .a { color: var(--text-2); font-size: 25px; }
+  .ck { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; }
+  .ck .it { font-size: 25px; background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--gold); border-radius: 8px; padding: 10px 16px; }
+  .flowline { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 10px 0 8px; }
+  .flowline .node { font-size: 25px; background: var(--panel); border: 2px solid var(--info); border-radius: 10px; padding: 16px 20px; }
+  .flowline .node.ok { border-color: var(--ok, #35c27a); }
+  .flowline .node.bad { border-color: var(--sell); color: var(--gold); }
+  .flowline .ar { color: var(--text-2); font-size: 30px; }
+  .src { white-space: normal; flex-shrink: 0; } .src .ln { white-space: pre; }
+  .src .cm { color: #6f7682; }
+  .cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: start; }
+  .cards2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  .cards3 .card, .cards2 .card { font-size: 26px; padding: 20px 24px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="C02" data-title="TRON 专题：能跑 Solidity，但 TVM 不是 EVM">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 链专题 · C02</div>
+    <h1>能跑 Solidity，<br>但 TVM <span class="hl">不是 EVM</span></h1>
+    <div class="ana">
+      <div class="card info" data-k="1" data-nocur><b>资源模型</b><div class="a">能量 + 带宽，不是 gas</div></div>
+      <div class="card info" data-k="1" data-nocur><b>地址 / 链 ID</b><div class="a">T 开头、0x41 前缀</div></div>
+      <div class="card sell" data-k="2" data-nocur><b>USDT 怪习惯</b><div class="a">成功也返回 false</div></div>
+      <div class="card gold" data-k="2" data-nocur><b>账户权限</b><div class="a">一地址 ≠ 一私钥</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，链专题第三集，TRON。一句话理解，TRON 能跑 Solidity，但 TVM 不是 EVM。TVM 是 TRON 的合约虚拟机，兼容大部分 EVM 指令，但有很多自己的规则。</li>
+      <li>它的资源模型是能量加带宽，不是 gas。地址以 T 开头，链上带 0x41 前缀，链 ID 也完全不同。</li>
+      <li>最坑的是，最常见的代币 USDT 有个怪习惯，转账成功也返回 false。还有账户权限可以被修改，一个地址不等于一把私钥。把以太坊合约原样搬过来，编译能过，运行会错。本集讲八项差异和账户层的骗局。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="改装过的同型号汽车" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>TVM 像一台改装过的同型号汽车</h2>
+    <div class="ana">
+      <div class="card" data-k="0"><b>上车就能开</b><div class="a">方向盘油门刹车位置一样</div></div>
+      <div class="card" data-k="1"><b>不烧汽油</b><div class="a">烧"能量"，油箱有两个</div></div>
+      <div class="card" data-k="2"><b>几块表显示 0</b><div class="a">DIFFICULTY、GASLIMIT 返回 0</div></div>
+      <div class="card" data-k="3"><b>乘客的怪习惯</b><div class="a">USDT 到了却说"没到"</div></div>
+    </div>
+    <div class="card warn fs29" data-k="4">比喻的局限：改装车的差异写在说明书里。TRON 的部分差异由<b>硬分叉开关</b>控制，会随网络提案变化，部署前要查当前状态。</div>
+    <ol class="say">
+      <li>打个比方。TVM 像一台改装过的同型号汽车。方向盘、油门、刹车的位置一样，大部分操作码兼容，你上车就能开。</li>
+      <li>但它不烧汽油，烧能量。而且油箱有两个，一个是质押 TRX 获得的能量，一个是直接燃烧 TRX。</li>
+      <li>仪表盘有几块表永远显示零，比如 DIFFICULTY 和 GASLIMIT 都返回零，用它们做随机数或参数就会出错。</li>
+      <li>而路上最常见的乘客 USDT，有个怪习惯，下车时明明到了，却说没到，也就是 transfer 返回 false。</li>
+      <li>比喻的局限是，改装车的差异写在说明书里，但 TRON 的部分差异由硬分叉开关控制，会随网络提案变化，部署前一定要查当前状态。</li>
+    </ol>
+  </section>
+
+  <!-- 3 八项差异 -->
+  <section class="scene" data-title="TVM vs EVM 八项差异" data-onstep="rowStep">
+    <div class="kicker">差异总表 · 来自 TRON 官方文档</div>
+    <h2>编译能过，运行会错的八个地方</h2>
+    <table class="t sm">
+      <thead><tr><th>差异</th><th>TRON</th><th>会让什么出错</th></tr></thead>
+      <tbody>
+        <tr><td>计费</td><td>能量；无优先费</td><td>依赖 tx.gasprice / basefee 的逻辑</td></tr>
+        <tr><td>执行时限</td><td>每次 80ms CPU，超时 OUT_OF_TIME</td><td>以太坊能跑的大循环</td></tr>
+        <tr><td>CHAINID</td><td>主网 728126428</td><td>写死链 ID、链下签名工具</td></tr>
+        <tr><td>CREATE2 地址</td><td>keccak(0x41++…)</td><td>预计算地址、同地址部署假设</td></tr>
+        <tr><td>CREATE 地址</td><td>内部计数器，账户无 nonce</td><td>按 nonce 预测合约地址</td></tr>
+        <tr><td>原生币转账</td><td>TransferContract 不执行合约代码</td><td>依赖 receive() 记账 / 拒收</td></tr>
+        <tr><td>返回 0 操作码</td><td>DIFFICULTY、GASLIMIT 返回 0</td><td>用它们做随机数或参数</td></tr>
+        <tr><td>功能开关</td><td>PUSH0、TSTORE 等由网络参数控制</td><td>新编译器默认生成新指令</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>先看 TVM 和 EVM 的八项差异，这来自 TRON 官方文档。计费用能量，没有优先费，所以依赖 tx.gasprice 或 basefee 的逻辑都会出错。执行有八十毫秒的 CPU 时限，超时返回 OUT_OF_TIME，以太坊上 gas 足够的大循环在这会超时，要分批处理。链 ID 是七亿多，写死链 ID 的代码和链下签名工具都要用这个值。</li>
+      <li>地址计算也不同，CREATE2 用 0x41 前缀，CREATE 用内部计数器而不是 nonce，所以预计算地址和跨链同地址部署的假设都不成立。最关键的，原生币转账，TransferContract 这种系统转账不执行合约代码，所以依赖 receive 记账或拒收的逻辑会失效。</li>
+      <li>还有，DIFFICULTY 和 GASLIMIT 返回零，不能用它们做随机数。最后，PUSH0、TSTORE 这些新操作码由网络参数开关控制，未开启时返回非法操作，而新版编译器默认会生成 PUSH0，所以必须用 TRON 适配的编译器，并设置和网络一致的 evmVersion。这八项，每一项都对应一类会出错的代码。</li>
+    </ol>
+  </section>
+
+  <!-- 4 USDT 返回 false -->
+  <section class="scene" data-title="USDT：成功却返回 false" data-onstep="marks">
+    <div class="kicker">案例一 · EP06 非标准代币</div>
+    <h2>SafeERC20 推送 USDT，在 TRON 上全部回滚</h2>
+    <div class="flowline" data-k="0">
+      <span class="node ok">以太坊审计过的金库</span><span class="ar">→</span>
+      <span class="node">原样部署到 TRON</span><span class="ar">→</span>
+      <span class="node">提款 safeTransfer</span><span class="ar">→</span>
+      <span class="node bad">USDT 成功但返回 false</span><span class="ar">→</span>
+      <span class="node bad">SafeERC20 判失败 → 回滚</span>
+    </div>
+    <div class="cards3">
+      <div class="card sell fs28" data-k="1"><b>后果：</b>不是被盗，是被<b>锁</b>——存款走 transferFrom 正常，提款走 safeTransfer 全部回滚，用户资金只进不出。合约不可升级则可能永久取不出。</div>
+      <div class="card gold fs28" data-k="2"><b>修复（TronTransferLib）：</b>调用 transfer 后，检查接收方<b>余额是否增加</b>了对应金额，而不是看返回值。transferFrom、approve 行为标准，拉取方向不用改。</div>
+      <div class="card warn fs28" data-k="3"><b>两个前提：</b>修复假设 USDT 没开转账手续费（Tether 在 TRON 保留了开启能力）；单元测试用模拟 USDT 测不出，必须在 TRON 测试网用真实 USDT 测。</div>
+    </div>
+    <ol class="say">
+      <li>第一个案例，USDT 成功却返回 false。这来自 OpenZeppelin 二零二六年对 Across 协议 TRON 部署的审计报告。看这条流程，一个以太坊上审计过的金库，原样部署到 TRON。提款时用 SafeERC20 的 safeTransfer 推送 USDT，而 TRON 上的 USDT 转账成功时也返回 false，于是 SafeERC20 判定失败，整笔回滚。</li>
+      <li>后果不是被盗，而是被锁。存款走的是 transferFrom，方向正常，但提款走 safeTransfer 全部回滚，用户资金只进不出。如果合约不可升级，资金可能永久无法取出。</li>
+      <li>修复方案叫 TronTransferLib，核心是，调用 transfer 之后，检查接收方的余额是否增加了对应的金额，而不是看返回值。transferFrom 和 approve 行为标准，拉取方向不需要改。</li>
+      <li>但有两个前提要注意。这个修复假设 USDT 没有开启转账手续费，而 Tether 在 TRON 上保留了开启手续费、黑名单和暂停的能力。另外，单元测试用模拟的 USDT 根本测不出这个问题，必须在 TRON 测试网上用真实的 USDT 合约测试。</li>
+    </ol>
+  </section>
+
+  <!-- 5 能量/CPU/假充值 -->
+  <section class="scene" data-title="失败但上链 → 假充值" data-onstep="rowStep">
+    <div class="kicker">案例二 · EP11 确认充值要看执行结果</div>
+    <h2>TRON 交易失败仍然上链，有哈希、扣资源</h2>
+    <table class="t sm">
+      <thead><tr><th>结果</th><th>原因</th><th>影响</th></tr></thead>
+      <tbody>
+        <tr><td>OUT_OF_ENERGY</td><td>能量和 fee_limit 不足</td><td>转账未发生，资源已扣</td></tr>
+        <tr><td>OUT_OF_TIME</td><td>超过 80ms CPU 时间</td><td>同上</td></tr>
+        <tr><td>REVERT</td><td>require 失败（余额不足、被 Tether 冻结）</td><td>同上</td></tr>
+      </tbody>
+    </table>
+    <div class="card warn fs29" data-k="2"><b>"假充值"风险：</b>交易所、支付网关、跨链桥确认充值时，必须检查回执<b>执行结果为成功</b>，并检查 Transfer 事件来自<b>正确的代币合约地址</b>。只检查"交易存在"或"里面有转账调用"，就会把失败交易记为到账。</div>
+    <ol class="say">
+      <li>第二个案例，失败但上链导致的假充值。这是 TRON 一个很重要的特性，交易执行失败时，交易仍然上链，有交易哈希，扣除已消耗的资源。</li>
+      <li>常见的失败原因有三种。OUT_OF_ENERGY，能量和 fee_limit 不足以支付执行。OUT_OF_TIME，超过八十毫秒 CPU 时间。还有 REVERT，合约的 require 失败，比如余额不足，或者地址被 Tether 冻结。这三种情况，转账都没有真正发生，但资源已经扣了，交易也上链了。</li>
+      <li>这就带来假充值风险。交易所、支付网关、跨链桥在 TRON 上确认充值时，必须检查回执的执行结果为成功，并且检查 Transfer 事件来自正确的代币合约地址。如果只检查交易存在，或者只检查交易里有转账调用，就会把一笔失败的交易记为到账。公开报道中，确实有用户遇到失败回滚的 USDT 转账，被交易所错误标记为成功的情况。这是第十一集到账确认的现实版本。</li>
+    </ol>
+  </section>
+
+  <!-- 6 TRX 系统转账绕过 -->
+  <section class="scene" data-title="TRX 转账绕过合约代码" data-onstep="marks">
+    <div class="kicker">案例三 · EP06 余额等式会被打破</div>
+    <h2>以为所有入账都经过 receive()，就埋了 DoS</h2>
+    <div class="src sm" data-k="0"><div class="ln c"><span class="cm">// ❌ 在 TRON 上不可靠：以为所有入账都经过 receive()</span></div>
+<div class="ln">uint256 public totalReceived;</div>
+<div class="ln bad">receive() external payable { totalReceived += msg.value; }</div>
+<div class="ln bad">function check() external view {</div>
+<div class="ln bad">  require(address(this).balance == totalReceived); <span class="cm">// 会被打破</span></div>
+<div class="ln">}</div></div>
+    <div class="cards2">
+      <div class="card sell fs28" data-k="1"><b>被打破的不变量：</b>合约余额 == 记账值。任何人用 TransferContract 普通转账向合约转 1 sun，receive() 不执行，余额却增加了，check() 从此永远失败。</div>
+      <div class="card gold fs28" data-k="2"><b>修复：</b>不依赖 receive() 记账；用内部变量记账，并接受"余额可以在合约不知情时增加"。这和以太坊"强制转入 ETH"是同一类问题。</div>
+    </div>
+    <ol class="say">
+      <li>第三个案例，TRX 系统转账绕过合约代码。看这段代码，它用 receive 函数累加 totalReceived，然后在 check 里要求合约余额等于 totalReceived。在以太坊上，这个假设大致成立，因为转 ETH 给合约会触发 receive。</li>
+      <li>但在 TRON 上，被打破的不变量是，合约余额等于记账值。任何人用 TransferContract，也就是普通的 TRX 转账，向这个合约转一个 sun，receive 不会执行，但余额增加了，于是 check 从此永远失败。如果某个关键函数依赖这个等式，就构成了 DoS。</li>
+      <li>修复是，不依赖 receive 记账，用内部变量记账，并且接受余额可以在合约不知情的情况下增加这个事实。这和以太坊上强制转入 ETH，其实是同一类问题。第二集和第六集都讲过，合约余额是可以被外部强行改变的，不能作为账本的事实来源。</li>
+    </ol>
+  </section>
+
+  <!-- 7 账户层骗局 -->
+  <section class="scene" data-title="账户层的三类骗局" data-onstep="rowStep">
+    <div class="kicker">账户层 · 不在合约漏洞里的损失</div>
+    <h2>TRON 的损失，很多发生在账户层而非协议</h2>
+    <table class="t sm">
+      <thead><tr><th>骗局</th><th>机制</th><th>防御</th></tr></thead>
+      <tbody>
+        <tr><td>权限篡改（"多签诈骗"）</td><td>拿到私钥后不转资产，改 Owner/Active 权限给自己</td><td>UI 显示权限配置；权限变化告警</td></tr>
+        <tr><td>授权钓鱼</td><td>诱导对攻击者地址 approve 大额 USDT</td><td>清晰显示授权对象与金额；定期撤销</td></tr>
+        <tr><td>地址投毒</td><td>生成首尾相同的地址，发 0 额转账污染记录</td><td>核对完整地址；用地址簿；隐藏零额转账</td></tr>
+        <tr><td>假 USDT</td><td>部署同名同符号的假代币发给受害者</td><td>以合约地址识别代币，不以名称</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>第四组是账户层的骗局。TRON 收集到的案例，集中在账户层和集成层，而不是单个协议的合约漏洞。最典型的是权限篡改，也叫多签诈骗。攻击者拿到私钥后，不立即转走资产，而是把账户的 Owner 和 Active 权限改成自己控制的地址。受害者还能看到余额，但转账需要攻击者签名，新转入的 USDT 不需要签名就到账，攻击者等余额变大后一次转走。防御是，钱包和交易所要在 UI 里显示账户权限配置，权限变化时告警。</li>
+      <li>第二种是授权钓鱼，诱导用户对攻击者地址 approve 大额 USDT，防御是钱包清晰显示授权对象和金额，定期撤销授权。第三种是地址投毒，攻击者生成首尾字符和你常用地址相同的地址，发送零金额转账污染你的交易记录，你下次从记录里复制就复制错了，防御是核对完整地址，用地址簿，钱包隐藏零金额转账。</li>
+      <li>第四种是假 USDT，部署一个名字和符号都相同的假代币发给你，防御是以合约地址识别代币，不以名称识别。核心启示是，在 TRON 上收到一个地址作为合约特权角色时，一定要确认它的账户权限配置，因为一个地址不等于一把私钥。</li>
+    </ol>
+  </section>
+
+  <!-- 8 签名与链 ID -->
+  <section class="scene" data-title="签名与链 ID" data-onstep="ckStep">
+    <div class="kicker">EP08 · 签名防重放在 TRON 的要点</div>
+    <h2>四个容易踩的签名坑</h2>
+    <div class="ck" id="ck"></div>
+    <ol class="say">
+      <li>最后讲签名与链 ID，有四个容易踩的坑。第一，EIP-712 的域分隔符包含 chainId，在 TRON 上 block.chainid 返回七亿多，链下签名工具必须用相同的值，否则签名验证会失败。第二，TRON 账户没有 nonce，交易层靠 TAPOS 和六十秒过期防重放，但合约层的签名防重放仍然要你自己维护 nonce。</li>
+      <li>第三，地址在虚拟机内部是二十字节，到链边界才加 0x41 前缀，所以签名消息里的地址编码，要和合约里 abi.encode 处理 address 的方式一致。第四，TRON 提供了 ValidateMultiSign 预编译合约，地址是 0x0a，可以在合约里验证账户多签。</li>
+      <li>这四点都是第八集签名安全在 TRON 上的具体落地。总的来说，TRON 的签名问题，根子还是链 ID 和地址编码的差异。把这些对齐了，第八集讲的最小输出、截止时间、nonce 防重放这些通用原则，在 TRON 上一样适用。</li>
+    </ol>
+  </section>
+
+  <!-- 9 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">USDT <span class="hl">成功也返回 false</span>：推送转账改余额差校验，必须用真实 USDT 在测试网测。</li>
+      <li data-step="1">交易<span class="hl">失败也上链</span>：确认充值要看执行结果 + 代币合约地址，防"假充值"。</li>
+      <li data-step="2">账户权限<span class="hl">可被修改</span>：一地址 ≠ 一私钥；特权角色先核查权限配置。</li>
+    </ul>
+    <h2 data-show="3">下一集：C03 Mantle（以太坊 L2）</h2>
+    <div class="path" data-show="3">
+      <div class="card sell"><div class="n">MNT</div><b>原生币不是 ETH</b><div class="d">msg.value 是 MNT</div></div>
+      <div class="card gold"><div class="n">ETH</div><b>是 ERC-20 形式</b><div class="d">不能 call{value:}</div></div>
+      <div class="card info"><div class="n">L2</div><b>排序器 + 多签</b><div class="d">新的信任假设</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，TRON 的 USDT 成功也返回 false，推送转账要改成余额差校验，而且必须用真实的 USDT 在测试网测，模拟代币测不出来。</li>
+      <li>第二，TRON 的交易失败也会上链，确认充值时要看执行结果和代币合约地址，防止假充值。</li>
+      <li>第三，账户权限可以被修改，一个地址不等于一把私钥，把一个地址设为特权角色前，先核查它的权限配置。</li>
+      <li>下一集是 C03，Mantle，这是一条以太坊的二层网络，视角又不一样。它的原生币是 MNT 不是 ETH，msg.value 收到的是 MNT。而 ETH 在上面是 ERC-20 的形式，不能用 call value 发送。而且作为 L2，你的资产安全还取决于排序器、证明系统和升级多签，这是全新的信任假设。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  function ckStep(el, st) {
+    marks(el, st);
+    const items = [
+      'EIP-712 域分隔符的 chainId 用 block.chainid（主网 728126428）',
+      '账户无 nonce：合约层签名防重放仍要自己维护 nonce',
+      '地址 VM 内 20 字节、链边界加 0x41；签名编码要与 abi.encode 一致',
+      'ValidateMultiSign 预编译（0x0a）可在合约内验证账户多签'
+    ];
+    el.querySelector('#ck').innerHTML = items.map(t => `<div class="it">${t}</div>`).join('');
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

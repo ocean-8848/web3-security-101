@@ -1,0 +1,40 @@
+[
+ {
+  "after": "2. 访问控制：最常见、损失最大的一类",
+  "title": "任意外部调用盗走授权",
+  "mermaid": "sequenceDiagram\n  participant U as 受害者\n  participant R as 路由合约\n  participant A as 攻击者\n  participant T as 代币合约\n  U->>T: 授权路由合约\n  A->>R: 提交 target = 代币 data = transferFrom(受害者, 攻击者, x)\n  R->>T: 原样执行 msg.sender 是路由\n  T->>T: 检查路由的授权额度 通过\n  T-->>A: 受害者的代币转给攻击者\n  Note over R,T: 路由没限制 target 和 data",
+  "notes": [
+   [
+    "flow",
+    "资金从受害者经代币合约直接流向攻击者，路由只是被借用的身份。"
+   ],
+   [
+    "fail",
+    "路由执行用户提供的调用，却没有限制目标和数据。"
+   ],
+   [
+    "risk",
+    "所有对路由有授权的资产都会暴露，属于 Critical。"
+   ]
+  ]
+ },
+ {
+  "after": "3.1 溢出与回绕",
+  "title": "BEC batchTransfer 溢出",
+  "mermaid": "flowchart TB\n  I[\"攻击者传入 2 个地址<br/>_value = 2²⁵⁵\"] --> M[\"amount = cnt * _value\"]\n  M --> O[\"Solidity 0.8 之前不报错<br/>乘积溢出为 0\"]\n  O --> C[\"余额检查 amount = 0<br/>直接通过\"]\n  C --> R[\"每个地址收到 2²⁵⁵ 代币\"]\n  F[\"0.8 起默认检查<br/>溢出时 revert\"] -.->|\"修复\"| M\n  W[\"0.8 后仍会回绕<br/>unchecked 块 · 内联汇编<br/>类型强转 · 移位运算\"] -.->|\"例外\"| F",
+  "notes": [
+   [
+    "fail",
+    "错在先乘后检：检查的是溢出后的 0，而不是真实总额。"
+   ],
+   [
+    "risk",
+    "检查被绕过后，凭空铸出的代币直接打进攻击者地址。"
+   ],
+   [
+    "limit",
+    "0.8 的默认检查管不到 unchecked、汇编、强转和移位。"
+   ]
+  ]
+ }
+]

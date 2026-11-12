@@ -1,0 +1,6 @@
+{
+"answers": [
+"标题示例：Library 按 0.25% 报价，Pair 仍按 0.3% 校验 K，导致 Router 兑换回滚。影响：<code>getAmountOut</code> 算出的输出超过 Pair 允许的量，<code>getAmountIn</code> 算出的输入低于所需的量。Pair 仍用 <code>1000 / 3</code> 校验，Router 兑换会因 <code>K</code> 回滚，极小金额可能因取整通过。结果是主要交易路径不可用，LP 资金不会被盗。严重性按可用性定级。修复是同步修改 Library 和 Pair 中的费率常数，并加上 Router 到 Pair 的集成测试。",
+"因为 Pair 只保护池子，不保护交易者。调用方自己声明取出多少，Pair 在回调后读取真实余额，并检查扣费后的 K 不减。输出多要回滚，输出少只是调用方吃亏。<code>amountOutMin</code> 约束的是用户能接受的最差价格，这属于 Router 的职责。集成方如果直接调用 Pair，必须自己实现滑点保护。"
+]
+}

@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>漏洞定级训练</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .choices { display: flex; flex-wrap: wrap; gap: 8px; }
+  .choices button[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); font-weight: 650; }
+  .progress { font-family: var(--mono); font-size: 13px; color: var(--text-2); }
+  .scen { font-size: 15px; }
+  .cmp td:first-child { color: var(--text-2); white-space: nowrap; }
+  .ok { color: var(--buy); font-weight: 650; }
+  .no { color: var(--sell); font-weight: 650; }
+  .matrix td, .matrix th { text-align: center; }
+  .matrix td.hit { background: var(--accent-soft); font-weight: 700; }
+  .big { font-size: 22px; font-weight: 650; font-family: var(--mono); }
+  ul.review { padding-left: 18px; margin: 8px 0 0; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="back" href="index.html">← 交互实验目录</a>
+    <h1>漏洞定级训练</h1>
+  </header>
+  <p class="lead">20 个自拟的发现场景。每题先选影响和可能性，再选等级，然后和参考推理对比。判定依据是 <a href="../assessment/A02-risk-rating-reporting.md">A02 风险评级</a> 的矩阵。配套章节：<a href="../bootcamp/B28-bug-patterns.md">B28 模式库</a>、<a href="../bootcamp/B30-think-aloud.md">B30 跟审实录</a>。</p>
+
+  <div class="grid cols-2">
+    <div class="card">
+      <div class="progress" id="progress"></div>
+      <h3 id="title" style="margin-top:6px"></h3>
+      <p class="scen" id="body"></p>
+      <label>影响（被利用后的后果）</label>
+      <div class="choices" id="impact"></div>
+      <label>可能性（被利用的门槛）</label>
+      <div class="choices" id="likelihood"></div>
+      <label>等级</label>
+      <div class="choices" id="severity"></div>
+      <div class="btn-row" style="margin-top:14px">
+        <button class="primary" id="submit" disabled>提交</button>
+        <button id="next" disabled>下一题</button>
+        <button id="reset">重新开始</button>
+      </div>
+      <div id="feedback"></div>
+    </div>
+    <div>
+      <div class="card">
+        <h3>得分</h3>
+        <div class="stat"><span class="k">当前得分（每题 3 分）</span><span class="big" id="score">0 / 0</span></div>
+        <p class="small muted" id="scoreNote">影响、可能性、等级各 1 分。</p>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h3>A02 矩阵</h3>
+        <div class="table-wrap"><table class="matrix" id="matrix"></table></div>
+        <p class="small muted">矩阵是起点。真实定级还要写清攻击者能力假设。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="summary" style="margin-top:16px;display:none">
+    <h3>训练结果</h3>
+    <p id="sumLine"></p>
+    <ul class="review small" id="sumList"></ul>
+  </div>
+
+  <footer class="note">全部场景都是本手册自拟的示例，不对应真实项目。练习结果只保留在当前页面。</footer>
+</div>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const IMPACTS = ['严重', '高', '中', '低'];
+  const LIKES = ['高', '中', '低'];
+  const SEVS = ['严重', '高', '中', '低', '信息'];
+  const MATRIX = {
+    '高': { '严重': '严重', '高': '高', '中': '中', '低': '低' },
+    '中': { '严重': '高', '高': '高', '中': '中', '低': '低' },
+    '低': { '严重': '中', '高': '中', '中': '低', '低': '信息' }
+  };
+  const S = [
+    { t: '无权限的清扫函数', b: '金库有 sweep(token, to)，函数没有权限修饰符。金库当前持有用户存入的全部资产。', i: '严重', l: '高', s: '严重', r: '任何人一笔交易就能转走全部资产。影响是直接盗取资金，门槛几乎为零。' },
+    { t: '3/5 多签可立即升级', b: '代理合约由 3/5 多签升级，没有时间锁。5 名签名人使用硬件钱包，地理和组织上互相独立，流程有文档。', i: '严重', l: '低', s: '中', r: '被攻破的后果是全部资金。但需要拿到 3 把独立管理的私钥，门槛高。如果私钥管理薄弱，可能性要上调。' },
+    { t: '奖励可重复领取', b: 'claim() 在发放奖励后忘记更新已领取记录。奖励放在单独的奖励池，用户本金不在其中。', i: '高', l: '高', s: '高', r: '任何用户都能反复领取，但损失的是未领取收益，不是本金。A02 把盗取未领取收益列为高。' },
+    { t: 'L2 恢复时缺少宽限期', b: '借贷协议部署在 L2，没有排序器在线检查。排序器恢复瞬间，用户来不及补仓，部分仓位被清算。', i: '高', l: '低', s: '中', r: '部分用户受损，但需要排序器宕机这一少见外部条件。' },
+    { t: '死份额没有原子化', b: '金库没有虚拟份额。部署脚本分两笔交易部署和注入死份额。两笔交易之间，金库处于空状态。', i: '严重', l: '中', s: '高', r: '首存者膨胀能盗取后续存款。攻击者必须抢在注入之前，窗口有限，需要监控和抢跑。' },
+    { t: '事件参数写反', b: 'Withdraw 事件的 owner 和 receiver 两个参数顺序写反。链上余额和业务逻辑都正确，索引服务显示错误。', i: '低', l: '高', s: '低', r: '每笔取款都触发，但只影响链下展示，不造成价值损失。' },
+    { t: '错误配置导致存款暂停', b: 'owner 把 depositCap 设为 0 时，deposit 全部回滚，直到 owner 改回来。已存资金不受影响。', i: '中', l: '低', s: '低', r: '一项功能不可用，但只有特权角色的失误能触发，且可恢复。' },
+    { t: '用户可增长的循环', b: 'distribute() 遍历 stakers 数组。任何人都能用极小金额注册，数组无上限。admin 可以分批分发，但默认入口会超出区块 gas。', i: '中', l: '高', s: '中', r: '默认入口的 DoS 很容易触发。资金没有丢失，存在分批的恢复路径，所以影响是中。' },
+    { t: '黑名单卡住批量付款', b: 'payoutAll() 用 USDC 循环推送给多个收款人。一个收款人被代币发行方列入黑名单后，整笔交易回滚，全部付款暂时冻结。', i: '高', l: '低', s: '中', r: '临时冻结资金。触发依赖发行方拉黑某个收款人，攻击者难以自行促成。' },
+    { t: '退出签名缺少 chainId', b: '协议在两条链上以相同地址部署。提款签名不包含 chainId。用户在 A 链签名提款，同一签名在 B 链也有效。', i: '严重', l: '中', s: '高', r: '可以直接盗取用户在另一条链上的资金。前提是用户在两条链都有余额，并且攻击者看到签名。' },
+    { t: '喂价不检查时效', b: '借贷协议读取 latestRoundData，但忽略 updatedAt。喂价停更时，协议继续按旧价放贷。', i: '严重', l: '中', s: '高', r: '行情剧烈时旧价会造成坏账，甚至资不抵债。需要喂价停更和市场波动同时发生。' },
+    { t: '复投时滑点为零', b: '任何人都能调用 harvest()。函数把奖励卖成本金，minOut 写死为 0。奖励进入前被夹击，最多损失全部奖励。', i: '高', l: '高', s: '高', r: '损失的是收益，不是本金。夹击是公开内存池上的标准操作，门槛低。' },
+    { t: '有 minOut 但无 deadline', b: '路由的 swap 函数接受用户指定的 minOut，但没有 deadline。交易可能在内存池等待较长时间后才成交。', i: '低', l: '中', s: '低', r: '最差结果受用户自己的 minOut 限制。用户损失的是机会成本，不是超出预期的资金。' },
+    { t: '任何人可取消他人订单', b: '订单簿的 cancel(orderId) 没有检查发起人。攻击者不能获利，但能取消任何挂单，订单金额全额退回。', i: '中', l: '高', s: '中', r: '无获利破坏，门槛低。资金没有损失，订单簿功能被破坏。' },
+    { t: '实现合约未初始化', b: 'UUPS 实现合约没有封锁初始化。任何人能初始化实现合约本身。实现合约不持有资金，升级入口只能经代理调用。', i: '低', l: '高', s: '低', r: '任何人都能触发，但本场景的条件限制了影响，实现合约的状态不影响代理。真实审计中要逐项验证这些条件。' },
+    { t: '取款多给 1 wei', b: '取款换算向上取整，用户每次最多多得 1 wei。代币是 18 位精度，部署在 gas 较高的主网。', i: '低', l: '高', s: '低', r: '任何人都能触发。在这里每次收益远低于 gas，没有经济动机。偏离规格，但没有实际价值损失。' },
+    { t: '低精度代币上的取整', b: '同样的取整错误，代币是 6 位精度，部署在 gas 很低的 L2，并且能用 multicall 批量重复。', i: '严重', l: '中', s: '高', r: '低精度让单次收益变得可观，低 gas 让重复变得划算，能持续抽走池子。需要构造批量调用并等待合适的汇率。同一错误，环境改变等级。' },
+    { t: '跨链接收不校验来源', b: '接收函数只检查 msg.sender 是消息端点，不检查源链上的发送方。任何人都能通过端点发送伪造的铸造消息。', i: '严重', l: '高', s: '严重', r: '等同未授权增发。端点是公开的，攻击者不需要特殊条件。' },
+    { t: 'owner 可永久暂停', b: 'owner 能暂停取款，没有最长暂停时间。owner 是有时间锁的多签，文档中披露了这一权力。', i: '严重', l: '低', s: '中', r: '如果被滥用，资金永久冻结。但需要特权角色作恶或被攻破，属于中心化风险。' },
+    { t: '管理员函数的错误事件', b: '只有 owner 能调用的 setLabel 函数，在值没有变化时也发出事件。没有任何链上逻辑读取这个标签。', i: '低', l: '低', s: '信息', r: '没有价值影响，也只有特权角色能触发。记录下来即可，不进入修复优先队列。' }
+  ];
+
+  let idx, picks, done, total, results;
+
+  function renderMatrix(i, l) {
+    let h = '<tr><th></th>' + IMPACTS.map(x => '<th>影响：' + x + '</th>').join('') + '</tr>';
+    LIKES.forEach(row => {
+      h += '<tr><th>可能性：' + row + '</th>' + IMPACTS.map(col => '<td class="' + (row === l && col === i ? 'hit' : '') + '">' + MATRIX[row][col] + '</td>').join('') + '</tr>';
+    });
+    $('matrix').innerHTML = h;
+  }
+
+  function group(el, key, opts) {
+    el.innerHTML = '';
+    opts.forEach(o => {
+      const b = document.createElement('button');
+      b.textContent = o; b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+      b.onclick = () => {
+        if (done) return;
+        picks[key] = o;
+        [...el.children].forEach(c => c.setAttribute('aria-pressed', String(c === b)));
+        $('submit').disabled = !(picks.i && picks.l && picks.s);
+        if (key !== 's') renderMatrix(picks.i, picks.l);
+      };
+      el.appendChild(b);
+    });
+  }
+
+  function show() {
+    const q = S[idx];
+    picks = {}; done = false;
+    $('progress').textContent = '第 ' + (idx + 1) + ' / ' + S.length + ' 题';
+    $('title').textContent = q.t;
+    $('body').textContent = q.b;
+    group($('impact'), 'i', IMPACTS);
+    group($('likelihood'), 'l', LIKES);
+    group($('severity'), 's', SEVS);
+    $('feedback').innerHTML = '';
+    $('submit').disabled = true;
+    $('next').disabled = true;
+    renderMatrix();
+  }
+
+  function mark(a, b) { return a === b ? '<span class="ok">✓</span>' : '<span class="no">✗</span>'; }
+
+  function submit() {
+    if (done) return;
+    done = true;
+    const q = S[idx];
+    const gain = (picks.i === q.i) + (picks.l === q.l) + (picks.s === q.s);
+    total += gain;
+    results.push({ t: q.t, gain, want: q.s, got: picks.s });
+    const own = MATRIX[picks.l][picks.i];
+    const hint = own !== picks.s ? '<p class="small">提示：按你自己选的影响和可能性，矩阵给出的是"' + own + '"，而你选了"' + picks.s + '"。</p>' : '';
+    $('feedback').innerHTML = '<div class="callout ' + (gain === 3 ? 'info' : 'warn') + ' small">' +
+      '<div class="table-wrap"><table class="cmp"><tr><th></th><th>你的选择</th><th>参考</th><th></th></tr>' +
+      '<tr><td>影响</td><td>' + picks.i + '</td><td>' + q.i + '</td><td>' + mark(picks.i, q.i) + '</td></tr>' +
+      '<tr><td>可能性</td><td>' + picks.l + '</td><td>' + q.l + '</td><td>' + mark(picks.l, q.l) + '</td></tr>' +
+      '<tr><td>等级</td><td>' + picks.s + '</td><td>' + q.s + '</td><td>' + mark(picks.s, q.s) + '</td></tr></table></div>' +
+      '<p style="margin:8px 0 0"><strong>推理：</strong>' + q.r + '</p>' + hint + '</div>';
+    renderMatrix(q.i, q.l);
+    $('score').textContent = total + ' / ' + (results.length * 3);
+    $('submit').disabled = true;
+    $('next').disabled = false;
+    $('next').textContent = idx === S.length - 1 ? '查看结果' : '下一题';
+  }
+
+  function finish() {
+    const pct = Math.round(total / (S.length * 3) * 100);
+    $('summary').style.display = '';
+    $('sumLine').innerHTML = '总分 <strong>' + total + ' / ' + (S.length * 3) + '</strong>（' + pct + '%）。' +
+      (pct >= 80 ? '定级判断稳定，可以进入独立审计练习。' : '回看下面失分的场景，比较你的攻击者能力假设和参考推理。');
+    const miss = results.filter(r => r.gain < 3);
+    $('sumList').innerHTML = miss.length ? miss.map(r => '<li>' + r.t + '：得 ' + r.gain + ' 分，参考等级 ' + r.want + '，你选 ' + r.got + '</li>').join('') : '<li>全部答对。</li>';
+    $('next').disabled = true;
+    $('summary').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function reset() {
+    idx = 0; total = 0; results = [];
+    $('summary').style.display = 'none';
+    $('score').textContent = '0 / 0';
+    $('next').textContent = '下一题';
+    show();
+  }
+
+  $('submit').onclick = submit;
+  $('next').onclick = () => { if (idx === S.length - 1) finish(); else { idx++; show(); } };
+  $('reset').onclick = reset;
+  window.__drill = { S, MATRIX };
+  reset();
+})();
+</script>
+<script>
+/* 在单文件阅读版的 iframe 中打开时，把章节链接交给外层阅读器处理 */
+(function () {
+  if (window.parent === window) return;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href');
+    if (/\.md(#|$)/.test(h)) { e.preventDefault(); window.parent.postMessage({ cexNavMd: h }, '*'); }
+  });
+})();
+</script>
+</body>
+</html>

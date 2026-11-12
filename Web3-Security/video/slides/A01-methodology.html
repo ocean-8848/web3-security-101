@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A01 安全评估方法论</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .q { font-family: var(--display); font-size: 62px; line-height: 1.35; }
+  .series { display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; }
+  .series .card { font-size: 26px; padding: 16px 20px; min-height: 150px; display: flex; flex-direction: column; gap: 6px; }
+  .series .card .n { font-family: var(--mono); color: var(--gold); font-weight: 700; font-size: 30px; }
+  .ana { display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; }
+  .ana .card { font-size: 28px; padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; min-height: 250px; }
+  .ana .card .a { color: var(--text-2); font-size: 26px; }
+  .obj th:first-child, .obj td:first-child { width: 230px; color: var(--text-2); }
+  .scope { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .scope .card { font-size: 28px; padding: 18px 22px; min-height: 160px; display: flex; flex-direction: column; gap: 6px; }
+  .scope .card .n { font-family: var(--mono); color: var(--gold); font-weight: 700; font-size: 34px; }
+  .scope .card .d { color: var(--text-2); font-size: 24px; }
+  .verdict { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .verdict .card { display: flex; flex-direction: column; gap: 12px; min-height: 300px; }
+  .verdict .card .d { font-size: 27px; color: var(--text-2); line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="A01" data-title="安全评估方法论：从接单到签字">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 评估篇 · A01</div>
+    <h1>评估不是找 bug，<br>是给<span class="hl">上线决策</span>签字</h1>
+    <div class="hero">
+      <div class="card sell" data-k="1" data-nocur><div class="k">2021 · Uranium Finance</div><div class="big">约 5,000 万$</div><div>改了一个常数，校验弱了 100 倍</div></div>
+      <div class="card warn" data-k="2" data-nocur><div class="k">2022 · Nomad 跨链桥</div><div class="big">约 1.9 亿$</div><div>一次升级里的初始化值出错</div></div>
+      <div class="card info" data-k="3" data-nocur><div class="k">2024 · Radiant</div><div class="big">约 5,000 万$</div><div>合约没新漏洞，签名人被骗</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到合约安全评估篇第1集。先问一个问题。一份审计报告写着没有严重问题，你敢签字上线吗？</li>
+      <li>看三个案例，以下据公开报道。2021年，Uranium Finance 改了一个常数，交换后的校验弱了100倍，损失约5000万美元。</li>
+      <li>2022年，Nomad 跨链桥在一次升级里把一个初始化值设错，损失约1.9亿美元。</li>
+      <li>2024年，Radiant 的合约本身没有新漏洞，是签名人的电脑被入侵，签下了恶意交易，损失约5000万美元。这三起事故，问题都不只在代码里。所以本集的主题是，评估不是找 bug，而是给一个上线决策签字。</li>
+    </ol>
+  </section>
+
+  <!-- 2 系列路线 -->
+  <section class="scene" data-title="评估篇路线图" data-onstep="marks">
+    <div class="kicker">评估篇 · 10 集</div>
+    <h2>三类对象，自评为主，外部审计补充</h2>
+    <div class="series">
+      <div class="card gold" data-k="0" data-nocur><span class="n">A01</span>方法论：七个阶段</div>
+      <div class="card" data-k="0" data-nocur><span class="n">A02</span>风险评级与报告</div>
+      <div class="card sell" data-k="1" data-nocur><span class="n">A03</span>交易所合约与钱包</div>
+      <div class="card info" data-k="1" data-nocur><span class="n">A04</span>DeFi 协议评估</div>
+      <div class="card buy" data-k="1" data-nocur><span class="n">A05</span>上币与合作尽调</div>
+      <div class="card" data-k="2" data-nocur><span class="n">A06</span>运营与密钥安全</div>
+      <div class="card" data-k="2" data-nocur><span class="n">A07</span>外部审计与赏金</div>
+      <div class="card" data-k="3" data-nocur><span class="n">A08</span>事故分析与验证</div>
+      <div class="card" data-k="3" data-nocur><span class="n">A09</span>应急响应</div>
+      <div class="card" data-k="3" data-nocur><span class="n">A10</span>实例：Audit 页</div>
+    </div>
+    <div class="card gold fs30" data-k="4" data-nocur>本集路线：七个阶段 → 三类对象 → 定范围 → 分工与工作量 → 三种结论</div>
+    <ol class="say">
+      <li>先看评估篇的路线。一共10集。前两集讲通用的方法，就是怎么组织一次评估，怎么给发现定级。</li>
+      <li>中间三集，分别对应你要负责的三类对象。交易所自己的合约和钱包，DeFi 协议，还有上币和合作项目的尽调。</li>
+      <li>接着两集讲代码之外的部分，运营和密钥安全，以及怎样管理外部审计和漏洞赏金。</li>
+      <li>最后三集讲实战，怎样读懂一起事故，出事后怎样应急，还有一个实例分析。整个系列的立场是，评估主要自己做，外部审计作为补充。</li>
+      <li>本集的路线是这样的。先看七个阶段，再看三类对象的差别，然后讲最容易出错的定范围，接着是分工和工作量估算，最后是三种结论。</li>
+    </ol>
+  </section>
+
+  <!-- 3 比喻 -->
+  <section class="scene" data-title="像建筑验收一样评估" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>安全评估像建筑验收</h2>
+    <div class="ana">
+      <div class="card" data-k="0"><b>拿图纸</b><div class="a">施工记录、设计图</div><div class="hl">→ 资料收集</div></div>
+      <div class="card" data-k="0"><b>定验收范围</b><div class="a">结构、消防、电梯</div><div class="hl">→ 范围说明书</div></div>
+      <div class="card" data-k="1"><b>重点查易出事处</b><div class="a">不查每块砖</div><div class="hl">→ 威胁建模</div></div>
+      <div class="card" data-k="2"><b>问题分轻重</b><div class="a">必须整改 / 建议整改</div><div class="hl">→ 风险评级</div></div>
+      <div class="card" data-k="3"><b>签字</b><div class="a">交付 / 附条件 / 不交付</div><div class="hl">→ 门禁结论</div></div>
+    </div>
+    <div class="card warn fs30" data-k="4">比喻不准的地方：大楼验收后很少改动。合约会升级、改参数、接新资产，所以要有<b>变更触发重评</b>。</div>
+    <ol class="say">
+      <li>打个比方，安全评估像建筑验收。验收员不会重新设计大楼。他先拿到图纸和施工记录，再确定这次验什么，比如结构、消防、电梯。</li>
+      <li>他也不会检查每一块砖。他知道哪些地方最容易出事，重点看那里。对应到评估，就是威胁建模。</li>
+      <li>发现的问题，他分成两类。必须整改才能入住的，和建议整改的。这就是风险评级。</li>
+      <li>最后他签字。可以交付，附条件交付，或者不能交付。这就是评估的门禁结论。</li>
+      <li>比喻不准的地方在于，大楼验收后很少改动。合约上线后会升级，会改参数，会接入新资产。所以评估必须有一条规则，任何改变风险的变更，都触发重新评估。</li>
+    </ol>
+  </section>
+
+  <!-- 4 七个阶段 -->
+  <section class="scene" data-title="七个阶段" data-onstep="stageStep">
+    <div class="kicker">流程 · 七个阶段</div>
+    <h2>每个阶段都有退出条件</h2>
+    <svg id="stg" width="1640" height="520" viewBox="0 0 1640 520"></svg>
+    <ol class="say">
+      <li>来看完整的流程，一共七个阶段。第一步是受理和定范围。申请方提出评估，我们写出范围说明书，双方书面确认。</li>
+      <li>第二步是资料收集，按资料清单要架构图、规格、权限清单和部署脚本。资料齐了，代码冻结，才进入下一步。</li>
+      <li>第三步是威胁建模。列出资产、入口、信任边界和关键不变量。第四步是审查与测试，这是工作量最大的一步。</li>
+      <li>第五步，给每条发现定级，写成报告。第六步，项目方修复，我们复核。严重和高危必须全部关闭，或者有业务负责人签字接受风险。</li>
+      <li>第七步，给出门禁结论，同时提出上线后的监控需求。</li>
+      <li>注意两条回头的虚线。审查中发现范围外的高风险，比如依赖的外部协议有问题，要回到第一步调整范围，而不是悄悄扩大工作量，或者视而不见。</li>
+      <li>另一条是上线之后。升级、参数变更、接入新资产，都会触发新一轮评估。所以第七步不是终点。</li>
+    </ol>
+  </section>
+
+  <!-- 5 输入输出表 -->
+  <section class="scene" data-title="阶段的输入、输出与退出条件" data-onstep="rowStep">
+    <div class="kicker">每个阶段交什么</div>
+    <h2>不满足退出条件，就不进入下一阶段</h2>
+    <table class="t sm" id="io">
+      <thead><tr><th>阶段</th><th>输出</th><th>退出条件</th></tr></thead>
+      <tbody>
+        <tr><td>① 受理与定范围</td><td>范围说明书：对象、提交哈希、链、排除项</td><td>申请方书面确认</td></tr>
+        <tr><td>② 资料收集</td><td>架构、规格、权限、部署脚本、既往审计</td><td>资料齐全 · 代码冻结</td></tr>
+        <tr><td>③ 威胁建模</td><td>资产、入口、信任边界、不变量、特权清单</td><td>组内评审通过</td></tr>
+        <tr><td>④ 审查与测试</td><td>审查记录、测试代码、扫描结论</td><td>每个高风险项都有结论</td></tr>
+        <tr><td>⑤ 定级与报告</td><td>发现报告</td><td>每条有定级、证据、建议</td></tr>
+        <tr><td>⑥ 整改复核</td><td>已修复 / 部分修复 / 接受风险</td><td>严重高危关闭或签字接受</td></tr>
+        <tr><td>⑦ 门禁结论</td><td>门禁结论 + 监控需求</td><td>门禁签字</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>把每个阶段的产出列成表。第一阶段产出范围说明书，退出条件是申请方书面确认。口头说好不算数。</li>
+      <li>第二阶段的退出条件有两个。必需资料齐全，而且代码冻结。代码还在改，评估的就不是上线的版本。</li>
+      <li>第三阶段的退出条件是组内评审通过。威胁模型画错了，后面的审查就会查错地方。</li>
+      <li>第四阶段的退出条件很具体。威胁模型里每一个高风险项，都要有明确结论，有问题，或者没问题，并写明理由。</li>
+      <li>第五和第六阶段，每条发现都要有定级、证据和修复建议。严重和高危，要么修复，要么有人签字接受。</li>
+      <li>最后是门禁签字。下面我们看，同样是这七步，三类对象做起来差别有多大。</li>
+    </ol>
+  </section>
+
+  <!-- 6 三类对象 -->
+  <section class="scene" data-title="三类评估对象" data-onstep="objStep">
+    <div class="kicker">三类对象 · 时长为示例</div>
+    <h2>控制力不同，深度和交付物就不同</h2>
+    <table class="t obj" id="obj">
+      <thead><tr><th></th><th>A 交易所自有合约与钱包</th><th>B DeFi 协议</th><th>C 上币与合作尽调</th></tr></thead>
+      <tbody>
+        <tr><td>核心问题</td><td>我们的资产会不会丢</td><td>协议会不会被掏空</td><td>风险能否接受</td></tr>
+        <tr><td>对代码控制力</td><td class="good">完全可控</td><td>自研可控 · 接入不可控</td><td class="bad">不可控</td></tr>
+        <tr><td>评估深度</td><td>代码 + 运营 + 密钥 + 流程</td><td>代码 + 经济 + 依赖</td><td>权限 + 链上数据 + 问卷</td></tr>
+        <tr><td>典型时长</td><td class="mono">2–6 周</td><td class="mono">1–4 周</td><td class="mono">1–5 个工作日</td></tr>
+        <tr><td>交付物</td><td>完整报告 + 门禁 + 监控规则</td><td>完整报告或接入评估</td><td>评分卡 + 结论 + 上线条件</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>你要负责三类对象。先看核心问题。A 类是交易所自己的合约和钱包，问题是我们的资产会不会丢。B 类是 DeFi 协议，问题是会不会被掏空，接入后会不会被连累。C 类是上币和合作项目，问题是风险能不能接受。</li>
+      <li>三者最大的区别是控制力。自己的合约完全可控，有问题就改。上币项目完全不可控，你没有权力让对方改代码。</li>
+      <li>控制力决定深度。A 类最深，要看代码、运营、密钥和流程。B 类看代码、经济模型和外部依赖。C 类看权限、链上数据，再加一份运营安全问卷。</li>
+      <li>时长也差很多。示例里，A 类两到六周，B 类一到四周，C 类只有一到五个工作日。</li>
+      <li>交付物也不同。A 类是完整报告，加门禁，加监控规则。C 类是一张评分卡，一个结论，和一组上线条件。</li>
+    </ol>
+  </section>
+
+  <!-- 7 C 类结论 -->
+  <section class="scene" data-title="尽调的结论是风险可否接受" data-onstep="marks">
+    <div class="kicker">C 类尽调 · 注意</div>
+    <h2>不是"代码安不安全"，而是"风险能不能接受"</h2>
+    <div class="vs">
+      <div class="card bad" data-k="0"><h3>✗ 错误的目标</h3><div class="fs30">五天内审完对方全部代码<br>要求对方修改代码后再上线<br>结论写"代码安全"</div></div>
+      <div class="card good" data-k="1"><h3>✓ 正确的目标</h3><div class="fs30">把时间花在<b class="hl">能直接造成用户损失</b>的权限和机制上<br>增发、暂停、升级、黑名单、锁仓<br>结论写"风险可接受 / 附条件 / 不可接受"</div></div>
+    </div>
+    <div class="card info fs30" data-k="2">没有源码怎么办？仍可查：部署者历史、权限地址类型、持仓集中度、能否卖出。结论写明"<b>未经源码审查</b>"。</div>
+    <ol class="say">
+      <li>C 类尽调有个常见误区。有人想在五天内审完对方全部代码，还要求对方改完再上线，最后在结论里写代码安全。这三件事都做不到。</li>
+      <li>正确的目标是，把有限的时间花在能直接造成用户损失的权限和机制上。比如谁能增发，谁能暂停，谁能升级，谁能拉黑名单，锁仓是不是真的。结论写的是风险能不能接受。</li>
+      <li>如果对方只给了合约地址，没有源码呢？仍然有事可做。可以查部署者的历史，权限地址是个人钱包还是多签，持仓是否集中，代币能不能卖出。但结论里必须写明，未经源码审查。</li>
+    </ol>
+  </section>
+
+  <!-- 8 定范围 -->
+  <section class="scene" data-title="范围说明书的八项" data-onstep="marks">
+    <div class="kicker">定范围 · 最容易出错的一步</div>
+    <h2>范围说明书必须写清八项</h2>
+    <div class="scope">
+      <div class="card" data-k="0"><span class="n">1</span>评估对象<div class="d">仓库 + <b class="hl">提交哈希</b>，不是分支名</div></div>
+      <div class="card" data-k="0"><span class="n">2</span>部署目标<div class="d">链、网络、已部署地址</div></div>
+      <div class="card" data-k="1"><span class="n">3</span>包含与排除的文件</div>
+      <div class="card" data-k="1"><span class="n">4</span>外部依赖<div class="d">哪些视为可信，哪些要评估</div></div>
+      <div class="card" data-k="2"><span class="n">5</span>链下组件<div class="d">签名、后端、前端、密钥</div></div>
+      <div class="card" data-k="2"><span class="n">6</span>已知问题与既往审计</div>
+      <div class="card" data-k="3"><span class="n">7</span>交付物与截止时间</div>
+      <div class="card" data-k="3"><span class="n">8</span>结论用途<div class="d">内部上线、对外公告、监管报备</div></div>
+    </div>
+    <ol class="say">
+      <li>七个阶段里，最容易出错的是第一步，定范围。范围说明书要写清八项。第一项是评估对象。注意，要写提交哈希，不能只写分支名。分支上的代码随时会变。第二项是部署到哪条链、哪个网络。</li>
+      <li>第三项，包含和排除哪些文件。第四项，外部依赖里，哪些视为可信，比如成熟的标准库，哪些需要评估。</li>
+      <li>第五项，链下组件在不在范围内，比如签名服务、后端、前端和密钥管理。开场讲的 Radiant，问题就出在签名环节。第六项，已知问题和以前的审计报告。</li>
+      <li>第七项，交付物和截止时间。第八项，结论用于什么，是内部上线决策，还是对外公告，或者监管报备。用途不同，措辞和证据要求就不同。</li>
+    </ol>
+  </section>
+
+  <!-- 9 范围不清信号 -->
+  <section class="scene" data-title="范围不清的早期信号" data-onstep="rowStep">
+    <div class="kicker">早期信号 · 应对</div>
+    <h2>五个信号，在第一周就要喊停</h2>
+    <table class="t sm">
+      <thead><tr><th>信号</th><th>风险</th><th>应对</th></tr></thead>
+      <tbody>
+        <tr><td>只给分支名，代码还在改</td><td>评估的不是上线的版本</td><td>冻结提交哈希；改动走差异评估</td></tr>
+        <tr><td>"只看合约，不看部署脚本"</td><td>初始化、权限移交出错</td><td>部署脚本默认纳入范围</td></tr>
+        <tr><td>"外部协议很成熟，不用看"</td><td>依赖风险直接传导</td><td>至少评估集成点</td></tr>
+        <tr><td>没有规格文档</td><td>分不清 bug 还是设计</td><td>先写出关键不变量</td></tr>
+        <tr><td>上线日期已对外公布</td><td>时间压力降低标准</td><td>门禁条件提前写进范围</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>范围不清有五个早期信号。第一，申请方只给分支名，代码还在改。应对是冻结一个提交哈希，之后的改动单独做差异评估。</li>
+      <li>第二，对方说只看合约，不看部署脚本。可是初始化参数和权限移交，恰恰是部署脚本做的。Nomad 的问题就出在初始化值上。所以部署脚本默认纳入范围。</li>
+      <li>第三，对方说外部协议很成熟，不用看。成熟不等于和你的集成方式没问题。至少要评估集成点，比如价格、回调、暂停和升级。</li>
+      <li>第四，没有规格文档。那就无法判断一个行为是 bug 还是设计。应对是先让对方写出关键不变量，否则不开工。</li>
+      <li>第五，上线日期已经对外公布。时间压力会让人降低标准。应对是把门禁条件提前写进范围说明书，谁也不能临时放宽。</li>
+    </ol>
+  </section>
+
+  <!-- 10 Uranium -->
+  <section class="scene" data-title="案例：改了一个常数" data-onstep="uraStep">
+    <div class="kicker">真实案例 · 2021-04 · 据公开复盘 · 数字为示例</div>
+    <h2 id="uraH">Uranium：手续费精度改了，校验没跟着改</h2>
+    <div class="row">
+      <div class="col" style="flex:1.05">
+        <div class="src sm"><span class="ln" data-mark="1:good">balanceAdj = balance × <span class="n">10000</span> − 手续费</span><span class="ln" data-mark="2:bad">require( adj0 × adj1 ≥ k × <span class="n">1000</span>² )</span><span class="ln c">// 左边放大了 10000²，右边只放大 1000²</span></div>
+        <div class="card fs28" id="uraNote"></div>
+      </div>
+      <svg id="ura" width="720" height="560" viewBox="0 0 720 560"></svg>
+    </div>
+    <ol class="say">
+      <li>来看一个真实案例，以下据公开复盘，数字为示例。Uranium 是一个分叉自 Uniswap V2 的交易所。V2 每次交换后要检查一个不变量，两种代币余额的乘积不能变小。</li>
+      <li>Uranium 想把手续费精度从千分之一改成万分之一，于是把调整余额时乘的数，从1000改成了10000。</li>
+      <li>但是校验那一行，右边仍然乘以1000的平方。左边放大了10000的平方，右边只放大了1000的平方，差了100倍。</li>
+      <li>算一下。假设池子里两种代币各100个，乘积是10000。正确的校验要求交换后乘积仍然不小于10000。</li>
+      <li>错误的校验只要求乘积不小于100。这意味着两边余额可以同时降到10个左右，池子里九成的资金都能被取走。</li>
+      <li>这次改动只有一个常数。教训是，任何改动，哪怕一行，都要走差异评估，而且要回到不变量去验证。</li>
+    </ol>
+  </section>
+
+  <!-- 11 分工 -->
+  <section class="scene" data-title="审查与测试的分工" data-onstep="rowStep">
+    <div class="kicker">第四阶段 · 两人评估组示例</div>
+    <h2>六项工作，各有工具和产出</h2>
+    <table class="t sm">
+      <thead><tr><th>工作</th><th>方法 · 工具</th><th>产出</th></tr></thead>
+      <tbody>
+        <tr><td>架构与权限审查</td><td>逐个核对修饰器与角色授予 · 链上读取</td><td>特权清单与最大破坏力</td></tr>
+        <tr><td>手工代码审查</td><td>按威胁模型逐个入口走读 · 两人交叉</td><td>发现草稿</td></tr>
+        <tr><td>静态分析</td><td>Slither、Aderyn 自动扫描，逐条下结论</td><td>扫描结论表</td></tr>
+        <tr><td>测试补强</td><td>为关键不变量写模糊测试 · Foundry、Echidna</td><td>测试代码与结果</td></tr>
+        <tr><td>部署与配置核查</td><td>对照部署脚本与链上实际状态</td><td>配置差异表</td></tr>
+        <tr><td>链差异核查</td><td>按目标链清单逐项检查</td><td>链风险清单</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>第四阶段的工作，以两个人的评估组为例，可以分成六项。第一项是架构与权限审查。逐个核对每个函数的修饰器和角色授予，产出一张特权清单。每个特权角色，写出它最坏能造成什么破坏。</li>
+      <li>第二项是手工代码审查。按威胁模型，一个入口一个入口地走读，两个人交叉审。</li>
+      <li>第三项是静态分析。工具会报很多条，每一条都要给出结论，是真问题还是误报，不能直接贴进报告。</li>
+      <li>第四项是测试补强。为关键不变量写模糊测试，让工具用大量随机输入去寻找违反条件的情况。</li>
+      <li>第五项是部署与配置核查。对照部署脚本，读取链上实际状态，看参数、权限和实现地址对不对得上。</li>
+      <li>第六项是链差异核查。同一份代码部署到 BNB Chain、TRON 或 Mantle，行为可能不同。按目标链的清单逐项检查。</li>
+    </ol>
+  </section>
+
+  <!-- 12 工作量估算 -->
+  <section class="scene" data-title="工作量估算" data-onstep="estStep">
+    <div class="kicker">工作量估算 · 示例</div>
+    <h2>按有效代码行粗估，再加三成</h2>
+    <div class="row" style="align-items:flex-start">
+      <div class="col" style="flex:1;gap:28px">
+      <table class="t">
+        <thead><tr><th>复杂度</th><th class="num">每人每天（行）</th><th>例子</th></tr></thead>
+        <tbody id="rate">
+          <tr><td>低</td><td class="num">400–600</td><td>标准代币、简单金库</td></tr>
+          <tr><td>中</td><td class="num">200–400</td><td>借贷市场、质押奖励</td></tr>
+          <tr><td>高</td><td class="num">100–200</td><td>集中流动性、跨链消息</td></tr>
+        </tbody>
+      </table>
+      <div id="estWarn"></div>
+      </div>
+      <div class="col" style="flex:0.9;gap:12px" id="calc"></div>
+    </div>
+    <ol class="say">
+      <li>评估要多长时间？业界常用有效代码行来粗估。有效代码行，就是去掉注释和空行之后的源码行数。再按复杂度给一个速度。示例里，低复杂度每人每天四百到六百行，中等两百到四百行，高复杂度一百到两百行。</li>
+      <li>来算一个示例。一个质押奖励合约，有效代码3600行，属于中等复杂度，按每人每天300行算。</li>
+      <li>3600除以300，是12个人天。评估组有两个人，就是6天。</li>
+      <li>再加三成用于写报告和复核。6天乘以1.3，约等于7.8天，取8个工作日。</li>
+      <li>如果上线日期只留了5天怎么办？不要压缩审查。在第一阶段就缩小范围，或者推迟上线。压缩审查等于降低标准，而且没有人知道降低了多少。</li>
+    </ol>
+  </section>
+
+  <!-- 13 三种结论 -->
+  <section class="scene" data-title="三种结论与自评盲区" data-onstep="marks">
+    <div class="kicker">第七阶段 · 门禁结论</div>
+    <h2>结论只有三种，每种都要写明依据</h2>
+    <div class="verdict">
+      <div class="card buy" data-k="0"><span class="stamp buy">通过</span><div class="d">无未关闭的严重和高危<br>中危有修复计划</div></div>
+      <div class="card warn" data-k="1"><span class="stamp warn">附条件通过</span><div class="d">限额上线、只开白名单资产<br>30 天内完成某项修复<br>部署指定监控</div></div>
+      <div class="card sell" data-k="2"><span class="stamp sell">不通过</span><div class="d">有未关闭的严重或高危<br>且没有可接受的缓解</div></div>
+    </div>
+    <div class="card gold fs30" data-k="3">每份结论都写明：<b>依据的版本</b> · <b>未覆盖的范围</b> · <b>剩余风险</b></div>
+    <div class="card info fs28" data-k="4">自评的最大风险是熟悉带来的盲区：不评自己写的代码 · 组内交叉审 · 关键模块请外部审计复核</div>
+    <ol class="say">
+      <li>最后是结论。只有三种。第一种是通过，没有未关闭的严重和高危，中危有修复计划。</li>
+      <li>第二种是附条件通过。可以上线，但必须满足列明的条件。比如限额上线，只开放白名单资产，30天内完成某项修复，或者部署指定的监控。</li>
+      <li>第三种是不通过。存在未关闭的严重或高危，又没有可以接受的缓解措施。</li>
+      <li>不管哪种结论，都要写明三件事。依据的是哪个版本，哪些范围没有覆盖，还剩哪些风险。没写未覆盖范围，那里出了事，就会被认为是评估失职。</li>
+      <li>还有一点。自己做评估，最大的风险是熟悉带来的盲区。所以评估人员不评自己写的代码，组内交叉审查，关键模块再请外部审计复核。</li>
+    </ol>
+  </section>
+
+  <!-- 14 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">评估的交付物是<span class="hl">一个签了字的结论</span>，找 bug 只是手段。</li>
+      <li data-step="1">七个阶段各有<span class="hl">退出条件</span>；范围写死提交哈希，任何改动走差异评估。</li>
+      <li data-step="2">三类对象控制力不同；结论写明<span class="hl">版本、未覆盖范围、剩余风险</span>。</li>
+    </ul>
+    <h2 data-show="3">下一集：A02 风险评级与报告</h2>
+    <div class="path" data-show="3">
+      <div class="card gold"><div class="n">×</div><b>影响 × 可能性</b><div class="d">一张矩阵给发现定级</div></div>
+      <div class="card info"><div class="n">≈</div><b>对照外部口径</b><div class="d">漏洞赏金平台的严重度分级</div></div>
+      <div class="card buy"><div class="n">签</div><b>风险接受</b><div class="d">谁有权签字，签什么</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，评估的交付物是一个签了字的结论，找 bug 只是手段。</li>
+      <li>第二，七个阶段各有退出条件。范围里写死提交哈希，任何改动，哪怕一个常数，都走差异评估。</li>
+      <li>第三，三类对象的控制力不同，深度和交付物也不同。无论哪种结论，都要写明版本、未覆盖的范围和剩余风险。</li>
+      <li>下一集讲风险评级与报告。怎样用影响和可能性给发现定级，怎样对照外部的严重度口径，以及风险接受由谁签字。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, fmt } = K;
+
+  function stageStep(el, st) {
+    const svg = el.querySelector('#stg'); svg.innerHTML = '';
+    const S = [['① 受理', '定范围'], ['② 资料', '收集'], ['③ 威胁', '建模'], ['④ 审查', '与测试'], ['⑤ 定级', '与报告'], ['⑥ 整改', '复核'], ['⑦ 门禁', '与监控']];
+    const on = [0, 1, 3, 5, 6, 6, 6][st];
+    const cur = { 0: [0], 1: [1], 2: [2, 3], 3: [4, 5], 4: [6], 5: [], 6: [] }[st];
+    S.forEach(([a, b], i) => {
+      const x = 10 + i * 234, y = 150, o = i <= on ? 1 : .18, c = cur.includes(i);
+      box(svg, x, y, 196, 130, [a, b], { stroke: c ? C.gold : (i <= on ? C.info : C.line), fill: c ? C.curFill : C.panel, sw: c ? 5 : 3, op: o, fs: 32, ss: 28, sc: C.text, bold: true });
+      if (i < 6) arrow(svg, x + 198, y + 65, x + 230, y + 65, i < on ? C.gold : C.line, false, 4, o);
+    });
+    if (st >= 5) {
+      svg.appendChild(svgEl('path', { d: 'M 810 284 C 810 420, 108 420, 108 286', fill: 'none', stroke: C.warn, 'stroke-width': 4, 'stroke-dasharray': '10 8' }));
+      arrow(svg, 112, 320, 108, 288, C.warn, false, 4);
+      T(svg, 460, 440, '审查中发现范围外的高风险 → 回到 ① 调整范围', C.warn, 30, 'middle', true);
+    }
+    if (st >= 6) {
+      svg.appendChild(svgEl('path', { d: 'M 1512 146 C 1512 20, 108 20, 108 146', fill: 'none', stroke: C.sell, 'stroke-width': 4, 'stroke-dasharray': '10 8' }));
+      arrow(svg, 112, 110, 108, 146, C.sell, false, 4);
+      T(svg, 810, 58, '升级 · 参数变更 · 新资产 → 新一轮评估', C.sell, 30, 'middle', true);
+    }
+  }
+
+  function objStep(el, st) {
+    const rows = [...el.querySelectorAll('#obj tbody tr')];
+    rows.forEach((r, i) => { r.classList.toggle('pend', i > st); r.classList.toggle('cur', i === st); });
+  }
+
+  function uraStep(el, st) {
+    marks(el, st);
+    const svg = el.querySelector('#ura'); svg.innerHTML = '';
+    const note = el.querySelector('#uraNote');
+    note.innerHTML = ['V2 规则：交换后 <b class="hl">x × y 不能变小</b>',
+      '改动 ①：余额乘数 1000 → <b class="hl">10000</b>（手续费精度变细）',
+      '改动 ②：<b class="down">校验仍乘 1000²</b> → 左右差 100 倍',
+      '示例池：x = 100，y = 100，k = <b class="hl">10,000</b>',
+      '错误校验只要求 x × y ≥ <b class="down">100</b>',
+      '一行改动 → 差异评估 + 回到不变量验证'][st];
+    // axes
+    const ox = 80, oy = 500, sc = 4; // 1 token = 4px
+    K.line(svg, ox, oy, 700, oy, C.t2, 3); K.line(svg, ox, oy, ox, 20, C.t2, 3);
+    T(svg, 690, 530, 'x', C.t2, 26); T(svg, 50, 30, 'y', C.t2, 26);
+    const curve = (k, color, dash) => {
+      let d = '';
+      for (let x = Math.max(1, k / 118); x <= 118; x += 0.5) { const y = k / x; if (y > 118) continue; d += (d ? ' L ' : 'M ') + (ox + x * sc).toFixed(1) + ' ' + (oy - y * sc).toFixed(1); }
+      svg.appendChild(svgEl('path', { d, fill: 'none', stroke: color, 'stroke-width': 4, 'stroke-dasharray': dash ? '10 8' : '' }));
+    };
+    if (st >= 3) {
+      curve(10000, C.buy);
+      K.circle(svg, ox + 100 * sc, oy - 100 * sc, 10, C.gold);
+      T(svg, ox + 100 * sc + 14, oy - 100 * sc - 26, '(100, 100)', C.gold, 26, 'start', true);
+      T(svg, 104, 44, '— 正确：x·y ≥ 10,000', C.buy, 24, 'start', true);
+    }
+    if (st >= 4) {
+      curve(100, C.sell, true);
+      K.circle(svg, ox + 10 * sc, oy - 10 * sc, 10, C.sell);
+      T(svg, ox + 10 * sc + 16, oy - 10 * sc - 26, '(10, 10) 也能通过', C.sell, 26, 'start', true);
+      svg.appendChild(svgEl('rect', { x: ox + 10 * sc, y: oy - 100 * sc, width: 90 * sc, height: 90 * sc, fill: 'rgba(246,70,93,.10)', stroke: C.sell, 'stroke-dasharray': '8 6', 'stroke-width': 2 }));
+      T(svg, ox + 55 * sc, oy - 55 * sc, '约九成可被取走', C.sell, 30, 'middle', true);
+      T(svg, 104, 80, '- - 错误：x·y ≥ 100', C.sell, 24, 'start', true);
+    }
+    if (st < 3) T(svg, 380, 260, '先看规则，再看图', C.dim, 30);
+  }
+
+  function estStep(el, st) {
+    const rows = [...el.querySelectorAll('#rate tr')];
+    rows.forEach((r, i) => r.classList.toggle('cur', st >= 1 && i === 1));
+    const c = el.querySelector('#calc');
+    const L = [
+      ['有效代码行', '3,600', st >= 1],
+      ['中等复杂度速度', '300 行 / 人 / 天', st >= 1],
+      ['3,600 ÷ 300', '12 人天', st >= 2],
+      ['评估组 2 人', '6 天', st >= 2],
+      ['+30% 报告与复核', '6 × 1.3 ≈ 7.8 → 8 天', st >= 3],
+    ];
+    c.innerHTML = L.map(([k, v, on]) => `<div class="stat" style="opacity:${on ? 1 : .12}"><div class="k">${k}</div><div class="v" style="font-size:40px">${v}</div></div>`).join('');
+    el.querySelector('#estWarn').innerHTML = st >= 4 ? '<div class="card sell fs30">上线只留 5 天？<b>缩小范围或推迟上线</b>，不压缩审查。</div>' : '';
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

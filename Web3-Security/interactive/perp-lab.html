@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>永续合约风险实验</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .big { font-size: 22px; font-weight: 650; font-family: var(--mono); }
+  .verdict { font-weight: 650; }
+  .bar { position: relative; height: 34px; background: var(--surface-2); border-radius: 8px; margin: 10px 0 4px; overflow: hidden; }
+  .bar .zone { position: absolute; top: 0; bottom: 0; }
+  .bar .mark { position: absolute; top: 0; bottom: 0; width: 2px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12.5px; color: var(--text-2); }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; }
+  td.num, th.num { text-align: right; font-family: var(--mono); }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="back" href="index.html">← 交互实验目录</a>
+    <h1>永续合约风险实验</h1>
+  </header>
+  <p class="lead">调整仓位和价格冲击，观察盈亏、资金费、清算价和坏账。坏账（Bad Debt）：亏损超过保证金的部分，由保险基金或金库承担。配套章节：<a href="../bootcamp/B42-perps.md">B42 永续合约</a>、<a href="../bootcamp/B43-audit-7-perplite.md">B43 第 7 次审计</a>。本页所有数值都是示例，不代表任何真实协议的参数。</p>
+
+  <h2>1. 设置仓位（示例）</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <label for="side">方向</label>
+      <select id="side"><option value="1">做多</option><option value="-1">做空</option></select>
+      <label for="entry">开仓价（美元，示例）</label>
+      <input type="number" id="entry" value="3000" min="1" step="1">
+      <label for="size">名义价值（美元，示例）</label>
+      <input type="number" id="size" value="3000" min="1" step="100">
+      <label for="margin">保证金（美元，示例）</label>
+      <input type="number" id="margin" value="600" min="1" step="50">
+      <label for="maint">维持保证金率（%，示例）</label>
+      <input type="number" id="maint" value="1" min="0" max="50" step="0.1">
+    </div>
+    <div class="card">
+      <label for="rate">资金费率（%/小时，示例；正数表示多头付费）</label>
+      <input type="number" id="rate" value="0.01" step="0.01">
+      <label for="hours">持仓时间（小时）</label>
+      <div class="range-row"><input type="range" id="hours" min="0" max="720" value="0"><output id="hoursOut"></output></div>
+      <label for="shock">标记价冲击（相对开仓价）</label>
+      <div class="range-row"><input type="range" id="shock" min="-90" max="90" step="any" value="0"><output id="shockOut"></output></div>
+      <label for="fund">保险基金余额（美元，示例）</label>
+      <input type="number" id="fund" value="100" min="0" step="50">
+      <div class="btn-row"><button id="p1">涨 10%</button><button id="p2">跌 19%（接近清算）</button><button id="p3">跳空到 2,200</button><button id="p4">归零</button></div>
+    </div>
+  </div>
+
+  <h2>2. 结果</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <div class="stat"><span class="k">杠杆</span><span class="big" id="lev"></span></div>
+      <div class="stat" style="margin-top:10px"><span class="k">标记价（示例）</span><span class="big" id="mark"></span></div>
+      <div class="stat" style="margin-top:10px"><span class="k">未实现盈亏</span><span class="big" id="pnl"></span></div>
+      <div class="stat" style="margin-top:10px"><span class="k">累计资金费（正数为支出）</span><span class="big" id="fee"></span></div>
+      <div class="stat" style="margin-top:10px"><span class="k">权益</span><span class="big" id="eq"></span></div>
+      <div class="stat" style="margin-top:10px"><span class="k">清算价（含当前资金费）</span><span class="big" id="liq"></span></div>
+    </div>
+    <div class="card">
+      <p class="verdict" id="verdict"></p>
+      <div class="bar" id="bar"></div>
+      <div class="legend"><span><i style="background:var(--sell-soft)"></i>可清算区</span><span><i style="background:var(--warn)"></i>清算价</span><span><i style="background:var(--text)"></i>当前标记价</span></div>
+      <div class="table-wrap" style="margin-top:12px"><table>
+        <thead><tr><th>坏账承担顺序（示例）</th><th class="num">金额（美元）</th></tr></thead>
+        <tbody>
+          <tr><td>坏账总额</td><td class="num" id="bd"></td></tr>
+          <tr><td>保险基金承担</td><td class="num" id="bdF"></td></tr>
+          <tr><td>金库 LP 或 ADL 承担</td><td class="num" id="bdL"></td></tr>
+        </tbody>
+      </table></div>
+      <p class="small muted" id="note"></p>
+    </div>
+  </div>
+
+  <h2>3. 公式</h2>
+  <div class="card small">
+    <p><span class="mono">盈亏 = 方向 × 名义价值 × (标记价 − 开仓价) ÷ 开仓价</span></p>
+    <p><span class="mono">资金费 = 方向 × 名义价值 × 费率 × 小时</span>（正数表示支出）</p>
+    <p><span class="mono">权益 = 保证金 + 盈亏 − 资金费</span></p>
+    <p><span class="mono">可清算：权益 &lt; 名义价值 × 维持保证金率</span></p>
+    <p class="muted">本页没有计入开仓费、清算费和价格影响。真实协议的公式更复杂。</p>
+  </div>
+
+  <footer class="note">本页只做本地计算，不连接任何网络。所有数值均为示例。</footer>
+</div>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const num = id => { const v = parseFloat($(id).value); return isFinite(v) ? v : 0; };
+  const usd = v => (v < 0 ? '−' : '') + '$' + Math.abs(v).toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 });
+
+  function calc() {
+    const side = +$('side').value, entry = num('entry'), size = num('size'), margin = num('margin');
+    const maintPct = num('maint'), rate = num('rate'), hrs = +$('hours').value, shock = +$('shock').value, fund = num('fund');
+    $('hoursOut').textContent = hrs + ' 小时';
+    $('shockOut').textContent = (shock > 0 ? '+' : '') + (Math.round(shock * 100) / 100) + '%';
+    if (entry <= 0 || size <= 0 || margin <= 0) { $('verdict').textContent = '⚠️ 开仓价、名义价值和保证金都要大于 0。'; return; }
+
+    const mark = entry * (1 + shock / 100);
+    const pnl = side * size * (mark - entry) / entry;
+    const funding = side * size * (rate / 100) * hrs;
+    const equity = margin + pnl - funding;
+    const maint = size * maintPct / 100;
+    const liqPrice = entry * (1 - side * (margin - funding - maint) / size);
+    const liquidatable = equity < maint;
+    const badDebt = equity < 0 ? -equity : 0;
+    const fromFund = Math.min(badDebt, Math.max(fund, 0));
+    const fromLp = badDebt - fromFund;
+
+    $('lev').textContent = (size / margin).toFixed(2) + ' 倍';
+    $('mark').textContent = usd(mark);
+    $('pnl').textContent = usd(pnl); $('pnl').style.color = pnl >= 0 ? 'var(--buy)' : 'var(--sell)';
+    $('fee').textContent = usd(funding);
+    $('eq').textContent = usd(equity); $('eq').style.color = equity >= maint ? 'var(--buy)' : 'var(--sell)';
+    $('liq').textContent = liqPrice > 0 ? usd(liqPrice) : '无（价格不可能到达）';
+    $('bd').textContent = usd(badDebt); $('bdF').textContent = usd(fromFund); $('bdL').textContent = usd(fromLp);
+
+    const v = $('verdict'), note = $('note');
+    if (badDebt > 0) {
+      v.style.color = 'var(--sell)';
+      v.textContent = '❌ 已穿仓：权益为负，产生坏账 ' + usd(badDebt) + '。';
+      note.textContent = fromLp > 0 ? '保险基金不足，差额 ' + usd(fromLp) + ' 由金库 LP 或 ADL 承担。' : '保险基金足以覆盖这笔坏账。';
+    } else if (liquidatable) {
+      v.style.color = 'var(--warn)';
+      v.textContent = '⚠️ 触发清算：权益 ' + usd(equity) + ' 低于维持保证金 ' + usd(maint) + '。';
+      note.textContent = '清算后剩余权益（扣除清算费后）退还给用户。';
+    } else {
+      v.style.color = 'var(--buy)';
+      v.textContent = '✅ 仓位健康：权益高于维持保证金 ' + usd(maint) + '。';
+      note.textContent = '距离清算价：' + (liqPrice > 0 ? Math.abs((mark - liqPrice) / mark * 100).toFixed(2) + '%。' : '价格无法到达清算价。');
+    }
+
+    const lo = entry * 0.1, hi = entry * 1.9;
+    const pos = p => Math.max(0, Math.min(100, (p - lo) / (hi - lo) * 100));
+    const lp = liqPrice > 0 ? pos(liqPrice) : (side > 0 ? 0 : 100);
+    const zone = side > 0 ? 'left:0;width:' + lp + '%' : 'left:' + lp + '%;right:0';
+    $('bar').innerHTML = '<div class="zone" style="background:var(--sell-soft);' + zone + '"></div>' +
+      '<div class="mark" style="background:var(--warn);left:' + lp + '%"></div>' +
+      '<div class="mark" style="background:var(--text);left:' + pos(mark) + '%"></div>';
+  }
+
+  ['side', 'entry', 'size', 'margin', 'maint', 'rate', 'hours', 'shock', 'fund'].forEach(id => $(id).addEventListener('input', calc));
+  const setShock = s => { $('shock').value = s; calc(); };
+  $('p1').onclick = () => setShock(10);
+  $('p2').onclick = () => setShock(-19);
+  $('p3').onclick = () => { $('entry').value = 3000; setShock(-80 / 3); };
+  $('p4').onclick = () => setShock(0);
+  calc();
+})();
+</script>
+<script>
+/* 在单文件阅读版的 iframe 中打开时，把章节链接交给外层阅读器处理 */
+(function () {
+  if (window.parent === window) return;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href');
+    if (/\.md(#|$)/.test(h)) { e.preventDefault(); window.parent.postMessage({ cexNavMd: h }, '*'); }
+  });
+})();
+</script>
+</body>
+</html>

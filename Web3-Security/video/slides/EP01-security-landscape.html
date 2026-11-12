@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EP01 合约安全全景</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .layers { display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; }
+  .layers .card { font-size: 26px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; min-height: 300px; }
+  .layers .card .n { font-family: var(--mono); color: var(--gold); font-size: 24px; letter-spacing: .1em; }
+  .layers .card b { font-size: 30px; }
+  .layers .card .d { color: var(--text-2); font-size: 24px; line-height: 1.6; }
+  .ana { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .ana .card { font-size: 27px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; min-height: 220px; }
+  .ana .card .a { color: var(--text-2); font-size: 24px; }
+  .six { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .six .card { font-size: 27px; padding: 18px 22px; display: flex; flex-direction: column; gap: 6px; min-height: 180px; }
+  .six .card .n { font-family: var(--mono); font-size: 32px; font-weight: 700; color: var(--gold); }
+  .six .card .d { color: var(--text-2); font-size: 24px; }
+  .six .card .ch { font-family: var(--mono); color: var(--info); font-size: 22px; margin-top: auto; }
+  .cap { display: grid; grid-template-columns: 1.5fr 1fr; gap: 28px; }
+  .cap ol, .cap ul { margin: 0; padding-left: 36px; font-size: 28px; line-height: 1.6; }
+  .cap li { margin: 4px 0; transition: opacity .35s; }
+  .cap li.pend { opacity: .12; }
+  .inv .steps .card { padding: 16px 22px; gap: 4px; }
+  .inv .steps .card .n { font-size: 38px; }
+  .inv #invSide .formula { padding: 16px 28px; }
+  .inv #invSide .card { padding: 16px 28px; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="EP01" data-title="合约安全全景：为什么代码就是金库">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 主线 · EP01</div>
+    <h1>代码就是金库，<br>而且<span class="hl">对全世界开放</span></h1>
+    <div class="hero">
+      <div class="card sell" data-k="1" data-nocur><div class="k">2016 · The DAO</div><div class="big">约 6,000 万$</div><div>重入 · 代码漏洞</div></div>
+      <div class="card warn" data-k="2" data-nocur><div class="k">2022 · Ronin 跨链桥</div><div class="big">约 6.2 亿$</div><div>验证者私钥</div></div>
+      <div class="card info" data-k="3" data-nocur><div class="k">2025 · Bybit</div><div class="big">约 14.6 亿$</div><div>签名界面</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到合约安全主线第1集。这一集是整个系列的地图。先记住一句话。智能合约是一段公开的、不可撤回的、直接控制资金的代码。任何人都可以用任意参数、任意顺序调用它。</li>
+      <li>看三起事故，以下据公开报道，金额为当时的估值。2016年，以太坊上的 The DAO 被盗约6000万美元，根因是重入，一个纯粹的代码漏洞。</li>
+      <li>2022年，Ronin 跨链桥被盗约6.2亿美元，根因是验证者私钥被拿到。</li>
+      <li>2025年，Bybit 被盗约14.6亿美元，根因是签名界面被篡改。从代码漏洞，到私钥，到签名界面，损失越来越大，也越来越不在代码里。这一集，我们把整张地图画出来。</li>
+    </ol>
+  </section>
+
+  <!-- 2 路线 -->
+  <section class="scene" data-title="主线路线图" data-onstep="marks">
+    <div class="kicker">主线 13 集 · 五层</div>
+    <h2>从地图到复盘，由浅入深</h2>
+    <div class="layers">
+      <div class="card gold" data-k="0"><span class="n">第一层</span><b>地图</b><div class="d">EP01 安全全景<br>EP02 EVM 基础</div></div>
+      <div class="card sell" data-k="1"><span class="n">第二层</span><b>经典漏洞</b><div class="d">EP03 重入<br>EP04 权限<br>EP05 算术<br>EP06 外部调用</div></div>
+      <div class="card warn" data-k="2"><span class="n">第三层</span><b>DeFi 攻击</b><div class="d">EP07 预言机与闪电贷<br>EP08 MEV 与签名</div></div>
+      <div class="card info" data-k="3"><span class="n">第四层</span><b>系统级</b><div class="d">EP09 升级与代理<br>EP10 经济安全<br>EP11 跨链桥</div></div>
+      <div class="card buy" data-k="4"><span class="n">第五层</span><b>工程与复盘</b><div class="d">EP12 审计与测试<br>EP13 事故案例库</div></div>
+    </div>
+    <div class="card fs28" data-k="5">本集路线：售货机比喻 → 和 Web2 的三个区别 → 攻击面地图 → 六大类 → 攻击者能做什么 → 威胁建模 → 损失趋势 → 四条链</div>
+    <ol class="say">
+      <li>主线一共13集，分五层。第一层是地图，就是本集的安全全景，和下一集的 EVM 与 Solidity 基础。</li>
+      <li>第二层是经典漏洞，重入、权限、算术精度和外部调用，每类一集。</li>
+      <li>第三层是 DeFi 攻击，预言机与闪电贷，MEV 与签名。</li>
+      <li>第四层是系统级问题，可升级合约与代理，DeFi 经济安全，跨链桥。</li>
+      <li>第五层是工程与复盘，审计测试流程，以及事故案例库。另外还有链专题4集，讲以太坊、BNB Chain、TRON 和 Mantle 的差异。</li>
+      <li>本集的路线是，一个比喻，三个区别，一张攻击面地图，六大类漏洞，攻击者能做什么，怎样做威胁建模，最后看损失趋势和四条链。</li>
+    </ol>
+  </section>
+
+  <!-- 3 比喻 -->
+  <section class="scene" data-title="广场中央的售货机" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>智能合约像广场中央的自动售货机</h2>
+    <div class="ana">
+      <div class="card" data-k="0"><b>装着真金白银</b><div class="hl">→ 合约余额</div></div>
+      <div class="card" data-k="0"><b>电路图贴在外壳</b><div class="hl">→ 代码公开</div></div>
+      <div class="card" data-k="1"><b>谁都能来拍打</b><div class="hl">→ 任何人可调用</div></div>
+      <div class="card" data-k="2"><b>装好就不能维修</b><div class="hl">→ 不可变；维修门的钥匙成了目标</div></div>
+      <div class="card" data-k="3"><b>吐错钱没客服</b><div class="hl">→ 交易不可逆</div></div>
+    </div>
+    <div class="card warn fs30" data-k="4">比喻不准的地方：售货机一次服务一个人；合约在<b>一笔交易里</b>可以被同一个人反复调用、嵌套调用，还能和几十台"售货机"组合使用。</div>
+    <ol class="say">
+      <li>打个比方。智能合约像一台放在广场中央的自动售货机。机器里装着真金白银，就是合约的余额。机器的电路图贴在外壳上，谁都能看，因为合约代码是公开的。</li>
+      <li>全世界的人都可以全天候来投币、按按钮、拍打机器，因为任何人都可以调用公开函数。</li>
+      <li>机器一旦装好，就不能打开维修，合约默认不可变。如果留了一扇维修门，也就是升级功能，那么维修门的钥匙本身就成了攻击目标。</li>
+      <li>机器吐错了钱，没有客服可以追回，因为交易不可逆。</li>
+      <li>比喻不准的地方在于，真实的售货机一次只服务一个人。合约在一笔交易里，可以被同一个人反复调用、嵌套调用，还可以和其他几十台售货机组合使用。这种可组合性，正是很多漏洞的来源。</li>
+    </ol>
+  </section>
+
+  <!-- 4 三个区别 -->
+  <section class="scene" data-title="和 Web2、CEX 有什么不同" data-onstep="rowStep">
+    <div class="kicker">对比</div>
+    <h2>没有防火墙，不能回滚，攻击几乎不要本钱</h2>
+    <table class="t sm">
+      <thead><tr><th>维度</th><th>Web2 后端</th><th>CEX</th><th>智能合约</th></tr></thead>
+      <tbody>
+        <tr><td>代码是否公开</td><td>通常不公开</td><td>不公开</td><td class="hl">字节码一定公开</td></tr>
+        <tr><td>谁能调用</td><td>鉴权用户</td><td>KYC 用户</td><td class="bad">任何地址、任何合约</td></tr>
+        <tr><td>出错能否回滚</td><td>改数据库</td><td>改内部账本</td><td class="bad">不可逆</td></tr>
+        <tr><td>修复速度</td><td>分钟级热修复</td><td>分钟级</td><td>要有升级权限</td></tr>
+        <tr><td>攻击成本</td><td>绕过防火墙</td><td>盗号或攻破内部系统</td><td class="bad">一笔交易的 gas</td></tr>
+        <tr><td>失败后果</td><td>数据泄露</td><td>平台赔付</td><td>资金被转走，通常无赔付</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>和 Web2 后端、中心化交易所相比，合约有几个根本不同。第一，代码公开。合约的字节码一定公开，源码通常也公开。攻击者和你看的是同一份代码。</li>
+      <li>第二，谁都能调。Web2 的接口要先鉴权，交易所要先做身份认证。合约的公开函数，就是对全世界开放的接口，任何地址、任何合约都能调用。没有边界防火墙。</li>
+      <li>第三，不能回滚。Web2 出错可以改数据库，交易所可以改内部账本。合约交易不可逆，修复只能靠升级，没有升级权限就修不了。</li>
+      <li>第四，攻击成本极低。攻击者只需要一笔交易的 gas 费。失败的后果也不同，资金被直接转走，通常没有赔付。下面算一算，为什么连本金都不需要。</li>
+    </ol>
+  </section>
+
+  <!-- 5 闪电贷成本 -->
+  <section class="scene" data-title="攻击者为什么不需要本金" data-onstep="flStep">
+    <div class="kicker">闪电贷 · 数字为示例</div>
+    <h2>一笔交易里，借一个亿</h2>
+    <svg id="fl" width="1640" height="560" viewBox="0 0 1640 560"></svg>
+    <ol class="say">
+      <li>闪电贷，是在同一笔交易内借出、并且必须归还的无抵押贷款。交易结束时没还上，整笔交易回滚，就像什么都没发生过。</li>
+      <li>来算一个示例。攻击者借1亿美元的稳定币，示例手续费是万分之五，就是5万美元。</li>
+      <li>他用这1亿去推动一个价格，或者撑大一个余额，在同一笔交易里，从某个协议里取出比应得更多的钱，然后归还1亿，加5万手续费。</li>
+      <li>如果失败呢？交易回滚，他只损失 gas 费。成功了，赚走差价。所以，凡是按当前余额或当前价格计算的量，在攻击者眼里都是可控的输入。这在第7集详细讲。</li>
+    </ol>
+  </section>
+
+  <!-- 6 攻击面地图 -->
+  <section class="scene" data-title="攻击面地图" data-onstep="mapStep">
+    <div class="kicker">一笔交易经过哪些环节</div>
+    <h2>红色是信任边界，漏洞最集中</h2>
+    <svg id="map" width="1640" height="560" viewBox="0 0 1640 560"></svg>
+    <ol class="say">
+      <li>一笔交易从发出到执行，会经过这些环节。用户或攻击者的账户，先经过钱包和前端的签名界面，然后进入内存池公开排队，再由区块构建者或者排序器决定顺序，最后到达目标合约。</li>
+      <li>目标合约会调用外部合约，比如代币、DEX 和预言机。注意这条回来的箭头，外部合约可以在你的函数执行中途调回来。重入就发生在这里。</li>
+      <li>目标合约可能是一个代理，背后有升级权限。它还可能通过跨链桥，把消息发到另一条链上的合约。</li>
+      <li>红色的节点是信任边界，数据和控制权在这里跨越，漏洞最集中。签名界面、内存池、外部合约、升级权限和跨链桥。还要注意，这张图没画链本身的共识层。链被攻破时，合约代码再正确也没用。</li>
+    </ol>
+  </section>
+
+  <!-- 7 六大类 -->
+  <section class="scene" data-title="漏洞六大类" data-onstep="marks">
+    <div class="kicker">分类</div>
+    <h2>六大类，真实事故通常多类叠加</h2>
+    <div class="six">
+      <div class="card" data-k="0"><span class="n">① 控制流</span>外部调用让攻击者"插队"<div class="d">重入、只读重入、回调</div><span class="ch">EP03 · EP06</span></div>
+      <div class="card" data-k="0"><span class="n">② 权限</span>不该调用的人调用了<div class="d">缺修饰器、tx.origin、未初始化</div><span class="ch">EP04 · EP09</span></div>
+      <div class="card" data-k="1"><span class="n">③ 数学</span>数字算错了<div class="d">溢出、精度、舍入方向、金库通胀</div><span class="ch">EP05</span></div>
+      <div class="card" data-k="1"><span class="n">④ 数据可信度</span>相信了可被操纵的数据<div class="d">现货价预言机、闪电贷、签名重放</div><span class="ch">EP07 · EP08</span></div>
+      <div class="card" data-k="2"><span class="n">⑤ 经济设计</span>代码对，规格可被套利<div class="d">治理攻击、清算漏洞、坏账</div><span class="ch">EP10</span></div>
+      <div class="card" data-k="2"><span class="n">⑥ 系统与运营</span>代码之外的环节失守<div class="d">跨链验证、私钥、前端、编译器</div><span class="ch">EP11 · EP12</span></div>
+    </div>
+    <ol class="say">
+      <li>漏洞可以分六大类。第一类，控制流，外部调用让攻击者插队执行，比如重入和回调。第二类，权限，不该调用的人调用了，比如缺少修饰器、用了交易发起人做鉴权，或者合约没初始化。</li>
+      <li>第三类，数学，数字算错了，比如溢出、精度损失、舍入方向和金库通胀。第四类，数据可信度，合约相信了可以被操纵的数据，比如现货价格、闪电贷撑大的余额、被重放的签名。</li>
+      <li>第五类，经济设计，代码完全按规格执行，但规格本身可以被套利，比如治理攻击和清算漏洞。第六类，系统与运营，代码之外的环节失守，比如跨链验证、多签私钥、前端篡改，甚至编译器的 bug。真实事故通常是多类叠加，所以审计不能只按清单逐项打勾。</li>
+    </ol>
+  </section>
+
+  <!-- 8 攻击者能力 -->
+  <section class="scene" data-title="攻击者能做什么" data-onstep="capStep">
+    <div class="kicker">威胁建模的起点 · 默认假设</div>
+    <h2>攻击者能做到的七件事</h2>
+    <div class="cap">
+      <div class="card"><b class="hl">默认能</b>
+        <ol id="can">
+          <li>用任意参数调用任意公开函数</li>
+          <li>部署自己的合约，让你调用它</li>
+          <li>在一笔交易内借到巨额资金</li>
+          <li>看到内存池，在别人交易前后插队</li>
+          <li>不经你的函数，直接向你转入代币</li>
+          <li>读取你合约的全部存储，包括 private</li>
+          <li>在另一条链、另一个合约上重放你的签名</li>
+        </ol>
+      </div>
+      <div class="card" id="cannot"><b class="up">通常不能</b>
+        <ul>
+          <li>伪造他人签名 <span class="muted fs26">除非私钥泄露或验证写错</span></li>
+          <li>修改已确认的区块 <span class="muted fs26">除非共识被攻破</span></li>
+          <li>让 msg.sender 变成别人 <span class="muted fs26">除非用了 tx.origin</span></li>
+        </ul>
+      </div>
+    </div>
+    <ol class="say">
+      <li>威胁建模的起点，是攻击者能做什么。对任意一个合约，默认攻击者能做到七件事。第一，用任意参数调用任意公开函数。第二，部署自己的合约，让你的合约去调用它，比如恶意代币和恶意回调。</li>
+      <li>第三，在一笔交易内借到巨额资金。第四，看到内存池里待确认的交易，在它前后插入自己的交易。</li>
+      <li>第五，不经过你的函数，直接向你的合约转入代币。很多合约把余额当作账本，这一条就会打破它。第六，读取你合约的全部存储，包括声明为 private 的变量。第七，在另一条链或另一个合约上，重放你签过的消息。</li>
+      <li>攻击者通常不能做到的有三件。伪造别人的签名，除非私钥泄露或者签名验证写错了。修改已经确认的区块，除非链的共识被攻破。让消息发送者变成别人，除非你的代码用了交易发起人来鉴权。</li>
+    </ol>
+  </section>
+
+  <!-- 9 private 不私密 -->
+  <section class="scene" data-title="private 不等于保密" data-onstep="slotStep">
+    <div class="kicker">示例 · 第六件事</div>
+    <h2>private 只限制其他合约调用，不限制任何人读取</h2>
+    <div class="row">
+      <div class="col" style="flex:1">
+        <div class="src"><span class="ln" data-mark="1:bad"><span class="kw">uint256 private</span> secret = <span class="n">42</span>;   <span class="c">// slot 0</span></span><span class="ln"><span class="kw">address private</span> owner;          <span class="c">// slot 1</span></span></div>
+        <div class="card fs28" id="slotNote"></div>
+      </div>
+      <div class="col" style="flex:1" id="slotSide"></div>
+    </div>
+    <ol class="say">
+      <li>来看第六件事的一个示例。一个合约声明了一个私有变量，值是42，放在存储的第0个槽位。</li>
+      <li>private 这个关键字，只是不让其他合约通过函数读取它，并不是加密。</li>
+      <li>任何人都可以调用节点的一个标准接口，读取这个合约第0个槽位的原始数据。返回的值，末尾是十六进制的2a，也就是42。</li>
+      <li>所以，永远不要把密码、随机数种子或者私钥放在合约存储里，哪怕声明为 private。链上没有秘密。</li>
+    </ol>
+  </section>
+
+  <!-- 10 威胁建模 -->
+  <section class="scene" data-title="威胁建模六步" data-onstep="invStep">
+    <div class="kicker">方法 · 不变量是锚点 · 数字为示例</div>
+    <h2>先写出"必须恒成立的式子"</h2>
+    <div class="row inv">
+      <div class="steps" style="flex:1.1; grid-template-columns:1fr 1fr; gap:14px">
+        <div class="card" data-k="0"><span class="n">1</span><b>资产清单</b></div>
+        <div class="card" data-k="0"><span class="n">2</span><b>入口函数 · 谁能调</b></div>
+        <div class="card gold" data-k="1"><span class="n">3</span><b>不变量</b></div>
+        <div class="card" data-k="3"><span class="n">4</span><b>外部调用前状态更新了吗</b></div>
+        <div class="card" data-k="3"><span class="n">5</span><b>外部数据能被操纵吗</b></div>
+        <div class="card" data-k="3"><span class="n">6</span><b>特权私钥在谁手里</b></div>
+      </div>
+      <div class="col" style="flex:0.9" id="invSide"></div>
+    </div>
+    <ol class="say">
+      <li>知道了攻击者的能力，就可以做威胁建模，一共六步。第一，列出合约持有的资产，比如用户存入的 USDT 和协议手续费。第二，列出每个改变资产的函数，标注谁可以调用。</li>
+      <li>第三步最关键，写出不变量，也就是任何操作之后都必须成立的式子。比如，合约的 USDT 余额，不小于所有用户存款之和。示例里三个用户分别存了100、250和50，合计400，合约余额也是400，成立。</li>
+      <li>假如某个提款函数有 bug，让一个用户多提了50。账本上存款之和还是400，合约余额却只剩350。不变量被打破，问题就暴露了。不变量是整个安全工作的锚点，所有测试最终都在验证它。</li>
+      <li>后三步，对每个函数问三个问题。外部调用之前，状态更新了吗？价格、余额、签名这些外部数据，一笔交易内能被操纵吗？每个特权角色的私钥在谁手里，被盗后最大损失是多少？</li>
+    </ol>
+  </section>
+
+  <!-- 11 损失趋势 -->
+  <section class="scene" data-title="损失的规模与趋势" data-onstep="trendStep">
+    <div class="kicker">据公开报道 · 金额为事发时估值</div>
+    <h2>从代码漏洞，转向桥和运营</h2>
+    <svg id="trend" width="1640" height="570" viewBox="0 0 1640 570"></svg>
+    <ol class="say">
+      <li>看损失的趋势，以下据公开报道和安全公司统计。早期事故集中在代码漏洞。2016年 The DAO 是重入。2017年 Parity 多签库被自毁，约51万个 ETH 被永久冻结，根因是初始化和权限。</li>
+      <li>2021到2022年，最大的事故转向跨链桥。Poly Network 约6.1亿美元，后来归还了。Ronin 约6.2亿美元。BNB Chain 的 Token Hub 被凭空增发了200万个 BNB。</li>
+      <li>2023年，Euler 约1.97亿美元，是业务逻辑问题。2025年，Bybit 约14.6亿美元，问题在签名界面，代码审计覆盖不到。</li>
+      <li>同在2025年，成熟协议 Balancer 因为舍入问题损失约1.28亿美元。所以数学精度类漏洞并没有消失。编译器和库成熟后，简单的代码漏洞少了，但最大的损失转向了跨链桥和运营安全。</li>
+    </ol>
+  </section>
+
+  <!-- 12 四条链 -->
+  <section class="scene" data-title="以太坊与三条链" data-onstep="rowStep">
+    <div class="kicker">扩展视角 · 链专题 C00–C03</div>
+    <h2>"EVM 兼容"不等于"行为一致"</h2>
+    <table class="t sm">
+      <thead><tr><th>链</th><th>类型</th><th>和以太坊的关系</th><th>学习重点</th></tr></thead>
+      <tbody>
+        <tr><td>以太坊</td><td>L1 · EVM 原件</td><td>参照环境</td><td>多数漏洞模式的首发地</td></tr>
+        <tr><td>BNB Chain</td><td>独立 L1 · EVM 兼容</td><td>字节码兼容，参数不同</td><td>分叉项目改参数、低流动性预言机</td></tr>
+        <tr><td>TRON</td><td>独立 L1 · TVM</td><td>可编译，部分语义不同</td><td>USDT 返回值、能量、账户权限</td></tr>
+        <tr><td>Mantle</td><td>以太坊 L2</td><td>原生 gas 是 MNT</td><td>msg.value 是 MNT、L2 信任假设</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>本系列的扩展案例以以太坊为参照，再延伸到三条链。以太坊是一层网络，EVM 的原件，绝大多数漏洞模式都在这里首发。</li>
+      <li>BNB Chain 是独立的一层网络，EVM 兼容，字节码兼容，但出块时间等参数不同。重点是分叉项目改参数出错，以及低流动性的预言机。</li>
+      <li>TRON 用的是 TVM，Solidity 可以编译，但部分操作的语义不同。重点是 USDT 的返回值、能量模型和账户权限。</li>
+      <li>Mantle 是以太坊的二层网络，原生 gas 代币是 MNT，所以合约里收到的原生币是 MNT，不是 ETH。把以太坊上审计过的合约原样部署到另一条链，审计结论不能直接复用。</li>
+    </ol>
+  </section>
+
+  <!-- 13 练一练 -->
+  <section class="scene" data-title="练一练" data-onstep="marks">
+    <div class="kicker">练一练 · 暂停视频想一想</div>
+    <h2>为一个借贷协议写出三个不变量</h2>
+    <div class="steps c3">
+      <div class="card" data-k="1"><span class="n">1</span><b>偿付</b><div class="d">协议持有的资产 + 未偿借款 ≥ 用户存款总额</div></div>
+      <div class="card" data-k="1"><span class="n">2</span><b>健康</b><div class="d">任何操作后，每个账户的健康因子 ≥ 1，否则交易回滚</div></div>
+      <div class="card" data-k="1"><span class="n">3</span><b>守恒</b><div class="d">份额总量 = 每个用户份额之和；没有凭空增减</div></div>
+    </div>
+    <ol class="say">
+      <li>来练一练。为你熟悉的借贷协议写出三个不变量。先暂停想一想。</li>
+      <li>参考答案。第一，偿付，协议持有的资产加上未偿还的借款，不小于用户存款总额。第二，健康，任何一次操作之后，每个账户的健康因子都不小于1，否则交易回滚。第三，守恒，份额总量等于每个用户的份额之和，不会凭空增加或减少。后面每一集讲的漏洞，几乎都是在打破这样的某一条式子。</li>
+    </ol>
+  </section>
+
+  <!-- 14 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">合约是<span class="hl">公开、不可撤回、直接控制资金</span>的代码，任何人可用任意参数调用。</li>
+      <li data-step="1">从<span class="hl">攻击者能控制什么</span>出发建模；链上没有秘密，闪电贷让本金不是门槛。</li>
+      <li data-step="2"><span class="hl">不变量</span>是锚点；最大的损失正在转向跨链桥和运营。</li>
+    </ul>
+    <h2 data-show="3">下一集：EP02 EVM 与 Solidity 安全基础</h2>
+    <div class="path" data-show="3">
+      <div class="card info"><div class="n">3</div><b>三种调用</b><div class="d">call、delegatecall、staticcall</div></div>
+      <div class="card gold"><div class="n">32</div><b>存储布局</b><div class="d">槽位、打包、映射</div></div>
+      <div class="card sell"><div class="n">8</div><b>八个易错特性</b><div class="d">语言层面的坑</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，合约是公开的、不可撤回的、直接控制资金的代码，任何人都可以用任意参数调用。</li>
+      <li>第二，从攻击者能控制什么出发做威胁建模。链上没有秘密，闪电贷让本金不再是门槛。</li>
+      <li>第三，不变量是整个安全工作的锚点。最大的损失，正在从代码漏洞转向跨链桥和运营安全。</li>
+      <li>下一集讲 EVM 与 Solidity 的安全基础。三种调用方式，存储布局，以及八个语言层面的易错特性。理解合约运行的机器，才能理解漏洞从哪里来。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line, circle } = K;
+
+  function flStep(el, st) {
+    const svg = el.querySelector('#fl'); svg.innerHTML = '';
+    rect(svg, 20, 30, 1600, 400, { fill: 'rgba(255,255,255,.02)', stroke: C.gold, sw: 3 });
+    T(svg, 50, 62, '一笔交易', C.gold, 28, 'start', true);
+    const S = [['借入', '1 亿', C.info, 0], ['使用', '推动价格 / 撑大余额', C.warn, 2], ['取出', '多拿的部分', C.sell, 2], ['归还', '1 亿 + 5 万', C.info, 1]];
+    S.forEach(([a, b, c, k], i) => {
+      const x = 70 + i * 390, op = st >= k ? 1 : .12;
+      box(svg, x, 150, 330, 170, [a, b], { stroke: c, fs: 40, ss: 30, sc: c, op, bold: true });
+      if (i < 3) arrow(svg, x + 332, 235, x + 386, 235, C.t2, false, 4, st >= Math.max(k, S[i + 1][3]) ? 1 : .12);
+    });
+    if (st === 0) T(svg, 820, 380, '交易结束前没还上 → 整笔回滚', C.t2, 30);
+    if (st >= 1) T(svg, 1305, 380, '示例手续费 0.05% = 5 万', C.info, 28, 'middle', true);
+    if (st >= 3) {
+      box(svg, 120, 460, 680, 80, ['失败：回滚，只损失 gas'], { stroke: C.buy, fill: C.goodFill, fs: 30 });
+      box(svg, 840, 460, 760, 80, ['当前余额、当前价格 = 攻击者可控的输入'], { stroke: C.sell, fill: C.badFill, fs: 30, tc: C.sell });
+    }
+  }
+
+  function mapStep(el, st) {
+    const svg = el.querySelector('#map'); svg.innerHTML = '';
+    const red = st >= 3;
+    const N = {
+      U: [10, 220, '用户 / 攻击者', false, 0], W: [270, 220, '钱包 · 签名界面', true, 0], M: [530, 220, '内存池', true, 0], B: [790, 220, '构建者 / 排序器', false, 0],
+      Cc: [1050, 220, '目标合约', false, 0], X: [1340, 60, ['外部合约', '代币 · DEX · 预言机'], true, 1], P: [1340, 220, '代理 · 升级权限', true, 2], BR: [1340, 380, '跨链桥', true, 2], C2: [1050, 470, '另一条链的合约', false, 2],
+    };
+    Object.entries(N).forEach(([k, [x, y, t, hot, s]]) => {
+      const w = k === 'X' ? 280 : 230;
+      box(svg, x, y, w, 90, t, { stroke: red && hot ? C.sell : (k === 'Cc' ? C.gold : C.info), fill: red && hot ? C.badFill : C.panel, fs: 27, ss: 22, op: st >= s ? 1 : .12, sw: red && hot ? 4 : 3 });
+    });
+    [[240, 270], [500, 530], [760, 790], [1020, 1050]].forEach(([a, b]) => arrow(svg, a + 2, 265, b - 4, 265, C.t2, false, 3));
+    arrow(svg, 1282, 240, 1336, 120, C.t2, false, 3, st >= 1 ? 1 : .12);
+    if (st >= 1) { arrow(svg, 1340, 140, 1284, 255, C.gold, true, 4); T(svg, 1250, 170, '回调', C.gold, 26, 'end', true); }
+    arrow(svg, 1282, 265, 1336, 265, C.t2, false, 3, st >= 2 ? 1 : .12);
+    arrow(svg, 1282, 290, 1336, 410, C.t2, false, 3, st >= 2 ? 1 : .12);
+    arrow(svg, 1400, 472, 1282, 510, C.t2, false, 3, st >= 2 ? 1 : .12);
+    if (st >= 3) T(svg, 520, 420, '没画出的一层：链的共识 —— 被攻破时，代码再正确也没用', C.t2, 26);
+  }
+
+  function capStep(el, st) {
+    const shown = [2, 4, 7, 7][st];
+    el.querySelectorAll('#can li').forEach((li, i) => li.classList.toggle('pend', i >= shown));
+    el.querySelector('#cannot').style.opacity = st >= 3 ? 1 : .12;
+  }
+
+  function slotStep(el, st) {
+    marks(el, st);
+    el.querySelector('#slotNote').innerHTML = ['secret 放在存储槽位 0', '<b class="hl">private</b> = 其他合约不能通过函数读取<br><b class="down">≠ 加密</b>', '任何人都能直接读槽位', '<b class="down">链上没有秘密</b>：不放密码、随机数种子、私钥'][st];
+    const side = el.querySelector('#slotSide');
+    side.innerHTML = st >= 2 ? '<div class="code" style="font-size:24px">eth_getStorageAt(合约地址, 0)\n\n→ 0x000000000000000000000000\n  0000000000000000000000000000\n  0000000000<span class="hl">2a</span></div><div class="stat"><div class="k">0x2a =</div><div class="v hl">42</div></div>' : '<div class="card fs28 muted">节点的标准接口<br>可以读取任意合约的任意槽位</div>';
+    side.style.opacity = st >= 1 ? 1 : .15;
+  }
+
+  function invStep(el, st) {
+    marks(el, st);
+    const side = el.querySelector('#invSide');
+    const U = [['用户 A', 100], ['用户 B', 250], ['用户 C', 50]];
+    const bal = st >= 2 ? 350 : 400;
+    if (st < 1) { side.innerHTML = '<div class="card fs28 muted">不变量 = 任何操作后都必须成立的式子</div>'; return; }
+    side.innerHTML = '<div class="formula" style="font-size:30px">合约 USDT 余额 ≥ 存款之和</div>' +
+      '<table class="t sm"><tbody>' + U.map(([n, v]) => `<tr><td>${n}</td><td class="num">${v}</td></tr>`).join('') +
+      `<tr><td><b>存款之和</b></td><td class="num"><b>400</b></td></tr><tr class="${st >= 2 ? 'cur' : ''}"><td><b>合约余额</b></td><td class="num ${st >= 2 ? 'bad' : 'good'}">${bal}</td></tr></tbody></table>` +
+      `<div class="card ${st >= 2 ? 'sell' : 'buy'} fs30">${bal} ≥ 400 ？ ${st >= 2 ? '<b>✗ 被打破</b>' : '<b>✓ 成立</b>'}</div>`;
+  }
+
+  function trendStep(el, st) {
+    const svg = el.querySelector('#trend'); svg.innerHTML = '';
+    const E = [
+      [2016, 'The DAO', 0.6, '重入', C.sell, 0, '约 6,000 万$'], [2017, 'Parity', 0, '初始化', C.sell, 0, '51 万 ETH 冻结'],
+      [2021, 'Poly', 6.1, '跨链', C.warn, 1], [2022, 'Ronin', 6.2, '跨链私钥', C.warn, 1], [2022.5, 'Token Hub', 5.7, '跨链证明', C.warn, 1, '增发 200 万 BNB'],
+      [2023, 'Euler', 1.97, '业务逻辑', C.info, 2], [2025, 'Bybit', 14.6, '签名界面', C.gold, 2], [2025.5, 'Balancer', 1.28, '舍入', C.sell, 3],
+    ];
+    const ox = 100, oy = 470, H = 380;
+    const Y = v => oy - Math.log10(1 + v * 10) / Math.log10(1 + 150) * H;
+    line(svg, ox, oy, 1600, oy, C.t2, 3);
+    T(svg, ox, 30, '损失（亿美元，对数刻度示意）', C.t2, 24, 'start');
+    E.forEach(([y, n, v, c, col, k, alt], i) => {
+      const op = st >= k ? 1 : .1, x = ox + 90 + i * 185, yy = v ? Y(v) : oy - 30;
+      rect(svg, x - 50, yy, 100, oy - yy, { fill: col, op: op * .7, rx: 6 });
+      T(svg, x, yy - 52, n, C.text, 26, 'middle', true, op);
+      T(svg, x, yy - 22, alt || ('约 ' + v + ' 亿$'), col, 22, 'middle', false, op);
+      T(svg, x, oy + 30, String(Math.floor(y)), C.t2, 24, 'middle', false, op);
+      T(svg, x, oy + 60, c, C.t2, 22, 'middle', false, op);
+    });
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

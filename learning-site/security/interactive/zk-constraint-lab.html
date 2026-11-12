@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZK 约束不足实验</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); }
+  .w-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)); gap: 8px; }
+  .w-grid label { margin: 0 0 4px; font-family: var(--mono); }
+  .ok { color: var(--buy); font-weight: 650; } .bad { color: var(--sell); font-weight: 650; }
+  .off td { opacity: .5; }
+  td code { word-break: break-word; }
+  input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); vertical-align: middle; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="back" href="index.html">← 交互实验目录</a>
+    <h1>ZK 约束不足实验</h1>
+  </header>
+  <p class="lead">验证器只检查约束是否全部成立。电路少写一条约束，错误的见证（Witness）也能通过。这里用模 97 的小素数域做一个玩具提款电路。配套章节：<a href="../14-zk-proof-systems.md">14 ZK 与证明系统</a>。</p>
+
+  <div class="callout info small">
+    <strong>怎么玩：</strong>
+    1. 点“诚实提款”，确认全部约束通过。
+    2. 点“尝试超额提款”，确认提取 25（余额只有 20）被拒绝。
+    3. 取消勾选一条约束，再点“让恶意证明者求解”。观察伪造见证。
+    4. 在第 3 节先预测，再看结果。
+    5. 勾选过度约束 O，再点“诚实提款（余额大）”，观察合法用户被拒绝。
+  </div>
+
+  <h2>1. 电路与见证</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <h3>见证（全部取模 97）</h3>
+      <p class="small muted">示例：账户余额 B = 20。a 是公开提款额，r 是公开的新余额，b0 到 b4 是 r 的二进制位（私有）。</p>
+      <div class="w-grid" id="wit"></div>
+      <div class="btn-row">
+        <button id="honest">诚实提款</button>
+        <button id="honestBig">诚实提款（余额大）</button>
+        <button id="over">尝试超额提款</button>
+        <button id="solve" class="primary">让恶意证明者求解</button>
+        <button id="reset">恢复全部约束</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>验证结果</h3>
+      <div id="vOut"></div>
+      <div id="sOut" style="margin-top:8px"></div>
+      <div id="why" class="small" style="margin-top:8px"></div>
+    </div>
+  </div>
+
+  <h2>2. 约束（勾选表示写进了电路）</h2>
+  <div class="card">
+    <div class="table-wrap"><table>
+      <thead><tr><th>启用</th><th>ID</th><th>约束</th><th>代入后</th><th>结果</th></tr></thead>
+      <tbody id="cons"></tbody>
+    </table></div>
+    <p class="small muted">R 是业务合约对公开输入的范围检查，按整数比较，不取模。O 默认关闭，它是一条写错的多余约束。</p>
+  </div>
+
+  <h2>3. 先预测，再求解</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <label for="pC">假设电路只漏掉这一条约束</label>
+      <select id="pC"></select>
+      <label for="pA">目标提款额 a（示例，余额 20）</label>
+      <input type="number" id="pA" min="0" max="96" value="25">
+      <p class="small">恶意证明者能为这个 a 构造出通过验证的见证吗？</p>
+      <div class="btn-row"><button id="pY">能</button><button id="pN">不能</button></div>
+      <div id="pOut" class="small muted">还没有预测。</div>
+    </div>
+    <div class="card">
+      <h3>逐条移除的结果</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>移除</th><th>a=25 能过吗</th><th class="num">可超额的 a 个数</th></tr></thead>
+        <tbody id="sweep"></tbody>
+      </table></div>
+      <p class="small muted">“可超额”指 a &gt; 20 且存在通过验证的见证。求解器逐个枚举 a = 0 到 96。</p>
+    </div>
+  </div>
+
+  <h2>4. 反思</h2>
+  <div class="card">
+    <ol class="small">
+      <li>打开你读过的一个电路。哪些信号只被赋值，没有被约束？</li>
+      <li>哪些公开输入由业务合约使用？合约有没有检查范围，有没有用全部字段？</li>
+      <li>你的测试里有“应该失败”的恶意见证吗？如果只有诚实见证，它能发现本页的问题吗？</li>
+    </ol>
+  </div>
+
+  <footer class="note">全部数字都是示例。模 97 只用于演示，真实系统使用约 254 位的域。本页不生成真实证明，只检查约束方程。</footer>
+</div>
+<script>
+/*LOGIC*/
+const P = 97, B = 20, BITS = 5;
+const mod = x => ((x % P) + P) % P;
+const inv = x => { x = mod(x); for (let i = 1; i < P; i++) if (mod(x * i) === 1) return i; return 0; };
+const IDS = ['C1', 'B0', 'B1', 'B2', 'B3', 'B4', 'S', 'R', 'O'];
+const allOn = () => ({ C1: true, B0: true, B1: true, B2: true, B3: true, B4: true, S: true, R: true, O: false });
+function checks(w) {
+  const sum = w.b.reduce((s, v, i) => s + v * (1 << i), 0);
+  const out = [
+    { id: 'C1', txt: 'a + r = B（守恒）', sub: mod(w.a + w.r) + ' = ' + B, ok: mod(w.a + w.r) === B },
+  ];
+  w.b.forEach((v, i) => out.push({ id: 'B' + i, txt: 'b' + i + ' · (b' + i + ' − 1) = 0（布尔）', sub: mod(v * (v - 1)) + ' = 0', ok: mod(v * (v - 1)) === 0 }));
+  out.push({ id: 'S', txt: 'Σ 2^i · b_i = r（位分解，把 r 限制在 0 到 31）', sub: mod(sum) + ' = ' + mod(w.r), ok: mod(sum) === mod(w.r) });
+  out.push({ id: 'R', txt: '0 ≤ a ≤ 31（合约检查公开输入）', sub: 'a = ' + mod(w.a), ok: mod(w.a) <= 31 });
+  out.push({ id: 'O', txt: 'b4 = 0（过度约束：错误地只允许 4 位）', sub: 'b4 = ' + mod(w.b[4]), ok: mod(w.b[4]) === 0 });
+  return out;
+}
+const accepted = (w, on) => checks(w).every(c => !on[c.id] || c.ok);
+function semantic(w) {
+  const a = mod(w.a), r = mod(w.r);
+  if (a > B) return { ok: false, why: '提款额 ' + a + ' 大于余额 ' + B + '。' };
+  if (a + r !== B) return { ok: false, why: '按整数计算，' + a + ' + ' + r + ' 不等于 ' + B + '，账本不守恒。' };
+  if (!w.b.every(v => mod(v) === 0 || mod(v) === 1)) return { ok: false, why: 'b 里有不是 0 或 1 的值，它不是 r 的二进制分解。' };
+  if (w.b.reduce((s, v, i) => s + mod(v) * (1 << i), 0) !== r) return { ok: false, why: '二进制位的和不等于 r。' };
+  return { ok: true, why: '提款额不超过余额，账本守恒，二进制分解正确。' };
+}
+function solve(aIn, on) {
+  const a = mod(aIn), rt = mod(B - a);
+  const free = [];
+  for (let i = 0; i < BITS; i++) if (!on['B' + i] && !(i === 4 && on.O)) free.push(i);
+  const solved = on.S && free.length ? free[0] : -1;
+  const idx = [...Array(BITS).keys()].filter(i => i !== solved);
+  const total = 1 << idx.length;
+  for (let m = 0; m < total; m++) {
+    const b = [0, 0, 0, 0, 0];
+    idx.forEach((i, j) => { b[i] = (m >> j) & 1; });
+    if (on.O && b[4] !== 0) continue;
+    const sum = b.reduce((s, v, i) => s + v * (1 << i), 0);
+    let r;
+    if (on.S && solved >= 0) { r = on.C1 ? rt : mod(sum); b[solved] = mod((r - sum) * inv(1 << solved)); }
+    else if (on.S) r = mod(sum);
+    else r = on.C1 ? rt : 0;
+    const w = { a, r, b };
+    if (accepted(w, on)) return w;
+  }
+  return null;
+}
+function excessCount(on) { let n = 0; for (let a = B + 1; a < P; a++) if (solve(a, on)) n++; return n; }
+const without = id => { const on = allOn(); on[id] = false; return on; };
+/*END*/
+(function () {
+  const $ = id => document.getElementById(id);
+  let on = allOn(), w = { a: 5, r: 15, b: [1, 1, 1, 1, 0] };
+  const fields = ['a', 'r', 'b0', 'b1', 'b2', 'b3', 'b4'];
+  $('wit').innerHTML = fields.map(f => '<div><label for="w_' + f + '">' + f + '</label><input type="number" id="w_' + f + '" min="0" max="96"></div>').join('');
+  function writeW() { $('w_a').value = w.a; $('w_r').value = w.r; w.b.forEach((v, i) => { $('w_b' + i).value = v; }); render(); }
+  fields.forEach(f => $('w_' + f).addEventListener('input', () => {
+    const v = mod(parseInt($('w_' + f).value || '0', 10));
+    if (f === 'a') w.a = v; else if (f === 'r') w.r = v; else w.b[+f[1]] = v;
+    render();
+  }));
+  function render() {
+    const list = checks(w);
+    $('cons').innerHTML = list.map(c => '<tr class="' + (on[c.id] ? '' : 'off') + '"><td><input type="checkbox" data-id="' + c.id + '" aria-label="启用 ' + c.id + '" ' + (on[c.id] ? 'checked' : '') + '></td><td class="mono">' + c.id + '</td><td>' + c.txt + '</td><td class="mono">' + c.sub + '</td><td class="' + (c.ok ? 'ok">成立' : 'bad">不成立') + '</td></tr>').join('');
+    document.querySelectorAll('#cons input').forEach(x => x.addEventListener('change', () => { on[x.dataset.id] = x.checked; render(); }));
+    const acc = accepted(w, on), sem = semantic(w);
+    const failed = list.filter(c => on[c.id] && !c.ok).map(c => c.id);
+    const missing = list.filter(c => !on[c.id] && !c.ok && c.id !== 'O').map(c => c.id);
+    $('vOut').innerHTML = acc ? '<span class="pill buy">验证器：接受</span>' : '<span class="pill sell">验证器：拒绝</span> <span class="small">失败约束：' + failed.join('、') + '</span>';
+    $('sOut').innerHTML = (sem.ok ? '<span class="pill buy">业务含义：正确</span> ' : '<span class="pill sell">业务含义：错误</span> ') + '<span class="small">' + sem.why + '</span>';
+    let t;
+    if (acc && !sem.ok) t = '<div class="callout warn">伪造成功。验证器没有坏，它只检查写进电路的约束。这个见证违反了 ' + (missing.join('、') || '电路外的业务规则') + '，而这些约束没有启用。合约会把新余额记成 ' + mod(w.r) + '。</div>';
+    else if (!acc && sem.ok) t = '<div class="callout warn">过度约束。合法见证被拒绝，用户无法提款。后果是拒绝服务，资金可能被锁住。</div>';
+    else if (acc) t = '诚实见证通过全部启用的约束。';
+    else t = '约束拦下了这个见证。取消勾选失败的约束，或点“让恶意证明者求解”。';
+    $('why').innerHTML = t;
+  }
+  $('honest').onclick = () => { w = { a: 5, r: 15, b: [1, 1, 1, 1, 0] }; writeW(); };
+  $('honestBig').onclick = () => { w = { a: 2, r: 18, b: [0, 1, 0, 0, 1] }; writeW(); };
+  $('over').onclick = () => { w = { a: 25, r: mod(B - 25), b: [0, 0, 1, 1, 1] }; writeW(); };
+  $('reset').onclick = () => { on = allOn(); render(); renderSweep(); };
+  $('solve').onclick = () => {
+    const r = solve(w.a, on);
+    if (r) { w = r; writeW(); }
+    else $('why').innerHTML = '<div class="callout info">求解器枚举后没有找到见证。当前约束下，a = ' + mod(w.a) + ' 无法通过。试试取消勾选一条约束。</div>';
+  };
+  const sel = IDS.filter(i => i !== 'O');
+  $('pC').innerHTML = sel.map(i => '<option value="' + i + '">' + i + '</option>').join('');
+  function pred(guess) {
+    const id = $('pC').value, a = mod(parseInt($('pA').value || '0', 10)), r = solve(a, without(id)), can = !!r;
+    const right = guess === can;
+    $('pOut').className = 'callout ' + (right ? 'info' : 'warn') + ' small';
+    $('pOut').innerHTML = (right ? '预测正确。' : '预测错误。') + (r
+      ? ' 能。见证：a=' + r.a + '，r=' + r.r + '，b=[' + r.b.join(', ') + ']。' + (a > B ? '提款额超过余额，这是伪造。' : '这个 a 没有超额；诚实用户也能提。')
+      : ' 不能。其余约束仍然拦住了 a=' + a + '。例如 r 必须落在 0 到 31，或合约拒绝这个公开输入。');
+  }
+  $('pY').onclick = () => pred(true); $('pN').onclick = () => pred(false);
+  function renderSweep() {
+    $('sweep').innerHTML = sel.map(id => { const o = without(id), s = solve(25, o); return '<tr><td class="mono">' + id + '</td><td class="' + (s ? 'bad">能' : 'ok">不能') + '</td><td class="num">' + excessCount(o) + '</td></tr>'; }).join('') +
+      '<tr><td>不移除</td><td class="ok">不能</td><td class="num">' + excessCount(allOn()) + '</td></tr>';
+  }
+  writeW(); renderSweep();
+})();
+</script>
+<script>
+/* 在单文件阅读版的 iframe 中打开时，把章节链接交给外层阅读器处理 */
+(function () {
+  if (window.parent === window) return;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href');
+    if (/\.md(#|$)/.test(h)) { e.preventDefault(); window.parent.postMessage({ cexNavMd: h }, '*'); }
+  });
+})();
+</script>
+</body>
+</html>

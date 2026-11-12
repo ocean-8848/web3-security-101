@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C03 Mantle 专题</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .ana .card { font-size: 27px; display: flex; flex-direction: column; gap: 10px; min-height: 210px; }
+  .ana .card .a { color: var(--text-2); font-size: 25px; }
+  .ck { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; }
+  .ck .it { font-size: 25px; background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--gold); border-radius: 8px; padding: 10px 16px; }
+  .cmp th:first-child, .cmp td:first-child { color: var(--text-2); }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="C03" data-title="Mantle 专题：以太坊 L2 视角">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 链专题 · C03（完结）</div>
+    <h1>代码几乎一样，<br>但<span class="hl">两件事</span>不同</h1>
+    <div class="ana">
+      <div class="card sell" data-k="1" data-nocur><b>原生币是 MNT</b><div class="a">不是 ETH；msg.value 是 MNT</div></div>
+      <div class="card sell" data-k="1" data-nocur><b>ETH 是 ERC-20</b><div class="a">不能 call{value:} 发送</div></div>
+      <div class="card gold" data-k="2" data-nocur><b>安全不只看以太坊</b><div class="a">还看排序器、证明、多签</div></div>
+      <div class="card info" data-k="2" data-nocur><b>提款可被暂停</b><div class="a">依赖"一定能及时提款"会出错</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，链专题最后一集，Mantle。它是建在以太坊上的二层网络。一句话理解，Mantle 的合约代码和以太坊几乎一样，但有两件事不同。</li>
+      <li>第一，原生币是 MNT 不是 ETH，msg.value 收到的是 MNT。而且你从以太坊带来的 ETH，在上面是 ERC-20 的形式，不能用 call value 发送。</li>
+      <li>第二，你的资产安全不只取决于以太坊，还取决于 L2 的排序器、证明系统和升级多签。提款甚至可以被暂停，所以依赖提款一定能及时完成的协议会出错。这两件事，是 L2 和 L1 最根本的区别。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="以太坊旁的卫星城" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>Mantle 像以太坊城旁的一座卫星城</h2>
+    <div class="ana">
+      <div class="card" data-k="0"><b>一个调度员</b><div class="a">调度很快，但排序器只有一个</div></div>
+      <div class="card" data-k="1"><b>定期回城公证</b><div class="a">把账本送回以太坊（状态根+证明）</div></div>
+      <div class="card" data-k="2"><b>通用货币 MNT</b><div class="a">带来的 ETH 变成"兑换券"</div></div>
+      <div class="card" data-k="3"><b>6/14 签字改规划</b><div class="a">而且立即生效</div></div>
+    </div>
+    <div class="card warn fs29" data-k="4">比喻的局限：卫星城出问题时，居民可经以太坊的"紧急通道"把交易<b>强制送进</b>卫星城（强制包含），但可能要等 12 小时。</div>
+    <ol class="say">
+      <li>打个比方。Mantle 像以太坊城旁边的一座卫星城。卫星城有自己的交通调度中心，也就是排序器，调度很快，但只有一个调度员。</li>
+      <li>卫星城每隔一段时间，把账本送回以太坊城公证，提交状态根和证明。</li>
+      <li>卫星城的通用货币是 MNT。你从以太坊城带来的 ETH，在这里被换成一种 ETH 兑换券，也就是 ERC-20 形式的 ETH。</li>
+      <li>卫星城的城市规划，可以由十四人委员会中的六人签字修改，而且立即生效，没有延迟。这是一个很重要的信任假设。</li>
+      <li>比喻的局限是，卫星城出问题时，居民可以通过以太坊的紧急通道，把交易强制送进卫星城，这叫强制包含，但可能要等十二小时。下面具体看差异。</li>
+    </ol>
+  </section>
+
+  <!-- 3 安全模型 -->
+  <section class="scene" data-title="链的安全模型" data-onstep="modelStep">
+    <div class="kicker">安全模型 · 资料来自 L2BEAT（截至 2026）</div>
+    <h2 id="mdH">资产安全的上限，是这几个组件</h2>
+    <svg id="model" width="1640" height="500" viewBox="0 0 1640 500"></svg>
+    <ol class="say">
+      <li>先看 Mantle 的安全模型，资料来自 L2BEAT。L2 这一侧，用户交易先经过一个中心化排序器，它是唯一能出块的运营者，然后在 op-geth 分叉的 EVM 上执行，原生 gas 代币是 MNT。</li>
+      <li>以太坊这一侧有几个关键合约。交易数据发布到以太坊的 blob。输出预言机由白名单提议者提交状态根。SP1 验证器网关做有效性证明。还有桥和门户合约，持有 L1 上的跨链资产。L2BEAT 把 Mantle 归类为 ZK Rollup，用 OP Succinct 证明，但工程多签可以把它切换到乐观模式。</li>
+      <li>最关键的是升级权限。一个六选十四的安全多签，可以无延迟升级这些持有资产的 L1 合约。L2BEAT 把无升级延迟、无退出窗口标为关键风险，并将 Mantle 评为 Stage 0。还有一个三选七的工程多签，可以暂停提款、切换乐观模式。所以你在 Mantle 上的资产安全上限，其实就是这几个组件和这两个多签。</li>
+    </ol>
+  </section>
+
+  <!-- 4 八项差异 -->
+  <section class="scene" data-title="与以太坊的八项差异" data-onstep="rowStep">
+    <div class="kicker">差异总表 · 移植最常见的错在前两项</div>
+    <h2>原生币与 ETH 形态，是最常见的移植错</h2>
+    <table class="t sm">
+      <thead><tr><th>差异</th><th>Mantle</th><th>会让什么出错</th></tr></thead>
+      <tbody>
+        <tr><td>原生币</td><td>MNT</td><td>msg.value/balance/payable 单位是 MNT</td></tr>
+        <tr><td>ETH 的形态</td><td>ERC-20（BVM_ETH）</td><td>以为能 call{value:} 发 ETH、WETH 包装</td></tr>
+        <tr><td>回调入口</td><td>转 MNT 触发 receive，转 ETH 不触发</td><td>重入分析、接收通知逻辑</td></tr>
+        <tr><td>交易费</td><td>L2 执行费 + L1 数据费（tokenRatio 换算）</td><td>L2 上可能出现 L1 没有的 out-of-gas</td></tr>
+        <tr><td>交易顺序</td><td>单一排序器</td><td>MEV/审查集中在运营者</td></tr>
+        <tr><td>排序器宕机</td><td>清算/喂价停，强制提交最长 12 小时</td><td>借贷、永续的清算与预言机</td></tr>
+        <tr><td>L1→L2 消息</td><td>对 L1 发送者做地址别名</td><td>msg.sender==L1地址 鉴权会失败</td></tr>
+        <tr><td>提款</td><td>需状态根提交/终结，可被暂停</td><td>依赖"提款一定及时"的协议</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>把差异列成表。原生币是 MNT，所以 msg.value、balance、payable 函数的单位全是 MNT。ETH 是 ERC-20 形式，审计报告里叫 BVM_ETH，所以以为能用 call value 发 ETH、或者做 WETH 包装的代码都会出错。回调入口也变了，转 MNT 触发 receive，转 ETH 不触发，所以重入分析要按实际资产重做。交易费分两部分，L2 执行费加 L1 数据费，用 tokenRatio 换算，所以 L2 上可能出现 L1 上不会有的 out-of-gas。</li>
+      <li>交易顺序由单一排序器决定，MEV 和审查风险集中在运营者。排序器宕机时，价格停止更新、清算停止，要经 L1 强制提交最长十二小时，所以借贷和永续合约的清算和预言机逻辑必须考虑这种情况。</li>
+      <li>还有两项容易漏。L1 到 L2 的消息，OP Stack 会对 L1 发送者做地址别名，所以在 L2 上用 msg.sender 等于 L1 合约地址来鉴权会失败，要通过跨域信使获取原始发送者。最后，提款需要状态根被提交和终结，而且可被工程多签暂停，所以依赖提款一定能及时完成的协议会出错。前两项，原生币和 ETH 形态，是最常见的移植错。</li>
+    </ol>
+  </section>
+
+  <!-- 5 mETH 防御成功 -->
+  <section class="scene" data-title="mETH 追回：防御成功" data-onstep="marks">
+    <div class="kicker">案例一 · EP10 延迟 + 暂停救回资产</div>
+    <h2>三个条件缺一不可，追回约 4,300 万美元</h2>
+    <div class="ana">
+      <div class="card ok" data-k="0"><b>① 提款延迟</b><div class="a">cmETH 赎回有 8 小时延迟</div><div class="hl">攻击者赎回被卡住</div></div>
+      <div class="card ok" data-k="1"><b>② 暂停 + 恢复权</b><div class="a">团队暂停合约</div><div class="hl">把 15,000 cmETH 转到恢复地址</div></div>
+      <div class="card ok" data-k="2"><b>③ 外部社区</b><div class="a">SEAL 数小时内联系到团队</div><div class="hl">发现并通知</div></div>
+    </div>
+    <div class="card warn fs28" data-k="3"><b>对照：</b>同一起事件中，Bybit 被盗的大部分原生 ETH 无法追回——原生 ETH 没有延迟，cmETH 有。</div>
+    <div class="card sell fs28" data-k="4"><b>另一面：</b>团队能转走攻击者地址的代币，意味着也能转走<b>任何用户</b>的代币。这是必须向用户披露的中心化权限。</div>
+    <ol class="say">
+      <li>第一个案例，是个正面例子，mETH 协议追回 cmETH。mETH 是 Mantle 生态的流动性再质押协议，cmETH 的赎回有八小时延迟。攻击者用 Bybit 被盗的资金发起 cmETH 赎回，第一个条件起作用了，提款有八小时延迟，攻击者的赎回被卡在延迟里。</li>
+      <li>第二个条件，团队有暂停和资产恢复权限，于是暂停合约，把一万五千个 cmETH 从攻击者地址转到恢复地址。</li>
+      <li>第三个条件，外部安全社区 SEAL 在数小时内发现并联系到了团队。这三个条件缺一不可，最终追回约四千三百万美元。</li>
+      <li>一个鲜明的对照是，同一起事件中，Bybit 被盗的大部分原生 ETH 无法追回。区别就在于，原生 ETH 没有延迟，而 cmETH 有。延迟把攻击从一瞬间，拉长成了一个可以响应的窗口。</li>
+      <li>但这个案例也有另一面。团队能把攻击者地址上的代币转走，这意味着团队也有能力转走任何一个用户的代币。这是一个中心化权限，必须向用户披露。延迟和暂停是可信中心化的工具，它保护了资金，也要求用户信任持有权限的人。设计时要回答，谁持有权限，有没有时间锁，被滥用时用户能否察觉。</li>
+    </ol>
+  </section>
+
+  <!-- 6 op-geth 客户端层 -->
+  <section class="scene" data-title="客户端层的漏洞" data-onstep="rowStep">
+    <div class="kicker">案例二 · L2 的可信计算基础（TCB）</div>
+    <h2>L2 的执行客户端，本身就是"合约"的一部分</h2>
+    <table class="t sm">
+      <thead><tr><th>op-geth 审计发现（已修复）</th><th>机制</th><th>如果未修复</th></tr></thead>
+      <tbody>
+        <tr><td>BVM_ETH 无限铸造</td><td>ETH 转账缺溢出检查，负 big.Int 被当正数</td><td>存 100 ETH 可得 200 ETH</td></tr>
+        <tr><td>交易成本遗漏 Value</td><td>复制粘贴错误，接受付不起的交易</td><td>交易池被垃圾交易填满（DoS）</td></tr>
+        <tr><td>代付余额检查</td><td>逐笔检查而非检查总额</td><td>无法支付的交易填满交易池</td></tr>
+      </tbody>
+    </table>
+    <div class="card gold fs29" data-k="2"><b>教训：</b>在 L2 上，合约的可信计算基础（TCB）包括 L2 客户端、证明系统和桥合约——<b>合约审计覆盖不到这些</b>。"原生币不是 ETH"迫使客户端增加大量新代码，新代码=新攻击面。</div>
+    <ol class="say">
+      <li>第二个案例，客户端层的漏洞。这提醒我们，L2 的执行客户端本身，就是合约的一部分，它决定了 EVM 规则怎样在这条链上运行。OpenZeppelin 二零二四年四月对 Mantle op-geth 修改部分的审计，报告了三个严重问题，都已修复。</li>
+      <li>第一个最吓人，BVM_ETH 无限铸造。ETH 转账缺少溢出检查，一个负的大整数被当成正数写入，结果只存入一百个 ETH，可以获得两百个。第二个，交易成本计算遗漏了 Value 字段，一个复制粘贴错误使交易池接受付不起的交易，可以被垃圾交易填满造成 DoS。第三个，代付余额检查，对多笔代付交易逐笔检查余额，而不是检查总额，也能填满交易池。</li>
+      <li>教训很深。在 L2 上，合约的可信计算基础，也就是 TCB，包括 L2 客户端、证明系统和桥合约，而你的合约审计根本覆盖不到这些。而且原生币不是 ETH 这个设计，迫使客户端增加了大量新代码，比如 ETH 作为 ERC-20 的转账逻辑和 tokenRatio 换算，新代码就是新攻击面。所以在 L2 上开发，要把这些底层组件也纳入风险评估。</li>
+    </ol>
+  </section>
+
+  <!-- 7 延迟+暂停 设计模式 -->
+  <section class="scene" data-title="延迟+暂停设计模式" data-onstep="smStep">
+    <div class="kicker">设计模式 · 从 mETH 提炼可复用设计</div>
+    <h2>延迟期内资产仍在协议控制下</h2>
+    <svg id="sm" width="1640" height="600" viewBox="0 0 1640 600"></svg>
+    <ol class="say">
+      <li>从 mETH 案例，可以提炼一个可复用的设计模式，把延迟加暂停做对。用户发起赎回后，进入请求状态。正常情况下，延迟期满就变成可领取，用户领取后结束。</li>
+      <li>关键在于，延迟期内如果守护者暂停或标记可疑，就进入冻结状态。复核通过可以恢复成请求，继续走正常流程。只有在治理加时间锁批准后，资产才转入恢复地址。注意，延迟期内资产仍在协议控制下，暂停只是阻止状态推进，并不转移资产。</li>
+      <li>有两条原则。恢复这条路径是最敏感的权限，它应该需要比暂停更高的门槛，更多签名、时间锁、公开公告。还有，延迟会降低资本效率，业界常见的折中是，小额即时赎回加大额排队赎回，或者按全局速率限制赎回。这个模式，其实就是第十集讲的把延迟当成安全参数来设计。</li>
+    </ol>
+  </section>
+
+  <!-- 8 三链对比 -->
+  <section class="scene" data-title="三条链对比" data-onstep="rowStep">
+    <div class="kicker">链专题小结 · 一张表看全</div>
+    <h2>BNB Chain · TRON · Mantle</h2>
+    <table class="t sm cmp">
+      <thead><tr><th>维度</th><th>BNB Chain</th><th>TRON</th><th>Mantle</th></tr></thead>
+      <tbody>
+        <tr><td>类型</td><td>独立 L1，PoSA</td><td>独立 L1，DPoS</td><td>以太坊 L2</td></tr>
+        <tr><td>虚拟机</td><td>EVM</td><td>TVM（EVM 变体）</td><td>EVM（op-geth 分叉）</td></tr>
+        <tr><td>原生币</td><td>BNB</td><td>TRX</td><td>MNT（ETH 为 ERC-20）</td></tr>
+        <tr><td>最大移植陷阱</td><td>精度、区块数计时、分叉</td><td>USDT 返回值、资源、操作码开关</td><td>msg.value 单位、ETH 形态、L2 信任</td></tr>
+        <tr><td>应急能力</td><td>验证者可协调停链</td><td>超级代表提案</td><td>多签可暂停提款</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>把三条链放在一起对比。类型上，BNB Chain 是独立 L1，用 PoSA 共识。TRON 也是独立 L1，用 DPoS。Mantle 是以太坊的 L2。虚拟机上，BNB 是标准 EVM，TRON 是 EVM 变体 TVM，Mantle 是 op-geth 分叉的 EVM。</li>
+      <li>原生币，BNB、TRX、MNT，其中 Mantle 上 ETH 是 ERC-20。最大的移植陷阱各不相同，BNB 是代币精度、区块数计时和分叉改动，TRON 是 USDT 返回值、资源模型和操作码开关，Mantle 是 msg.value 单位、ETH 形态和 L2 信任假设。</li>
+      <li>应急能力也不同，BNB 的验证者可以协调停链，TRON 靠超级代表提案，Mantle 的多签可以暂停提款。这张表告诉你一件事，通用的漏洞模式是相同的，但每条链的参数和信任假设不同，所以每迁移到一条新链，都要按它的差异重新做一遍检查。手册里的链迁移检查器，可以根据目标链和你的代码假设，生成一份迁移风险清单。</li>
+    </ol>
+  </section>
+
+  <!-- 9 全系列完结 -->
+  <section class="scene" data-title="全系列完结" data-onstep="marks">
+    <div class="kicker">全系列完结</div>
+    <h2 data-show="0-2">合约安全学习手册 · 讲到这里</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0"><span class="hl">评估篇 A01–A10</span>：怎么看一个项目、给风险定级、写报告。</li>
+      <li data-step="1"><span class="hl">主线 EP01–EP13</span>：十二类漏洞的机制与防御，加一张事故地图。</li>
+      <li data-step="2"><span class="hl">链专题 C00–C03</span>：把通用方法，落到每条链的具体差异上。</li>
+    </ul>
+    <h2 data-show="3">把安全，写进每一行代码和每一次迁移</h2>
+    <div class="path" data-show="3">
+      <div class="card gold"><div class="n">看穿</div><b>共同的形状</b><div class="d">新事故多是旧模式的变体</div></div>
+      <div class="card info"><div class="n">写对</div><b>不变量</b><div class="d">工具找序列，性质要你写</div></div>
+      <div class="card sell"><div class="n">落地</div><b>每条链重测</b><div class="d">参数变了，假设就变了</div></div>
+    </div>
+    <ol class="say">
+      <li>到这里，整个合约安全学习手册的视频就全部讲完了。回顾一下三个部分。评估篇 A01 到 A10，讲怎么看一个项目、给风险定级、写评估报告，这是上手就能用的方法。</li>
+      <li>主线 EP01 到 EP13，讲十二类漏洞的机制和防御，从重入、权限、算术，到预言机、签名、升级、跨链，最后用一张事故地图把它们串起来。</li>
+      <li>链专题 C00 到 C03，把这些通用方法，落到以太坊、BNB Chain、TRON、Mantle 每条链的具体差异上。</li>
+      <li>最后送大家三句话。第一，看穿共同的形状，绝大多数新事故，都是旧模式换了外衣。第二，写对不变量，工具能替你找出打破不变量的序列，但那条性质要你自己写对。第三，每迁移到一条新链都要重测，因为参数变了，安全假设就变了。希望这套手册，能帮你把安全，真正写进每一行代码和每一次迁移。谢谢观看，我们有缘再见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line } = K;
+
+  function modelStep(el, st) {
+    marks(el, st);
+    const svg = el.querySelector('#model'); svg.innerHTML = '';
+    // L2 box
+    const l2on = 1, l1on = st >= 1 ? 1 : .15, mson = st >= 2 ? 1 : .12;
+    rect(svg, 30, 40, 620, 280, { fill: 'none', stroke: C.info, sw: 2, rx: 12, op: l2on });
+    T(svg, 340, 75, 'Mantle（L2）', C.info, 26, 'middle', true, l2on);
+    box(svg, 70, 110, 540, 70, '中心化排序器（唯一出块运营者）', { stroke: C.sell, fs: 24, op: l2on });
+    box(svg, 70, 210, 540, 80, '执行：op-geth 分叉 EVM · 原生 gas = MNT', { stroke: C.info, fs: 24, op: l2on });
+
+    // L1 box
+    rect(svg, 720, 40, 890, 280, { fill: 'none', stroke: C.warn, sw: 2, rx: 12, op: l1on });
+    T(svg, 1165, 75, '以太坊（L1）', C.warn, 26, 'middle', true, l1on);
+    box(svg, 750, 110, 400, 60, '交易数据 → 以太坊 blob', { stroke: C.t2, fs: 23, op: l1on });
+    box(svg, 1180, 110, 400, 60, '输出预言机（白名单提议者）', { stroke: C.t2, fs: 23, op: l1on });
+    box(svg, 750, 190, 400, 60, 'SP1 验证器（有效性证明）', { stroke: C.t2, fs: 23, op: l1on });
+    box(svg, 1180, 190, 400, 60, '桥 / 门户（持 L1 资产）', { stroke: C.gold, fs: 23, op: l1on });
+    if (st >= 1) arrow(svg, 650, 245, 748, 220, C.t2, false, 2, l1on);
+
+    // multisigs
+    rect(svg, 120, 370, 680, 100, { fill: C.curFill, stroke: C.sell, sw: 3, rx: 10, op: mson });
+    T(svg, 460, 408, '安全多签 6/14', C.sell, 26, 'middle', true, mson);
+    T(svg, 460, 445, '可无延迟升级桥 / 预言机 / 门户 → Stage 0', C.text, 23, 'middle', false, mson);
+    rect(svg, 840, 370, 680, 100, { fill: C.panel, stroke: C.warn, sw: 3, rx: 10, op: mson });
+    T(svg, 1180, 408, '工程多签 3/7', C.warn, 26, 'middle', true, mson);
+    T(svg, 1180, 445, '可暂停提款、切换乐观模式', C.text, 23, 'middle', false, mson);
+    el.querySelector('#mdH').textContent = st >= 2 ? '资产安全的上限 = 两个多签 + 这些组件' : '资产安全的上限，是这几个组件';
+  }
+
+  function smStep(el, st) {
+    marks(el, st);
+    const svg = el.querySelector('#sm'); svg.innerHTML = '';
+    const node = (x, y, w, t, col, op) => { rect(svg, x, y, w, 84, { fill: C.panel, stroke: col, sw: 3, rx: 10, op }); T(svg, x + w / 2, y + 44, t, C.text, 28, 'middle', true, op); };
+    node(20, 30, 300, '用户发起赎回', C.info, 1);
+    node(450, 30, 380, 'Requested 请求中', C.info, 1);
+    node(450, 220, 380, 'Claimable 可领取', C.warn, 1);
+    node(1010, 220, 300, 'Claimed 领取', C.info, 1);
+    node(450, 410, 420, 'Frozen 冻结（暂停/可疑）', C.sell, 1);
+    node(1010, 410, 620, 'Recovered 恢复地址（治理+时间锁）', C.gold, 1);
+    arrow(svg, 322, 72, 446, 72, C.t2, false, 3);
+    arrow(svg, 640, 116, 640, 216, C.warn, false, 3); T(svg, 662, 167, '延迟期满', C.t2, 24, 'start');
+    arrow(svg, 832, 262, 1006, 262, C.t2, false, 3);
+    arrow(svg, 640, 306, 640, 406, C.sell, false, 3); T(svg, 662, 357, '守护者暂停', C.t2, 24, 'start');
+    line(svg, 448, 452, 380, 452, C.t2, 3, true); line(svg, 380, 452, 380, 98, C.t2, 3, true);
+    arrow(svg, 380, 98, 446, 98, C.t2, true, 3); T(svg, 362, 280, '复核通过 → 恢复请求', C.t2, 24, 'end');
+    arrow(svg, 872, 452, 1006, 452, C.gold, false, 3);
+    T(svg, 820, 565, '延迟期内资产仍在协议控制下 · 暂停只阻止推进，不转移资产 · Recovered 门槛最高', C.gold, 27, 'middle', true);
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

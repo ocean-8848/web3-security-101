@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A04 DeFi 协议评估</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .ana .card { font-size: 30px; display: flex; flex-direction: column; gap: 10px; min-height: 250px; }
+  .ana .card .a { color: var(--text-2); font-size: 27px; }
+  .g9 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .g9 .card { font-size: 27px; padding: 16px 22px; display: flex; flex-direction: column; gap: 4px; min-height: 140px; }
+  .g9 .card b { font-size: 30px; }
+  .g9 .card .d { color: var(--text-2); font-size: 24px; }
+  .g9 .card .ch { font-family: var(--mono); color: var(--gold); font-size: 22px; }
+  .chk { display: flex; flex-direction: column; gap: 14px; }
+  .chk .it { display: grid; grid-template-columns: 56px 1fr; gap: 14px; align-items: start; font-size: 29px; line-height: 1.45; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 20px; transition: opacity .4s, border-color .4s; }
+  .chk .it .n { font-family: var(--mono); color: var(--gold); font-weight: 700; font-size: 32px; }
+  .chk .it .ex { color: var(--text-2); font-size: 25px; }
+  .chk .it.cur { border-color: var(--gold); background: #221e10; }
+  .tg { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .tg .card { font-size: 28px; display: flex; flex-direction: column; gap: 10px; }
+  .tg .card h3 { font-size: 36px; margin: 0; }
+  .tg .card ul { margin: 0; padding-left: 30px; line-height: 1.55; }
+  .tg .card li { margin: 4px 0; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="A04" data-title="DeFi 协议评估：按协议类型下手">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 评估篇 · A04</div>
+    <h1>代码会不会被攻破，<br>规则会不会被<span class="hl">套利</span></h1>
+    <div class="hero">
+      <div class="card sell" data-k="1" data-nocur><div class="k">2023-03 · Euler Finance</div><div class="big">约 1.97 亿$</div><div>一个函数漏了健康检查</div></div>
+      <div class="card warn" data-k="2" data-nocur><div class="k">2022-04 · Beanstalk</div><div class="big">约 1.8 亿$</div><div>闪电贷借来投票权</div></div>
+      <div class="card info" data-k="3" data-nocur><div class="k">2023-11 · KyberSwap</div><div class="big">约 4,800 万$</div><div>一处舍入方向的偏差</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到评估篇第4集。这一集讲第二类对象，DeFi 协议。DeFi 协议的评估分两层。第一层，代码会不会被攻破。第二层，规则会不会被套利。</li>
+      <li>看三个例子，以下据公开报道。2023年，借贷协议 Euler 损失约1.97亿美元。根因是一个函数在减少抵押品后，漏了健康检查。</li>
+      <li>2022年，稳定币协议 Beanstalk 损失约1.8亿美元。攻击者用闪电贷借来大量代币，换成投票权，在同一笔交易里通过并执行了恶意提案。每一步都符合规则。</li>
+      <li>2023年，KyberSwap 损失约4800万美元，根因是集中流动性计算里一处舍入的偏差。第一类问题有清单可查。第二类问题，要把整个协议和它依赖的市场一起建模。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="像检查一座水坝" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>评估 DeFi 协议像检查水坝</h2>
+    <div class="ana">
+      <div class="card" data-k="0"><b>坝体有没有裂缝</b><div class="a">混凝土、钢筋</div><div class="hl">→ 代码漏洞：重入、权限、溢出</div></div>
+      <div class="card" data-k="1"><b>设计能不能扛洪水</b><div class="a">上游暴涨、上游垮坝</div><div class="hl">→ 经济安全与外部依赖</div></div>
+      <div class="card" data-k="2"><b>谁能开闸</b><div class="a">几个人同意才能开</div><div class="hl">→ 权限与治理</div></div>
+    </div>
+    <div class="card warn fs30" data-k="3">比喻不准的地方：水坝的上游是固定的。DeFi 的"上游"—— 预言机、被依赖的协议、抵押资产 —— <b>会变</b>，要假设它们将来会恶化。</div>
+    <ol class="say">
+      <li>打个比方，评估 DeFi 协议像检查一座水坝。首先看坝体有没有裂缝，对应代码漏洞，比如重入、权限和溢出。</li>
+      <li>然后看设计。上游水位暴涨时，泄洪能力够不够。上游另一座坝垮了，会不会连锁。这对应经济安全和外部依赖。</li>
+      <li>坝体完好、设计也对，还要看谁能开闸，开闸要几个人同意。这是权限和治理。</li>
+      <li>比喻不准的地方在于，水坝的上游是固定的。DeFi 协议的上游，比如预言机、被依赖的协议和抵押资产，都会变。评估要假设它们将来会恶化。</li>
+    </ol>
+  </section>
+
+  <!-- 3 通用清单 -->
+  <section class="scene" data-title="通用清单：九类问题" data-onstep="marks">
+    <div class="kicker">通用清单 · 所有协议都查</div>
+    <h2>九类问题，每类都对应过真实事故</h2>
+    <div class="g9">
+      <div class="card" data-k="0"><span class="ch">03 章</span><b>重入</b><div class="d">外部调用前状态已更新？共享状态共享锁？</div></div>
+      <div class="card" data-k="0"><span class="ch">04 章</span><b>权限</b><div class="d">每个改状态函数谁能调？初始化受保护？</div></div>
+      <div class="card" data-k="0"><span class="ch">05 章</span><b>算术</b><div class="d">舍入对协议有利？精度从合约读取？</div></div>
+      <div class="card" data-k="1"><span class="ch">06 章</span><b>外部调用</b><div class="d">返回值检查？非标准代币？任意调用？</div></div>
+      <div class="card" data-k="1"><span class="ch">07 章</span><b>预言机</b><div class="d">价格一笔交易内可变？时效与上下限？</div></div>
+      <div class="card" data-k="1"><span class="ch">08 章</span><b>MEV 与签名</b><div class="d">最小成交量与截止时间？签名域完整？</div></div>
+      <div class="card" data-k="2"><span class="ch">09 章</span><b>升级</b><div class="d">存储布局？时间锁？暂停与升级分离？</div></div>
+      <div class="card" data-k="2"><span class="ch">10 章</span><b>经济</b><div class="d">偿付不变量？治理快照？清算激励？</div></div>
+      <div class="card" data-k="2"><span class="ch">C00–C03</span><b>链差异</b><div class="d">目标链的行为和以太坊一样吗？</div></div>
+    </div>
+    <ol class="say">
+      <li>先看通用清单，所有协议都查，一共九类，每类对应手册里的一章。前三类是重入、权限和算术。比如外部调用之前，状态更新了没有。每个修改状态的函数，谁能调用。舍入方向是不是对协议有利。</li>
+      <li>中间三类是外部调用、预言机、MEV 和签名。返回值有没有检查，能不能处理非标准代币。价格能不能在一笔交易内被推动。交换有没有设置最小成交量和截止时间。</li>
+      <li>后三类是升级、经济和链差异。存储布局对不对，有没有时间锁。偿付能力的不变量成不成立。部署到目标链后，行为和以太坊是否一样。这张清单是底线。在它之上，每类协议还有自己的高发点。</li>
+    </ol>
+  </section>
+
+  <!-- 4 借贷 -->
+  <section class="scene" data-title="借贷协议" data-onstep="lendStep">
+    <div class="kicker">分类型清单 · 借贷 · 数字为示例</div>
+    <h2>所有减少抵押或增加债务的路径，最后都要检查健康</h2>
+    <div class="row">
+      <div class="chk" style="flex:1" id="lendChk">
+        <div class="it" data-k="0"><span class="n">1</span><div>抵押品估值用什么价格？低流动性资产有供应上限？</div></div>
+        <div class="it" data-k="0"><span class="n">2</span><div>极端行情下清算仍有利可图？坏账谁承担？</div></div>
+        <div class="it" data-k="1"><span class="n">3</span><div><b class="hl">所有</b>减少抵押或增加债务的路径都检查健康因子？</div></div>
+        <div class="it" data-k="4"><span class="n">4</span><div>分叉自哪个项目？改了哪些地方？</div></div>
+      </div>
+      <svg id="hf" width="700" height="560" viewBox="0 0 700 560"></svg>
+    </div>
+    <ol class="say">
+      <li>先看借贷协议。前两项，抵押品估值用什么价格，低流动性的资产有没有供应上限。极端行情下，清算是不是仍然有利可图，坏账由谁承担。</li>
+      <li>第三项最关键。所有减少抵押品、或者增加债务的路径，最后都要检查健康因子。注意是所有路径，不是主要路径。用数字看一下。</li>
+      <li>示例账户存了100个单位的抵押品，抵押率是80%，借了75。健康因子等于100乘以0.8，再除以75，约等于1.07，大于1，安全。</li>
+      <li>现在有一个新函数，比如把抵押品捐给储备金，它减少了30个抵押品，却没有检查健康因子。抵押品剩70，乘以0.8是56，除以75，健康因子只有0.75，账户已经资不抵债，坏账留给了协议。据公开复盘，Euler 的问题就出在这样一个新增的函数上。</li>
+      <li>第四项，协议是不是分叉自 Compound 或 Aave 这类项目，改了哪些地方。改动的地方，往往就是新漏洞的地方。</li>
+    </ol>
+  </section>
+
+  <!-- 5 DEX -->
+  <section class="scene" data-title="DEX 与 AMM" data-onstep="marks">
+    <div class="kicker">分类型清单 · DEX / AMM</div>
+    <h2>不变量、舍入、回调，三个高发点</h2>
+    <div class="chk">
+      <div class="it" data-k="0"><span class="n">1</span><div>每次交换后，恒定乘积或对应的不变量是否成立？<div class="ex">Uranium：校验弱了 100 倍（A01）</div></div></div>
+      <div class="it" data-k="1"><span class="n">2</span><div>集中流动性的价格区间边界、再投资计算，舍入方向对吗？<div class="ex">KyberSwap：边界处的舍入偏差被放大</div></div></div>
+      <div class="it" data-k="2"><span class="n">3</span><div>交换回调是否校验调用者就是<b class="hl">计算出的</b>真实池子？<div class="ex">Sushi RouteProcessor2：伪造池子回调，划走授权给路由的代币</div></div></div>
+      <div class="it" data-k="3"><span class="n">4</span><div>能否把池子储备直接当作价格？收税、变基代币会不会破坏记账？<div class="ex">储备一笔交易就能推动，不能直接当预言机</div></div></div>
+    </div>
+    <ol class="say">
+      <li>再看 DEX 和 AMM，也就是自动做市商。第一项，每次交换后，恒定乘积或者对应的不变量是否成立。第1集讲的 Uranium，就是这个校验弱了100倍。</li>
+      <li>第二项，集中流动性的价格区间边界，以及手续费再投资的计算，舍入方向对不对。据公开复盘，KyberSwap 的问题就出在边界处一个很小的舍入偏差，被反复放大。</li>
+      <li>第三项，交换回调。池子在交换中会回调调用方，让它付款。回调函数必须确认，调用它的就是按工厂地址计算出来的真实池子。据公开报道，Sushi 的一个路由合约没有这样做，攻击者伪造了一个池子来回调，划走了用户授权给路由的代币。</li>
+      <li>第四项，不能把池子储备直接当价格用，储备一笔交易就能推动。还要看收税代币、变基代币会不会破坏池子的记账。</li>
+    </ol>
+  </section>
+
+  <!-- 6 金库 -->
+  <section class="scene" data-title="金库：首存者通胀" data-onstep="vaultStep">
+    <div class="kicker">分类型清单 · 金库 ERC-4626 · 数字为示例</div>
+    <h2 id="vaH">份额价格能被一笔捐赠拉高吗？</h2>
+    <div class="row">
+      <table class="t" style="flex:1.1" id="va">
+        <thead><tr><th>步骤</th><th class="num">总资产</th><th class="num">总份额</th><th class="num">每份价值</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="col" style="flex:0.9" id="vaSide"></div>
+    </div>
+    <ol class="say">
+      <li>金库协议有一个经典问题，首存者通胀。份额等于存入的资产，乘以总份额，再除以总资产，结果向下取整。来看一个示例。</li>
+      <li>第一个存款人只存了1个最小单位，拿到1份。然后他不通过存款，而是直接向金库转入10000 USDC。总资产变成约10000，总份额还是1。</li>
+      <li>第二个用户存入19999 USDC。他的份额等于19999乘以1，再除以约10000，约等于1.9999，向下取整，只拿到1份。</li>
+      <li>现在金库有约30000 USDC，2份。每份价值约15000。第二个用户存了19999，只值15000，约5000被第一个人拿走。</li>
+      <li>评估要查三件事。有没有虚拟份额或者首存锁定。总资产是不是直接读余额，能被捐赠操纵。策略合约能不能被替换。手册里的金库实验可以拖动数字，亲手看到这个过程。</li>
+    </ol>
+  </section>
+
+  <!-- 7 稳定币、质押、桥 -->
+  <section class="scene" data-title="稳定币、质押与跨链桥" data-onstep="marks">
+    <div class="kicker">分类型清单 · 三类</div>
+    <h2>锚定、凭证、消息：各有各的命门</h2>
+    <div class="grid3">
+      <div class="card" data-k="0"><h3>稳定币</h3><div class="fs28">锚定机制与极端脱锚路径<br>抵押品价格的熔断上下限<br>铸造权限、上限、时间锁<br><span class="down">抵押品与稳定币相关 → 死亡螺旋</span></div></div>
+      <div class="card" data-k="1"><h3>质押与再质押</h3><div class="fs28">凭证脱锚与赎回延迟队列<br>延迟期内谁能暂停<br>多层叠加的风险传导<br><span class="hl">罚没如何传导给持有人</span></div></div>
+      <div class="card" data-k="2"><h3>跨链桥</h3><div class="fs28">消息含源链、源合约、目标、nonce<br>验证方式与多签独立性<br>未证明消息不能当已证明<br><span class="hl">单笔与单位时间上限、两侧对账</span></div></div>
+    </div>
+    <ol class="say">
+      <li>接下来三类放在一起看。稳定币，看锚定机制，极端脱锚时的清算和赎回路径，抵押品价格的熔断上下限，以及谁能铸造。特别注意，抵押品如果和稳定币本身相关，价格下跌会互相强化，形成死亡螺旋。</li>
+      <li>质押和再质押，看凭证会不会脱锚，赎回有没有延迟队列，延迟期内谁能暂停。质押、再质押、再拿去抵押，层层叠加时，一层出事会传导到每一层。还要看罚没的损失怎样传导给凭证持有人。</li>
+      <li>跨链桥，看消息格式是否包含源链、源合约、目标和序号，并逐项校验。验证方式是多签还是证明，多签是否独立。未证明的消息，绝不能被当作已证明。最后还要有限额和两侧供应量的对账。</li>
+    </ol>
+  </section>
+
+  <!-- 8 永续与账户抽象 -->
+  <section class="scene" data-title="永续与账户抽象" data-onstep="marks">
+    <div class="kicker">分类型清单 · 两类</div>
+    <h2>指数价格与新账户模型</h2>
+    <div class="vs">
+      <div class="card" data-k="0"><h3 class="hl">永续 / 衍生品</h3><div class="fs28">标记价格与资金费率能否被操纵？<br>指数价格来源抗操纵吗？<br>保险基金耗尽时的自动减仓<br><span class="hl">L2 排序器宕机时，清算怎么办？</span></div></div>
+      <div class="card" data-k="1"><h3 class="blue">账户抽象</h3><div class="fs28">ERC-4337：Paymaster 能否被耗尽？<br>用户操作的签名验证<br>EIP-7702：普通地址也能带代码<br><span class="down">不能再用 tx.origin == msg.sender<br>或 code.length == 0 判断"是人"</span></div></div>
+    </div>
+    <ol class="say">
+      <li>永续合约和衍生品，看标记价格和资金费率能不能被操纵，指数价格的来源是否抗操纵，保险基金耗尽时，自动减仓机制是否合理。部署在二层网络上，还要问，排序器宕机时，价格停更，清算怎么办。</li>
+      <li>账户抽象是近两年的新领域。ERC-4337 要看代付手续费的合约能不能被耗尽，用户操作的签名验证是否正确。EIP-7702 让普通地址也能带上代码。所以，旧代码里用交易发起人等于调用者，或者代码长度为零来判断对方是人的写法，已经不再可靠。</li>
+    </ol>
+  </section>
+
+  <!-- 9 经济安全 -->
+  <section class="scene" data-title="经济安全评估" data-onstep="ecoStep">
+    <div class="kicker">经济安全 · 代码清单查不出来</div>
+    <h2>每一步都合法，组合起来却致命</h2>
+    <div class="row">
+      <div class="chk" style="flex:1">
+        <div class="it" data-k="0"><span class="n">1</span><div>写出协议级不变量，用不变量测试验证</div></div>
+        <div class="it" data-k="0"><span class="n">2</span><div>把外部市场纳入模型：某个依赖出极端情况会怎样</div></div>
+        <div class="it" data-k="1"><span class="n">3</span><div>闪电贷视角：攻击者在一笔交易内有无限本金</div></div>
+        <div class="it" data-k="2"><span class="n">4</span><div>治理视角：投票权能被借吗？提案能同交易执行吗？</div></div>
+        <div class="it" data-k="4"><span class="n">5</span><div>参数边界：抵押率、费率、上限在极端值下仍安全</div></div>
+      </div>
+      <svg id="eco" width="720" height="560" viewBox="0 0 720 560"></svg>
+    </div>
+    <ol class="say">
+      <li>代码清单查不出经济攻击，要单独做。第一，写出协议级的不变量，比如总负债不超过总资产，并用不变量测试去验证。第二，把外部市场纳入模型。假设某个预言机、某个被依赖的协议、某个抵押资产出现极端情况，协议会怎样。</li>
+      <li>第三，闪电贷视角。攻击者在一笔交易内可以借到几乎无限的本金，只要在交易结束前还上。所以任何按当前余额或当前价格计算的量，都是攻击者可以控制的输入。</li>
+      <li>第四，治理视角。来看 Beanstalk，以下据公开复盘。攻击者用闪电贷借入巨额资金，换成治理代币，一下拿到了多数投票权。</li>
+      <li>它在同一笔交易里，投票通过并执行了一个恶意提案，把协议资金转走，然后归还闪电贷。投票权能被临时借来，提案又能当场执行，两个设计叠加，就成了漏洞。修复是投票权按历史快照计算，提案执行前要有延迟。</li>
+      <li>第五，参数边界。抵押率、费率、清算折扣和供应上限，在边界值和极端值下是否仍然安全。经济评估要问的不是这一步对不对，而是把这些步骤按攻击者喜欢的顺序和规模组合起来，会怎样。</li>
+    </ol>
+  </section>
+
+  <!-- 10 外部依赖 -->
+  <section class="scene" data-title="外部依赖表" data-onstep="rowStep">
+    <div class="kicker">外部依赖评估</div>
+    <h2>依赖出事，协议跟着出事</h2>
+    <table class="t sm">
+      <thead><tr><th>依赖</th><th>失效会怎样</th><th>要评估什么</th></tr></thead>
+      <tbody>
+        <tr><td>预言机</td><td>价格错误或停更</td><td>时效、上下限、备用源、排序器状态</td></tr>
+        <tr><td>被集成的协议</td><td>对方被攻破或暂停</td><td>回调、价格、暂停、升级等集成点</td></tr>
+        <tr><td>代币</td><td>被暂停、拉黑、升级、脱锚</td><td>代币自身的权限；是否映射资产</td></tr>
+        <tr><td>库</td><td>库本身有 bug</td><td>版本锁定；关注已知问题</td></tr>
+        <tr><td>编译器</td><td>编译器 bug</td><td>版本锁定 · 2023 年 Vyper 编译器重入锁失效</td></tr>
+        <tr><td>基础设施</td><td>节点、索引、keeper 中断</td><td>降级路径</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>协议依赖的东西出了问题，协议会跟着出问题。所以要列一张依赖表。第一类是预言机，失效表现为价格错误或者停更。评估时效检查、上下限、备用数据源，以及二层网络的排序器状态。</li>
+      <li>第二类是被集成的协议，对方可能被攻破或暂停。评估每一个集成点，回调、价格、暂停和升级。第三类是代币本身，它可能被暂停、拉黑、升级或者脱锚。</li>
+      <li>第四类是库和编译器。2023年，Vyper 编译器某些版本的重入锁失效，导致多个池子被攻击。所以版本要锁定，并持续关注已知问题。第五类是基础设施，节点、索引服务和自动执行任务的服务，都要有降级路径。</li>
+    </ol>
+  </section>
+
+  <!-- 11 两种目标 -->
+  <section class="scene" data-title="自研协议 vs 接入第三方" data-onstep="marks">
+    <div class="kicker">两种评估目标 · 数字为示例</div>
+    <h2>接入第三方：继承全部风险，却没有修复能力</h2>
+    <div class="tg">
+      <div class="card info" data-k="0"><h3>自研协议</h3><ul><li>能改代码</li><li>全量评估：代码 + 经济 + 依赖</li><li>上线前把问题修掉</li><li>交付：完整报告 + 门禁</li></ul></div>
+      <div class="card warn" data-k="1"><h3>接入第三方</h3><ul><li>不能改代码</li><li>评估集成点 + 对方的信任假设</li><li>对方出事时我们受什么影响</li><li>交付：接入评估 + 限额 + 退出预案</li></ul></div>
+    </div>
+    <div class="card gold fs28" data-k="2">示例：理财资金接入一个收益协议 · 单协议敞口 ≤ 2,000 万$ 且 ≤ 对方 TVL 的 5% · 对方暂停或 TVL 单日降 30% → 触发退出</div>
+    <ol class="say">
+      <li>最后，DeFi 评估有两种目标。评估自研协议，我们能改代码，所以要全量评估，代码、经济和依赖都看，上线前把问题修掉，交付完整报告和门禁。</li>
+      <li>评估接入第三方协议，比如把交易所的理财资金放进一个外部收益协议，情况完全不同。我们不能改它的代码，继承了它的全部风险，却没有修复能力。评估重点是集成点和对方的信任假设，关键问题是，对方被攻破、暂停或者跑路时，我们的资金和用户受什么影响，怎么退出。</li>
+      <li>所以接入评估的结论，一定带着限额和退出预案。举个示例，单个协议的敞口不超过2000万美元，同时不超过对方锁仓总额的5%。对方暂停，或者锁仓总额单日下降30%，就触发退出。不要依赖它看起来很大、很成熟。</li>
+    </ol>
+  </section>
+
+  <!-- 12 练一练 -->
+  <section class="scene" data-title="练一练" data-onstep="marks">
+    <div class="kicker">练一练 · 暂停视频想一想</div>
+    <h2>一个借贷协议新增"一键循环杠杆"</h2>
+    <div class="card fs34" data-k="0">功能：用户存入抵押品 → 借出 → 自动换成抵押品再存入 → 重复 N 次，一笔交易完成。</div>
+    <div class="grid3">
+      <div class="card" data-k="1"><b class="hl">健康检查</b><div class="fs28">循环中途是否有不检查的状态？最后一次检查覆盖全部吗？</div></div>
+      <div class="card" data-k="1"><b class="hl">价格</b><div class="fs28">自动兑换用的价格和抵押估值用的价格，能否被同一笔交易推动？</div></div>
+      <div class="card" data-k="1"><b class="hl">清算</b><div class="fs28">高杠杆仓位集中，极端行情下清算能否及时、是否仍有利可图？</div></div>
+    </div>
+    <ol class="say">
+      <li>来练一练。一个借贷协议新增了一键循环杠杆功能。用户存入抵押品，借出资产，自动换成抵押品再存进去，重复多次，全部在一笔交易里完成。你会重点检查什么？</li>
+      <li>参考三个方向。第一，健康检查，循环中途有没有不检查的状态，最后一次检查能不能覆盖全部变化。第二，价格，自动兑换用的价格和抵押估值用的价格，能不能被同一笔交易推动。第三，清算，高杠杆仓位集中起来，极端行情下清算能不能及时，是否仍然有利可图。为什么循环杠杆是高风险功能？因为它把借贷、兑换和价格三个高发点，压进了同一笔交易。</li>
+    </ol>
+  </section>
+
+  <!-- 13 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">通用清单是底线，<span class="hl">分类型清单</span>抓每类协议的命门。</li>
+      <li data-step="1">经济安全单独评估：<span class="hl">闪电贷视角、治理视角、参数边界</span>。</li>
+      <li data-step="2">接入第三方：继承风险、无法修复 → <span class="hl">限额 + 退出预案</span>。</li>
+    </ul>
+    <h2 data-show="3">下一集：A05 上币与合作项目尽调</h2>
+    <div class="path" data-show="3">
+      <div class="card sell"><div class="n">8</div><b>八条红线</b><div class="d">任一命中，一票否决</div></div>
+      <div class="card gold"><div class="n">4</div><b>四维评分</b><div class="d">权限、链上数据、团队运营、经济模型</div></div>
+      <div class="card info"><div class="n">5</div><b>五天出结论</b><div class="d">时间有限时，先查什么</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，通用清单是底线，分类型清单抓住每一类协议的命门。</li>
+      <li>第二，经济安全要单独评估，用闪电贷视角、治理视角，再检查参数边界。</li>
+      <li>第三，接入第三方协议，等于继承它的全部风险却无法修复，所以结论一定带着限额和退出预案。</li>
+      <li>下一集讲第三类对象，上币和合作项目的尽调。八条红线，任一命中就一票否决。四个维度的评分。以及时间只有几天时，先查什么。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line, fmt } = K;
+
+  function lendStep(el, st) {
+    marks(el, st);
+    el.querySelectorAll('#lendChk .it').forEach(n => n.classList.toggle('cur', (+n.dataset.k === 1 && st >= 1 && st <= 3) || (+n.dataset.k === st && st !== 1)));
+    const svg = el.querySelector('#hf'); svg.innerHTML = '';
+    if (st < 2) { T(svg, 350, 280, st === 1 ? '用数字看一下 →' : '', C.dim, 32); return; }
+    const y0 = 470, sc = 3.6;
+    const bar = (x, v, label, color, sub) => { rect(svg, x, y0 - v * sc, 120, v * sc, { fill: color, rx: 6 }); T(svg, x + 60, y0 - v * sc - 24, label, C.text, 28, 'middle', true); T(svg, x + 60, y0 + 30, sub, C.t2, 24); };
+    const coll = st >= 3 ? 70 : 100;
+    bar(20, coll, String(coll), st >= 3 ? 'rgba(240,163,64,.6)' : 'rgba(91,156,255,.5)', '抵押品');
+    bar(165, coll * 0.8, String(coll * 0.8), 'rgba(91,156,255,.8)', '× 0.8');
+    bar(310, 75, '75', 'rgba(246,70,93,.6)', '借款');
+    line(svg, 10, y0, 450, y0, C.t2, 3);
+    const hf = coll * 0.8 / 75;
+    T(svg, 585, 200, '健康因子', C.t2, 28, 'middle');
+    T(svg, 585, 270, hf.toFixed(2), hf >= 1 ? C.buy : C.sell, 64, 'middle', true);
+    T(svg, 585, 340, hf >= 1 ? '安全' : '资不抵债', hf >= 1 ? C.buy : C.sell, 30, 'middle', true);
+    if (st >= 3) {
+      rect(svg, 20, 18, 560, 60, { fill: C.badFill, stroke: C.sell, sw: 3 });
+      T(svg, 300, 48, '新函数：减少 30 抵押品 · 没有健康检查', C.sell, 27, 'middle', true);
+    }
+  }
+
+  function vaultStep(el, st) {
+    const tb = el.querySelector('#va tbody');
+    const R = [
+      ['首存 1 个最小单位', '1', '1', '1'],
+      ['直接转入 10,000 USDC', '≈ 10,000', '1', '≈ 10,000'],
+      ['用户存 19,999 → 份额 = 19,999 × 1 ÷ 10,000 ≈ 1.9999 → 取整 1', '≈ 29,999', '2', '≈ 15,000'],
+    ];
+    const n = [0, 2, 3, 3, 3][st];
+    tb.innerHTML = R.slice(0, n).map((r, i) => `<tr class="${i === n - 1 && st < 4 ? 'cur' : ''}"><td>${r[0]}</td><td class="num">${r[1]}</td><td class="num">${r[2]}</td><td class="num">${r[3]}</td></tr>`).join('');
+    const side = el.querySelector('#vaSide');
+    side.innerHTML = [
+      '<div class="formula" style="font-size:32px">份额 = 存入 × 总份额 ÷ 总资产<br><span class="hl">向下取整</span></div>',
+      '<div class="card warn fs28">捐赠不发份额，<br>却抬高了每份价值</div>',
+      '<div class="card sell fs28">1.9999 → <b>1</b><br>舍入吃掉了近一份</div>',
+      '<div class="stat"><div class="k">用户存入</div><div class="v">19,999</div></div><div class="stat"><div class="k">用户份额价值</div><div class="v down">≈ 15,000</div></div><div class="card sell fs28">约 5,000 被首存者拿走</div>',
+      '<div class="card buy fs28">查三件事：<br>· 虚拟份额 / 首存锁定<br>· 总资产是否直接读余额<br>· 策略合约能否被替换</div>'][st];
+  }
+
+  function ecoStep(el, st) {
+    marks(el, st);
+    const svg = el.querySelector('#eco'); svg.innerHTML = '';
+    if (st < 2) {
+      box(svg, 60, 160, 600, 200, ['一笔交易内', '借 → 用 → 还'], { stroke: C.gold, fs: 40, ss: 32, sc: C.gold, bold: true });
+      T(svg, 360, 420, '本金不是门槛', C.t2, 30);
+      return;
+    }
+    const S = [['闪电贷借入巨额资金', C.info], ['换成治理代币 · 拿到多数投票权', C.warn], ['投票通过恶意提案', C.sell], ['同一笔交易内执行 · 资金转走', C.sell], ['归还闪电贷', C.info]];
+    const n = st >= 3 ? 5 : 2;
+    S.slice(0, n).forEach(([t, c], i) => {
+      box(svg, 60, 20 + i * 100, 600, 74, t, { stroke: c, fs: 29 });
+      if (i < n - 1) arrow(svg, 360, 96 + i * 100, 360, 118 + i * 100, C.t2, false, 3);
+    });
+    if (st >= 3) {
+      rect(svg, 60, 515, 600, 44, { fill: C.goodFill, stroke: C.buy, sw: 2 });
+      T(svg, 360, 537, '修复：投票权按历史快照 · 执行前有延迟', C.buy, 25, 'middle', true);
+    }
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

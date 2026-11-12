@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>借贷清算实验</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin: 8px 0; }
+  .stats .stat .v { font-size: 18px; word-break: break-all; }
+  .chart { width: 100%; height: auto; display: block; background: var(--surface-2); border-radius: 8px; }
+  .chart .grid-line { stroke: var(--border); stroke-width: 1; }
+  .chart .t-axis { fill: var(--text-2); font-size: 11px; }
+  .chart .l-borrow { stroke: var(--sell); stroke-width: 2.2; fill: none; }
+  .chart .l-supply { stroke: var(--buy); stroke-width: 2.2; fill: none; }
+  .chart .l-kink { stroke: var(--warn); stroke-width: 1.2; stroke-dasharray: 4 4; }
+  .chart .l-cur { stroke: var(--accent); stroke-width: 1.5; }
+  .chart .l-price { stroke: var(--accent); stroke-width: 2.2; fill: none; }
+  .chart .l-liq { stroke: var(--sell); stroke-width: 1.6; stroke-dasharray: 6 4; }
+  .chart .l-bad { stroke: var(--warn); stroke-width: 1.2; stroke-dasharray: 3 3; }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--text-2); margin-top: 6px; }
+  .legend i { display: inline-block; width: 14px; height: 3px; vertical-align: middle; margin-right: 4px; border-radius: 2px; }
+  .formula { font-family: var(--mono); font-size: 13px; background: var(--surface-2); border-radius: 8px; padding: 10px; overflow-x: auto; white-space: pre; }
+  .gauge-wrap { display: flex; flex-direction: column; align-items: center; }
+  .gauge { width: 100%; max-width: 280px; height: auto; }
+  .gauge .needle { stroke: var(--text); stroke-width: 3; stroke-linecap: round; transition: transform .35s ease; transform-origin: 140px 140px; }
+  .hf-big { font-family: var(--mono); font-size: 30px; font-weight: 700; }
+  .presets button.on { border-color: var(--accent); background: var(--accent-soft); }
+  .liq-box { border: 1px dashed var(--border); border-radius: 8px; padding: 10px 12px; margin-top: 10px; }
+  @media (prefers-reduced-motion: reduce) { .gauge .needle { transition: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <h1>借贷清算实验</h1>
+    <a class="back" href="../07-defi-primitives.md">配套章节：07 DeFi 原语</a>
+    <a class="back" href="../apps/Y02-aave.md">Y02 Aave</a>
+    <a class="back" href="../apps/Y04-sky-maker.md">Y04 Sky / Maker</a>
+  </header>
+  <p class="lead">拖动利用率，看借款和存款利率怎样变化。再拖动 ETH 价格，看健康因子（HF）跌破 1 的时刻，并亲手执行一次清算。全部参数为示例。</p>
+
+  <div class="callout">
+    <strong>怎么玩</strong>
+    <ol style="margin:6px 0 0; padding-left:20px;">
+      <li>点一个"预设场景"。默认是 07 章示例。</li>
+      <li>在"① 利率曲线"拖动利用率 U，看拐点前后利率的差别。</li>
+      <li>在"② 仓位"拖动 ETH 价格，或点"播放下跌"。</li>
+      <li>HF 小于 1 时，点"清算人执行清算"，读下方结果。</li>
+      <li>试"闪崩"预设：价格一步跳过清算价，观察坏账。</li>
+    </ol>
+  </div>
+
+  <h2>预设场景</h2>
+  <div class="btn-row presets" id="presets">
+    <button type="button" data-p="ch07" class="on">07 章示例</button>
+    <button type="button" data-p="slow">慢跌</button>
+    <button type="button" data-p="crash">闪崩跳过清算价（坏账）</button>
+    <button type="button" data-p="run">高利用率挤兑</button>
+  </div>
+  <p class="small muted" id="presetNote"></p>
+
+  <!-- ============ ① 利率曲线 ============ -->
+  <h2>① 利用率利率曲线</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <h3>曲线参数（示例）</h3>
+      <label for="base">基础利率</label>
+      <div class="range-row"><input id="base" type="range" min="0" max="5" step="0.25" value="0"><output id="baseOut"></output></div>
+      <label for="s1">斜率1（拐点前）</label>
+      <div class="range-row"><input id="s1" type="range" min="1" max="15" step="0.5" value="4"><output id="s1Out"></output></div>
+      <label for="kink">拐点 U*</label>
+      <div class="range-row"><input id="kink" type="range" min="50" max="95" step="1" value="80"><output id="kinkOut"></output></div>
+      <label for="s2">斜率2（拐点后）</label>
+      <div class="range-row"><input id="s2" type="range" min="10" max="300" step="5" value="75"><output id="s2Out"></output></div>
+      <label for="rf">储备因子</label>
+      <div class="range-row"><input id="rf" type="range" min="0" max="50" step="1" value="10"><output id="rfOut"></output></div>
+      <label for="util">当前利用率 U（拖动）</label>
+      <div class="range-row"><input id="util" type="range" min="0" max="100" step="1" value="50"><output id="utilOut"></output></div>
+      <div class="stats">
+        <div class="stat"><span class="k">借款利率 R</span><span class="v down" id="sR">-</span></div>
+        <div class="stat"><span class="k">存款利率 S</span><span class="v up" id="sS">-</span></div>
+        <div class="stat"><span class="k">协议抽成（R×U×储备因子）</span><span class="v" id="sP">-</span></div>
+      </div>
+      <div class="formula" id="rateFormula"></div>
+    </div>
+    <div class="card">
+      <h3>利率 vs 利用率</h3>
+      <svg id="rateChart" class="chart" viewBox="0 0 520 300" role="img" aria-label="利率曲线"></svg>
+      <div class="legend">
+        <span><i style="background:var(--sell)"></i>借款利率 R</span>
+        <span><i style="background:var(--buy)"></i>存款利率 S</span>
+        <span><i style="background:var(--warn)"></i>拐点</span>
+        <span><i style="background:var(--accent)"></i>当前 U</span>
+      </div>
+      <div class="liq-box" id="runBox">
+        <strong>挤兑小实验</strong>
+        <p class="small muted" style="margin:4px 0">存款池（示例）：存款 100M USDC。可取出的现金 = 存款 − 已借出。</p>
+        <label for="wd">存款人想取出（M USDC）</label>
+        <div class="range-row"><input id="wd" type="range" min="0" max="30" step="1" value="0"><output id="wdOut"></output></div>
+        <div class="btn-row"><button type="button" id="wdBtn">执行取款</button></div>
+        <div id="runResult" class="small"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ② 仓位与健康因子 ============ -->
+  <h2>② 仓位、健康因子与清算</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <h3>Alice 的仓位</h3>
+      <label for="coll">抵押 ETH 数量</label>
+      <input id="coll" type="number" value="10" min="0.1" step="0.1">
+      <label for="debt">借款（USDC）</label>
+      <input id="debt" type="number" value="18000" min="0" step="100">
+      <label for="lt">清算阈值 LT</label>
+      <div class="range-row"><input id="lt" type="range" min="50" max="95" step="1" value="80"><output id="ltOut"></output></div>
+      <label for="bonus">清算奖励</label>
+      <div class="range-row"><input id="bonus" type="range" min="0" max="15" step="0.5" value="5"><output id="bonusOut"></output></div>
+      <label for="cf">平仓系数（单次最多还债比例）</label>
+      <div class="range-row"><input id="cf" type="range" min="10" max="100" step="5" value="50"><output id="cfOut"></output></div>
+      <label for="price">ETH 预言机价格（拖动）</label>
+      <div class="range-row"><input id="price" type="range" min="500" max="4000" step="10" value="3000"><output id="priceOut"></output></div>
+      <div class="btn-row">
+        <button type="button" class="primary" id="playBtn">▶ 播放下跌</button>
+        <button type="button" id="resetPos">重置仓位</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>健康因子</h3>
+      <div class="gauge-wrap">
+        <svg class="gauge" viewBox="0 0 280 160" role="img" aria-label="健康因子仪表">
+          <path id="arcRed" fill="none" stroke-width="16"></path>
+          <path id="arcWarn" fill="none" stroke-width="16"></path>
+          <path id="arcOk" fill="none" stroke-width="16"></path>
+          <line class="needle" id="needle" x1="140" y1="140" x2="140" y2="40"></line>
+          <circle cx="140" cy="140" r="6" style="fill:var(--text)"></circle>
+          <text x="22" y="156" class="t-axis" style="fill:var(--text-2);font-size:11px">0</text>
+          <text x="134" y="16" style="fill:var(--text-2);font-size:11px">1.5</text>
+          <text x="250" y="156" style="fill:var(--text-2);font-size:11px">3+</text>
+        </svg>
+        <div class="hf-big" id="hfBig">-</div>
+        <div id="hfPill"></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><span class="k">抵押价值</span><span class="v" id="sColl">-</span></div>
+        <div class="stat"><span class="k">债务</span><span class="v" id="sDebt">-</span></div>
+        <div class="stat"><span class="k">清算价</span><span class="v down" id="sLiq">-</span></div>
+        <div class="stat"><span class="k">距清算价</span><span class="v" id="sDist">-</span></div>
+      </div>
+      <div class="formula" id="hfFormula"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>价格路径</h3>
+    <svg id="priceChart" class="chart" viewBox="0 0 640 220" role="img" aria-label="价格路径"></svg>
+    <div class="legend">
+      <span><i style="background:var(--accent)"></i>ETH 预言机价格</span>
+      <span><i style="background:var(--sell)"></i>清算价（HF = 1）</span>
+      <span><i style="background:var(--warn)"></i>资不抵债价（抵押价值 = 债务）</span>
+    </div>
+  </div>
+
+  <div class="grid cols-2" style="margin-top:16px">
+    <div class="card">
+      <h3>清算人</h3>
+      <p class="small muted">清算人替 Alice 还一部分债，按"债务 ×（1 + 奖励）÷ 价格"拿走 ETH。合约自己不会发起清算。</p>
+      <div class="btn-row">
+        <button type="button" class="sell" id="liqBtn" disabled>清算人执行清算</button>
+        <button type="button" id="liqAllBtn" disabled>连续清算到 HF ≥ 1</button>
+      </div>
+      <div class="stats">
+        <div class="stat"><span class="k">清算人还债</span><span class="v" id="lRepay">-</span></div>
+        <div class="stat"><span class="k">拿走 ETH</span><span class="v" id="lSeize">-</span></div>
+        <div class="stat"><span class="k">清算人毛利</span><span class="v up" id="lProfit">-</span></div>
+        <div class="stat"><span class="k">借款人罚金</span><span class="v down" id="lLoss">-</span></div>
+        <div class="stat"><span class="k">清算后 HF</span><span class="v" id="lHF">-</span></div>
+        <div class="stat"><span class="k">协议坏账</span><span class="v down" id="lBad">-</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>事件日志</h3>
+      <div class="log" id="log"></div>
+    </div>
+  </div>
+
+  <div class="callout info small" style="margin-top:16px">
+    <strong>和 CEX 逐仓强平比一比：</strong>CEX 由交易所风控引擎在自己的订单簿里强平，强平费归交易所或保险基金；链上借贷由任何地址触发清算，奖励归清算人，坏账先由协议储备承担。CEX 一侧的强平价公式和插针保护见《CEX 交易所学习手册》的永续合约实验（../../CEX/interactive/perpetual-liquidation.html），此处只作文字说明。
+  </div>
+
+  <h2>观察要点</h2>
+  <ul>
+    <li>U 越过拐点后，借款利率陡升。90% 利用率时借款利率是 41.5%，是拐点处的 10 倍。高利率逼借款人还款，也吸引新存款。</li>
+    <li>存款利率总是低于借款利率。只有 U 比例的存款在生息，储备因子那部分归协议。</li>
+    <li>清算价 = 债务 ÷（抵押数量 × 清算阈值）。07 章示例里是 18,000 ÷（10 × 0.8）= 2,250。</li>
+    <li>清算人的毛利就是借款人的罚金（07 章示例：450 USDC）。如果价格一步跌到抵押价值不足"债务 × 1.05"，清算拿不回全部债务，差额变成坏账。</li>
+  </ul>
+
+  <footer class="note">参数为示例值，用于演示机制；不构成投资建议。利率模型参数参照 07 章（基础利率 0%、斜率 4% / 75%、拐点 80%、储备因子 10%），清算参数参照 07 章（清算阈值 80%、奖励 5%、平仓系数 50%）。真实协议（如 Aave）的参数按资产不同，并会通过治理调整。</footer>
+</div>
+
+<script src="assets/handbook-nav.js"></script>
+<script>
+// ===== CORE-BEGIN：核心计算（可复制到 node 验证） =====
+// 拐点利率模型：输入全部用小数（0.04 = 4%）
+function borrowRate(U, base, s1, kink, s2) {
+  // 拐点前：线性上升到 base + s1
+  if (U <= kink) return base + s1 * U / kink;
+  // 拐点后：在 base + s1 基础上，按斜率2 陡升
+  return base + s1 + s2 * (U - kink) / (1 - kink);
+}
+// 存款利率 = 借款利率 × 利用率 × (1 − 储备因子)
+function supplyRate(R, U, rf) { return R * U * (1 - rf); }
+// 健康因子 HF = 抵押价值 × 清算阈值 / 债务
+function healthFactor(collQty, price, lt, debt) {
+  if (debt <= 0) return Infinity;
+  return collQty * price * lt / debt;
+}
+// 清算价：令 HF = 1，P = 债务 / (抵押数量 × 清算阈值)
+function liqPrice(collQty, lt, debt) { return collQty > 0 ? debt / (collQty * lt) : Infinity; }
+// 一次清算：清算人最多还 债务 × 平仓系数；拿走 还款 × (1 + 奖励) / 价格 的 ETH
+// 如果抵押不够，按全部抵押能覆盖的还款额封顶（还款 = 抵押价值 / (1 + 奖励)）
+function liquidateOnce(pos, price, cf, bonus) {
+  let repay = pos.debt * cf;
+  let seize = repay * (1 + bonus) / price;
+  if (seize > pos.coll) {
+    seize = pos.coll;
+    repay = seize * price / (1 + bonus);
+  }
+  const after = { coll: pos.coll - seize, debt: pos.debt - repay };
+  let bad = 0;
+  // 抵押清零后剩下的债务没人会还，记为坏账
+  if (after.coll <= 1e-12 && after.debt > 1e-9) { bad = after.debt; }
+  return { repay, seize, profit: seize * price - repay, after, bad };
+}
+// ===== CORE-END =====
+
+const $ = id => document.getElementById(id);
+const fmt = (n, d = 2) => Number.isFinite(n) ? n.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '∞';
+const pct = (x, d = 2) => (x * 100).toFixed(d) + '%';
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ---------- 状态 ----------
+let pos = { coll: 10, debt: 18000 };
+let priceHist = [3000];
+let totalBad = 0;
+let poolBorrowed = 50; // M USDC，挤兑小实验
+let poolDeposits = 100;
+let playing = null;
+
+function log(msg, cls) {
+  const el = $('log');
+  const line = document.createElement('div');
+  if (cls) line.className = cls;
+  line.textContent = msg;
+  el.prepend(line);
+}
+
+// ---------- ① 利率曲线 ----------
+function rateParams() {
+  return {
+    base: +$('base').value / 100, s1: +$('s1').value / 100, kink: +$('kink').value / 100,
+    s2: +$('s2').value / 100, rf: +$('rf').value / 100,
+  };
+}
+function renderRates() {
+  const p = rateParams();
+  const U = +$('util').value / 100;
+  $('baseOut').textContent = pct(p.base, 2); $('s1Out').textContent = pct(p.s1, 1);
+  $('kinkOut').textContent = pct(p.kink, 0); $('s2Out').textContent = pct(p.s2, 0);
+  $('rfOut').textContent = pct(p.rf, 0); $('utilOut').textContent = pct(U, 0);
+  const R = borrowRate(U, p.base, p.s1, p.kink, p.s2);
+  const S = supplyRate(R, U, p.rf);
+  $('sR').textContent = pct(R); $('sS').textContent = pct(S); $('sP').textContent = pct(R * U * p.rf);
+  const seg = U <= p.kink
+    ? `U ≤ U*：R = ${pct(p.base)} + ${pct(p.s1)} × ${pct(U, 0)} / ${pct(p.kink, 0)} = ${pct(R)}`
+    : `U > U*：R = ${pct(p.base)} + ${pct(p.s1)} + ${pct(p.s2, 0)} × (${pct(U, 0)} − ${pct(p.kink, 0)}) / (1 − ${pct(p.kink, 0)}) = ${pct(R)}`;
+  $('rateFormula').textContent = seg + `\nS = R × U × (1 − 储备因子) = ${pct(R)} × ${pct(U, 0)} × ${(1 - p.rf).toFixed(2)} = ${pct(S)}`;
+  drawRateChart(p, U);
+  // 挤兑小实验与利用率联动
+  poolBorrowed = poolDeposits * U;
+  renderRun();
+}
+function drawRateChart(p, U) {
+  const W = 520, H = 300, L = 44, R = 12, T = 14, B = 34;
+  const maxR = Math.max(0.1, borrowRate(1, p.base, p.s1, p.kink, p.s2)) * 1.05;
+  const X = u => L + u * (W - L - R);
+  const Y = r => H - B - r / maxR * (H - T - B);
+  let s = '';
+  for (let i = 0; i <= 5; i++) {
+    const r = maxR * i / 5;
+    s += `<line class="grid-line" x1="${L}" x2="${W - R}" y1="${Y(r)}" y2="${Y(r)}"/>`;
+    s += `<text class="t-axis" x="${L - 6}" y="${Y(r) + 4}" text-anchor="end">${(r * 100).toFixed(0)}%</text>`;
+  }
+  for (let i = 0; i <= 10; i += 2) s += `<text class="t-axis" x="${X(i / 10)}" y="${H - 14}" text-anchor="middle">${i * 10}%</text>`;
+  s += `<text class="t-axis" x="${W - R}" y="${H - 2}" text-anchor="end">利用率 U</text>`;
+  let pb = '', ps = '';
+  for (let i = 0; i <= 200; i++) {
+    const u = i / 200, r = borrowRate(u, p.base, p.s1, p.kink, p.s2), sr = supplyRate(r, u, p.rf);
+    pb += (i ? 'L' : 'M') + X(u).toFixed(1) + ' ' + Y(r).toFixed(1);
+    ps += (i ? 'L' : 'M') + X(u).toFixed(1) + ' ' + Y(sr).toFixed(1);
+  }
+  s += `<line class="l-kink" x1="${X(p.kink)}" x2="${X(p.kink)}" y1="${T}" y2="${H - B}"/>`;
+  s += `<path class="l-borrow" d="${pb}"/><path class="l-supply" d="${ps}"/>`;
+  const r0 = borrowRate(U, p.base, p.s1, p.kink, p.s2);
+  s += `<line class="l-cur" x1="${X(U)}" x2="${X(U)}" y1="${T}" y2="${H - B}"/>`;
+  s += `<circle cx="${X(U)}" cy="${Y(r0)}" r="5" style="fill:var(--sell)"/>`;
+  s += `<circle cx="${X(U)}" cy="${Y(supplyRate(r0, U, p.rf))}" r="5" style="fill:var(--buy)"/>`;
+  $('rateChart').innerHTML = s;
+}
+function renderRun() {
+  const wd = +$('wd').value;
+  $('wdOut').textContent = wd + 'M';
+  const cash = poolDeposits - poolBorrowed;
+  $('runResult').innerHTML = `存款 ${fmt(poolDeposits, 1)}M · 已借出 ${fmt(poolBorrowed, 1)}M · 可取现金 <strong>${fmt(cash, 1)}M</strong>`;
+}
+$('wdBtn').addEventListener('click', () => {
+  const p = rateParams();
+  const want = +$('wd').value;
+  const cash = poolDeposits - poolBorrowed;
+  const got = Math.min(want, cash);
+  poolDeposits -= got;
+  const U = poolDeposits > 0 ? poolBorrowed / poolDeposits : 1;
+  const R = borrowRate(Math.min(U, 1), p.base, p.s1, p.kink, p.s2);
+  if (got < want) log(`取款 ${want}M 只成功 ${fmt(got, 1)}M：池里现金不够。剩余 ${fmt(want - got, 1)}M 要等借款人还款或新存款。`, 'err');
+  else log(`取款 ${want}M 成功。`, 'ok');
+  log(`利用率变为 ${pct(Math.min(U, 1), 1)}，借款利率 ${pct(R)}。高利率逼借款人还款。`, 'note');
+  $('util').value = Math.round(Math.min(U, 1) * 100);
+  // 同步曲线（不重算 poolBorrowed，以免覆盖取款结果）
+  const keepB = poolBorrowed;
+  renderRates();
+  poolBorrowed = keepB;
+  renderRun();
+});
+
+// ---------- ② 仓位 ----------
+function posParams() {
+  return { lt: +$('lt').value / 100, bonus: +$('bonus').value / 100, cf: +$('cf').value / 100, price: +$('price').value };
+}
+function renderPos() {
+  const p = posParams();
+  $('ltOut').textContent = pct(p.lt, 0); $('bonusOut').textContent = pct(p.bonus, 1);
+  $('cfOut').textContent = pct(p.cf, 0); $('priceOut').textContent = fmt(p.price, 0);
+  const hf = healthFactor(pos.coll, p.price, p.lt, pos.debt);
+  const lp = liqPrice(pos.coll, p.lt, pos.debt);
+  $('sColl').textContent = fmt(pos.coll * p.price, 0);
+  $('sDebt').textContent = fmt(pos.debt, 0);
+  $('sLiq').textContent = pos.debt > 0 ? fmt(lp, 2) : '—';
+  $('sDist').textContent = pos.debt > 0 ? pct(lp / p.price - 1, 1) : '—';
+  $('hfBig').textContent = Number.isFinite(hf) ? hf.toFixed(2) : '∞';
+  $('hfBig').style.color = hf < 1 ? 'var(--sell)' : hf < 1.2 ? 'var(--warn)' : 'var(--buy)';
+  $('hfPill').innerHTML = hf < 1 ? '<span class="pill sell">HF &lt; 1：任何人可清算</span>'
+    : hf < 1.2 ? '<span class="pill warn">接近清算</span>' : '<span class="pill buy">安全</span>';
+  // 仪表：0 → −90°，3 → +90°
+  const ang = (Math.min(Number.isFinite(hf) ? hf : 3, 3) / 3) * 180 - 90;
+  $('needle').style.transform = `rotate(${ang}deg)`;
+  $('hfFormula').textContent =
+    `HF = ${fmt(pos.coll, 4)} ETH × ${fmt(p.price, 0)} × ${p.lt.toFixed(2)} / ${fmt(pos.debt, 2)} = ${Number.isFinite(hf) ? hf.toFixed(4) : '∞'}\n` +
+    `清算价 = ${fmt(pos.debt, 2)} / (${fmt(pos.coll, 4)} × ${p.lt.toFixed(2)}) = ${fmt(lp, 2)}`;
+  const canLiq = hf < 1 && pos.coll > 1e-12;
+  $('liqBtn').disabled = !canLiq; $('liqAllBtn').disabled = !canLiq;
+  drawPriceChart(p);
+}
+function arcPath(a0, a1) { // 角度：0=左，180=右（上半圆）
+  const cx = 140, cy = 140, r = 110;
+  const p = a => [cx - r * Math.cos(a * Math.PI / 180), cy - r * Math.sin(a * Math.PI / 180)];
+  const [x0, y0] = p(a0), [x1, y1] = p(a1);
+  return `M${x0} ${y0} A${r} ${r} 0 0 1 ${x1} ${y1}`;
+}
+function initGauge() {
+  // HF 0–1 红，1–1.2 橙，1.2–3 绿
+  const a = hf => hf / 3 * 180;
+  $('arcRed').setAttribute('d', arcPath(0, a(1))); $('arcRed').style.stroke = 'var(--sell)';
+  $('arcWarn').setAttribute('d', arcPath(a(1), a(1.2))); $('arcWarn').style.stroke = 'var(--warn)';
+  $('arcOk').setAttribute('d', arcPath(a(1.2), 180)); $('arcOk').style.stroke = 'var(--buy)';
+}
+function drawPriceChart(p) {
+  const W = 640, H = 220, L = 50, R = 12, T = 12, B = 24;
+  const lo = 500, hi = 4000;
+  const n = Math.max(priceHist.length, 30);
+  const X = i => L + i / (n - 1) * (W - L - R);
+  const Y = v => H - B - (v - lo) / (hi - lo) * (H - T - B);
+  let s = '';
+  for (let v = 500; v <= 4000; v += 500) {
+    s += `<line class="grid-line" x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}"/>`;
+    s += `<text class="t-axis" x="${L - 6}" y="${Y(v) + 4}" text-anchor="end">${v}</text>`;
+  }
+  if (pos.debt > 0 && pos.coll > 0) {
+    const lp = liqPrice(pos.coll, p.lt, pos.debt);
+    const insolv = pos.debt / pos.coll; // 抵押价值 = 债务
+    if (lp >= lo && lp <= hi) s += `<line class="l-liq" x1="${L}" x2="${W - R}" y1="${Y(lp)}" y2="${Y(lp)}"/><text x="${W - R - 4}" y="${Y(lp) - 4}" text-anchor="end" style="fill:var(--sell);font-size:11px">清算价 ${fmt(lp, 0)}</text>`;
+    if (insolv >= lo && insolv <= hi) s += `<line class="l-bad" x1="${L}" x2="${W - R}" y1="${Y(insolv)}" y2="${Y(insolv)}"/><text x="${W - R - 4}" y="${Y(insolv) + 13}" text-anchor="end" style="fill:var(--warn);font-size:11px">资不抵债 ${fmt(insolv, 0)}</text>`;
+  }
+  let d = '';
+  priceHist.forEach((v, i) => { d += (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(Math.max(lo, Math.min(hi, v))).toFixed(1); });
+  s += `<path class="l-price" d="${d}"/>`;
+  const last = priceHist[priceHist.length - 1];
+  s += `<circle cx="${X(priceHist.length - 1)}" cy="${Y(Math.max(lo, Math.min(hi, last)))}" r="4" style="fill:var(--accent)"/>`;
+  $('priceChart').innerHTML = s;
+}
+function setPrice(v, record = true) {
+  $('price').value = v;
+  if (record) { priceHist.push(v); if (priceHist.length > 120) priceHist.shift(); }
+  const p = posParams();
+  const hf = healthFactor(pos.coll, v, p.lt, pos.debt);
+  renderPos();
+  return hf;
+}
+
+// ---------- 清算 ----------
+function doLiquidate() {
+  const p = posParams();
+  const hfBefore = healthFactor(pos.coll, p.price, p.lt, pos.debt);
+  if (!(hfBefore < 1) || pos.coll <= 1e-12) return false;
+  const r = liquidateOnce(pos, p.price, p.cf, p.bonus);
+  pos = r.after;
+  let bad = 0;
+  if (r.bad > 0) { bad = r.bad; totalBad += bad; pos.debt = 0; pos.coll = 0; }
+  const hfAfter = healthFactor(pos.coll, p.price, p.lt, pos.debt);
+  $('lRepay').textContent = fmt(r.repay, 2);
+  $('lSeize').textContent = fmt(r.seize, 4);
+  $('lProfit').textContent = fmt(r.profit, 2);
+  $('lLoss').textContent = fmt(r.profit, 2);
+  $('lHF').textContent = Number.isFinite(hfAfter) ? hfAfter.toFixed(2) : '无债务';
+  $('lBad').textContent = fmt(totalBad, 2);
+  log(`清算：价格 ${fmt(p.price, 0)}，清算人还 ${fmt(r.repay, 2)} USDC，拿走 ${fmt(r.seize, 4)} ETH（价值 ${fmt(r.seize * p.price, 2)}，含 ${pct(p.bonus, 1)} 奖励）。`, 'err');
+  log(`Alice 剩 ${fmt(pos.coll, 4)} ETH，债务 ${fmt(pos.debt, 2)}，HF ${Number.isFinite(hfAfter) ? hfAfter.toFixed(2) : '∞'}。`, 'note');
+  if (bad > 0) log(`抵押物已被拿光，剩余债务 ${fmt(bad, 2)} USDC 无人偿还 → 协议坏账。`, 'err');
+  renderPos();
+  return true;
+}
+$('liqBtn').addEventListener('click', doLiquidate);
+$('liqAllBtn').addEventListener('click', () => {
+  let n = 0;
+  while (n < 50 && doLiquidate()) n++;
+  log(`连续清算 ${n} 次后停止。`, 'note');
+});
+
+// ---------- 播放下跌 ----------
+function stopPlay() { if (playing) { clearInterval(playing); playing = null; $('playBtn').textContent = '▶ 播放下跌'; } }
+function play(path) {
+  stopPlay();
+  let i = 0;
+  $('playBtn').textContent = '⏸ 暂停';
+  let warned = false;
+  const tick = () => {
+    if (i >= path.length) { stopPlay(); return; }
+    const p = posParams();
+    const hf = setPrice(path[i++]);
+    if (hf < 1 && !warned) { warned = true; log(`价格 ${fmt(+$('price').value, 0)}：HF = ${hf.toFixed(2)} < 1，清算人可以出手。`, 'err'); stopPlay(); }
+  };
+  if (reduce) { while (i < path.length) { const hf = setPrice(path[i++]); if (hf < 1) break; } stopPlay(); return; }
+  playing = setInterval(tick, 160);
+}
+function slowPath(from, to, steps) {
+  const a = []; for (let k = 1; k <= steps; k++) a.push(Math.round(from + (to - from) * k / steps)); return a;
+}
+$('playBtn').addEventListener('click', () => {
+  if (playing) { stopPlay(); return; }
+  const cur = +$('price').value;
+  play(slowPath(cur, Math.max(500, Math.round(cur * 0.6)), 40));
+});
+['coll', 'debt'].forEach(id => $(id).addEventListener('input', () => {
+  pos = { coll: Math.max(0, +$('coll').value), debt: Math.max(0, +$('debt').value) };
+  renderPos();
+}));
+$('resetPos').addEventListener('click', () => { stopPlay(); resetPos(); });
+function resetPos() {
+  pos = { coll: +$('coll').value, debt: +$('debt').value };
+  totalBad = 0; priceHist = [+$('price').value];
+  ['lRepay', 'lSeize', 'lProfit', 'lLoss', 'lHF', 'lBad'].forEach(id => $(id).textContent = '-');
+  renderPos();
+}
+$('price').addEventListener('input', () => setPrice(+$('price').value));
+['lt', 'bonus', 'cf'].forEach(id => $(id).addEventListener('input', renderPos));
+['base', 's1', 'kink', 's2', 'rf', 'util'].forEach(id => $(id).addEventListener('input', renderRates));
+$('wd').addEventListener('input', renderRun);
+
+// ---------- 预设 ----------
+const PRESETS = {
+  ch07: { note: '07 章示例：10 ETH 抵押，借 18,000 USDC，ETH 3,000。HF 1.33，清算价 2,250。把价格拖到 2,200 后执行清算：还 9,000，拿走 4.2955 ETH，清算后 HF 1.12。', util: 50, price: 3000, path: [2900, 2800, 2700, 2600, 2500, 2400, 2300, 2250, 2200] },
+  slow: { note: '慢跌：价格每步下跌约 1%。HF 一跌破 1 就停下，清算人在清算价附近出手，借款人只损失 5% 奖励。', util: 60, price: 3000, path: slowPath(3000, 2000, 60) },
+  crash: { note: '闪崩：预言机价格从 3,000 一步跳到 1,700，跳过清算价 2,250 和资不抵债价 1,800。抵押价值 17,000 < 债务 18,000。点"连续清算"，看坏账。', util: 70, price: 3000, path: [1700] },
+  run: { note: '高利用率挤兑：U = 95%，借款利率 60.25%。存款人取 10M，只能取出 5M。看利用率怎样卡在 100%。', util: 95, price: 3000, path: null },
+};
+function loadPreset(key) {
+  stopPlay();
+  const P = PRESETS[key];
+  document.querySelectorAll('#presets button').forEach(b => b.classList.toggle('on', b.dataset.p === key));
+  $('presetNote').textContent = P.note;
+  $('base').value = 0; $('s1').value = 4; $('kink').value = 80; $('s2').value = 75; $('rf').value = 10;
+  $('util').value = P.util; poolDeposits = 100;
+  $('coll').value = 10; $('debt').value = 18000; $('lt').value = 80; $('bonus').value = 5; $('cf').value = 50;
+  $('price').value = P.price; $('wd').value = key === 'run' ? 10 : 0;
+  $('log').innerHTML = '';
+  renderRates(); resetPos();
+  log(`加载预设：${document.querySelector(`#presets button[data-p="${key}"]`).textContent}`, 'note');
+  if (P.path) play(P.path);
+}
+document.querySelectorAll('#presets button').forEach(b => b.addEventListener('click', () => loadPreset(b.dataset.p)));
+
+initGauge();
+loadPreset('ch07');
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+"answers": [
+"模糊测试的 PASS 只说明这批随机样本没有发现反例。本章中 <code>testFuzz_MsbBuggy</code> 通过了，但函数确实有 bug。<code>check_MsbFixed</code> 的 PASS 表示 Halmos 对全部 <code>uint256</code> 输入在其建模下探索了所有路径，这是更强的结论。但它仍然只针对写下的断言。",
+"价值更低。前提把初始状态限制成每份额价值恰好为 1。捐赠后的状态、取整放大的状态都被排除了，而漏洞恰好出现在这些状态。这是过约束。合理前提只应排除不可能的状态，例如 <code>totalAssets &gt; 0</code>。",
+"<code>check_SharesConserved</code> 只涉及加减法和比较，属于线性约束，求解器很擅长。<code>check_NoProfit_Fixed</code> 包含符号值相乘和相除，这是非线性算术，求解难度急剧上升，所以超时。缩小取值范围或改写为线性引理可以缓解。"
+]
+}

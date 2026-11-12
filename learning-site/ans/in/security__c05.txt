@@ -1,0 +1,365 @@
+# 章节：05 算术与精度：差一个 wei，丢一个金库
+
+## 思考题（共 3 题，按顺序作答）
+Q1. 打开 vault-inflation-lab.html。偏移为 0 时，受害者存入 5,000 USDC，攻击者至少要捐赠多少才能让受害者得到 0 份额？偏移改为 3 呢？
+Q2. 一个借贷协议计算利息时，对借款人的应还金额向下取整。攻击者可以怎样利用？
+Q3. 你要把一个以太坊上的 USDT 收益协议部署到 BNB Chain。列出至少 2 处需要修改的数学相关代码。
+
+## 章节正文
+
+# 05 算术与精度：差一个 wei，丢一个金库
+
+学习目标：读完本章，你能——
+
+- 识别溢出、截断、除法顺序、舍入方向、精度单位不一致五类数学缺陷。
+
+- 解释 ERC-4626 金库首存者通胀攻击，并说出两种防御方式。
+
+- 对任意"份额 ↔ 资产"换算，判断它该向上还是向下取整。
+
+前置章节：02 EVM 与 Solidity 安全基础交互实验：vault-inflation-lab.html ｜ 示例合约：examples/03-VaultInflation.sol
+
+## 1. 一句话理解
+
+EVM 只有整数。每一次除法都会丢掉余数；丢掉的余数归谁，决定了谁能从协议里慢慢"抠"出钱。
+
+🎯 打个比方：一家披萨店按"块"卖披萨，一张披萨切 8 块。
+
+- 你付 1/3 张的钱，店员必须决定给你 2 块还是 3 块（舍入方向）。
+
+- 如果店员总是往多了给，聪明的顾客就反复买 1/3 张，每次多拿一点。
+
+- 如果第一个顾客买下整张披萨只切成 1 块，然后往盒子里偷偷塞进 100 张披萨，下一个顾客付了 99 张的钱，却因为"1 块披萨价值 101 张"而一块也分不到（金库通胀攻击）。
+
+比喻的局限：披萨店会被投诉。合约里，每次多拿 1 wei 的操作可以在一笔交易里重复几千次。
+
+## 2. 五类数学缺陷
+
+ | 
+
+ | #
+ | 缺陷
+ | 例子
+ | 后果
+
+ | ①
+ | 溢出 / 下溢
+ | 0.8 之前的 a * b；0.8 之后的 unchecked { }
+ | 余额回绕成极大值或 0
+
+ | ②
+ | 类型截断
+ | uint128(x)、int256 转 uint256
+ | 静默丢掉高位
+
+ | ③
+ | 先除后乘
+ | a / b * c
+ | 精度损失被放大 c 倍
+
+ | ④
+ | 舍入方向错误
+ | 存款时份额向上取整
+ | 每次操作都向用户泄漏 1 单位
+
+ | ⑤
+ | 单位不一致
+ | 6 位精度的 USDT 当作 18 位计算
+ | 价格偏差 10^12 倍
+
+### 2.1 溢出：BEC batchOverflow（2018 年 4 月，以太坊）
+
+// ❌ 漏洞（Solidity 0.4，无溢出检查）
+function batchTransfer(address[] _receivers, uint256 _value) public {
+    uint cnt = _receivers.length;
+    uint256 amount = uint256(cnt) * _value;     // 2 * 2^255 = 2^256 → 回绕为 0
+    require(_value > 0 && balances[msg.sender] >= amount);   // 0 ≤ 任何余额，通过
+    balances[msg.sender] = balances[msg.sender].sub(amount);
+    for (uint i = 0; i < cnt; i++) {
+        balances[_receivers[i]] = balances[_receivers[i]].add(_value);  // 每人收到 2^255
+    }
+}
+
+攻击者用 2 个接收地址和 _value = 2^255，凭空铸出天量代币。多家交易所暂停 BEC 充提（公开报道）。
+
+💡 注意：Solidity 0.8 默认检查溢出。但 unchecked 块、内联汇编、类型转换仍会静默回绕。审计时要逐一检查这三处。
+
+### 2.2 先除后乘
+
+// ❌ 精度损失：利率 5%，本金 19
+uint256 interest = principal / 100 * rateBps / 100;  // 19/100 = 0 → 利息 0
+// ✅ 先乘后除
+uint256 interest = principal * rateBps / 10_000;     // 19*500/10000 = 0（仍为 0，但误差不再被放大）
+// ✅ 更好：使用 mulDiv（OpenZeppelin Math.mulDiv），中间结果 512 位，不溢出，可指定舍入方向
+uint256 interest = Math.mulDiv(principal, rateBps, 10_000, Math.Rounding.Floor);
+
+### 2.3 单位不一致：三条链上的 USDT
+
+同一个"USDT"，在不同链上的精度不同（以链上合约的 decimals() 为准）：
+
+ | 
+
+ | 链
+ | 代币
+ | decimals()
+
+ | 以太坊
+ | Tether USD
+ | 6
+
+ | BNB Chain
+ | Binance-Peg BSC-USD
+ | 18
+
+ | TRON
+ | Tether USD (TRC-20)
+ | 6
+
+⚠️ 警告：把以太坊上的价格计算代码原样部署到 BNB Chain，如果写死了 1e6，USDT 金额会被放大 10^12 倍。**永远从合约读取 decimals()，不要写死。**跨链桥两端精度不同时，要在桥合约里显式换算，并处理换算后的余数。
+
+## 3. 舍入方向：永远对协议有利
+
+规则只有一条：舍入的余数归协议，不归调用者。
+
+图 · 四种换算的取整方向新增图解
+
+[图]
+flowchart TB
+  O["份额 ↔ 资产换算"] --> D1["deposit：给资产拿份额<br/>份额向下取整"]
+  O --> D2["mint：按份额算所需资产<br/>资产向上取整"]
+  O --> D3["withdraw：按资产算所需份额<br/>份额向上取整"]
+  O --> D4["redeem：给份额拿资产<br/>资产向下取整"]
+  D1 --> P["余数归协议"]
+  D2 --> P
+  D3 --> P
+  D4 --> P
+  X["方向写反"] --> Y["反复 mint 1 份额再 redeem"]
+  Y --> Z["每次净赚 1 单位误差"]
+  Z --> W["无手续费时循环上千次"]
+[/图]
+
+读图要点：
+
+- 关键：用户拿走的少给，用户付出的多收：余数永远归协议。
+- 出错点：任何一处方向写反，就留下往返套利的入口。
+- 风险：单次只差 1 单位，但可以在一笔交易里重复几千次。
+
+ | 
+
+ | 操作
+ | 用户给出
+ | 用户得到
+ | 取整方向
+ | 理由
+
+ | deposit(assets)
+ | 资产
+ | 份额
+ | 向下
+ | 少给份额
+
+ | mint(shares)
+ | 资产（计算所需）
+ | 份额
+ | 向上
+ | 多收资产
+
+ | withdraw(assets)
+ | 份额（计算所需）
+ | 资产
+ | 向上
+ | 多扣份额
+
+ | redeem(shares)
+ | 份额
+ | 资产
+ | 向下
+ | 少给资产
+
+如果方向反了，攻击者可以做"往返套利"：反复 mint 1 份额再 redeem，每次净赚 1 单位舍入误差。单次很小，但在没有手续费的场景下可以循环上千次。
+
+### 3.1 案例：Balancer V2（2025 年 11 月，多链）
+
+- 公开分析（Check Point Research、Verichains 等安全公司）指出：Composable Stable Pool 的 batchSwap 中存在舍入误差。
+
+- 攻击者在一笔批量交换中串联大量小额交换，让每一步的舍入都朝对自己有利的方向累积，操纵池子不变量和 BPT（池子份额）价格。
+
+- 损失约 1.28 亿美元（事发时估值），涉及多条链上的部署。
+
+- 教训：舍入误差在单步测试中可以忽略，在可批量、可循环的路径中会被放大。要对"重复 N 次同一操作"做模糊测试（12 章）。
+
+### 3.2 案例：KyberSwap Elastic（2023 年 11 月，以太坊等多链）
+
+- BlockSec 公开分析：estimateIncrementalLiquidity 中的 deltaL 用 mulDivFloor 向下取整，而代码注释表明应向上取整。
+
+- 偏差让池子在价格已越过某个 tick 时误判"未跨越"，同一段流动性在反向交换中被计算两次。
+
+- 损失超过 4,800 万美元。根因与教训见 C00 以太坊专题 4.4 节。
+
+💡 注意：代码与注释不一致时，要把它当作漏洞线索，而不是文档瑕疵。
+
+## 4. ERC-4626 金库通胀攻击
+
+ERC-4626：代币化金库的标准接口。用户存入资产（assets），获得份额（shares）。
+
+shares = assets × totalSupply / totalAssets      （向下取整）
+
+totalAssets 通常是 asset.balanceOf(address(this))——任何人都可以通过直接转账来增加它。
+
+### 4.1 攻击步骤
+
+[图]
+sequenceDiagram
+  autonumber
+  participant A as 攻击者
+  participant V as 金库（空）
+  participant U as 受害者
+  A->>V: deposit(1 wei)
+  Note over V: totalSupply = 1，totalAssets = 1
+  A->>V: 直接 transfer 10,000 USDC（不走 deposit）
+  Note over V: totalSupply = 1，totalAssets = 10,000 USDC + 1
+  U->>V: deposit(9,999 USDC)
+  Note over V: shares = 9,999e6 × 1 / (10,000e6 + 1) = 0（向下取整）
+  Note over U: 受害者得到 0 份额
+  A->>V: redeem(1 share)
+  Note over A: 取回全部 ≈ 19,999 USDC
+[/图]
+
+读图要点：
+
+- 攻击者的 1 份额代表了金库全部资产。受害者的存款被"捐赠"给了这 1 份额。
+
+- 攻击者通常抢跑受害者的第一笔存款交易（08 章）。
+
+- 攻击成本是捐赠额。只要受害者存款接近捐赠额，攻击就有利可图。
+
+- 局限：这个攻击只在金库几乎为空时有效。金库规模越大，攻击成本越高。
+
+### 4.2 防御
+
+ | 
+
+ | 方案
+ | 做法
+ | 效果
+
+ | 虚拟份额与偏移（OpenZeppelin ≥ 4.9）
+ | shares = assets × (totalSupply + 10^offset) / (totalAssets + 1)
+ | 攻击者需要捐赠 10^offset 倍的资金才能造成同样损失
+
+ | 初始存款销毁
+ | 部署时存入一笔资金，并把份额发给死地址
+ | 金库永远不为空
+
+ | 内部记账
+ | 用状态变量记录 totalAssets，不读 balanceOf
+ | 捐赠不改变份额价格
+
+ | 最小份额检查
+ | require(shares > 0)；用户侧设置 minSharesOut
+ | 受害者交易回滚，而不是得到 0
+
+去 vault-inflation-lab.html，拖动 decimalsOffset 滑块，观察攻击者利润从正变负。
+
+💡 注意：Uniswap V2 也用了类似思路：首次添加流动性时，永久锁定 MINIMUM_LIQUIDITY = 1000 份 LP 代币。
+
+## 5. 扩展案例：BNB Chain 上的 Uranium Finance（2021 年 4 月）
+
+Uranium Finance 分叉自 Uniswap V2。开发者把手续费从 0.3% 改成 0.16%（公开分析报告），在 swap() 的余额检查中修改了一处常数，但漏改了另一处：
+
+图 · Uranium 漏改常数的后果链新增图解
+
+[图]
+flowchart TB
+  A["分叉 Uniswap V2"] --> B["手续费 0.3% 改为 0.16%"]
+  B --> C["左侧调整项改成 10000"]
+  B --> D["右侧仍是 1000²"]
+  C --> E["左边被放大 100 倍"]
+  D --> E
+  E --> F["x × y ≥ k<br/>退化成 x × y ≥ k / 100"]
+  F --> G["极少量代币换出约 99% 储备"]
+  G --> H["损失约 5,000 万美元"]
+[/图]
+
+读图要点：
+
+- 出错点：只改了一处常数，另一处没同步，两边比较的尺度不一致。
+- 风险：不变量 k 被削弱 100 倍，池子储备几乎可以被免费换走。
+- 关键：修改过的分叉代码等于新代码，必须重新审计。
+
+// Uniswap V2 原版：两处都是 1000
+uint balance0Adjusted = balance0.mul(1000).sub(amount0In.mul(3));
+require(balance0Adjusted.mul(balance1Adjusted) >= uint(_reserve0).mul(_reserve1).mul(1000**2));
+
+// ❌ Uranium：调整项放大到 10000，右侧仍是 1000**2
+uint balance0Adjusted = balance0.mul(10000).sub(amount0In.mul(16));
+require(balance0Adjusted.mul(balance1Adjusted) >= uint(_reserve0).mul(_reserve1).mul(1000**2));
+
+左边被放大了 100 倍（10000² / 1000²），右边没有。不变量 x × y ≥ k 退化成 x × y ≥ k / 100。攻击者只投入极少量代币，就能换出池子约 99% 的储备。损失约 5,000 万美元（公开报道）。
+
+⚠️ 警告：分叉项目的修改往往只有几行，审计却容易被跳过——"这是 Uniswap 的代码，已经审计过了"。**修改过的分叉代码等于新代码。**更多 BNB Chain 分叉项目案例见 C01。
+
+## 6. 审计检查点
+
+-  所有 unchecked 块都有不会溢出的证明。
+
+-  所有向下类型转换都用了 SafeCast。
+
+-  乘除混合运算都是先乘后除，或使用 mulDiv。
+
+-  每个份额 ↔ 资产换算的舍入方向都对协议有利。
+
+-  金库首存者攻击已防御（虚拟份额、死份额或内部记账）。
+
+-  不写死代币精度；跨链换算处理了余数。
+
+-  分叉代码中修改过的常数，所有使用位置都已同步。
+
+-  模糊测试覆盖"同一操作重复 N 次"的路径。
+
+## 7. 术语表
+
+ | 
+
+ | 术语
+ | 英文
+ | 定义
+
+ | 溢出
+ | Overflow
+ | 运算结果超过类型上限后回绕
+
+ | 截断
+ | Truncation
+ | 类型转换时丢掉高位
+
+ | 舍入方向
+ | Rounding Direction
+ | 除法余数归属的选择（向上 / 向下）
+
+ | 份额
+ | Shares
+ | 代表对金库资产按比例所有权的代币
+
+ | 通胀攻击
+ | Inflation Attack
+ | 通过捐赠抬高份额价格，使后来者得到 0 份额
+
+ | 虚拟份额
+ | Virtual Shares
+ | 计算时额外加入的不存在的份额，用于抵抗通胀攻击
+
+ | 精度
+ | Decimals
+ | 代币最小单位与显示单位之间的 10 的幂次
+
+## 8. 思考题
+
+- 打开 vault-inflation-lab.html。偏移为 0 时，受害者存入 5,000 USDC，攻击者至少要捐赠多少才能让受害者得到 0 份额？偏移改为 3 呢？
+
+- 一个借贷协议计算利息时，对借款人的应还金额向下取整。攻击者可以怎样利用？
+
+- 你要把一个以太坊上的 USDT 收益协议部署到 BNB Chain。列出至少 2 处需要修改的数学相关代码。
+
+下一章：06 外部调用与代币兼容性 —— 你调用的那个合约，未必按你想的方式工作。
+

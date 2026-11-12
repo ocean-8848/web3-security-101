@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EP09 可升级合约与代理</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .ana .card { font-size: 29px; display: flex; flex-direction: column; gap: 10px; min-height: 230px; }
+  .ana .card .a { color: var(--text-2); font-size: 26px; }
+  .chk { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; }
+  .chk .card { font-size: 27px; padding: 14px 22px; }
+  .slots { display: grid; grid-template-columns: 130px 1fr 1.25fr; gap: 10px; font-size: 26px; }
+  .slots > div { padding: 14px 16px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); transition: all .35s; }
+  .slots .h { background: transparent; border: 0; color: var(--text-2); }
+  .slots .k { font-family: var(--mono); color: var(--gold); text-align: center; white-space: nowrap; }
+  .slots .note { font-size: 24px; font-weight: 600; }
+  .slots .bad { border-color: var(--sell); background: var(--sell-soft); color: var(--sell); }
+  .slots .good { border-color: var(--buy); background: var(--buy-soft); }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="EP09" data-title="可升级合约与代理：维修门的两面">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 主线 · EP09</div>
+    <h1>谁能换实现，<br>谁就拥有<span class="hl">全部资金</span></h1>
+    <div class="hero">
+      <div class="card sell" data-k="1" data-nocur><div class="k">2022 · Nomad 桥</div><div class="big">约 1.9 亿$</div><div>升级把可信根设成了 0</div></div>
+      <div class="card warn" data-k="2" data-nocur><div class="k">2021 · OZ UUPS 公告</div><div class="big">4.1–4.3.1</div><div>未初始化实现可被接管并自毁</div></div>
+      <div class="card info" data-k="3" data-nocur><div class="k">2021 · Compound 提案 62</div><div class="big">约 8,000 万$</div><div>没有紧急开关，修复要等 7 天</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到主线第9集，可升级合约与代理。留给自己的维修门，也是留给攻击者的门。一句话理解，代理合约保存数据和资金，实现合约提供代码。升级，就是换掉代理指向的实现。谁能换实现，谁就拥有全部资金。</li>
+      <li>看三个案例，以下据公开报道。2022年，Nomad 桥在升级时，把可信消息根设成了零，损失约1.9亿美元。</li>
+      <li>2021年，OpenZeppelin 公告它的 UUPS 实现有问题，未初始化的实现合约可被接管并自毁。</li>
+      <li>同年，Compound 的一个升级提案出错，部分用户超额领取奖励，而协议没有紧急开关，修复要等约7天。本集讲三种代理、三类漏洞和安全升级流程。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="保险柜与操作手册" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>代理是保险柜，实现是操作手册</h2>
+    <div class="ana">
+      <div class="card" data-k="0"><b>按手册操作柜子</b><div class="a">delegatecall：用手册，改柜子</div><div class="hl">升级 = 换一本新手册</div></div>
+      <div class="card sell" data-k="1"><b>新手册改了格子含义</b><div class="a">"第 3 格放现金"改成"放钥匙"</div><div class="hl">→ 存储冲突</div></div>
+      <div class="card sell" data-k="2"><b>"第一个读到这页的是主人"</b><div class="a">没人先读过</div><div class="hl">→ 未初始化，路人成主人</div></div>
+    </div>
+    <div class="card warn fs30" data-k="3">比喻不准的地方：真实换手册需要时间。<b>没有时间锁</b>时，链上换实现只需一笔交易。</div>
+    <ol class="say">
+      <li>打个比方。代理合约是一个保险柜，实现合约是保险柜的操作手册。柜员每次都按手册操作柜子，这就是 delegatecall，用手册，改柜子。升级，就是换一本新手册。</li>
+      <li>如果新手册把第3格放现金，改成了第3格放钥匙，柜员会把现金当钥匙用。这是存储冲突。</li>
+      <li>如果新手册第一页写着，第一个读到这页的人是柜子主人，而没人先读过它，路人就能成为主人。这是未初始化。</li>
+      <li>比喻不准的地方在于，真实保险柜换手册需要时间。如果没有时间锁，链上换实现只需要一笔交易。</li>
+    </ol>
+  </section>
+
+  <!-- 3 三种代理 -->
+  <section class="scene" data-title="三种代理模式" data-onstep="rowStep">
+    <div class="kicker">代理模式</div>
+    <h2>升级权限在哪，风险就在哪</h2>
+    <table class="t">
+      <thead><tr><th>模式</th><th>升级权限在哪</th><th>主要风险</th></tr></thead>
+      <tbody>
+        <tr><td>透明代理</td><td>代理的 admin 槽</td><td>admin 私钥</td></tr>
+        <tr><td>UUPS</td><td>实现合约的授权升级函数</td><td>新实现遗漏升级函数；实现合约未初始化</td></tr>
+        <tr><td>信标代理</td><td>信标合约的 owner</td><td>一次升级影响全部实例</td></tr>
+        <tr><td>钻石 EIP-2535</td><td>diamondCut 的权限</td><td>多个 facet 共享存储，冲突面最大</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>代理有几种模式。透明代理，升级逻辑在代理里，管理员调用代理时不转发，避免和实现函数冲突。升级权限在代理的管理槽，风险是管理员私钥。</li>
+      <li>UUPS，升级函数在实现合约里。如果新实现忘了包含升级函数，合约就再也不能升级。还要防实现合约未初始化。信标代理，多个代理共享一个信标，一次升级影响所有代理，适合大量相同的合约。</li>
+      <li>还有钻石模式，把逻辑拆成多个切面。升级权限在切面管理函数，多个切面共享存储，冲突面最大。四种模式都依赖 delegatecall，都有存储冲突风险。</li>
+    </ol>
+  </section>
+
+  <!-- 4 存储冲突 A -->
+  <section class="scene" data-title="存储冲突 A：撞槽" data-onstep="collideStep">
+    <div class="kicker">漏洞一 · 代理变量和实现变量撞槽</div>
+    <h2 id="caH">写 owner，就是写 implementation</h2>
+    <div class="row">
+      <svg id="col" width="900" height="520" viewBox="0 0 900 520"></svg>
+      <div class="col" id="colSide"></div>
+    </div>
+    <ol class="say">
+      <li>第一类存储冲突，代理自己的变量和实现的变量撞在同一个槽。看一个朴素代理，它把实现地址放在第0个槽位。</li>
+      <li>实现合约里，owner 也在第0个槽位。因为 delegatecall 用的是代理的存储。</li>
+      <li>当实现合约执行设置 owner 的代码，改的是第0个槽，也就是代理的实现地址被改成了一个 owner 地址。</li>
+      <li>下一次调用，代理会把这个 owner 地址当作实现合约去 delegatecall，合约彻底坏掉。修复是用 EIP-1967 定义的固定伪随机槽位，存放实现地址，第2集讲过那个以3608开头的位置，几乎不可能和普通变量重合。</li>
+    </ol>
+  </section>
+
+  <!-- 5 存储冲突 B -->
+  <section class="scene" data-title="存储冲突 B：布局错位" data-onstep="layoutStep">
+    <div class="kicker">漏洞一 · 升级前后布局不一致 · 在前面插入 uint256 feeBps</div>
+    <h2 id="cbH">插入一个变量，后面全部错位</h2>
+    <div class="slots" id="slots"></div>
+    <div class="card warn fs26" data-k="4">别靠肉眼数槽位：插入一个 bool 会和后面的 owner 打包，错位方式完全不同。用 forge inspect 或 solc 的 storageLayout 确认。</div>
+    <ol class="say">
+      <li>第二类存储冲突，升级前后布局不一致。看一个例子，V2 想在最前面插入一个手续费变量。V1 的布局是，第0槽 owner，第1槽总存款，第2槽余额映射，第3槽初始化标志。</li>
+      <li>V2 在最前面插入了手续费，于是第0槽变成手续费，而它读到的，其实是旧的 owner 地址，被当成了一个巨大的整数。</li>
+      <li>第1槽本该是手续费后面的 owner，却读到了旧的总存款的低20字节，变成一个错误的地址。</li>
+      <li>第2槽读到映射的占位槽，恒为零。第3槽的映射基址变了，所有用户的余额全部消失。一个变量的插入，后面全部错位。</li>
+      <li>正确的做法是，只在末尾追加变量，不删除、不重排、不改类型，父合约预留空隙槽位，并用工具比对新旧布局。注意，插入一个布尔值，错位方式又完全不同，所以别靠肉眼数槽位。手册里的存储实验，可以看到哪个槽被错误解释。</li>
+    </ol>
+  </section>
+
+  <!-- 6 初始化缺失 -->
+  <section class="scene" data-title="初始化缺失" data-onstep="rowStep">
+    <div class="kicker">漏洞二 · 初始化</div>
+    <h2>四种情况，都和"谁先初始化"有关</h2>
+    <table class="t sm">
+      <thead><tr><th>情况</th><th>后果</th><th>修复</th></tr></thead>
+      <tbody>
+        <tr><td>部署后没在同一笔交易里初始化</td><td>攻击者抢跑调用，成为 owner</td><td>部署与初始化原子化</td></tr>
+        <tr><td>初始化可重复调用</td><td>任何人重置 owner</td><td>initializer 修饰器</td></tr>
+        <tr><td>实现合约本身没初始化</td><td>攻击者成为实现 owner；若实现有 delegatecall / 自毁 → 破坏所有代理</td><td>构造函数 _disableInitializers</td></tr>
+        <tr><td>V2 新初始化用了 initializer</td><td>已初始化过，V2 初始化永不执行</td><td>reinitializer(2)</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>第二类漏洞是初始化缺失，四种情况。第一，部署代理后，没有在同一笔交易里初始化，攻击者抢跑调用初始化，成为 owner。修复是部署与初始化原子化。第二，初始化可以重复调用，任何人都能重置 owner，修复是加 initializer 修饰器。</li>
+      <li>第三，实现合约本身没初始化。攻击者成为实现合约的 owner，如果实现里有 delegatecall 或自毁逻辑，就能破坏所有指向它的代理。这正是 OpenZeppelin 那个公告，也和2017年 Parity 第二次事故是同一类问题。修复是在实现合约的构造函数里禁用初始化。</li>
+      <li>第四，V2 新增的初始化逻辑，如果还用普通的 initializer 修饰器，因为已经初始化过了，V2 的初始化永远不能执行。修复是用可重复初始化的版本，指定版本号。</li>
+    </ol>
+  </section>
+
+  <!-- 7 Nomad -->
+  <section class="scene" data-title="案例：Nomad 桥" data-onstep="nomadStep">
+    <div class="kicker">真实案例 · 2022-08 · 据公开复盘</div>
+    <h2>"零值"有了业务含义</h2>
+    <svg id="nm" width="1640" height="520" viewBox="0 0 1640 520"></svg>
+    <ol class="say">
+      <li>来看 Nomad，以下据公开复盘。Nomad 在一次升级中，调用初始化函数，把可信消息根设成了零。</li>
+      <li>而合约逻辑里，未经证明的消息，默认对应的根也是零。于是，任何消息的根都等于零，都被视为已证明。</li>
+      <li>第一个攻击者成功后，其他人只需要复制他的交易，替换收款地址，就能提款。数百个地址参与哄抢，损失约1.9亿美元。</li>
+      <li>三条教训。第一，升级时的初始化参数，和代码一样需要审计。第二，零值不能有业务含义，默认值和合法值必须可区分。第三，升级后要跑回归测试，覆盖未授权消息必须被拒绝这一条。</li>
+    </ol>
+  </section>
+
+  <!-- 8 Compound 62 -->
+  <section class="scene" data-title="对照：Compound 提案 62" data-onstep="compStep">
+    <div class="kicker">对照案例 · 2021-09 · 据公开报道</div>
+    <h2>时间锁挡住恶意升级，也挡住紧急修复</h2>
+    <div class="row">
+      <svg id="comp" width="980" height="480" viewBox="0 0 980 480"></svg>
+      <div class="col" id="compSide"></div>
+    </div>
+    <ol class="say">
+      <li>再看一个对照案例，Compound 提案62，2021年9月。升级后的奖励逻辑有误，部分用户可以超额领取奖励代币，最坏情况约28万枚，约8000万美元。</li>
+      <li>问题是，协议没有一个可以停止奖励分发的紧急开关。任何修复，都要走约7天的治理流程。在这7天里，错误的奖励还在继续发放。</li>
+      <li>和 Nomad 对比，一个是升级权太容易被利用，一个是没有紧急开关，修复太慢。教训是，时间锁挡住了恶意升级，但也挡住了紧急修复。所以，暂停权和升级权要分开设计，暂停要快，升级要慢，第4集讲过。</li>
+    </ol>
+  </section>
+
+  <!-- 9 链级升级 -->
+  <section class="scene" data-title="谁能升级链本身" data-onstep="rowStep">
+    <div class="kicker">链视角 · 截至 2026 年公开资料</div>
+    <h2>可升级的不只是 DeFi 合约</h2>
+    <table class="t sm">
+      <thead><tr><th>链</th><th>可升级的关键组件</th><th>由谁升级</th></tr></thead>
+      <tbody>
+        <tr><td>BNB Chain</td><td>系统合约、共识规则</td><td>硬分叉（Moran 修复了 Token Hub）</td></tr>
+        <tr><td>TRON</td><td>网络参数、TVM 功能开关</td><td>超级代表投票通过提案</td></tr>
+        <tr><td>Mantle</td><td>L1 桥、输出预言机、门户</td><td>安全多签 6/14 可无延迟升级；工程多签 3/7 可暂停提款</td></tr>
+      </tbody>
+    </table>
+    <div class="card sell fs28" data-k="2">在 L2 上部署的协议，其安全上限是 L2 本身的升级权限。桥能被无延迟升级 → 协议再安全，资产也可能在 L1 端被转走。</div>
+    <ol class="say">
+      <li>可升级的不只是 DeFi 合约，链本身也可以。BNB Chain 的系统合约和共识规则，通过硬分叉升级，比如 Moran 硬分叉修复了 Token Hub。TRON 的网络参数和功能开关，由超级代表投票通过提案。</li>
+      <li>Mantle 的一层桥、输出预言机和门户合约，据 L2BEAT，安全多签6选14可以无延迟升级，工程多签3选7可以暂停提款。</li>
+      <li>这里有一条重要的警告。在二层网络上部署的协议，它的安全上限，就是二层网络本身的升级权限。如果二层的桥可以被无延迟升级，那么协议写得再安全，资产也可能在一层网络那一端被转走。评估时一定要披露这个信任假设。</li>
+    </ol>
+  </section>
+
+  <!-- 10 安全升级流程 -->
+  <section class="scene" data-title="安全升级流程" data-onstep="flowStep">
+    <div class="kicker">安全升级 · 八步</div>
+    <h2>升级交易本身也要审计</h2>
+    <svg id="flow" width="1640" height="520" viewBox="0 0 1640 520"></svg>
+    <ol class="say">
+      <li>安全升级流程八步。第一，编写新实现，只追加变量。第二，用工具比对存储布局，输出差异报告。第三，在主网分叉环境执行升级，跑全部回归测试和不变量测试。</li>
+      <li>第四，审计新实现，以及升级交易本身，包括初始化参数。Nomad 就是升级交易的参数出了错。第五，通过时间锁排队，公开升级内容。</li>
+      <li>第六，延迟期内，监控和社区复核。第七，执行升级，立刻跑部署后验证脚本，读关键变量，做小额端到端操作。</li>
+      <li>第八，保留回滚方案。如果新实现有问题，能不能升级回旧实现，旧实现和新布局是否兼容。整个流程的核心是，升级交易本身，和代码一样需要审计。</li>
+    </ol>
+  </section>
+
+  <!-- 11 审计检查点 -->
+  <section class="scene" data-title="审计检查点" data-onstep="marks">
+    <div class="kicker">审计清单</div>
+    <h2>八个检查点</h2>
+    <div class="chk">
+      <div class="card" data-k="0">① 代理用 EIP-1967 槽位；没有自定义变量放在低位槽</div>
+      <div class="card" data-k="0">② 新旧实现存储布局已用工具比对</div>
+      <div class="card" data-k="1">③ 实现合约构造函数调用 _disableInitializers</div>
+      <div class="card" data-k="1">④ 代理部署与初始化在同一笔交易完成</div>
+      <div class="card" data-k="2">⑤ UUPS 新实现包含升级函数，且权限正确</div>
+      <div class="card" data-k="2">⑥ 升级权限经过多签和时间锁</div>
+      <div class="card" data-k="3">⑦ 初始化参数中没有"零值具有业务含义"</div>
+      <div class="card gold" data-k="3">⑧ 对部署所在 L2 的升级信任假设做了披露</div>
+    </div>
+    <ol class="say">
+      <li>审计检查点八个。第一，代理用 EIP-1967 槽位，没有自定义变量放在低位槽。第二，新旧实现的存储布局已经用工具比对过。</li>
+      <li>第三，实现合约的构造函数调用了禁用初始化。第四，代理的部署与初始化在同一笔交易完成。</li>
+      <li>第五，UUPS 的新实现包含升级函数，并且权限正确。第六，升级权限经过多签和时间锁。</li>
+      <li>第七，初始化参数中，没有零值具有业务含义的情况。第八，对部署所在二层网络的升级信任假设，做了披露。</li>
+    </ol>
+  </section>
+
+  <!-- 12 练一练 -->
+  <section class="scene" data-title="练一练" data-onstep="marks">
+    <div class="kicker">练一练 · 暂停视频想一想</div>
+    <h2>UUPS 升级到 V2，V2 的授权升级函数被写成空函数</h2>
+    <div class="grid2">
+      <div class="card" data-k="0"><b>会发生什么？</b></div>
+      <div class="card sell" data-k="1"><b>参考</b><div class="fs28">授权升级函数是 UUPS 检查升级权限的地方。写成<b>空函数</b> = 没有任何权限检查 → <b>任何人都能升级</b>这个合约，把实现换成恶意合约，接管全部资金。<br><b class="up">修复</b>：授权升级函数必须有权限修饰器；升级流程验证新实现的该函数。</div></div>
+    </div>
+    <ol class="say">
+      <li>来练一练。一个 UUPS 合约升级到 V2 后，V2 的授权升级函数被写成了空函数。会发生什么？</li>
+      <li>参考答案。授权升级函数，是 UUPS 检查升级权限的地方。写成空函数，等于没有任何权限检查，任何人都能升级这个合约，把实现换成恶意合约，接管全部资金。这比不能升级更危险。修复是，授权升级函数必须有权限修饰器，而且升级流程要验证新实现的这个函数。</li>
+    </ol>
+  </section>
+
+  <!-- 13 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">谁能换实现谁就有全部资金；用 <span class="hl">EIP-1967 槽位</span>，只在末尾加变量。</li>
+      <li data-step="1">实现合约<span class="hl">锁死初始化</span>；零值不能有业务含义（Nomad）。</li>
+      <li data-step="2"><span class="hl">升级交易本身要审计</span>；暂停权与升级权分开；L2 升级权是安全上限。</li>
+    </ul>
+    <h2 data-show="3">下一集：EP10 DeFi 经济安全</h2>
+    <div class="path" data-show="3">
+      <div class="card sell"><div class="n">∑</div><b>偿付不变量</b><div class="d">资产永远盖得住负债</div></div>
+      <div class="card gold"><div class="n">vote</div><b>治理攻击</b><div class="d">投票权能借、提案能当场执行</div></div>
+      <div class="card info"><div class="n">延</div><b>延迟作为安全参数</b><div class="d">给人反应的时间</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，谁能换实现谁就有全部资金。用 EIP-1967 槽位，只在末尾追加变量。</li>
+      <li>第二，实现合约要锁死初始化。零值不能有业务含义，这是 Nomad 的教训。</li>
+      <li>第三，升级交易本身要审计。暂停权和升级权分开设计。在二层网络上，链的升级权限是你的安全上限。</li>
+      <li>下一集讲 DeFi 经济安全，代码按规格执行，规格本身却可以被套利。偿付不变量，治理攻击，以及把延迟当作一个安全参数来设计。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line } = K;
+
+  function collideStep(el, st) {
+    const svg = el.querySelector('#col'); svg.innerHTML = '';
+    box(svg, 20, 40, 340, 100, ['朴素代理', 'implementation @ slot 0'], { stroke: C.info, fs: 28, ss: 24 });
+    box(svg, 540, 40, 340, 100, ['实现合约 Impl', 'owner @ slot 0'], { stroke: st >= 1 ? C.warn : C.line, fs: 28, ss: 24, op: st >= 1 ? 1 : .15 });
+    if (st >= 1) { arrow(svg, 364, 104, 534, 104, C.t2, true, 3); T(svg, 450, 76, 'delegatecall', C.t2, 22); }
+    // slot 0 box
+    rect(svg, 200, 220, 500, 120, { fill: st >= 2 ? C.badFill : C.panel, stroke: st >= 2 ? C.sell : C.gold, sw: 4 });
+    T(svg, 450, 255, '代理 slot 0', C.t2, 26, 'middle', true);
+    T(svg, 450, 300, st >= 2 ? 'owner 地址（本该是 impl 地址）' : 'implementation 地址', st >= 2 ? C.sell : C.text, 28, 'middle', true);
+    if (st >= 3) {
+      rect(svg, 100, 400, 700, 100, { fill: C.curFill, stroke: C.gold, sw: 3 });
+      T(svg, 450, 435, '下次调用 → 把 owner 地址当实现 delegatecall', C.gold, 26, 'middle', true);
+      T(svg, 450, 475, '修复：EIP-1967 固定伪随机槽位', C.buy, 26, 'middle', true);
+    }
+    const side = el.querySelector('#colSide');
+    side.innerHTML = ['<div class="card fs28 muted">delegatecall 用代理的存储</div>',
+      '<div class="card warn fs28">两个 slot 0 撞在一起</div>',
+      '<div class="card sell fs28">写 owner = 写 implementation</div>',
+      '<div class="card buy fs28">EIP-1967：实现地址放在<br>keccak 算出的固定位置<br>几乎不可能和变量重合</div>'][Math.min(st, 3)];
+  }
+
+  function layoutStep(el, st) {
+    marks(el, st);
+    const V1 = ['owner', 'totalDeposits', 'balances（映射）', 'initialized'];
+    const V2bad = [['feeBps', '← 读到旧 owner，当成大整数'], ['owner', '← 读到旧 totalDeposits 低 20 字节'], ['totalDeposits', '← 映射占位槽，恒为 0'], ['balances', '← 映射基址变，余额"消失"']];
+    const html = ['<div class="h"></div><div class="h">V1 布局</div><div class="h">V2（前面插入 feeBps）</div>'];
+    for (let i = 0; i < 4; i++) {
+      const showBad = st >= 1 && (st >= i + 1 || st >= 4);
+      html.push(`<div class="k">slot ${i}</div>`);
+      html.push(`<div class="good" style="opacity:${st >= 0 ? 1 : .2}">${V1[i]}</div>`);
+      html.push(`<div class="${showBad ? 'bad' : ''}" style="opacity:${showBad ? 1 : .12}">${V2bad[i][0]} <span class="note">${showBad ? V2bad[i][1] : ''}</span></div>`);
+    }
+    el.querySelector('#slots').innerHTML = html.join('');
+    el.querySelector('#cbH').textContent = st >= 4 ? '一个变量的插入，后面全部错位' : '插入一个变量，后面全部错位';
+  }
+
+  function nomadStep(el, st) {
+    const svg = el.querySelector('#nm'); svg.innerHTML = '';
+    const op = k => st >= k ? 1 : .12;
+    box(svg, 20, 60, 400, 100, ['升级：initialize', '可信根 = 0x00'], { stroke: C.sell, fill: C.badFill, fs: 28, ss: 24 });
+    box(svg, 20, 220, 400, 100, ['任意伪造消息', '默认根也是 0x00'], { stroke: C.warn, fs: 28, ss: 24, op: op(1) });
+    svg.appendChild(svgEl('polygon', { points: '640,170 840,250 640,330 440,250', fill: st >= 2 ? C.curFill : C.panel, stroke: st >= 2 ? C.gold : C.line, 'stroke-width': 4, opacity: op(2) }));
+    T(svg, 640, 232, '根 == 可信根？', C.text, 26, 'middle', true, op(2));
+    T(svg, 640, 270, '0x00 == 0x00 ✓', C.sell, 25, 'middle', true, op(2));
+    arrow(svg, 422, 112, 474, 236, C.t2, false, 3, op(2)); arrow(svg, 422, 270, 470, 258, C.t2, false, 3, op(2));
+    box(svg, 900, 200, 320, 110, ['process() 放行', '提走资金'], { stroke: C.sell, fill: C.badFill, fs: 28, op: op(2) });
+    arrow(svg, 842, 250, 896, 250, C.sell, false, 4, op(2));
+    if (st >= 3) {
+      box(svg, 1280, 200, 340, 110, ['交易被复制', '数百人哄抢 · 约 1.9 亿$'], { stroke: C.sell, fill: C.badFill, fs: 28, ss: 24, tc: C.sell, bold: true });
+      arrow(svg, 1222, 255, 1276, 255, C.sell, false, 4);
+      rect(svg, 20, 380, 1600, 120, { fill: C.curFill, stroke: C.gold, sw: 3 });
+      T(svg, 820, 420, '① 升级参数要审计  ②"零值"不能有业务含义  ③ 回归测试覆盖"未授权消息必须被拒绝"', C.gold, 27, 'middle', true);
+      T(svg, 820, 465, '默认值和合法值必须可区分', C.text, 26);
+    }
+  }
+
+  function compStep(el, st) {
+    const svg = el.querySelector('#comp'); svg.innerHTML = '';
+    box(svg, 40, 40, 400, 100, ['升级后奖励逻辑有误', '部分用户超额领取'], { stroke: C.sell, fs: 28, ss: 24 });
+    if (st >= 1) {
+      box(svg, 40, 200, 400, 100, ['没有紧急开关', '不能停止分发'], { stroke: C.warn, fill: C.badFill, fs: 28, ss: 24 });
+      arrow(svg, 240, 142, 240, 196, C.t2, false, 3);
+      box(svg, 40, 360, 400, 90, ['修复要走约 7 天治理'], { stroke: C.sell, fs: 28 });
+      arrow(svg, 240, 302, 240, 356, C.sell, false, 3);
+    }
+    const side = el.querySelector('#compSide');
+    side.innerHTML = '<div class="stat"><div class="k">最坏约</div><div class="v down" style="font-size:48px;white-space:nowrap">28 万枚 ≈ 8,000 万$</div></div>' +
+      (st >= 1 ? '<div class="card warn fs28">7 天里，错误奖励继续发</div>' : '') +
+      (st >= 2 ? '<div class="card buy fs28">时间锁挡住恶意升级，<br>也挡住紧急修复<br>→ <b>暂停权与升级权分开</b></div>' : '');
+    side.style.opacity = 1;
+  }
+
+  function flowStep(el, st) {
+    const svg = el.querySelector('#flow'); svg.innerHTML = '';
+    const S = ['① 新实现只追加', '② 比对存储布局', '③ 分叉环境回归 + 不变量', '④ 审计新实现 + 升级交易', '⑤ 时间锁排队 · 公开', '⑥ 延迟期监控复核', '⑦ 执行 + 部署后验证', '⑧ 保留回滚方案'];
+    const per = Math.ceil(S.length / 4);
+    const hi = { 0: [0, 1, 2], 1: [3, 4], 2: [5, 6], 3: [7] }[st] || [];
+    S.forEach((s, i) => {
+      const x = 20 + (i % 4) * 405, y = 60 + Math.floor(i / 4) * 200, cur = hi.includes(i), on = st * 1 >= 0;
+      const done = hi.length && i < Math.min(...hi);
+      box(svg, x, y, 385, 150, s.split(' ·').length > 1 ? s.split(' · ') : [s], { stroke: cur ? C.gold : C.info, fill: cur ? C.curFill : C.panel, fs: 27, sw: cur ? 4 : 2, op: hi.length ? (cur ? 1 : done ? .85 : .3) : 1 });
+    });
+    rect(svg, 20, 460, 1600, 50, { fill: 'none' });
+    T(svg, 820, 490, '核心：升级交易本身，和代码一样需要审计', C.gold, 28, 'middle', true);
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

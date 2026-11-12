@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EP13 事故案例库</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .ana .card { font-size: 27px; display: flex; flex-direction: column; gap: 10px; min-height: 210px; }
+  .ana .card .a { color: var(--text-2); font-size: 25px; }
+  .tmpl { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; }
+  .tmpl .it { display: grid; grid-template-columns: 56px 1fr; gap: 14px; font-size: 26px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 18px; align-items: center; }
+  .tmpl .it b { color: var(--gold); font-size: 30px; text-align: center; }
+  .path.c4 { grid-template-columns: repeat(4, 1fr); gap: 22px; }
+  .path.c4 .card { min-height: 260px; }
+  .pat { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 22px; }
+  .pat .it { display: grid; grid-template-columns: 52px 1fr; gap: 14px; font-size: 25px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 11px 16px; align-items: center; }
+  .pat .it .n { color: var(--sell); font-size: 30px; font-weight: 700; text-align: center; }
+  .pat .it .d { color: var(--text-2); font-size: 23px; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="EP13" data-title="事故案例库：同样的错误，换个名字再来一次">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 主线 · EP13（完结）</div>
+    <h1>大多数事故不是新漏洞，<br>是旧漏洞<span class="hl">换了环境</span></h1>
+    <div class="ana">
+      <div class="card info" data-k="1" data-nocur><b>新链</b><div class="a">同一个坑，换条链再踩</div></div>
+      <div class="card info" data-k="1" data-nocur><b>新分叉</b><div class="a">改了一行，检查失效</div></div>
+      <div class="card info" data-k="2" data-nocur><b>新版本</b><div class="a">审计之后又改了</div></div>
+      <div class="card sell" data-k="2" data-nocur><b>新组合</b><div class="a">两个安全的东西拼在一起</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到主线第13集，也是主线的最后一集，事故案例库。前面十二集我们逐类讲了漏洞和防御，这一集把它们串成一张事故地图。</li>
+      <li>一句话理解，大多数事故不是全新的漏洞，而是旧漏洞在新环境里复发。换了新链，同一个坑再踩一次。分叉改了一行，原来的检查就失效了。</li>
+      <li>或者审计之后又改了版本，又或者，两个各自安全的东西拼在一起就出了问题。本集讲三十多起事故的分类总表、七种反复出现的模式，和一份复盘模板。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="航空业的事故报告" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>读事故报告，是成本最低的安全训练</h2>
+    <div class="vs">
+      <div class="card info" data-k="0"><h3>航空业</h3><div class="fs28">每一起事故都写成公开报告<br>今天的飞行员，不会再犯 1970 年代的错<br><span class="hl">独立机构调查，结论权威</span></div></div>
+      <div class="card gold" data-k="1"><h3>合约安全</h3><div class="fs28">项目复盘 + 安全公司分析 + 链上数据<br>这就是我们的"事故报告"<br><span class="hl">多由项目方或安全公司发布</span></div></div>
+    </div>
+    <div class="card warn fs29" data-k="2">比喻的局限：合约事故的复盘，细节可能不完整，归因可能有争议。本集只采用<b>多方公开资料一致</b>的事实，金额是事发时的美元估值约数。</div>
+    <ol class="say">
+      <li>打个比方。航空业把每一起事故都写成公开报告，所以今天的飞行员不会再犯七十年代的错误。航空事故由独立机构调查，结论有权威性。</li>
+      <li>合约安全也有自己的事故报告，项目复盘、安全公司分析、链上数据。读事故报告，是成本最低的安全训练，别人用真金白银买的教训，你花时间读一遍就学到了。</li>
+      <li>但要注意比喻的局限。合约事故的复盘，多数由项目方或安全公司发布，细节可能不完整，归因可能有争议。所以本集只采用多方公开资料一致的事实，金额都是事发时的美元估值约数。</li>
+    </ol>
+  </section>
+
+  <!-- 3 事故总表 时间轴 -->
+  <section class="scene" data-title="十年事故时间轴" data-onstep="eraStep">
+    <div class="kicker">事故总表 · 按时间看演变</div>
+    <h2 id="eraH">从单点漏洞，到组合与跨域</h2>
+    <svg id="era" width="1660" height="520" viewBox="0 0 1660 520"></svg>
+    <ol class="say">
+      <li>先按时间看。二零一六到一九年，事故多是单点代码漏洞。The DAO 的重入，Parity 多签的初始化问题，BEC 的整数溢出。那时候防御意识还很薄弱，一个经典错误就能造成巨额损失。</li>
+      <li>二零二零到二二年，闪电贷普及，预言机操纵集中爆发，bZx、Harvest、Cream 都是这一类。同时跨链桥成了新的重灾区，Poly Network、Wormhole、Ronin、BSC Token Hub，单笔损失动辄数亿美元。</li>
+      <li>二三年之后，纯代码漏洞变少了，因为审计和工具普及了。但前端与签名成了新战场，WazirX 和 Bybit 都是签名人被骗。KyberSwap 和 Balancer 则是深藏在数学里的精度错误。趋势很清楚，攻击从单点代码，转向了组合、跨域和人。</li>
+    </ol>
+  </section>
+
+  <!-- 4 按根因分类 -->
+  <section class="scene" data-title="按根因分类" data-onstep="catStep">
+    <div class="kicker">事故总表 · 按根因看分布</div>
+    <h2>八类根因，每一类都对应一集防御</h2>
+    <svg id="cat" width="1660" height="520" viewBox="0 0 1660 520"></svg>
+    <ol class="say">
+      <li>换个角度，按根因分类。重入，The DAO、Fei Rari、Curve、Penpie。权限与初始化，两次 Parity、Nomad。算术与精度，BEC、Uranium、KyberSwap、Balancer。这三类都是经典代码漏洞，分别对应主线第三、四、五集。</li>
+      <li>外部调用，Qubit、Akutars、Sushi。预言机操纵，bZx、Harvest、Cream、PancakeBunny、Inverse。这两类对应第六和第七集。</li>
+      <li>前端与签名，WazirX、Bybit、委托钓鱼。升级与治理，Compound、Beanstalk、Euler。跨链与私钥，Poly、Wormhole、Ronin、Token Hub。这些对应第八到第十一集。每一类的防御，前面都讲过。这张分布图告诉你，没有哪一类可以忽略。</li>
+    </ol>
+  </section>
+
+  <!-- 5 同一个坑换条链 -->
+  <section class="scene" data-title="同一个坑，换条链" data-onstep="rowStep">
+    <div class="kicker">复发 · 跨链重演</div>
+    <h2>以太坊踩过的坑，在新链上重新踩一遍</h2>
+    <table class="t sm">
+      <thead><tr><th>原型（以太坊）</th><th>复发</th><th>根因相同点</th></tr></thead>
+      <tbody>
+        <tr><td>bZx 单一 DEX 价格</td><td>PancakeBunny（BNB）</td><td>按池储备给 LP 定价</td></tr>
+        <tr><td>Uniswap V2 的 k 检查</td><td>Uranium（BNB 分叉）</td><td>改手续费漏改常数，检查失效</td></tr>
+        <tr><td>safeTransferFrom 零地址</td><td>Qubit（BNB 桥）</td><td>对无代码地址调用返回成功</td></tr>
+        <tr><td>标准 ERC-20 返回值</td><td>TRON USDT 集成</td><td>成功也可能返回 false</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>复发最典型的形式，就是同一个坑换条链再踩一遍。以太坊上 bZx 用单一 DEX 价格被操纵，到了 BNB 链，PancakeBunny 按池储备给 LP 定价，本质一样。Uniswap V2 靠一个常数做 k 检查，Uranium 分叉它改手续费时漏改了常数，检查就失效了。</li>
+      <li>对零地址做 safeTransferFrom 本该失败，Qubit 桥上对无代码地址的调用却返回成功。标准 ERC-20 的返回值问题，在 TRON 的 USDT 上又以另一种形式出现，成功也可能返回 false。</li>
+      <li>看出规律了吗。换了链，代币精度、返回值约定、出块时间、原生币假设全都变了，而开发者还带着以太坊的习惯。这就是为什么链专题要单独讲。本手册里的事故浏览器，可以按链、按年份、按根因交叉筛选这三十多起事故。</li>
+    </ol>
+  </section>
+
+  <!-- 6 七种模式 flow -->
+  <section class="scene" data-title="七种反复出现的模式" data-onstep="patFlow">
+    <div class="kicker">七种模式 · 同样的错一犯再犯</div>
+    <h2>把三十起事故，压缩成七条</h2>
+    <svg id="pflow" width="1660" height="500" viewBox="0 0 1660 500"></svg>
+    <ol class="say">
+      <li>如果把这三十多起事故再压缩，会得到七种反复出现的模式。第一，先交互后记账，外部调用之后还有状态写入，从 The DAO 到 Curve 都是它。第二，零值或默认值有含义，Nomad 的可信根被设成零，Qubit 的零地址，都是把默认值当成了合法值。</li>
+      <li>第三，一笔交易内可变的数据被当作事实，bZx、Cream、PancakeBunny 都是把瞬时价格当真。第四，新增函数绕过既有检查，Euler 新加的捐赠函数没走健康检查。第五，改动过的分叉或新版本没审计，Uranium 和 PancakeBunny 都栽在这。</li>
+      <li>第六，签名人看不懂自己签的内容，Bybit 和 TRON 权限诈骗都是盲签。第七，少数密钥控制全部资产，Ronin 九选五，无延迟升级的桥，都是权力太集中。记住这七条，比记三十起事故更有用。</li>
+    </ol>
+  </section>
+
+  <!-- 7 七种模式 识别与防御 -->
+  <section class="scene" data-title="识别信号与防御" data-onstep="rowStep">
+    <div class="kicker">七种模式 · 识别信号 → 防御动作</div>
+    <h2>看到这些信号，就该停下来</h2>
+    <table class="t sm">
+      <thead><tr><th>模式</th><th>识别信号</th><th>防御</th></tr></thead>
+      <tbody>
+        <tr><td>① 先交互后记账</td><td>外部调用之后还有状态写入</td><td>CEI + 共享重入锁</td></tr>
+        <tr><td>② 零值有含义</td><td>== 0、address(0)、未初始化映射当合法值</td><td>零值一律视为无效；显式存在标记</td></tr>
+        <tr><td>③ 可变数据作事实</td><td>getReserves、balanceOf、份额价格用于定价</td><td>抗操纵预言机；内部记账</td></tr>
+        <tr><td>④ 新函数绕过检查</td><td>新增改余额/债务的入口</td><td>统一"操作后检查"钩子；不变量测试</td></tr>
+        <tr><td>⑤ 未审计的改动</td><td>"只改了一行"</td><td>改动即重审；差异审计</td></tr>
+        <tr><td>⑥ 盲签</td><td>签名界面只显示哈希或摘要</td><td>独立解码；硬件钱包核对；白名单</td></tr>
+        <tr><td>⑦ 密钥集中</td><td>少数签名人、无时间锁</td><td>提高阈值与独立性；时间锁；限额</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>把七种模式变成可执行的检查。看到外部调用之后还有状态写入，就想到先交互后记账，用 CEI 加共享锁。看到代码里用等于零、零地址，或者把未初始化的映射当合法值，就想到零值有含义，一律视为无效，并用显式的存在标记。看到 getReserves、balanceOf 或份额价格被用于定价，就想到可变数据作事实，换抗操纵预言机或内部记账。</li>
+      <li>看到新增一个能改余额或债务的入口，就想到新函数绕过检查，用统一的操作后检查钩子，配不变量测试。听到有人说只改了一行，就想到未审计的改动，改动即重审，做差异审计。</li>
+      <li>看到签名界面只显示一串哈希或摘要，就想到盲签，必须独立解码、硬件钱包核对、对 delegatecall 做白名单。看到少数签名人又没有时间锁，就想到密钥集中，提高阈值和独立性，加时间锁和限额。这张表的左边是信号，右边是动作，看到左边就做右边。</li>
+    </ol>
+  </section>
+
+  <!-- 8 复盘模板 -->
+  <section class="scene" data-title="复盘模板" data-onstep="tmplStep">
+    <div class="kicker">复盘模板 · 每起事故 → 一个检查项</div>
+    <h2>用统一模板，把事故变成清单</h2>
+    <div class="tmpl" id="tmpl"></div>
+    <ol class="say">
+      <li>最后给你一份复盘模板，九个字段。一句话摘要，损失金额和是否追回，还有时间线，特别要分清漏洞是哪个版本引入的、攻击交易何时发生、何时被发现响应。接着是攻击路径。</li>
+      <li>然后是根因，要分两层。直接原因是代码哪一行，根本原因是流程哪一环缺失。再问一个关键问题，前面八个关口里，哪一个本可以拦住它。再写出被打破的那个不变量式子。</li>
+      <li>最后是防御清单和资料来源。这个模板不只用来学别人的事故，也适用于你自己项目的事故。每填一次，就把一起事故变成你清单上的一个检查项。这样，别人的教训就真正变成了你的能力。</li>
+    </ol>
+  </section>
+
+  <!-- 9 练一练 -->
+  <section class="scene" data-title="练一练" data-onstep="quizStep">
+    <div class="kicker">练一练 · 先暂停思考</div>
+    <h2 id="qH">这三起事故，分别属于哪种模式？</h2>
+    <div class="ana">
+      <div class="card" data-k="0"><b>Euler</b><div class="a">新加的捐赠函数，没走健康检查</div><div class="hl on" data-show="1-9">→ 模式④ 新函数绕过检查</div></div>
+      <div class="card" data-k="0"><b>Nomad</b><div class="a">可信根被初始化为 0x00</div><div class="hl on" data-show="2-9">→ 模式② 零值有含义</div></div>
+      <div class="card" data-k="0"><b>Bybit</b><div class="a">签名人对着被篡改的界面盲签</div><div class="hl on" data-show="3-9">→ 模式⑥ 盲签</div></div>
+    </div>
+    <div class="card gold fs29" data-show="3-9">同一起事故可能命中多条模式。关键不是贴标签，而是<b>看到信号就触发对应的防御动作</b>。</div>
+    <ol class="say">
+      <li>练一练，先暂停。这三起事故，分别属于七种模式里的哪一种。Euler，新加的捐赠函数没走健康检查。Nomad，可信根被初始化成零。Bybit，签名人对着被篡改的界面盲签。想一想再继续。</li>
+      <li>Euler 是模式四，新函数绕过检查。它新增了一个能改债务状态的入口，却没有复用既有的健康因子检查。防御是统一的操作后检查钩子，加不变量测试。</li>
+      <li>Nomad 是模式二，零值有含义。它把可信根的默认值零，当成了一个合法的、可以通过验证的值。防御是零值一律视为无效。</li>
+      <li>Bybit 是模式六，盲签。签名人看到的界面和实际签署的数据不一致。防御是独立解码所签内容，用硬件钱包核对。注意，同一起事故可能命中多条模式。关键不是贴标签，而是看到信号就触发对应的防御动作。</li>
+    </ol>
+  </section>
+
+  <!-- 10 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">主线小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">大多数事故是<span class="hl">旧漏洞换环境</span>复发：新链、新分叉、新版本、新组合。</li>
+      <li data-step="1">三十多起事故，可压缩成<span class="hl">七种模式</span>；记模式比记事故更有用。</li>
+      <li data-step="2">每起事故用模板<span class="hl">复盘一次</span>，就变成你清单上的一个检查项。</li>
+    </ul>
+    <h2 data-show="3">主线完结 · 下面是链专题</h2>
+    <div class="path c4" data-show="3">
+      <div class="card info"><div class="n">C00</div><b>以太坊</b><div class="d">经典事故代码深潜</div></div>
+      <div class="card sell"><div class="n">C01</div><b>BNB Chain</b><div class="d">分叉与精度</div></div>
+      <div class="card gold"><div class="n">C02</div><b>TRON</b><div class="d">账户权限与集成</div></div>
+      <div class="card info"><div class="n">C03</div><b>Mantle</b><div class="d">L2 与原生币差异</div></div>
+    </div>
+    <ol class="say">
+      <li>主线小结三点。第一，大多数事故是旧漏洞换环境复发，新链、新分叉、新版本、新组合。安全不是记住每一个漏洞，而是看穿它们共同的形状。</li>
+      <li>第二，三十多起事故可以压缩成七种模式。记住这七种模式，比记住三十起事故更有用，因为新事故往往还是它们的变体。</li>
+      <li>第三，每学一起事故，用模板复盘一次，它就变成你清单上的一个检查项。别人的教训，就这样变成你的能力。到这里，合约安全主线十三集就全部讲完了。</li>
+      <li>接下来是四集链专题。C00 以太坊，深潜经典事故的代码。C01 BNB Chain，分叉和精度。C02 TRON，账户权限和集成。C03 Mantle，二层和原生币的差异。把主线学到的通用方法，落到每一条链的具体差异上。我们链专题见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line } = K;
+
+  function eraStep(el, st) {
+    const svg = el.querySelector('#era'); svg.innerHTML = '';
+    const E = [
+      ['2016–2019', '单点代码漏洞', 'DAO 重入 · Parity 初始化 · BEC 溢出', C.info, 0],
+      ['2020–2022', '闪电贷 + 跨链桥', 'bZx/Harvest/Cream · Poly/Wormhole/Ronin', C.warn, 1],
+      ['2023 —', '前端签名 + 深层数学', 'WazirX/Bybit · KyberSwap/Balancer', C.sell, 2]
+    ];
+    // base timeline
+    line(svg, 40, 70, 1620, 70, C.t2, 3);
+    E.forEach(([a, b, c, col, k], i) => {
+      const x = 40 + i * 540, on = st >= k ? 1 : .15, cur = st === k;
+      circle(svg, x + 10, 70, 10, { fill: col, op: on });
+      rect(svg, x, 110, 500, 150, { fill: cur ? C.curFill : C.panel, stroke: cur ? C.gold : col, sw: cur ? 4 : 3, op: on });
+      T(svg, x + 30, 160, a, col, 34, 'start', true, on);
+      T(svg, x + 30, 205, b, C.text, 28, 'start', true, on);
+      T(svg, x + 30, 245, c, C.t2, 22, 'start', false, on);
+    });
+    if (st >= 2) {
+      arrow(svg, 300, 320, 1360, 320, C.gold, false, 3);
+      T(svg, 830, 300, '攻击重心：单点代码 → 组合与跨域 → 人与界面', C.gold, 27, 'middle', true);
+    }
+    el.querySelector('#eraH').textContent = st >= 2 ? '攻击从代码，转向了组合、跨域和人' : '从单点漏洞，到组合与跨域';
+  }
+  function circle(svg, cx, cy, r, o = {}) {
+    const c = svgEl('circle', { cx, cy, r, fill: o.fill || 'none', stroke: o.stroke || 'none', 'stroke-width': o.sw || 0, opacity: o.op == null ? 1 : o.op });
+    svg.appendChild(c); return c;
+  }
+
+  function catStep(el, st) {
+    const svg = el.querySelector('#cat'); svg.innerHTML = '';
+    const D = [
+      ['重入', 4, 'EP03', C.sell], ['权限/初始化', 3, 'EP04', C.info], ['算术/精度', 4, 'EP05', C.warn],
+      ['外部调用', 3, 'EP06', C.info], ['预言机操纵', 5, 'EP07', C.sell], ['前端/签名', 3, 'EP08', C.warn],
+      ['升级/治理', 3, 'EP09·10', C.info], ['跨链/私钥', 4, 'EP11', C.sell]
+    ];
+    const grp = [0, 0, 0, 1, 1, 2, 2, 2];
+    const maxN = 5, bw = 185, gap = 15, x0 = 40, baseY = 380;
+    D.forEach(([name, n, ep, col], i) => {
+      const x = x0 + i * (bw + gap), on = grp[i] <= st ? 1 : .15, cur = grp[i] === st;
+      const h = n / maxN * 280;
+      if (cur) rect(svg, x - 6, baseY - h - 46, bw + 12, h + 46 + 84, { fill: C.curFill, stroke: C.gold, sw: 2, rx: 10 });
+      rect(svg, x, baseY - h, bw, h, { fill: col, op: on * .85, rx: 6 });
+      T(svg, x + bw / 2, baseY - h - 20, n + ' 起', col, 26, 'middle', true, on);
+      T(svg, x + bw / 2, baseY + 30, name, C.text, 23, 'middle', true, on);
+      T(svg, x + bw / 2, baseY + 62, ep, C.t2, 21, 'middle', false, on);
+    });
+    line(svg, x0, baseY, x0 + 8 * (bw + gap) - gap, baseY, C.t2, 2);
+    T(svg, 830, 500, '每一类根因，主线都有专门一集讲防御', C.gold, 25, 'middle', true);
+  }
+
+  function patFlow(el, st) {
+    const svg = el.querySelector('#pflow'); svg.innerHTML = '';
+    const P = [
+      ['① 先交互后记账', 'DAO → Curve'],
+      ['② 零值有含义', 'Nomad · Qubit'],
+      ['③ 可变数据作事实', 'bZx → PancakeBunny'],
+      ['④ 新函数绕过检查', 'Euler'],
+      ['⑤ 未审计的改动', 'Uranium'],
+      ['⑥ 盲签', 'Bybit · TRON'],
+      ['⑦ 密钥集中', 'Ronin · 无延迟升级']
+    ];
+    const grp = [0, 0, 1, 1, 1, 2, 2];
+    const cols = 4, bw = 385, bh = 150, gx = 20, gy = 40, x0 = 20, y0 = 20;
+    P.forEach(([a, b], i) => {
+      const x = x0 + (i % cols) * (bw + gx), y = y0 + Math.floor(i / cols) * (bh + gy);
+      const on = grp[i] <= st ? 1 : .15, cur = grp[i] === st;
+      rect(svg, x, y, bw, bh, { fill: cur ? C.curFill : C.panel, stroke: cur ? C.gold : C.info, sw: cur ? 3 : 2, op: on, rx: 10 });
+      T(svg, x + bw / 2, y + 60, a, C.text, 28, 'middle', true, on);
+      T(svg, x + bw / 2, y + 105, b, C.t2, 23, 'middle', false, on);
+    });
+  }
+
+  function tmplStep(el, st) {
+    marks(el, st);
+    const F = [
+      ['1', '一句话摘要'], ['2', '损失：金额（约）· 是否追回'], ['3', '时间线：引入 → 攻击 → 响应'],
+      ['4', '攻击路径'], ['5', '根因：直接（哪一行）+ 根本（哪一环）'], ['6', '哪个关口本可拦住它'],
+      ['7', '被打破的不变量（写出式子）'], ['8', '防御清单'], ['9', '资料来源']
+    ];
+    el.querySelector('#tmpl').innerHTML = F.map(([n, t]) => `<div class="it"><b>${n}</b><span>${t}</span></div>`).join('');
+  }
+
+  function quizStep(el, st) {
+    marks(el, st);
+    el.querySelector('#qH').textContent = st >= 1 ? '对照模式，触发防御' : '这三起事故，分别属于哪种模式？';
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

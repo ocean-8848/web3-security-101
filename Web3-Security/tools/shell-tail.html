@@ -1,0 +1,416 @@
+;
+const { docs, nav, labs, mdMap, aliases = {} } = DATA;
+const order = nav.flatMap(g => g.items);
+const groupName = Object.fromEntries(nav.map(g => [g.key, g.full || g.name]));
+const codeOf = id => id === 'home' ? '·' : id === 'guide' ? '规范' : id === 'examples' ? 'SOL' : (docs[id] && /^([A-Z]?\d\d[a-z]?)\s/.test(docs[id].title)) ? docs[id].title.split(/\s/)[0] : /^[atrb]\d\d$/.test(id) ? id.toUpperCase() : /^k\d\d$/.test(id) ? 'C' + id.slice(1) : id.replace(/^[cs]/, '');
+const shortTitle = t => t.replace(/^[A-Z]?\d\d[a-z]?\s+/, '').replace(/^Web3 安全学习手册.*$/, '学习路径总览').replace(/：合约安全专题.*$/, '');
+
+// ---------- sidebar ----------
+const navEl = document.getElementById('navGroups');
+const linkHtml = id => `<a class="navlink" href="#${id}" data-nav="${id}"><span class="code">${codeOf(id)}</span><span>${shortTitle(docs[id].title)}${docs[id].draft ? ' 🚧' : ''}</span></a>`;
+const groupHtml = g => !g.name ? `<div class="part-lead">${g.items.map(linkHtml).join('')}</div>` : `<details class="group" data-g="${g.key}"><summary><h4>${g.name}<span class="gcount">${g.items.length}</span></h4></summary>${g.items.map(id =>
+  `<a class="navlink" href="#${id}" data-nav="${id}"><span class="code">${codeOf(id)}</span><span>${shortTitle(docs[id].title)}${docs[id].draft ? ' 🚧' : ''}</span></a>`).join('')}</details>`;
+// 父分类：连续的同 part 分组包进一个可折叠的父目录
+const partsMeta = DATA.parts || {};
+let navHtml = '';
+for (let i = 0; i < nav.length;) {
+  const p = nav[i].part;
+  if (!p) { navHtml += groupHtml(nav[i++]); continue; }
+  const gs = [];
+  while (i < nav.length && nav[i].part === p) gs.push(nav[i++]);
+  const n = gs.reduce((a, g) => a + g.items.length, 0);
+  navHtml += `<details class="group part" data-g="part:${p}"><summary><h3>${partsMeta[p] || p}<span class="gcount">${n}</span></h3></summary><div class="part-body">${gs.map(groupHtml).join('')}</div></details>`;
+}
+navEl.innerHTML = navHtml
+  + `<details class="group" data-g="labs"><summary><h4>交互实验<span class="gcount">${labs.length}</span></h4></summary>${labs.map(l =>
+  `<a class="navlink" href="#${l.id}" data-nav="${l.id}"><span class="code">LAB</span><span>${l.title}</span></a>`).join('')}</details>`;
+// 目录分组可点击展开/收起；记住读者的选择，当前所在分组自动展开
+const NAV_OPEN_KEY = 'w3s-nav-open';
+let navOpen = {};
+try { navOpen = JSON.parse(localStorage.getItem(NAV_OPEN_KEY) || '{}') || {}; } catch (e) { navOpen = {}; }
+navEl.querySelectorAll('details.group').forEach((d, i) => {
+  d.open = d.dataset.g in navOpen ? !!navOpen[d.dataset.g] : (i === 0 || d.classList.contains('part'));
+  d.addEventListener('toggle', () => {
+    navOpen[d.dataset.g] = d.open;
+    try { localStorage.setItem(NAV_OPEN_KEY, JSON.stringify(navOpen)); } catch (e) {}
+  });
+});
+
+// ---------- mermaid ----------
+const isDark = () => {
+  const t = document.documentElement.getAttribute('data-theme');
+  return t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+};
+let mmdTheme = null, mmdSeq = 0;
+function initMermaid() {
+  const dark = isDark();
+  if (mmdTheme === dark) return;
+  mmdTheme = dark;
+  const css = getComputedStyle(document.documentElement);
+  const v = n => css.getPropertyValue(n).trim();
+  mermaid.initialize({
+    startOnLoad: false, securityLevel: 'strict', theme: 'base',
+    fontFamily: '-apple-system, "PingFang SC", "Microsoft YaHei", sans-serif',
+    themeVariables: {
+      darkMode: dark, background: v('--paper'), fontSize: '14px',
+      primaryColor: v('--gold-soft'), primaryBorderColor: v('--gold'), primaryTextColor: v('--ink'),
+      secondaryColor: v('--info-soft'), tertiaryColor: v('--tint'),
+      lineColor: v('--ink-2'), textColor: v('--ink'), mainBkg: v('--gold-soft'),
+      clusterBkg: v('--tint'), clusterBorder: v('--rule'), titleColor: v('--ink'),
+      edgeLabelBackground: v('--paper'), noteBkgColor: v('--info-soft'), noteTextColor: v('--ink'), noteBorderColor: v('--info'),
+      actorBkg: v('--gold-soft'), actorBorder: v('--gold'), actorTextColor: v('--ink'), signalColor: v('--ink-2'), signalTextColor: v('--ink'),
+      labelBoxBkgColor: v('--tint'), labelTextColor: v('--ink'), loopTextColor: v('--ink'), activationBkgColor: v('--tint'),
+    },
+  });
+}
+async function renderMermaid(root) {
+  if (!window.mermaid) return;
+  initMermaid();
+  for (const pre of root.querySelectorAll('pre.mmd')) {
+    const wrap = pre.parentElement;
+    const src = pre.dataset.src || pre.textContent;
+    pre.dataset.src = src;
+    try {
+      const { svg } = await mermaid.render('m' + (++mmdSeq), src);
+      const holder = document.createElement('div');
+      holder.innerHTML = svg;
+      const el = holder.firstElementChild;
+      wrap.querySelectorAll('svg').forEach(s => s.remove());
+      pre.hidden = true;
+      wrap.appendChild(el);
+      const w = parseFloat(el.style.maxWidth) || 0;
+      wrap.classList.toggle('wide', w > 900);
+      if (!wrap.classList.contains('ready')) {
+        wrap.classList.add('ready');
+        wrap.tabIndex = 0;
+        wrap.setAttribute('role', 'button');
+        wrap.setAttribute('aria-label', '放大查看流程图');
+        const chip = document.createElement('span');
+        chip.className = 'zoom-chip';
+        chip.textContent = '⤢ 点击放大';
+        wrap.prepend(chip);
+      }
+    } catch (e) { pre.hidden = false; }
+  }
+}
+function rerenderForTheme() { if (mmdTheme !== null && mmdTheme !== isDark()) { viewer.close(); mmdTheme = null; renderMermaid(view); } }
+
+// ---------- diagram viewer: click a diagram to open it full screen, then pan and zoom ----------
+const viewer = (() => {
+  const box = document.getElementById('viewer'), port = document.getElementById('viewerPort'), stage = document.getElementById('viewerStage');
+  const zoomLabel = document.getElementById('vZoom'), titleEl = document.getElementById('viewerTitle');
+  let svg = null, home = null, opener = null, w = 0, h = 0, s = 1, x = 0, y = 0;
+  const MIN = 0.1, MAX = 8;
+  const apply = () => { stage.style.transform = `translate(${x}px, ${y}px) scale(${s})`; zoomLabel.textContent = Math.round(s * 100) + '%'; };
+  const rect = () => port.getBoundingClientRect();
+  function zoomAt(f, cx, cy) {
+    const ns = Math.min(MAX, Math.max(MIN, s * f));
+    x = cx - (cx - x) * ns / s; y = cy - (cy - y) * ns / s; s = ns; apply();
+  }
+  const zoomCenter = f => { const r = rect(); zoomAt(f, r.width / 2, r.height / 2); };
+  function fit() {
+    const r = rect(), pad = 24;
+    s = Math.min(MAX, Math.max(MIN, Math.min((r.width - pad * 2) / w, (r.height - pad * 2) / h)));
+    x = (r.width - w * s) / 2; y = (r.height - h * s) / 2; apply();
+  }
+  // First view: fit the whole diagram, unless that makes it too small to read (wide diagrams on phones).
+  // Then start at a readable size from the left edge and let the reader pan.
+  function initial() {
+    fit();
+    if (s >= 0.45) return;
+    const r = rect();
+    s = 0.6;
+    x = 16; y = Math.max(16, (r.height - h * s) / 2); apply();
+  }
+  function actual() { const r = rect(); s = 1; x = (r.width - w) / 2; y = Math.max(24, (r.height - h) / 2); apply(); }
+  function titleFor(wrap) {
+    let n = wrap.previousElementSibling;
+    while (n && !/^H[1-4]$/.test(n.tagName)) n = n.previousElementSibling;
+    const doc = view.querySelector('h1');
+    return [doc && doc.textContent, n && n.textContent].filter(Boolean).join(' · ') || '流程图';
+  }
+  function open(wrap) {
+    const el = wrap.querySelector('svg');
+    if (!el) return;
+    const vb = (el.getAttribute('viewBox') || '').split(/[\s,]+/).map(Number);
+    const bb = el.getBoundingClientRect();
+    w = vb[2] || bb.width; h = vb[3] || bb.height;
+    svg = el; opener = wrap; home = { parent: el.parentNode, next: el.nextSibling, style: el.getAttribute('style'), width: el.getAttribute('width'), height: el.getAttribute('height') };
+    el.setAttribute('width', w); el.setAttribute('height', h); el.style.maxWidth = 'none';
+    stage.appendChild(el);
+    titleEl.textContent = titleFor(wrap);
+    box.hidden = false;
+    document.documentElement.style.overflow = 'hidden';
+    initial();
+    document.getElementById('vClose').focus();
+  }
+  function close() {
+    if (box.hidden) return;
+    if (svg && home) {
+      home.style === null ? svg.removeAttribute('style') : svg.setAttribute('style', home.style);
+      home.width === null ? svg.removeAttribute('width') : svg.setAttribute('width', home.width);
+      home.height === null ? svg.removeAttribute('height') : svg.setAttribute('height', home.height);
+      home.parent.insertBefore(svg, home.next);
+    }
+    box.hidden = true; svg = null;
+    document.documentElement.style.overflow = '';
+    if (opener && document.contains(opener)) opener.focus({ preventScroll: true });
+  }
+
+  // wheel: pan by default (scrolling), zoom with Ctrl/⌘ or a trackpad pinch (which arrives as ctrl+wheel)
+  port.addEventListener('wheel', e => {
+    e.preventDefault();
+    const r = rect();
+    if (e.ctrlKey || e.metaKey) zoomAt(Math.exp(-Math.max(-25, Math.min(25, e.deltaY)) * 0.01), e.clientX - r.left, e.clientY - r.top); // a mouse notch ≈ ×1.28; trackpad pinch stays smooth
+    else { x -= e.shiftKey && !e.deltaX ? e.deltaY : e.deltaX; y -= e.shiftKey && !e.deltaX ? 0 : e.deltaY; apply(); }
+  }, { passive: false });
+
+  // pointer: one pointer drags, two pointers pinch
+  const pts = new Map();
+  let last = null;
+  port.addEventListener('pointerdown', e => {
+    port.setPointerCapture(e.pointerId);
+    pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    port.classList.add('dragging');
+    last = null;
+  });
+  port.addEventListener('pointermove', e => {
+    if (!pts.has(e.pointerId)) return;
+    const prev = pts.get(e.pointerId);
+    pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pts.size === 1) { x += e.clientX - prev.x; y += e.clientY - prev.y; apply(); return; }
+    const [a, b] = [...pts.values()], r = rect();
+    const d = Math.hypot(a.x - b.x, a.y - b.y), mx = (a.x + b.x) / 2 - r.left, my = (a.y + b.y) / 2 - r.top;
+    if (last) { x += mx - last.mx; y += my - last.my; zoomAt(d / last.d, mx, my); }
+    last = { d, mx, my };
+  });
+  const up = e => { pts.delete(e.pointerId); last = null; if (!pts.size) port.classList.remove('dragging'); };
+  port.addEventListener('pointerup', up);
+  port.addEventListener('pointercancel', up);
+  port.addEventListener('dblclick', e => { const r = rect(); zoomAt(2, e.clientX - r.left, e.clientY - r.top); });
+
+  document.getElementById('vIn').addEventListener('click', () => zoomCenter(1.25));
+  document.getElementById('vOut').addEventListener('click', () => zoomCenter(0.8));
+  document.getElementById('vFit').addEventListener('click', fit);
+  document.getElementById('v100').addEventListener('click', actual);
+  document.getElementById('vClose').addEventListener('click', close);
+  addEventListener('resize', () => { if (!box.hidden) fit(); });
+  document.addEventListener('keydown', e => {
+    if (box.hidden) {
+      const wrap = e.target.closest && e.target.closest('.mmd-wrap.ready');
+      if (wrap && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); open(wrap); }
+      return;
+    }
+    const k = e.key, step = 60;
+    if (k === 'Escape') close();
+    else if (k === '+' || k === '=') zoomCenter(1.25);
+    else if (k === '-' || k === '_') zoomCenter(0.8);
+    else if (k === '0') fit();
+    else if (k === 'ArrowLeft') { x += step; apply(); }
+    else if (k === 'ArrowRight') { x -= step; apply(); }
+    else if (k === 'ArrowUp') { y += step; apply(); }
+    else if (k === 'ArrowDown') { y -= step; apply(); }
+    else if (k === 'Tab') { // keep focus inside the dialog
+      const f = [...box.querySelectorAll('button')]; const i = f.indexOf(document.activeElement);
+      e.preventDefault(); f[(i + (e.shiftKey ? f.length - 1 : 1)) % f.length].focus();
+      return;
+    } else return;
+    e.preventDefault();
+  });
+  document.addEventListener('click', e => {
+    const wrap = e.target.closest && e.target.closest('.mmd-wrap.ready');
+    if (wrap && !box.contains(wrap) && !getSelection().toString()) open(wrap);
+  });
+  return { open, close };
+})();
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', rerenderForTheme);
+new MutationObserver(rerenderForTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+// ---------- routing ----------
+const view = document.getElementById('view');
+function setCurrent(id) {
+  document.querySelectorAll('.navlink').forEach(a => {
+    if (a.dataset.nav === id) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+  });
+  const cur = document.querySelector(`.navlink[data-nav="${CSS.escape(id)}"]`);
+  for (let g = cur && cur.closest('details.group'); g; g = g.parentElement && g.parentElement.closest('details.group')) if (!g.open) g.open = true;
+}
+function showDoc(id) {
+  const d = docs[id];
+  const i = order.indexOf(id);
+  const prev = order[i - 1], next = order[i + 1];
+  view.className = 'doc';
+  view.innerHTML = `<div class="eyebrow">${groupName[d.group]}</div>${d.html}
+    <nav class="pager">${prev ? `<a href="#${prev}" data-nav="${prev}"><span class="k">← 上一篇</span><span class="t">${shortTitle(docs[prev].title)}</span></a>` : ''}
+    ${next ? `<a class="next" href="#${next}" data-nav="${next}"><span class="k">下一篇 →</span><span class="t">${shortTitle(docs[next].title)}</span></a>` : ''}</nav>`;
+  initChecks(id);
+  enhanceCode(view);
+  renderMermaid(view);
+  buildToc();
+}
+// ---------- 本页目录（悬浮） ----------
+const tocEl = document.getElementById('toc'), tocList = document.getElementById('tocList'), tocFab = document.getElementById('tocFab'), mainEl = document.getElementById('main');
+let tocHeads = [];
+function setTocOpen(open) { tocEl.classList.toggle('open', open); tocFab.setAttribute('aria-expanded', String(open)); }
+function buildToc() {
+  tocHeads = [...view.querySelectorAll(':scope > h2, :scope > h3')].filter(h => h.textContent.trim());
+  const show = tocHeads.length >= 3;
+  tocEl.hidden = tocFab.hidden = !show; mainEl.classList.toggle('has-toc', show); setTocOpen(false);
+  tocList.innerHTML = show ? tocHeads.map((h, i) => `<a href="#" class="${h.tagName === 'H3' ? 'l3' : 'l2'}" data-toc="${i}">${escHtml(h.textContent.trim())}</a>`).join('') : '';
+  spyToc();
+}
+tocList.addEventListener('click', e => {
+  const a = e.target.closest('[data-toc]'); if (!a) return;
+  e.preventDefault();
+  tocHeads[+a.dataset.toc].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setTocOpen(false);
+});
+tocFab.addEventListener('click', () => setTocOpen(!tocEl.classList.contains('open')));
+document.addEventListener('click', e => { if (tocEl.classList.contains('open') && !e.target.closest('#toc, #tocFab')) setTocOpen(false); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') setTocOpen(false); });
+let spyQueued = false;
+function spyToc() {
+  spyQueued = false;
+  if (!tocHeads.length) return;
+  const line = (document.querySelector('.bar')?.offsetHeight || 52) + 24;
+  let cur = 0;
+  tocHeads.forEach((h, i) => { if (h.getBoundingClientRect().top <= line) cur = i; });
+  tocList.querySelectorAll('a').forEach((a, i) => a.classList.toggle('on', i === cur));
+  const on = tocList.querySelector('a.on');
+  if (on && !tocEl.hidden) { const r = on.getBoundingClientRect(), b = tocEl.getBoundingClientRect(); if (r.top < b.top || r.bottom > b.bottom) on.scrollIntoView({ block: 'nearest' }); }
+}
+window.addEventListener('scroll', () => { if (!spyQueued) { spyQueued = true; requestAnimationFrame(spyToc); } }, { passive: true });
+// Code blocks: syntax highlight (highlight.js when it loaded) and a copy button.
+const LANG_ALIAS = { sh: 'bash', shell: 'bash', zsh: 'bash', js: 'javascript', ts: 'typescript', yul: 'solidity', sol: 'solidity', cvl: 'solidity', move: 'rust', toml: 'ini' };
+const LANG_LABEL = { solidity: 'Solidity', bash: 'Shell', javascript: 'JS', typescript: 'TS', python: 'Python', rust: 'Rust', go: 'Go', yaml: 'YAML', json: 'JSON', markdown: 'Markdown', html: 'HTML', text: '文本', ini: 'TOML' };
+function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+  return Promise.resolve(fallbackCopy(text));
+}
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:-1000px;opacity:0';
+  document.body.appendChild(ta); ta.select(); let ok = false; try { ok = document.execCommand('copy'); } catch (e) {} ta.remove(); if (!ok) throw new Error('copy failed');
+}
+function enhanceCode(root) {
+  root.querySelectorAll('.code-wrap > pre > code').forEach(code => {
+    const wrap = code.closest('.code-wrap'); if (wrap.dataset.enh) return; wrap.dataset.enh = 1;
+    const raw = code.textContent.replace(/\n$/, '');
+    const m = (code.className.match(/language-([\w-]+)/) || [])[1];
+    const lang = m ? (LANG_ALIAS[m] || m) : '';
+    if (window.hljs && lang !== 'text') {
+      try {
+        if (lang && hljs.getLanguage(lang)) code.innerHTML = hljs.highlight(raw, { language: lang, ignoreIllegals: true }).value;
+        else if (!lang) { const r = hljs.highlightAuto(raw, ['solidity', 'bash', 'javascript', 'python', 'json', 'yaml', 'rust', 'go']); if (r.relevance > 5) code.innerHTML = r.value; }
+        code.classList.add('hljs');
+      } catch (e) {}
+    }
+    if (m && (LANG_LABEL[lang] || LANG_LABEL[m])) { const tag = document.createElement('span'); tag.className = 'lang-tag'; tag.textContent = LANG_LABEL[lang] || LANG_LABEL[m]; wrap.appendChild(tag); }
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'copy-btn'; b.textContent = '复制'; b.setAttribute('aria-label', '复制代码');
+    b.addEventListener('click', () => {
+      // shell prompts like "$ " are not part of commands
+      const text = lang === 'bash' ? raw.split('\n').map(l => l.replace(/^\$ /, '')).join('\n') : raw;
+      copyText(text).then(() => { b.textContent = '已复制 ✓'; b.classList.add('done'); }, () => { b.textContent = '复制失败'; })
+        .finally(() => setTimeout(() => { b.textContent = '复制'; b.classList.remove('done'); }, 1600));
+    });
+    wrap.appendChild(b);
+  });
+}
+
+// Checklists (过关标准, 检查项): interactive, saved per chapter in this browser.
+function initChecks(id) {
+  const key = 'w3s-ck:' + id;
+  let st = {}; try { st = JSON.parse(localStorage.getItem(key) || '{}') || {}; } catch (e) { st = {}; }
+  const boxes = [...view.querySelectorAll('li > input[type=checkbox]')];
+  if (!boxes.length) return;
+  const save = () => { try { localStorage.setItem(key, JSON.stringify(st)); } catch (e) {} };
+  const lists = [...new Set(boxes.map(b => b.closest('ul, ol')))];
+  const prog = lists.map(l => { const p = document.createElement('div'); p.className = 'ck-prog'; l.before(p); return p; });
+  const upd = () => lists.forEach((l, i) => {
+    const bs = [...l.querySelectorAll(':scope > li > input[type=checkbox]')], n = bs.filter(b => b.checked).length;
+    prog[i].innerHTML = `<span>已勾选 ${n} / ${bs.length}</span><i style="--p:${bs.length ? n / bs.length * 100 : 0}%"></i>${n ? '<button type="button" class="ck-reset">清空</button>' : ''}`;
+    l.classList.toggle('ck-done', bs.length > 0 && n === bs.length);
+  });
+  boxes.forEach((b, k) => {
+    b.disabled = false; b.removeAttribute('disabled');
+    if (k in st) b.checked = !!st[k];
+    const li = b.parentElement; li.classList.add('ck-item'); li.classList.toggle('checked', b.checked);
+    b.setAttribute('aria-label', li.textContent.trim().slice(0, 60));
+    b.addEventListener('change', () => { st[k] = b.checked; li.classList.toggle('checked', b.checked); save(); upd(); });
+    li.addEventListener('click', e => { if (e.target === b || e.target.closest('a, button, input, summary')) return; b.checked = !b.checked; b.dispatchEvent(new Event('change')); });
+  });
+  view.addEventListener('click', e => {
+    const r = e.target.closest('.ck-reset'); if (!r) return;
+    const l = r.parentElement.nextElementSibling;
+    l.querySelectorAll(':scope > li > input[type=checkbox]').forEach(b => { if (b.checked) { b.checked = false; b.dispatchEvent(new Event('change')); } });
+  });
+  upd();
+}
+function showLabs() {
+  view.className = 'doc';
+  view.innerHTML = `<div class="eyebrow">交互实验</div><h1>亲手验证，而不是只读结论</h1>
+    <p>每个实验对应一章。拖动滑块、点击按钮，观察系统在不同参数和状态下怎样运行。所有参数都是示例值。实验页里的章节链接会带你回到对应章节。</p>
+    <div class="labs-grid">${labs.map(l => `<a class="lab-card" href="#${l.id}" data-nav="${l.id}"><span class="from">LAB</span><span class="t">${l.title}</span></a>`).join('')}</div>`;
+  buildToc();
+}
+function showLab(id) {
+  const l = labs.find(x => x.id === id);
+  view.className = 'labview'; tocEl.hidden = tocFab.hidden = true; mainEl.classList.remove('has-toc');
+  view.innerHTML = `<div class="labhead"><h1>${l.title}</h1><span class="muted">交互实验 · 页面内的链接会带你回到对应章节</span></div>
+    <iframe class="labframe" src="interactive/${l.file}" title="${l.title}"></iframe>`;
+}
+function route() {
+  viewer.close();
+  let id = (location.hash || '#home').slice(1);
+  if (aliases[id]) { id = aliases[id]; history.replaceState(null, '', '#' + id); }
+  document.body.classList.remove('menu-open');
+  if (docs[id]) showDoc(id);
+  else if (id === 'labs') showLabs();
+  else if (labs.some(l => l.id === id)) showLab(id);
+  else { showDoc('home'); }
+  setCurrent(id);
+  if (!id.startsWith('lab')) window.scrollTo(0, 0);
+}
+function go(id) { if (location.hash === '#' + id) route(); else location.hash = id; }
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[data-nav]');
+  if (a) { e.preventDefault(); go(a.dataset.nav); }
+});
+window.addEventListener('hashchange', route);
+window.addEventListener('message', e => {
+  const m = e.data || {};
+  if (m.cexNav) go(m.cexNav);
+  else if (m.cexNavMd) { const id = mdMap['../' + m.cexNavMd.split('#')[0].replace(/^(\.\.\/)+/, '')]; if (id) go(id); }
+});
+document.getElementById('menuBtn').addEventListener('click', () => document.body.classList.toggle('menu-open'));
+
+// ---------- search ----------
+const plain = Object.fromEntries(Object.values(docs).map(d => [d.id, d.html.replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;/g, ' ').replace(/\s+/g, ' ')]));
+const q = document.getElementById('q'), results = document.getElementById('results');
+const escHtml = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+q.addEventListener('input', () => {
+  const term = q.value.trim();
+  if (!term) { results.hidden = true; navEl.hidden = false; return; }
+  const low = term.toLowerCase();
+  const hits = [];
+  for (const id of order) {
+    const text = plain[id]; const idx = text.toLowerCase().indexOf(low);
+    const inTitle = docs[id].title.toLowerCase().includes(low);
+    if (idx < 0 && !inTitle) continue;
+    const count = text.toLowerCase().split(low).length - 1;
+    const s = Math.max(0, idx - 24);
+    const snip = idx < 0 ? '' : escHtml(text.slice(s, idx)) + '<mark>' + escHtml(text.slice(idx, idx + term.length)) + '</mark>' + escHtml(text.slice(idx + term.length, idx + term.length + 40));
+    hits.push({ id, score: (inTitle ? 1000 : 0) + count, snip, count });
+  }
+  hits.sort((a, b) => b.score - a.score);
+  results.hidden = false; navEl.hidden = true;
+  results.innerHTML = hits.length ? hits.slice(0, 30).map(h => `<a class="result" href="#${h.id}" data-nav="${h.id}"><b>${codeOf(h.id)} · ${shortTitle(docs[h.id].title)} <span>(${h.count})</span></b><span>${h.snip}</span></a>`).join('')
+    : '<p class="result"><span>没有找到。换一个词试试，例如"重入"或"钓鱼"。</span></p>';
+});
+
+route();
+</script>
+
+
+
+
+

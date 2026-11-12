@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>金库通胀攻击实验</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .seg { display: flex; flex-wrap: wrap; gap: 6px; }
+  .seg button.on { background: var(--accent); border-color: var(--accent); color: #1d1d1b; font-weight: 600; }
+  .stats { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin-top: 12px; }
+  tr.zero td { background: var(--sell-soft); }
+  .chart { width: 100%; height: auto; display: block; }
+  .chart .axis { stroke: var(--border); }
+  .chart .zero { stroke: var(--text-2); stroke-dasharray: 4 3; }
+  .chart .line { fill: none; stroke: var(--sell); stroke-width: 2; }
+  .chart .dot { fill: var(--accent); stroke: var(--surface); stroke-width: 2; }
+  .chart text { font-size: 11px; fill: var(--text-2); }
+  .quiz { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .q { border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; background: var(--surface-2); }
+  .q .fb { font-size: 13px; margin-top: 6px; min-height: 1.4em; }
+  .q .fb.ok { color: var(--buy); } .q .fb.no { color: var(--sell); }
+  .formula { font-family: var(--mono); font-size: 13px; background: var(--surface-2); padding: 8px 12px; border-radius: 8px; overflow-x: auto; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="back" href="index.html">← 交互实验目录</a>
+    <h1>金库通胀攻击实验（ERC-4626）</h1>
+  </header>
+  <p class="lead">空金库里，攻击者先存 1 个最小单位，再直接转入一大笔资产"捐赠"给金库，抬高每份额的价格。下一位存款人的份额被向下取整为 0，他的存款就归了攻击者。配套章节：<a href="../06-arithmetic-precision.md">06 算术与精度</a> ｜ 示例合约：<a href="../examples/03-VaultInflation.sol">03-VaultInflation.sol</a>。</p>
+
+  <div class="card">
+    <h3>怎么玩</h3>
+    <ol class="small">
+      <li>保持"朴素金库"，拖动捐赠额和受害者存款，观察受害者份额何时变为 0。</li>
+      <li>切换到"虚拟份额 + 偏移"，把偏移从 0 调到 6，观察攻击者利润从正变负。</li>
+      <li>看下方曲线：横轴是捐赠额，纵轴是攻击者利润。曲线在零线以下，攻击就无利可图。</li>
+      <li>最后做舍入方向小练习。</li>
+    </ol>
+    <p class="small muted">资产为 USDC（6 位精度，示例）。全部计算使用 BigInt 整数运算，与链上一致。</p>
+  </div>
+
+  <h2>1. 参数</h2>
+  <div class="card">
+    <div class="seg" id="modeSeg">
+      <button data-v="naive" class="on">朴素金库（totalAssets = balanceOf）</button>
+      <button data-v="oz">虚拟份额 + 偏移（OpenZeppelin ≥ 4.9 思路）</button>
+    </div>
+    <div class="grid cols-3" style="margin-top:8px">
+      <div><label for="don">攻击者捐赠额（USDC）</label><div class="range-row"><input type="range" id="don" min="0" max="50000" step="100" value="10000"><output id="donOut"></output></div></div>
+      <div><label for="dep">受害者存款（USDC）</label><div class="range-row"><input type="range" id="dep" min="100" max="50000" step="100" value="9900"><output id="depOut"></output></div></div>
+      <div><label for="off">decimalsOffset（仅虚拟份额模式）</label><div class="range-row"><input type="range" id="off" min="0" max="6" value="0"><output id="offOut"></output></div></div>
+    </div>
+    <div class="formula" id="formula" style="margin-top:10px"></div>
+  </div>
+
+  <h2>2. 逐步结果</h2>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>操作</th><th class="num">totalAssets</th><th class="num">totalSupply</th><th>结果</th></tr></thead>
+        <tbody id="steps"></tbody>
+      </table>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="k">受害者得到份额</span><span class="v" id="vShares"></span></div>
+      <div class="stat"><span class="k">受害者损失</span><span class="v down" id="vLoss"></span></div>
+      <div class="stat"><span class="k">攻击者利润</span><span class="v" id="aProfit"></span></div>
+    </div>
+    <div class="callout" id="verdict"></div>
+  </div>
+
+  <h2>3. 攻击者利润 vs 捐赠额</h2>
+  <div class="card">
+    <svg class="chart" id="chart" viewBox="0 0 640 260" role="img" aria-label="攻击者利润随捐赠额变化曲线"></svg>
+    <p class="small muted">受害者存款固定为当前设置。圆点是当前捐赠额。锯齿形来自整数除法：受害者份额每跨过一个整数，利润就跳变一次。</p>
+  </div>
+
+  <h2>4. 小练习：舍入方向</h2>
+  <div class="card">
+    <p class="small">原则：舍入的余数归金库，不归调用者。为每个函数选择取整方向。</p>
+    <div class="quiz" id="quiz"></div>
+  </div>
+
+  <footer class="note">本页仅用于学习安全原理，所有数值为示例；不要在未授权的合约上做任何测试。</footer>
+</div>
+
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const U = 1_000_000n; // 1 USDC
+  let mode = 'naive';
+  const fmt = v => {
+    const neg = v < 0n; if (neg) v = -v;
+    const i = v / U, f = (v % U).toString().padStart(6, '0').replace(/0+$/, '');
+    return (neg ? '−' : '') + i.toLocaleString('zh-CN') + (f ? '.' + f : '') + ' USDC';
+  };
+  function vault(off) {
+    const st = { ta: 0n, ts: 0n };
+    const virt = 10n ** BigInt(off);
+    return {
+      st,
+      toShares(a) {
+        if (mode === 'naive') return st.ts === 0n ? a : a * st.ts / st.ta;
+        return a * (st.ts + virt) / (st.ta + 1n);
+      },
+      toAssets(s) {
+        if (mode === 'naive') return st.ts === 0n ? 0n : s * st.ta / st.ts;
+        return s * (st.ta + 1n) / (st.ts + virt);
+      }
+    };
+  }
+  function run(donation, deposit, off) {
+    const v = vault(off), s = v.st, rows = [];
+    // 1 attacker deposits 1 unit
+    const aSh = v.toShares(1n); s.ta += 1n; s.ts += aSh;
+    rows.push(['攻击者 deposit(0.000001 USDC)', s.ta, s.ts, '得到 ' + aSh + ' 份额']);
+    // 2 donation
+    s.ta += donation;
+    rows.push(['攻击者直接 transfer ' + fmt(donation) + '（不走 deposit）', s.ta, s.ts, '每份额价值 ' + (s.ts ? fmt(s.ta / (s.ts || 1n)) : '—')]);
+    // 3 victim deposit
+    const vSh = v.toShares(deposit); s.ta += deposit; s.ts += vSh;
+    rows.push(['受害者 deposit(' + fmt(deposit) + ')', s.ta, s.ts, '得到 ' + vSh + ' 份额', vSh === 0n]);
+    // 4 attacker redeem
+    const aOut = v.toAssets(aSh); s.ta -= aOut; s.ts -= aSh;
+    rows.push(['攻击者 redeem(' + aSh + ' 份额)', s.ta, s.ts, '取回 ' + fmt(aOut)]);
+    // 5 victim redeem
+    const vOut = v.toAssets(vSh); s.ta -= vOut; s.ts -= vSh;
+    rows.push(['受害者 redeem(' + vSh + ' 份额)', s.ta, s.ts, '取回 ' + fmt(vOut)]);
+    return { rows, vSh, vOut, aOut, profit: aOut - 1n - donation, loss: deposit - vOut, left: s.ta };
+  }
+  function update() {
+    const don = BigInt($('don').value) * U, dep = BigInt($('dep').value) * U, off = +$('off').value;
+    $('donOut').textContent = Number($('don').value).toLocaleString('zh-CN');
+    $('depOut').textContent = Number($('dep').value).toLocaleString('zh-CN');
+    $('offOut').textContent = off;
+    $('off').disabled = mode === 'naive';
+    $('formula').textContent = mode === 'naive'
+      ? 'shares = assets × totalSupply / totalAssets      （向下取整；空金库时 1:1）'
+      : 'shares = assets × (totalSupply + 10^' + off + ') / (totalAssets + 1)      （向下取整）';
+    const r = run(don, dep, off);
+    $('steps').innerHTML = r.rows.map((x, i) => '<tr' + (x[4] ? ' class="zero"' : '') + '><td>' + (i + 1) + '</td><td>' + x[0] + '</td><td class="num">' + fmt(x[1]) + '</td><td class="num">' + x[2].toLocaleString('zh-CN') + '</td><td>' + x[3] + '</td></tr>').join('');
+    $('vShares').textContent = r.vSh.toLocaleString('zh-CN');
+    $('vLoss').textContent = fmt(r.loss);
+    $('aProfit').textContent = fmt(r.profit);
+    $('aProfit').className = 'v ' + (r.profit > 0n ? 'down' : 'up');
+    const el = $('verdict');
+    if (r.profit > 0n) { el.className = 'callout warn'; el.textContent = '❌ 攻击有利可图：攻击者净赚 ' + fmt(r.profit) + '。受害者' + (r.vSh === 0n ? '得到 0 份额，存款全部归攻击者。' : '份额被舍入压低，损失 ' + fmt(r.loss) + '。'); }
+    else { el.className = 'callout info'; el.textContent = '✅ 攻击无利可图：攻击者亏损 ' + fmt(-r.profit) + '。' + (mode === 'oz' ? '虚拟份额让捐赠的大部分价值被"虚拟持有人"分走，攻击者无法收回。' : '捐赠额相对受害者存款不够大，或受害者仍得到了足够份额。'); }
+    drawChart(dep, off, don);
+  }
+  function drawChart(dep, off, cur) {
+    const W = 640, H = 260, L = 70, R = 16, T = 14, B = 34;
+    const max = 50000n * U, N = 120;
+    const pts = [];
+    for (let i = 0; i <= N; i++) { const d = max * BigInt(i) / BigInt(N); pts.push([d, run(d, dep, off).profit]); }
+    const curP = run(cur, dep, off).profit;
+    let lo = pts.reduce((m, p) => p[1] < m ? p[1] : m, curP), hi = pts.reduce((m, p) => p[1] > m ? p[1] : m, curP);
+    if (hi < 0n) hi = 0n; if (lo > 0n) lo = 0n; if (hi === lo) hi = lo + U;
+    const xs = d => L + Number(d) / Number(max) * (W - L - R);
+    const ys = p => T + (Number(hi - p) / Number(hi - lo)) * (H - T - B);
+    const path = pts.map((p, i) => (i ? 'L' : 'M') + xs(p[0]).toFixed(1) + ' ' + ys(p[1]).toFixed(1)).join(' ');
+    const lbl = v => (Number(v) / 1e6 / 1000).toFixed(1) + 'k';
+    $('chart').innerHTML =
+      '<line class="axis" x1="' + L + '" y1="' + T + '" x2="' + L + '" y2="' + (H - B) + '"/>' +
+      '<line class="axis" x1="' + L + '" y1="' + (H - B) + '" x2="' + (W - R) + '" y2="' + (H - B) + '"/>' +
+      '<line class="zero" x1="' + L + '" y1="' + ys(0n) + '" x2="' + (W - R) + '" y2="' + ys(0n) + '"/>' +
+      '<text x="' + (L - 6) + '" y="' + (ys(hi) + 4) + '" text-anchor="end">' + lbl(hi) + '</text>' +
+      '<text x="' + (L - 6) + '" y="' + (ys(0n) + 4) + '" text-anchor="end">0</text>' +
+      '<text x="' + (L - 6) + '" y="' + (ys(lo) + 4) + '" text-anchor="end">' + lbl(lo) + '</text>' +
+      '<text x="' + L + '" y="' + (H - 12) + '">0</text>' +
+      '<text x="' + (W - R) + '" y="' + (H - 12) + '" text-anchor="end">捐赠额 50k USDC</text>' +
+      '<text x="' + (L + 4) + '" y="' + (T + 10) + '">攻击者利润（USDC）</text>' +
+      '<path class="line" d="' + path + '"/>' +
+      '<circle class="dot" r="5" cx="' + xs(cur) + '" cy="' + ys(curP) + '"/>';
+  }
+  $('modeSeg').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    [...$('modeSeg').children].forEach(x => x.classList.toggle('on', x === b));
+    mode = b.dataset.v; update();
+  });
+  ['don', 'dep', 'off'].forEach(id => $(id).addEventListener('input', update));
+  update();
+
+  // quiz
+  const Q = [
+    ['deposit(assets) → 份额', 'down', '用户给资产、拿份额。份额向下取整，用户少拿。'],
+    ['mint(shares) → 需支付的资产', 'up', '用户指定份额，金库计算要收多少资产。向上取整，多收。'],
+    ['withdraw(assets) → 需扣除的份额', 'up', '用户指定取多少资产，金库计算扣多少份额。向上取整，多扣。'],
+    ['redeem(shares) → 资产', 'down', '用户交份额、拿资产。资产向下取整，少给。']
+  ];
+  $('quiz').innerHTML = Q.map((q, i) => '<div class="q"><strong>' + q[0] + '</strong><div class="btn-row"><button data-q="' + i + '" data-a="up">向上取整</button><button data-q="' + i + '" data-a="down">向下取整</button></div><div class="fb" id="fb' + i + '"></div></div>').join('');
+  $('quiz').addEventListener('click', e => {
+    const b = e.target.closest('button[data-q]'); if (!b) return;
+    const q = Q[+b.dataset.q], ok = b.dataset.a === q[1], fb = $('fb' + b.dataset.q);
+    fb.className = 'fb ' + (ok ? 'ok' : 'no');
+    fb.textContent = (ok ? '✓ 正确。' : '✗ 不对。') + q[2];
+  });
+})();
+</script>
+<script>
+/* 在单文件阅读版（handbook.html）的 iframe 中打开时，把章节链接交给外层阅读器处理 */
+(function () {
+  if (window.parent === window) return;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href');
+    if (/\.md(#|$)/.test(h)) { e.preventDefault(); window.parent.postMessage({ cexNavMd: h }, '*'); }
+  });
+})();
+</script>
+</body>
+</html>

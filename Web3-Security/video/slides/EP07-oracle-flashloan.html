@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EP07 预言机与闪电贷</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .ana .card { font-size: 26px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; min-height: 230px; }
+  .ana .card .n { font-family: var(--mono); color: var(--gold); font-size: 34px; font-weight: 700; }
+  .ana .card .a { color: var(--text-2); font-size: 24px; }
+  .chk { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; }
+  .chk .card { font-size: 27px; padding: 14px 22px; }
+  .src.fd { font-size: 28px; line-height: 1.7; flex-shrink: 0; padding-top: 14px; padding-bottom: 14px; }
+  .src.fd .ln { padding: 0 22px; }
+  .src.fd .c { color: #b4bac4; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="EP07" data-title="预言机与闪电贷：一笔交易就能改写的价格">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 主线 · EP07</div>
+    <h1>合约相信了一个<br><span class="hl">一笔交易就能改写</span>的价格</h1>
+    <div class="hero">
+      <div class="card sell" data-k="1" data-nocur><div class="k">2021 · Cream Finance</div><div class="big">约 1.3 亿$</div><div>份额价格被捐赠抬高</div></div>
+      <div class="card warn" data-k="2" data-nocur><div class="k">2022 · Venus（LUNA）</div><div class="big">约 1,100 万$</div><div>预言机下限熔断</div></div>
+      <div class="card info" data-k="3" data-nocur><div class="k">2022 · Inverse Finance</div><div class="big">约 1,560 万$</div><div>TWAP 也没挡住</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到主线第7集，预言机与闪电贷。一句话理解，如果合约用同一笔交易里可以被改变的数据来定价，就会被人先改变它，再按错误的价格和合约做交易。本集的重点是，怎样识别不可信的价格源，以及怎样安全地读取价格。</li>
+      <li>看三起事故，以下据公开报道。2021年，Cream Finance 约1.3亿美元，份额价格被捐赠抬高，而协议用它给抵押品估值。</li>
+      <li>2022年，BNB Chain 上的 Venus，约1100万美元，根因是预言机的下限熔断，价格停在了下限。</li>
+      <li>同年，Inverse Finance 约1560万美元，连时间加权平均价也没能挡住。三起事故的共同点是，协议相信了一个可被操纵的价格。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="按菜市场成交价估值的当铺" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>当铺按"隔壁菜市场最新成交价"给黄金估价</h2>
+    <div class="vs">
+      <div class="card bad" data-k="0"><h3>不可信的价格源</h3><div class="fs28">当铺只看<b>最近一笔成交价</b><br>而菜市场的成交价，任何人花钱<br>就能在一瞬间推上去或压下来</div></div>
+      <div class="card good" data-k="1"><h3>可信的价格源</h3><div class="fs28">看<b>一整天的平均成交价</b>，<br>或者看多个独立市场的共识价<br>→ 一笔买卖改不动它</div></div>
+    </div>
+    <div class="card warn fs30" data-k="2">比喻不准的地方：现实中操纵市场要几天、会被监管。链上一次性的价格操纵发生在<b>同一笔交易里</b>，没有人来得及反应。所以定价<b>不能只看瞬时价</b>。</div>
+    <ol class="say">
+      <li>打个比方。一家当铺按隔壁菜市场的最新成交价给黄金估价。问题在于，这个最新成交价，任何人只要花钱，就能在一瞬间推上去或压下来。你拿一克黄金去当铺，当铺按被推高的价格给你估值，借给你一大笔钱。这就是不可信的价格源。</li>
+      <li>可信的价格源不看最近一笔，而是看一整天的平均成交价，或者看多个独立市场的共识价。这样，一笔买卖改不动它。</li>
+      <li>比喻不准的地方在于，现实中操纵市场要几天，还会被监管。链上一次性的价格操纵，发生在同一笔交易里，没有人来得及反应。所以定价绝不能只看瞬时价。本集就讲，哪些价格是瞬时价，哪些抗操纵。</li>
+    </ol>
+  </section>
+
+  <!-- 3 哪些读数可变 -->
+  <section class="scene" data-title="哪些读数一笔交易内可变" data-onstep="rowStep">
+    <div class="kicker">威胁模型 · 任何一笔交易内可变的读数，都是攻击者的输入</div>
+    <h2>逐个问：一笔交易内能改吗？</h2>
+    <table class="t sm">
+      <thead><tr><th>读数</th><th>一笔交易内可变？</th></tr></thead>
+      <tbody>
+        <tr><td>AMM 池储备比例</td><td class="bad">是</td></tr>
+        <tr><td>按储备直接算的 LP 代币价格</td><td class="bad">是</td></tr>
+        <tr><td>金库份额价格（总资产读余额）</td><td class="bad">是（捐赠）</td></tr>
+        <tr><td>合约的 balanceOf</td><td class="bad">是</td></tr>
+        <tr><td>TWAP 时间加权平均价</td><td style="color:var(--warn);font-weight:700">当前块影响小；多区块持续操纵可以</td></tr>
+        <tr><td>链下聚合价格</td><td class="good">否（但可能过时或触及上下限）</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>做威胁建模时，要对每个用于定价的读数，问一个问题，它在一笔交易内能被改变吗？AMM 池的储备比例，能。按储备直接算出的 LP 代币价格，能。</li>
+      <li>金库份额价格，如果总资产直接读余额，能，通过捐赠就能改。合约的代币余额，能。</li>
+      <li>时间加权平均价，当前区块的影响很小，但有资本的人在多个区块持续操纵，是可以的。链下聚合的价格，一笔交易内改不了，但它可能过时，也可能触及上下限。能改的，就是攻击者的输入参数。</li>
+    </ol>
+  </section>
+
+  <!-- 4 浅池可被操纵 -->
+  <section class="scene" data-title="为什么现货价不可信" data-onstep="poolStep">
+    <div class="kicker">恒定乘积 AMM · 数字为示例</div>
+    <h2 id="poolH">池子越浅，价格越容易被推动</h2>
+    <div class="row">
+      <svg id="pool" width="900" height="540" viewBox="0 0 900 540"></svg>
+      <div class="col" id="poolSide"></div>
+    </div>
+    <ol class="say">
+      <li>为什么现货价不可信？看恒定乘积 AMM。两种代币数量相乘等于常数，现货价等于两种数量的比值。价格高低，完全由池子当前的储备比例决定。</li>
+      <li>比较两个池子。浅池只有10万 USDC 和10万 TOKEN。深池有1亿 USDC 和1亿 TOKEN。两个池子现在价格都是1美元。</li>
+      <li>要把价格推到2倍，需要投入多少钱？浅池大约只需要4万多美元，深池需要4000多万美元。差了1000倍。</li>
+      <li>所以结论是，池子越浅，把价格推到目标位置越便宜。长尾资产和低流动性代币，用现货价定价的风险最高。而闪电贷让这笔操纵资金几乎零成本借到，操纵后在同一笔交易里用完就还。这是对比，不是操作指南。</li>
+    </ol>
+  </section>
+
+  <!-- 5 三类价格源 -->
+  <section class="scene" data-title="三类价格源对比" data-onstep="rowStep">
+    <div class="kicker">价格源对比</div>
+    <h2>没有完美的预言机</h2>
+    <table class="t sm">
+      <thead><tr><th>价格源</th><th>抗单笔操纵</th><th>抗多区块操纵</th><th>主要风险</th></tr></thead>
+      <tbody>
+        <tr><td>AMM 现货价</td><td class="bad">✗</td><td class="bad">✗</td><td>一笔交易即可操纵</td></tr>
+        <tr><td>AMM TWAP</td><td class="good">✓</td><td style="color:var(--warn)">取决于窗口和流动性</td><td>低流动性池仍可被持续操纵；窗口越长越滞后</td></tr>
+        <tr><td>链下聚合（Chainlink 类）</td><td class="good">✓</td><td class="good">✓</td><td>价格过时、上下限熔断、喂价方失效</td></tr>
+        <tr><td>多源组合 + 偏离检查</td><td class="good">✓</td><td class="good">✓</td><td>实现复杂；源之间分歧怎么处理</td></tr>
+      </tbody>
+    </table>
+    <div class="card warn fs28" data-k="2">工程上要回答两个问题：<b>价格错了会怎样？价格停了会怎样？</b></div>
+    <ol class="say">
+      <li>三类价格源对比。AMM 现货价，既不抗单笔操纵，也不抗多区块操纵，一笔交易就能改，最不可信。AMM 的时间加权平均价，抗单笔操纵，但能不能抗多区块操纵，取决于窗口长度和池子深度，而且窗口越长，价格越滞后。</li>
+      <li>链下聚合价格，比如 Chainlink 这类，一笔交易内改不了，抗操纵，但它的风险是价格过时、触及上下限熔断，或者喂价方失效。多源组合加偏离检查最稳，代价是实现复杂，而且要想好源之间分歧时怎么处理。</li>
+      <li>记住，没有完美的预言机。工程上要回答两个问题，价格错了会怎样，价格停了会怎样。这两个问题，决定了你的降级设计。</li>
+    </ol>
+  </section>
+
+  <!-- 6 安全读取 -->
+  <section class="scene" data-title="安全读取链下预言机" data-onstep="feedStep">
+    <div class="kicker">读取 Chainlink 类聚合器的检查清单</div>
+    <h2 id="fdH">四个检查，缺一个就可能出事</h2>
+    <div class="row">
+      <div class="col" style="flex:1.25">
+        <div class="src fd"><span class="ln" data-mark="0:good">(,int answer,,uint updatedAt,)</span><span class="ln" data-mark="0:good">    = feed.latestRoundData();</span><span class="ln" data-mark="1:good">require(answer &gt; 0);<span class="c"> // ①正值</span></span><span class="ln" data-mark="2:good">require(now - updatedAt &lt;= MAX_DELAY);<span class="c"> // ②时效</span></span><span class="ln" data-mark="3:good">require(MIN &lt; answer &amp;&amp; answer &lt; MAX);<span class="c"> // ③上下限</span></span><span class="ln" data-mark="4:good">uint8 dec = feed.decimals();<span class="c"> // ④精度不写死</span></span></div>
+      </div>
+      <div class="col" style="flex:0.9" id="fdSide"></div>
+    </div>
+    <ol class="say">
+      <li>怎样安全读取链下预言机？四个检查。第一，检查价格是正值。无效时聚合器可能返回零或负数。</li>
+      <li>第二，检查时效。拿当前时间减去最后更新时间，不能超过按喂价心跳设置的最大延迟。否则你可能在用一个很久以前的价格。</li>
+      <li>第三，检查上下限。这一条最容易被忽略，下一页专门讲。</li>
+      <li>第四，精度从合约读取，不要写死。这四个检查，缺一个都可能出事。</li>
+    </ol>
+  </section>
+
+  <!-- 7 Venus LUNA -->
+  <section class="scene" data-title="案例：下限熔断" data-onstep="lunaStep">
+    <div class="kicker">真实案例 · 2022-05 · BNB Chain · Venus（LUNA） · 据公开报道</div>
+    <h2 id="luH">喂价停在下限，真实价格早已跌穿</h2>
+    <div class="row">
+      <svg id="luna" width="980" height="540" viewBox="0 0 980 540"></svg>
+      <div class="col" id="lunaSide"></div>
+    </div>
+    <ol class="say">
+      <li>来看下限熔断，以下据公开报道。Chainlink 的 LUNA 喂价，设置了一个最低价，示例是0.1美元。正常时，这个下限不起作用。</li>
+      <li>2022年5月，LUNA 崩盘，真实价格跌到了远低于0.1美元，比如几分之一美分。但喂价被下限卡住，停在0.1美元附近。</li>
+      <li>BNB Chain 上的 Venus 协议，仍然按约0.1美元给 LUNA 抵押品估值。有人在市场上用极低的真实价格买入大量 LUNA，存入 Venus，按0.1美元的虚高估值借出其他资产。</li>
+      <li>协议损失约1100万美元。教训是，读取价格时检查是否触碰上下限，触碰时要暂停相关操作，并给抵押资产设供应上限和紧急下架流程。上下限是防极端波动的，一旦真的触碰，说明价格已经不可信了。</li>
+    </ol>
+  </section>
+
+  <!-- 8 L2 排序器 -->
+  <section class="scene" data-title="L2 的额外检查：排序器状态" data-onstep="seqStep">
+    <div class="kicker">L2 部署 · 据 Chainlink 文档与 L2BEAT 公开页面</div>
+    <h2>链停了，价格也停了</h2>
+    <svg id="seq" width="1640" height="540" viewBox="0 0 1640 540"></svg>
+    <ol class="say">
+      <li>在 Mantle 这样的二层网络上，交易由排序器打包。排序器一旦宕机，会发生两件事。第一，喂价交易上不了链，价格停留在宕机之前。</li>
+      <li>第二，排序器恢复后的第一批区块里，普通用户和清算机器人同时涌入，能通过一层网络强制提交交易的少数人占优。这时用停更的旧价格清算，会误伤用户。</li>
+      <li>业界通用做法是，额外读取一个排序器在线状态的喂价。Chainlink 在多条二层网络上提供这个喂价。排序器刚恢复时，设一段宽限期，示例一小时，这期间暂停清算或新借款。</li>
+      <li>据 L2BEAT 截至2026年的页面，Mantle 排序器宕机时，用户可以通过一层网络强制提交交易，延迟最长12小时。部署前要确认目标二层网络上有没有这个状态喂价。链专题 C03 会详细讲。</li>
+    </ol>
+  </section>
+
+  <!-- 9 份额价格捐赠 -->
+  <section class="scene" data-title="份额价格也会被操纵" data-onstep="shareStep">
+    <div class="kicker">Cream Finance · 2021-10 · 据公开复盘</div>
+    <h2>不是只有 AMM 价格危险</h2>
+    <div class="row">
+      <svg id="share" width="900" height="530" viewBox="0 0 900 530"></svg>
+      <div class="col" id="shareSide"></div>
+    </div>
+    <ol class="say">
+      <li>不是只有 AMM 现货价危险。份额价格同样会被操纵。看 Cream，以下据公开复盘。一个金库的份额价格，等于总资产除以总份额。如果总资产直接读合约的代币余额，那么任何人直接向金库转账，就能抬高每份的价值。</li>
+      <li>Cream 用这个份额价格，给一种抵押品估值。攻击者向金库捐赠大量资产，份额价格被抬高。</li>
+      <li>然后用少量这种份额作抵押，按虚高的价格借出大量资金，损失约1.3亿美元。这和第5集讲的金库通胀，是同一个根源，总资产直接读余额。</li>
+      <li>还有 LP 代币的定价。LP 代币不能用储备乘以现货价再除以总供应来算，因为储备和现货价都可被操纵。要用公平储备法，用外部预言机价格和不变量反推出公平储备，再算 LP 价值。</li>
+    </ol>
+  </section>
+
+  <!-- 10 BNB 案例表 -->
+  <section class="scene" data-title="BNB Chain 上的价格操纵" data-onstep="rowStep">
+    <div class="kicker">扩展案例 · 据公开报道 · 详见链专题</div>
+    <h2>浅池 + 现货价 = 高发区</h2>
+    <table class="t sm">
+      <thead><tr><th>时间 · 协议</th><th>约损失</th><th>被操纵的读数</th></tr></thead>
+      <tbody>
+        <tr><td>2021-05 · PancakeBunny</td><td>约 4,500 万$</td><td>按池储备算 LP 价值，并据此铸奖励</td></tr>
+        <tr><td>2021-05 · Venus（XVS）</td><td>坏账超 9,500 万$</td><td>低流动性治理代币作抵押品，价格被拉升后回落</td></tr>
+        <tr><td>2020-10 · Harvest（以太坊）</td><td>约 3,380 万$</td><td>份额价格依赖 Curve 池中稳定币价格</td></tr>
+        <tr><td>2022-04 · Inverse（以太坊）</td><td>约 1,560 万$</td><td>自有资金多区块推高浅池，TWAP 输出虚高</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>BNB Chain 早期生态扩张快，大量协议用 PancakeSwap 的池子价格，成了价格操纵的高发区。2021年 PancakeBunny 约4500万美元，按池储备计算 LP 价值，还据此铸造奖励。同年 Venus 的 XVS 事件，用低流动性的治理代币作抵押品，价格被快速拉升后回落，坏账超过9500万美元。</li>
+      <li>以太坊上的对照案例，Harvest 的份额价格依赖 Curve 池里稳定币的价格。最值得注意的是 Inverse Finance，攻击者没有用闪电贷，而是用自有资金在多个区块持续推高一个浅池，让时间加权平均价输出了虚高价格。这说明，TWAP 挡不住有资本的多区块操纵。窗口长度和池子深度，要一起评估。</li>
+    </ol>
+  </section>
+
+  <!-- 11 防御清单 -->
+  <section class="scene" data-title="防御清单" data-onstep="marks">
+    <div class="kicker">防御</div>
+    <h2>六条</h2>
+    <div class="chk">
+      <div class="card" data-k="0">① 不用现货价、balanceOf、可被捐赠的份额价作关键定价</div>
+      <div class="card" data-k="0">② 必须用 AMM 价时，用足够长窗口的 TWAP，并评估池深</div>
+      <div class="card" data-k="1">③ 读链下预言机：正值、时效、上下限、精度；L2 查排序器</div>
+      <div class="card" data-k="1">④ 关键资产用多源价格，偏离超阈值就暂停</div>
+      <div class="card" data-k="2">⑤ 低流动性抵押品设供应上限和更低抵押率</div>
+      <div class="card gold" data-k="2">⑥ 把"一笔交易内借款 + 还款"纳入监控告警</div>
+    </div>
+    <ol class="say">
+      <li>防御清单六条。第一，不用现货价、合约余额，或者可被捐赠改变的份额价格，作为关键定价依据。第二，如果必须用 AMM 价格，用足够长窗口的时间加权平均价，并且评估池子深度。</li>
+      <li>第三，读链下预言机时，检查正值、时效、上下限和精度，二层网络上还要检查排序器状态。第四，关键资产用多个价格源，偏离超过阈值就暂停。</li>
+      <li>第五，对低流动性的抵押品，设供应上限和更低的抵押率。第六，把一笔交易内借款又还款这种模式，纳入监控告警。这类模式本身就是闪电贷攻击的指纹。</li>
+    </ol>
+  </section>
+
+  <!-- 12 练一练 -->
+  <section class="scene" data-title="练一练" data-onstep="marks">
+    <div class="kicker">练一练 · 暂停视频想一想</div>
+    <h2>一个协议用 30 分钟 TWAP。安全吗？</h2>
+    <div class="grid2">
+      <div class="card" data-k="0"><b>攻击者能操纵它吗？代价是什么？</b></div>
+      <div class="card warn" data-k="1"><b>参考</b><div class="fs28">能，如果池子<b>够浅</b>：在连续多个区块持续买入，把 30 分钟窗口的均价拉高。<br>代价：多区块持仓的<b>价格风险</b>和<b>套利者回补</b> —— 但 Inverse 证明，浅池里这个代价可能很低。<br><b class="up">结论</b>：TWAP 要和<b>池深</b>一起评估，不是万能。</div></div>
+    </div>
+    <ol class="say">
+      <li>来练一练。一个协议用30分钟的时间加权平均价。安全吗？攻击者能操纵它吗，代价是什么？</li>
+      <li>参考答案。如果池子够浅，能。攻击者在连续多个区块持续买入，就能把30分钟窗口的均价拉高。代价是多区块持仓的价格风险，以及套利者来回补。但 Inverse 的案例证明，在浅池里，这个代价可能很低。结论是，时间加权平均价要和池子深度一起评估，它不是万能的。</li>
+    </ol>
+  </section>
+
+  <!-- 13 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">闪电贷让本金不是门槛；<span class="hl">一笔交易内可变的读数都不能定价</span>。</li>
+      <li data-step="1">三类价格源各有短板；读链下预言机查<span class="hl">正值、时效、上下限、精度</span>。</li>
+      <li data-step="2">问"<span class="hl">价格错了/停了会怎样</span>"；L2 查排序器；TWAP 要配池深。</li>
+    </ul>
+    <h2 data-show="3">下一集：EP08 MEV 与签名安全</h2>
+    <div class="path" data-show="3">
+      <div class="card sell"><div class="n">夹</div><b>三明治</b><div class="d">你的交易被夹在中间</div></div>
+      <div class="card gold"><div class="n">5</div><b>签名五要素</b><div class="d">少一个就能被重放</div></div>
+      <div class="card info"><div class="n">0</div><b>ecrecover 零地址</b><div class="d">无效签名的陷阱</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，闪电贷让本金不再是攻击门槛。任何一笔交易内可变的读数，都不能用来定价。</li>
+      <li>第二，三类价格源各有短板。读链下预言机，检查正值、时效、上下限和精度。</li>
+      <li>第三，工程上要回答价格错了、价格停了会怎样。二层网络检查排序器，时间加权平均价要配合池子深度一起评估。</li>
+      <li>下一集讲 MEV 与签名安全。交易顺序和签名都可以被别人利用。三明治攻击，签名的五个要素，以及 ecrecover 返回零地址的陷阱。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line, circle, fmt } = K;
+
+  function poolStep(el, st) {
+    const svg = el.querySelector('#pool'); svg.innerHTML = '';
+    const draw = (x, title, usdc, cost, k, c) => {
+      box(svg, x, 40, 360, 90, [title, usdc + ' USDC / ' + usdc + ' TOKEN'], { stroke: c, fs: 28, ss: 24 });
+      if (k >= 2) { rect(svg, x, 170, 360, 120, { fill: C.panel, stroke: C.gold, sw: 3 }); T(svg, x + 180, 205, '推到 2 倍价格', C.t2, 26); T(svg, x + 180, 250, '≈ ' + cost, C.gold, 38, 'middle', true); }
+    };
+    draw(20, '浅池', '10 万', '4 万多$', st, C.warn);
+    draw(500, '深池', '1 亿', '4,000 万多$', st, C.info);
+    if (st >= 3) {
+      rect(svg, 20, 330, 840, 180, { fill: C.curFill, stroke: C.gold, sw: 3 });
+      T(svg, 440, 375, '池子越浅，推动价格越便宜 —— 差约 1,000 倍', C.gold, 30, 'middle', true);
+      T(svg, 440, 425, '长尾 / 低流动性代币用现货价定价，风险最高', C.text, 27);
+      T(svg, 440, 470, '闪电贷让这笔资金几乎零成本，用完即还', C.sell, 26, 'middle', true);
+    }
+    const side = el.querySelector('#poolSide');
+    side.innerHTML = st === 0 ? '<div class="formula" style="font-size:30px">x × y = k<br>价格 = y ÷ x</div><div class="card fs28 muted">价格由储备比例决定</div>' :
+      st === 1 ? '<div class="card fs28">两个池子现在都是 <b class="hl">1 美元</b></div>' :
+      '<div class="card warn fs28">要把价格推到 <b>2 倍</b>，<br>投入的钱差约 1,000 倍</div>' + (st >= 3 ? '<div class="card info fs26">这是对比，不是操作指南</div>' : '');
+    el.querySelector('#poolH').textContent = st >= 2 ? '同样推到 2 倍：浅池 4 万，深池 4,000 万' : '池子越浅，价格越容易被推动';
+  }
+
+  function feedStep(el, st) {
+    marks(el, st);
+    const side = el.querySelector('#fdSide');
+    side.innerHTML = [
+      '<div class="card fs28 muted">latestRoundData 返回价格和更新时间</div>',
+      '<div class="card buy fs28">① 正值：无效时可能返回 0 或负数</div>',
+      '<div class="card buy fs28">② 时效：避免用很久以前的价格</div>',
+      '<div class="card warn fs28">③ 上下限：最易忽略 → 下一页 Venus</div>',
+      '<div class="card buy fs28">④ 精度从合约读，不写死 8</div>'][Math.min(st, 4)];
+    el.querySelector('#fdH').textContent = st >= 3 ? '上下限触碰 = 价格已不可信' : '四个检查，缺一个就可能出事';
+  }
+
+  function lunaStep(el, st) {
+    const svg = el.querySelector('#luna'); svg.innerHTML = '';
+    const ox = 80, oy = 460, W = 820, H = 380;
+    line(svg, ox, oy, ox + W, oy, C.t2, 3); line(svg, ox, oy, ox, oy - H, C.t2, 3);
+    T(svg, ox + W, oy + 32, '时间', C.t2, 24, 'end'); T(svg, ox, 40, 'LUNA 价格', C.t2, 24, 'start');
+    const floorY = oy - 60;
+    line(svg, ox, floorY, ox + W, floorY, C.gold, 3, true);
+    T(svg, ox + 14, floorY + 28, '喂价下限 0.1$', C.gold, 24, 'start', true);
+    // real price
+    const real = 'M ' + [[ox, oy - 320], [ox + 300, oy - 300], [ox + 420, oy - 200]].map(p => p.join(' ')).join(' L ');
+    svg.appendChild(svgEl('path', { d: real + ` L ${ox + 560} ${oy - 20} L ${ox + 820} ${oy - 8}`, fill: 'none', stroke: st >= 1 ? C.sell : C.info, 'stroke-width': 4 }));
+    if (st >= 1) T(svg, ox + 700, oy - 40, '真实价跌穿', C.sell, 26, 'middle', true);
+    // fed price stuck at floor
+    if (st >= 1) {
+      svg.appendChild(svgEl('path', { d: `M ${ox} ${oy - 320} L ${ox + 300} ${oy - 300} L ${ox + 420} ${floorY} L ${ox + 820} ${floorY}`, fill: 'none', stroke: C.gold, 'stroke-width': 5, 'stroke-dasharray': '2 0' }));
+      T(svg, ox + 650, floorY - 22, '喂价停在 0.1$', C.gold, 26, 'middle', true);
+    }
+    const side = el.querySelector('#lunaSide');
+    side.innerHTML = [
+      '<div class="card fs28 muted">喂价设了最低价 0.1$<br>正常时下限不起作用</div>',
+      '<div class="card sell fs28">真实价跌到远低于 0.1$<br>喂价被下限<b>卡住</b></div>',
+      '<div class="card warn fs28">Venus 仍按 0.1$ 给 LUNA 估值<br>低价买入 → 高估借出</div>',
+      '<div class="card buy fs28">约 1,100 万$<br>触碰上下限 → 暂停 + 供应上限 + 紧急下架</div>'][Math.min(st, 3)];
+    el.querySelector('#luH').textContent = st >= 2 ? 'Venus 按 0.1$ 估值，真实价早已跌穿' : '喂价停在下限，真实价格早已跌穿';
+  }
+
+  function seqStep(el, st) {
+    const svg = el.querySelector('#seq'); svg.innerHTML = '';
+    const ox = 60, y = 90, W = 1520;
+    rect(svg, ox + 0.35 * W, y - 40, 0.27 * W, 100, { fill: 'rgba(246,70,93,.12)', stroke: C.sell, sw: 2, op: st >= 1 ? 1 : .1 });
+    line(svg, ox, y, ox + W, y, C.t2, 4);
+    const marks3 = [[0.1, '正常'], [0.35, '排序器宕机'], [0.62, '恢复'], [0.9, '宽限期后']];
+    marks3.forEach(([p, t], i) => { const x = ox + p * W; circle(svg, x, y, 10, i === 1 ? C.sell : i === 2 ? C.warn : C.buy); T(svg, x, y - 62, t, i === 1 ? C.sell : i === 2 ? C.warn : C.text, 26, 'middle', true, st >= i ? 1 : .15); });
+    T(svg, ox + 0.485 * W, y + 34, '价格停更', C.sell, 24, 'middle', true, st >= 1 ? 1 : .1);
+    const B = [['① 喂价上不了链 → 价格停在宕机前', C.sell, 1, 186], ['② 恢复首批区块：能走 L1 强制交易的人占优', C.warn, 2, 272], ['③ 读"排序器在线状态"喂价 + 恢复后设宽限期（示例 1 小时）暂停清算', C.buy, 3, 358]];
+    B.forEach(([t, c, k, yy]) => { box(svg, ox, yy, W, 66, t, { stroke: c, fs: 28, op: st >= k ? 1 : .12 }); });
+    if (st >= 3) { rect(svg, ox, 452, W, 60, { fill: C.curFill, stroke: C.gold, sw: 2 }); T(svg, ox + W / 2, 482, 'L2BEAT：Mantle 排序器宕机时，用户可走 L1 强制交易，延迟最长 12 小时', C.gold, 26, 'middle', true); }
+  }
+
+  function shareStep(el, st) {
+    const svg = el.querySelector('#share'); svg.innerHTML = '';
+    box(svg, 40, 40, 400, 90, '份额价格 = 总资产 ÷ 总份额', { stroke: C.info, fs: 28 });
+    if (st >= 1) { box(svg, 40, 170, 400, 90, ['总资产 = 读合约余额', '→ 捐赠可抬高'], { stroke: C.warn, fs: 28, ss: 24 }); arrow(svg, 240, 132, 240, 166, C.t2, false, 3); }
+    if (st >= 2) {
+      box(svg, 500, 40, 360, 90, ['捐赠 → 份额价抬高'], { stroke: C.sell, fill: C.badFill, fs: 28 });
+      box(svg, 500, 170, 360, 90, ['少量份额作抵押', '虚高价借出大量资金'], { stroke: C.sell, fs: 28, ss: 24 });
+      arrow(svg, 680, 132, 680, 166, C.sell, false, 3);
+      box(svg, 500, 300, 360, 80, '约 1.3 亿$', { stroke: C.sell, fill: C.badFill, fs: 32, tc: C.sell, bold: true });
+      arrow(svg, 680, 262, 680, 296, C.sell, false, 3);
+    }
+    if (st >= 3) { rect(svg, 40, 300, 400, 212, { fill: C.curFill, stroke: C.gold, sw: 3 }); T(svg, 240, 340, 'LP 代币定价', C.gold, 28, 'middle', true); T(svg, 240, 386, '✗ 储备 × 现货价 ÷ 总供应', C.sell, 24); T(svg, 240, 428, '✓ 公平储备法：', C.buy, 24); T(svg, 240, 468, '外部价 + 不变量反推公平储备', C.text, 24); }
+    const side = el.querySelector('#shareSide');
+    side.innerHTML = ['<div class="card fs28 muted">份额价格也可被操纵</div>',
+      '<div class="card warn fs28">和第 5 集金库通胀<br>同一个根源：<b>总资产读余额</b></div>',
+      '<div class="card sell fs28">Cream：用份额价给抵押品估值<br>→ 约 1.3 亿$</div>',
+      '<div class="card info fs28">LP 代币：用公平储备法，<br>不用储备直接算</div>'][Math.min(st, 3)];
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

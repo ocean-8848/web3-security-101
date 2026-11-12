@@ -1,0 +1,97 @@
+
+# 02-MinimalToken.sol
+⚠️ 警告：教学示例，未经审计，不可用于生产。路径：examples/02-MinimalToken.sol
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+/// @title MinimalToken：最小 ERC-20 代币
+/// @notice 教学示例，未经审计，不可用于生产。
+/// @dev 配套章节：Contract/04-contract-lifecycle.md、Contract/06-token-standards.md
+///      本合约不依赖外部库，只演示三件事：余额账本、事件、授权。
+contract MinimalToken {
+    // ───────────── 1. 代币的基本信息 ─────────────
+    // name / symbol / decimals 只给钱包和浏览器显示用，不影响记账。
+    string public name;
+    string public symbol;
+    uint8 public constant decimals = 18; // 1 个代币 = 10^18 个最小单位
+
+    uint256 public totalSupply;
+
+    // ───────────── 2. 余额就是一个 mapping ─────────────
+    // 代币不在用户的钱包里。代币记在这个合约的账本里。
+    // 钱包显示的余额，是钱包调用 balanceOf(地址) 读出来的数字。
+    mapping(address => uint256) public balanceOf;
+
+    // 授权表：allowance[持有人][被授权人] = 被授权人还能代扣的数量。
+    mapping(address => mapping(address => uint256)) public allowance;
+
+    // ───────────── 3. 事件 ─────────────
+    // 合约不能主动"通知"任何人。事件写入交易日志（log）。
+    // 浏览器、钱包、索引器扫描日志，才知道"谁给谁转了多少"。
+    // 如果不发 Transfer 事件，浏览器的"代币转账"页面就看不到这笔转账。
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+
+    // ───────────── 4. 自定义错误 ─────────────
+    // 自定义错误比字符串 revert 更省 Gas，也便于前端解码。
+    error InsufficientBalance(address account, uint256 balance, uint256 needed);
+    error InsufficientAllowance(address spender, uint256 allowed, uint256 needed);
+    error ZeroAddress();
+
+    // ───────────── 5. 构造函数：只在部署时运行一次 ─────────────
+    // 部署者收到全部初始供应。from = address(0) 表示"铸造"。
+    constructor(string memory name_, string memory symbol_, uint256 initialSupply) {
+        name = name_;
+        symbol = symbol_;
+        totalSupply = initialSupply;
+        balanceOf[msg.sender] = initialSupply;
+        emit Transfer(address(0), msg.sender, initialSupply);
+    }
+
+    // ───────────── 6. 转账 ─────────────
+    /// @notice 调用者把自己的代币转给 to。
+    function transfer(address to, uint256 value) external returns (bool) {
+        _transfer(msg.sender, to, value);
+        return true;
+    }
+
+    // ───────────── 7. 授权与代扣 ─────────────
+    /// @notice 调用者允许 spender 代扣最多 value 个代币。
+    /// @dev 竞态提醒：把授权从 N 直接改成 M 时，spender 可以抢先花掉旧的 N，
+    ///      再花新的 M。常见做法是先改成 0 再改成 M。
+    ///      授权风险详见 ../../Contract-Security/06-external-calls-tokens.md 第 5 节。
+    function approve(address spender, uint256 value) external returns (bool) {
+        if (spender == address(0)) revert ZeroAddress();
+        allowance[msg.sender][spender] = value;
+        emit Approval(msg.sender, spender, value);
+        return true;
+    }
+
+    /// @notice 被授权人（例如 DEX 合约）从 from 的账户代扣代币给 to。
+    function transferFrom(address from, address to, uint256 value) external returns (bool) {
+        uint256 allowed = allowance[from][msg.sender];
+        if (allowed != type(uint256).max) {
+            // 无限授权（max）不扣减；其他情况先检查再扣减。
+            if (allowed < value) revert InsufficientAllowance(msg.sender, allowed, value);
+            allowance[from][msg.sender] = allowed - value;
+        }
+        _transfer(from, to, value);
+        return true;
+    }
+
+    // ───────────── 8. 内部记账 ─────────────
+    // 转账 = 账本里一个数字减少，另一个数字增加，然后发事件。
+    function _transfer(address from, address to, uint256 value) internal {
+        if (to == address(0)) revert ZeroAddress();
+        uint256 fromBalance = balanceOf[from];
+        if (fromBalance < value) revert InsufficientBalance(from, fromBalance, value);
+        unchecked {
+            // 上一行已检查 fromBalance >= value，这里不会下溢。
+            balanceOf[from] = fromBalance - value;
+        }
+        balanceOf[to] += value;
+        emit Transfer(from, to, value);
+    }
+}
+

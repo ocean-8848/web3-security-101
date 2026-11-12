@@ -1,0 +1,7 @@
+{
+ "answers": [
+  "MS-01 是纯函数错误：一次调用的输入和输出就能违反规则，所以一次随机调用就能发现。MS-02 需要两步：先有一次交易积累协议费，再调用 <code>collectProtocolFees</code>。无状态测试每次都从干净状态开始，收取到的费用是 0，不会触发。Foundry 和 Echidna 的最短反例都正好是这两步。",
+  "<code>addLiquidity</code> 和 <code>removeLiquidity</code> 本来就会改变 <code>k</code>，<code>removeLiquidity</code> 还会让它变小。如果不变量函数只比较相邻两次的 <code>k</code>，LP 正常退出就会误报。Handler 只在交易前后比较，把违规写入影子变量 <code>kDropped</code>，不变量函数只读这个标志。这样只针对\"交易不能让 k 变小\"这条规则。",
+  "任何人调用的风险：攻击者可以在一笔交易内先改变余额（比如直接捐入代币或借助变基时机），再调用 <code>sync()</code> 操纵储备比例和价格，影响依赖现货价格的外部协议。好处是无需信任，负向变基后 LP 能立即恢复。限制为 owner 后，操纵面变小，但恢复依赖 owner 及时响应，并新增中心化信任。常见折中是保持公开，但配套不依赖现货价格的预言机，并在文档中声明这些风险。"
+ ]
+}

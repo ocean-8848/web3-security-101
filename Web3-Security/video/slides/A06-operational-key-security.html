@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A06 运营与密钥安全</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .ana .card { font-size: 28px; display: flex; flex-direction: column; gap: 10px; min-height: 230px; }
+  .ana .card .a { color: var(--text-2); font-size: 26px; }
+  .chk { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 26px; }
+  .chk .card { font-size: 28px; padding: 16px 22px; display: flex; flex-direction: column; gap: 6px; }
+  .chk .card .d { color: var(--text-2); font-size: 24px; }
+  .case { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .case .card { display: flex; flex-direction: column; gap: 14px; font-size: 28px; }
+  .case .card h3 { margin: 0; font-size: 34px; white-space: nowrap; }
+  .case .chain { display: flex; flex-direction: column; gap: 10px; }
+  .case .chain .s { background: var(--panel-2); border-radius: 10px; padding: 10px 16px; font-size: 27px; transition: opacity .35s; }
+  .case .chain .s.pend { opacity: .12; }
+  .case .lesson { color: var(--gold); font-size: 26px; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="A06" data-title="运营与密钥安全：代码之外的战场">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 评估篇 · A06</div>
+    <h1>只锁了保险柜，<br>没锁<span class="hl">保险柜所在的房间</span></h1>
+    <div class="hero">
+      <div class="card sell" data-k="1" data-nocur><div class="k">2025 · Bybit</div><div class="big">约 14.6 亿$</div><div>签名流程被攻破</div></div>
+      <div class="card warn" data-k="2" data-nocur><div class="k">2024 · DMM Bitcoin</div><div class="big">约 3.05 亿$</div><div>假招聘 → 终端被控</div></div>
+      <div class="card info" data-k="3" data-nocur><div class="k">2021 · BadgerDAO</div><div class="big">约 1.2 亿$</div><div>前端被注入脚本</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到评估篇第6集，运营与密钥安全。合约审计覆盖的是，代码会不会出错。但近年最大的损失，几乎都不在代码里。</li>
+      <li>以下据公开报道。2025年，Bybit 损失约14.6亿美元，签名流程被攻破。</li>
+      <li>2024年，日本交易所 DMM Bitcoin 损失约3.05亿美元。入口是一次假招聘，员工的电脑被控制了。</li>
+      <li>2021年，DeFi 协议 BadgerDAO 损失约1.2亿美元，前端网页被注入了恶意脚本。评估不覆盖链下，等于只锁了保险柜，没锁保险柜所在的房间。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="保险柜与整栋楼" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>合约是保险柜，运营安全是整栋楼</h2>
+    <div class="ana">
+      <div class="card sell" data-k="0"><b>保安被收买</b><div class="hl">→ 私钥与签名</div></div>
+      <div class="card sell" data-k="0"><b>门禁系统被改</b><div class="hl">→ 前端被注入</div></div>
+      <div class="card sell" data-k="1"><b>送货通道被掉包</b><div class="hl">→ 依赖与供应链</div></div>
+      <div class="card sell" data-k="1"><b>保洁被冒充</b><div class="hl">→ 社会工程</div></div>
+    </div>
+    <div class="card warn fs30" data-k="2">比喻不准的地方：楼里出事还有保险理赔、警察追回。链上资产被转走，多数情况下<b>追不回来</b>。</div>
+    <ol class="say">
+      <li>打个比方。合约是保险柜，用最好的钢材做的，也审计过了。运营安全是保险柜所在的整栋楼。保安被收买，对应私钥和签名出问题。门禁系统被改，对应前端被注入。</li>
+      <li>送货通道被人掉包，对应依赖库和供应链被投毒。保洁被冒充，对应社会工程。这些情况发生时，保险柜再硬也没用。</li>
+      <li>比喻不准的地方在于，楼里出了事，还有保险公司理赔，有警察追回。链上资产一旦被转走，多数情况下追不回来。</li>
+    </ol>
+  </section>
+
+  <!-- 3 四类根因 -->
+  <section class="scene" data-title="四类链下根因" data-onstep="rootStep">
+    <div class="kicker">攻击面 · 四类链下根因</div>
+    <h2>社会工程常常是入口</h2>
+    <svg id="root" width="1640" height="566" viewBox="0 0 1640 566"></svg>
+    <ol class="say">
+      <li>链下根因可以分四类。第一类是私钥与签名，包括多签签名流程被攻破，以及签名终端和基础设施被入侵。</li>
+      <li>第二类是前端与供应链。前端被注入恶意脚本，依赖库被投毒，还有域名被劫持。</li>
+      <li>第三类是部署与运维，部署和升级的流水线被污染，持续集成的密钥泄露。第四类是社会工程，假招聘、假承包商、钓鱼邮件。</li>
+      <li>四类常常组合出现。社会工程是入口，导致私钥、终端或者流水线被攻破。公开报道多指向有国家背景的长期团队。所以评估要按对方会渗透几个月来设防。</li>
+    </ol>
+  </section>
+
+  <!-- 4 密钥方案 -->
+  <section class="scene" data-title="四种密钥方案" data-onstep="rowStep">
+    <div class="kicker">私钥与签名 · 方案对比</div>
+    <h2>每种方案，都有要评估的风险</h2>
+    <table class="t sm">
+      <thead><tr><th>方案</th><th>原理</th><th>优点</th><th>要评估的风险</th></tr></thead>
+      <tbody>
+        <tr><td>单签个人地址</td><td>一把私钥</td><td>简单</td><td class="bad">单点 · 绝不用于金库</td></tr>
+        <tr><td>多签合约</td><td>链上 M-of-N</td><td>成熟、透明</td><td>签名流程 · module 扩展点 · 升级</td></tr>
+        <tr><td>MPC</td><td>私钥分片，多方协同签名</td><td>无完整私钥落地</td><td>分片分布 · 实现方可信度 · 审批流程</td></tr>
+        <tr><td>HSM</td><td>硬件内保管并签名</td><td>私钥不出硬件</td><td>谁能让它签 · 访问控制 · 物理安全</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>先看私钥与签名。常见的密钥方案有四种。单签的个人地址只有一把私钥，简单，但是单点，绝不能用于金库。</li>
+      <li>多签合约是链上的 M 选 N，成熟透明。要评估签名流程、module 这样的扩展点，以及合约能否被升级。</li>
+      <li>MPC 是多方计算，私钥被拆成分片，多方协同签名，完整私钥从不出现。链上看起来是一个普通的单签地址。要评估分片放在哪里，实现方是否可信，以及审批流程。</li>
+      <li>HSM 是硬件安全模块，私钥在硬件内保管并签名，不出硬件。要评估的是，谁能让它签名，访问控制和物理安全怎样。</li>
+    </ol>
+  </section>
+
+  <!-- 5 MPC 没解决什么 -->
+  <section class="scene" data-title="MPC 与 HSM 没解决什么" data-onstep="mpcStep">
+    <div class="kicker">关键认识 · 示例</div>
+    <h2>私钥不落地 ≠ 签的东西是对的</h2>
+    <svg id="mpc" width="1640" height="580" viewBox="0 0 1640 580"></svg>
+    <ol class="say">
+      <li>MPC 和 HSM 解决的是，私钥不以完整形态落地。它们没有解决两个问题，谁来授权签名，签的到底是什么。</li>
+      <li>来看一个示例。一个 MPC 方案，3个分片，任意2片就能签名。分片 A 和 B 放在两台服务器上，分片 C 在一名员工的手机里。看起来，攻击者要攻破两个地方。</li>
+      <li>但 A 和 B 两台服务器，都听同一个审批服务的指令。审批服务说签，它们就签。</li>
+      <li>攻击者只要攻破这个审批服务，就同时驱动了 A 和 B，满足了2片的门槛。名义上是3选2，实际上是一个单点。</li>
+      <li>Bybit、WazirX、Radiant 的问题，都不是私钥被直接偷走，而是合法的签名人被骗着授权了恶意交易。所以上一集的签名流程评估，对任何密钥方案都适用。</li>
+    </ol>
+  </section>
+
+  <!-- 6 私钥评估清单 -->
+  <section class="scene" data-title="私钥与签名评估清单" data-onstep="marks">
+    <div class="kicker">私钥与签名 · 评估清单</div>
+    <h2>六个问题</h2>
+    <div class="chk">
+      <div class="card" data-k="0"><b>签名人独立性</b><div class="d">不同的人、组织、地点、设备？实际几方控制？</div></div>
+      <div class="card" data-k="0"><b>签名终端</b><div class="d">专机专用？能否收文件、装软件、上网？</div></div>
+      <div class="card" data-k="1"><b>独立解码</b><div class="d">看到的和签的一致吗？用独立工具核对？</div></div>
+      <div class="card" data-k="1"><b>高危操作审批</b><div class="d">升级、换签名人、delegatecall 额外审批 + 带外确认</div></div>
+      <div class="card" data-k="2"><b>时间锁与限额</b><div class="d">大额转出有延迟？单位时间有上限和告警？</div></div>
+      <div class="card warn" data-k="2"><b>轮换与撤销</b><div class="d">离职、换岗后权限及时撤销？Ledger：前员工权限未撤</div></div>
+    </div>
+    <ol class="say">
+      <li>私钥与签名的评估清单有六个问题。签名人是否独立，实际有几方在控制。签名终端是不是专机专用，能不能收文件、装软件、上网。</li>
+      <li>签名人看到的和签的是否一致，有没有用独立工具核对。升级、换签名人、委托调用这些高危操作，有没有额外审批和带外确认。</li>
+      <li>大额转出有没有时间锁，单位时间的提币有没有上限和告警。最后一项常被忽略，密钥和权限的轮换与撤销。员工离职或换岗后，权限有没有及时撤销。后面会看到，一个没撤销的账号，就足以引发一次供应链攻击。</li>
+    </ol>
+  </section>
+
+  <!-- 7 前端与供应链 -->
+  <section class="scene" data-title="前端与供应链评估" data-onstep="sriStep">
+    <div class="kicker">前端与供应链 · 评估清单</div>
+    <h2>前端被攻破，用户直接授权给攻击者</h2>
+    <div class="row">
+      <div class="chk" style="flex:1.15; grid-template-columns:1fr">
+        <div class="card" data-k="0"><b>前端托管</b><div class="d">谁能改线上代码？CDN、托管平台的访问控制与密钥？</div></div>
+        <div class="card" data-k="0"><b>依赖锁定</b><div class="d">npm 库锁定版本？是否从第三方 CDN 动态加载？</div></div>
+        <div class="card" data-k="1"><b>子资源完整性 SRI</b><div class="d">外部脚本带哈希校验，被篡改就拒绝执行</div></div>
+        <div class="card" data-k="3"><b>域名与监控</b><div class="d">注册商账户保护 · DNS 变更审批 · 授权激增告警</div></div>
+      </div>
+      <svg id="sri" width="680" height="560" viewBox="0 0 680 560"></svg>
+    </div>
+    <ol class="say">
+      <li>合约再安全，用户也是通过前端交互的。前端被攻破，用户就会直接把授权给攻击者。评估清单的前两项，前端托管，谁能修改线上代码，CDN 和托管平台的访问控制怎样。依赖锁定，npm 库有没有锁定到具体版本，是不是从第三方 CDN 动态加载最新版。</li>
+      <li>第三项，子资源完整性。页面引用外部脚本时，写上这个脚本内容的哈希值。浏览器下载后先算哈希。</li>
+      <li>如果有人在 CDN 上把脚本换掉了，哪怕只改了一个字符，哈希就对不上，浏览器拒绝执行。这样，托管方被入侵，也注入不了恶意代码。</li>
+      <li>第四项，域名和监控。域名注册商账户要有强保护，DNS 记录的变更要审批。还要监控异常授权，比如大量用户突然授权给同一个陌生地址。</li>
+    </ol>
+  </section>
+
+  <!-- 8 两种供应链攻击 -->
+  <section class="scene" data-title="案例：两种供应链攻击" data-onstep="caseStep">
+    <div class="kicker">真实案例 · 据公开报道</div>
+    <h2>一个改了网页，一个改了依赖库</h2>
+    <div class="case">
+      <div class="card sell"><h3>BadgerDAO · 2021-12 · 约 1.2 亿$</h3>
+        <div class="chain">
+          <div class="s" data-c="0">托管服务账户的 API 密钥被获取</div>
+          <div class="s" data-c="1">向前端注入恶意脚本</div>
+          <div class="s" data-c="1">诱导用户给攻击者<b>无限授权</b></div>
+          <div class="s" data-c="2">约 500 个钱包中招，资金被划走</div>
+        </div>
+        <div class="lesson" data-c="2">评估项：前端托管访问控制 · 授权展示 · 授权激增告警</div>
+      </div>
+      <div class="card warn"><h3>Ledger Connect Kit · 2023-12 · 约 60 万$</h3>
+        <div class="chain">
+          <div class="s" data-c="3">前员工的 npm 账户被钓鱼</div>
+          <div class="s" data-c="3">离职后发布权限<b>没有撤销</b></div>
+          <div class="s" data-c="4">发布 1.1.5 – 1.1.7 恶意版本</div>
+          <div class="s" data-c="4">引用它的网站加载了盗币脚本</div>
+        </div>
+        <div class="lesson" data-c="5">评估项：依赖锁定 · 离职权限撤销 · SRI</div>
+      </div>
+    </div>
+    <ol class="say">
+      <li>来看两种供应链攻击，以下据公开报道。先看 BadgerDAO，2021年12月。攻击者获取了前端托管服务账户的 API 密钥。</li>
+      <li>他们用这个密钥向前端注入了恶意脚本。用户打开网站，正常操作时，会被诱导给攻击者的地址一个无限授权。</li>
+      <li>大约500个钱包中招，损失约1.2亿美元。对应的评估项，是前端托管的访问控制，钱包授权时的清晰展示，以及授权激增的告警。</li>
+      <li>再看 Ledger Connect Kit，2023年12月。这是一个很多 DeFi 网站都在用的钱包连接库。一名前员工的 npm 账户被钓鱼。问题是，他离职后，这个账户的发布权限并没有撤销。</li>
+      <li>攻击者用它发布了1.1.5到1.1.7三个恶意版本。凡是动态加载最新版的网站，都把盗币脚本带给了自己的用户。</li>
+      <li>直接损失约60万美元，不算大，但波及面极广。对应的评估项，依赖锁定版本，离职权限撤销，以及子资源完整性校验。</li>
+    </ol>
+  </section>
+
+  <!-- 9 部署与运维 -->
+  <section class="scene" data-title="部署与运维" data-onstep="marks">
+    <div class="kicker">部署与运维 · 评估清单</div>
+    <h2>流水线也是攻击面</h2>
+    <div class="steps c5">
+      <div class="card" data-k="0"><span class="n">1</span><b>脚本化</b><div class="d">部署用经过评审的脚本；部署与初始化原子化</div></div>
+      <div class="card" data-k="1"><span class="n">2</span><b>部署后验证</b><div class="d">源码验证、参数读取核对、权限移交确认</div></div>
+      <div class="card" data-k="2"><span class="n">3</span><b>CI 密钥</b><div class="d">部署私钥不进代码库；最小权限</div></div>
+      <div class="card" data-k="3"><span class="n">4</span><b>升级流程</b><div class="d">经时间锁 · 公开 · 验证脚本 · 回滚方案</div></div>
+      <div class="card" data-k="3"><span class="n">5</span><b>变更管理</b><div class="d">每次链上变更有审批、有记录、可追溯</div></div>
+    </div>
+    <ol class="say">
+      <li>第三类根因是部署与运维。第一，部署要用经过评审的脚本，部署和初始化要在同一笔交易里完成，不给别人抢先初始化的机会。</li>
+      <li>第二，部署后验证。在浏览器上验证源码，逐项读取关键参数核对，确认权限已经移交给多签。</li>
+      <li>第三，持续集成的密钥。部署私钥和 API 密钥绝不能进代码库，要用密钥管理服务，并且给最小权限。</li>
+      <li>第四，升级要经过时间锁，公开，部署后跑验证脚本，并保留回滚方案。第五，任何链上变更都要有审批、有记录、可以追溯。</li>
+    </ol>
+  </section>
+
+  <!-- 10 社会工程 -->
+  <section class="scene" data-title="社会工程" data-onstep="seStep">
+    <div class="kicker">社会工程 · 据公开报道</div>
+    <h2>人仍是最软的一环</h2>
+    <div class="case">
+      <div class="card warn"><h3>DMM Bitcoin · 2024 · 约 3.05 亿$</h3>
+        <div class="chain">
+          <div class="s" data-c="0">冒充招聘者，在职业社交平台接触钱包服务商员工</div>
+          <div class="s" data-c="1">诱其运行一段"入职测试"代码</div>
+          <div class="s" data-c="1">终端被控 → 操纵交易请求</div>
+        </div>
+      </div>
+      <div class="card sell"><h3>Radiant · 2024 · 约 5,000 万$</h3>
+        <div class="chain">
+          <div class="s" data-c="2">冒充前承包商，在即时通讯里发来"报告"</div>
+          <div class="s" data-c="2">文件带木马，开发者终端中招</div>
+          <div class="s" data-c="3">还被转发给同事，扩散到多个签名人</div>
+        </div>
+      </div>
+    </div>
+    <ol class="say">
+      <li>第四类根因是社会工程。技术防御再强，人仍是最软的一环。先看 DMM Bitcoin，以下据公开报道。攻击者冒充招聘者，在职业社交平台上接触了 DMM 的钱包服务商的一名员工。</li>
+      <li>对方被诱导运行了一段所谓入职测试的代码。他的电脑因此被控制，攻击者进而操纵了交易请求，损失约3.05亿美元。</li>
+      <li>再看 Radiant。攻击者冒充一名前承包商，在即时通讯软件里发来一份看似正常的报告文件。文件里带着木马，开发者的电脑中招。</li>
+      <li>这份文件还被转发给了同事，扩散到多个签名人。注意这个细节。攻击者不需要逐个攻破签名人，只要让他们彼此信任地转发一份文件。</li>
+    </ol>
+  </section>
+
+  <!-- 11 社工评估要点 + 位置 -->
+  <section class="scene" data-title="社会工程评估与权重" data-onstep="marks">
+    <div class="kicker">评估要点 · 运营安全在三类对象中的权重</div>
+    <h2>让"一个人被攻破"不足以造成损失</h2>
+    <div class="chk">
+      <div class="card" data-k="0"><b>培训与意识</b><div class="d">尤其是开发和签名人员</div></div>
+      <div class="card" data-k="0"><b>硬性规定</b><div class="d">签名、部署终端上不开外部文件、链接、代码</div></div>
+      <div class="card" data-k="1"><b>身份核验</b><div class="d">招聘、承包、合作流程</div></div>
+      <div class="card" data-k="1"><b>多人与带外确认</b><div class="d">单个人被攻破不足以造成损失</div></div>
+    </div>
+    <table class="t sm" data-k="2">
+      <thead><tr><th>评估对象</th><th>运营安全的权重</th></tr></thead>
+      <tbody>
+        <tr data-k="2"><td>A 交易所自有合约与钱包</td><td class="bad">最高 · 签名流程与密钥管理是第一重点</td></tr>
+        <tr data-k="2"><td>B 自研 DeFi 协议</td><td>高 · 部署、升级权限、前端、监控</td></tr>
+        <tr data-k="2"><td>C 上币与合作尽调</td><td>中高 · 通过问卷了解；深度合作时提升</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>社会工程的评估要点有四个。团队，尤其是开发和签名人员，有没有反社会工程的培训。有没有硬性规定，签名和部署用的电脑上，不打开任何外部文件、链接，不运行外部代码。</li>
+      <li>招聘、承包和合作流程，有没有身份核验。高危操作是否要求多人和带外确认。目标是，单个人被攻破，不足以造成损失。</li>
+      <li>运营安全在三类对象里的权重不同。交易所自有合约和钱包最高，签名流程和密钥管理是第一重点。自研协议要看部署、升级权限、前端和监控。上币尽调通过问卷了解，深度合作时要提高权重。很多项超出了合约评估的传统边界，但报告要明确列出需要安全团队跟进的项，而不是写一句不在范围内就略过。</li>
+    </ol>
+  </section>
+
+  <!-- 12 练一练 -->
+  <section class="scene" data-title="练一练" data-onstep="marks">
+    <div class="kicker">练一练 · 暂停视频想一想</div>
+    <h2>前端从第三方 CDN 加载一个钱包连接库</h2>
+    <div class="card fs34" data-k="0">请列出至少三个降低供应链风险的措施。</div>
+    <div class="steps c4">
+      <div class="card buy" data-k="1"><span class="n">1</span><b>锁定版本</b><div class="d">不加载 latest；随构建一起发布</div></div>
+      <div class="card buy" data-k="1"><span class="n">2</span><b>SRI 校验</b><div class="d">脚本带哈希，被篡改就不执行</div></div>
+      <div class="card buy" data-k="2"><span class="n">3</span><b>自托管</b><div class="d">把库放进自己的域名和构建流程</div></div>
+      <div class="card buy" data-k="2"><span class="n">4</span><b>监控与告警</b><div class="d">前端完整性监控 · 授权激增告警</div></div>
+    </div>
+    <ol class="say">
+      <li>来练一练。你的前端从第三方 CDN 加载一个钱包连接库。请列出至少三个降低供应链风险的措施。可以先暂停想一想。</li>
+      <li>参考答案。第一，锁定版本，不加载最新版，把库随自己的构建一起发布。第二，加上子资源完整性校验，脚本被篡改就不执行。</li>
+      <li>第三，自托管，把库放进自己的域名和构建流程，减少对第三方的依赖。第四，前端完整性监控，加上授权激增的告警。Ledger 那次事件里，恶意代码正是通过动态加载最新版传播的。前三条做到任何一条，都能挡住这类攻击的大部分路径。</li>
+    </ol>
+  </section>
+
+  <!-- 13 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">最大的损失在链下：<span class="hl">私钥签名、前端供应链、部署运维、社会工程</span>。</li>
+      <li data-step="1">MPC 和 HSM 让私钥不落地，但<span class="hl">没解决谁授权、签的是什么</span>。</li>
+      <li data-step="2">锁定依赖、SRI、离职即撤权；让<span class="hl">一个人被攻破</span>不足以造成损失。</li>
+    </ul>
+    <h2 data-show="3">下一集：A07 外部审计与漏洞赏金</h2>
+    <div class="path" data-show="3">
+      <div class="card info"><div class="n">5</div><b>五种外部检查</b><div class="d">单家、多家、竞赛、形式化、赏金</div></div>
+      <div class="card gold"><div class="n">6</div><b>读报告六步</b><div class="d">范围、方法、发现、已确认风险…</div></div>
+      <div class="card buy"><div class="n">$</div><b>设计赏金计划</b><div class="d">奖金怎么定、安全港、响应流程</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，最大的损失在链下，四类根因是私钥签名、前端供应链、部署运维和社会工程。</li>
+      <li>第二，MPC 和 HSM 让私钥不落地，但没有解决谁来授权、签的是什么。签名流程评估对任何方案都适用。</li>
+      <li>第三，锁定依赖、子资源完整性校验、离职即撤权。目标是让一个人被攻破，不足以造成损失。</li>
+      <li>下一集讲外部审计与漏洞赏金。五种外部检查方式怎么选，读审计报告的六个步骤，以及怎样设计一个赏金计划。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line, circle } = K;
+
+  function rootStep(el, st) {
+    const svg = el.querySelector('#root'); svg.innerHTML = '';
+    const Q = [
+      ['① 私钥与签名', ['多签签名流程被攻破', '签名终端被入侵'], C.sell, 0, 0, 10],
+      ['② 前端与供应链', ['前端被注入脚本', '依赖库被投毒 · 域名劫持'], C.warn, 1, 878, 10],
+      ['③ 部署与运维', ['流水线被污染', 'CI 密钥泄露'], C.info, 2, 0, 260],
+      ['④ 社会工程', ['假招聘 · 假承包商', '钓鱼邮件和消息'], C.gold, 2, 878, 260],
+    ];
+    Q.forEach(([h, d, c, k, x, y]) => {
+      const op = st >= k ? 1 : .15;
+      rect(svg, x + 2, y, 758, 210, { fill: C.panel, stroke: c, sw: 3, op });
+      T(svg, x + 30, y + 48, h, c, 36, 'start', true, op);
+      d.forEach((s, i) => T(svg, x + 30, y + 105 + i * 52, '· ' + s, C.text, 30, 'start', false, op));
+    });
+    if (st >= 3) {
+      arrow(svg, 872, 300, 768, 180, C.gold, false, 5);
+      arrow(svg, 872, 400, 768, 400, C.gold, false, 5);
+      rect(svg, 500, 494, 640, 64, { fill: C.curFill, stroke: C.gold, sw: 3 });
+      T(svg, 820, 526, '社会工程是入口 · 按"渗透数月"设防', C.gold, 28, 'middle', true);
+    }
+  }
+
+  function mpcStep(el, st) {
+    const svg = el.querySelector('#mpc'); svg.innerHTML = '';
+    if (st === 0) {
+      box(svg, 120, 140, 620, 260, ['✓ 私钥不以完整形态落地', 'MPC · HSM 解决了这个'], { stroke: C.buy, fill: C.goodFill, fs: 36, ss: 30 });
+      box(svg, 900, 140, 620, 260, ['✗ 谁来授权签名？签的是什么？', '没有解决'], { stroke: C.sell, fill: C.badFill, fs: 34, ss: 30, tc: C.sell });
+      return;
+    }
+    if (st === 4) {
+      box(svg, 120, 120, 1400, 300, ['Bybit · WazirX · Radiant', '不是私钥被直接偷走，而是合法签名人被骗着授权了恶意交易', '→ 签名流程评估对任何密钥方案都适用'], { stroke: C.gold, fs: 40, ss: 32, sc: C.text, lh: 70 });
+      return;
+    }
+    const P = [['分片 A', '服务器 1', 300], ['分片 B', '服务器 2', 700], ['分片 C', '员工手机', 1240]];
+    P.forEach(([a, b, x], i) => {
+      const hit = st >= 3 && i < 2;
+      box(svg, x - 140, 300, 280, 120, [a, b], { stroke: hit ? C.sell : C.info, fill: hit ? C.badFill : C.panel, fs: 32 });
+    });
+    T(svg, 820, 480, '任意 2 片即可签名', C.t2, 30);
+    if (st >= 2) {
+      box(svg, 360, 60, 280, 110, ['审批服务', '说签就签'], { stroke: st >= 3 ? C.sell : C.warn, fill: st >= 3 ? C.badFill : C.panel, fs: 32 });
+      arrow(svg, 450, 172, 320, 296, st >= 3 ? C.sell : C.warn, false, 4);
+      arrow(svg, 550, 172, 680, 296, st >= 3 ? C.sell : C.warn, false, 4);
+    }
+    if (st >= 3) {
+      rect(svg, 900, 60, 680, 150, { fill: C.badFill, stroke: C.sell, sw: 4 });
+      T(svg, 1240, 110, '名义：3 选 2', C.text, 34, 'middle', true);
+      T(svg, 1240, 165, '实际：攻破 1 个审批服务', C.sell, 36, 'middle', true);
+    }
+  }
+
+  function sriStep(el, st) {
+    marks(el, st);
+    const svg = el.querySelector('#sri'); svg.innerHTML = '';
+    if (st < 1) { T(svg, 340, 280, '谁能改你的前端？', C.dim, 34); return; }
+    box(svg, 20, 30, 640, 90, ['<script src="cdn/wallet.js"', 'integrity="sha384-AbC…"'], { stroke: C.info, fs: 26, ss: 26, sc: C.gold });
+    arrow(svg, 340, 122, 340, 180, C.t2, false, 3);
+    box(svg, 160, 185, 360, 70, '浏览器计算下载内容的哈希', { stroke: C.line, fs: 26 });
+    arrow(svg, 340, 257, 340, 310, C.t2, false, 3);
+    if (st === 1) { box(svg, 100, 315, 480, 100, ['哈希一致', '→ 执行'], { stroke: C.buy, fill: C.goodFill, fs: 32, tc: C.buy }); }
+    if (st >= 2) {
+      box(svg, 20, 315, 640, 120, ['CDN 上的脚本被换掉 · 改了 1 个字符', '哈希不一致 → 拒绝执行'], { stroke: C.sell, fill: C.badFill, fs: 30, ss: 30, sc: C.sell, tc: C.text });
+      T(svg, 340, 490, '托管方被入侵，也注入不了代码', C.buy, 30, 'middle', true);
+    }
+  }
+
+  function caseStep(el, st) {
+    el.querySelectorAll('[data-c]').forEach(n => n.classList.toggle('pend', st < +n.dataset.c));
+    el.querySelectorAll('.lesson').forEach(n => n.style.opacity = st >= +n.dataset.c ? 1 : .1);
+  }
+  function seStep(el, st) {
+    el.querySelectorAll('[data-c]').forEach(n => n.classList.toggle('pend', st < +n.dataset.c));
+  }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>

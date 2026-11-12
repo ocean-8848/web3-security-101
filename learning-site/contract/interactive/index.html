@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>合约交互实验</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .lab { display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: var(--text); transition: border-color .15s, transform .15s; }
+  .lab:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .lab .num { font-family: var(--mono); font-size: 12px; color: var(--accent); font-weight: 700; }
+  .lab .t { font-size: 17px; font-weight: 650; }
+  .lab .d { color: var(--text-2); font-size: 13px; }
+  .lab .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+  .layer { margin-top: 28px; }
+  .layer h2 { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .layer h2 small { font-size: 13px; color: var(--text-2); font-weight: 400; }
+  @media (prefers-reduced-motion: reduce) { .lab { transition: none; } .lab:hover { transform: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <h1>合约交互实验</h1>
+    <a class="back" href="../README.md">← 返回学习目录</a>
+  </header>
+  <p class="lead">每个实验对应一个章节。读结论不如亲手验证：拖动滑块、点击按钮，观察合约和系统在不同参数、不同状态下怎样运行。所有参数均为<strong>示例值</strong>，不代表任何链或项目的实时参数。</p>
+
+  <div class="callout">
+    <strong>怎么用：</strong>
+    1. 先读对应章节的"一句话理解"和第一张图。
+    2. 打开实验，先点一个"预设场景"。
+    3. 改一个参数，记录结果怎样变化。
+    4. 回到章节末尾的"思考题"，用实验结果回答。
+  </div>
+
+  <section class="layer">
+    <h2>地图 <small>一笔交易怎样上链，费用去哪里</small></h2>
+    <div class="grid cols-3">
+      <a class="card lab" href="tx-lifecycle-lab.html">
+        <span class="num">第 01 / 02 章</span><span class="t">交易生命周期</span>
+        <span class="d">从签名到最终性，逐步动画。切换链，制造 Gas 不足、nonce 冲突、低小费，看交易卡在哪一步。</span>
+        <span class="tags"><span class="pill info">交易</span><span class="pill warn">失败分支</span><span class="pill accent">五条链</span></span>
+      </a>
+      <a class="card lab" href="eip1559-burn-lab.html">
+        <span class="num">第 02 / 13 章 · X01 / X02</span><span class="t">EIP-1559 销毁</span>
+        <span class="d">调节区块使用率，看基础费逐块变化和累计销毁。算一笔交易的费用拆分和年净发行。</span>
+        <span class="tags"><span class="pill info">基础费</span><span class="pill accent">销毁</span><span class="pill warn">净通胀</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="layer">
+    <h2>执行环境 <small>合约的数据放在哪里</small></h2>
+    <div class="grid cols-3">
+      <a class="card lab" href="evm-storage-lab.html">
+        <span class="num">第 03 / 04 章</span><span class="t">EVM 存储槽</span>
+        <span class="d">编辑状态变量，看 32 字节槽位怎样分配和打包。计算 mapping 与数组的槽位，比较读写成本。</span>
+        <span class="tags"><span class="pill info">存储槽</span><span class="pill accent">keccak256</span></span>
+      </a>
+      <a class="card lab" href="account-model-lab.html">
+        <span class="num">第 05 章 · X00 / X03 / X05 / X07</span><span class="t">账户模型对比</span>
+        <span class="d">同一笔转账，在 UTXO、EVM、Solana、XRPL 中怎样改变状态。测试接收方没有账户时会怎样，比较并行执行。</span>
+        <span class="tags"><span class="pill info">UTXO</span><span class="pill info">账户</span><span class="pill accent">并行</span></span>
+      </a>
+      <a class="card lab" href="tx-decoder-lab.html">
+        <span class="num">第 03 / 16 章</span><span class="t">交易解码</span>
+        <span class="d">粘贴 calldata，识别函数选择器，按 32 字节切分参数。识别无限授权风险，也能反向编码。</span>
+        <span class="tags"><span class="pill info">ABI</span><span class="pill warn">授权风险</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="layer">
+    <h2>积木 <small>代币与 DeFi 原语</small></h2>
+    <div class="grid cols-3">
+      <a class="card lab" href="token-ledger-lab.html">
+        <span class="num">第 06 章</span><span class="t">代币账本</span>
+        <span class="d">在合约内部操作 balances 与 allowances。体验两步授权、授权不足、无限授权被盗、精度错配。</span>
+        <span class="tags"><span class="pill info">ERC-20</span><span class="pill warn">授权</span><span class="pill accent">decimals</span></span>
+      </a>
+      <a class="card lab" href="amm-lab.html">
+        <span class="num">第 07 章 · Y01 / Y06</span><span class="t">AMM 兑换</span>
+        <span class="d">在 x·y=k 曲线上兑换，看价格冲击和滑点保护。比较持有与做 LP，体验联合曲线"毕业"。</span>
+        <span class="tags"><span class="pill info">恒定乘积</span><span class="pill warn">无常损失</span><span class="pill accent">联合曲线</span></span>
+      </a>
+      <a class="card lab" href="lending-lab.html">
+        <span class="num">第 07 章 · Y02 / Y04</span><span class="t">借贷清算</span>
+        <span class="d">拖动利用率看利率曲线。播放价格下跌，看健康因子跌破 1，再以清算人身份执行清算。</span>
+        <span class="tags"><span class="pill info">利率曲线</span><span class="pill sell">清算</span><span class="pill warn">坏账</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="layer">
+    <h2>扩展与商业 <small>谁在交易里分钱，代币怎样流通</small></h2>
+    <div class="grid cols-3">
+      <a class="card lab" href="mev-lab.html">
+        <span class="num">第 11 章</span><span class="t">MEV 三明治</span>
+        <span class="d">设置受害者的滑点容忍度，看搜索者怎样前跑、后跑。打开 MEV 保护，看攻击怎样消失。</span>
+        <span class="tags"><span class="pill sell">三明治</span><span class="pill info">交易供应链</span></span>
+      </a>
+      <a class="card lab" href="tokenomics-lab.html">
+        <span class="num">第 13 章</span><span class="t">代币释放沙盘</span>
+        <span class="d">设置分配比例与解锁时间表，看 48 个月的流通量、悬崖解锁、FDV，以及抛压和回购的对比。</span>
+        <span class="tags"><span class="pill info">解锁</span><span class="pill warn">低流通高 FDV</span><span class="pill accent">回购</span></span>
+      </a>
+      <a class="card lab" href="terra-spiral-lab.html">
+        <span class="num">第 15 章</span><span class="t">Terra 死亡螺旋</span>
+        <span class="d">模拟 UST 抛售、LUNA 铸造、价格下跌的循环。调节储备和抛售规模，找到"恢复"与"螺旋"的临界点。</span>
+        <span class="tags"><span class="pill sell">反身性</span><span class="pill warn">脱锚</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="layer">
+    <h2>项目与总结 <small>稳定币、对比与自测</small></h2>
+    <div class="grid cols-3">
+      <a class="card lab" href="stablecoin-lab.html">
+        <span class="num">X06</span><span class="t">稳定币发行与冻结</span>
+        <span class="d">调整储备构成，算发行商的利息利润和利率敏感性。在链上发行、冻结、销毁，做挤兑压力测试。</span>
+        <span class="tags"><span class="pill info">储备</span><span class="pill accent">利润</span><span class="pill warn">冻结</span></span>
+      </a>
+      <a class="card lab" href="chain-matrix.html">
+        <span class="num">X08</span><span class="t">对比矩阵</span>
+        <span class="d">九个项目按技术、费用、商业、权力、监管筛选排序。挑 2–3 个并排对比，按用途找合适的链。</span>
+        <span class="tags"><span class="pill info">对比</span><span class="pill accent">雷达图</span></span>
+      </a>
+      <a class="card lab" href="quiz.html">
+        <span class="num">全书</span><span class="t">每章自测题</span>
+        <span class="d">按章节或随机抽题，即时反馈，交卷后看薄弱章节和错题解析。</span>
+        <span class="tags"><span class="pill info">自测</span><span class="pill accent">错题回顾</span></span>
+      </a>
+    </div>
+  </section>
+
+  <footer class="note">全部参数为示例值，用于演示机制，不构成投资建议。实验是单文件 HTML，浏览器直接打开即可，无需服务器。</footer>
+</div>
+<script src="assets/handbook-nav.js"></script>
+</body>
+</html>

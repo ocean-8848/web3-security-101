@@ -1,0 +1,48 @@
+[
+  {
+    "after": "03-SimpleAMM.sol",
+    "title": "swap 一次兑换的调用顺序",
+    "mermaid": "sequenceDiagram\n    participant U as 交易者\n    participant A as SimpleAMM\n    participant TI as tokenIn 代币\n    participant TO as 另一侧代币\n    U->>A: swap tokenIn, amountIn, minOut\n    Note over A: nonReentrant 加锁<br/>tokenIn 不是 token0 或 token1 则 InvalidToken\n    A->>A: getAmountOut 用 reserve 报价\n    Note over A: amountOut 低于 minOut 则 InsufficientOutput 回滚\n    Note over A: 先改储备 rIn 加 amountIn，rOut 减 amountOut\n    A->>TI: transferFrom 交易者到池子 amountIn\n    A->>TO: transfer 池子到交易者 amountOut\n    A-->>U: 返回 amountOut 并解锁",
+    "notes": [
+      [
+        "flow",
+        "入金从交易者进池子，出金从池子回交易者，两步都在储备更新之后执行。"
+      ],
+      [
+        "fail",
+        "报价出来低于 minOut 就整笔回滚，这是滑点保护。"
+      ],
+      [
+        "risk",
+        "储备用 reserve0/reserve1 记账而不读 balanceOf，别人直接转币捐赠不会改变报价。"
+      ],
+      [
+        "limit",
+        "不支持转账扣费代币，实际到账少于 amountIn 时储备会记多。"
+      ]
+    ]
+  },
+  {
+    "after": "03-SimpleAMM.sol",
+    "title": "恒定乘积报价：入金如何决定出金",
+    "mermaid": "flowchart LR\n    A[\"amountIn 入金\"] --> B[\"乘 FEE_NUM 997<br/>得 amountInWithFee\"]\n    B --> C[\"分子 = amountInWithFee × reserveOut\"]\n    B --> D[\"分母 = reserveIn × 1000 + amountInWithFee\"]\n    C --> E[\"amountOut = 分子 / 分母\"]\n    D --> E\n    E --> F[\"reserveIn 加全部 amountIn<br/>reserveOut 减 amountOut\"]\n    F --> G[\"0.3% 手续费留在池里<br/>k 缓慢变大，LP 赚钱\"]",
+    "notes": [
+      [
+        "key",
+        "公式来自 (rIn + 入金×0.997) × (rOut − 出金) = rIn × rOut。"
+      ],
+      [
+        "flow",
+        "入金越大，分母越大，单位价格越差，这就是价格冲击。"
+      ],
+      [
+        "limit",
+        "首次 addLiquidity 份额 = sqrt(x·y) 减去锁给 address(0) 的 MINIMUM_LIQUIDITY。"
+      ],
+      [
+        "risk",
+        "之后加流动性按两边较小比例给份额，多给的一边相当于送给现有 LP。"
+      ]
+    ]
+  }
+]

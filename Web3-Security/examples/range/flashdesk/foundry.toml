@@ -1,0 +1,12 @@
+# flashdesk 审计靶场：只跑本地玩具合约。没有分叉，也没有 RPC 配置。
+[profile.default]
+src = "src"
+test = "test"
+out = "out"
+libs = ["lib"]
+solc = "0.8.30"
+evm_version = "prague"
+remappings = ["forge-std/=lib/forge-std/src/"]
+
+[fuzz]
+runs = 256

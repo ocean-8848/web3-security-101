@@ -1,0 +1,82 @@
+# 章节：预言机：Chainlink、TWAP、VRF
+
+## 思考题（共 2 题，按顺序作答）
+Q1. 在价格操纵实验中，把预言机从"现货"切换到"TWAP 30 分钟"。攻击者需要连续维持价格多少个区块？成本来自哪里？
+Q2. Chainlink 校验器中，选择 Arbitrum 并让排序器刚刚恢复 10 分钟。为什么要等待宽限期？
+
+## 章节正文
+
+倚门而歌 · 2.4
+
+# 预言机：链上世界的"眼睛"，也是最常被蒙住的眼睛
+
+学习目标比较现货价格、TWAP、Chainlink 三类价格源的操纵成本；写出完整的 Chainlink 校验；理解 VRF 的作用。
+
+前置章节2.2、2.3
+
+交互实验闪电贷价格操纵模拟器 · Chainlink 校验器
+
+## 1. 一句话理解
+
+协议用什么价格，攻击者就去操纵什么价格。价格源的安全性 = 操纵它的成本 ÷ 操纵后的收益。
+
+🎯 打个比方：一家当铺用"门口小摊上最后一笔成交价"给手表估价。你先花钱让朋友在小摊上用天价买一块同款手表，然后把自己的手表拿去当铺。这就是现货价格预言机攻击。
+
+## 2. 三类价格源
+
+[图]
+flowchart LR
+  A["AMM 现货价格reserve1 / reserve0slot0.sqrtPriceX96"] -- "单笔交易可操纵闪电贷成本≈0" --> X["❌ 不能用于估值"]
+  B["TWAP 时间加权均价Uniswap V2 累积价格 / V3 observe"] -- "需持续多个区块成本随窗口和流动性上升" --> Y["⚠️ 可用，注意窗口与流动性"]
+  C["Chainlink 喂价多节点链下聚合"] -- "操纵需攻击多个交易所和节点" --> Z["✅ 主流选择但要校验陈旧与异常"]
+[/图]
+
+读图要点
+
+- TWAP 抗闪电贷，但在 PoS 下，同一提议者连续出块（多块 MEV）会降低操纵成本。流动性小的池子 TWAP 仍可被操纵。
+
+- Chainlink 价格不是实时的：偏差超过阈值（例如 0.5%）或心跳时间（例如 1 小时）到达才更新。
+
+- 局限：任何预言机都只能报告市场价格。如果整个市场的流动性都很薄（小币种），"真实价格"本身就可被操纵（Mango Markets 2022）。
+
+## 3. Chainlink 正确用法
+
+function getPrice() public view returns (uint256) {
+    // L2：先检查排序器是否在线（Sequencer Uptime Feed）
+    (, int256 up, uint256 since, , ) = sequencerFeed.latestRoundData();
+    require(up == 0, "sequencer down");
+    require(block.timestamp - since > GRACE_PERIOD, "grace period");
+
+    (uint80 roundId, int256 answer, , uint256 updatedAt, ) = feed.latestRoundData();
+    require(answer > 0, "invalid price");
+    require(updatedAt != 0 && block.timestamp - updatedAt <= HEARTBEAT, "stale");
+    // 不同喂价的 decimals 不同：USD 对通常为 8，ETH 对通常为 18
+    return uint256(answer) * 1e18 / (10 ** feed.decimals());
+}
+
+- 不要用已弃用的 latestAnswer()：它不返回更新时间。
+
+- 每个喂价的心跳不同。不要对所有资产用同一个 HEARTBEAT 常量。
+
+- 部分聚合器有 minAnswer / maxAnswer 熔断边界。价格跌破下限时，喂价停在下限，而不是真实价格（2022 年 LUNA 崩盘时，有协议因此按错误价格接受抵押）。
+
+- 考虑喂价失效时的降级：try/catch 包裹，切换备用价格源或暂停，而不是让清算全部 revert。
+
+- 拉取式预言机（Pyth、Chainlink Data Streams）由用户在交易中提交签名价格。要检查价格时间戳和置信区间，防止用户挑选对自己有利的旧价格。
+
+## 4. VRF：可验证随机数
+
+Chainlink VRF 在链下用私钥和种子生成随机数与证明，链上合约验证证明后回调 fulfillRandomWords。审计关注：
+
+- 回调函数不能 revert，否则随机数丢失（VRF 不会重试）。
+
+- 请求后、回调前，用户不能再改变下注（否则可以看到随机数后撤单）。
+
+- 确认数 requestConfirmations 太低会受链重组影响。
+
+## 5. 思考题
+
+- 在价格操纵实验中，把预言机从"现货"切换到"TWAP 30 分钟"。攻击者需要连续维持价格多少个区块？成本来自哪里？
+
+- Chainlink 校验器中，选择 Arbitrum 并让排序器刚刚恢复 10 分钟。为什么要等待宽限期？
+

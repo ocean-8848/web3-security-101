@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EP06 外部调用与代币兼容性</title>
+<link rel="stylesheet" href="assets/player.css">
+<link rel="stylesheet" href="assets/contract.css">
+<style>
+  .ana { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .ana .card { font-size: 27px; display: flex; flex-direction: column; gap: 10px; min-height: 230px; }
+  .ana .card .a { color: var(--text-2); font-size: 25px; }
+  .tok { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 26px; }
+  .tok .card { font-size: 27px; padding: 16px 22px; display: grid; grid-template-columns: 54px 1fr; gap: 4px 12px; }
+  .tok .card .n { font-family: var(--mono); color: var(--gold); font-size: 36px; font-weight: 700; grid-row: span 3; }
+  .tok .card .r { color: var(--sell); font-size: 24px; } .tok .card .f { color: var(--buy); font-size: 24px; }
+  .chk { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; }
+  .chk .card { font-size: 27px; padding: 14px 22px; }
+</style>
+</head>
+<body>
+<div class="stage" data-ep="EP06" data-title="外部调用与代币兼容性：对方未必按标准出牌">
+
+  <!-- 1 开场 -->
+  <section class="scene title" data-title="开场" data-onstep="marks">
+    <div class="kicker">合约安全 · 主线 · EP06</div>
+    <h1>每一个外部调用，<br>都是<span class="hl">把命运交给别人</span></h1>
+    <div class="hero">
+      <div class="card sell" data-k="1" data-nocur><div class="k">2022 · Qubit 跨链桥</div><div class="big">约 8,000 万$</div><div>对零地址"转账"也算成功</div></div>
+      <div class="card warn" data-k="2" data-nocur><div class="k">2022 · Akutars NFT</div><div class="big">11,539.5 ETH</div><div>退款被卡死 + 出口条件写错</div></div>
+      <div class="card info" data-k="3" data-nocur><div class="k">TRON 上的 USDT</div><div class="big">false</div><div>转账成功，却返回 false</div></div>
+    </div>
+    <ol class="say">
+      <li>大家好，欢迎来到主线第6集，外部调用与代币兼容性。一句话理解，每一个外部调用，都是把命运交给别人。对方可能失败，可能撒谎，可能拖延，也可能根本不存在。</li>
+      <li>看三个例子，以下据公开报道。2022年，Qubit 跨链桥损失约8000万美元。它对一个零地址做转账，结果被当成了成功。</li>
+      <li>同年，以太坊上的 Akutars NFT，11539.5个 ETH 被永久锁死。退款被一个拒收的合约卡住，项目方提款的条件又写错了。</li>
+      <li>还有 TRON 上的 USDT，据一份公开审计，它的转账在成功时也返回 false。用以太坊上的标准写法去调用它，会一律失败。</li>
+    </ol>
+  </section>
+
+  <!-- 2 比喻 -->
+  <section class="scene" data-title="快递员与登记簿" data-onstep="marks">
+    <div class="kicker">一句话理解 · 打个比方</div>
+    <h2>你让快递员送包裹，然后在登记簿上写"已送达"</h2>
+    <div class="ana">
+      <div class="card" data-k="0"><b>快递员没回话</b><div class="a">你当作送到了</div><div class="hl">→ 没查返回值</div></div>
+      <div class="card sell" data-k="1"><b>地址是一块空地</b><div class="a">空地不会拒收</div><div class="hl">→ 目标没有代码</div></div>
+      <div class="card warn" data-k="2"><b>收件人扣下 10% 小费</b><div class="a">登记簿却写全额</div><div class="hl">→ 收税代币</div></div>
+      <div class="card info" data-k="3"><b>第 1 个拒收，后 99 个送不出</b><div class="hl">→ 拒绝服务</div></div>
+    </div>
+    <div class="card warn fs30" data-k="4">比喻不准的地方：快递员一次只出一种错。外部合约可以<b>同时</b>撒谎、回调、耗尽 gas。</div>
+    <ol class="say">
+      <li>打个比方。你让快递员把包裹送到一个地址，然后在登记簿上写已送达。快递员没回话，你就当作送到了。这是没检查返回值。</li>
+      <li>地址是一块空地，快递员说送到了，因为空地不会拒收。这是目标地址没有代码。</li>
+      <li>收件人收件时扣下10%当小费，你的登记簿上却写着全额。这是收税代币。</li>
+      <li>收件人故意拒收，而你要按顺序送完100个包裹，第1个被拒，后面99个都送不出去。这是拒绝服务。</li>
+      <li>比喻不准的地方在于，快递员一次只出一种错。外部合约可以同时撒谎、回调、耗尽 gas。</li>
+    </ol>
+  </section>
+
+  <!-- 3 低级调用四陷阱 -->
+  <section class="scene" data-title="低级调用的四个陷阱" data-onstep="rowStep">
+    <div class="kicker">低级调用</div>
+    <h2>失败不冒泡，空地也说"成功"</h2>
+    <table class="t sm">
+      <thead><tr><th>陷阱</th><th>说明</th><th>修复</th></tr></thead>
+      <tbody>
+        <tr><td>① 不检查返回值</td><td>call 失败只返回 false</td><td>require(ok)</td></tr>
+        <tr><td>② 目标没有代码</td><td>对无代码地址 call 返回 true，数据为空</td><td>调用前检查 code.length &gt; 0</td></tr>
+        <tr><td>③ 返回数据炸弹</td><td>对方返回超大数据，复制时耗尽 gas</td><td>限制复制长度</td></tr>
+        <tr><td>④ gas 不足型失败</td><td>故意给刚好不够的 gas，内层失败外层继续</td><td>检查 gasleft；关键失败整体回滚</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>先看低级调用的四个陷阱。第一，不检查返回值。低级 call 失败时只返回 false，不会回滚，调用方必须自己检查。</li>
+      <li>第二，目标地址没有代码。对一个没有代码的地址做 call，会返回成功，返回数据为空。下面的 Qubit 案例就栽在这里。</li>
+      <li>第三，返回数据炸弹。对方故意返回超大的数据，你复制到内存时耗尽 gas。修复是限制复制的长度。</li>
+      <li>第四，gas 不足型失败。调用方故意给刚好不够的 gas，让内部调用失败，而外层继续执行。修复是检查剩余 gas，关键调用失败时整体回滚。</li>
+    </ol>
+  </section>
+
+  <!-- 4 Qubit -->
+  <section class="scene" data-title="案例：Qubit 跨链桥" data-onstep="qbStep">
+    <div class="kicker">真实案例 · 2022-01 · 以太坊 → BNB Chain · 据 SlowMist 公开分析</div>
+    <h2>每一步单独看都"合理"</h2>
+    <svg id="qb" width="1640" height="560" viewBox="0 0 1640 560"></svg>
+    <ol class="say">
+      <li>来看 Qubit 跨链桥，以下据 SlowMist 的公开分析。这个桥把以太坊上的存款，映射成 BNB Chain 上的代币，再用作借贷抵押品。桥为原生 ETH 配置的代币地址，是零地址。ETH 存款本该走专门的函数，它会检查附带的 ETH 数量。</li>
+      <li>攻击者调用的是普通的代币存款函数，传入 ETH 对应的资源编号。白名单检查通过，因为这个编号确实被允许。</li>
+      <li>普通存款函数对零地址执行安全转账。零地址没有代码，低级调用返回成功，返回数据为空。旧版的安全转账库，为了兼容不返回值的代币，把空返回当作成功。</li>
+      <li>桥记录了一笔 ETH 存款，BNB Chain 一侧铸造了大量映射代币。攻击者拿它做抵押，借空了借贷池，损失约8000万美元。</li>
+      <li>漏洞来自组合，零地址，兼容性妥协，加上缺少原生币检查。白名单只告诉你这个编号被允许，不告诉你它对应什么类型的资产。现在 OpenZeppelin 的安全转账库，会在返回数据为空时检查目标是否有代码。</li>
+    </ol>
+  </section>
+
+  <!-- 5 非标准代币 1-4 -->
+  <section class="scene" data-title="八种非标准代币（上）" data-onstep="marks">
+    <div class="kicker">ERC-20 只规定接口，没规定行为</div>
+    <h2>前四种：返回值、收税、变基</h2>
+    <div class="tok">
+      <div class="card" data-k="0"><span class="n">1</span><b>transfer 不返回值</b><span class="r">以太坊 USDT、BNB · 按接口解码时回滚</span><span class="f">→ SafeERC20</span></div>
+      <div class="card sell" data-k="1"><span class="n">2</span><b>成功却返回 false</b><span class="r">TRON 上的 USDT · SafeERC20 判定失败</span><span class="f">→ 用余额差判断</span></div>
+      <div class="card" data-k="2"><span class="n">3</span><b>转账收税</b><span class="r">部分 BSC 社区代币 · 记账 &gt; 实收</span><span class="f">→ 记账用余额差</span></div>
+      <div class="card" data-k="3"><span class="n">4</span><b>余额自动变化</b><span class="r">stETH、AMPL · 缓存的余额失效</span><span class="f">→ 用份额记账，如 wstETH</span></div>
+    </div>
+    <ol class="say">
+      <li>ERC-20 标准只规定了接口，没有规定行为。真实世界的代币五花八门。第一种，转账函数不返回值，比如以太坊上的 USDT。按标准接口去解码返回值，就会回滚。用 SafeERC20 可以兼容。</li>
+      <li>第二种，转账成功却返回 false，比如 TRON 上的 USDT。这时 SafeERC20 反而会判定失败。要改用余额差来判断，后面专门讲。</li>
+      <li>第三种，转账收税，部分 BSC 社区代币就是这样。你记账的金额，大于实际收到的金额。要按余额差记账。</li>
+      <li>第四种，余额自动变化，也叫变基代币，比如 stETH。你缓存的余额会失效。要用份额记账，比如它的包装版本 wstETH。</li>
+    </ol>
+  </section>
+
+  <!-- 6 非标准代币 5-8 -->
+  <section class="scene" data-title="八种非标准代币（下）" data-onstep="marks">
+    <div class="kicker">ERC-20 只规定接口，没规定行为</div>
+    <h2>后四种：黑名单、暂停、钩子、升级</h2>
+    <div class="tok">
+      <div class="card" data-k="0"><span class="n">5</span><b>黑名单 / 冻结</b><span class="r">USDT、USDC · 一个地址被冻，批量全失败</span><span class="f">→ 拉取式；单笔失败不影响全局</span></div>
+      <div class="card" data-k="1"><span class="n">6</span><b>可暂停</b><span class="r">多数中心化稳定币 · 清算或提款暂停</span><span class="f">→ 风险披露；降级路径</span></div>
+      <div class="card" data-k="2"><span class="n">7</span><b>转账钩子</b><span class="r">ERC-777、ERC-1363 · 重入</span><span class="f">→ CEI + 重入锁</span></div>
+      <div class="card" data-k="3"><span class="n">8</span><b>可升级</b><span class="r">USDT、USDC 等 · 行为未来可能改变</span><span class="f">→ 监控升级事件</span></div>
+    </div>
+    <ol class="say">
+      <li>第五种，黑名单和冻结，USDT 和 USDC 都有。批量操作里只要一个地址被冻结，整笔都会失败。要用拉取式支付，或者让单笔失败不影响全局。</li>
+      <li>第六种，可以暂停，多数中心化稳定币都有。暂停时，清算或者提款也会停。要做风险披露，并设计降级路径。</li>
+      <li>第七种，带转账钩子，比如 ERC-777，会导致重入。用 CEI 加重入锁。</li>
+      <li>第八种，可以升级，比如 USDT 和 USDC 本身都是可升级的。它的行为将来可能改变。要监控它的升级事件。</li>
+    </ol>
+  </section>
+
+  <!-- 7 TRON USDT -->
+  <section class="scene" data-title="TRON USDT：成功却返回 false" data-onstep="trStep">
+    <div class="kicker">据 OpenZeppelin 2026 年公开的 Across 协议 TRON 部署审计</div>
+    <h2 id="trH">标准写法在 TRON 上一律回滚</h2>
+    <div class="row">
+      <div class="col" style="flex:1.15">
+        <div class="src sm"><span class="ln c">// ✅ 以余额差判断推送结果</span><span class="ln" data-mark="2:good">uint before = token.balanceOf(to);</span><span class="ln c">// 忽略返回值：成功时也返回 false</span><span class="ln" data-mark="2:good">(bool ok, ) = token.call(transfer(to, amt));</span><span class="ln" data-mark="2:good">require(ok, "call reverted");</span><span class="ln" data-mark="2:good">require(token.balanceOf(to) - before == amt);</span></div>
+      </div>
+      <div class="col" style="flex:0.85" id="trSide"></div>
+    </div>
+    <ol class="say">
+      <li>详细看第二种。据 OpenZeppelin 2026年公开的一份审计报告，TRON 上部署的 USDT 合约，转账函数在成功时也返回 false。</li>
+      <li>后果是，用 SafeERC20 推送 USDT 的代码，在 TRON 上一律回滚。存款能进来，提款却全部失败。</li>
+      <li>被审计的项目为 TRON 单独实现了一个库。转账时不读返回值，只检查调用没有回滚，再检查接收方余额是否正好增加了对应金额。同一份审计认为，拉取方向的转账和授权在 TRON USDT 上行为正常，所以保持不变。</li>
+      <li>注意，余额差方案假设代币没有转账税。据同一份审计，Tether 在 TRON 上保留了开启转账手续费、黑名单和暂停的能力。如果手续费被开启，等于金额的检查就会失败。设计时要明确选择，是失败即回滚，还是按实收金额记账。</li>
+    </ol>
+  </section>
+
+  <!-- 8 收税代币 -->
+  <section class="scene" data-title="收税代币的记账" data-onstep="taxStep">
+    <div class="kicker">数字为示例 · 转账税 2%</div>
+    <h2 id="taxH">按参数记账，最后一个人取不出钱</h2>
+    <div class="row">
+      <table class="t" style="flex:1.2" id="tax"><thead><tr><th>用户</th><th class="num">存入参数</th><th class="num">账本记</th><th class="num">合约实收</th></tr></thead><tbody></tbody></table>
+      <div class="col" style="flex:0.8" id="taxSide"></div>
+    </div>
+    <ol class="say">
+      <li>看收税代币怎样让协议资不抵债。示例代币有2%的转账税。用户 A 存入100枚，转账时被扣2枚，合约实际只收到98枚。可是账本按参数记了100。</li>
+      <li>五个用户各存入100枚。账本合计500，合约实际只有490。</li>
+      <li>大家依次取款。每人按账本取100枚，前四个人取走400。</li>
+      <li>轮到第五个人，合约里只剩90枚，他的100取不出来。如果取款时也收税，情况更糟。这就是按参数记账的后果，最后一个人承担了所有人的税。</li>
+      <li>修复是按实收金额记账。转账前读一次余额，转账后再读一次，差值才是实际收到的数量。注意要配合重入锁，防止转账里的回调扭曲余额差。不打算支持收税和变基代币的协议，要显式拒绝。</li>
+    </ol>
+  </section>
+
+  <!-- 9 DoS 模式 -->
+  <section class="scene" data-title="外部调用导致的拒绝服务" data-onstep="rowStep">
+    <div class="kicker">拒绝服务 DoS</div>
+    <h2>让功能永久或长期无法使用</h2>
+    <table class="t sm">
+      <thead><tr><th>模式</th><th>例子</th><th>修复</th></tr></thead>
+      <tbody>
+        <tr><td>推送支付中有人回滚</td><td>拍卖退款给上一出价者，对方合约总是拒收</td><td>拉取式支付</td></tr>
+        <tr><td>无界循环</td><td>遍历所有用户发奖励，超过区块 gas 上限</td><td>分页；累计奖励因子</td></tr>
+        <tr><td>黑名单卡住批量</td><td>批量分发 USDT，其中一个地址被冻结</td><td>逐个 try/catch，失败记账待领</td></tr>
+        <tr><td>依赖强制余额等式</td><td>require(余额 == 记录)，被强制转入 1 个单位</td><td>用 ≥，或不依赖实际余额</td></tr>
+        <tr><td>TRON 执行超时</td><td>单笔执行超过 80 毫秒 CPU 时间</td><td>控制单笔计算量</td></tr>
+      </tbody>
+    </table>
+    <ol class="say">
+      <li>外部调用还会导致拒绝服务，让功能永久或长期无法使用。第一种模式，推送支付中有人回滚。比如拍卖时，新的出价要先把钱退给上一个出价者。如果上一个出价者是一个总是拒收的合约，新出价就永远失败，他永远是最高价。修复是拉取式支付。</li>
+      <li>第二种，无界循环。遍历所有用户发奖励，用户数增长后，gas 超过区块上限。修复是分页处理，或者用累计奖励因子，让每个用户自己领。第三种，黑名单地址卡住批量操作。修复是逐个处理，失败的记账待领取。</li>
+      <li>第四种，依赖强制的余额等式。第2集讲过，余额可以被强制转入，所以要用大于等于。第五种，TRON 上单笔执行超过80毫秒的 CPU 时间，会返回超时。在以太坊上 gas 足够的循环，在 TRON 上可能失败。</li>
+    </ol>
+  </section>
+
+  <!-- 10 Akutars -->
+  <section class="scene" data-title="案例：Akutars" data-onstep="akStep">
+    <div class="kicker">真实案例 · 2022-04 · 以太坊 · 据公开复盘</div>
+    <h2>两个出口，都被堵死</h2>
+    <div class="vs">
+      <div class="card bad" data-k="0"><h3>出口一：退款</h3><div class="fs28">按顺序推送退款给每个出价者<br>一个拒收的合约 → <b>整个退款流程卡住</b></div></div>
+      <div class="card bad" data-k="1"><h3>出口二：项目方提款</h3><div class="fs28">提款条件比较了<b>错误的变量</b><br>条件永远不成立</div></div>
+    </div>
+    <div class="row center" data-k="2" style="gap:40px">
+      <div class="stat"><div class="k">永久锁定</div><div class="v down">11,539.5 ETH</div></div>
+      <div class="card warn fs28">推送改拉取 · 出口条件写不变量测试</div>
+    </div>
+    <ol class="say">
+      <li>来看 Akutars，2022年4月，以下据公开复盘。这是一个 NFT 拍卖合约，结束后要按顺序给每个出价者推送退款。有人用一个拒收的合约参与出价，整个退款流程被卡住了。</li>
+      <li>更糟的是，项目方自己提款的函数，条件里比较了一个错误的变量，这个条件永远不会成立。</li>
+      <li>两个出口都被堵死，11539.5个 ETH 被永久锁在合约里。修复思路是，推送改成拉取，出口条件用不变量测试验证，确保资金在任何情况下都有路可走。</li>
+    </ol>
+  </section>
+
+  <!-- 11 授权风险 -->
+  <section class="scene" data-title="授权的三种风险" data-onstep="marks">
+    <div class="kicker">Approve · 据公开复盘</div>
+    <h2>持有授权的合约，绝不能接受任意调用</h2>
+    <div class="grid3">
+      <div class="card" data-k="0"><h3>无限授权</h3><div class="fs28">协议被攻破 → 钱包里该代币全部可被转走，<b>哪怕没存进协议</b></div></div>
+      <div class="card" data-k="1"><h3>授权钓鱼</h3><div class="fs28">诱导签 approve 或链下 permit<br>TRON 与以太坊原理相同</div></div>
+      <div class="card sell" data-k="2"><h3>任意调用 + 授权</h3><div class="fs28">路由持有授权，又允许指定目标 → transferFrom(受害者, 攻击者)</div></div>
+    </div>
+    <div class="card warn fs28" data-k="3"><b>Sushi RouteProcessor2 · 2023-04 · 约 330 万$</b>：池子地址由用户填写；攻击者填入自己的"池子"，回调里把任意授权用户设为付款人。回调只检查"是不是刚才调用的地址"，没检查"是不是真实池子"。</div>
+    <ol class="say">
+      <li>最后是授权相关的风险。第一，无限授权。用户给协议授权了最大额度。协议被攻破后，攻击者可以转走用户钱包里的全部该代币，哪怕用户根本没有存进协议。</li>
+      <li>第二，授权钓鱼。钓鱼网站诱导用户签署授权，或者链下签名授权。TRON 上的 USDT 授权钓鱼，和以太坊上的签名授权钓鱼，原理相同。</li>
+      <li>第三，任意调用加授权。路由合约持有用户的授权，又允许用户指定任意的调用目标。攻击者就让路由去调用代币的转账函数，从受害者转给自己。这是聚合器被盗最常见的根因之一。</li>
+      <li>案例是 Sushi 的路由合约，2023年4月，约330万美元。路由里的池子地址由用户填写，攻击者填入自己伪造的池子，在回调里把任意一个授权过的用户设为付款人。回调只检查了是不是刚才调用的地址，没检查是不是真实的池子。</li>
+    </ol>
+  </section>
+
+  <!-- 12 审计检查点 -->
+  <section class="scene" data-title="审计检查点" data-onstep="marks">
+    <div class="kicker">审计清单</div>
+    <h2>八个检查点</h2>
+    <div class="chk">
+      <div class="card" data-k="0">① 所有低级 call 都检查了返回值</div>
+      <div class="card" data-k="0">② 目标可能是零地址或无代码时，显式检查</div>
+      <div class="card" data-k="1">③ 代币操作用 SafeERC20；TRON 的 USDT 推送单独处理</div>
+      <div class="card" data-k="1">④ 支持任意代币时按实收记账；不支持的显式拒绝</div>
+      <div class="card" data-k="2">⑤ 批量转账与退款用拉取式，或单笔失败不影响整体</div>
+      <div class="card" data-k="2">⑥ 没有随用户规模增长的无界循环</div>
+      <div class="card gold" data-k="3">⑦ 持有授权的合约不允许任意 calldata</div>
+      <div class="card" data-k="3">⑧ 代币精度从合约读取</div>
+    </div>
+    <ol class="say">
+      <li>审计检查点八个。第一，所有低级调用都检查了返回值。第二，调用目标可能是零地址或无代码地址时，显式检查。</li>
+      <li>第三，代币操作用 SafeERC20，部署到 TRON 时，USDT 的推送单独处理。第四，支持任意代币时，按实收金额记账，不支持的类型显式拒绝。</li>
+      <li>第五，批量转账和退款用拉取模式，或者单笔失败不影响整体。第六，没有随用户规模增长的无界循环。</li>
+      <li>第七，持有授权的合约，不允许任意的调用数据。第八，代币精度从合约读取。</li>
+    </ol>
+  </section>
+
+  <!-- 13 练一练 -->
+  <section class="scene" data-title="练一练" data-onstep="marks">
+    <div class="kicker">练一练 · 暂停视频想一想</div>
+    <h2>以太坊正常；部署到 TRON 后，提款全部失败</h2>
+    <div class="grid2">
+      <div class="card" data-k="0"><b>最可能的原因？</b><div class="muted fs28">提示：存款是"拉"，提款是"推"</div></div>
+      <div class="card sell" data-k="1"><b>参考</b><div class="fs28">提款用 <b>SafeERC20.safeTransfer</b> 推送 USDT；TRON USDT 成功时返回 false → 一律回滚。存款用 transferFrom 拉取，行为正常。<br><b class="up">修复</b>：推送改用余额差判断，并决定收税时的处理。</div></div>
+    </div>
+    <ol class="say">
+      <li>来练一练。一个收益协议在以太坊上运行良好。部署到 TRON 后，存款正常，提款全部失败。最可能的原因是什么？提示一下，存款是拉，提款是推。</li>
+      <li>参考答案。提款用 SafeERC20 推送 USDT，而 TRON 上的 USDT 在成功时返回 false，所以一律回滚。存款用拉取方向的转账，行为正常。修复是推送改用余额差判断，并提前决定，如果代币开启收税，要怎样处理。</li>
+    </ol>
+  </section>
+
+  <!-- 14 小结 -->
+  <section class="scene" data-title="小结与预告" data-onstep="marks">
+    <div class="kicker">小结</div>
+    <h2 data-show="0-2">记住三件事</h2>
+    <ul class="bullets" data-show="0-2">
+      <li data-step="0">低级调用：<span class="hl">查返回值、查有无代码</span>；零地址 + 兼容妥协 = Qubit。</li>
+      <li data-step="1">代币只守接口不守行为：<span class="hl">按实收记账</span>；TRON USDT 推送用余额差。</li>
+      <li data-step="2"><span class="hl">推送改拉取</span>防 DoS；持有授权的合约不接受任意调用。</li>
+    </ul>
+    <h2 data-show="3">下一集：EP07 预言机与闪电贷</h2>
+    <div class="path" data-show="3">
+      <div class="card sell"><div class="n">1 tx</div><b>现货价操纵</b><div class="d">一笔交易就能改写的价格</div></div>
+      <div class="card gold"><div class="n">TWAP</div><b>时间加权</b><div class="d">多区块操纵的代价</div></div>
+      <div class="card info"><div class="n">L2</div><b>排序器状态</b><div class="d">链停了，价格怎么办</div></div>
+    </div>
+    <ol class="say">
+      <li>小结三点。第一，低级调用要查返回值，也要查目标有没有代码。零地址加兼容性妥协，就是 Qubit。</li>
+      <li>第二，代币只遵守接口，不遵守行为。按实收金额记账。TRON 上推送 USDT，用余额差判断。</li>
+      <li>第三，推送改成拉取，防止拒绝服务。持有授权的合约，绝不接受任意调用。</li>
+      <li>下一集讲预言机与闪电贷。合约相信了一个一笔交易就能改写的价格。现货价操纵，时间加权平均价，以及二层网络排序器停摆时，价格该怎么办。下集见。</li>
+    </ol>
+  </section>
+</div>
+<script src="assets/kit.js"></script>
+<script>
+  const { C, svgEl, T, box, arrow, rect, line } = K;
+
+  function qbStep(el, st) {
+    const svg = el.querySelector('#qb'); svg.innerHTML = '';
+    const op = k => st >= k ? 1 : .12;
+    box(svg, 20, 30, 420, 120, ['ETH 的代币地址 = 0x0', '本该走 depositETH（查 msg.value）'], { stroke: C.info, fs: 28, ss: 24 });
+    box(svg, 20, 210, 420, 100, ['deposit(ETH 资源编号)', '攻击者走普通存款'], { stroke: C.sell, fs: 28, op: op(1) });
+    svg.appendChild(svgEl('polygon', { points: '640,200 790,260 640,320 490,260', fill: C.panel, stroke: st >= 1 ? C.buy : C.line, 'stroke-width': 3, opacity: op(1) }));
+    T(svg, 640, 260, '白名单？✓', C.buy, 28, 'middle', true, op(1));
+    arrow(svg, 442, 260, 486, 260, C.t2, false, 3, op(1));
+    box(svg, 850, 200, 360, 120, ['safeTransferFrom', '目标 = 0x0'], { stroke: C.warn, fs: 30, op: op(2) });
+    arrow(svg, 792, 260, 846, 260, C.t2, false, 3, op(2));
+    box(svg, 1260, 200, 360, 120, ['无代码 → 返回成功', '空返回 = 成功（旧库）'], { stroke: C.sell, fill: C.badFill, fs: 28, op: op(2) });
+    arrow(svg, 1212, 260, 1256, 260, C.sell, false, 4, op(2));
+    box(svg, 1260, 380, 360, 110, ['记录 ETH 存款', 'BSC 铸造映射代币'], { stroke: C.sell, fs: 28, op: op(3) });
+    arrow(svg, 1440, 322, 1440, 376, C.sell, false, 4, op(3));
+    box(svg, 850, 380, 360, 110, ['抵押借空资金池', '约 8,000 万$'], { stroke: C.sell, fill: C.badFill, fs: 30, op: op(3), tc: C.sell, bold: true });
+    arrow(svg, 1256, 435, 1214, 435, C.sell, false, 4, op(3));
+    if (st >= 4) {
+      rect(svg, 20, 360, 790, 170, { fill: C.curFill, stroke: C.gold, sw: 3 });
+      T(svg, 415, 400, '零地址 + 兼容性妥协 + 缺少原生币检查', C.gold, 28, 'middle', true);
+      T(svg, 415, 445, '白名单只说"允许"，不说"是什么资产"', C.text, 26);
+      T(svg, 415, 490, '新版 SafeERC20：空返回时检查目标有代码', C.buy, 26, 'middle', true);
+    }
+  }
+
+  function trStep(el, st) {
+    marks(el, st);
+    const side = el.querySelector('#trSide');
+    side.innerHTML = [
+      '<div class="card warn fs30">TRON USDT<br>transfer 成功时 → <b class="down">返回 false</b></div>',
+      '<div class="card sell fs28">SafeERC20.safeTransfer<br>看到 false → <b>回滚</b><br>存款（拉）正常 · 提款（推）全失败</div>',
+      '<div class="card buy fs28">不读返回值<br>只看：调用没回滚 + 接收方余额<b>正好</b>增加 amt</div><div class="card fs26 muted">transferFrom / approve 行为正常 → 拉取方向不变</div>',
+      '<div class="card warn fs28">假设<b>没有转账税</b><br>Tether 保留开启手续费、黑名单、暂停的能力<br>→ 选择：失败即回滚，还是按实收记账</div>'][st];
+    el.querySelector('#trH').textContent = st >= 2 ? '推送 USDT：看余额，不看返回值' : '标准写法在 TRON 上一律回滚';
+  }
+
+  function taxStep(el, st) {
+    const tb = el.querySelector('#tax tbody');
+    const users = ['A', 'B', 'C', 'D', 'E'];
+    const nDep = st === 0 ? 1 : 5;
+    let rows = users.slice(0, nDep).map((u, i) => `<tr class="${st === 0 ? 'cur' : ''}"><td>${u}</td><td class="num">100</td><td class="num">100</td><td class="num">98</td></tr>`).join('');
+    rows += `<tr class="cur"><td><b>合计</b></td><td class="num">${nDep * 100}</td><td class="num">${nDep * 100}</td><td class="num ${nDep > 1 ? 'bad' : ''}">${nDep * 98}</td></tr>`;
+    tb.innerHTML = rows;
+    const side = el.querySelector('#taxSide');
+    const remain = st >= 3 ? 90 : st >= 2 ? 90 : 490;
+    side.innerHTML = st <= 1 ? '<div class="card warn fs28">按参数记账：记 100<br>实际只收到 98</div>' :
+      `<div class="stat"><div class="k">前四人各取 100 后，合约剩余</div><div class="v ${st >= 3 ? 'down' : ''}">${remain}</div></div>` +
+      (st >= 3 ? '<div class="card sell fs28">E 要取 100，只剩 90 → <b>取不出</b><br>最后一个人承担了所有人的税</div>' : '') +
+      (st >= 4 ? '<div class="card buy fs26">received = 转后余额 − 转前余额<br>配合重入锁；不支持就显式拒绝</div>' : '');
+    el.querySelector('#taxH').textContent = st >= 4 ? '按实收记账：差值才是收到的数' : '按参数记账，最后一个人取不出钱';
+  }
+
+  function akStep(el, st) { marks(el, st); }
+</script>
+<script src="assets/player.js"></script>
+</body>
+</html>
