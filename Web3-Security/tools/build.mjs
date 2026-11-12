@@ -5,7 +5,10 @@ import path from 'node:path';
 import { convert, titleOf } from './md2data.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
-const rd = p => fs.readFileSync(path.join(ROOT, p), 'utf8');
+// 示例代码在仓库根目录 examples/（与 Web3-Security/ 同级）；文档里仍用逻辑路径 examples/…
+const EXAMPLES = path.resolve(ROOT, '..', 'examples');
+const abs = p => p.startsWith('examples/') ? path.join(EXAMPLES, p.slice('examples/'.length)) : path.join(ROOT, p);
+const rd = p => fs.readFileSync(abs(p), 'utf8');
 
 const NAV = [
   ['start', '开始', ['README.md', 'WRITING-GUIDE.md']],
@@ -92,11 +95,11 @@ for (const [file, group] of order) {
   let md = rd(file);
   if (file === 'examples/README.md') {
     md += '\n\n## 源码\n';
-    for (const f of fs.readdirSync(path.join(ROOT, 'examples')).filter(f => f.endsWith('.sol')).sort())
+    for (const f of fs.readdirSync(EXAMPLES).filter(f => f.endsWith('.sol')).sort())
       md += `\n### ${f}\n\n\`\`\`solidity\n${rd('examples/' + f).trimEnd()}\n\`\`\`\n`;
-    for (const sub of ['foundry/src', 'foundry/test', 'minilend/src', 'minilend/test'].concat(fs.existsSync(path.join(ROOT, 'examples/range')) ? fs.readdirSync(path.join(ROOT, 'examples/range')).flatMap(p => ['range/' + p + '/src', 'range/' + p + '/test']) : [])) {
-      if (!fs.existsSync(path.join(ROOT, 'examples', sub))) continue;
-      for (const f of fs.readdirSync(path.join(ROOT, 'examples', sub)).filter(f => f.endsWith('.sol')).sort())
+    for (const sub of ['foundry/src', 'foundry/test', 'minilend/src', 'minilend/test'].concat(fs.existsSync(path.join(EXAMPLES, 'range')) ? fs.readdirSync(path.join(EXAMPLES, 'range')).flatMap(p => ['range/' + p + '/src', 'range/' + p + '/test']) : [])) {
+      if (!fs.existsSync(path.join(EXAMPLES, sub))) continue;
+      for (const f of fs.readdirSync(path.join(EXAMPLES, sub)).filter(f => f.endsWith('.sol')).sort())
         md += `\n### ${sub}/${f}\n\n\`\`\`solidity\n${rd('examples/' + sub + '/' + f).trimEnd()}\n\`\`\`\n`;
     }
   }

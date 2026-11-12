@@ -6,7 +6,7 @@
 > 3. 区分合约层权限和账户层权限（以 TRON 账户权限为例）。
 >
 > 前置章节：[03 EVM 与 Solidity 安全基础](03-evm-solidity-basics.md)
-> 交互实验：[storage-proxy-lab.html](interactive/storage-proxy-lab.html) ｜ 示例合约：[examples/02-AccessControl.sol](examples/02-AccessControl.sol)
+> 交互实验：[storage-proxy-lab.html](interactive/storage-proxy-lab.html) ｜ 示例合约：[examples/02-AccessControl.sol](../examples/02-AccessControl.sol)
 
 > 最后核对：2026-11-09
 
@@ -195,7 +195,7 @@ L2 的桥合约持有用户全部跨链资产。谁能升级桥，谁就能决�
 
 ### 4.4 用代码验证修复
 
-示例合约 [02-AccessControl.sol](examples/02-AccessControl.sol) 同时包含 `VulnerableWallet` 和 `SafeWallet`。Foundry 靶场 `examples/foundry/test/AccessControl.t.sol` 用于对照这两个版本。
+示例合约 [02-AccessControl.sol](../examples/02-AccessControl.sol) 同时包含 `VulnerableWallet` 和 `SafeWallet`。Foundry 靶场 `examples/foundry/test/AccessControl.t.sol` 用于对照这两个版本。
 
 ```bash
 # 运行访问控制示例的测试

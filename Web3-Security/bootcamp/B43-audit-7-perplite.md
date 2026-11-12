@@ -7,7 +7,7 @@
 >
 > 前置知识：[B42 永续合约](B42-perps.md)；会写 Foundry 测试。
 > 预计用时：4–6 小时。
-> 靶场：[examples/range/perplite/](../examples/range/perplite/README.md)
+> 靶场：[examples/range/perplite/](../../examples/range/perplite/README.md)
 > 交互实验：[perp-lab.html](../interactive/perp-lab.html)
 > 关联章节：[08 预言机](../08-oracle-flashloan.md)｜[07 外部调用](../07-external-calls-tokens.md)｜[11 DeFi 经济安全](../11-defi-economic-security.md)｜[27 审计流程](../27-audit-testing-workflow.md)｜[B25 综合实战](B25-capstone-minilend.md)
 > 最后核对：2026-11-10（forge 1.5.1、solc 0.8.28 本地运行；下文输出来自真实运行）
@@ -58,7 +58,7 @@ PerpLite 只有一个合约文件，约 240 行。它有 LP 金库、两步下�
 ## 3. 环境
 
 ```bash
-cd Web3-Security/examples/range/perplite # 进入 PerpLite 靶场目录
+cd examples/range/perplite # 进入 PerpLite 靶场目录
 forge build # 编译全部合约
 ```
 

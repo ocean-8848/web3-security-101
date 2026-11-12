@@ -23,4 +23,4 @@ NoteBox 是一本链上笔记本。
 forge test
 ```
 
-配套章节：[B13 第 1 次审计：NoteBox](../../../bootcamp/B13-audit-1-notebox.md)。`test/` 和 `solution/` 含答案，第一遍审计前不要打开。
+配套章节：[B13 第 1 次审计：NoteBox](../../../Web3-Security/bootcamp/B13-audit-1-notebox.md)。`test/` 和 `solution/` 含答案，第一遍审计前不要打开。

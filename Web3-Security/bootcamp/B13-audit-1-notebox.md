@@ -7,7 +7,7 @@
 >
 > 前置章节：[B09 读代码与攻击者思维](B09-reading-code-mindset.md)（审计的最小流程与 5 个术语）、[B12 Foundry 进阶](B12-foundry-advanced.md)（读存储、PoC 骨架）
 > 预计用时：2–3 小时。
-> 靶场：[examples/range/notebox/](../examples/range/notebox/README.md)
+> 靶场：[examples/range/notebox/](../../examples/range/notebox/README.md)
 > 关联章节：[05 访问控制](../05-access-control.md)｜[03 EVM 与 Solidity 安全基础](../03-evm-solidity-basics.md)｜[A02 风险定级与报告](../assessment/A02-risk-rating-reporting.md)｜[T03 发现报告模板](../templates/T03-finding-report.md)｜[B25 实战项目](B25-capstone-minilend.md)
 > 最后核对：2026-11-10（forge 1.5.1、anvil、cast 均在本地运行过；下文输出来自真实运行）
 

@@ -6,7 +6,7 @@
 > 3. 在代码审查中找出所有"把控制权交出去"的位置。
 >
 > 前置章节：[03 EVM 与 Solidity 安全基础](03-evm-solidity-basics.md)
-> 交互实验：[reentrancy-lab.html](interactive/reentrancy-lab.html) ｜ 示例合约：[examples/01-Reentrancy.sol](examples/01-Reentrancy.sol)
+> 交互实验：[reentrancy-lab.html](interactive/reentrancy-lab.html) ｜ 示例合约：[examples/01-Reentrancy.sol](../examples/01-Reentrancy.sol)
 
 ---
 
@@ -204,7 +204,7 @@ function withdraw() external nonReentrant { ... }
 
 ### 4.4 用代码验证修复
 
-示例合约 [01-Reentrancy.sol](examples/01-Reentrancy.sol) 同时包含漏洞版和修复版。Foundry 靶场 `examples/foundry/test/Reentrancy.t.sol` 按固定顺序验证：
+示例合约 [01-Reentrancy.sol](../examples/01-Reentrancy.sol) 同时包含漏洞版和修复版。Foundry 靶场 `examples/foundry/test/Reentrancy.t.sol` 按固定顺序验证：
 
 1. PoC 测试在漏洞版上提走金库资金。
 2. 同一个 PoC 在修复版上回滚。

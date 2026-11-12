@@ -1,6 +1,6 @@
 # CLAMM 数学演示（本地）
 
-配套章节：[B37 集中流动性与 V4 Hooks](../../../bootcamp/B37-clamm-v4.md)。只做本地测试。
+配套章节：[B37 集中流动性与 V4 Hooks](../../../Web3-Security/bootcamp/B37-clamm-v4.md)。只做本地测试。
 
 ```bash
 forge test -vv

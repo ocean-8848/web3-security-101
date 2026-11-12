@@ -1,6 +1,6 @@
 # fv：B48 配套代码
 
-本目录只用于本地验证。配套章节：[B48 形式化验证](../../../bootcamp/B48-formal-verification.md)。
+本目录只用于本地验证。配套章节：[B48 形式化验证](../../../Web3-Security/bootcamp/B48-formal-verification.md)。
 
 | 文件 | 内容 |
 |---|---|

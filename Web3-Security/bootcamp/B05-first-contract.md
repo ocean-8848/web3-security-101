@@ -7,7 +7,7 @@
 >
 > 前置章节：[B04 环境搭建](B04-setup.md)
 > 预计用时：2～3 小时
-> 配套代码：[examples/range/basics/src/b02/](../examples/range/basics/src/b02/)（8 步的完整文件）
+> 配套代码：[examples/range/basics/src/b02/](../../examples/range/basics/src/b02)（8 步的完整文件）
 
 ---
 

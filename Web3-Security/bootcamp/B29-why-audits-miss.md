@@ -7,7 +7,7 @@
 >
 > 前置章节：[B28 高频漏洞模式库](B28-bug-patterns.md)、[B27 专业审计流程](B27-what-is-audit.md)
 > 预计时间：60 分钟阅读，60 分钟练习。
-> 配套靶场：[examples/range/thinkaloud](../examples/range/thinkaloud/) ｜ 跟审实录：[B30](B30-think-aloud.md)
+> 配套靶场：[examples/range/thinkaloud](../../examples/range/thinkaloud) ｜ 跟审实录：[B30](B30-think-aloud.md)
 
 > ⚠️ 警告：本章的练习只针对本地靶场、你自己的代码和已授权的代码。攻击者思维是审计方法，不是对未授权目标动手的理由。
 

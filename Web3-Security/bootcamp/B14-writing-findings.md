@@ -11,7 +11,7 @@
 > 交互实验：[评级计算器](../interactive/severity-calculator.html) ｜ [审计自查清单](../interactive/audit-checklist.html)
 > 预计用时：3～4 小时
 > 最后核对：2026-11-10
-> 配套文件：[examples/range/basics/report/](../examples/range/basics/report/)
+> 配套文件：[examples/range/basics/report/](../../examples/range/basics/report)
 
 ---
 
@@ -58,7 +58,7 @@
 
 PoC（Proof of Concept，概念验证）是证明漏洞真实存在的最小可运行示例。
 
-空白模板在 [report/finding-template.md](../examples/range/basics/report/finding-template.md)。
+空白模板在 [report/finding-template.md](../../examples/range/basics/report/finding-template.md)。
 
 ### 2.1 差和好的完整对比
 
@@ -204,7 +204,7 @@ LunchPool 的定级过程：
 
 ### 6.1 报告的结构
 
-模型报告是 [report/LunchPool-report.md](../examples/range/basics/report/LunchPool-report.md)。它包含：
+模型报告是 [report/LunchPool-report.md](../../examples/range/basics/report/LunchPool-report.md)。它包含：
 
 1. 概览表（提交哈希、范围、方法）
 2. 摘要（上线结论、数量统计）
@@ -227,7 +227,7 @@ LunchPool 的定级过程：
 需要：Python 3 和 Chrome（或 Chromium）。
 
 ```bash
-cd Web3-Security/examples/range/basics/report  # 进入报告目录
+cd examples/range/basics/report  # 进入报告目录
 python3 -m venv .venv  # 建一个独立的 Python 虚拟环境
 .venv/bin/pip install markdown  # 在虚拟环境里安装 markdown 库
 # 核对数量，生成 HTML 和 PDF

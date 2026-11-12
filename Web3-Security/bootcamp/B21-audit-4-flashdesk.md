@@ -51,7 +51,7 @@
 ## 3. 第一步：构建靶场
 
 ```bash
-cd Web3-Security/examples/range/flashdesk # 进入 FlashDesk 靶场目录
+cd examples/range/flashdesk # 进入 FlashDesk 靶场目录
 forge build # 编译全部合约
 ```
 

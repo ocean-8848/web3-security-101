@@ -8,7 +8,7 @@
 >
 > 前置章节：[B06 Foundry 基本功](B06-foundry-basics.md)
 > 预计用时：3～4 小时
-> 配套代码：[examples/range/basics/src/b04/](../examples/range/basics/src/b04/)
+> 配套代码：[examples/range/basics/src/b04/](../../examples/range/basics/src/b04)
 > 交互实验：[授权流程](../interactive/audit-approve.html)
 
 ---
@@ -379,7 +379,7 @@ Ran 1 test suite in 375.45ms (627.63µs CPU time): 1 tests passed, 0 failed, 0 s
 </details>
 
 ```bash
-cd Web3-Security/examples/range/basics  # 切到配套工程
+cd examples/range/basics  # 切到配套工程
 forge test --match-test test_BreakB  # 运行收费代币的 PoC
 ```
 

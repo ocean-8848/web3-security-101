@@ -1,6 +1,6 @@
 # thinkaloud：MooringPool 跟审靶场
 
-配套章节：[B30 跟审实录](../../../bootcamp/B30-think-aloud.md)。
+配套章节：[B30 跟审实录](../../../Web3-Security/bootcamp/B30-think-aloud.md)。
 
 `src/MooringPool.sol` 含有故意写入的漏洞，只用于本地学习。不要部署。
 

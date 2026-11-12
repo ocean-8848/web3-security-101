@@ -30,7 +30,7 @@ ASD-STE100（Simplified Technical English）是航空维修手册的受控语言
 ## 4. 代码规则
 
 - 漏洞代码一律标注 `// ❌ 漏洞` ，修复代码标注 `// ✅ 修复`。
-- 示例合约放在 `examples/`，使用 Solidity `^0.8.20`，必须能通过编译。
+- 示例合约和训练营靶场放在仓库根目录的 `examples/`（与 `Web3-Security/` 同级），使用 Solidity `^0.8.20`，必须能通过编译。
 - 示例只演示原理。示例不包含针对任何真实在线合约的攻击脚本。
 
 ## 5. 图表规则
@@ -54,7 +54,7 @@ ASD-STE100（Simplified Technical English）是航空维修手册的受控语言
 
 > 学习目标：读完本章，你能……（3 条以内）
 > 前置章节：……
-> 交互实验：[xxx.html](interactive/xxx.html) ｜ 示例合约：[examples/xxx.sol](examples/xxx.sol)
+> 交互实验：[xxx.html](interactive/xxx.html) ｜ 示例合约：[examples/xxx.sol](../examples/xxx.sol)
 
 ## 1. 一句话理解（+ 🎯 打个比方）
 ## 2. 威胁模型：攻击者能控制什么

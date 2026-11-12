@@ -6,7 +6,7 @@
 > 3. 对任意"份额 ↔ 资产"换算，判断它该向上还是向下取整。
 >
 > 前置章节：[03 EVM 与 Solidity 安全基础](03-evm-solidity-basics.md)
-> 交互实验：[vault-inflation-lab.html](interactive/vault-inflation-lab.html) ｜ 示例合约：[examples/03-VaultInflation.sol](examples/03-VaultInflation.sol)
+> 交互实验：[vault-inflation-lab.html](interactive/vault-inflation-lab.html) ｜ 示例合约：[examples/03-VaultInflation.sol](../examples/03-VaultInflation.sol)
 
 > 最后核对：2026-11-09
 
@@ -198,7 +198,7 @@ sequenceDiagram
 
 ### 4.3 用代码验证修复
 
-示例合约 [03-VaultInflation.sol](examples/03-VaultInflation.sol) 同时包含 `NaiveVault` 和 `OffsetVault`。Foundry 靶场 `examples/foundry/test/VaultInflation.t.sol` 用于对照这两个版本。
+示例合约 [03-VaultInflation.sol](../examples/03-VaultInflation.sol) 同时包含 `NaiveVault` 和 `OffsetVault`。Foundry 靶场 `examples/foundry/test/VaultInflation.t.sol` 用于对照这两个版本。
 
 ```bash
 # 运行金库通胀攻击示例的测试

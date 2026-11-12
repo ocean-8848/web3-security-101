@@ -7,7 +7,7 @@
 >
 > 前置章节：[B15 第 2 次审计：LuckyPot](B15-audit-2-luckypot.md)、[B18 DEX 与 AMM](B18-dex-amm.md)
 > 预计用时：8–10 小时。
-> 靶场：[examples/range/miniswap/](../examples/range/miniswap/README.md)
+> 靶场：[examples/range/miniswap/](../../examples/range/miniswap/README.md)
 > 关联章节：[B18 DEX 与 AMM](B18-dex-amm.md)｜[06 算术与精度](../06-arithmetic-precision.md)｜[07 外部调用与代币](../07-external-calls-tokens.md)｜[09 MEV 与签名](../09-mev-signatures.md)｜[27 审计与测试流程](../27-audit-testing-workflow.md)｜[B25 实战项目](B25-capstone-minilend.md)｜[AMM 实验](../interactive/audit-amm.html)｜[不变量模糊测试器](../interactive/audit-fuzz.html)
 > 最后核对：2026-11-10（本地运行 forge 1.5.1、Echidna 2.3.3；公开发布信息显示 Echidna 已有 2.4.0，版本不同时输出可能有差异）
 

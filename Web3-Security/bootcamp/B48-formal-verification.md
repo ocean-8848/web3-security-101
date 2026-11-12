@@ -7,7 +7,7 @@
 >
 > 前置章节：[B06 Foundry 基础](B06-foundry-basics.md)、[B12 模糊测试与不变量](B12-foundry-advanced.md)、[B19 审计三：MiniSwap](B19-audit-3-miniswap.md)（不变量）、[B31 自动化工具](B31-automation-tools.md)
 > 预计用时：6–8 小时。
-> 交互实验：[模糊测试实验](../interactive/audit-fuzz.html) ｜ 配套代码：[examples/range/fv/](../examples/range/fv/README.md)
+> 交互实验：[模糊测试实验](../interactive/audit-fuzz.html) ｜ 配套代码：[examples/range/fv/](../../examples/range/fv/README.md)
 >
 > 最后核对：2026-11-10
 
@@ -52,7 +52,7 @@
 本章的命令都在配套目录中运行。
 
 ```bash
-cd Web3-Security/examples/range/fv # 进入形式化验证配套目录
+cd examples/range/fv # 进入形式化验证配套目录
 forge test -vv # 先用 Foundry 复现反例
 ```
 

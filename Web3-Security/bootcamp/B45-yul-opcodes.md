@@ -9,7 +9,7 @@
 >
 > 前置章节：[03 EVM 与 Solidity 基础](../03-evm-solidity-basics.md)、[B06 Foundry 基础](B06-foundry-basics.md)
 > 预计用时：8–10 小时。
-> 交互实验：[EVM 单步执行器](../interactive/audit-evm.html) ｜ [选择器与槽位计算器](../interactive/audit-abi.html) ｜ [存储与代理](../interactive/storage-proxy-lab.html) ｜ 配套代码：[examples/range/yul/](../examples/range/yul/README.md)
+> 交互实验：[EVM 单步执行器](../interactive/audit-evm.html) ｜ [选择器与槽位计算器](../interactive/audit-abi.html) ｜ [存储与代理](../interactive/storage-proxy-lab.html) ｜ 配套代码：[examples/range/yul/](../../examples/range/yul/README.md)
 >
 > 最后核对：2026-11-10
 
@@ -82,7 +82,7 @@ flowchart LR
 先进入配套目录。后面的所有命令（包括第 6–8 节）都在这个目录中运行。
 
 ```bash
-cd Web3-Security/examples/range/yul # 进入 Yul 配套目录
+cd examples/range/yul # 进入 Yul 配套目录
 forge build # 同时编译 .sol 和 .yul 文件
 ```
 

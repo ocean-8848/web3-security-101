@@ -43,7 +43,7 @@ SITES = {
         src=f'{ROOT}/Web3-Security/dist/index.html', title=('Web3 安全学习手册', 'Web3 安全学习站'),
         cfg=dict(key='cshb', name='Web3 安全'), config='docs-config.js',
         aux=lambda: [(p, s, None) for p, s in files_in(f'{ROOT}/Web3-Security/interactive', 'interactive/', {'.html', '.css', '.js'})]
-                    + [(p, s, None) for p, s in files_in(f'{ROOT}/Web3-Security/examples', 'examples/', {'.sol'})]),
+                    + [(p, s, None) for p, s in files_in(f'{ROOT}/examples', 'examples/', {'.sol'})]),
     'scsec': dict(
         # Independent site: the original 13-chapter smart contract security book (Contract-Security/tools/build.mjs).
         src=f'{ROOT}/Contract-Security/dist/index.html', title=('Web3 智能合约安全手册', 'Web3 智能合约安全学习站'),

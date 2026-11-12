@@ -6,7 +6,7 @@
 > 3. 识别由外部调用引起的拒绝服务（DoS）。
 >
 > 前置章节：[04 重入攻击](04-reentrancy.md)
-> 交互实验：[chain-porting-lab.html](interactive/chain-porting-lab.html) ｜ 示例合约：[examples/05-SafeTokenOps.sol](examples/05-SafeTokenOps.sol)
+> 交互实验：[chain-porting-lab.html](interactive/chain-porting-lab.html) ｜ 示例合约：[examples/05-SafeTokenOps.sol](../examples/05-SafeTokenOps.sol)
 
 > 最后核对：2026-11-09
 
@@ -192,11 +192,11 @@ deposits[msg.sender] += received;   // 只记实际增量
 
 > ⚠️ 警告：持有用户授权的合约（路由器、聚合器）必须**禁止**用户指定任意调用目标和任意 calldata。这是聚合器被盗的最常见根因之一。
 
-案例：Sushi RouteProcessor2（2023 年 4 月，约 330 万美元）。路由里的池子地址由用户填写；攻击者填入自己的"池子"，在回调中把任意授权用户设为付款人。回调校验只检查"是不是刚才调用的地址"，没有检查"是不是真实池子"。见 [C00](chains/C00-ethereum.md) 4.7 节与 [examples/08-RouterCallback.sol](examples/08-RouterCallback.sol)。
+案例：Sushi RouteProcessor2（2023 年 4 月，约 330 万美元）。路由里的池子地址由用户填写；攻击者填入自己的"池子"，在回调中把任意授权用户设为付款人。回调校验只检查"是不是刚才调用的地址"，没有检查"是不是真实池子"。见 [C00](chains/C00-ethereum.md) 4.7 节与 [examples/08-RouterCallback.sol](../examples/08-RouterCallback.sol)。
 
 ### 5.1 用代码验证修复
 
-示例合约 [05-SafeTokenOps.sol](examples/05-SafeTokenOps.sol) 演示无代码检查、可选返回值和余额差校验。[08-RouterCallback.sol](examples/08-RouterCallback.sol) 同时包含 `VulnerableRouter` 和 `SafeRouter`。对应的 Foundry 靶场是 `examples/foundry/test/SafeTokenOps.t.sol` 和 `examples/foundry/test/RouterCallback.t.sol`。
+示例合约 [05-SafeTokenOps.sol](../examples/05-SafeTokenOps.sol) 演示无代码检查、可选返回值和余额差校验。[08-RouterCallback.sol](../examples/08-RouterCallback.sol) 同时包含 `VulnerableRouter` 和 `SafeRouter`。对应的 Foundry 靶场是 `examples/foundry/test/SafeTokenOps.t.sol` 和 `examples/foundry/test/RouterCallback.t.sol`。
 
 ```bash
 # 代币返回值与收费代币示例

@@ -26,7 +26,7 @@ GuardVault 是一个收益金库。用户存入资产，策略团队把资金分
 先读 `examples/range/guardvault/README.md`。范围、角色和团队声明的不变量都在里面。
 
 ```bash
-cd Web3-Security/examples/range/guardvault # 进入 GuardVault 靶场目录
+cd examples/range/guardvault # 进入 GuardVault 靶场目录
 forge build # 编译全部合约
 ```
 

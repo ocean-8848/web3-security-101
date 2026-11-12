@@ -7,7 +7,7 @@
 >
 > 前置章节：[B28 模式库](B28-bug-patterns.md)、[B29 为什么会漏掉漏洞](B29-why-audits-miss.md)、[A02 风险评级](../assessment/A02-risk-rating-reporting.md)
 > 预计时间：先独立审计 90 分钟，再跟读 90 分钟。
-> 靶场：[examples/range/thinkaloud](../examples/range/thinkaloud/) ｜ 定级练习：[severity-drill.html](../interactive/severity-drill.html)
+> 靶场：[examples/range/thinkaloud](../../examples/range/thinkaloud) ｜ 定级练习：[severity-drill.html](../interactive/severity-drill.html)
 
 > ⚠️ 警告：`MooringPool` 是含有故意漏洞的本地玩具合约。不要部署它。本章的方法只用于自己的代码、已授权的审计和本地靶场。
 
