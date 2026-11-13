@@ -76,7 +76,7 @@ flowchart LR
 ## 2. 准备与范围
 
 ```bash
-cd practice-example-code/range/miniswap # 进入 MiniSwap 靶场目录
+cd practice-example-code/range/miniswap  # 从 web3-security-handbook/ 出发，进入 MiniSwap 靶场目录
 forge build # 编译；留意输出里的警告
 ```
 
@@ -548,7 +548,7 @@ return (reserveIn * amountOut * BPS) / ((reserveOut - amountOut) * (BPS - SWAP_F
 | `echidna: command not found` | 没有安装 | `brew install echidna`，或用 [官方 Release](https://github.com/crytic/echidna/releases) |
 | Echidna 报编译错误 | 系统 `solc` 低于 0.8.20 | 用 `solc-select` 切换到 0.8.20 或更高 |
 | Echidna 结果里有旧语料的干扰 | `echidna-corpus` 残留 | 删除该目录后重跑 |
-| `Source not found` | `lib/forge-std` 软链接失效 | `forge install --no-git foundry-rs/forge-std` |
+| `Source not found` | `lib/forge-std` 软链接失效 | 在 `web3-security-handbook/` 目录运行 `bash practice-example-code/setup.sh` |
 
 ## 8. 过关标准
 

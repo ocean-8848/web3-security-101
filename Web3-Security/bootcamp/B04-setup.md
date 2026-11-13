@@ -234,7 +234,48 @@ git commit -m "chore: init lab"
 
 ---
 
-## 7. 测试专用钱包规范
+## 7. 下载学习仓库
+
+本训练营的示例合约和靶场都在学习仓库 `web3-security-handbook` 里。之后各章的命令都**以 `web3-security-handbook/` 目录为起点**，例如 `cd practice-example-code/range/basics`。
+
+仓库是私有的。克隆前，先用有访问权限的 GitHub 账号登录，例如运行 `gh auth login`。
+
+```bash
+cd ~
+git clone https://github.com/ocean-8848/web3-security-handbook.git  # 下载学习仓库
+cd web3-security-handbook  # 之后各章都从这里出发
+bash practice-example-code/setup.sh  # 下载依赖：forge-std 和 OpenZeppelin（lib/ 不进仓库）
+```
+
+最后一行的预期输出：
+
+```text
+依赖已就绪：forge-std v1.11.0，OpenZeppelin v5.6.1
+```
+
+目录结构：
+
+| 路径 | 内容 |
+|---|---|
+| `Web3-Security/` | 手册和训练营的 Markdown 源稿 |
+| `practice-example-code/` | 示例合约、Foundry 工程和各章靶场 |
+| `learning-site/` | 学习站的构建脚本 |
+
+确认依赖可用：
+
+```bash
+cd practice-example-code/range/basics  # 从 web3-security-handbook/ 出发
+forge test  # B06 会详细讲这条命令
+cd ../../..  # 回到 web3-security-handbook/
+```
+
+最后一行显示 `27 tests passed, 0 failed, 1 skipped` 就说明环境就绪。
+
+> 💡 注意：之后每章开头的 `cd practice-example-code/...` 都假设你在 `web3-security-handbook/` 目录。不确定时先运行 `pwd`，输出应以 `/web3-security-handbook` 结尾。
+
+---
+
+## 8. 测试专用钱包规范
 
 钱包（Wallet）管理私钥。私钥（Private Key）能花掉一个地址上的全部资金。
 
@@ -254,7 +295,7 @@ git commit -m "chore: init lab"
 
 ---
 
-## 8. 如果出错
+## 9. 如果出错
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
@@ -264,20 +305,23 @@ git commit -m "chore: init lab"
 | `Please tell me who you are` | 没有配置 git 用户名 | 运行第 3 节的两条 `git config` |
 | 下载 `forge-std` 失败 | 网络连不上 GitHub | 检查网络和代理设置，再重试 |
 | Windows 上命令不可用 | 在 PowerShell 或 CMD 里运行 | 改用 WSL |
+| `git clone` 提示 `Repository not found` 或要求输入密码 | 没有登录，或账号没有仓库权限 | 运行 `gh auth login` 登录有权限的账号，再重试 |
+| `cd practice-example-code/...` 报 `no such file or directory` | 当前不在 `web3-security-handbook/` 目录 | 运行 `cd ~/web3-security-handbook` 再重试 |
 
 ---
 
-## 9. 过关标准
+## 10. 过关标准
 
 - [ ] 你能背出 `pwd`、`ls`、`cd`、`cat` 的作用。
 - [ ] `git log --oneline` 至少显示 1 条提交。
 - [ ] `forge --version` 正常输出版本。
 - [ ] `~/bootcamp-lab` 里 `forge test` 显示 `2 tests passed`。
+- [ ] `~/web3-security-handbook/practice-example-code/range/basics` 里 `forge test` 显示 `27 tests passed, 0 failed, 1 skipped`。
 - [ ] 你能用一句话说出本训练营的规则：所有练习只在本机运行。
 
 ---
 
-## 10. 相关章节
+## 11. 相关章节
 
 - [01 安全全景](../01-security-landscape.md)
 - [18 钱包与密钥管理](../18-wallet-key-management.md)
@@ -288,7 +332,7 @@ git commit -m "chore: init lab"
 
 ---
 
-## 11. 思考题
+## 12. 思考题
 
 1. 你在开源仓库里读到一个合约，它有明显的漏洞，已部署到主网。列出你**可以**做的事和**不可以**做的事。
 2. 为什么 `anvil` 的默认私钥公开也没关系？在什么情况下它会造成真实损失？

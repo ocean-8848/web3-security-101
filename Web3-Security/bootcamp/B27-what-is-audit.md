@@ -126,7 +126,7 @@ Rekt Test 是项目方的自评。受理（Intake）是审计方的判断：签�
 本章的练习对象仍是 LunchPool。如果你在 [B09](B09-reading-code-mindset.md) 建过工作副本，直接在副本里运行 `git rev-parse HEAD`。否则，创建一份带 git 的副本，得到提交哈希：
 
 ```bash
-cd practice-example-code/range/basics  # 进入配套工程
+cd practice-example-code/range/basics  # 从 web3-security-handbook/ 出发，进入配套工程
 # 清掉旧副本，新建空目录
 rm -rf /tmp/lunchpool-audit && mkdir /tmp/lunchpool-audit
 cp -R src/b05 docs /tmp/lunchpool-audit/  # 复制合约源码和规格文档

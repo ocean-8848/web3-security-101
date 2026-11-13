@@ -247,7 +247,7 @@ BNB Chain 早期 DeFi 生态快速扩张，大量协议使用 PancakeSwap 池子
 
 ```bash
 # 运行现货价预言机操纵示例的测试
-cd practice-example-code/foundry && forge test --match-path test/SpotOracle.t.sol -vv
+cd practice-example-code/foundry && forge test --match-path test/SpotOracle.t.sol -vv  # 从 web3-security-handbook/ 出发
 ```
 
 > 💡 注意：修复验证需要两个结果：漏洞版上操纵价格能多借，修复版上操纵不改变可借额度（[A08](assessment/A08-reproduce-attacks.md)）。

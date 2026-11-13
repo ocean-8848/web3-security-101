@@ -263,7 +263,7 @@ anvil --port 18547  # 本章固定用 18547 端口
 2. 回到第一个终端，在手册的 `practice-example-code/foundry/` 目录部署玩具代币，并给受害者铸造 1,000 枚：
 
 ```bash
-cd practice-example-code/foundry
+cd practice-example-code/foundry  # 从 web3-security-handbook/ 出发
 R=http://127.0.0.1:18547
 forge create src/ToyERC20.sol:ToyERC20 --broadcast --rpc-url $R --private-key $VK
 T=0x5FbDB2315678afecb367f032d93F642f64180aa3

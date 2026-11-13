@@ -45,10 +45,10 @@
 
 ## 2. 运行实验
 
-在仓库根目录（`Web3-Security/` 的上一级）运行：
+在 `web3-security-handbook/` 目录（学习仓库根目录）运行：
 
 ```bash
-cd practice-example-code/range/abi # 进入 ABI 配套目录
+cd practice-example-code/range/abi  # 从 web3-security-handbook/ 出发，进入 ABI 配套目录
 forge test # 运行全部编码实验
 ```
 
@@ -295,7 +295,7 @@ forge test -vv --match-test ReturnBomb # 只跑返回数据炸弹测试，打印
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
-| `forge-std/Test.sol not found` | 软链接失效 | 在 `abi/` 下运行 `ls -l lib/forge-std`，确认指向 `../../../foundry/lib/forge-std` |
+| `forge-std/Test.sol not found` | 软链接失效 | 在 `web3-security-handbook/` 目录运行 `bash practice-example-code/setup.sh` |
 | gas 数字和本章不同 | 编译器或优化器设置不同 | 比较两行的差额，不比较绝对值 |
 | `test_DirtyAddressReverts` 失败 | 使用了 ABI coder v1 | 确认没有写 `pragma abicoder v1` |
 | 手工解码偏移量错位 | 基准选错 | 嵌套偏移量从所在数组或结构体的起点算起 |

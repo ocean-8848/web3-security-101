@@ -52,7 +52,7 @@
 本章的命令都在配套目录中运行。
 
 ```bash
-cd practice-example-code/range/fv # 进入形式化验证配套目录
+cd practice-example-code/range/fv  # 从 web3-security-handbook/ 出发，进入形式化验证配套目录
 forge test -vv # 先用 Foundry 复现反例
 ```
 

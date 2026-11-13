@@ -32,7 +32,7 @@
 准备工作：进入配套工程。
 
 ```bash
-cd practice-example-code/range/basics  # 进入配套工程目录
+cd practice-example-code/range/basics  # 从 web3-security-handbook/ 出发，进入配套工程目录
 forge test  # 运行工程里的全部测试
 ```
 

@@ -227,7 +227,7 @@ LunchPool 的定级过程：
 需要：Python 3 和 Chrome（或 Chromium）。
 
 ```bash
-cd practice-example-code/range/basics/report  # 进入报告目录
+cd practice-example-code/range/basics/report  # 从 web3-security-handbook/ 出发，进入报告目录
 python3 -m venv .venv  # 建一个独立的 Python 虚拟环境
 .venv/bin/pip install markdown  # 在虚拟环境里安装 markdown 库
 # 核对数量，生成 HTML 和 PDF

@@ -31,6 +31,7 @@ ASD-STE100（Simplified Technical English）是航空维修手册的受控语言
 
 - 漏洞代码一律标注 `// ❌ 漏洞` ，修复代码标注 `// ✅ 修复`。
 - 示例合约和训练营靶场放在仓库根目录的 `practice-example-code/`（与 `Web3-Security/` 同级），使用 Solidity `^0.8.20`，必须能通过编译。
+- 读者的工作目录是克隆下来的 `web3-security-handbook/`。命令写成从这里出发（`cd practice-example-code/...`），每章第一条 `cd` 注明"从 web3-security-handbook/ 出发"。新增依赖要同步写进 `practice-example-code/setup.sh`。
 - 示例只演示原理。示例不包含针对任何真实在线合约的攻击脚本。
 
 ## 5. 图表规则

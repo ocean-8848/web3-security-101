@@ -48,7 +48,7 @@
 注意部署计划中的第三条链。它是下面第 5 节的线索。
 
 ```bash
-cd practice-example-code/range/echobridge # 进入 EchoBridge 靶场目录
+cd practice-example-code/range/echobridge  # 从 web3-security-handbook/ 出发，进入 EchoBridge 靶场目录
 forge build # 编译全部合约
 ```
 

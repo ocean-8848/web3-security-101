@@ -379,7 +379,7 @@ Ran 1 test suite in 375.45ms (627.63µs CPU time): 1 tests passed, 0 failed, 0 s
 </details>
 
 ```bash
-cd practice-example-code/range/basics  # 切到配套工程
+cd practice-example-code/range/basics  # 从 web3-security-handbook/ 出发，切到配套工程
 forge test --match-test test_BreakB  # 运行收费代币的 PoC
 ```
 

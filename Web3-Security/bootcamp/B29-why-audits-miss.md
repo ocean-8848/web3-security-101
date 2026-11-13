@@ -250,7 +250,7 @@ flowchart LR
 |---|---|---|
 | 清单总是全部打钩 | 打钩时没有证据 | 每项写一条证据：文件、测试名或图 |
 | 练习 1 列不全路径 | 没有搜索转账 | 搜索 `transfer`、`call`，再按函数归类 |
-| `forge test` 找不到 forge-std | 软链接失效 | 确认 `lib/forge-std` 指向 `../../../foundry/lib/forge-std` |
+| `forge test` 找不到 forge-std | 软链接失效 | 在 `web3-security-handbook/` 目录运行 `bash practice-example-code/setup.sh` |
 | 找不到任何组合 | 只看发现列表 | 改为列"能力"，再对能力做配对 |
 
 ## 过关标准

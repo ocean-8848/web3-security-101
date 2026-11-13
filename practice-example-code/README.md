@@ -19,6 +19,8 @@
 
 靶场只运行本地玩具合约。靶场没有主网分叉，没有 RPC 配置，也不包含真实地址。
 
+下面的命令从 `web3-security-handbook/` 目录出发。克隆后先运行一次 `bash practice-example-code/setup.sh` 下载依赖（`lib/` 不进仓库）。
+
 ```bash
 # 主题靶场（导入上面的 01–08 示例，并包含新增演示）
 cd practice-example-code/foundry && forge test
@@ -27,7 +29,7 @@ cd practice-example-code/foundry && forge test
 cd ../minilend && forge test  # 接着上一条命令，已在 foundry 目录里
 ```
 
-需要 Foundry（已用 forge 1.5.1 验证）。配置使用 solc 0.8.30 和 EVM 版本 `prague`，因为 EIP-7702 需要 `prague`。`forge-std` 安装在 `practice-example-code/foundry/lib`。
+需要 Foundry（已用 forge 1.5.1 验证）。配置使用 solc 0.8.30 和 EVM 版本 `prague`，因为 EIP-7702 需要 `prague`。`forge-std` 由 `setup.sh` 安装在 `practice-example-code/foundry/lib`，各靶场的 `lib/forge-std` 是指向它的链接。
 
 > ⚠️ 警告：`src/` 下的演示合约同样只用于学习。不要部署到主网。
 

@@ -233,7 +233,7 @@
 
 ## 4. 动手：用触发点扫描靶场
 
-在仓库根目录（`Web3-Security/` 的上一级）运行下面的命令。这是一次搜索签名、低级调用和冷却逻辑的扫描。
+在 `web3-security-handbook/` 目录（学习仓库根目录）运行下面的命令。这是一次搜索签名、低级调用和冷却逻辑的扫描。
 
 ```bash
 # -n 显示行号，-E 用扩展正则；一次搜多个触发点
@@ -268,7 +268,7 @@ grep -nE 'ecrecover|delegatecall|\.call\{?\(|exitReadyAt == 0' practice-example-
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
-| `grep` 没有输出 | 不在仓库根目录 | 先 `cd` 到仓库根目录，再运行 |
+| `grep` 没有输出 | 不在 `web3-security-handbook/` 目录 | 先 `cd ~/web3-security-handbook`，再运行 |
 | `grep: invalid` 报错 | 系统没有 `-E` 支持 | 使用 GNU 或 BSD 版 grep |
 | 命中太多，读不完 | 搜索词太宽 | 限定到一个分组，再按外部入口排序 |
 | 这张表里没有对应模式 | 表是有限的 | 从价值流入手，见 [B29](B29-why-audits-miss.md) |

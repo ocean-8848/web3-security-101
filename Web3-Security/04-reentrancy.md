@@ -212,7 +212,7 @@ function withdraw() external nonReentrant { ... }
 
 ```bash
 # 只跑重入示例的测试，-vv 打印失败断言
-cd practice-example-code/foundry && forge test --match-path test/Reentrancy.t.sol -vv
+cd practice-example-code/foundry && forge test --match-path test/Reentrancy.t.sol -vv  # 从 web3-security-handbook/ 出发
 ```
 
 > 💡 注意：修复验证需要"修复前失败、修复后通过"两个结果。只跑通修复版，不能证明测试真的覆盖了漏洞（[A08](assessment/A08-reproduce-attacks.md)）。

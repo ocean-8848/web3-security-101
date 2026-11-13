@@ -200,7 +200,7 @@ deposits[msg.sender] += received;   // 只记实际增量
 
 ```bash
 # 代币返回值与收费代币示例
-cd practice-example-code/foundry && forge test --match-path test/SafeTokenOps.t.sol -vv
+cd practice-example-code/foundry && forge test --match-path test/SafeTokenOps.t.sol -vv  # 从 web3-security-handbook/ 出发
 # 路由回调授权滥用示例（已在 practice-example-code/foundry 目录里）
 forge test --match-path test/RouterCallback.t.sol -vv
 ```

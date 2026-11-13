@@ -28,7 +28,7 @@
 命令在配套工程 `practice-example-code/range/basics` 里运行。代码内笔记写在 LunchPool 的工作副本里，不改原文件。先建好副本：
 
 ```bash
-cd practice-example-code/range/basics  # 进入配套工程
+cd practice-example-code/range/basics  # 从 web3-security-handbook/ 出发，进入配套工程
 # 清掉旧副本，新建空目录
 rm -rf /tmp/lunchpool-audit && mkdir /tmp/lunchpool-audit
 cp -R src/b05 docs /tmp/lunchpool-audit/  # 复制合约源码和规格文档

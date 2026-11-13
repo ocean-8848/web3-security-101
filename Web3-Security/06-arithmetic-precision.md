@@ -202,7 +202,7 @@ sequenceDiagram
 
 ```bash
 # 运行金库通胀攻击示例的测试
-cd practice-example-code/foundry && forge test --match-path test/VaultInflation.t.sol -vv
+cd practice-example-code/foundry && forge test --match-path test/VaultInflation.t.sol -vv  # 从 web3-security-handbook/ 出发
 ```
 
 > 💡 注意：修复验证需要两个结果：漏洞版上受害者损失资产，修复版上攻击无利可图（[A08](assessment/A08-reproduce-attacks.md)）。

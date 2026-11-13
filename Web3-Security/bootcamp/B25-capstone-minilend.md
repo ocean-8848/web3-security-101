@@ -38,7 +38,7 @@ MiniLend 允许用户存入 ETH 作为抵押，借出稳定币 USD。最大借�
 
 运行步骤：
 
-1. 确认 `practice-example-code/foundry/lib/forge-std` 存在。靶场共用这份依赖。
+1. 确认 `practice-example-code/foundry/lib/forge-std` 存在。靶场共用这份依赖。不存在就在 `web3-security-handbook/` 目录运行 `bash practice-example-code/setup.sh`（见 [B04 第 7 节](B04-setup.md)）。
 2. 进入目录：`cd practice-example-code/minilend`。
 3. 运行测试：`forge test`。
 
