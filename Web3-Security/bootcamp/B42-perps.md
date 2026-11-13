@@ -8,7 +8,7 @@
 > 前置知识：[B13 第 1 次审计](B13-audit-1-notebox.md)、[B17 DeFi 地图与头部协议](B17-defi-basics.md)、[08 预言机与闪电贷](../08-oracle-flashloan.md)、[B41 ERC-4626 金库](B41-case-erc4626.md)。
 > 预计用时：3–4 小时。
 > 交互实验：[perp-lab.html](../interactive/perp-lab.html)
-> 靶场：[examples/range/perplite/](../../examples/range/perplite/README.md)（下一章使用）
+> 靶场：[practice-example-code/range/perplite/](../../practice-example-code/range/perplite/README.md)（下一章使用）
 > 关联章节：[08 预言机与闪电贷](../08-oracle-flashloan.md)｜[11 DeFi 经济安全](../11-defi-economic-security.md)｜[B17 DeFi 地图与头部协议](B17-defi-basics.md)
 > 最后核对：2026-11-10（协议设计和事故来源见文内链接；计算示例已用 Foundry 和实验页核对）
 
@@ -66,7 +66,7 @@
 
 示例：ETH 从 3,000 涨到 3,300，涨 10%。盈亏 = 3,000 × 10% = 300 美元。权益 = 600 + 300 = 900 美元。保证金回报率 50%。
 
-> 🧪 动手验证：打开 [perp-lab.html](../interactive/perp-lab.html)。名义价值填 3,000，保证金填 600，把价格冲击拖到 +10%。确认权益显示 900。
+> 🧪 动手验证：打开 [perp-lab.html](../interactive/perp-lab.html)。名义价值填 3,000，保证金填 600，点击「涨 10%」按钮。确认权益显示 900。
 
 ## 3. 资金费：把永续价格拉回现货
 

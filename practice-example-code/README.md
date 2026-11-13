@@ -21,13 +21,13 @@
 
 ```bash
 # 主题靶场（导入上面的 01–08 示例，并包含新增演示）
-cd examples/foundry && forge test
+cd practice-example-code/foundry && forge test
 
-# 审计靶场 MiniLend（共用 examples/foundry/lib 中的 forge-std）
-cd examples/minilend && forge test
+# 审计靶场 MiniLend（共用 practice-example-code/foundry/lib 中的 forge-std）
+cd ../minilend && forge test  # 接着上一条命令，已在 foundry 目录里
 ```
 
-需要 Foundry（已用 forge 1.5.1 验证）。配置使用 solc 0.8.30 和 EVM 版本 `prague`，因为 EIP-7702 需要 `prague`。`forge-std` 安装在 `examples/foundry/lib`。
+需要 Foundry（已用 forge 1.5.1 验证）。配置使用 solc 0.8.30 和 EVM 版本 `prague`，因为 EIP-7702 需要 `prague`。`forge-std` 安装在 `practice-example-code/foundry/lib`。
 
 > ⚠️ 警告：`src/` 下的演示合约同样只用于学习。不要部署到主网。
 
@@ -58,18 +58,18 @@ cd examples/minilend && forge test
 
 ```bash
 # 方式一：Foundry（foundry 项目已导入 01–08 示例）
-cd examples/foundry && forge build
+cd practice-example-code/foundry && forge build
 
 # 方式二：solc-js
 npm i solc@0.8.24
-npx solcjs --bin examples/01-Reentrancy.sol
+npx solcjs --bin practice-example-code/01-Reentrancy.sol
 ```
 
 ## 查看存储布局
 
 ```bash
 # 打印合约的存储布局：变量、槽位、偏移
-cd examples/foundry && forge inspect BankV2Broken storage-layout
+cd practice-example-code/foundry && forge inspect BankV2Broken storage-layout
 ```
 
 预期输出（与 [10 章](../Web3-Security/10-upgradeable-proxy.md) 3.1 节表格一致）：`feeBps@0, owner@1, totalDeposits@2, balances@3`。

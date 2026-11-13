@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// 配套章节：04 重入攻击 ｜ 被测合约：examples/01-Reentrancy.sol
+// 配套章节：04 重入攻击 ｜ 被测合约：practice-example-code/01-Reentrancy.sol
 pragma solidity ^0.8.20;
 
 import {Test} from "forge-std/Test.sol";

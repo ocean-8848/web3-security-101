@@ -173,7 +173,7 @@ CEX 的充值系统做的事情和跨链桥一样：**相信链上发生了一�
 
 ### 6.1 用代码验证修复
 
-`examples/foundry` 中有跨链验证器演示。修复验证需要"修复前失败、修复后通过"两个结果（[A08](assessment/A08-reproduce-attacks.md)）。
+`practice-example-code/foundry` 中有跨链验证器演示。修复验证需要"修复前失败、修复后通过"两个结果（[A08](assessment/A08-reproduce-attacks.md)）。
 
 ---
 

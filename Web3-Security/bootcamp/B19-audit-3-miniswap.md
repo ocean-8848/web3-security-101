@@ -7,7 +7,7 @@
 >
 > 前置章节：[B15 第 2 次审计：LuckyPot](B15-audit-2-luckypot.md)、[B18 DEX 与 AMM](B18-dex-amm.md)
 > 预计用时：8–10 小时。
-> 靶场：[examples/range/miniswap/](../../examples/range/miniswap/README.md)
+> 靶场：[practice-example-code/range/miniswap/](../../practice-example-code/range/miniswap/README.md)
 > 关联章节：[B18 DEX 与 AMM](B18-dex-amm.md)｜[06 算术与精度](../06-arithmetic-precision.md)｜[07 外部调用与代币](../07-external-calls-tokens.md)｜[09 MEV 与签名](../09-mev-signatures.md)｜[27 审计与测试流程](../27-audit-testing-workflow.md)｜[B25 实战项目](B25-capstone-minilend.md)｜[AMM 实验](../interactive/audit-amm.html)｜[不变量模糊测试器](../interactive/audit-fuzz.html)
 > 最后核对：2026-11-10（本地运行 forge 1.5.1、Echidna 2.3.3；公开发布信息显示 Echidna 已有 2.4.0，版本不同时输出可能有差异）
 
@@ -76,7 +76,7 @@ flowchart LR
 ## 2. 准备与范围
 
 ```bash
-cd examples/range/miniswap # 进入 MiniSwap 靶场目录
+cd practice-example-code/range/miniswap # 进入 MiniSwap 靶场目录
 forge build # 编译；留意输出里的警告
 ```
 
@@ -204,6 +204,8 @@ forge test --match-contract HandlerInvariantVulnerable -vv
 
 **序列缩减**（Shrinking）：模糊器把失败序列缩短，便于阅读。第一个失败从 13 步缩减到 2 步：一次交易，一次收取协议费。
 
+> 💡 注意：再次运行时，输出会变成 `invariant_... replay failure`。Foundry 把上次找到的失败序列存在 `cache/invariant/failures`，下次直接重放。想重新看到完整序列，先删除 `cache/invariant` 目录（`rm -rf cache/invariant`）再运行。模糊测试 `QuoteFuzzVulnerable` 同理，它的反例存在 `cache/fuzz`。
+
 运行修复版：
 
 ```bash
@@ -219,7 +221,7 @@ forge test --match-contract HandlerInvariantFixed # 同一套不变量，换成�
 Suite result: ok. 3 passed; 0 failed; 0 skipped
 ```
 
-回滚只有约 3%，全部来自 `addLiquidity`。对比开放式的 91%，这才是有价值的测试。
+reverts 的数字每次运行会在 133–135 之间浮动。回滚只有约 3%，全部来自 `addLiquidity`。对比开放式的 91%，这才是有价值的测试。
 
 > 🧪 动手验证：打开[不变量模糊测试器](../interactive/audit-fuzz.html)。把序列长度从 1 改到 10，记录发现错误需要的步数。
 

@@ -60,7 +60,7 @@
 
 - [ ] 不变量:每次交换后 `x·y≥k`（或对应不变量）是否成立?(Uranium)
 - [ ] 舍入:集中流动性的 tick 边界、再投资计算的舍入方向?(KyberSwap)
-- [ ] 回调:swap 回调是否校验调用者为**计算出的**真实池子?(Sushi RouteProcessor2,见 [examples/08](../../examples/08-RouterCallback.sol))
+- [ ] 回调:swap 回调是否校验调用者为**计算出的**真实池子?(Sushi RouteProcessor2,见 [practice-example-code/08](../../practice-example-code/08-RouterCallback.sol))
 - [ ] 手续费与价格读数:LP 价格是否可被用作抗操纵预言机?(不能直接用储备算)
 - [ ] 代币兼容:收税、变基、无返回值代币能否破坏池子记账?
 

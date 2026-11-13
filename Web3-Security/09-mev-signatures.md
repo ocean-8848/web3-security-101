@@ -6,7 +6,7 @@
 > 3. 比较 BNB Chain、TRON、Mantle 三条链的交易排序机制对 MEV 的影响。
 >
 > 前置章节：[08 预言机与闪电贷](08-oracle-flashloan.md)
-> 交互实验：[signature-replay-lab.html](interactive/signature-replay-lab.html) ｜ 示例合约：[examples/06-SignatureReplay.sol](../examples/06-SignatureReplay.sol)
+> 交互实验：[signature-replay-lab.html](interactive/signature-replay-lab.html) ｜ 示例合约：[practice-example-code/06-SignatureReplay.sol](../practice-example-code/06-SignatureReplay.sol)
 
 > 最后核对：2026-11-09
 
@@ -177,11 +177,11 @@ TRON 的 TVM 在签名上有三处与 EVM 不同：`CHAINID` 是 `728126428`，�
 
 ### 3.6 用代码验证修复
 
-示例合约 [06-SignatureReplay.sol](../examples/06-SignatureReplay.sol) 同时包含漏洞版 `VulnerableClaim` 和修复版 `SafeClaim`。Foundry 靶场 `examples/foundry/test/SignatureReplay.t.sol` 对比这两个版本。`examples/foundry` 中还有 Permit2 演示。
+示例合约 [06-SignatureReplay.sol](../practice-example-code/06-SignatureReplay.sol) 同时包含漏洞版 `VulnerableClaim` 和修复版 `SafeClaim`。Foundry 靶场 `practice-example-code/foundry/test/SignatureReplay.t.sol` 对比这两个版本。`practice-example-code/foundry` 中还有 Permit2 演示。
 
 ```bash
 # 运行签名重放示例的测试
-cd examples/foundry && forge test --match-path test/SignatureReplay.t.sol -vv
+cd practice-example-code/foundry && forge test --match-path test/SignatureReplay.t.sol -vv
 ```
 
 > 💡 注意：修复验证需要"修复前失败、修复后通过"两个结果。只跑通修复版，不能证明测试真的覆盖了重放（[A08](assessment/A08-reproduce-attacks.md)）。

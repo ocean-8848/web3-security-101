@@ -5,9 +5,9 @@ import path from 'node:path';
 import { convert, titleOf } from './md2data.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
-// 示例代码在仓库根目录 examples/（与 Web3-Security/ 同级）；文档里仍用逻辑路径 examples/…
-const EXAMPLES = path.resolve(ROOT, '..', 'examples');
-const abs = p => p.startsWith('examples/') ? path.join(EXAMPLES, p.slice('examples/'.length)) : path.join(ROOT, p);
+// 示例代码在仓库根目录 practice-example-code/（与 Web3-Security/ 同级）；文档里仍用逻辑路径 practice-example-code/…
+const EXAMPLES = path.resolve(ROOT, '..', 'practice-example-code');
+const abs = p => p.startsWith('practice-example-code/') ? path.join(EXAMPLES, p.slice('practice-example-code/'.length)) : path.join(ROOT, p);
 const rd = p => fs.readFileSync(abs(p), 'utf8');
 
 const NAV = [
@@ -35,7 +35,7 @@ const NAV = [
   ['chain', '链专题 · ETH / BNB / TRON / Mantle', 'chains'],
   ['asm', '评估篇 · 交易所 / DeFi / 上币尽调', 'assessment'],
   ['tpl', '评估模板', 'templates'],
-  ['code', '示例合约', ['examples/README.md']],
+  ['code', '示例合约', ['practice-example-code/README.md']],
 ];
 // Old 合约安全学习手册 anchors -> new ids (old links keep working).
 // Old anchors -> current ids (c..: 合约手册; r..: 第九篇, folded 2026-11-10; b..: bootcamp before sequential renumbering 2026-11-11). Targets must never be alias keys.
@@ -60,7 +60,7 @@ const LABS = [
 const idOf = file => {
   if (file === 'README.md') return 'home';
   if (file === 'WRITING-GUIDE.md') return 'guide';
-  if (file === 'examples/README.md') return 'examples';
+  if (file === 'practice-example-code/README.md') return 'examples';
   let m;
   if ((m = file.match(/^(\d\d[a-z]?)-/))) return 's' + m[1];
   if ((m = file.match(/^audit\/R(\d\d)-/))) return 'r' + m[1];
@@ -93,14 +93,14 @@ for (const [old, id] of Object.entries(OLD_FILES)) mdMap[old] = id;
 const docs = {};
 for (const [file, group] of order) {
   let md = rd(file);
-  if (file === 'examples/README.md') {
+  if (file === 'practice-example-code/README.md') {
     md += '\n\n## 源码\n';
     for (const f of fs.readdirSync(EXAMPLES).filter(f => f.endsWith('.sol')).sort())
-      md += `\n### ${f}\n\n\`\`\`solidity\n${rd('examples/' + f).trimEnd()}\n\`\`\`\n`;
+      md += `\n### ${f}\n\n\`\`\`solidity\n${rd('practice-example-code/' + f).trimEnd()}\n\`\`\`\n`;
     for (const sub of ['foundry/src', 'foundry/test', 'minilend/src', 'minilend/test'].concat(fs.existsSync(path.join(EXAMPLES, 'range')) ? fs.readdirSync(path.join(EXAMPLES, 'range')).flatMap(p => ['range/' + p + '/src', 'range/' + p + '/test']) : [])) {
       if (!fs.existsSync(path.join(EXAMPLES, sub))) continue;
       for (const f of fs.readdirSync(path.join(EXAMPLES, sub)).filter(f => f.endsWith('.sol')).sort())
-        md += `\n### ${sub}/${f}\n\n\`\`\`solidity\n${rd('examples/' + sub + '/' + f).trimEnd()}\n\`\`\`\n`;
+        md += `\n### ${sub}/${f}\n\n\`\`\`solidity\n${rd('practice-example-code/' + sub + '/' + f).trimEnd()}\n\`\`\`\n`;
     }
   }
   const id = idOf(file);

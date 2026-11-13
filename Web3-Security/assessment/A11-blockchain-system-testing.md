@@ -90,12 +90,14 @@ flowchart LR
 4. 启动本地链。
 
 ```bash
+# 生成实验专用助记词，只保存 Phrase 下面那一行
+cast wallet new-mnemonic | sed -n '/^Phrase:/{n;p;}' > ./lab-only-mnemonic.txt
 # 只监听本机；助记词来自实验专用文件
 anvil --host 127.0.0.1 --port 8545 --chain-id 31337 \
   --mnemonic "$(cat ./lab-only-mnemonic.txt)"
 ```
 
-5. 发送任何交易前运行防误操作检查。
+5. 发送任何交易前运行防误操作检查。下面两行放在部署脚本开头；直接在终端里运行时，`exit 1` 会关闭当前终端。
 
 ```bash
 # 实验链地址

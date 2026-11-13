@@ -64,11 +64,15 @@ def main():
     pdf_path = out_dir / f"{source.stem}.pdf"
     html_path.write_text(page, encoding="utf-8")
 
-    subprocess.run(
+    pdf_path.unlink(missing_ok=True)  # 删掉旧 PDF，下面才能判断这次是否生成成功
+    result = subprocess.run(
         [find_chrome(), "--headless", "--disable-gpu", "--no-pdf-header-footer",
          f"--print-to-pdf={pdf_path}", html_path.as_uri()],
-        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=120,
+        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=120,
     )
+    # 部分新版 Chrome 打印完成后仍返回非零退出码，所以以 PDF 是否生成为准
+    if not pdf_path.exists() or pdf_path.stat().st_size == 0:
+        sys.exit(f"Chrome 没有生成 PDF（退出码 {result.returncode}）")
     print(f"findings: {count}")
     print(f"html: {html_path.relative_to(HERE)}")
     print(f"pdf:  {pdf_path.relative_to(HERE)} ({pdf_path.stat().st_size // 1024} KB)")

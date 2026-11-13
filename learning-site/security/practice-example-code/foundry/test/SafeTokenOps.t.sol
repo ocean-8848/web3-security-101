@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// 配套章节：07 外部调用、C02 TRON ｜ 被测合约：examples/05-SafeTokenOps.sol
+// 配套章节：07 外部调用、C02 TRON ｜ 被测合约：practice-example-code/05-SafeTokenOps.sol
 pragma solidity ^0.8.20;
 
 import {Test} from "forge-std/Test.sol";

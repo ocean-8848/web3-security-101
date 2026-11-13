@@ -7,7 +7,7 @@
 >
 > 前置章节：[B28 模式库](B28-bug-patterns.md)、[B29 为什么会漏掉漏洞](B29-why-audits-miss.md)、[A02 风险评级](../assessment/A02-risk-rating-reporting.md)
 > 预计时间：先独立审计 90 分钟，再跟读 90 分钟。
-> 靶场：[examples/range/thinkaloud](../../examples/range/thinkaloud) ｜ 定级练习：[severity-drill.html](../interactive/severity-drill.html)
+> 靶场：[practice-example-code/range/thinkaloud](../../practice-example-code/range/thinkaloud) ｜ 定级练习：[severity-drill.html](../interactive/severity-drill.html)
 
 > ⚠️ 警告：`MooringPool` 是含有故意漏洞的本地玩具合约。不要部署它。本章的方法只用于自己的代码、已授权的审计和本地靶场。
 
@@ -172,7 +172,7 @@ flowchart LR
 **[00:18] 跑工具。**
 
 ```bash
-cd examples/range/thinkaloud # 进入 thinkaloud 靶场目录
+cd practice-example-code/range/thinkaloud # 进入 thinkaloud 靶场目录
 # 排除依赖、测试和答案目录，只看中高级别结果
 slither . --filter-paths "lib|test|solution" --exclude-informational --exclude-optimization
 ```
@@ -262,7 +262,7 @@ CompleteExit(address owner,uint256 nonce,uint256 deadline)
 
 </details>
 
-**[01:04] PoC 第一版。** 我写得太快：
+**[01:04] PoC 第一版。** 我写得太快（这两版草稿 PoC 不在靶场里；想复现，把代码放进 `test/PoC.t.sol` 的测试合约里，gas 数字可能略有不同）：
 
 ```solidity
 stakeAs(mallory, 1_000 * E);  // 步骤 1：Mallory 质押
@@ -480,10 +480,10 @@ rate after : 5787037037037037
 
 ## 9. 运行全部测试
 
-在 `Web3-Security/` 目录运行：
+在仓库根目录（`Web3-Security/` 的上一级）运行：
 
 ```bash
-cd examples/range/thinkaloud # 进入 thinkaloud 靶场目录
+cd practice-example-code/range/thinkaloud # 进入 thinkaloud 靶场目录
 forge test # 运行全部 PoC 和修复测试
 ```
 

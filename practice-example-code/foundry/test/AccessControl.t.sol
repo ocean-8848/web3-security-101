@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// 配套章节：05 访问控制与权限 ｜ 被测合约：examples/02-AccessControl.sol
+// 配套章节：05 访问控制与权限 ｜ 被测合约：practice-example-code/02-AccessControl.sol
 pragma solidity ^0.8.20;
 
 import {Test} from "forge-std/Test.sol";

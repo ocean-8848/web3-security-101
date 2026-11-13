@@ -11,7 +11,7 @@
 > 交互实验：[评级计算器](../interactive/severity-calculator.html) ｜ [审计自查清单](../interactive/audit-checklist.html)
 > 预计用时：3～4 小时
 > 最后核对：2026-11-10
-> 配套文件：[examples/range/basics/report/](../../examples/range/basics/report)
+> 配套文件：[practice-example-code/range/basics/report/](../../practice-example-code/range/basics/report)
 
 ---
 
@@ -58,7 +58,7 @@
 
 PoC（Proof of Concept，概念验证）是证明漏洞真实存在的最小可运行示例。
 
-空白模板在 [report/finding-template.md](../../examples/range/basics/report/finding-template.md)。
+空白模板在 [report/finding-template.md](../../practice-example-code/range/basics/report/finding-template.md)。
 
 ### 2.1 差和好的完整对比
 
@@ -204,7 +204,7 @@ LunchPool 的定级过程：
 
 ### 6.1 报告的结构
 
-模型报告是 [report/LunchPool-report.md](../../examples/range/basics/report/LunchPool-report.md)。它包含：
+模型报告是 [report/LunchPool-report.md](../../practice-example-code/range/basics/report/LunchPool-report.md)。它包含：
 
 1. 概览表（提交哈希、范围、方法）
 2. 摘要（上线结论、数量统计）
@@ -227,7 +227,7 @@ LunchPool 的定级过程：
 需要：Python 3 和 Chrome（或 Chromium）。
 
 ```bash
-cd examples/range/basics/report  # 进入报告目录
+cd practice-example-code/range/basics/report  # 进入报告目录
 python3 -m venv .venv  # 建一个独立的 Python 虚拟环境
 .venv/bin/pip install markdown  # 在虚拟环境里安装 markdown 库
 # 核对数量，生成 HTML 和 PDF
@@ -256,7 +256,7 @@ pdf:  out/LunchPool-report.pdf (595 KB)
 
 > 💡 注意：社区常用 Pandoc + LaTeX 模板生成 PDF。手册运行环境没有安装 Pandoc，所以没有验证这条路径。
 
-> 🧪 动手验证：修改 `template.html` 里 `h1` 的颜色，重新生成 PDF，确认模板生效。然后给报告加一条你自己写的 `[I-03]`，同时把摘要的信息数量改为 3。
+> 🧪 动手验证：给 `template.html` 里的 `h1` 加一行颜色（例如 `color: #c00;`），重新生成 PDF，确认模板生效。然后给报告加一条你自己写的 `[I-03]`，同时把摘要的信息数量改为 3。
 
 ### 6.3 练习：自己写一条
 
@@ -296,6 +296,7 @@ pdf:  out/LunchPool-report.pdf (595 KB)
 | 表格没有渲染 | 表格前没有空行 | 在表格前加一个空行 |
 | PDF 中文显示成方块 | 系统没有中文字体 | 在 `template.html` 的 `font-family` 中加入你系统上的中文字体 |
 | 报错提示 Chrome 超时 | 无头 Chrome 启动失败 | 重新运行；确认 Chrome 能正常打开 |
+| `Chrome 没有生成 PDF` | 无头 Chrome 打印失败 | 重新运行；仍失败就用浏览器打开生成的 HTML，手动打印为 PDF |
 
 ---
 

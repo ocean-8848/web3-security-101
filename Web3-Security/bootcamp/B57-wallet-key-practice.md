@@ -24,7 +24,7 @@
 
 <details class="predict"><summary>🤔 先猜再看：抄错了一个词，钱包恢复时会发生什么？是报错，还是恢复出另一个钱包？</summary>
 
-多数情况下会报错。BIP-39 助记词的最后一个词带有校验和（Checksum）。12 个词的校验和只有 4 位，所以随机抄错时，约有 1/16 的机会通过校验。通过校验后，钱包会恢复出一个**完全不同**的空钱包。第 3 步你会亲手看到报错。
+多数情况下会报错。BIP-39 助记词的最后一个词带有校验和（Checksum）。12 个词的校验和只有 4 位，所以随机抄错时，约有 1/16 的机会通过校验。通过校验后，钱包会恢复出一个**完全不同**的空钱包。第 2 步你会亲手看到报错。
 
 </details>
 
@@ -42,10 +42,10 @@ flowchart LR
   M --> S["种子<br/>助记词 + passphrase"]
   S --> P["派生路径<br/>m/44'/60'/0'/0/i"]
   P --> K["私钥 → 地址"]
-  E -.-> X1["弱随机数<br/>第 4 步"]
-  M -.-> X2["截图 / 云笔记 / 日志<br/>第 6 步"]
-  S -.-> X3["忘记 passphrase<br/>第 3 步"]
-  K -.-> X4["一个地址放全部资产<br/>第 8 步"]
+  E -.-> X1["弱随机数<br/>第 3 步"]
+  M -.-> X2["截图 / 云笔记 / 日志<br/>第 5 步"]
+  S -.-> X3["忘记 passphrase<br/>第 2 步"]
+  K -.-> X4["一个地址放全部资产<br/>第 6–7 步"]
 ```
 
 读图要点：
@@ -77,6 +77,7 @@ cast wallet new-mnemonic -a 3  # 仅用于练习，不要存入资金
 输出（你的词和地址会不同）：
 
 ```text
+Generating mnemonic from provided entropy...
 Successfully generated a new mnemonic.
 Phrase:
 wool suspect nurse erode check music post butter own drastic excite make

@@ -7,7 +7,7 @@
 >
 > 前置章节：[B09 读代码与攻击者思维](B09-reading-code-mindset.md)（审计的最小流程与 5 个术语）、[B12 Foundry 进阶](B12-foundry-advanced.md)（读存储、PoC 骨架）
 > 预计用时：2–3 小时。
-> 靶场：[examples/range/notebox/](../../examples/range/notebox/README.md)
+> 靶场：[practice-example-code/range/notebox/](../../practice-example-code/range/notebox/README.md)
 > 关联章节：[05 访问控制](../05-access-control.md)｜[03 EVM 与 Solidity 安全基础](../03-evm-solidity-basics.md)｜[A02 风险定级与报告](../assessment/A02-risk-rating-reporting.md)｜[T03 发现报告模板](../templates/T03-finding-report.md)｜[B25 实战项目](B25-capstone-minilend.md)
 > 最后核对：2026-11-10（forge 1.5.1、anvil、cast 均在本地运行过；下文输出来自真实运行）
 
@@ -38,10 +38,10 @@
 ## 2. 第 1 步：准备环境
 
 1. 打开终端。
-2. 进入靶场目录。路径以手册根目录 `Web3-Security/` 为起点：
+2. 进入靶场目录。路径以仓库根目录（`Web3-Security/` 的上一级）为起点：
 
 ```bash
-cd examples/range/notebox  # 进入 NoteBox 靶场
+cd practice-example-code/range/notebox  # 进入 NoteBox 靶场
 ```
 
 3. 编译：
@@ -50,7 +50,7 @@ cd examples/range/notebox  # 进入 NoteBox 靶场
 forge build  # 先确认靶场能编译
 ```
 
-预期输出的最后一行：
+预期输出包含这一行（之后还有 forge-lint 的 note 提示，不是错误）：
 
 ```text
 Compiler run successful!

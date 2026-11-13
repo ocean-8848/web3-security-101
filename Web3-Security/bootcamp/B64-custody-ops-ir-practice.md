@@ -271,7 +271,6 @@ chainId 在 domainSeparator 里，domainSeparator 又进入最终哈希。改任
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
-| `cast` 连到了公网节点 | 环境变量 `ETH_RPC_URL` 指向外部 RPC | 每条命令都显式加 `--rpc-url $R`；不要省略 |
 | `safe-hash.sh` 结果和实验页不同 | 字段抄错，常见是金额少了 6 个零或 nonce 不是 42 | 对照实验页 #42 的"字段对比"表逐项核对 |
 | `node risk.mjs` 报 `Cannot use import statement` | 文件扩展名不是 `.mjs` | 改名为 `risk.mjs` |
 

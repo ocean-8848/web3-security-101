@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// 配套章节：08 预言机与闪电贷 ｜ 被测合约：examples/04-SpotOracle.sol
+// 配套章节：08 预言机与闪电贷 ｜ 被测合约：practice-example-code/04-SpotOracle.sol
 pragma solidity ^0.8.20;
 
 import {Test} from "forge-std/Test.sol";

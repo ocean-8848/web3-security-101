@@ -9,7 +9,7 @@
 >
 > 前置章节：[03 EVM 与 Solidity 基础](../03-evm-solidity-basics.md)、[B06 Foundry 基础](B06-foundry-basics.md)
 > 预计用时：8–10 小时。
-> 交互实验：[EVM 单步执行器](../interactive/audit-evm.html) ｜ [选择器与槽位计算器](../interactive/audit-abi.html) ｜ [存储与代理](../interactive/storage-proxy-lab.html) ｜ 配套代码：[examples/range/yul/](../../examples/range/yul/README.md)
+> 交互实验：[EVM 单步执行器](../interactive/audit-evm.html) ｜ [选择器与槽位计算器](../interactive/audit-abi.html) ｜ [存储与代理](../interactive/storage-proxy-lab.html) ｜ 配套代码：[practice-example-code/range/yul/](../../practice-example-code/range/yul/README.md)
 >
 > 最后核对：2026-11-10
 
@@ -82,7 +82,7 @@ flowchart LR
 先进入配套目录。后面的所有命令（包括第 6–8 节）都在这个目录中运行。
 
 ```bash
-cd examples/range/yul # 进入 Yul 配套目录
+cd practice-example-code/range/yul # 进入 Yul 配套目录
 forge build # 同时编译 .sol 和 .yul 文件
 ```
 
@@ -475,6 +475,8 @@ Huff 是比 Yul 更底层的合约语言，开发者直接编排操作码。本�
 | `vm.getCode: no matching artifact found` | 该形式找不到 Yul 产物 | 改用 `vm.readFile` 加 `vm.parseJsonBytes` |
 | `Unreachable code` 警告 | `LockDemo` 故意演示 | 这是预期输出，保留用于教学 |
 | `python3` 命令不存在 | 未安装 Python | 用编辑器打开 `out/Tally.yul/Tally.json`，复制 `deployedBytecode.object` |
+| 改了 `Tally.yul`，测试结果不变 | forge 没有重新编译 Yul 产物 | 先运行 `forge build --force`，再运行 `forge test` |
+| `Error: Lint failed`（`src/Tally.yul`） | forge 的 lint 不支持 `.yul` | 配套工程的 `foundry.toml` 已设置 `lint_on_build = false`；自建工程照此添加 |
 
 ## 11. 过关标准
 

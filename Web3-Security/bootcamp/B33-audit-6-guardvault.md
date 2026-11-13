@@ -4,7 +4,7 @@
 > 前置知识：完成 B21 和 B32，读过 [B25 综合实战](B25-capstone-minilend.md)。
 > 预计用时：时盒 8 小时，复盘 2 小时。
 > 交互实验：[audit-governance.html](../interactive/audit-governance.html) ｜ [vault-inflation-lab.html](../interactive/vault-inflation-lab.html) ｜ [reentrancy-lab.html](../interactive/reentrancy-lab.html)
-> 靶场目录：`examples/range/guardvault/`
+> 靶场目录：`practice-example-code/range/guardvault/`
 > 最后核对：2026-11-10
 
 > ⚠️ 警告：本章只在本地运行玩具合约。不要对任何真实协议尝试这些攻击。未经授权测试他人系统可能违法。
@@ -23,10 +23,10 @@
 
 GuardVault 是一个收益金库。用户存入资产，策略团队把资金分配给策略，机器人收割奖励，治理合约持有管理权限，信用模块允许用户以份额为抵押借款。
 
-先读 `examples/range/guardvault/README.md`。范围、角色和团队声明的不变量都在里面。
+先读 `practice-example-code/range/guardvault/README.md`。范围、角色和团队声明的不变量都在里面。
 
 ```bash
-cd examples/range/guardvault # 进入 GuardVault 靶场目录
+cd practice-example-code/range/guardvault # 进入 GuardVault 靶场目录
 forge build # 编译全部合约
 ```
 

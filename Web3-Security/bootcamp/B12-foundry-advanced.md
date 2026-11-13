@@ -9,7 +9,7 @@
 > 交互实验：[模糊测试](../interactive/audit-fuzz.html)
 > 预计用时：2～3 小时
 > 最后核对：2026-11-10
-> 配套代码：[examples/range/basics/](../../examples/range/basics)
+> 配套代码：[practice-example-code/range/basics/](../../practice-example-code/range/basics)
 
 ---
 
@@ -17,7 +17,7 @@
 
 [B06](B06-foundry-basics.md) 用手写的单元测试检查了 `Club`，又用 `cast` 和 `anvil` 操作了本地链。手写用例只覆盖你想到的情况。本篇先让工具生成随机输入和随机调用序列，再用分叉读取链上状态，最后搭起审计员的工作台：读存储、重放交易、写 PoC 骨架。
 
-准备工作：第 1 节的命令在配套工程 `examples/range/basics` 里运行。第 2、3 节要用一条本地链，链上有一个 `Club` 和一笔 `join` 交易。如果你刚做完 [B06 第 6 节](B06-foundry-basics.md)且 anvil 还在运行，直接用它。否则按下面的步骤重建（与 B06 第 6 节相同）。
+准备工作：第 1 节的命令在配套工程 `practice-example-code/range/basics` 里运行。第 2、3 节要用一条本地链，链上有一个 `Club` 和一笔 `join` 交易。如果你刚做完 [B06 第 6 节](B06-foundry-basics.md)且 anvil 还在运行，直接用它。否则按下面的步骤重建（与 B06 第 6 节相同）。
 
 打开**第一个**终端：
 
@@ -28,7 +28,7 @@ anvil  # 启动本地测试链，占用这个终端
 打开**第二个**终端：
 
 ```bash
-cd examples/range/basics
+cd practice-example-code/range/basics
 export RPC=http://127.0.0.1:8545  # 本地链的地址，后面命令复用
 export ME=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266     # anvil 的 0 号默认账户，私钥公开
 export ALICE=0x70997970C51812dc3A010C7d01b50e0d17dc79C8  # anvil 的 1 号默认账户
@@ -124,6 +124,8 @@ FOUNDRY_PROFILE=demo forge test --match-contract BuggyInvariantDemo
 		sender=0x0000000000000000000000000000000000000416 addr=[demo-fail/BuggyInvariant.t.sol:BuggyHandler]0x2e234DAe75C793f67A35089C9d99245E1C58470b calldata=mint(uint256,uint256) args=[3172, 5325]
 		sender=0x00000000000000000000000000000000000012dC addr=[demo-fail/BuggyInvariant.t.sol:BuggyHandler]0x2e234DAe75C793f67A35089C9d99245E1C58470b calldata=move(uint256,uint256,uint256) args=[1000000000000000000000000 [1e24], 652, 4575]
 ```
+
+> 💡 注意：序列和数值是随机的，你的结果会不同，但缩减后仍是 mint 加一次给自己的 move，共两步。再次运行会显示 `replay failure`：Foundry 把上次的失败序列存在 `cache/invariant/`，下次直接重放。删除这个目录可以重新搜索。
 
 读法：
 

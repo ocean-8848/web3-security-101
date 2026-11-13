@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// 配套章节：03 EVM 基础、10 可升级合约 ｜ 被测合约：examples/07-ProxyStorage.sol
+// 配套章节：03 EVM 基础、10 可升级合约 ｜ 被测合约：practice-example-code/07-ProxyStorage.sol
 pragma solidity ^0.8.20;
 
 import {Test} from "forge-std/Test.sol";

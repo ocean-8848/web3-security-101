@@ -7,7 +7,7 @@
 >
 > 前置章节：[B13 第 1 次审计：NoteBox](B13-audit-1-notebox.md)、[B14 写好一个发现](B14-writing-findings.md)
 > 预计用时：5–8 小时。
-> 靶场：[examples/range/luckypot/](../../examples/range/luckypot/README.md)
+> 靶场：[practice-example-code/range/luckypot/](../../practice-example-code/range/luckypot/README.md)
 > 关联章节：[04 重入](../04-reentrancy.md)｜[02 密码学与随机数](../02-cryptography-randomness.md)｜[06 算术与精度](../06-arithmetic-precision.md)｜[07 外部调用与代币](../07-external-calls-tokens.md)｜[B31 工具工程化](B31-automation-tools.md)｜[重入实验](../interactive/reentrancy-lab.html)
 > 最后核对：2026-11-10（本地运行 forge 1.5.1、Slither 0.11.5、Aderyn 0.6.8；公开发布信息显示 Slither 已有 0.11.6，版本不同时输出可能有差异）
 
@@ -50,7 +50,7 @@
 1. 进入靶场：
 
 ```bash
-cd examples/range/luckypot  # 进入 LuckyPot 靶场
+cd practice-example-code/range/luckypot  # 进入 LuckyPot 靶场
 forge build  # 先确认能编译
 ```
 

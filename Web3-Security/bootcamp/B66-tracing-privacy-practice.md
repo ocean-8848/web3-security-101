@@ -124,17 +124,25 @@ Deployed to: 0x8464135c8F25Da09e49BC8782676a84730C318bC
 6. 模拟盗币和转移。攻击者拿到了受害者私钥，所以前两笔的 `from` 是受害者：
 
 ```bash
-cast send $A --value 10ether --private-key $VICTIM_PK --rpc-url $RPC                     # 盗走 ETH
-cast send $T 'transfer(address,uint256)' $A 500000 --private-key $VICTIM_PK --rpc-url $RPC # 盗走 tUSD
+# 盗走 ETH；--json 输出回执，jq 取出交易哈希存进 TX1
+TX1=$(cast send $A --value 10ether --private-key $VICTIM_PK --rpc-url $RPC --json | jq -r .transactionHash)
+# 盗走 tUSD；哈希存进 TX2
+TX2=$(cast send $T 'transfer(address,uint256)' $A 500000 --private-key $VICTIM_PK --rpc-url $RPC --json | jq -r .transactionHash)
 cast send $H1 --value 4ether --private-key $A_PK --rpc-url $RPC                          # 拆分
 cast send $H2 --value 4ether --private-key $A_PK --rpc-url $RPC                          # 拆分
 cast send $DEP --value 3.9ether --private-key $H1_PK --rpc-url $RPC                      # 进交易所
 ```
 
-第一笔的输出里有交易哈希。把它记为"起点"：
+第一笔的交易哈希就是"起点"：
+
+```bash
+echo $TX1  # 起点交易哈希
+```
+
+示例输出（哈希由你的地址决定，你的会不同）：
 
 ```text
-transactionHash      0x321effa9c03c0b6ebfb15b79836ed725830579157f2e6a4d529f0f10b9a8c594
+0x321effa9c03c0b6ebfb15b79836ed725830579157f2e6a4d529f0f10b9a8c594
 ```
 
 ## 3. 第 2 步：从一笔交易哈希开始读交易图
@@ -142,10 +150,10 @@ transactionHash      0x321effa9c03c0b6ebfb15b79836ed725830579157f2e6a4d529f0f10b
 1. 读起点交易：
 
 ```bash
-cast tx 0x321effa9c03c0b6ebfb15b79836ed725830579157f2e6a4d529f0f10b9a8c594 --rpc-url $RPC
+cast tx $TX1 --rpc-url $RPC
 ```
 
-关键字段：
+关键字段（地址是本章示例运行的，你的会不同）：
 
 ```text
 blockNumber          3
@@ -179,7 +187,7 @@ cd .. && chmod +x trace.sh   # 回到 b52-lab
 ./trace.sh $H2   # 跳板 2 发出了什么
 ```
 
-输出（已缩短）：
+输出（已缩短；哈希和地址以你的运行为准）：
 
 ```text
 block=5 hash=0x6f66218b… to=0xc64da920… value_wei=0x3782dace9d900000
@@ -193,7 +201,7 @@ H2 没有输出，说明它的资金还没动。`cast from-wei $(cast to-dec 0x3
 
 ```bash
 cast logs --from-block 1 --address $T 'Transfer(address indexed,address indexed,uint256)' --rpc-url $RPC
-cast calldata-decode 'transfer(address,uint256)' $(cast tx 0xdfbab77c61418c5f5da726883fe70a12d359d19504a45bd549a42a15350435c7 input --rpc-url $RPC)
+cast calldata-decode 'transfer(address,uint256)' $(cast tx $TX2 input --rpc-url $RPC)
 ```
 
 ```text

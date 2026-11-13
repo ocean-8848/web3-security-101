@@ -9,3 +9,7 @@ optimizer_runs = 200
 evm_version = "cancun"
 remappings = ["forge-std/=lib/forge-std/src/"]
 fs_permissions = [{ access = "read", path = "./out" }]
+
+# forge 的 lint 不支持 .yul，构建时会误报失败
+[lint]
+lint_on_build = false

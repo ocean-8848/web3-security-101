@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// 配套章节：09 MEV 与签名安全 ｜ 被测合约：examples/06-SignatureReplay.sol
+// 配套章节：09 MEV 与签名安全 ｜ 被测合约：practice-example-code/06-SignatureReplay.sol
 pragma solidity ^0.8.20;
 
 import {Test} from "forge-std/Test.sol";

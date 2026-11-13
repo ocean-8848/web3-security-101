@@ -57,7 +57,17 @@ flowchart LR
 
 ## 3. 自定义 Slither 检测器（示例）
 
-先准备被测合约 `src/FeeVault.sol`。下面三节共用它。
+先新建一个空的 Foundry 项目。下面三节都在这个目录里做：
+
+```bash
+# 新建空项目：自带 git 仓库、foundry.toml 和 lib/forge-std
+forge init --empty feevault-lab && cd feevault-lab
+mkdir -p tools rules  # 检测器和 Semgrep 规则的目录
+```
+
+> 💡 注意：`detector.py .` 靠 `foundry.toml` 识别 Foundry 项目。没有这个文件，Slither 会报 `. is a directory`。
+
+再准备被测合约 `src/FeeVault.sol`。下面三节共用它。
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -304,8 +314,8 @@ contract FeeVaultInvariant is Test {
 ```
 
 ```bash
-# 安装 Foundry 标准测试库
-forge install foundry-rs/forge-std
+# forge init 已经装好 forge-std。在别的已有目录里，先 git init，再运行：
+# forge install foundry-rs/forge-std
 # 只跑不变量测试，预期 invariant_totalMatchesGhostSum 失败
 forge test --match-path test/FeeVault.invariant.t.sol -vv
 ```

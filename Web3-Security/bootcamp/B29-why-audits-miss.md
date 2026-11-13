@@ -7,7 +7,7 @@
 >
 > 前置章节：[B28 高频漏洞模式库](B28-bug-patterns.md)、[B27 专业审计流程](B27-what-is-audit.md)
 > 预计时间：60 分钟阅读，60 分钟练习。
-> 配套靶场：[examples/range/thinkaloud](../../examples/range/thinkaloud) ｜ 跟审实录：[B30](B30-think-aloud.md)
+> 配套靶场：[practice-example-code/range/thinkaloud](../../practice-example-code/range/thinkaloud) ｜ 跟审实录：[B30](B30-think-aloud.md)
 
 > ⚠️ 警告：本章的练习只针对本地靶场、你自己的代码和已授权的代码。攻击者思维是审计方法，不是对未授权目标动手的理由。
 
@@ -201,7 +201,7 @@ flowchart LR
 
 攻击者不问"这段代码做什么"。攻击者问"我能让这段代码做什么"。
 
-全部练习只针对本地靶场 `examples/range/thinkaloud/src/MooringPool.sol`。
+全部练习只针对本地靶场 `practice-example-code/range/thinkaloud/src/MooringPool.sol`。
 
 ### 练习 1：价值地图（15 分钟）
 
@@ -240,7 +240,7 @@ flowchart LR
 
 阅读 `solution/MooringPoolFixed.sol`。把自己当作这份修复的攻击者。回答：哪个修复没有完全消除根因？
 
-> 🧪 动手验证：在 `examples/range/thinkaloud/` 下运行 `forge test`。预期最后一行包含 `16 tests passed, 0 failed`。然后为练习 4 增加一个你自己的测试。
+> 🧪 动手验证：在 `practice-example-code/range/thinkaloud/` 下运行 `forge test`。预期最后一行包含 `16 tests passed, 0 failed`。然后为练习 4 增加一个你自己的测试。
 
 ---
 

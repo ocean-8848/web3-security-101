@@ -7,7 +7,7 @@
 >
 > 前置知识：[B42 永续合约](B42-perps.md)；会写 Foundry 测试。
 > 预计用时：4–6 小时。
-> 靶场：[examples/range/perplite/](../../examples/range/perplite/README.md)
+> 靶场：[practice-example-code/range/perplite/](../../practice-example-code/range/perplite/README.md)
 > 交互实验：[perp-lab.html](../interactive/perp-lab.html)
 > 关联章节：[08 预言机](../08-oracle-flashloan.md)｜[07 外部调用](../07-external-calls-tokens.md)｜[11 DeFi 经济安全](../11-defi-economic-security.md)｜[27 审计流程](../27-audit-testing-workflow.md)｜[B25 综合实战](B25-capstone-minilend.md)
 > 最后核对：2026-11-10（forge 1.5.1、solc 0.8.28 本地运行；下文输出来自真实运行）
@@ -58,7 +58,7 @@ PerpLite 只有一个合约文件，约 240 行。它有 LP 金库、两步下�
 ## 3. 环境
 
 ```bash
-cd examples/range/perplite # 进入 PerpLite 靶场目录
+cd practice-example-code/range/perplite # 进入 PerpLite 靶场目录
 forge build # 编译全部合约
 ```
 
@@ -271,7 +271,7 @@ forge test --match-contract PoC -vv 2>&1 | grep -E "F0[0-9]b? "
 
 读数：F-02 用 2 万美元保证金净赚约 9,900 美元。F-07 的真实盈亏应为 500 美元，合约却算出约 666.67 美元。
 
-> 🧪 动手验证：打开 `test/PoC.t.sol`，把 F-02 的 `perp.executeNext(1)` 改成 `perp.executeNext(2)`。重新运行，记录利润变成了多少，并解释原因。
+> 🧪 动手验证：打开 `test/PoC.t.sol`，把 F-02 的 `perp.executeNext(1)` 改成 `perp.executeNext(2)`。重新运行，记录利润变成了多少，并解释原因。测试会因 `assertGt` 不成立而失败，这是预期结果；看日志里的 profit 读数。
 
 ## 7. Handler 不变量测试
 
@@ -314,7 +314,7 @@ FOUNDRY_PROFILE=vuln forge test # 切换到 vuln 配置，同一 Handler 跑漏�
  invariant_openInterestMatchesPositions()
 ```
 
-读法：模糊器把序列缩减到 3 步：开仓、跌价、清算。清算后仓位没了，`longOI` 还在。这就是 F-08。
+读法：模糊器把序列缩减到几步，常见的是开仓、跌价、清算。具体步数和多空方向每次运行可能不同。清算后仓位没了，`longOI` 还在。这就是 F-08。
 
 > 💡 注意：不变量测试的 `fail_on_revert` 设为 `false`。Handler 的部分操作（比如清算健康仓位）本来就该回滚。反过来，如果你把它设成 `true`，就在要求协议永不回滚，这不是这里要测的性质。
 

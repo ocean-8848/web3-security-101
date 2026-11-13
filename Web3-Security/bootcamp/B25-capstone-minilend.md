@@ -8,7 +8,7 @@
 > 5. 说出"附条件上线"需要哪些上线条件、已接受风险和监控需求。
 >
 > 前置章节：[04](../04-reentrancy.md)–[09](../09-mev-signatures.md)、[B14](B14-writing-findings.md)、[B20](B20-lending-cdp.md)、[A02](../assessment/A02-risk-rating-reporting.md)
-> 交互实验：[MiniLend 审计练习台](../interactive/audit-capstone.html) ｜ 靶场：[examples/minilend/](../../examples/minilend/src/MiniLend.sol) ｜ 模板：[T03](../templates/T03-finding-report.md)
+> 交互实验：[MiniLend 审计练习台](../interactive/audit-capstone.html) ｜ 靶场：[practice-example-code/minilend/](../../practice-example-code/minilend/src/MiniLend.sol) ｜ 模板：[T03](../templates/T03-finding-report.md)
 
 ## 1. 一句话理解
 
@@ -30,16 +30,16 @@ MiniLend 允许用户存入 ETH 作为抵押，借出稳定币 USD。最大借�
 
 | 文件 | 作用 |
 |---|---|
-| [src/MiniLend.sol](../../examples/minilend/src/MiniLend.sol) | 审计目标，包含 8 个预埋漏洞 |
-| [src/MiniLendFixed.sol](../../examples/minilend/src/MiniLendFixed.sol) | 全部修复，对外接口不变 |
-| [src/MiniLendProxy.sol](../../examples/minilend/src/MiniLendProxy.sol) | 最小 ERC-1967 代理 |
-| [test/MiniLendPoC.t.sol](../../examples/minilend/test/MiniLendPoC.t.sol) | 每个发现的 PoC 和修复验证 |
-| [test/MiniLendInvariant.t.sol](../../examples/minilend/test/MiniLendInvariant.t.sol) | 修复版的不变量测试 |
+| [src/MiniLend.sol](../../practice-example-code/minilend/src/MiniLend.sol) | 审计目标，包含 8 个预埋漏洞 |
+| [src/MiniLendFixed.sol](../../practice-example-code/minilend/src/MiniLendFixed.sol) | 全部修复，对外接口不变 |
+| [src/MiniLendProxy.sol](../../practice-example-code/minilend/src/MiniLendProxy.sol) | 最小 ERC-1967 代理 |
+| [test/MiniLendPoC.t.sol](../../practice-example-code/minilend/test/MiniLendPoC.t.sol) | 每个发现的 PoC 和修复验证 |
+| [test/MiniLendInvariant.t.sol](../../practice-example-code/minilend/test/MiniLendInvariant.t.sol) | 修复版的不变量测试 |
 
 运行步骤：
 
-1. 确认 `examples/foundry/lib/forge-std` 存在。靶场共用这份依赖。
-2. 进入目录：`cd examples/minilend`。
+1. 确认 `practice-example-code/foundry/lib/forge-std` 存在。靶场共用这份依赖。
+2. 进入目录：`cd practice-example-code/minilend`。
 3. 运行测试：`forge test`。
 
 > ⚠️ 警告：靶场只用于本地学习。靶场不连接任何网络，也不包含真实地址。不要部署到主网。
@@ -411,8 +411,8 @@ sequenceDiagram
 
 | 项目 | 内容 |
 |---|---|
-| 文件 | `examples/minilend/src/MiniLend.sol`（SHA-256 前 16 位 `88869dcae78a7ba3`）、`MiniLendProxy.sol` |
-| 修复复查 | `examples/minilend/src/MiniLendFixed.sol` |
+| 文件 | `practice-example-code/minilend/src/MiniLend.sol`（SHA-256 前 16 位 `88869dcae78a7ba3`）、`MiniLendProxy.sol` |
+| 修复复查 | `practice-example-code/minilend/src/MiniLendFixed.sol` |
 | 链 | 本地测试环境，单链假设 |
 | 评估日期 | 2026-11-10（教学示例） |
 | 方法与工时 | 人工审计、清单、Foundry PoC、模糊和不变量测试；工时为教学示例，不记录 |
@@ -635,7 +635,7 @@ ID:            F-08
 
 ### 11.10 附录
 
-测试清单见第 8 节。不变量见任务 2.2。运行命令：`cd examples/minilend && forge test`。
+测试清单见第 8 节。不变量见任务 2.2。运行命令：`cd practice-example-code/minilend && forge test`。
 
 修复版的不变量测试：`invariant_EthBalanceEqualsCollateralLedger`、`invariant_DebtSharesSumToTotal`、`invariant_UsdBalanceMatchesFlows`、`invariant_RecordedDebtCoversPrincipal`、`invariant_NoFreeBorrowNoUnsafeExit`。
 
