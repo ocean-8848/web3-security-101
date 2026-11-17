@@ -36,7 +36,7 @@
 在 B04 创建的工程里工作。
 
 ```bash
-cd ~/bootcamp-lab  # 进入 B04 建好的工程
+cd ~/bootcamp-lab  # 进入 B04 建好的工程；参考副本：practice-example-code/bootcamp-lab/
 touch src/Club.sol  # 新建一个空的合约文件
 ```
 

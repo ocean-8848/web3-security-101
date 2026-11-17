@@ -37,7 +37,7 @@ ERC-20 是可替代代币的接口标准。它规定了 `transfer`、`approve`�
 
 OpenZeppelin 提供经过广泛审计的实现。自己重写一遍 ERC-20 是常见的错误来源。
 
-本章回到 `~/bootcamp-lab`。安装依赖：
+本章回到 `~/bootcamp-lab`。参考副本在 `practice-example-code/bootcamp-lab/`；本章的金库、破坏 A/B/C 的完整代码在 `practice-example-code/range/basics/src/b04/`。安装依赖：
 
 ```bash
 cd ~/bootcamp-lab

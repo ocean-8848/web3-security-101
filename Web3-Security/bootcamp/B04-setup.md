@@ -225,6 +225,8 @@ Ran 1 test suite in 400.67ms (3.37ms CPU time): 2 tests passed, 0 failed, 0 skip
 | `lib/` | 依赖库，`forge-std` 在这里 |
 | `foundry.toml` | 工程配置 |
 
+> 💡 注意：仓库里的 `practice-example-code/bootcamp-lab/` 是这个练习工程学完 B08 前的参考副本（`Counter`、`Club` 和对应测试）。运行 `bash practice-example-code/setup.sh` 后进入该目录，`forge test` 会运行 3 个测试（B05 的 `Club` 测试多 1 个）。你自己手敲时，仍在 `~/bootcamp-lab` 里做，卡住时对照参考副本。
+
 存一次档。`forge init` 已经创建了 git 仓库：
 
 ```bash
