@@ -10,6 +10,14 @@
 
 > 🧭 不知道从哪里开始？打开[学习路径导航](interactive/learning-paths.html)，回答 4 个问题，得到适合你的路径。
 
+> 🗂 先获取仓库：本手册的示例代码和靶场都在 GitHub 仓库里。先下载，再**进入 `web3-security-handbook/` 目录**，之后全书的命令都从这个目录运行。详细步骤见 [B04 第 7 节](bootcamp/B04-setup.md)。
+>
+> ```bash
+> git clone https://github.com/ocean-8848/web3-security-handbook.git  # 下载仓库
+> cd web3-security-handbook                                           # 进入仓库根目录：之后都从这里出发
+> bash practice-example-code/setup.sh                                 # 下载依赖（只需一次）
+> ```
+
 ## 1. 一张图看懂学习路径
 
 ```mermaid
