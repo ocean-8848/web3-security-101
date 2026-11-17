@@ -31,4 +31,9 @@ if [ ! -d range/basics/lib/openzeppelin-contracts/contracts ]; then
   fetch OpenZeppelin/openzeppelin-contracts "$OZ" range/basics/lib/openzeppelin-contracts
 fi
 
+# 4. bootcamp-lab（手敲练习工程）：forge-std 和 OpenZeppelin 都链接到已下载的副本
+mkdir -p bootcamp-lab/lib
+ln -sfn ../../foundry/lib/forge-std bootcamp-lab/lib/forge-std
+ln -sfn ../../range/basics/lib/openzeppelin-contracts bootcamp-lab/lib/openzeppelin-contracts
+
 echo "依赖已就绪：forge-std ${FORGE_STD}，OpenZeppelin ${OZ}"

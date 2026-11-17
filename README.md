@@ -5,7 +5,7 @@
 | 目录 | 内容 | 构建 |
 |---|---|---|
 | `Web3-Security/` | 《Web3 安全学习手册》Markdown 源稿、交互实验页、构建脚本 | `node Web3-Security/tools/build.mjs` → `Web3-Security/dist/index.html` |
-| `practice-example-code/` | 示例代码：单文件示例合约（01–08）、Foundry 工程（`foundry/`）、MiniLend 靶场、训练营靶场（`range/`） | 在各 Foundry 目录下运行 `forge test` |
+| `practice-example-code/` | 示例代码：单文件示例合约（01–08）、Foundry 工程（`foundry/`）、MiniLend 靶场、训练营靶场（`range/`）、手敲练习工程（`bootcamp-lab/`） | 在各 Foundry 目录下运行 `forge test` |
 | `learning-site/` | Web3 安全学习站：学习进度层（`learn.js`、`visual.js`）、参考答案、构建脚本 | `python3 learning-site/build.py security` → `learning-site/security/index.html` |
 
 ## 准备
