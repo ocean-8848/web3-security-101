@@ -10,7 +10,7 @@
 >
 > 最后核对：2026-11-11
 
-> 🗂 先获取仓库：本手册的示例代码和靶场都在 GitHub 仓库里。先下载，再**进入 `web3-security-handbook/` 目录**，之后全书的命令都从这个目录运行。详细步骤见 [B04 第 7 节](B04-setup.md)。
+> 🗂 先获取仓库：本手册的示例代码和靶场都在 GitHub 仓库里。先下载，再**进入 `web3-security-handbook/` 目录**，之后全书的命令都从这个目录运行。详细步骤见 [B04 第 6 节](B04-setup.md)。
 >
 > ```bash
 > git clone https://github.com/ocean-8848/web3-security-handbook.git  # 下载仓库

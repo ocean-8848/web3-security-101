@@ -23,7 +23,7 @@
 | 学习路线与每日循环 | [B00](B00-roadmap.md)、[B02 第 2 节](B02-study-method.md) | 你写下了路线、每周学习时间，并按每日循环写完一次学习日志。 |
 | 法律边界与负责任披露 | [B04 第 1 节](B04-setup.md)、[B02 第 1 节](B02-study-method.md) | 你能按顺序说出负责任披露的步骤。 |
 | 区块链怎样记账 | [B03](B03-blockchain-basics.md)、主线 [02](../02-cryptography-randomness.md)、[03](../03-evm-solidity-basics.md) | 你能解释哈希链为什么防篡改，区分 EOA 与合约账户，并算出一笔 EIP-1559 手续费。 |
-| 终端、git 与 Foundry 安装 | [B04](B04-setup.md) | `~/bootcamp-lab` 里 `forge test` 显示 `2 tests passed`。 |
+| 终端、git 与 Foundry 安装 | [B04](B04-setup.md) | `practice-example-code/bootcamp-lab` 里 `forge test` 显示 `3 tests passed`。 |
 | Solidity 基本语法 | [B05](B05-first-contract.md)、主线 [03](../03-evm-solidity-basics.md) | 不看书说出 `public` 与 `external`、`msg.sender` 与 `msg.value` 的区别。 |
 | Foundry 测试与本地链 | [B06](B06-foundry-basics.md) | 你能从 `-vvvv` 输出说出每一行的调用者和 gas，并在 anvil 上部署合约、读状态。 |
 

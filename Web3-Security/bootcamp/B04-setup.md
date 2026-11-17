@@ -194,49 +194,7 @@ Build Profile: maxperf
 
 ---
 
-## 6. 创建你的练习工程
-
-```bash
-cd ~
-forge init bootcamp-lab  # 生成带示例合约的新工程
-cd bootcamp-lab
-forge build              # 编译 src/ 里的合约
-forge test               # 运行 test/ 里的测试
-```
-
-`forge init` 创建工程。最后的预期输出：
-
-```text
-Ran 2 tests for test/Counter.t.sol:CounterTest
-[PASS] testFuzz_SetNumber(uint256) (runs: 256, μ: 27734, ~: 29289)
-[PASS] test_Increment() (gas: 28783)
-Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 3.37ms (3.13ms CPU time)
-
-Ran 1 test suite in 400.67ms (3.37ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
-```
-
-工程目录的含义：
-
-| 路径 | 内容 |
-|---|---|
-| `src/` | 合约源码 |
-| `test/` | 测试 |
-| `script/` | 部署脚本 |
-| `lib/` | 依赖库，`forge-std` 在这里 |
-| `foundry.toml` | 工程配置 |
-
-> 💡 注意：仓库里的 `practice-example-code/bootcamp-lab/` 是这个练习工程学完 B08 前的参考副本（`Counter`、`Club` 和对应测试）。运行 `bash practice-example-code/setup.sh` 后进入该目录，`forge test` 会运行 3 个测试（B05 的 `Club` 测试多 1 个）。你自己手敲时，仍在 `~/bootcamp-lab` 里做，卡住时对照参考副本。
-
-存一次档。`forge init` 已经创建了 git 仓库：
-
-```bash
-git add .                       # . 表示当前目录下所有改动
-git commit -m "chore: init lab"
-```
-
----
-
-## 7. 下载学习仓库
+## 6. 下载学习仓库
 
 本训练营的示例合约和靶场都在学习仓库 `web3-security-handbook` 里。之后各章的命令都**以 `web3-security-handbook/` 目录为起点**，例如 `cd practice-example-code/range/basics`。
 
@@ -277,6 +235,48 @@ cd ../../..  # 回到 web3-security-handbook/
 
 ---
 
+## 7. 进入练习工程
+
+练习工程在学习仓库的 `practice-example-code/bootcamp-lab/` 里。B05 到 B08 的手敲练习都在这个目录里做。
+
+```bash
+cd ~/web3-security-handbook             # 确认从仓库根目录出发
+cd practice-example-code/bootcamp-lab   # 进入练习工程
+forge build                             # 编译 src/ 里的合约
+forge test                              # 运行 test/ 里的测试
+```
+
+最后的预期输出：
+
+```text
+Ran 1 test for test/Club.t.sol:ClubSmokeTest
+[PASS] test_JoinWorks() (gas: 1029063)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 3.73ms (1.78ms CPU time)
+
+Ran 2 tests for test/Counter.t.sol:CounterTest
+[PASS] testFuzz_SetNumber(uint256) (runs: 256, μ: 28122, ~: 29289)
+[PASS] test_Increment() (gas: 28783)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 6.40ms (4.10ms CPU time)
+
+Ran 2 test suites in 398.34ms (10.13ms CPU time): 3 tests passed, 0 failed, 0 skipped (3 total tests)
+```
+
+> 💡 注意：这个目录是 `forge init` 生成的工程，再加上 B05 的 `Club` 和它的冒烟测试。B05 会让你用完整内容覆盖 `src/Club.sol`，所以目录里已有的 `Club` 只是参考。`Counter` 的 2 个测试是 `forge init` 自带的。
+
+工程目录的含义：
+
+| 路径 | 内容 |
+|---|---|
+| `src/` | 合约源码 |
+| `test/` | 测试 |
+| `script/` | 部署脚本 |
+| `lib/` | 依赖库，`setup.sh` 已经为你链接好 `forge-std` 和 OpenZeppelin |
+| `foundry.toml` | 工程配置，里面有 `@openzeppelin/` 的重映射 |
+
+学习仓库本身就是 git 仓库，不用再 `forge init`。要存档练习，在仓库里 `git add`、`git commit` 即可（第 3 节）。
+
+---
+
 ## 8. 测试专用钱包规范
 
 钱包（Wallet）管理私钥。私钥（Private Key）能花掉一个地址上的全部资金。
@@ -303,7 +303,6 @@ cd ../../..  # 回到 web3-security-handbook/
 |---|---|---|
 | `command not found: forge` | 新路径没有生效 | 关闭并重新打开终端；如果仍失败，运行 `source ~/.zshrc`（bash 用 `source ~/.bashrc`），再运行 `foundryup` |
 | `foundryup: command not found` | 安装器脚本没有运行成功 | 重新运行第 5 节第 1 步 |
-| `forge init` 报目录非空 | 目标目录已存在 | 换一个名字，或删除旧目录 |
 | `Please tell me who you are` | 没有配置 git 用户名 | 运行第 3 节的两条 `git config` |
 | 下载 `forge-std` 失败 | 网络连不上 GitHub | 检查网络和代理设置，再重试 |
 | Windows 上命令不可用 | 在 PowerShell 或 CMD 里运行 | 改用 WSL |
@@ -317,7 +316,7 @@ cd ../../..  # 回到 web3-security-handbook/
 - [ ] 你能背出 `pwd`、`ls`、`cd`、`cat` 的作用。
 - [ ] `git log --oneline` 至少显示 1 条提交。
 - [ ] `forge --version` 正常输出版本。
-- [ ] `~/bootcamp-lab` 里 `forge test` 显示 `2 tests passed`。
+- [ ] `~/web3-security-handbook/practice-example-code/bootcamp-lab` 里 `forge test` 显示 `3 tests passed`。
 - [ ] `~/web3-security-handbook/practice-example-code/range/basics` 里 `forge test` 显示 `27 tests passed, 0 failed, 1 skipped`。
 - [ ] 你能用一句话说出本训练营的规则：所有练习只在本机运行。
 

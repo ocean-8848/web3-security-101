@@ -20,7 +20,7 @@ cd Web3-Security/tools && npm install
 - 构建学习站之前，先构建手册。学习站读取 `Web3-Security/dist/index.html`。
 - 发布前运行链接检查：`node Web3-Security/tools/check-links.mjs`。
 - 示例代码用 Foundry。依赖（`lib/`）和构建产物（`out/`、`cache/`）不进仓库。克隆后在仓库根目录运行一次 `bash practice-example-code/setup.sh`，它下载固定版本的 forge-std（v1.11.0）和 OpenZeppelin（v5.6.1），并为各靶场建好 `lib/forge-std` 链接。
-- 学习时的根目录就是克隆下来的 `web3-security-handbook/`。手册里的命令（例如 `cd practice-example-code/foundry`）都从这里运行。步骤见训练营 B04 第 7 节。
+- 学习时的根目录就是克隆下来的 `web3-security-handbook/`。手册里的命令（例如 `cd practice-example-code/foundry`）都从这里运行。步骤见训练营 B04 第 6 节。
 - 视频成品（`Web3-Security/video/output/`）不进仓库，只保留脚本、幻灯片和工具源码。
 
 ## 说明

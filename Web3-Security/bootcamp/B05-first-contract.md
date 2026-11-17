@@ -33,10 +33,10 @@
 
 ## 0. 准备
 
-在 B04 创建的工程里工作。
+在 B04 第 7 节进入的练习工程里工作。
 
 ```bash
-cd ~/bootcamp-lab  # 进入 B04 建好的工程；参考副本：practice-example-code/bootcamp-lab/
+cd practice-example-code/bootcamp-lab  # 从 web3-security-handbook/ 出发，进入练习工程
 touch src/Club.sol  # 新建一个空的合约文件
 ```
 

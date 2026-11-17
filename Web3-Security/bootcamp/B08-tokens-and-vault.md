@@ -37,23 +37,21 @@ ERC-20 是可替代代币的接口标准。它规定了 `transfer`、`approve`�
 
 OpenZeppelin 提供经过广泛审计的实现。自己重写一遍 ERC-20 是常见的错误来源。
 
-本章回到 `~/bootcamp-lab`。参考副本在 `practice-example-code/bootcamp-lab/`；本章的金库、破坏 A/B/C 的完整代码在 `practice-example-code/range/basics/src/b04/`。安装依赖：
+本章继续在 `practice-example-code/bootcamp-lab/` 里做。本章的金库、破坏 A/B/C 的完整代码在 `practice-example-code/range/basics/src/b04/`，卡住时对照。依赖已经由 `setup.sh` 准备好：
 
 ```bash
-cd ~/bootcamp-lab
-# 下载 OpenZeppelin 合约库到 lib/，@ 后固定版本
-forge install OpenZeppelin/openzeppelin-contracts@v5.6.1
-# 重映射：让 @openzeppelin/ 指向 lib 里的真实路径
-echo '@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/' > remappings.txt
+cd practice-example-code/bootcamp-lab  # 从 web3-security-handbook/ 出发，进入练习工程
+# 确认 OpenZeppelin 已就位；foundry.toml 里已有 @openzeppelin/ 的重映射
+ls lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol
 ```
 
-最后一行输出：
+预期输出：
 
 ```text
-    Installed openzeppelin-contracts tag=v5.6.1@5fd1781b1454fd1ef8e722282f86f9293cacf256
+lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol
 ```
 
-> 💡 注意：2026-11-10 查询 npm 的最新稳定版是 5.6.1；GitHub 上已有 v5.7.0 标签。本章固定使用 v5.6.1，保证你和手册的结果一致。
+> 💡 注意：`setup.sh` 固定下载 OpenZeppelin v5.6.1，保证你和手册的结果一致（2026-11-10 查询：npm 最新稳定版是 5.6.1，GitHub 上已有 v5.7.0 标签）。在学习仓库的子目录里运行 `forge install` 会报错，所以不用它。文件不存在时，回到 `web3-security-handbook/` 运行 `bash practice-example-code/setup.sh`。
 
 创建 `src/BootToken.sol`：
 
@@ -193,7 +191,7 @@ anvil  # 启动本地链
 第二个终端：
 
 ```bash
-cd ~/bootcamp-lab
+cd practice-example-code/bootcamp-lab  # 从 web3-security-handbook/ 出发
 export RPC=http://127.0.0.1:8545
 export ME=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 # 运行部署脚本；--sender 指定发交易的账户，--broadcast 真正上链
@@ -291,7 +289,7 @@ status               1 (success)
 
 ### 5.1 破坏 A：取谁的钱，由调用者说了算（权限，ACC 类）
 
-在 `~/bootcamp-lab` 里，复制金库：
+在 `practice-example-code/bootcamp-lab` 里，复制金库：
 
 ```bash
 cp src/MiniVault.sol src/BrokenVault.sol  # 复制一份金库，用来改坏
