@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>攻击者不再偷私钥，而是控制签名路径</title>
+<style>
+:root {
+  --ground: #f6f5f1; --paper: #fffefb; --ink: #1d1c19; --ink-2: #5d5a52; --rule: #e4e1d8; --tint: #efece4;
+  --gold: #b38300; --gold-soft: #f8edcc; --accent: #1d93ba; --accent-soft: #e1f1f7;
+  --f-display: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --f-body: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --ground: #131311; --paper: #1a1a17; --ink: #ebe9e2; --ink-2: #a5a298; --rule: #2f2e29; --tint: #23221e;
+    --gold: #f0b90b; --gold-soft: #3a3010; --accent: #6cc7e0; --accent-soft: #15303a; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --ground: #131311; --paper: #1a1a17; --ink: #ebe9e2; --ink-2: #a5a298; --rule: #2f2e29; --tint: #23221e;
+  --gold: #f0b90b; --gold-soft: #3a3010; --accent: #6cc7e0; --accent-soft: #15303a; color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { background: var(--ground); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 6px; }
+
+.app { height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; background: var(--ground); }
+.top { display: flex; align-items: center; gap: 10px; padding: 8px 14px; border-bottom: 1px solid var(--rule); background: var(--paper); min-width: 0; }
+.top .t { flex: 1; min-width: 0; }
+.top .eyebrow { font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; color: var(--gold); }
+.top h1 { margin: 0; font-family: var(--f-display); font-size: 16px; font-weight: 800; line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.btn { height: 34px; padding: 0 12px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); cursor: pointer; white-space: nowrap; font-size: 14px; }
+.btn:hover { border-color: var(--gold); }
+.btn[aria-pressed="true"] { background: var(--gold-soft); border-color: var(--gold); }
+.btn.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.btn:disabled { opacity: .4; cursor: default; }
+
+.body { min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 360px; }
+.stagewrap { min-width: 0; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 14px; }
+.screen { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 100%; overflow: hidden; border-radius: 12px; background: #efebe3;
+  box-shadow: 0 1px 0 var(--rule), 0 8px 28px rgba(60, 50, 30, .14); cursor: pointer; touch-action: pan-y; user-select: none; }
+.screen iframe { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; border: 0; transform-origin: 0 0; visibility: hidden; pointer-events: none; }
+.screen iframe.on { visibility: visible; }
+.screen .wait { position: absolute; inset: 0; display: grid; place-items: center; color: #8a826f; font-size: 14px; background: #efebe3; }
+.screen .wait[hidden] { display: none; }
+
+.side { min-height: 0; overflow-y: auto; border-left: 1px solid var(--rule); background: var(--paper); padding: 18px 20px 24px; }
+.sec { font-size: 12px; color: var(--accent); font-weight: 600; letter-spacing: .04em; }
+.side h2 { margin: 4px 0 12px; font-family: var(--f-display); font-size: 22px; font-weight: 800; line-height: 1.4; text-wrap: balance; }
+.side ul { margin: 0; padding: 0; list-style: none; }
+.side li { position: relative; padding: 6px 0 6px 18px; border-top: 1px solid var(--rule); }
+.side li:first-child { border-top: 0; }
+.side li::before { content: ""; position: absolute; left: 2px; top: 16px; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+.notes { margin-top: 18px; border: 1px solid var(--rule); border-radius: 8px; }
+.notes > summary { cursor: pointer; padding: 8px 12px; font-size: 13px; font-weight: 600; color: var(--ink-2); list-style: none; }
+.notes > summary::-webkit-details-marker { display: none; }
+.notes > summary::before { content: "▸ "; }
+.notes[open] > summary::before { content: "▾ "; }
+.notes ol { margin: 0; padding: 4px 14px 10px 32px; font-size: 14px; color: var(--ink-2); }
+.notes li { border: 0; padding: 2px 0; }
+.notes li::before { display: none; }
+
+.ctrl { display: flex; align-items: center; gap: 8px; padding: 8px 14px calc(8px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--rule); background: var(--paper); flex-wrap: wrap; }
+.count { font-family: var(--f-mono); font-size: 13px; color: var(--ink-2); min-width: 64px; text-align: center; font-variant-numeric: tabular-nums; }
+.prog { flex: 1 1 240px; display: flex; gap: 3px; align-items: center; height: 30px; min-width: 160px; }
+.prog .grp { display: flex; gap: 2px; flex: var(--n) 1 0; }
+.prog .grp + .grp { margin-left: 6px; }
+.prog button { flex: 1; height: 8px; padding: 0; border: 0; border-radius: 3px; background: var(--tint); cursor: pointer; }
+.prog button.seen { background: var(--gold-soft); }
+.prog button.cur { background: var(--gold); }
+.prog button:hover { outline: 1px solid var(--gold); }
+.speed { height: 34px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); padding: 0 6px; font-size: 13px; }
+
+/* fullscreen: picture fills, text sits on the right */
+.app:fullscreen .body { grid-template-columns: minmax(0, 1fr) 380px; }
+.app:fullscreen .top { display: none; }
+
+@media (max-width: 960px), (max-aspect-ratio: 4/3) {
+  .body { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+  .stagewrap { padding: 10px 10px 0; }
+  .screen { max-height: none; }
+  .side { border-left: 0; border-top: 0; background: var(--ground); padding: 12px 14px 20px; }
+  .side h2 { font-size: 19px; margin-bottom: 8px; }
+  .hide-narrow { display: none; }
+  .app:fullscreen .body { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .top { padding: 6px 10px; }
+  .top h1 { font-size: 14px; }
+  .ctrl { gap: 6px; padding-inline: 10px; }
+  .prog { order: -1; flex-basis: 100%; }
+  .btn { padding: 0 10px; }
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <header class="top">
+    <div class="t"><div class="eyebrow" id="eyebrow">拟物化知识讲解</div><h1 id="title"></h1></div>
+    <button class="btn" id="back" title="回到文字章节">正文 ↗</button>
+    <button class="btn hide-narrow" id="fs" title="全屏（F）">⛶ 全屏</button>
+  </header>
+  <div class="body">
+    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="wait" id="wait">载入动画…</div></div></div>
+    <aside class="side" aria-live="polite">
+      <div class="sec" id="sec"></div>
+      <h2 id="stitle"></h2>
+      <ul id="points"></ul>
+      <details class="notes" id="notes"><summary>讲稿（N）</summary><ol id="lines"></ol></details>
+    </aside>
+  </div>
+  <nav class="ctrl" aria-label="翻页">
+    <button class="btn" id="prev" aria-label="上一页（←）">‹ 上一页</button>
+    <button class="btn" id="replay" aria-label="重播本页动画（R）">⟳ 重播</button>
+    <button class="btn primary" id="next" aria-label="下一页（→ 或空格）">下一页 ›</button>
+    <span class="count" id="count"></span>
+    <div class="prog" id="prog"></div>
+    <select class="speed" id="speed" aria-label="动画速度">
+      <option value="1">1×</option><option value="1.5" selected>1.5×</option><option value="2">2×</option><option value="4">4×</option>
+    </select>
+  </nav>
+</div>
+<script>
+(function () {
+  var D = {"chapter": "s29", "title": "攻击者不再偷私钥，而是控制签名路径", "segs": 7, "slides": [{"seg": "1", "t0": 0.0, "t1": 16.09, "title": "Bybit：私钥没有泄露", "points": ["2025 年 2 月 21 日，Bybit 以太坊冷钱包被转走约 15 亿美元", "私钥没有泄露，签名人按流程一个个按下确认", "屏幕上显示的，是一笔普通的转账"], "notes": ["2025年2月21日，Bybit 的以太坊冷钱包，被转走了大约15亿美元。", "私钥，没有泄露。签名人按照流程，一个一个，按下了确认。", "屏幕上显示的，是一笔普通的转账。"], "section": "钥匙还在，钱没了"}, {"seg": "1", "t0": 16.09, "t1": 29.49, "title": "多了一个参数", "points": ["真正签下的交易多了一个参数：operation 等于 1", "钱包去执行攻击者的代码，把实现合约换成了攻击者的"], "notes": ["而真正签下去的交易，多了一个参数：operation，等于 1。", "就这一个数字，让钱包去执行了攻击者的代码，把自己的实现合约，换成了攻击者的。"], "section": "钥匙还在，钱没了"}, {"seg": "1", "t0": 29.49, "t1": 46.02, "title": "攻击者不再偷私钥", "points": ["钥匙一直锁得好好的", "攻击者控制的，是钥匙盖在什么文件上", "跟着一笔交易，走完从提出到上链的七道关"], "notes": ["钥匙，一直锁得好好的。攻击者控制的，是钥匙盖在什么文件上。", "这一集，我们跟着一笔交易，走完它从提出、到上链的七道关。"], "section": "钥匙还在，钱没了"}, {"seg": "2", "t0": 0.0, "t1": 20.35, "title": "意图与构造", "points": ["示例：一位用户要从交易所提走 2 万 USDT", "第一关业务意图：用户点下提现，账本多了一张提现单", "第二关请求构造：钱包后台把单子翻译成待签名交易"], "notes": ["先把这条路画出来。", "假设一位用户，要从交易所提走 2 万 USDT。这是示例。", "第一关，业务意图。用户点下提现，账本里多了一张提现单。", "第二关，请求构造。钱包后台把这张单子，翻译成一笔待签名的交易。"], "section": "七道关"}, {"seg": "2", "t0": 20.35, "t1": 34.47, "title": "审批与显示", "points": ["第三关风控与审批：规则查金额和地址，大额要人批准", "第四关显示与解码：审批人看到的，是翻译出来的文字"], "notes": ["第三关，风控与审批。规则检查金额和地址，大额还要有人批准。", "第四关，显示与解码。审批的人看不懂原始字节，他看到的，是翻译出来的文字。"], "section": "七道关"}, {"seg": "2", "t0": 34.47, "t1": 53.93, "title": "签名、广播、上链", "points": ["第五关签名：MPC 节点、硬件加密机或多签签名人", "第六关广播：签好的交易发到链上", "第七关链上状态：余额变了，有时代码和权限也跟着变"], "notes": ["第五关，签名。可能是 MPC 节点，可能是硬件加密机，也可能是多签的签名人。", "第六关，广播。签好的交易，发到链上。", "第七关，链上状态。余额变了。有时候，账户的代码和权限，也会跟着变。"], "section": "七道关"}, {"seg": "2", "t0": 53.93, "t1": 67.25, "title": "支线与箭头", "points": ["支线：有些系统先读链上数据再决定签不签，数据来自 RPC 节点", "每一个箭头，下游都默认上游已经检查过了"], "notes": ["还有一条支线。有些系统要先读链上数据，再决定签不签。这些数据，来自 RPC 节点。", "注意每一个箭头。下游都默认，上游已经检查过了。"], "section": "七道关"}, {"seg": "2", "t0": 67.25, "t1": 79.66, "title": "这条路叫签名路径", "points": ["从意图到链上，整条链路叫签名路径", "私钥只待在第五关", "攻击者要的，只是让第五关签出他想要的东西"], "notes": ["从意图到链上，这整条链路，叫做签名路径。", "私钥，只待在第五关。攻击者要的，只是让第五关，签出他想要的东西。"], "section": "七道关"}, {"seg": "3a", "t0": 0.0, "t1": 28.49, "title": "第二关：Bitget", "points": ["2026 年 9 月，Bitget 被转走约 3.9 亿美元", "项目方称：第三方安全产品零日漏洞泄露内部凭证，攻击者伪造提现指令", "项目方称私钥和冷钱包未受影响；产品名至今未公开"], "notes": ["2024 年以来的六起大额事件，我们一个一个，放到这条路上。", "先看第二关。2026 年 9 月，Bitget 被转走约 3.9 亿美元。", "项目方说，一款第三方安全产品的零日漏洞，泄露了内部凭证。", "攻击者用定制工具，伪造了提现指令。", "项目方说，私钥和冷钱包没有受影响。那款产品的名字，至今没有公开。"], "section": "断在哪一关"}, {"seg": "3a", "t0": 28.49, "t1": 46.03, "title": "第四关：WazirX", "points": ["2024 年 7 月，WazirX 损失约 2.3 亿美元", "WazirX 称：托管方 Liminal 界面显示的和实际签的不一样", "Liminal 称自己没被攻破；说法冲突，尚无最终独立报告"], "notes": ["再看第四关。2024 年 7 月，WazirX 损失约 2.3 亿美元。", "WazirX 说，托管方 Liminal 界面上显示的，和实际签的不一样。", "Liminal 说，自己没有被攻破。双方说法冲突，还没有最终的独立报告。"], "section": "断在哪一关"}, {"seg": "3a", "t0": 46.03, "t1": 75.53, "title": "第四关：Bybit 前端被改", "points": ["Safe 称：开发者电脑被攻破，AWS 会话令牌被劫持，S3 上的前端被改", "篡改只对 Bybit 冷钱包生效，交易完成约 2 分钟后换回", "签名人的屏幕来自同一个被篡改的前端，没有第二处可核对"], "notes": ["同样断在第四关的，是开头讲的 Bybit。", "Safe 说，一名开发者的电脑先被攻破，攻击者劫持了他的 AWS 会话令牌，", "改掉了托管在 S3 上的前端代码。", "篡改的代码，只对 Bybit 的冷钱包生效。交易完成大约 2 分钟后，代码又被换了回来。", "签名人看到的屏幕，来自同一个被篡改的前端。他们没有第二个地方可以核对。"], "section": "断在哪一关"}, {"seg": "3a", "t0": 75.53, "t1": 101.93, "title": "第五关：Drift", "points": ["2026 年 4 月，Solana 上的 Drift 损失约 2.85 亿美元", "第三方分析称：五人里两人签名就生效，迁移后没有时间锁", "成员预签了没完全看懂的交易；持久 nonce 让签名不会过期"], "notes": ["第五关，签名人自己。2026 年 4 月，Solana 上的 Drift，损失约 2.85 亿美元。", "第三方分析说，安全委员会五个人里两人签名就能生效，迁移后没有时间锁。", "成员预先签了，自己没完全看懂的交易。", "Solana 的持久 nonce，让这些签名不会自然过期。攻击者可以等，等到时机合适再提交。"], "section": "断在哪一关"}, {"seg": "3a", "t0": 101.93, "t1": 135.64, "title": "支线数据源：KelpDAO", "points": ["2026 年 4 月，KelpDAO 损失约 2.92 亿美元，跨链桥只用一个验证者", "LayerZero 称：攻击者替换两个 RPC 节点，再用 DDoS 逼它切换", "验证者没被攻破，诚实地对假数据签了名；责任争议已进诉讼"], "notes": ["再看那条支线，数据源。同在 2026 年 4 月，KelpDAO 损失约 2.92 亿美元。", "这座跨链桥只用了一个验证者。", "LayerZero 说，攻击者替换了它依赖的两个 RPC 节点，再用 DDoS 打掉其他节点，逼它切换过去。", "恶意节点只对这个验证者撒谎。验证者本身没被攻破，它诚实地，对假数据签了名。", "责任怎么划分，双方有争议，已经进入诉讼。"], "section": "断在哪一关"}, {"seg": "3b", "t0": 0.0, "t1": 27.69, "title": "Binance：最大的一起", "points": ["2026 年 10 月 29 日，多条链热钱包被转走约 63.4 亿美元（项目方口径）", "初步报告：假面试作业控制一名工程师的电脑", "另一台电脑上的容器部署令牌，让攻击者接触到内部签名服务"], "notes": ["最后一起，也是最大的一起。", "2026 年 10 月 29 日，Binance 多条链的热钱包，被转走约 63.4 亿美元。这是项目方的口径。", "按项目方的初步报告，攻击者先用一份假的面试作业，控制了一名工程师的电脑。", "另一名工程师的电脑上，放着容器部署的令牌。", "攻击者用它部署了自己的容器，接触到了内部签名服务。"], "section": "断在哪一关 · Binance"}, {"seg": "3b", "t0": 27.69, "t1": 43.95, "title": "第五关：让签名服务代签", "points": ["攻击者没有偷钥匙，他让签名服务替他签", "签出 50 笔操纵 nonce、设置 EIP-7702 委托的交易", "以太坊热钱包地址，从此执行攻击者指定的代码"], "notes": ["这是第五关。攻击者没有偷钥匙，他让签名服务替他签。", "签出来的，是 50 笔操纵 nonce、设置 EIP-7702 委托的交易。", "以太坊热钱包的地址，从此会执行攻击者指定的代码。"], "section": "断在哪一关 · Binance"}, {"seg": "3b", "t0": 43.95, "t1": 66.24, "title": "第七关：委托还在链上", "points": ["Binance 暂停提现，关掉热钱包服务", "但委托是链上状态，不受这些开关控制，存活约 3 小时 50 分钟", "告警时间、内部 AI 工具怎么被利用，完整报告还在等"], "notes": ["然后是第七关。Binance 暂停了提现，关掉了热钱包服务。", "但委托是链上状态，不受这些开关控制。", "按公开的时间，这个委托在链上存活了大约 3 小时 50 分钟。", "告警时间、内部 AI 工具怎么被利用，报告里还没有说清。完整报告还在等。"], "section": "断在哪一关 · Binance"}, {"seg": "4", "t0": 0.0, "t1": 13.99, "title": "六个位置，一个结果", "points": ["六起事件，打在六个不同的位置", "签名系统正常运行，签出了攻击者想要的东西"], "notes": ["六起事件，打在六个不同的位置。结果却一样：签名系统正常运行，签出了攻击者想要的东西。", "把它们叠在一起，能看到三个共同点。"], "section": "三个共同点"}, {"seg": "4", "t0": 13.99, "t1": 36.65, "title": "三个共同点", "points": ["校验放错位置：下游只查格式，不查背后有没有真实业务", "关键输入只有一个来源：一块屏幕、一组 RPC、一个发布包", "响应只管链下：关掉服务，改变不了已写在链上的状态"], "notes": ["第一，校验放错了位置。下游只检查请求的格式，不检查请求背后，有没有真实的业务。", "第二，关键输入只有一个来源。一块屏幕，一组 RPC，一个发布包，一条审批路径。", "第三，响应只管链下。关掉服务，也无法改变已经写在链上的状态。"], "section": "三个共同点"}, {"seg": "4", "t0": 36.65, "t1": 46.69, "title": "谁决定盖在什么文件上", "points": ["私钥保护，回答的是谁拿着钥匙", "签名路径，回答的是谁决定钥匙盖在什么文件上"], "notes": ["回到开头那句话。私钥保护，回答的是谁拿着钥匙。", "签名路径，回答的是谁决定，钥匙盖在什么文件上。"], "section": "三个共同点"}, {"seg": "4", "t0": 46.69, "t1": 66.44, "title": "三条防御", "points": ["每一层都重新检查，不继承上一层的结论", "关键输入要有多个独立来源，对不上就拒签，不自动切换", "响应要覆盖链上状态：暂停提现，不等于撤销权限"], "notes": ["所以防御也是三条。第一，每一层都重新检查，不继承上一层的结论。", "第二，关键输入要有多个独立来源，对不上就拒签，不自动切换。", "第三，响应要覆盖链上状态。暂停提现，不等于撤销权限。"], "section": "三个共同点"}, {"seg": "5a", "t0": 0.0, "t1": 24.53, "title": "一套示例架构", "points": ["综合公开事件教训，不是哪家交易所公布的方案", "账本、意图签发、策略引擎、审批、签名集群、广播、链上，加独立监控", "开发电脑到签名集群：网络上根本不该有这条路由"], "notes": ["下面是一套示例架构。它综合了公开事件的教训，不是哪家交易所公布的方案。", "账本，意图签发，策略引擎，审批，签名集群，广播，链上，再加一套独立监控。", "开发电脑到签名集群，这条线是禁止的。网络上根本不该有这条路由。"], "section": "怎么守"}, {"seg": "5a", "t0": 24.53, "t1": 45.67, "title": "① 账本绑定签名", "points": ["只为账本里存在、状态正确、金额一致的提现单签名，一单一签", "目标和金额从原始交易解析，不读上游写的描述", "伪造的提现指令，在这里对不上账"], "notes": ["我们挑四个重点。第一，账本绑定签名。", "签名服务只为账本里存在、状态正确、金额一致的提现单签名。同一张单，只能签一次。", "目标和金额，要从原始交易里解析出来，不读上游写的描述。伪造的提现指令，在这里对不上账。"], "section": "怎么守"}, {"seg": "5a", "t0": 45.67, "t1": 78.93, "title": "② 策略读原始字节", "points": ["读原始待签字节，默认拒绝：没有明确规则的交易类型一律不签", "Safe 多签 operation 只许 0（1 只能指向官方批量合约），Bybit 那笔会被拒", "热钱包 EIP-7702 授权一律拒签，Binance 那批委托签不出来"], "notes": ["第二，策略读的是原始待签字节，而且默认拒绝。没有明确规则的交易类型，一律不签。", "比如 Safe 多签，operation 只允许等于 0。", "要用 1，只能指向官方的批量调用合约，链上还有 Guard 合约再拦一次。", "Bybit 那笔 operation 等于 1 的交易，在这里会被拒绝。", "再比如热钱包，EIP-7702 授权一律拒签。策略如果覆盖了这一条，Binance 那批委托就签不出来。"], "section": "怎么守"}, {"seg": "5a", "t0": 78.93, "t1": 92.81, "title": "③ 分链熔断", "points": ["某条链流出异常，就停这条链的广播", "账本里没有对应订单的流出，所有链一起停", "熔断开关，不能依赖已经被攻击的系统"], "notes": ["第三，分链熔断。某条链流出异常，就停这条链的广播。", "发现账本里没有对应订单的流出，所有链一起停。熔断的开关，不能依赖已经被攻击的系统。"], "section": "怎么守"}, {"seg": "5a", "t0": 92.81, "t1": 115.15, "title": "④ 紧急撤销", "points": ["7702 委托要用新授权把委托地址设成零地址才能清掉", "MPC 钱包要有独立撤销路径：预先批准，每季度演练，记下用时", "查账户代码结果为空，才算完成"], "notes": ["第四，紧急撤销。7702 委托，要用一笔新的授权，把委托地址设成零地址，才能清掉。", "MPC 钱包没有一把单独的私钥能立刻做这件事。所以要有一条独立的撤销路径，预先批准，每季度演练，记下用时。", "最后查一下账户代码，结果为空，才算完成。"], "section": "怎么守"}, {"seg": "5a", "t0": 115.15, "t1": 126.14, "title": "架构的局限", "points": ["挡不住所有内部人作恶", "把一个人作恶，变成需要多人共谋"], "notes": ["也要说清局限。架构挡不住所有内部人作恶。它做的，是把一个人作恶，变成需要多人共谋。"], "section": "怎么守"}, {"seg": "5b", "t0": 0.0, "t1": 20.37, "title": "今天就能做（一）", "points": ["签名工程师：列出到达签名节点的所有调用路径，找出没过策略引擎的那条", "多签签名人：换一台设备独立重算下一笔交易哈希，别和前端同源"], "notes": ["最后，按角色，每个人今天就能做一件事。", "签名工程师，列出所有能到达签名节点的调用路径，找出没经过策略引擎的那一条。", "多签签名人，换一台设备，独立重新计算下一笔交易的哈希，别和前端用同一个来源。"], "section": "你今天能做什么"}, {"seg": "5b", "t0": 20.37, "t1": 42.91, "title": "今天就能做（二）", "points": ["运维：扫描开发电脑上的生产令牌，看失陷电脑能部署到哪里", "安全工程师：测试网发一笔 7702 授权请求，看策略拒没拒、告警响没响", "事故指挥官：主持撤销演练，暂停后怎么确认链上授权已清掉？"], "notes": ["运维，扫描开发电脑上的生产令牌，看看一台失陷的电脑，能部署到哪里。", "安全工程师，在测试网发一笔 7702 授权请求，看策略拒没拒，告警响没响。", "事故指挥官，主持一次撤销演练。暂停提现之后，你怎么确认链上授权已经清掉？"], "section": "你今天能做什么"}, {"seg": "5b", "t0": 42.91, "t1": 52.43, "title": "钥匙还在，钱为什么没了", "points": ["攻击者控制的不是钥匙", "是钥匙要盖的那份文件"], "notes": ["回到开头的问题。钥匙还在，钱为什么没了？", "因为攻击者控制的不是钥匙，是钥匙要盖的那份文件。"], "section": "你今天能做什么"}, {"seg": "5b", "t0": 52.43, "t1": 66.6, "title": "每一关都重新检查", "points": ["守住签名路径，靠的不是哪一关特别强", "六起事件，一条路径，每一关都要重新检查"], "notes": ["守住签名路径，靠的不是哪一关特别强，而是每一关都重新检查。", "六起事件，一条路径，每一关都要重新检查。"], "section": "你今天能做什么"}]};
+  var S = D.slides, N = S.length, KEY = 'deck-' + D.chapter;
+  var $ = function (id) { return document.getElementById(id); };
+  var screen = $('screen'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
+  var store = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+                set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+  try { var pt = parent !== window && parent.document.documentElement.getAttribute('data-theme'); if (pt) document.documentElement.setAttribute('data-theme', pt); } catch (e) {}
+  try { seen = JSON.parse(store.get(KEY + '-seen') || '{}') || {}; } catch (e) { seen = {}; }
+
+  $('title').textContent = D.title;
+  $('eyebrow').textContent = '拟物化知识讲解 · 第 ' + D.chapter.replace(/\D/g, '') + ' 章';
+
+  // progress: one group per section
+  var prog = $('prog'), groups = [];
+  S.forEach(function (s, i) {
+    var g = groups[groups.length - 1];
+    if (!g || g.seg !== s.seg) { g = { seg: s.seg, el: document.createElement('div') }; g.el.className = 'grp'; groups.push(g); prog.appendChild(g.el); g.n = 0; }
+    var b = document.createElement('button'); b.title = (i + 1) + ' · ' + s.title; b.setAttribute('aria-label', '第 ' + (i + 1) + ' 页：' + s.title);
+    b.onclick = function () { go(i, 'seek'); }; g.el.appendChild(b); g.n++; s.dot = b;
+  });
+  groups.forEach(function (g) { g.el.style.setProperty('--n', g.n); });
+
+  function scale() { var k = screen.clientWidth / 1920; for (var s in frames) frames[s].style.transform = 'scale(' + k + ')'; }
+  if (window.ResizeObserver) new ResizeObserver(scale).observe(screen); else addEventListener('resize', scale);
+
+  function frame(seg) {
+    if (frames[seg]) return frames[seg];
+    var f = document.createElement('iframe'); f.src = 's' + seg + '.html'; f.title = '第 ' + seg + ' 节动画'; f.tabIndex = -1;
+    f.setAttribute('aria-hidden', 'true'); screen.appendChild(f); frames[seg] = f; scale(); return f;
+  }
+  function send(seg, msg) {
+    msg.deck = 'cmd';
+    if (ready[seg]) frames[seg].contentWindow.postMessage(msg, '*'); else pending[seg] = msg;
+  }
+  addEventListener('message', function (e) {
+    var m = e.data || {};
+    if (!m.deck || !frames[m.seg] || e.source !== frames[m.seg].contentWindow) return;
+    if (m.deck === 'ready') {
+      ready[m.seg] = true;
+      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; send(m.seg, p); }
+      if (cur >= 0 && S[cur].seg === m.seg) $('wait').hidden = true;
+    } else if (m.deck === 'done' && cur >= 0 && S[cur].seg === m.seg) { playing = false; paint(); }
+  });
+
+  function paint() {
+    var s = S[cur];
+    $('sec').textContent = s.section;
+    $('stitle').textContent = s.title;
+    $('points').innerHTML = ''; s.points.forEach(function (p) { var li = document.createElement('li'); li.textContent = p; $('points').appendChild(li); });
+    $('lines').innerHTML = ''; s.notes.forEach(function (p) { var li = document.createElement('li'); li.textContent = p; $('lines').appendChild(li); });
+    $('count').textContent = (cur + 1) + ' / ' + N;
+    $('prev').disabled = cur === 0;
+    $('next').textContent = playing ? '跳到本页结尾 ›' : (cur === N - 1 ? '回到正文 ›' : '下一页 ›');
+    S.forEach(function (x, i) { x.dot.className = i === cur ? 'cur' : (seen[i] ? 'seen' : ''); });
+  }
+  function go(i, mode) {
+    if (i < 0 || i >= N) return;
+    var s = S[i]; cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
+    var f = frame(s.seg);
+    for (var k in frames) frames[k].classList.toggle('on', k === s.seg);
+    $('wait').hidden = !!ready[s.seg];
+    playing = mode === 'play';
+    send(s.seg, playing ? { play: [s.t0, s.t1], rate: +$('speed').value } : { seek: s.t1 });
+    // warm the next segment while this one is on screen
+    if (i + 1 < N && S[i + 1].seg !== s.seg) frame(S[i + 1].seg);
+    paint();
+  }
+  function next() {
+    if (playing) { go(cur, 'seek'); return; }
+    if (cur === N - 1) { back(); return; }
+    go(cur + 1, 'play');
+  }
+  function prev() { go(cur - 1, 'seek'); }
+  function back() {
+    if (parent !== window) parent.postMessage({ cexNav: D.chapter }, '*');
+    else location.href = '../../index.html#' + D.chapter;
+  }
+  function fullscreen() {
+    var a = $('app');
+    if (document.fullscreenElement) document.exitFullscreen(); else if (a.requestFullscreen) a.requestFullscreen().catch(function () {});
+  }
+  if (!document.fullscreenEnabled) $('fs').hidden = true;
+
+  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = function () { go(cur, 'play'); };
+  $('back').onclick = back; $('fs').onclick = fullscreen;
+  addEventListener('keydown', function (e) {
+    if (e.target.tagName === 'SELECT' || e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+    if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); next(); }
+    else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
+    else if (k === 'r' || k === 'R') go(cur, 'play');
+    else if (k === 'f' || k === 'F') fullscreen();
+    else if (k === 'n' || k === 'N') $('notes').open = !$('notes').open;
+    else if (k === 'Home') go(0, 'seek');
+    else if (k === 'End') go(N - 1, 'seek');
+  });
+  // tap = next; horizontal swipe = next / previous
+  var x0 = null, y0 = null;
+  screen.addEventListener('pointerdown', function (e) { x0 = e.clientX; y0 = e.clientY; });
+  screen.addEventListener('pointerup', function (e) {
+    if (x0 === null) return;
+    var dx = e.clientX - x0, dy = e.clientY - y0; x0 = null;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { dx < 0 ? next() : prev(); }
+    else if (Math.abs(dx) < 8 && Math.abs(dy) < 8) next();
+  });
+
+  var start = +store.get(KEY); if (!(start >= 0 && start < N)) start = 0;
+  go(start, start === 0 ? 'play' : 'seek');
+})();
+</script>
+</body>
+</html>

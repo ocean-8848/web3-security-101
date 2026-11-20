@@ -178,6 +178,10 @@ a.lab-link::after { content: " ▸"; font-size: .8em; color: var(--gold); }
 .labhead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; padding: 10px 0; }
 .labhead h1 { font-family: var(--f-display); font-size: 20px; margin: 0; }
 .labhead .muted { font-size: 13px; color: var(--ink-2); }
+.deck-embed { position: relative; left: 50%; transform: translateX(-50%); width: min(1280px, calc(100vw - var(--rail) - 40px)); margin: 18px 0 8px; }
+.deck-embed iframe { display: block; width: 100%; height: max(540px, calc(100vh - var(--bar) - 150px)); border: 1px solid var(--rule); border-radius: 12px; background: var(--ground); }
+@media (max-width: 960px), (max-aspect-ratio: 4/3) { .deck-embed iframe { height: calc(min(1280px, 100vw - var(--rail) - 40px) * .5625 + 470px); } }
+@media (max-width: 900px) { .deck-embed { width: calc(100vw - 24px); } .deck-embed iframe { height: calc((100vw - 24px) * .5625 + 470px); } }
 .labframe { flex: 1; width: 100%; border: 1px solid var(--rule); border-radius: 10px 10px 0 0; background: var(--ground); }
 
 .results { margin-top: 10px; }

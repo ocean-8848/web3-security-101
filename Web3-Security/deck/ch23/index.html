@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>托管、充提与合规安全：保管者与检查站</title>
+<style>
+:root {
+  --ground: #f6f5f1; --paper: #fffefb; --ink: #1d1c19; --ink-2: #5d5a52; --rule: #e4e1d8; --tint: #efece4;
+  --gold: #b38300; --gold-soft: #f8edcc; --accent: #1d93ba; --accent-soft: #e1f1f7;
+  --f-display: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --f-body: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --ground: #131311; --paper: #1a1a17; --ink: #ebe9e2; --ink-2: #a5a298; --rule: #2f2e29; --tint: #23221e;
+    --gold: #f0b90b; --gold-soft: #3a3010; --accent: #6cc7e0; --accent-soft: #15303a; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --ground: #131311; --paper: #1a1a17; --ink: #ebe9e2; --ink-2: #a5a298; --rule: #2f2e29; --tint: #23221e;
+  --gold: #f0b90b; --gold-soft: #3a3010; --accent: #6cc7e0; --accent-soft: #15303a; color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { background: var(--ground); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 6px; }
+
+.app { height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; background: var(--ground); }
+.top { display: flex; align-items: center; gap: 10px; padding: 8px 14px; border-bottom: 1px solid var(--rule); background: var(--paper); min-width: 0; }
+.top .t { flex: 1; min-width: 0; }
+.top .eyebrow { font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; color: var(--gold); }
+.top h1 { margin: 0; font-family: var(--f-display); font-size: 16px; font-weight: 800; line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.btn { height: 34px; padding: 0 12px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); cursor: pointer; white-space: nowrap; font-size: 14px; }
+.btn:hover { border-color: var(--gold); }
+.btn[aria-pressed="true"] { background: var(--gold-soft); border-color: var(--gold); }
+.btn.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.btn:disabled { opacity: .4; cursor: default; }
+
+.body { min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 360px; }
+.stagewrap { min-width: 0; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 14px; }
+.screen { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 100%; overflow: hidden; border-radius: 12px; background: #efebe3;
+  box-shadow: 0 1px 0 var(--rule), 0 8px 28px rgba(60, 50, 30, .14); cursor: pointer; touch-action: pan-y; user-select: none; }
+.screen iframe { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; border: 0; transform-origin: 0 0; visibility: hidden; pointer-events: none; }
+.screen iframe.on { visibility: visible; }
+.screen .wait { position: absolute; inset: 0; display: grid; place-items: center; color: #8a826f; font-size: 14px; background: #efebe3; }
+.screen .wait[hidden] { display: none; }
+
+.side { min-height: 0; overflow-y: auto; border-left: 1px solid var(--rule); background: var(--paper); padding: 18px 20px 24px; }
+.sec { font-size: 12px; color: var(--accent); font-weight: 600; letter-spacing: .04em; }
+.side h2 { margin: 4px 0 12px; font-family: var(--f-display); font-size: 22px; font-weight: 800; line-height: 1.4; text-wrap: balance; }
+.side ul { margin: 0; padding: 0; list-style: none; }
+.side li { position: relative; padding: 6px 0 6px 18px; border-top: 1px solid var(--rule); }
+.side li:first-child { border-top: 0; }
+.side li::before { content: ""; position: absolute; left: 2px; top: 16px; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+.notes { margin-top: 18px; border: 1px solid var(--rule); border-radius: 8px; }
+.notes > summary { cursor: pointer; padding: 8px 12px; font-size: 13px; font-weight: 600; color: var(--ink-2); list-style: none; }
+.notes > summary::-webkit-details-marker { display: none; }
+.notes > summary::before { content: "▸ "; }
+.notes[open] > summary::before { content: "▾ "; }
+.notes ol { margin: 0; padding: 4px 14px 10px 32px; font-size: 14px; color: var(--ink-2); }
+.notes li { border: 0; padding: 2px 0; }
+.notes li::before { display: none; }
+
+.ctrl { display: flex; align-items: center; gap: 8px; padding: 8px 14px calc(8px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--rule); background: var(--paper); flex-wrap: wrap; }
+.count { font-family: var(--f-mono); font-size: 13px; color: var(--ink-2); min-width: 64px; text-align: center; font-variant-numeric: tabular-nums; }
+.prog { flex: 1 1 240px; display: flex; gap: 3px; align-items: center; height: 30px; min-width: 160px; }
+.prog .grp { display: flex; gap: 2px; flex: var(--n) 1 0; }
+.prog .grp + .grp { margin-left: 6px; }
+.prog button { flex: 1; height: 8px; padding: 0; border: 0; border-radius: 3px; background: var(--tint); cursor: pointer; }
+.prog button.seen { background: var(--gold-soft); }
+.prog button.cur { background: var(--gold); }
+.prog button:hover { outline: 1px solid var(--gold); }
+.speed { height: 34px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); padding: 0 6px; font-size: 13px; }
+
+/* fullscreen: picture fills, text sits on the right */
+.app:fullscreen .body { grid-template-columns: minmax(0, 1fr) 380px; }
+.app:fullscreen .top { display: none; }
+
+@media (max-width: 960px), (max-aspect-ratio: 4/3) {
+  .body { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+  .stagewrap { padding: 10px 10px 0; }
+  .screen { max-height: none; }
+  .side { border-left: 0; border-top: 0; background: var(--ground); padding: 12px 14px 20px; }
+  .side h2 { font-size: 19px; margin-bottom: 8px; }
+  .hide-narrow { display: none; }
+  .app:fullscreen .body { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .top { padding: 6px 10px; }
+  .top h1 { font-size: 14px; }
+  .ctrl { gap: 6px; padding-inline: 10px; }
+  .prog { order: -1; flex-basis: 100%; }
+  .btn { padding: 0 10px; }
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <header class="top">
+    <div class="t"><div class="eyebrow" id="eyebrow">拟物化知识讲解</div><h1 id="title"></h1></div>
+    <button class="btn" id="back" title="回到文字章节">正文 ↗</button>
+    <button class="btn hide-narrow" id="fs" title="全屏（F）">⛶ 全屏</button>
+  </header>
+  <div class="body">
+    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="wait" id="wait">载入动画…</div></div></div>
+    <aside class="side" aria-live="polite">
+      <div class="sec" id="sec"></div>
+      <h2 id="stitle"></h2>
+      <ul id="points"></ul>
+      <details class="notes" id="notes"><summary>讲稿（N）</summary><ol id="lines"></ol></details>
+    </aside>
+  </div>
+  <nav class="ctrl" aria-label="翻页">
+    <button class="btn" id="prev" aria-label="上一页（←）">‹ 上一页</button>
+    <button class="btn" id="replay" aria-label="重播本页动画（R）">⟳ 重播</button>
+    <button class="btn primary" id="next" aria-label="下一页（→ 或空格）">下一页 ›</button>
+    <span class="count" id="count"></span>
+    <div class="prog" id="prog"></div>
+    <select class="speed" id="speed" aria-label="动画速度">
+      <option value="1">1×</option><option value="1.5" selected>1.5×</option><option value="2">2×</option><option value="4">4×</option>
+    </select>
+  </nav>
+</div>
+<script>
+(function () {
+  var D = {"chapter": "s23", "title": "托管、充提与合规安全：保管者与检查站", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 15.41, "title": "Binance 热钱包大额转出", "points": ["2026 年 10 月 29 日，热钱包开始大额转出", "先是 XRP，再是比特币，然后是以太坊", "一条链接着一条链，资产往外流"], "notes": ["2026 年 10 月 29 日，Binance 的热钱包，开始大额转出。", "先是 XRP，再是比特币，然后是以太坊。", "一条链接着一条链，资产往外流。"], "section": "暂停之后"}, {"seg": "1", "t0": 15.41, "t1": 39.15, "title": "暂停提现没有挡住", "points": ["按项目方初步报告，暂停提现没挡住全部未授权转账", "最后一笔到 UTC 23:56 才转完", "项目方称约 63.4 亿美元，有记录以来最大的加密资产盗窃案"], "notes": ["交易所发现之后，暂停了提现。", "可按项目方的初步报告，暂停提现，没有挡住全部的未授权转账。", "最后一笔，到世界协调时 23 点 56 分，才转完。", "项目方的口径是，约 63.4 亿美元。", "这是有记录以来，最大的一起加密资产盗窃案。"], "section": "暂停之后"}, {"seg": "1", "t0": 39.15, "t1": 47.15, "title": "没有私钥，怎么签出去", "points": ["Binance 称，没有发现私钥泄露的证据", "没有私钥，钱是怎么签出去的？"], "notes": ["更反常的是，Binance 称，没有发现私钥泄露的证据。", "没有私钥，钱是怎么签出去的？"], "section": "暂停之后"}, {"seg": "1", "t0": 47.15, "t1": 67.94, "title": "先猜一道题", "points": ["提现已暂停，热钱包服务也关掉了", "以太坊热钱包上还留着一个恶意的 EIP-7702 委托", "这时新转进这个地址的钱，安全吗？"], "notes": ["先猜一道题。", "提现已经暂停，热钱包服务也关掉了。", "以太坊热钱包上，还留着一个恶意的 EIP-7702 委托。", "这时候，新转进这个地址的钱，安全吗？", "带着这个问题，我们看看交易所的两张面孔。"], "section": "暂停之后"}, {"seg": "2", "t0": 0.0, "t1": 24.07, "title": "保管者与检查站", "points": ["保管者：替用户保管私钥和资产，这叫托管", "检查站：链上资金从这里进出法币世界", "保管者失误，用户丢钱；检查站失误，赃款被洗白，交易所担责"], "notes": ["先给准确的说法。", "交易所同时扮演两个角色。", "一个是保管者，替用户保管私钥和资产，这叫托管。", "另一个是检查站，链上的资金，从这里进出法币世界。", "保管者失误，用户丢钱。", "检查站失误，赃款被洗白，交易所自己也要承担法律责任。"], "section": "两张面孔"}, {"seg": "2", "t0": 24.07, "t1": 50.99, "title": "交易所像一座机场", "points": ["金库是冷钱包；登机口是提币，入境口是充值", "安检是反洗钱，边检是制裁筛查", "不同的是：链上资金流向永久公开，几年后还能追查"], "notes": ["打个比方，交易所像一座机场。", "金库是冷钱包，要防盗。", "登机口是提币，要验票，入境口是充值，要验真伪。", "安检是反洗钱，边检是制裁筛查，拦住名单上的人。", "比喻在这里不成立，机场的旅客，走了就走了。", "链上的资金流向永久公开，执法机构几年以后，还能回头追查每一笔。"], "section": "两张面孔"}, {"seg": "2", "t0": 50.99, "t1": 69.79, "title": "钱在交易所里怎么流动", "points": ["每个用户有自己的充值地址，钱到了归集到热钱包", "热钱包负责日常提币，超出水位的转回冷钱包", "冷钱包补充温钱包，温钱包再补充热钱包"], "notes": ["先看保管者这一面，钱在交易所里怎么流动。", "每个用户有自己的充值地址，钱到了，被归集到热钱包。", "热钱包负责日常提币，余额超出水位，多出来的转回冷钱包。", "冷钱包补充温钱包，温钱包再补充热钱包。"], "section": "两张面孔"}, {"seg": "2", "t0": 69.79, "t1": 84.77, "title": "链下还有一条流水线", "points": ["充值扫描服务读取链上数据，记进内部账本", "提币请求：账本 → 风控引擎 → 签名服务 → 热钱包"], "notes": ["链下还有一条流水线。", "充值扫描服务读取链上数据，记进内部账本。", "提币请求从账本出发，经过风控引擎，再到签名服务，最后从热钱包发出。"], "section": "两张面孔"}, {"seg": "2", "t0": 84.77, "t1": 104.22, "title": "攻击打在四个点上", "points": ["充值扫描被假充值骗过；账本被盗来的账号拿去提币", "签名服务被伪造的上游请求驱动；热钱包私钥泄露", "内部人可以同时出现在这四个点上"], "notes": ["攻击打在四个点上。", "充值扫描，被假充值骗过。", "账本，被盗来的用户账号拿去提币。", "签名服务，被伪造的上游请求驱动。", "热钱包，私钥泄露。", "图里没画的还有内部人，他可以同时出现在这四个点上。"], "section": "两张面孔"}, {"seg": "3", "t0": 0.0, "t1": 13.01, "title": "假充值", "points": ["把一笔不该算数的转账，记成了用户的充值", "失败的、伪造的、到账金额不对的，都算"], "notes": ["先看充值这一头。", "假充值，是交易所把一笔不该算数的转账，记成了用户的充值。", "失败的、伪造的、到账金额不对的，都算。"], "section": "假充值"}, {"seg": "3", "t0": 13.01, "t1": 37.95, "title": "失败交易与无效交易", "points": ["交易失败却已上链，扫描只看存在、不看执行状态", "2019 年 3 月 SlowMist 披露 EOS 上的这类手法", "2018 年 6 月 SlowMist 预警：部分交易所不校验 Omni-USDT 的 valid 字段"], "notes": ["第一种，交易失败了，却已经上链。", "扫描服务只看交易存不存在，不看执行状态。", "2019 年 3 月，SlowMist 披露了 EOS 上的这类手法，TRON 和以太坊也要防。", "第二种，无效交易被入账。", "2018 年 6 月，SlowMist 预警，部分交易所没有校验 Omni-USDT 交易的 valid 字段。"], "section": "假充值"}, {"seg": "3", "t0": 37.95, "t1": 63.29, "title": "XRP 的部分支付", "points": ["请求金额可以远大于实际到账金额", "2024 年 1 月有人向 Bitfinex 发起：名义约 150 亿美元，实到约 0.001 美元", "Bitfinex 按实际到账入账，攻击没有成功"], "notes": ["第三种，部分支付，这是 XRP 的一个特性。", "一笔支付写的请求金额，可以远大于实际到账的金额。", "2024 年 1 月，有人向 Bitfinex 发起了一笔部分支付。", "名义金额约 150 亿美元，实际到账约 0.001 美元。", "Bitfinex 按实际到账金额入账，攻击没有成功。"], "section": "假充值"}, {"seg": "3", "t0": 63.29, "t1": 80.11, "title": "假代币、假事件、回滚", "points": ["假代币：名字和符号都能照抄", "伪造转账事件：只看 Transfer 事件，不看来自哪个合约", "确认数不够就入账，区块回滚后充值跟着消失"], "notes": ["第四种，假代币，名字和符号都能照抄。", "第五种，伪造的转账事件，系统只看 Transfer 事件，不看它来自哪个合约。", "第六种，确认数不够就入账，之后区块回滚，这笔充值也跟着消失。"], "section": "假充值"}, {"seg": "3", "t0": 80.11, "t1": 86.55, "title": "一条原则", "points": ["以链上执行结果和实际到账金额为准"], "notes": ["这些形态，可以归成一条原则。", "以链上执行结果和实际到账金额为准。"], "section": "假充值"}, {"seg": "3", "t0": 86.55, "t1": 95.57, "title": "入账前的四道检查", "points": ["执行成功了吗；代币合约地址在白名单里吗", "实际到账多少", "确认数够了吗"], "notes": ["入账之前，过四道检查。", "执行成功了吗。", "代币合约地址，在白名单里吗。", "实际到账多少。", "确认数够了吗。"], "section": "假充值"}, {"seg": "3", "t0": 95.57, "t1": 113.16, "title": "独立节点复核，每链重做", "points": ["用第二个独立节点再复核一遍", "只靠一个节点，被篡改或不同步也会记错账", "每接入新链，按它的交易模型从头设计，不照搬以太坊"], "notes": ["最后，用第二个独立节点再复核一遍。", "只靠一个节点，节点被篡改或者不同步，也会记错账。", "每接入一条新链，都要按这条链的交易模型，从头设计入账校验，不能照搬以太坊的逻辑。"], "section": "假充值"}, {"seg": "4", "t0": 0.0, "t1": 13.57, "title": "签名服务只认格式", "points": ["提币这一头，最要紧的是签名服务", "它只认请求的格式对不对", "上游数据被伪造，它就按正常流程签出攻击交易"], "notes": ["再看提币这一头，最要紧的是签名服务。", "签名服务只认请求的格式对不对。", "攻击者如果能伪造上游数据，它就会按正常流程，签出攻击交易。"], "section": "签名被驱动"}, {"seg": "4", "t0": 13.57, "t1": 32.21, "title": "Bitget：伪造提现指令", "points": ["2026 年 9 月，Bitget 被盗约 3.875 亿美元", "公开报道称：利用第三方安全产品零日漏洞拿到内部高权限凭证", "向钱包后台插入伪造的提现指令；项目方称已排除私钥泄露"], "notes": ["2026 年 9 月，Bitget 被盗约 3.875 亿美元。", "公开报道称，攻击者利用第三方安全产品的零日漏洞，拿到了内部高权限凭证。", "再向钱包后台，插入伪造的提现指令。", "项目方称，已经排除了私钥泄露。"], "section": "签名被驱动"}, {"seg": "4", "t0": 32.21, "t1": 45.91, "title": "Binance：被篡改的 Homebrew", "points": ["按 Binance 初步报告的路径", "6 月，一名工程师下载了被篡改的 Homebrew", "那次已被处置，报告没有确认之后一直有访问"], "notes": ["一个月后，Binance 出事，按它的初步报告，路径是这样的。", "6 月，一名工程师下载了被篡改的 Homebrew。", "那一次已被发现并处置，报告没有确认之后一直有访问。"], "section": "签名被驱动"}, {"seg": "4", "t0": 45.91, "t1": 66.55, "title": "从面试作业到签名服务", "points": ["9 月，另一名工程师运行了一份假的面试作业", "10 月 20 日，经这台电脑和内部 AI 工具控制另外两台电脑", "10 月 29 日，用容器部署令牌部署容器，访问内部签名服务"], "notes": ["9 月，另一名工程师运行了一份假的面试作业。", "10 月 20 日，攻击者经过这台电脑和内部 AI 工具，又控制了另外两台电脑。", "其中一台上，存着容器部署令牌。", "10 月 29 日，攻击者用它部署容器，运行恶意脚本，访问内部签名服务。"], "section": "签名被驱动"}, {"seg": "4", "t0": 66.55, "t1": 95.31, "title": "不要私钥，让签名服务替签", "points": ["以太坊上签出 EIP-7702 委托，把热钱包代码指向攻击者合约；其他链是普通转账", "决定性一环：开发终端上的长期部署令牌，一台电脑失陷变成生产失陷", "签名流程被驱动，冷热隔离和私钥保护都挡不住"], "notes": ["攻击者不需要私钥，它让签名服务替它签。", "以太坊上，签出的是 EIP-7702 委托，把热钱包账户的代码，指向攻击者的合约。", "其他链上，就是普通的签名转账。", "决定性的一环，是开发终端上的长期部署令牌。", "它把一台电脑失陷，变成了生产环境失陷。", "签名流程本身被驱动了，冷热隔离和私钥保护，都挡不住。"], "section": "签名被驱动"}, {"seg": "4", "t0": 95.31, "t1": 116.78, "title": "三条防线", "points": ["签名服务独立核对：地址和金额要对上账本里的提现订单", "部署令牌短期有效、绑定设备、第二个人批准", "风控引擎和签名服务由不同团队维护；两起事件尚无最终第三方报告"], "notes": ["防线有三条。", "签名服务独立核对，目标地址和金额，必须对得上账本里的提现订单。", "部署令牌要短期有效、绑定设备，还要第二个人批准。", "风控引擎和签名服务，由不同的团队维护。", "两起事件，都还没有最终的第三方调查报告。"], "section": "签名被驱动"}, {"seg": "5", "t0": 0.0, "t1": 29.67, "title": "检查站：规则有漏洞就够", "points": ["盗来的资金想充进交易所再提走或换掉；名单上的人换新地址", "洗钱者把金额拆开，快进快出", "TRM 记录：事件前一天，攻击者操作钱包收到 3 笔 Tornado Cash 提款"], "notes": ["再看交易所的另一张面孔，检查站。", "这里的攻击者，不需要攻破交易所的系统，只需要规则有漏洞。", "盗来的资金，想充进交易所，再提走或者换掉。", "名单上的人，换个新地址、新账户，绕过筛查。", "洗钱者把金额拆开，快进快出。", "TRM 记录到，Binance 事件前一天，攻击者的操作钱包，收到 3 笔 Tornado Cash 提款。"], "section": "检查站"}, {"seg": "5", "t0": 29.67, "t1": 59.01, "title": "充提要过四道关", "points": ["制裁筛查（如 OFAC 名单），命中就拦；链上风险评分", "Travel Rule：服务商之间传递发起人和受益人信息", "反洗钱交易监控：盯住拆分和快进快出"], "notes": ["一笔充值或者提币，要过四道关。", "第一道，制裁筛查，比如美国财政部 OFAC 的名单，命中就拦。", "第二道，链上风险评分，看资金在几跳以内，是不是来自被盗资金或者混币器。", "第三道，Travel Rule，服务商之间转账，要传递发起人和受益人的信息。", "第四道，反洗钱交易监控，盯住拆分和快进快出。"], "section": "检查站"}, {"seg": "5", "t0": 59.01, "t1": 76.93, "title": "门槛按辖区来定", "points": ["FATF 建议门槛 1000 美元或欧元", "欧盟：服务商之间转账不设最低门槛", "按 1000 欧元设计，小额转账就缺了双方信息"], "notes": ["门槛要按辖区来定。", "FATF 建议的门槛，是 1000 美元或欧元。", "欧盟规定，服务商之间转账，不设最低门槛。", "系统如果按 1000 欧元设计，小额转账就缺了发起人和受益人的信息。"], "section": "检查站"}, {"seg": "5", "t0": 76.93, "t1": 94.87, "title": "冻结追回的最后机会", "points": ["被盗资金进入交易所，往往是冻结追回的最后机会", "事件当晚 Tether 冻结约 9.711 亿 USDT，Circle 冻结约 8.23 亿 USDC", "比特币、XRP 这类原生资产，发行方没办法冻结"], "notes": ["被盗资金进入交易所，往往是冻结追回的最后机会。", "Binance 事件当晚，Tether 冻结了约 9.711 亿 USDT，Circle 冻结了约 8.23 亿 USDC。", "比特币、XRP 这类原生资产，发行方没办法冻结。"], "section": "检查站"}, {"seg": "5", "t0": 94.87, "t1": 108.17, "title": "代价回到交易所身上", "points": ["2023 年 11 月，Binance 认罪，支付约 43 亿美元", "2025 年，KuCoin 和 OKX 也认罪无牌汇款"], "notes": ["检查站失守，代价最后会回到交易所身上。", "2023 年 11 月，Binance 认罪，支付约 43 亿美元。", "2025 年，KuCoin 和 OKX，也认罪无牌汇款。"], "section": "检查站"}, {"seg": "5", "t0": 108.17, "t1": 128.4, "title": "也别误伤普通人", "points": ["评分会误报，没有人工复核和申诉，正常用户会被错冻", "2025 年 3 月 Tornado Cash 移出制裁名单，风险没有消失", "混币器来的钱，照样按评分和规则走一遍"], "notes": ["反过来，评分也会误报，没有人工复核和申诉通道，正常用户的钱就会被错冻。", "2025 年 3 月，Tornado Cash 被移出制裁名单，可风险没有跟着消失。", "混币器来的钱，照样要按评分和规则走一遍。"], "section": "检查站"}, {"seg": "6", "t0": 0.0, "t1": 14.91, "title": "答案：不安全", "points": ["委托写在账户的链上代码里，独立于链下提现系统", "新授权覆盖或清零之前，委托合约照样可以被调用"], "notes": ["回到开头的题。", "答案是不安全。", "委托写在账户的链上代码里，独立于链下的提现系统。", "在新的授权覆盖或者清零它之前，委托合约照样可以被调用。"], "section": "撤销委托"}, {"seg": "6", "t0": 14.91, "t1": 27.33, "title": "暂停提现≠撤销权限", "points": ["Binance 在 10 月 30 日 0:10 才把委托清零", "恶意委托在链上存活了约 3 小时 50 分", "暂停提现，不等于撤销权限"], "notes": ["Binance 在 10 月 30 日 0 点 10 分，才把委托清零。", "恶意委托在链上，存活了约 3 小时 50 分。", "暂停提现，不等于撤销权限。"], "section": "撤销委托"}, {"seg": "6", "t0": 27.33, "t1": 44.21, "title": "交易所今天就能做三件事", "points": ["写好紧急撤销流程并演练，把链上授权也算进去", "热钱包设余额上限，每条链单独熔断", "签名策略覆盖全部交易类型，包括 EIP-7702 授权"], "notes": ["交易所今天就能做三件事。", "提前写好紧急撤销流程并且演练，把链上授权也算进去。", "热钱包设余额上限，每条链单独熔断。", "签名策略覆盖全部交易类型，包括 EIP-7702 授权。"], "section": "撤销委托"}, {"seg": "6", "t0": 44.21, "t1": 62.61, "title": "普通用户的几件事", "points": ["充值前确认代币合约地址和网络", "开提币白名单和新地址冷却期，从地址簿选地址", "来源不明的钱不充；补资料只在官方 App 里处理"], "notes": ["普通用户也有几件事。", "充值前，确认交易所支持的代币合约地址和网络。", "开启提币白名单和新地址冷却期，提币地址从地址簿里选。", "来源不明的资金不要充进去，交易所要你补资料，只在官方 App 里处理。"], "section": "撤销委托"}, {"seg": "6", "t0": 62.61, "t1": 70.03, "title": "保管者与检查站各守其职", "points": ["保管者让签名只为真实的订单服务", "检查站要拦住赃款，也别误伤普通人"], "notes": ["保管者要让签名只为真实的订单服务，检查站要拦住赃款，也别误伤普通人。"], "section": "撤销委托"}]};
+  var S = D.slides, N = S.length, KEY = 'deck-' + D.chapter;
+  var $ = function (id) { return document.getElementById(id); };
+  var screen = $('screen'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
+  var store = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+                set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+  try { var pt = parent !== window && parent.document.documentElement.getAttribute('data-theme'); if (pt) document.documentElement.setAttribute('data-theme', pt); } catch (e) {}
+  try { seen = JSON.parse(store.get(KEY + '-seen') || '{}') || {}; } catch (e) { seen = {}; }
+
+  $('title').textContent = D.title;
+  $('eyebrow').textContent = '拟物化知识讲解 · 第 ' + D.chapter.replace(/\D/g, '') + ' 章';
+
+  // progress: one group per section
+  var prog = $('prog'), groups = [];
+  S.forEach(function (s, i) {
+    var g = groups[groups.length - 1];
+    if (!g || g.seg !== s.seg) { g = { seg: s.seg, el: document.createElement('div') }; g.el.className = 'grp'; groups.push(g); prog.appendChild(g.el); g.n = 0; }
+    var b = document.createElement('button'); b.title = (i + 1) + ' · ' + s.title; b.setAttribute('aria-label', '第 ' + (i + 1) + ' 页：' + s.title);
+    b.onclick = function () { go(i, 'seek'); }; g.el.appendChild(b); g.n++; s.dot = b;
+  });
+  groups.forEach(function (g) { g.el.style.setProperty('--n', g.n); });
+
+  function scale() { var k = screen.clientWidth / 1920; for (var s in frames) frames[s].style.transform = 'scale(' + k + ')'; }
+  if (window.ResizeObserver) new ResizeObserver(scale).observe(screen); else addEventListener('resize', scale);
+
+  function frame(seg) {
+    if (frames[seg]) return frames[seg];
+    var f = document.createElement('iframe'); f.src = 's' + seg + '.html'; f.title = '第 ' + seg + ' 节动画'; f.tabIndex = -1;
+    f.setAttribute('aria-hidden', 'true'); screen.appendChild(f); frames[seg] = f; scale(); return f;
+  }
+  function send(seg, msg) {
+    msg.deck = 'cmd';
+    if (ready[seg]) frames[seg].contentWindow.postMessage(msg, '*'); else pending[seg] = msg;
+  }
+  addEventListener('message', function (e) {
+    var m = e.data || {};
+    if (!m.deck || !frames[m.seg] || e.source !== frames[m.seg].contentWindow) return;
+    if (m.deck === 'ready') {
+      ready[m.seg] = true;
+      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; send(m.seg, p); }
+      if (cur >= 0 && S[cur].seg === m.seg) $('wait').hidden = true;
+    } else if (m.deck === 'done' && cur >= 0 && S[cur].seg === m.seg) { playing = false; paint(); }
+  });
+
+  function paint() {
+    var s = S[cur];
+    $('sec').textContent = s.section;
+    $('stitle').textContent = s.title;
+    $('points').innerHTML = ''; s.points.forEach(function (p) { var li = document.createElement('li'); li.textContent = p; $('points').appendChild(li); });
+    $('lines').innerHTML = ''; s.notes.forEach(function (p) { var li = document.createElement('li'); li.textContent = p; $('lines').appendChild(li); });
+    $('count').textContent = (cur + 1) + ' / ' + N;
+    $('prev').disabled = cur === 0;
+    $('next').textContent = playing ? '跳到本页结尾 ›' : (cur === N - 1 ? '回到正文 ›' : '下一页 ›');
+    S.forEach(function (x, i) { x.dot.className = i === cur ? 'cur' : (seen[i] ? 'seen' : ''); });
+  }
+  function go(i, mode) {
+    if (i < 0 || i >= N) return;
+    var s = S[i]; cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
+    var f = frame(s.seg);
+    for (var k in frames) frames[k].classList.toggle('on', k === s.seg);
+    $('wait').hidden = !!ready[s.seg];
+    playing = mode === 'play';
+    send(s.seg, playing ? { play: [s.t0, s.t1], rate: +$('speed').value } : { seek: s.t1 });
+    // warm the next segment while this one is on screen
+    if (i + 1 < N && S[i + 1].seg !== s.seg) frame(S[i + 1].seg);
+    paint();
+  }
+  function next() {
+    if (playing) { go(cur, 'seek'); return; }
+    if (cur === N - 1) { back(); return; }
+    go(cur + 1, 'play');
+  }
+  function prev() { go(cur - 1, 'seek'); }
+  function back() {
+    if (parent !== window) parent.postMessage({ cexNav: D.chapter }, '*');
+    else location.href = '../../index.html#' + D.chapter;
+  }
+  function fullscreen() {
+    var a = $('app');
+    if (document.fullscreenElement) document.exitFullscreen(); else if (a.requestFullscreen) a.requestFullscreen().catch(function () {});
+  }
+  if (!document.fullscreenEnabled) $('fs').hidden = true;
+
+  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = function () { go(cur, 'play'); };
+  $('back').onclick = back; $('fs').onclick = fullscreen;
+  addEventListener('keydown', function (e) {
+    if (e.target.tagName === 'SELECT' || e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+    if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); next(); }
+    else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
+    else if (k === 'r' || k === 'R') go(cur, 'play');
+    else if (k === 'f' || k === 'F') fullscreen();
+    else if (k === 'n' || k === 'N') $('notes').open = !$('notes').open;
+    else if (k === 'Home') go(0, 'seek');
+    else if (k === 'End') go(N - 1, 'seek');
+  });
+  // tap = next; horizontal swipe = next / previous
+  var x0 = null, y0 = null;
+  screen.addEventListener('pointerdown', function (e) { x0 = e.clientX; y0 = e.clientY; });
+  screen.addEventListener('pointerup', function (e) {
+    if (x0 === null) return;
+    var dx = e.clientX - x0, dy = e.clientY - y0; x0 = null;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { dx < 0 ? next() : prev(); }
+    else if (Math.abs(dx) < 8 && Math.abs(dy) < 8) next();
+  });
+
+  var start = +store.get(KEY); if (!(start >= 0 && start < N)) start = 0;
+  go(start, start === 0 ? 'play' : 'seek');
+})();
+</script>
+</body>
+</html>

@@ -43,7 +43,9 @@ SITES = {
         src=f'{ROOT}/Web3-Security/dist/index.html', title=('Web3 安全学习手册', 'Web3 安全学习站'),
         cfg=dict(key='cshb', name='Web3 安全'), config='docs-config.js',
         aux=lambda: [(p, s, None) for p, s in files_in(f'{ROOT}/Web3-Security/interactive', 'interactive/', {'.html', '.css', '.js'})]
-                    + [(p, s, None) for p, s in files_in(f'{ROOT}/practice-example-code', 'practice-example-code/', {'.sol'})]),
+                    + [(p, s, None) for p, s in files_in(f'{ROOT}/practice-example-code', 'practice-example-code/', {'.sol'})]
+                    + [(p, s, None) for p, s in files_in(f'{ROOT}/Web3-Security/deck', 'deck/', {'.html', '.woff2'})]
+                    + [(p, s, None) for p, s in files_in(f'{ROOT}/Web3-Security/deck3b', 'deck3b/', {'.html'})]),
     'scsec': dict(
         # Independent site: the original 13-chapter smart contract security book (Contract-Security/tools/build.mjs).
         src=f'{ROOT}/Contract-Security/dist/index.html', title=('Web3 智能合约安全手册', 'Web3 智能合约安全学习站'),
@@ -166,6 +168,8 @@ def build(name):
     for path, src, patch in s['aux']():
         dst = os.path.join(out, path)
         os.makedirs(os.path.dirname(dst), exist_ok=True)
+        if src.endswith('.woff2'):
+            shutil.copyfile(src, dst); manifest.append(path); continue
         data = open(src, encoding='utf-8').read()
         if patch == 'cexnav':
             assert '</body>' in data, src
