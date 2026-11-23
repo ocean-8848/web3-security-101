@@ -24,7 +24,7 @@
 | X32 | 17-node-rpc-infrastructure.md | MetaMask 质押事件（2026-09）根因与签名密钥暴露未披露，约 1.7 万验证者退出为研究者估算，官方 11 月更新只经聚合站读到；Prysm Fusaka 后事故官方复盘页 404，仅靠 Potuz 技术分析与媒体；Ankr 无自己的复盘；Lighthouse doppelganger 文档未读到 | 章内已注明 |
 | B76 | X 章 INF-20 | S7 中 `prod/signing-config` 被读取映射到 INF-20，该条原文针对“签名密钥”，属推断式映射 | 酌情改 |
 | 靶场 | code/offchain-ops/API.md | W000889（S1-03，25,000 美元提币）只有 1 个审批人，已在 API.md 标为“有意设计”，是主会话据 S1-03 含义的推断，需靶场作者确认 | 待确认 |
-| 学习站 | ans/out | X01–X48、B71–B76 的参考答案已写；B77 待写；x02 Q1 的落地顺序、x03 Q2 的 Mixin 延伸、x14 Q2 / x15 Q2 的三问与取舍为答案作者的判断 | 发布前过目 |
+| 学习站 | learning-site/answers/out | X01–X48、B71–B76 的参考答案已写；B77 待写；x02 Q1 的落地顺序、x03 Q2 的 Mixin 延伸、x14 Q2 / x15 Q2 的三问与取舍为答案作者的判断 | 发布前过目 |
 
 ## 第二轮（X00、X14–X48、B79–B83）发布前待核事实（2026-11-23）
 

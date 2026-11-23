@@ -6,7 +6,7 @@
 |---|---|---|
 | `handbook/` | 《Web3 安全学习手册》Markdown 源稿、交互实验页、构建脚本 | `node handbook/tools/build.mjs` → `handbook/dist/index.html` |
 | `code/` | 示例代码：单文件示例合约（`snippets/`，01–08）、Foundry 演示工程（`foundry-demos/`）、训练营靶场（`ranges/`，含 MiniLend）、手敲练习工程（`bootcamp-lab/`）、链下运营练习（`offchain-ops/`） | 在各 Foundry 目录下运行 `forge test` |
-| `learning-site/` | Web3 安全学习站：学习进度层（`learn.js`、`visual.js`）、参考答案、构建脚本 | `python3 learning-site/build.py security` → `learning-site/security/index.html` |
+| `learning-site/` | Web3 安全学习站：学习进度层（`learn.js`、`visual.js`）、参考答案（`answers/`）、补充图解（`diagrams/`）、构建脚本 | `python3 learning-site/build.py` → `learning-site/security/index.html` |
 
 `handbook/` 的结构：
 
@@ -43,5 +43,5 @@ cd handbook/tools && npm install
 
 ## 说明
 
-- `learning-site/build.py` 也能构建其他学习站（CEX、合约等），但它们的源码不在本仓库，只有 `security` 目标能从本仓库直接构建。
+- 本仓库只构建 Web3 安全学习站。其他学习站（CEX、合约等）的源码和构建在仓库之外。
 - 写作规范见 `handbook/docs/WRITING-GUIDE.md`。

@@ -1,7 +1,0 @@
-{
- "answers": [
-  "机器人复制你的 commit 也领不到奖，因为 commit 是 <code>hash(answer, salt, sender)</code>，把 <code>sender</code> 包含在内。<br>机器人复制来的 hash 绑定的是你的地址，它无法在揭示阶段给出对应的 answer 和 salt，也不知道你的 salt。揭示时合约会用机器人的 <code>msg.sender</code> 重算 hash，对不上就拒绝。",
-  "因为抢跑者不需要比你付更高的 gas 价，只要排在你前面就行。构建者决定顺序，他们可以按小费、捆绑包或私下约定来排，抢跑者还可以通过私有通道和构建者交易。上限检查既拦不住这些排序手段，也会把正常用户在拥堵时的交易挡在门外。真正有效的是 commit-reveal、<code>amountOutMin + deadline</code> 和私有交易通道。",
-  "标题示例：「DEX 聚合器内部将 <code>amountOutMin</code> 硬编码为 0，用户交易可被夹击」。严重性定为高危（High）。<br>理由：没有任何滑点保护，攻击者可以先买推高价格、让用户成交、再卖出获利，用户资金直接受损，并且任何人都可触发。报告应写明受影响函数、攻击步骤，并建议把 <code>amountOutMin</code> 作为参数由用户传入，同时加 <code>deadline</code>。"
- ]
-}

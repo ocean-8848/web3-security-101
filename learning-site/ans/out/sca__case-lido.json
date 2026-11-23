@@ -1,1 +1,0 @@
-{"answers": ["存款会经常 revert，金库等于不可用。因为 stETH 的 <code>balanceOf</code> 是“份额 × 汇率”算出来的，转账后接收方余额常常只增加 x−1 或 x−2 wei（取整误差），严格相等断言就失败。修复是按余额差记账、用 <code>transferShares</code>，或改用 wstETH；更稳妥的是内部按份额记账。", "因为 wstETH 的余额是固定份额数，不 rebase，价值随汇率增长。这样借贷协议的记账不会被余额自增自减打乱，也没有 1–2 wei 的取整问题，不用再处理收益归属。估值时只需把 wstETH 换算成 stETH/ETH，并设折价保护和上限。"]}
