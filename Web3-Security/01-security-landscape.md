@@ -281,4 +281,4 @@ flowchart TD
 2. 为你熟悉的一个 DeFi 协议（例如借贷协议）写出 3 个不变量。
 3. 打开 [incident-explorer.html](interactive/incident-explorer.html)，按类别统计损失。哪一类损失最大？它是"代码漏洞"还是"代码之外"的问题？
 
-下一章：[02 密码学基础与实现风险](02-cryptography-randomness.md) —— 私钥从哪里来。
+下一章：[02 密码学基础与实现风险](02-cryptography-randomness.md) —— 私钥的随机性从哪里来。
