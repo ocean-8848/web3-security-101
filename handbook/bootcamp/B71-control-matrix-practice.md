@@ -8,7 +8,7 @@
 > 前置知识：读过 [B70 链下 L3 导读](B70-offchain-l3-guide.md)，读过 [X01 安全体系怎么搭](../architecture/X01-security-program-controls.md) 与 [X07 交易所安全架构总览](../architecture/X07-cex-architecture-overview.md) 更好；会运行 `python3` 和写简单 SQL。不需要 Foundry。
 > 预计用时：约 2–2.5 小时。
 > 交互实验：[控制矩阵覆盖率](../interactive/control-matrix-lab.html)
-> 关联章节：[X01 安全体系怎么搭](../architecture/X01-security-program-controls.md)｜[X02 标准与合规映射](../architecture/X02-standards-compliance-map.md)｜[X07 交易所安全架构总览](../architecture/X07-cex-architecture-overview.md)｜[T08 控制矩阵与风险登记表](../templates/T08-control-matrix-risk-register.md)｜[靶场 API](../../practice-example-code/ops/API.md)
+> 关联章节：[X01 安全体系怎么搭](../architecture/X01-security-program-controls.md)｜[X02 标准与合规映射](../architecture/X02-standards-compliance-map.md)｜[X07 交易所安全架构总览](../architecture/X07-cex-architecture-overview.md)｜[T08 控制矩阵与风险登记表](../templates/T08-control-matrix-risk-register.md)｜[靶场 API](../../code/offchain-ops/API.md)
 > 最后核对：2026-11-23（python3、MiniEx 靶场默认种子 20260301 在本机运行过；下文命令输出来自真实运行）
 
 > ⚠️ 警告：法律与道德边界。MiniEx 是虚构的交易所。所有数据由脚本合成，不含真实用户、真实地址或真实密钥。本章只在你自己的机器上读这些数据。不要用本章的方法去"勘察"不属于你的真实系统。真实机构的资产清单与控制验证，只在你所在组织的授权范围内进行。
@@ -60,18 +60,18 @@ flowchart LR
 1. 生成靶场数据（约 2 秒，只用 Python 标准库）：
 
 ```bash
-bash practice-example-code/ops/setup.sh --no-tests | tail -1
+bash code/offchain-ops/setup.sh --no-tests | tail -1
 ```
 
 ```text
-靶场已就绪：数据在 practice-example-code/ops/data/，答案在 practice-example-code/ops/answers/（练习做完再看）
+靶场已就绪：数据在 code/offchain-ops/data/，答案在 code/offchain-ops/answers/（练习做完再看）
 ```
 
 2. 新建练习目录，并设置一个路径变量。后面的命令都用 `$OPS`：
 
 ```bash
 mkdir -p b71-lab
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 python3 --version
 ```
 
@@ -79,7 +79,7 @@ python3 --version
 Python 3.12.3
 ```
 
-3. 读一遍数据字典。你只需要知道表名和列名，不需要背：[靶场 API](../../practice-example-code/ops/API.md) 的第 1 节。
+3. 读一遍数据字典。你只需要知道表名和列名，不需要背：[靶场 API](../../code/offchain-ops/API.md) 的第 1 节。
 
 ## 3. 第 1 步：勘察资产清单
 
@@ -731,10 +731,10 @@ wc -l b71-lab/my_matrix.csv
 - 覆盖率 = 各行"权重 × 得分"之和 ÷ 各行权重之和。权重：P0 为 3，P1 为 2，P2 为 1。得分：`implemented` 为 1，`partial` 为 0.5，`missing` 为 0。
 - 缺口分 = 各行"权重 × (1 − 得分)"之和。它表示"还差多少没做"。
 
-缺口排序按缺口分从大到小。缺口分相同时，覆盖率低的在前。脚本的完整说明在文件头部的注释里：[matrix_gap.py](../../practice-example-code/ops/solutions/b71/matrix_gap.py)。
+缺口排序按缺口分从大到小。缺口分相同时，覆盖率低的在前。脚本的完整说明在文件头部的注释里：[matrix_gap.py](../../code/offchain-ops/solutions/b71/matrix_gap.py)。
 
 ```bash
-python3 practice-example-code/ops/solutions/b71/matrix_gap.py b71-lab/my_matrix.csv
+python3 code/offchain-ops/solutions/b71/matrix_gap.py b71-lab/my_matrix.csv
 ```
 
 ```text
@@ -792,7 +792,7 @@ python3 practice-example-code/ops/solutions/b71/matrix_gap.py b71-lab/my_matrix.
 
 ```bash
 sed 's/,implemented,Q14$/,implemented,/' b71-lab/my_matrix.csv > b71-lab/no_evidence.csv
-python3 practice-example-code/ops/solutions/b71/matrix_gap.py b71-lab/no_evidence.csv | grep -E "^交易与清算|^因缺少"
+python3 code/offchain-ops/solutions/b71/matrix_gap.py b71-lab/no_evidence.csv | grep -E "^交易与清算|^因缺少"
 ```
 
 ```text
@@ -805,8 +805,8 @@ python3 practice-example-code/ops/solutions/b71/matrix_gap.py b71-lab/no_evidenc
 2. 设一个门槛。要求每个域覆盖率不低于 50%，看脚本如何失败：
 
 ```bash
-python3 practice-example-code/ops/solutions/b71/matrix_gap.py b71-lab/my_matrix.csv --min-domain-coverage 0.5 | tail -2
-python3 practice-example-code/ops/solutions/b71/matrix_gap.py b71-lab/my_matrix.csv --min-domain-coverage 0.5 > /dev/null; echo "退出码 $?"
+python3 code/offchain-ops/solutions/b71/matrix_gap.py b71-lab/my_matrix.csv --min-domain-coverage 0.5 | tail -2
+python3 code/offchain-ops/solutions/b71/matrix_gap.py b71-lab/my_matrix.csv --min-domain-coverage 0.5 > /dev/null; echo "退出码 $?"
 ```
 
 ```text
@@ -819,7 +819,7 @@ python3 practice-example-code/ops/solutions/b71/matrix_gap.py b71-lab/my_matrix.
 
 ```bash
 sed -e 's/,missing,Q22$/,implemented,Q22/' -e 's/,missing,Q23$/,implemented,Q23/' b71-lab/my_matrix.csv > b71-lab/what_if.csv
-python3 practice-example-code/ops/solutions/b71/matrix_gap.py b71-lab/what_if.csv --top 3 | grep -A3 "缺口排序"
+python3 code/offchain-ops/solutions/b71/matrix_gap.py b71-lab/what_if.csv --top 3 | grep -A3 "缺口排序"
 ```
 
 ```text
@@ -840,7 +840,7 @@ python3 practice-example-code/ops/solutions/b71/matrix_gap.py b71-lab/what_if.cs
 标准答案在 `answers/governance.json`。参考脚本 `staff_audit.py` 用另一种写法（Python 加 SQL）查同样的三类问题，并自动与标准答案比较：
 
 ```bash
-python3 practice-example-code/ops/solutions/b71/staff_audit.py
+python3 code/offchain-ops/solutions/b71/staff_audit.py
 ```
 
 ```text
@@ -859,7 +859,7 @@ python3 practice-example-code/ops/solutions/b71/staff_audit.py
 **对照 2：参考矩阵**
 
 ```bash
-diff b71-lab/my_matrix.csv practice-example-code/ops/solutions/b71/matrix.reference.csv && echo "与参考矩阵逐字相同"
+diff b71-lab/my_matrix.csv code/offchain-ops/solutions/b71/matrix.reference.csv && echo "与参考矩阵逐字相同"
 ```
 
 ```text
@@ -906,8 +906,8 @@ diff b71-lab/my_matrix.csv practice-example-code/ops/solutions/b71/matrix.refere
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
-| `logread.py` 报找不到表或文件 | 数据没有生成，或不在 `web3-security-101/` 目录下运行 | 回到根目录，运行 `bash practice-example-code/ops/setup.sh --no-tests` |
-| `$OPS` 为空，路径变成 `/lib/logread.py` | 换了终端窗口，变量丢失 | 重新运行 `OPS=practice-example-code/ops` |
+| `logread.py` 报找不到表或文件 | 数据没有生成，或不在 `web3-security-101/` 目录下运行 | 回到根目录，运行 `bash code/offchain-ops/setup.sh --no-tests` |
+| `$OPS` 为空，路径变成 `/lib/logread.py` | 换了终端窗口，变量丢失 | 重新运行 `OPS=code/offchain-ops` |
 | Q17 的数字和本章不同 | 用了 `setup.sh --seed` 换了种子 | 本章数值按默认种子 20260301。重新运行 `setup.sh --no-tests`（不带 `--seed`） |
 | `matrix_gap.py` 报"矩阵格式有问题" | `priority` 不是 P0/P1/P2，`status` 拼错，或 `control` 没有以 `[类型]` 开头 | 按报错的行号逐项修改 |
 | 矩阵里的逗号让列错位 | 在字段里写了英文逗号 | 字段内用中文逗号"，"，或用引号包住整个字段 |

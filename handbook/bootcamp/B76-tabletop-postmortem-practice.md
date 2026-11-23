@@ -60,7 +60,7 @@ flowchart LR
 准备工作。从 `web3-security-101/` 根目录出发（下文所有命令都从这里运行）：
 
 ```bash
-bash practice-example-code/ops/setup.sh --no-tests
+bash code/offchain-ops/setup.sh --no-tests
 mkdir -p my_b76
 ```
 
@@ -80,7 +80,7 @@ mkdir -p my_b76
 import argparse, csv, json, sys
 from pathlib import Path
 
-DATA = Path("practice-example-code/ops/data")
+DATA = Path("code/offchain-ops/data")
 
 
 def rows_csv(name):
@@ -141,7 +141,7 @@ if __name__ == "__main__":
 ```
 
 提示：
-- 各表的列名在 `ops/API.md` 第 1 节。事件 ID 列：`recoveries` 是 `recovery_id`，`account_events` 是 `event_id`，`chain_txs` 是 `tx_hash`，`approvals` 是 `approval_id`，`signing_requests` 是 `request_id`。
+- 各表的列名在 `code/offchain-ops/API.md` 第 1 节。事件 ID 列：`recoveries` 是 `recovery_id`，`account_events` 是 `event_id`，`chain_txs` 是 `tx_hash`，`approvals` 是 `approval_id`，`signing_requests` 是 `request_id`。
 - 时间戳都是 UTC、以 `Z` 结尾的 ISO 8601 字符串，格式一致，可以直接比较字符串大小。
 - JSONL 里的空值读出来是 `None`，CSV 里的空值是空字符串。`if r.get(e)` 对两者都有效。
 
@@ -328,7 +328,7 @@ python3 my_b76/timeline.py --fmt csv --entity ST024 --entity dev-mbp-024 --entit
 
 ```bash
 for s in S1-01 S1-02 S1-03 S6-01 S6-02 S6-03 S7-01 S7-02; do
-  python3 practice-example-code/ops/solutions/b76/check_timeline.py $s my_b76/$(echo $s | tr A-Z a-z).csv
+  python3 code/offchain-ops/solutions/b76/check_timeline.py $s my_b76/$(echo $s | tr A-Z a-z).csv
 done
 ```
 
@@ -345,7 +345,7 @@ S7-02：关键事件 5 个，时间线 12 行，覆盖 5/5
 
 你的行数可能和上面不同，因为摘要、是否包含心跳由你决定。**覆盖必须是 n/n。** 如果出现"缺失 XXX"，先看是哪个来源：多半是漏接了来源，或实体列没写全。
 
-> 🧪 动手验证：故意只保留时间线的前 2 行，再检查一次：`head -3 my_b76/s1-01.csv > my_b76/short.csv`，然后 `python3 practice-example-code/ops/solutions/b76/check_timeline.py S1-01 my_b76/short.csv`。输出应是"覆盖 0/4"，并列出 4 个缺失 ID，退出码为 1。
+> 🧪 动手验证：故意只保留时间线的前 2 行，再检查一次：`head -3 my_b76/s1-01.csv > my_b76/short.csv`，然后 `python3 code/offchain-ops/solutions/b76/check_timeline.py S1-01 my_b76/short.csv`。输出应是"覆盖 0/4"，并列出 4 个缺失 ID，退出码为 1。
 
 ## 4. 第 3 步：对照"应有的处置"，找缺口
 
@@ -356,8 +356,8 @@ S7-02：关键事件 5 个，时间线 12 行，覆盖 5/5
 先做一个基础检查：MiniEx 的日志里有没有"处置动作"这种事件？
 
 ```bash
-python3 practice-example-code/ops/lib/logread.py --sql "select status, count(*) n from withdrawals group by status"
-python3 practice-example-code/ops/lib/logread.py --sql "select event_type, count(*) n from account_events group by event_type"
+python3 code/offchain-ops/lib/logread.py --sql "select status, count(*) n from withdrawals group by status"
+python3 code/offchain-ops/lib/logread.py --sql "select event_type, count(*) n from account_events group by event_type"
 ```
 
 ```text
@@ -387,9 +387,9 @@ phone_change          26
 ### 4.1 S1：账户接管
 
 ```bash
-python3 practice-example-code/ops/lib/logread.py --sql "select approval_id, approved_by, approver_count, amount from approvals where approval_id in ('AP-W000279','AP-W000889')"
-python3 practice-example-code/ops/lib/logread.py --sql "select count(distinct account_id) accts, count(*) attempts, sum(result='success') ok from logins where ip like '203.0.113.1_'"
-python3 practice-example-code/ops/lib/logread.py --sql "select recovery_id, channel, result, review_type, ts, completed_ts from recoveries where recovery_id in ('RC000004','RC000023')"
+python3 code/offchain-ops/lib/logread.py --sql "select approval_id, approved_by, approver_count, amount from approvals where approval_id in ('AP-W000279','AP-W000889')"
+python3 code/offchain-ops/lib/logread.py --sql "select count(distinct account_id) accts, count(*) attempts, sum(result='success') ok from logins where ip like '203.0.113.1_'"
+python3 code/offchain-ops/lib/logread.py --sql "select recovery_id, channel, result, review_type, ts, completed_ts from recoveries where recovery_id in ('RC000004','RC000023')"
 ```
 
 ```text
@@ -419,8 +419,8 @@ RC000023     email    success  manual       2026-03-09T14:20:00Z  2026-03-09T14:
 ### 4.2 S6：签名服务
 
 ```bash
-python3 practice-example-code/ops/lib/logread.py --sql "select count(*) n, sum(signer_result='signed') signed from signing_requests where ts>'2026-03-06T16:21:00Z' and ts<'2026-03-09T21:05:00Z'"
-python3 practice-example-code/ops/lib/logread.py --sql "select approval_id, count(*) signed from signing_requests where signer_result='signed' and approval_id is not null group by approval_id having count(*)>1"
+python3 code/offchain-ops/lib/logread.py --sql "select count(*) n, sum(signer_result='signed') signed from signing_requests where ts>'2026-03-06T16:21:00Z' and ts<'2026-03-09T21:05:00Z'"
+python3 code/offchain-ops/lib/logread.py --sql "select approval_id, count(*) signed from signing_requests where signer_result='signed' and approval_id is not null group by approval_id having count(*)>1"
 ```
 
 ```text
@@ -447,8 +447,8 @@ AP-W000829   2
 ### 4.3 S7：开发终端
 
 ```bash
-python3 practice-example-code/ops/lib/logread.py --sql "select count(*) n, max(ts) last from cloud_audit where identity='ST021' and ts>'2026-03-09T12:00:00Z'"
-python3 practice-example-code/ops/lib/logread.py --sql "select count(*) n, min(ts) first, max(ts) last from endpoint_events where dest_ip='203.0.113.77'"
+python3 code/offchain-ops/lib/logread.py --sql "select count(*) n, max(ts) last from cloud_audit where identity='ST021' and ts>'2026-03-09T12:00:00Z'"
+python3 code/offchain-ops/lib/logread.py --sql "select count(*) n, min(ts) first, max(ts) last from endpoint_events where dest_ip='203.0.113.77'"
 ```
 
 ```text
@@ -520,7 +520,7 @@ n  first                 last
 `drill.py` 在参考实现目录里。它只用于主持人在推演时调用，指挥官在推演前不要运行 `card` 子命令。先列出卡号（不含内容）：
 
 ```bash
-python3 practice-example-code/ops/solutions/b76/drill.py list
+python3 code/offchain-ops/solutions/b76/drill.py list
 ```
 
 ```text
@@ -535,7 +535,7 @@ python3 practice-example-code/ops/solutions/b76/drill.py list
 主持人在 T+0 运行卡 1：
 
 ```bash
-python3 practice-example-code/ops/solutions/b76/drill.py card 1
+python3 code/offchain-ops/solutions/b76/drill.py card 1
 ```
 
 ```text
@@ -600,7 +600,7 @@ T+6 运行 `card 2`，T+11 运行 `card 3`，依此类推直到卡 6。每张卡
 
 ```bash
 printf 'A,13\nB,16\nC,12\nD,11\nE,11\nF,7\nG,8\n★1,ok\n★2,ok\n★3,ok\n★4,ok\n' > my_b76/score.csv
-python3 practice-example-code/ops/solutions/b76/drill_score.py my_b76/score.csv
+python3 code/offchain-ops/solutions/b76/drill_score.py my_b76/score.csv
 ```
 
 ```text
@@ -682,7 +682,7 @@ S1-01,2026-03-04T01:00:24Z,2026-03-04T01:48:30Z,2026-03-04T01:50:06Z,2026-03-04T
 S6-02,2026-03-09T21:05:00Z,2026-03-09T21:05:00Z,2026-03-09T21:05:45Z,2026-03-09T21:15:00Z
 S7-01,2026-03-09T11:02:00Z,2026-03-09T11:42:00Z,2026-03-09T11:46:00Z,2026-03-09T12:00:00Z
 EOF
-python3 practice-example-code/ops/solutions/b76/metrics.py my_b76/incidents.csv
+python3 code/offchain-ops/solutions/b76/metrics.py my_b76/incidents.csv
 ```
 
 ```text
@@ -704,7 +704,7 @@ S7-01         40.0       4.0      18.0
 
 ```bash
 for r in r03_change_then_add_address r09_signing_without_approval r11_dev_chain_to_signing; do
-  python3 practice-example-code/ops/lib/replay.py practice-example-code/ops/answers/reference_rules/$r.sql | head -4
+  python3 code/offchain-ops/lib/replay.py code/offchain-ops/answers/reference_rules/$r.sql | head -4
 done
 ```
 
@@ -747,8 +747,8 @@ r09 的 2 条误报就是卡 3 里的紧急调拨补签。复盘里要写：这�
 
 做完再看。对照的做法：
 
-1. 打开 `practice-example-code/ops/answers/S1.json`、`S6.json`、`S7.json`，把 `expected_response` 与你的缺口表逐条比对。你列出的处置少于答案里的，说明你漏了动作；多于答案的，要说明依据。
-2. 打开参考实现目录 `practice-example-code/ops/solutions/b76/`：
+1. 打开 `code/offchain-ops/answers/S1.json`、`S6.json`、`S7.json`，把 `expected_response` 与你的缺口表逐条比对。你列出的处置少于答案里的，说明你漏了动作；多于答案的，要说明依据。
+2. 打开参考实现目录 `code/offchain-ops/solutions/b76/`：
 
 | 文件 | 内容 |
 |---|---|

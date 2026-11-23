@@ -17,7 +17,7 @@
 > ```bash
 > git clone https://github.com/ocean-8848/web3-security-101.git  # 下载仓库
 > cd web3-security-101                                           # 进入仓库根目录：之后都从这里出发
-> bash practice-example-code/setup.sh                                 # 下载依赖（只需一次）
+> bash code/setup.sh                                 # 下载依赖（只需一次）
 > ```
 
 ## 1. 一张图看懂学习路径
@@ -117,18 +117,18 @@ flowchart TD
 
 | # | 章节 | 你会学到 | 交互实验 | 示例合约 |
 |---|---|---|---|---|
-| 04 | [重入攻击](chapters/04-reentrancy.md) | 单函数 / 跨函数 / 跨合约 / 只读重入；CEI 与重入锁 | [重入模拟器](interactive/reentrancy-lab.html) | [01-Reentrancy.sol](../practice-example-code/01-Reentrancy.sol) |
-| 05 | [访问控制与权限](chapters/05-access-control.md) | 6 种权限缺陷；多签 + 时间锁；TRON 账户权限 | [存储与代理](interactive/storage-proxy-lab.html) | [02-AccessControl.sol](../practice-example-code/02-AccessControl.sol) |
-| 06 | [算术与精度](chapters/06-arithmetic-precision.md) | 溢出、舍入方向、金库通胀攻击、三链 USDT 精度、Uranium | [金库通胀](interactive/vault-inflation-lab.html) | [03-VaultInflation.sol](../practice-example-code/03-VaultInflation.sol) |
-| 07 | [外部调用与代币兼容性](chapters/07-external-calls-tokens.md) | 低级调用陷阱、8 类非标准代币、TRON USDT 返回 false、Qubit | [链迁移检查](interactive/chain-porting-lab.html) | [05-SafeTokenOps.sol](../practice-example-code/05-SafeTokenOps.sol) |
+| 04 | [重入攻击](chapters/04-reentrancy.md) | 单函数 / 跨函数 / 跨合约 / 只读重入；CEI 与重入锁 | [重入模拟器](interactive/reentrancy-lab.html) | [01-Reentrancy.sol](../code/snippets/01-Reentrancy.sol) |
+| 05 | [访问控制与权限](chapters/05-access-control.md) | 6 种权限缺陷；多签 + 时间锁；TRON 账户权限 | [存储与代理](interactive/storage-proxy-lab.html) | [02-AccessControl.sol](../code/snippets/02-AccessControl.sol) |
+| 06 | [算术与精度](chapters/06-arithmetic-precision.md) | 溢出、舍入方向、金库通胀攻击、三链 USDT 精度、Uranium | [金库通胀](interactive/vault-inflation-lab.html) | [03-VaultInflation.sol](../code/snippets/03-VaultInflation.sol) |
+| 07 | [外部调用与代币兼容性](chapters/07-external-calls-tokens.md) | 低级调用陷阱、8 类非标准代币、TRON USDT 返回 false、Qubit | [链迁移检查](interactive/chain-porting-lab.html) | [05-SafeTokenOps.sol](../code/snippets/05-SafeTokenOps.sol) |
 
 ### 第三篇 · DeFi 与协议层
 
 | # | 章节 | 你会学到 | 交互实验 | 示例合约 |
 |---|---|---|---|---|
-| 08 | [预言机与闪电贷](chapters/08-oracle-flashloan.md) | 现货价操纵、TWAP、链下喂价检查、L2 排序器状态、BSC 案例 | [预言机操纵](interactive/oracle-manipulation-lab.html) | [04-SpotOracle.sol](../practice-example-code/04-SpotOracle.sol) |
-| 09 | [MEV 与签名安全](chapters/09-mev-signatures.md) | 三明治攻击、签名五要素、可塑性、Bybit 盲签 | [签名重放](interactive/signature-replay-lab.html) | [06-SignatureReplay.sol](../practice-example-code/06-SignatureReplay.sol) |
-| 10 | [可升级合约与代理](chapters/10-upgradeable-proxy.md) | 三种代理模式、存储冲突、初始化、Nomad、安全升级流程 | [存储与代理](interactive/storage-proxy-lab.html) | [07-ProxyStorage.sol](../practice-example-code/07-ProxyStorage.sol) |
+| 08 | [预言机与闪电贷](chapters/08-oracle-flashloan.md) | 现货价操纵、TWAP、链下喂价检查、L2 排序器状态、BSC 案例 | [预言机操纵](interactive/oracle-manipulation-lab.html) | [04-SpotOracle.sol](../code/snippets/04-SpotOracle.sol) |
+| 09 | [MEV 与签名安全](chapters/09-mev-signatures.md) | 三明治攻击、签名五要素、可塑性、Bybit 盲签 | [签名重放](interactive/signature-replay-lab.html) | [06-SignatureReplay.sol](../code/snippets/06-SignatureReplay.sol) |
+| 10 | [可升级合约与代理](chapters/10-upgradeable-proxy.md) | 三种代理模式、存储冲突、初始化、Nomad、安全升级流程 | [存储与代理](interactive/storage-proxy-lab.html) | [07-ProxyStorage.sol](../code/snippets/07-ProxyStorage.sol) |
 | 11 | [DeFi 经济安全](chapters/11-defi-economic-security.md) | 偿付不变量、Euler、Beanstalk、Venus、延迟作为安全参数；稳定币与 RWA 发行方风险 | [预言机操纵](interactive/oracle-manipulation-lab.html) | — |
 | 12 | [跨链桥安全](chapters/12-cross-chain-bridges.md) | 四种验证方式、四类根因、CEX 充值即"桥" | [签名重放](interactive/signature-replay-lab.html) | — |
 
@@ -266,7 +266,7 @@ flowchart TD
 | C03 | [Mantle](chains/C03-mantle.md) | L2 信任假设（L2BEAT）、MNT 原生币与 ERC-20 形式的 ETH、op-geth 审计、mETH 追回 cmETH；L2 运营方风险 | [链迁移检查](interactive/chain-porting-lab.html) |
 
 全部交互实验入口：[interactive/index.html](interactive/index.html)（浏览器直接打开，无需服务器）。
-全部示例合约：[practice-example-code/](../practice-example-code/README.md)（Solidity ^0.8.20，已通过编译）。
+全部示例合约：[code/](../code/README.md)（Solidity ^0.8.20，已通过编译）。
 
 ### 评估篇（[assessment/](assessment/A01-methodology.md)）：把"懂风险"变成"能做评估"
 
@@ -324,4 +324,4 @@ flowchart TD
 
 - **公开事实**：项目方复盘、官方文档、审计报告、L2BEAT、执法机构公告、主流媒体与安全公司分析。事故金额为事发时美元估值约数。
 - **业界通用做法**：没有单一权威来源、但被广泛采用的做法。
-- **本手册示例**：`practice-example-code/` 中的合约和 `interactive/` 中的模拟，数值均为示例。
+- **本手册示例**：`code/` 中的合约和 `interactive/` 中的模拟，数值均为示例。

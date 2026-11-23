@@ -8,7 +8,7 @@
 > 前置知识：[10 可升级代理](../chapters/10-upgradeable-proxy.md)、[08 预言机与闪电贷](../chapters/08-oracle-flashloan.md)。
 > 预计用时：5–7 小时。
 > 交互实验：[storage-proxy-lab.html](../interactive/storage-proxy-lab.html) ｜ [oracle-manipulation-lab.html](../interactive/oracle-manipulation-lab.html)
-> 靶场目录：`practice-example-code/range/flashdesk/`
+> 靶场目录：`code/ranges/flashdesk/`
 > 最后核对：2026-11-10
 
 > ⚠️ 警告：本章只在本地运行玩具合约。不要对任何真实在线合约尝试这些攻击。未经授权测试他人系统可能违法。发现真实漏洞时，走项目方的漏洞赏金或负责任披露渠道。
@@ -42,7 +42,7 @@
 
 ## 2. 范围与简报
 
-打开 `practice-example-code/range/flashdesk/README.md`，读范围表和部署流程。**不要打开 `test/` 和 `solution/`。**
+打开 `code/ranges/flashdesk/README.md`，读范围表和部署流程。**不要打开 `test/` 和 `solution/`。**
 
 审计范围：`FlashDesk.sol`、`FlashDeskV2.sol`、`FlashDeskProxy.sol`、`SpotPool.sol`。
 
@@ -51,7 +51,7 @@
 ## 3. 第一步：构建靶场
 
 ```bash
-cd practice-example-code/range/flashdesk  # 从 web3-security-101/ 出发，进入 FlashDesk 靶场目录
+cd code/ranges/flashdesk  # 从 web3-security-101/ 出发，进入 FlashDesk 靶场目录
 forge build # 编译全部合约
 ```
 
@@ -439,7 +439,7 @@ owner 按团队部署流程是单个 EOA。
 
 | 现象 | 原因 | 解决 |
 |---|---|---|
-| `forge-std/Test.sol` 找不到 | 符号链接断开或目录被移动 | 在 `web3-security-101/` 目录运行 `bash practice-example-code/setup.sh` |
+| `forge-std/Test.sol` 找不到 | 符号链接断开或目录被移动 | 在 `web3-security-101/` 目录运行 `bash code/setup.sh` |
 | `jq: command not found` | 没有安装 jq | macOS 运行 `brew install jq` |
 | `diff <(...)` 语法错误 | 当前 shell 是 sh | 运行 `bash` 后重新定义 `L` 函数 |
 | `forge inspect` 输出的 JSON 没有 `.storage` | Foundry 版本较旧 | 运行 `foundryup`。本章使用 forge 1.5.1 |

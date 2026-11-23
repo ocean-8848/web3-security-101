@@ -8,10 +8,10 @@
 
 一个**虚构**的小型交易所"MiniEx"，所有数据由脚本按固定随机种子**合成**，不含任何真实用户、真实地址、真实密钥。
 
-目录（在仓库根目录 `practice-example-code/ops/`，与 `practice-example-code/foundry/` 同级）：
+目录（在仓库根目录 `code/offchain-ops/`，与 `code/foundry-demos/` 同级）：
 
 ```
-practice-example-code/ops/
+code/offchain-ops/
 ├── README.md              靶场说明、场景表、命令速查
 ├── setup.sh               一键生成数据并跑自检（只依赖 python3 标准库）
 ├── gen/                   数据生成器（固定种子）
@@ -25,7 +25,7 @@ practice-example-code/ops/
 
 - 只用 Python 3（≥ 3.9）标准库（sqlite3、csv、json、argparse、datetime、hashlib、re、statistics）；不用第三方包，不联网。
 - 同一个种子生成的数据完全一致；`setup.sh` 可重复运行。
-- 命令从 `web3-security-101/` 根目录出发（读者的工作目录），例如 `bash practice-example-code/ops/setup.sh`、`python3 practice-example-code/ops/lib/replay.py ...`。
+- 命令从 `web3-security-101/` 根目录出发（读者的工作目录），例如 `bash code/offchain-ops/setup.sh`、`python3 code/offchain-ops/lib/replay.py ...`。
 - 数据与答案里**不出现**针对真实系统的攻击步骤；注入场景只写"事件长什么样"，用于检测与处置练习。
 
 ## 3. 数据集与注入场景
@@ -80,8 +80,8 @@ practice-example-code/ops/
 
 ## 5. 工作分工
 
-1. **靶场代理**：做 `practice-example-code/ops/`（生成器、数据、答案、`lib/`、`tests/`、`setup.sh`、README），并写一份给练习章代理用的 `ops/API.md`：数据字典、各场景的答案摘要（场景 ID、时间窗、实体）、`lib/` 里每个脚本的用法与示例命令。
-2. **练习章代理**（每章一个）：读 `ops/API.md` 与对应 X 章，写练习章，并**逐条在本机运行**章内的命令，确认输出与章内所写一致；需要新增脚本放在 `ops/lib/` 或 `ops/solutions/<章>/`（参考实现），不得修改别人的脚本。
+1. **靶场代理**：做 `code/offchain-ops/`（生成器、数据、答案、`lib/`、`tests/`、`setup.sh`、README），并写一份给练习章代理用的 `code/offchain-ops/API.md`：数据字典、各场景的答案摘要（场景 ID、时间窗、实体）、`lib/` 里每个脚本的用法与示例命令。
+2. **练习章代理**（每章一个）：读 `code/offchain-ops/API.md` 与对应 X 章，写练习章，并**逐条在本机运行**章内的命令，确认输出与章内所写一致；需要新增脚本放在 `ops/lib/` 或 `ops/solutions/<章>/`（参考实现），不得修改别人的脚本。
 3. **集成**（主会话）：`tools/build.mjs` 的 NAV / BOOT_IDS / ALIASES、训练营路线图 B00、README、学习路径、topics.json、模板与实验页、`setup.sh` 说明、检查与预览。
 
 ## 6. 质量要求
@@ -89,4 +89,4 @@ practice-example-code/ops/
 - 命令必须在 macOS 上用系统 `python3` 跑通；预期输出写进章里，与实际一致（数值因种子固定而稳定）。
 - 每个练习都有"没有标准答案也能判断做对没有"的过关标准（例如"在回放中召回 S1 的全部 3 次事件，且误报不超过 N 条"），数值来自靶场自检结果。
 - 不引入需要真实云账号、真实链节点或付费服务的步骤。
-- 所有 ID、路径、文件名与 `ops/API.md` 一致。
+- 所有 ID、路径、文件名与 `code/offchain-ops/API.md` 一致。

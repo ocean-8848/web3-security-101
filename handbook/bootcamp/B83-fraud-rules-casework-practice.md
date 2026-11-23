@@ -71,20 +71,20 @@ flowchart LR
 1. 设两个路径变量，确认第二批数据存在：
 
 ```bash
-export OPS=practice-example-code/ops
+export OPS=code/offchain-ops
 export B83=$OPS/solutions/b83
 ls $OPS/data_x/case_actions.jsonl $OPS/data_x/cases.csv $OPS/data/staff.csv
 ```
 
 ```text
-practice-example-code/ops/data/staff.csv
-practice-example-code/ops/data_x/case_actions.jsonl
-practice-example-code/ops/data_x/cases.csv
+code/offchain-ops/data/staff.csv
+code/offchain-ops/data_x/case_actions.jsonl
+code/offchain-ops/data_x/cases.csv
 ```
 
-如果提示文件不存在，先运行 `bash practice-example-code/ops/setup.sh --no-tests`（会生成第一批和第二批数据，约几秒到二十秒）。字段说明见 [ops/API_X.md 第 1.7 节](../../practice-example-code/ops/API_X.md)。
+如果提示文件不存在，先运行 `bash code/offchain-ops/setup.sh --no-tests`（会生成第一批和第二批数据，约几秒到二十秒）。字段说明见 [ops/API_X.md 第 1.7 节](../../code/offchain-ops/API_X.md)。
 
-2. 本章的辅助脚本在 `practice-example-code/ops/solutions/b83/`：
+2. 本章的辅助脚本在 `code/offchain-ops/solutions/b83/`：
    - `casesql.py`：把案件数据装进内存 SQLite，运行你的 SQL 并对答案评分（同 B72 的 `replay.py`，但读第二批的案件库）。表有 `case_actions`、`cases`、`staff_roles`（员工角色）、`order_events`。
    - `sla_sweep.py`：扫回报 SLA。
    - `acceptance_report.py`：生成规则验收报告。
@@ -945,7 +945,7 @@ CS00183  A00703      incident_review  CT00366    applied
 
 ## 9. 对照标准答案
 
-做完上面的步骤再看。第二批答案在 `practice-example-code/ops/answers/S15.json`；参考规则在 `practice-example-code/ops/solutions/b83/rules/`。
+做完上面的步骤再看。第二批答案在 `code/offchain-ops/answers/S15.json`；参考规则在 `code/offchain-ops/solutions/b83/rules/`。
 
 1. 把参考规则和你的各回放一遍，看是否一致：
 
@@ -1010,7 +1010,7 @@ python3 $OPS/lib/case_audit.py --score S15 --show 0
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
-| `找不到 .../data_x/...` | 第二批数据没生成 | `bash practice-example-code/ops/setup.sh --no-tests` |
+| `找不到 .../data_x/...` | 第二批数据没生成 | `bash code/offchain-ops/setup.sh --no-tests` |
 | `casesql.py` 报 `no such column` | SQL 里的列名不在表里 | `--sql "SELECT * FROM case_actions LIMIT 1"` 看列名；表有 `case_actions`、`cases`、`staff_roles`、`order_events` |
 | 回放命中不为 0，但没有 `[TP]` | 输出列里没有 `action_id` 或 `account_id` | 在 `SELECT` 里加上这两列之一 |
 | `f1` 命中 0 条 | `authorizer = NULL` 永远为假 | 判断空值写 `IS NULL` |

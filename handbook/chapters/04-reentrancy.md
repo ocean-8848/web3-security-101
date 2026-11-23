@@ -6,7 +6,7 @@
 > 3. 在代码审查中找出所有"把控制权交出去"的位置。
 >
 > 前置章节：[03 EVM 与 Solidity 安全基础](03-evm-solidity-basics.md)
-> 交互实验：[reentrancy-lab.html](../interactive/reentrancy-lab.html) ｜ 示例合约：[practice-example-code/01-Reentrancy.sol](../../practice-example-code/01-Reentrancy.sol)
+> 交互实验：[reentrancy-lab.html](../interactive/reentrancy-lab.html) ｜ 示例合约：[code/snippets/01-Reentrancy.sol](../../code/snippets/01-Reentrancy.sol)
 
 ---
 
@@ -204,7 +204,7 @@ function withdraw() external nonReentrant { ... }
 
 ### 4.4 用代码验证修复
 
-示例合约 [01-Reentrancy.sol](../../practice-example-code/01-Reentrancy.sol) 同时包含漏洞版和修复版。Foundry 靶场 `practice-example-code/foundry/test/Reentrancy.t.sol` 按固定顺序验证：
+示例合约 [01-Reentrancy.sol](../../code/snippets/01-Reentrancy.sol) 同时包含漏洞版和修复版。Foundry 靶场 `code/foundry-demos/test/Reentrancy.t.sol` 按固定顺序验证：
 
 1. PoC 测试在漏洞版上提走金库资金。
 2. 同一个 PoC 在修复版上回滚。
@@ -212,7 +212,7 @@ function withdraw() external nonReentrant { ... }
 
 ```bash
 # 只跑重入示例的测试，-vv 打印失败断言
-cd practice-example-code/foundry && forge test --match-path test/Reentrancy.t.sol -vv  # 从 web3-security-101/ 出发
+cd code/foundry-demos && forge test --match-path test/Reentrancy.t.sol -vv  # 从 web3-security-101/ 出发
 ```
 
 > 💡 注意：修复验证需要"修复前失败、修复后通过"两个结果。只跑通修复版，不能证明测试真的覆盖了漏洞（[A08](../assessment/A08-reproduce-attacks.md)）。

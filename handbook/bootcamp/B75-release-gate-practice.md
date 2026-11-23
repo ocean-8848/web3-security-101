@@ -66,7 +66,7 @@ flowchart LR
 
 ```bash
 cd web3-security-101          # 从这里出发；本章所有命令都在这个目录运行
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 ls $OPS/data/workflows
 ```
 
@@ -177,11 +177,11 @@ grep -rnE '\$\{\{[[:space:]]*github\.event\.inputs' $W
 预期输出（注释里的"缺陷"字样是靶场自带的）：
 
 ```text
-practice-example-code/ops/data/workflows/release.yml:12:      - uses: thirdparty/setup-foo@main              # 缺陷 4：第三方 Action 使用可变引用
-practice-example-code/ops/data/workflows/docs.yml:12:      - uses: actions/checkout@v4
-practice-example-code/ops/data/workflows/docs.yml:13:      - uses: actions/setup-node@v4
-practice-example-code/ops/data/workflows/release.yml:4:  pull_request_target:          # 缺陷 1：在带密钥的上下文里运行外部 PR 的代码
-practice-example-code/ops/data/workflows/release.yml:18:      - run: ./scripts/publish.sh ${{ github.event.inputs.version }}   # 缺陷 7：输入直接拼进命令
+code/offchain-ops/data/workflows/release.yml:12:      - uses: thirdparty/setup-foo@main              # 缺陷 4：第三方 Action 使用可变引用
+code/offchain-ops/data/workflows/docs.yml:12:      - uses: actions/checkout@v4
+code/offchain-ops/data/workflows/docs.yml:13:      - uses: actions/setup-node@v4
+code/offchain-ops/data/workflows/release.yml:4:  pull_request_target:          # 缺陷 1：在带密钥的上下文里运行外部 PR 的代码
+code/offchain-ops/data/workflows/release.yml:18:      - run: ./scripts/publish.sh ${{ github.event.inputs.version }}   # 缺陷 7：输入直接拼进命令
 ```
 
 三条 `grep` 一共命中 `release.yml` 的 3 个缺陷（第 4、1、7 个），并把 `docs.yml` 的 2 个官方标签引用也列了出来。
@@ -376,7 +376,7 @@ release  0       1
 release  1       5 
 ```
 
-无签名的发布有 15 次。14 次在 nightly 通道，1 次在 release 通道。字段说明在靶场的 `practice-example-code/ops/API.md` 第 1.2 节：`dependency_install` 有 `integrity` 和 `lock_integrity`，`action_use` 有 `ref`，`publish` 有 `channel` 和 `signature`。
+无签名的发布有 15 次。14 次在 nightly 通道，1 次在 release 通道。字段说明在靶场的 `code/offchain-ops/API.md` 第 1.2 节：`dependency_install` 有 `integrity` 和 `lock_integrity`，`action_use` 有 `ref`，`publish` 有 `channel` 和 `signature`。
 
 3. 写一条回放规则 `my_work/s8_ci.sql`。骨架如下，三段各补一个条件：
 
@@ -538,7 +538,7 @@ CI003333  run-00502  left-pad-x
 
 ## 7. 第 5 步：对照答案
 
-做完前四步，再看参考实现。它们在 `practice-example-code/ops/solutions/b75/`：
+做完前四步，再看参考实现。它们在 `code/offchain-ops/solutions/b75/`：
 
 ```bash
 ls $OPS/solutions/b75
@@ -601,7 +601,7 @@ python3 $OPS/lib/replay.py $OPS/solutions/b75/b75_s8.sql --scenario S8 --min-rec
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
-| `ls` 找不到 `data/workflows` | 数据还没生成 | `bash practice-example-code/ops/setup.sh --no-tests` |
+| `ls` 找不到 `data/workflows` | 数据还没生成 | `bash code/offchain-ops/setup.sh --no-tests` |
 | 你的 linter 对 `ci.yml` 报了发现 | R03 或 R09 没有先判断"是否发布" | 只在 job 的 `run` 里有 `publish` 或 `deploy` 时才查 |
 | `release.yml` 只报出 8 条 | R09 漏了，或 R05 没有判断触发器 | R09 看整个文件；R05 先查文件里有没有 `pull_request_target` |
 | R07 把 `head.sha` 也报了 | 没有放过 `.sha`、`.number`、`.id` | 这三类不是自由文本，放过 |

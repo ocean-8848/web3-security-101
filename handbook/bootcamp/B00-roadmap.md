@@ -15,7 +15,7 @@
 > ```bash
 > git clone https://github.com/ocean-8848/web3-security-101.git  # 下载仓库
 > cd web3-security-101                                           # 进入仓库根目录：之后都从这里出发
-> bash practice-example-code/setup.sh                                 # 下载依赖（只需一次）
+> bash code/setup.sh                                 # 下载依赖（只需一次）
 > ```
 
 ---

@@ -67,19 +67,19 @@ flowchart LR
 1. 确认靶场数据存在：
 
 ```bash
-ls practice-example-code/ops/data/miniex.db
+ls code/offchain-ops/data/miniex.db
 ```
 
 ```text
-practice-example-code/ops/data/miniex.db
+code/offchain-ops/data/miniex.db
 ```
 
-如果提示文件不存在，先运行 `bash practice-example-code/ops/setup.sh --no-tests`（会生成数据，约几秒）。
+如果提示文件不存在，先运行 `bash code/offchain-ops/setup.sh --no-tests`（会生成数据，约几秒）。
 
-2. 看一眼有哪些表。本章用到 `logins`、`recoveries`、`account_events`、`withdrawals`、`api_calls`、`ledger`、`orders_trades`、`marks`、`accounts`。字段说明见 [ops/API.md](../../practice-example-code/ops/API.md)。
+2. 看一眼有哪些表。本章用到 `logins`、`recoveries`、`account_events`、`withdrawals`、`api_calls`、`ledger`、`orders_trades`、`marks`、`accounts`。字段说明见 [ops/API.md](../../code/offchain-ops/API.md)。
 
 ```bash
-python3 practice-example-code/ops/lib/logread.py --tables | head -12
+python3 code/offchain-ops/lib/logread.py --tables | head -12
 ```
 
 ```text
@@ -118,8 +118,8 @@ EOF
 4. 回放：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/empty.sql
-python3 practice-example-code/ops/lib/replay.py my_rules/hello.sql --show 2
+python3 code/offchain-ops/lib/replay.py my_rules/empty.sql
+python3 code/offchain-ops/lib/replay.py my_rules/hello.sql --show 2
 ```
 
 ```text
@@ -147,7 +147,7 @@ python3 practice-example-code/ops/lib/replay.py my_rules/hello.sql --show 2
 5. 回放可以当门禁用。加上 `--min-recall` 和 `--max-fp`，不达标时退出码为 1：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/hello.sql --min-recall 1.0 --max-fp 5 > /dev/null; echo "exit=$?"
+python3 code/offchain-ops/lib/replay.py my_rules/hello.sql --min-recall 1.0 --max-fp 5 > /dev/null; echo "exit=$?"
 ```
 
 ```text
@@ -155,7 +155,7 @@ python3 practice-example-code/ops/lib/replay.py my_rules/hello.sql --min-recall 
 exit=1
 ```
 
-6. 本章还有两个辅助脚本，放在 `practice-example-code/ops/solutions/b72/`：
+6. 本章还有两个辅助脚本，放在 `code/offchain-ops/solutions/b72/`：
    - `sweep.py`：对一个参数取多个值，逐个回放，打印一张表。
    - `coverage.py`：把多条规则放在一起，打印"哪条规则抓到了哪个答案"的矩阵。
 
@@ -168,7 +168,7 @@ exit=1
 1. 先看数据。S1 的撞库来自 `203.0.113.10`–`15`，2026-03-04 01:00 开始。看其中一个 IP 开头 6 分钟：
 
 ```bash
-python3 practice-example-code/ops/lib/logread.py --sql "SELECT substr(ts,1,16) AS minute, COUNT(*) fails, COUNT(DISTINCT account_id) users FROM logins WHERE ip='203.0.113.11' AND result='failed_password' GROUP BY 1 LIMIT 6"
+python3 code/offchain-ops/lib/logread.py --sql "SELECT substr(ts,1,16) AS minute, COUNT(*) fails, COUNT(DISTINCT account_id) users FROM logins WHERE ip='203.0.113.11' AND result='failed_password' GROUP BY 1 LIMIT 6"
 ```
 
 ```text
@@ -209,7 +209,7 @@ HAVING users >= :min_users AND fails_per_user <= :max_ratio
 3. 回放：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s1_stuffing.sql --show 2
+python3 code/offchain-ops/lib/replay.py my_rules/s1_stuffing.sql --show 2
 ```
 
 ```text
@@ -232,7 +232,7 @@ python3 practice-example-code/ops/lib/replay.py my_rules/s1_stuffing.sql --show 
 4. 先查误报。看这四个 IP：办公室出口 `198.18.250.7`（回放里的 `[FP-噪声]` 那一行），S1-03 的两个 IP，和一个 S1-01 的 IP：
 
 ```bash
-python3 practice-example-code/ops/lib/logread.py --sql "SELECT ip, COUNT(DISTINCT account_id) users, COUNT(*) fails, ROUND(1.0*COUNT(*)/COUNT(DISTINCT account_id),2) per_user FROM logins WHERE result='failed_password' AND ip IN ('198.18.250.7','203.0.113.32','203.0.113.31','203.0.113.11') GROUP BY ip"
+python3 code/offchain-ops/lib/logread.py --sql "SELECT ip, COUNT(DISTINCT account_id) users, COUNT(*) fails, ROUND(1.0*COUNT(*)/COUNT(DISTINCT account_id),2) per_user FROM logins WHERE result='failed_password' AND ip IN ('198.18.250.7','203.0.113.32','203.0.113.31','203.0.113.11') GROUP BY ip"
 ```
 
 ```text
@@ -250,7 +250,7 @@ ip            users  fails  per_user
 5. 调阈值。用 `sweep.py` 扫 `min_users`：
 
 ```bash
-python3 practice-example-code/ops/solutions/b72/sweep.py my_rules/s1_stuffing.sql min_users 20,30,40,60
+python3 code/offchain-ops/solutions/b72/sweep.py my_rules/s1_stuffing.sql min_users 20,30,40,60
 ```
 
 ```text
@@ -266,7 +266,7 @@ python3 practice-example-code/ops/solutions/b72/sweep.py my_rules/s1_stuffing.sq
 6. 为什么漏了 S1-03？看 `203.0.113.32` 按小时的失败数：
 
 ```bash
-python3 practice-example-code/ops/lib/logread.py --sql "SELECT substr(ts,1,13) AS hour, COUNT(*) fails, COUNT(DISTINCT account_id) users FROM logins WHERE ip='203.0.113.32' GROUP BY 1"
+python3 code/offchain-ops/lib/logread.py --sql "SELECT substr(ts,1,13) AS hour, COUNT(*) fails, COUNT(DISTINCT account_id) users FROM logins WHERE ip='203.0.113.32' GROUP BY 1"
 ```
 
 ```text
@@ -288,7 +288,7 @@ S1-03 是**低慢撞库**：8 小时共 21 个账户，每小时只有 1–6 个
 7. 把窗口放大到一天（1440 分钟），阈值降到 15。这会同时把办公室 NAT 带回来：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s1_stuffing.sql --param window_min=1440 --param min_users=15 --show 20 | grep -v "TP\] S1-01,S1-02"
+python3 code/offchain-ops/lib/replay.py my_rules/s1_stuffing.sql --param window_min=1440 --param min_users=15 --show 20 | grep -v "TP\] S1-01,S1-02"
 ```
 
 ```text
@@ -306,7 +306,7 @@ python3 practice-example-code/ops/lib/replay.py my_rules/s1_stuffing.sql --param
 8. 把 `max_ratio` 设成 2：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s1_stuffing.sql --param window_min=1440 --param min_users=15 --param max_ratio=2 --show 1
+python3 code/offchain-ops/lib/replay.py my_rules/s1_stuffing.sql --param window_min=1440 --param min_users=15 --param max_ratio=2 --show 1
 ```
 
 ```text
@@ -350,7 +350,7 @@ WHERE r.result = '___' AND w.amount_usd >= :min_usd
 2. 回放：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s1_recovery_naive.sql --show 4
+python3 code/offchain-ops/lib/replay.py my_rules/s1_recovery_naive.sql --show 4
 ```
 
 ```text
@@ -371,7 +371,7 @@ python3 practice-example-code/ops/lib/replay.py my_rules/s1_recovery_naive.sql -
 3. 比较两个真阳性（W000293、W000889）和一个误报（W000299）：
 
 ```bash
-python3 practice-example-code/ops/lib/logread.py --sql "SELECT account_id, wd_id, amount_usd, ts, addr_added_ts FROM withdrawals WHERE wd_id IN ('W000299','W000293','W000889')"
+python3 code/offchain-ops/lib/logread.py --sql "SELECT account_id, wd_id, amount_usd, ts, addr_added_ts FROM withdrawals WHERE wd_id IN ('W000299','W000293','W000889')"
 ```
 
 ```text
@@ -390,7 +390,7 @@ A01432      W000889  25000.0     2026-03-10T12:40:00Z  2026-03-09T14:50:00Z
 5. 回放：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s1_recovery_tuned.sql
+python3 code/offchain-ops/lib/replay.py my_rules/s1_recovery_tuned.sql
 ```
 
 ```text
@@ -442,7 +442,7 @@ WHERE c.event_type IN ('___', '___', '___') AND w.amount_usd >= :min_usd
 2. 回放：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s1_change_addr.sql --show 0
+python3 code/offchain-ops/lib/replay.py my_rules/s1_change_addr.sql --show 0
 ```
 
 ```text
@@ -457,7 +457,7 @@ python3 practice-example-code/ops/lib/replay.py my_rules/s1_change_addr.sql --sh
 3. 但这不等于另外两条规则没用。把三条 S1 规则（都用默认参数）放进矩阵：
 
 ```bash
-python3 practice-example-code/ops/solutions/b72/coverage.py my_rules/s1_stuffing.sql my_rules/s1_recovery_tuned.sql my_rules/s1_change_addr.sql --scenarios S1
+python3 code/offchain-ops/solutions/b72/coverage.py my_rules/s1_stuffing.sql my_rules/s1_recovery_tuned.sql my_rules/s1_change_addr.sql --scenarios S1
 ```
 
 ```text
@@ -491,7 +491,7 @@ X08 控制 IC-10 要求：提币权限的 Key 必须绑定 IP。MiniEx 里有两
 1. 看 `account_events` 里的 `detail` 长什么样：
 
 ```bash
-python3 practice-example-code/ops/lib/logread.py --sql "SELECT event_id, event_type, ip, detail FROM account_events WHERE event_type IN ('api_key_perm_add','create_api_key')"
+python3 code/offchain-ops/lib/logread.py --sql "SELECT event_id, event_type, ip, detail FROM account_events WHERE event_type IN ('api_key_perm_add','create_api_key')"
 ```
 
 ```text
@@ -523,7 +523,7 @@ WHERE e.event_type IN ('___', '___')
 3. 先用 `need_no_ticket=0`（朴素版）回放：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s2_perm_change.sql --show 4
+python3 code/offchain-ops/lib/replay.py my_rules/s2_perm_change.sql --show 4
 ```
 
 ```text
@@ -542,7 +542,7 @@ python3 practice-example-code/ops/lib/replay.py my_rules/s2_perm_change.sql --sh
 4. 加 `need_no_ticket=1`，只留下没有变更单的操作：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s2_perm_change.sql --param need_no_ticket=1 --show 0
+python3 code/offchain-ops/lib/replay.py my_rules/s2_perm_change.sql --param need_no_ticket=1 --show 0
 ```
 
 ```text
@@ -576,7 +576,7 @@ GROUP BY c.key_id, c.ip
 2. 回放：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s2_new_ip_any.sql --show 0
+python3 code/offchain-ops/lib/replay.py my_rules/s2_new_ip_any.sql --show 0
 ```
 
 ```text
@@ -591,7 +591,7 @@ python3 practice-example-code/ops/lib/replay.py my_rules/s2_new_ip_any.sql --sho
 3. 调优：只看提币权限的调用。复制为 `my_rules/s2_new_ip_withdraw.sql`，id 改成 `b72_s2_new_ip_withdraw`，在 `WHERE` 开头加一个条件，限制 `c.perm_used`。
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s2_new_ip_withdraw.sql --show 0
+python3 code/offchain-ops/lib/replay.py my_rules/s2_new_ip_withdraw.sql --show 0
 ```
 
 ```text
@@ -645,7 +645,7 @@ WHERE i.in_usd >= :min_in_usd AND i.sources >= :min_sources AND o.out_usd >= :ou
 2. 用默认的手册示例阈值回放：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s3_funnel.sql --show 3
+python3 code/offchain-ops/lib/replay.py my_rules/s3_funnel.sql --show 3
 ```
 
 ```text
@@ -662,7 +662,7 @@ python3 practice-example-code/ops/lib/replay.py my_rules/s3_funnel.sql --show 3
 3. 看漏掉的两个账户到底有多少钱（A00476 是被抓到的那个，放在一起对比）：
 
 ```bash
-python3 practice-example-code/ops/lib/logread.py --sql "SELECT account_id, COUNT(*) sources, ROUND(SUM(amount_usd)) in_usd FROM ledger WHERE direction='credit' AND sub='available' AND entry_type IN ('deposit','internal_transfer') AND account_id IN ('A00476','A01228','A00112') GROUP BY 1"
+python3 code/offchain-ops/lib/logread.py --sql "SELECT account_id, COUNT(*) sources, ROUND(SUM(amount_usd)) in_usd FROM ledger WHERE direction='credit' AND sub='available' AND entry_type IN ('deposit','internal_transfer') AND account_id IN ('A00476','A01228','A00112') GROUP BY 1"
 ```
 
 ```text
@@ -679,7 +679,7 @@ A01228      6        9108.0
 4. 扫阈值：
 
 ```bash
-python3 practice-example-code/ops/solutions/b72/sweep.py my_rules/s3_funnel.sql min_in_usd 20000,15000,10000,9000,8000,5000,2000
+python3 code/offchain-ops/solutions/b72/sweep.py my_rules/s3_funnel.sql min_in_usd 20000,15000,10000,9000,8000,5000,2000
 ```
 
 ```text
@@ -701,7 +701,7 @@ python3 practice-example-code/ops/solutions/b72/sweep.py my_rules/s3_funnel.sql 
 5. 为什么不直接降到 500？因为单靠金额降下去，噪声会爆炸。试一下：把 `min_sources` 放到 1、`out_ratio` 放到 0.5，再扫金额：
 
 ```bash
-python3 practice-example-code/ops/solutions/b72/sweep.py my_rules/s3_funnel.sql min_in_usd 8000,2000,500 --fixed min_sources=1 --fixed out_ratio=0.5
+python3 code/offchain-ops/solutions/b72/sweep.py my_rules/s3_funnel.sql min_in_usd 8000,2000,500 --fixed min_sources=1 --fixed out_ratio=0.5
 ```
 
 ```text
@@ -716,7 +716,7 @@ python3 practice-example-code/ops/solutions/b72/sweep.py my_rules/s3_funnel.sql 
 6. 确认 `min_in_usd=8000`：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s3_funnel.sql --param min_in_usd=8000 --show 0
+python3 code/offchain-ops/lib/replay.py my_rules/s3_funnel.sql --param min_in_usd=8000 --show 0
 ```
 
 ```text
@@ -767,7 +767,7 @@ HAVING linked_trades >= :min_linked AND usd >= :min_usd
 2. 回放：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s4_wash.sql --show 0
+python3 code/offchain-ops/lib/replay.py my_rules/s4_wash.sql --show 0
 ```
 
 ```text
@@ -782,7 +782,7 @@ python3 practice-example-code/ops/lib/replay.py my_rules/s4_wash.sql --show 0
 3. 确认这两个账户是做市商：
 
 ```bash
-python3 practice-example-code/ops/lib/logread.py --sql "SELECT account_id, risk_tag FROM accounts WHERE account_id IN ('A00072','A00420')"
+python3 code/offchain-ops/lib/logread.py --sql "SELECT account_id, risk_tag FROM accounts WHERE account_id IN ('A00072','A00420')"
 ```
 
 ```text
@@ -798,7 +798,7 @@ A00420      market_maker
 4. 用 `exclude_mm=1` 排除做市商：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s4_wash.sql --param exclude_mm=1 --show 0
+python3 code/offchain-ops/lib/replay.py my_rules/s4_wash.sql --param exclude_mm=1 --show 0
 ```
 
 ```text
@@ -811,7 +811,7 @@ python3 practice-example-code/ops/lib/replay.py my_rules/s4_wash.sql --param exc
 5. 再扫 `min_linked`，找悬崖：
 
 ```bash
-python3 practice-example-code/ops/solutions/b72/sweep.py my_rules/s4_wash.sql min_linked 3,5,20,40,60 --fixed exclude_mm=1 --fixed min_usd=0
+python3 code/offchain-ops/solutions/b72/sweep.py my_rules/s4_wash.sql min_linked 3,5,20,40,60 --fixed exclude_mm=1 --fixed min_usd=0
 ```
 
 ```text
@@ -837,7 +837,7 @@ python3 practice-example-code/ops/solutions/b72/sweep.py my_rules/s4_wash.sql mi
 1. 看 S4-03 那个时段：
 
 ```bash
-python3 practice-example-code/ops/lib/logread.py --sql "SELECT symbol, ts, source_count, ROUND(mark_price/index_price-1,3) dev FROM marks WHERE ts BETWEEN '2026-03-12T13:25:00Z' AND '2026-03-12T14:05:00Z' AND symbol='ABC-USDT' LIMIT 4"
+python3 code/offchain-ops/lib/logread.py --sql "SELECT symbol, ts, source_count, ROUND(mark_price/index_price-1,3) dev FROM marks WHERE ts BETWEEN '2026-03-12T13:25:00Z' AND '2026-03-12T14:05:00Z' AND symbol='ABC-USDT' LIMIT 4"
 ```
 
 ```text
@@ -873,7 +873,7 @@ HAVING rows_off >= :min_rows
 3. 回放：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s4_mark.sql --show 0
+python3 code/offchain-ops/lib/replay.py my_rules/s4_mark.sql --show 0
 ```
 
 ```text
@@ -886,7 +886,7 @@ python3 practice-example-code/ops/lib/replay.py my_rules/s4_mark.sql --show 0
 4. 去掉"连续"要求。扫 `min_rows`：
 
 ```bash
-python3 practice-example-code/ops/solutions/b72/sweep.py my_rules/s4_mark.sql min_rows 1,2,3,6,7
+python3 code/offchain-ops/solutions/b72/sweep.py my_rules/s4_mark.sql min_rows 1,2,3,6,7
 ```
 
 ```text
@@ -903,7 +903,7 @@ python3 practice-example-code/ops/solutions/b72/sweep.py my_rules/s4_mark.sql mi
 5. 再把价格来源要求也去掉：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s4_mark.sql --param min_rows=1 --param min_sources=1 --show 5
+python3 code/offchain-ops/lib/replay.py my_rules/s4_mark.sql --param min_rows=1 --param min_sources=1 --show 5
 ```
 
 ```text
@@ -923,7 +923,7 @@ python3 practice-example-code/ops/lib/replay.py my_rules/s4_mark.sql --param min
 把你调好的规则放在一起：
 
 ```bash
-python3 practice-example-code/ops/solutions/b72/coverage.py \
+python3 code/offchain-ops/solutions/b72/coverage.py \
   my_rules/s1_stuffing.sql::window_min=1440,min_users=15,max_ratio=2 \
   my_rules/s1_recovery_tuned.sql my_rules/s1_change_addr.sql \
   my_rules/s2_perm_change.sql::need_no_ticket=1 my_rules/s2_new_ip_withdraw.sql \
@@ -963,12 +963,12 @@ S4-03  .                   .                   .                   .            
 
 ## 10. 对照标准答案
 
-做完上面的步骤再看。参考规则放在 `practice-example-code/ops/answers/reference_rules/`，一共 14 条（r01–r14）。本章对应 r01–r07。
+做完上面的步骤再看。参考规则放在 `code/offchain-ops/answers/reference_rules/`，一共 14 条（r01–r14）。本章对应 r01–r07。
 
 1. 回放全部参考规则，看汇总表：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py --dir practice-example-code/ops/answers/reference_rules
+python3 code/offchain-ops/lib/replay.py --dir code/offchain-ops/answers/reference_rules
 ```
 
 ```text

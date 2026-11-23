@@ -8,7 +8,7 @@
 > 前置知识：会读 Python 脚本和命令行输出；读过 [X18 第 4.1–4.4 节与第 5 节](../architecture/X18-cex-trading-verification.md)（验收用例与回放方法）；读过 [X10 第 3.4、3.5、3.7 节](../architecture/X10-cex-trading-settlement-credit.md)（价格保护、账务一致性、撤单）。建议先完成 [B70 L3 导读](B70-offchain-l3-guide.md)。
 > 预计用时：约 3–4 小时。
 > 关联章节：[X18 交易、结算与信用·工程验收](../architecture/X18-cex-trading-verification.md)｜[X10 交易、结算与信用](../architecture/X10-cex-trading-settlement-credit.md)｜[B72 提币与账户风控规则实战](B72-withdrawal-risk-rules-practice.md)｜[B80 复市与恢复演练](B80-resumption-recovery-practice.md)
-> 靶场：`practice-example-code/ops/`（第二批数据 `data_x/`；字段与场景见该目录的 `API_X.md`）
+> 靶场：`code/offchain-ops/`（第二批数据 `data_x/`；字段与场景见该目录的 `API_X.md`）
 > 最后核对：2026-11-23（Python 3.12.3；下文每条命令都在本机从仓库根目录用系统 `python3` 运行过，输出来自真实运行，数值由第二批种子 20260302 固定）
 
 > ⚠️ 警告：法律与道德边界。本章的数据是虚构交易所"MiniEx"的合成数据，不含真实用户、真实地址和真实密钥。本章只教你怎样在受控数据上验收交易系统，不教怎样对真实系统制造异常订单或异常价格。不要把本章的阈值直接搬到真实系统：上线前必须用你自己的历史数据回放。
@@ -67,30 +67,30 @@ flowchart LR
 1. 确认第二批数据存在：
 
 ```bash
-ls practice-example-code/ops/data_x/order_events.jsonl
+ls code/offchain-ops/data_x/order_events.jsonl
 ```
 
 ```text
-practice-example-code/ops/data_x/order_events.jsonl
+code/offchain-ops/data_x/order_events.jsonl
 ```
 
-如果提示文件不存在，先运行 `bash practice-example-code/ops/setup.sh --no-tests`（会生成两批数据）。
+如果提示文件不存在，先运行 `bash code/offchain-ops/setup.sh --no-tests`（会生成两批数据）。
 
 2. 数据量。四张表的行数（`wc -l` 对 CSV 含表头一行）：
 
 ```bash
-wc -l practice-example-code/ops/data_x/order_events.jsonl practice-example-code/ops/data_x/match_log.jsonl practice-example-code/ops/data_x/trade_ledger_link.csv practice-example-code/ops/data_x/case_actions.jsonl
+wc -l code/offchain-ops/data_x/order_events.jsonl code/offchain-ops/data_x/match_log.jsonl code/offchain-ops/data_x/trade_ledger_link.csv code/offchain-ops/data_x/case_actions.jsonl
 ```
 
 ```text
-   22242 practice-example-code/ops/data_x/order_events.jsonl
-    4962 practice-example-code/ops/data_x/match_log.jsonl
-   17820 practice-example-code/ops/data_x/trade_ledger_link.csv
-     424 practice-example-code/ops/data_x/case_actions.jsonl
+   22242 code/offchain-ops/data_x/order_events.jsonl
+    4962 code/offchain-ops/data_x/match_log.jsonl
+   17820 code/offchain-ops/data_x/trade_ledger_link.csv
+     424 code/offchain-ops/data_x/case_actions.jsonl
    45448 total
 ```
 
-3. 四张表各管什么（完整字段见 [API_X.md 第 1 节](../../practice-example-code/ops/API_X.md)）：
+3. 四张表各管什么（完整字段见 [API_X.md 第 1 节](../../code/offchain-ops/API_X.md)）：
 
 | 表 | 一行是什么 | 本章用来查 |
 |---|---|---|
@@ -101,7 +101,7 @@ wc -l practice-example-code/ops/data_x/order_events.jsonl practice-example-code/
 
 4. 标记价取自第一批 `data/marks.csv`（价格带要用）。第二批的订单、成交、分录自成一套编号（`OX…`、`MT…`、`LK…`），不和第一批的 `orders_trades.csv` 关联。
 
-5. 本章提供四个辅助脚本，放在 `practice-example-code/ops/solutions/b79/`，只读数据、只用标准库：
+5. 本章提供四个辅助脚本，放在 `code/offchain-ops/solutions/b79/`，只读数据、只用标准库：
    - `explain.py`：给定成交、订单、序号区间或账户，把原始证据摆出来。**这是"没有标准答案也能判断"的主要工具。**
    - `sweep.py`：对一个检查的一个参数取多个值，逐个评分，打印一张表。
    - `own_checks.py` 与 `report.py`：第 6、7 步的参考实现。先自己做，再对照。
@@ -115,7 +115,7 @@ wc -l practice-example-code/ops/data_x/order_events.jsonl practice-example-code/
 1. 先看一个品种。BTC-USDT：
 
 ```bash
-python3 practice-example-code/ops/lib/seqcheck.py --symbol BTC-USDT --show 20
+python3 code/offchain-ops/lib/seqcheck.py --symbol BTC-USDT --show 20
 ```
 
 ```text
@@ -129,7 +129,7 @@ python3 practice-example-code/ops/lib/seqcheck.py --symbol BTC-USDT --show 20
 2. **不看答案，自己判断这是不是真缺口。** 用 `explain.py` 把缺口两侧的事件和缺口时间窗内的撮合成交摆出来：
 
 ```bash
-python3 practice-example-code/ops/solutions/b79/explain.py gap BTC-USDT 1548 1559
+python3 code/offchain-ops/solutions/b79/explain.py gap BTC-USDT 1548 1559
 ```
 
 ```text
@@ -149,7 +149,7 @@ python3 practice-example-code/ops/solutions/b79/explain.py gap BTC-USDT 1548 155
 3. 对全部品种跑默认检查，并对答案评分：
 
 ```bash
-python3 practice-example-code/ops/lib/seqcheck.py --score S10-01,S10-02
+python3 code/offchain-ops/lib/seqcheck.py --score S10-01,S10-02
 ```
 
 ```text
@@ -165,7 +165,7 @@ python3 practice-example-code/ops/lib/seqcheck.py --score S10-01,S10-02
 4 条发现：1 个缺口，3 个冲突序号，全部命中。冲突序号怎么看？看 ETH-USDT 的 1530：
 
 ```bash
-python3 practice-example-code/ops/solutions/b79/explain.py gap ETH-USDT 1530 1530
+python3 code/offchain-ops/solutions/b79/explain.py gap ETH-USDT 1530 1530
 ```
 
 ```text
@@ -184,7 +184,7 @@ python3 practice-example-code/ops/solutions/b79/explain.py gap ETH-USDT 1530 153
 4. 现在看"没调过"的版本会怎样。把"原样重传""公告预留""到达乱序"全部打开：
 
 ```bash
-python3 practice-example-code/ops/lib/seqcheck.py --naive --score S10-01,S10-02 --show 3
+python3 code/offchain-ops/lib/seqcheck.py --naive --score S10-01,S10-02 --show 3
 ```
 
 ```text
@@ -200,9 +200,9 @@ python3 practice-example-code/ops/lib/seqcheck.py --naive --score S10-01,S10-02 
 41 条发现，37 条是噪声。三类噪声各自打开时的数字：
 
 ```bash
-python3 practice-example-code/ops/lib/seqcheck.py --include-identical --score S10-01,S10-02 --show 0 | tail -1
-python3 practice-example-code/ops/lib/seqcheck.py --include-announced --score S10-01,S10-02 --show 0 | tail -1
-python3 practice-example-code/ops/lib/seqcheck.py --check-order --score S10-01,S10-02 --show 0 | tail -1
+python3 code/offchain-ops/lib/seqcheck.py --include-identical --score S10-01,S10-02 --show 0 | tail -1
+python3 code/offchain-ops/lib/seqcheck.py --include-announced --score S10-01,S10-02 --show 0 | tail -1
+python3 code/offchain-ops/lib/seqcheck.py --check-order --score S10-01,S10-02 --show 0 | tail -1
 ```
 
 ```text
@@ -230,7 +230,7 @@ python3 practice-example-code/ops/lib/seqcheck.py --check-order --score S10-01,S
 1. 用 `replay_match.py` 找"撮合日志有、成交回报没有"的成交。它的输出里有多种发现，这里只取 `report_missing`：
 
 ```bash
-python3 practice-example-code/ops/lib/replay_match.py --json | python3 -c "
+python3 code/offchain-ops/lib/replay_match.py --json | python3 -c "
 import json,sys
 for f in json.load(sys.stdin)['findings']:
     if f['kind']=='report_missing': print(f['trade_id'], f['symbol'], f['ts'], f['missing'])"
@@ -247,7 +247,7 @@ MT000777 BTC-USDT 2026-03-04T10:20:43Z buy+sell
 2. 对 S10-01 评分，注意"其他场景"这一栏：
 
 ```bash
-python3 practice-example-code/ops/lib/replay_match.py --score S10-01 --show 0
+python3 code/offchain-ops/lib/replay_match.py --score S10-01 --show 0
 ```
 
 ```text
@@ -265,7 +265,7 @@ X18 第 4.2、4.3 节与第 5.5 节的"账务三不变量"。记账约定（见 
 1. 默认参数跑一遍：
 
 ```bash
-python3 practice-example-code/ops/lib/ledger_check.py --score S10-03,S10-04,S10-05
+python3 code/offchain-ops/lib/ledger_check.py --score S10-03,S10-04,S10-05
 ```
 
 ```text
@@ -288,7 +288,7 @@ python3 practice-example-code/ops/lib/ledger_check.py --score S10-03,S10-04,S10-
 2. 没有分录（`missing_legs`）。取 MT000767，ETH 成交 35.9684，价值约 119,529 美元：
 
 ```bash
-python3 practice-example-code/ops/solutions/b79/explain.py trade MT000767
+python3 code/offchain-ops/solutions/b79/explain.py trade MT000767
 ```
 
 ```text
@@ -307,7 +307,7 @@ python3 practice-example-code/ops/solutions/b79/explain.py trade MT000767
 3. 借贷不平（`unbalanced`）。取 MT000787：
 
 ```bash
-python3 practice-example-code/ops/solutions/b79/explain.py trade MT000787
+python3 code/offchain-ops/solutions/b79/explain.py trade MT000787
 ```
 
 ```text
@@ -331,7 +331,7 @@ USDT 的借方减贷方是 -28.21，恰好等于 `FEE-POOL` 的手续费 28.21�
 另一类 MT000793（BTC 成交）：
 
 ```bash
-python3 practice-example-code/ops/solutions/b79/explain.py trade MT000793 | tail -9
+python3 code/offchain-ops/solutions/b79/explain.py trade MT000793 | tail -9
 ```
 
 ```text
@@ -351,7 +351,7 @@ python3 practice-example-code/ops/solutions/b79/explain.py trade MT000793 | tail
 4. 估值错误（`valuation`）。这是平衡检查看不见的一类。取 MT000802：
 
 ```bash
-python3 practice-example-code/ops/solutions/b79/explain.py trade MT000802 | tail -9
+python3 code/offchain-ops/solutions/b79/explain.py trade MT000802 | tail -9
 ```
 
 ```text
@@ -373,7 +373,7 @@ python3 practice-example-code/ops/solutions/b79/explain.py trade MT000802 | tail
 5. 再看没调过的版本。容忍度 0、查迟到入账、查缺手续费：
 
 ```bash
-python3 practice-example-code/ops/lib/ledger_check.py --naive --score S10-03,S10-04,S10-05 --show 3
+python3 code/offchain-ops/lib/ledger_check.py --naive --score S10-03,S10-04,S10-05 --show 3
 ```
 
 ```text
@@ -389,9 +389,9 @@ python3 practice-example-code/ops/lib/ledger_check.py --naive --score S10-03,S10
 133 条里 123 条是噪声。三类噪声来源：
 
 ```bash
-python3 practice-example-code/ops/lib/ledger_check.py --tol 0 --score S10-03,S10-04,S10-05 --show 0 | tail -1
-python3 practice-example-code/ops/lib/ledger_check.py --late-sec 300 --score S10-03,S10-04,S10-05 --show 0 | tail -1
-python3 practice-example-code/ops/lib/ledger_check.py --require-fee --min-fee-notional 0 --score S10-03,S10-04,S10-05 --show 0 | tail -1
+python3 code/offchain-ops/lib/ledger_check.py --tol 0 --score S10-03,S10-04,S10-05 --show 0 | tail -1
+python3 code/offchain-ops/lib/ledger_check.py --late-sec 300 --score S10-03,S10-04,S10-05 --show 0 | tail -1
+python3 code/offchain-ops/lib/ledger_check.py --require-fee --min-fee-notional 0 --score S10-03,S10-04,S10-05 --show 0 | tail -1
 ```
 
 ```text
@@ -411,7 +411,7 @@ python3 practice-example-code/ops/lib/ledger_check.py --require-fee --min-fee-no
 6. 容忍度的"单位"。`--tol` 是一个数，同时用于 USDT 和 BTC。扫一扫：
 
 ```bash
-python3 practice-example-code/ops/solutions/b79/sweep.py ledger_check tol 0,0.011,5,30,60 S10-03,S10-04,S10-05
+python3 code/offchain-ops/solutions/b79/sweep.py ledger_check tol 0,0.011,5,30,60 S10-03,S10-04,S10-05
 ```
 
 ```text
@@ -434,7 +434,7 @@ python3 practice-example-code/ops/solutions/b79/sweep.py ledger_check tol 0,0.01
 1. 用 `ledger_check.py` 的价格检查（对成交价与标记价）：
 
 ```bash
-python3 practice-example-code/ops/lib/ledger_check.py --mark-tol 0.10 --score S10-03,S10-04,S10-05,S11-01 --show 12
+python3 code/offchain-ops/lib/ledger_check.py --mark-tol 0.10 --score S10-03,S10-04,S10-05,S11-01 --show 12
 ```
 
 ```text
@@ -458,7 +458,7 @@ python3 practice-example-code/ops/lib/ledger_check.py --mark-tol 0.10 --score S1
 多了 3 条 `price_off_mark`，也就是 S11-01 的三笔。看其中第一笔：
 
 ```bash
-python3 practice-example-code/ops/solutions/b79/explain.py trade MT001901 | tail -3
+python3 code/offchain-ops/solutions/b79/explain.py trade MT001901 | tail -3
 ```
 
 ```text
@@ -472,7 +472,7 @@ python3 practice-example-code/ops/solutions/b79/explain.py trade MT001901 | tail
 2. 扫价格带，对 S11-01 评分：
 
 ```bash
-python3 practice-example-code/ops/solutions/b79/sweep.py ledger_check mark_tol 0.05,0.08,0.10,0.30,0.40 S11-01
+python3 code/offchain-ops/solutions/b79/sweep.py ledger_check mark_tol 0.05,0.08,0.10,0.30,0.40 S11-01
 ```
 
 ```text
@@ -501,7 +501,7 @@ python3 practice-example-code/ops/solutions/b79/sweep.py ledger_check mark_tol 0
 `order_audit.py` 一次跑完 S11：
 
 ```bash
-python3 practice-example-code/ops/lib/order_audit.py --score S11 --show 30
+python3 code/offchain-ops/lib/order_audit.py --score S11 --show 30
 ```
 
 ```text
@@ -540,7 +540,7 @@ python3 practice-example-code/ops/lib/order_audit.py --score S11 --show 30
 1. 看一张订单的全部事件：
 
 ```bash
-python3 practice-example-code/ops/solutions/b79/explain.py order OX006542
+python3 code/offchain-ops/solutions/b79/explain.py order OX006542
 ```
 
 ```text
@@ -554,7 +554,7 @@ seq=4056 ts=2026-03-09T16:04:07Z event_type=fill order_id=OX006542 account_id=A0
 2. 用时间戳判断呢？`--by-ts`：
 
 ```bash
-python3 practice-example-code/ops/lib/order_audit.py --by-ts --score S11-02 --show 0 | tail -1
+python3 code/offchain-ops/lib/order_audit.py --by-ts --score S11-02 --show 0 | tail -1
 ```
 
 ```text
@@ -568,7 +568,7 @@ python3 practice-example-code/ops/lib/order_audit.py --by-ts --score S11-02 --sh
 3. 账户 A01736 在 15:30:00 被撤销交易权限（动作 CT00224）。看它之后的事件：
 
 ```bash
-python3 practice-example-code/ops/solutions/b79/explain.py account A01736
+python3 code/offchain-ops/solutions/b79/explain.py account A01736
 ```
 
 ```text
@@ -596,7 +596,7 @@ python3 practice-example-code/ops/solutions/b79/explain.py account A01736
 4. `grace` 宽限：撤权指令发出到撮合侧生效需要一点时间，默认宽限 60 秒。把它调大，看会漏什么：
 
 ```bash
-python3 practice-example-code/ops/solutions/b79/sweep.py order_audit grace 0,60,300,3600 S11-03
+python3 code/offchain-ops/solutions/b79/sweep.py order_audit grace 0,60,300,3600 S11-03
 ```
 
 ```text
@@ -612,8 +612,8 @@ python3 practice-example-code/ops/solutions/b79/sweep.py order_audit grace 0,60,
 5. 范围放得太宽会怎样？`--any-scope` 把"只限制提币"的账户也算进来；`--include-rejects` 把被拒绝的订单也当成"受理"：
 
 ```bash
-python3 practice-example-code/ops/lib/order_audit.py --any-scope --score S11 --show 0 | tail -1
-python3 practice-example-code/ops/lib/order_audit.py --include-rejects --score S11 --show 0 | tail -1
+python3 code/offchain-ops/lib/order_audit.py --any-scope --score S11 --show 0 | tail -1
+python3 code/offchain-ops/lib/order_audit.py --include-rejects --score S11 --show 0 | tail -1
 ```
 
 ```text
@@ -643,7 +643,7 @@ python3 practice-example-code/ops/lib/order_audit.py --include-rejects --score S
 mkdir -p my_b79
 cat > my_b79/valuation.py <<'EOF'
 import sys
-sys.path.insert(0, "practice-example-code/ops/lib")
+sys.path.insert(0, "code/offchain-ops/lib")
 import minix
 
 legs = {}
@@ -685,10 +685,10 @@ valuation MT000803
 3. 参考实现含四条检查：序号、分录、撤单、价格带，每条不用 `lib` 的检测器，直接读数据。运行：
 
 ```bash
-python3 practice-example-code/ops/solutions/b79/own_checks.py seq
-python3 practice-example-code/ops/solutions/b79/own_checks.py ledger
-python3 practice-example-code/ops/solutions/b79/own_checks.py cancel
-python3 practice-example-code/ops/solutions/b79/own_checks.py band
+python3 code/offchain-ops/solutions/b79/own_checks.py seq
+python3 code/offchain-ops/solutions/b79/own_checks.py ledger
+python3 code/offchain-ops/solutions/b79/own_checks.py cancel
+python3 code/offchain-ops/solutions/b79/own_checks.py band
 ```
 
 ```text
@@ -709,7 +709,7 @@ band：命中 3，TP 3，误报 0，召回 1/1
 1. 用 `report.py` 把数字汇总：
 
 ```bash
-python3 practice-example-code/ops/solutions/b79/report.py
+python3 code/offchain-ops/solutions/b79/report.py
 ```
 
 ```text
@@ -746,7 +746,7 @@ python3 practice-example-code/ops/solutions/b79/report.py
 2. 看"没调参"的版本，写进报告的"调参前后对比"：
 
 ```bash
-python3 practice-example-code/ops/solutions/b79/report.py --naive | sed -n 5,13p
+python3 code/offchain-ops/solutions/b79/report.py --naive | sed -n 5,13p
 ```
 
 ```text
@@ -783,13 +783,13 @@ python3 practice-example-code/ops/solutions/b79/report.py --naive | sed -n 5,13p
 
 做完上面所有步骤，再对照答案。
 
-1. 答案在 `practice-example-code/ops/answers/S10.json`、`S11.json`。列出本章要找的 8 条：
+1. 答案在 `code/offchain-ops/answers/S10.json`、`S11.json`。列出本章要找的 8 条：
 
 ```bash
 python3 -c "
 import json
 for s in ('S10','S11'):
-    for p in json.load(open('practice-example-code/ops/answers/%s.json'%s))['positives']: print(p['id'], p['name'])"
+    for p in json.load(open('code/offchain-ops/answers/%s.json'%s))['positives']: print(p['id'], p['name'])"
 ```
 
 ```text
@@ -837,7 +837,7 @@ S11-03 撤销交易权限后仍被受理的订单
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
-| `找不到 .../data_x/...` | 第二批数据没生成 | `bash practice-example-code/ops/setup.sh --no-tests` |
+| `找不到 .../data_x/...` | 第二批数据没生成 | `bash code/offchain-ops/setup.sh --no-tests` |
 | 数字与本章差几条 | 重新生成数据时换了种子 | 用默认种子 20260302（`gen/generate_x.py` 不带 `--seed`） |
 | `No such file` 指向 `my_b79/valuation.py` | 没有先创建目录，或不在仓库根目录 | `pwd` 确认在 `web3-security-101/`，先运行 `mkdir -p my_b79` |
 | `explain.py` 提示没有该订单或成交 | ID 写错 | 订单是 `OX` 加 6 位，成交是 `MT` 加 6 位 |
@@ -858,8 +858,8 @@ S11-03 撤销交易权限后仍被受理的订单
 - [ ] 用一条命令确认序号检查的门禁，达标退出码为 0，没调过的版本退出码为 1：
 
 ```bash
-python3 practice-example-code/ops/lib/seqcheck.py --score S10-01,S10-02 --min-recall 1.0 --max-fp 0 --show 0 > /dev/null 2>&1; echo "退出码 $?"
-python3 practice-example-code/ops/lib/seqcheck.py --naive --score S10-01,S10-02 --min-recall 1.0 --max-fp 0 --show 0 > /dev/null 2>&1; echo "退出码 $?"
+python3 code/offchain-ops/lib/seqcheck.py --score S10-01,S10-02 --min-recall 1.0 --max-fp 0 --show 0 > /dev/null 2>&1; echo "退出码 $?"
+python3 code/offchain-ops/lib/seqcheck.py --naive --score S10-01,S10-02 --min-recall 1.0 --max-fp 0 --show 0 > /dev/null 2>&1; echo "退出码 $?"
 ```
 
 ```text

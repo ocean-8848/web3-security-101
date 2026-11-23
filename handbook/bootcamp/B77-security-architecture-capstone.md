@@ -8,7 +8,7 @@
 > 前置知识：做完 [B71](B71-control-matrix-practice.md)–[B76](B76-tabletop-postmortem-practice.md)；读过 [X01 安全体系怎么搭](../architecture/X01-security-program-controls.md) 与 [X07 交易所安全架构总览](../architecture/X07-cex-architecture-overview.md)；会运行 `python3` 和写简单 SQL。不需要 Foundry。
 > 预计用时：约 8–10 小时（可拆成 3 个半天）。
 > 关联章节：[B70 L3 导读](B70-offchain-l3-guide.md)｜[X01](../architecture/X01-security-program-controls.md)｜[X06 韧性与验证](../architecture/X06-resilience-validation.md)｜模板 [T08 控制矩阵与风险登记表](../templates/T08-control-matrix-risk-register.md)｜[T12 安全架构评审单](../templates/T12-security-architecture-review.md)｜[A02 定级与报告](../assessment/A02-risk-rating-reporting.md)
-> 参考实现：`practice-example-code/ops/solutions/b77/`（`evidence.py`、`check_capstone.py` 与 4 份参考 CSV）
+> 参考实现：`code/offchain-ops/solutions/b77/`（`evidence.py`、`check_capstone.py` 与 4 份参考 CSV）
 > 最后核对：2026-11-23（本章全部命令在本机用系统 `python3` 运行过；输出来自真实运行，数值由靶场默认种子 20260301 决定）
 
 > ⚠️ 警告：法律与道德边界。MiniEx 是虚构的交易所，所有数据由脚本合成。本章的方法只用在你自己的机器和你被授权评估的系统上。真实评估要有书面授权、范围和保密约定。
@@ -107,12 +107,12 @@ flowchart LR
 
 ```bash
 cd /Users/k/Workon/Learning/web3
-bash practice-example-code/ops/setup.sh --no-tests | tail -2
+bash code/offchain-ops/setup.sh --no-tests | tail -2
 ```
 
 ```text
   endpoint_events       2540 行
-靶场已就绪：数据在 practice-example-code/ops/data/，答案在 practice-example-code/ops/answers/（练习做完再看）
+靶场已就绪：数据在 code/offchain-ops/data/，答案在 code/offchain-ops/answers/（练习做完再看）
 ```
 
 （第一行的 `cd` 只对作者的机器有意义。读者已经在自己克隆的 `web3-security-101/` 里。）
@@ -133,8 +133,8 @@ cp b71-lab/assets.csv b71-lab/my_matrix.csv b77-lab/
 如果你没有这两个文件，用参考实现代替。矩阵的参考文件和 B71 第 6 节的矩阵逐字相同：
 
 ```bash
-cp -n practice-example-code/ops/solutions/b71/matrix.reference.csv b77-lab/my_matrix.csv
-cp -n practice-example-code/ops/solutions/b77/assets.reference.csv b77-lab/assets.csv
+cp -n code/offchain-ops/solutions/b71/matrix.reference.csv b77-lab/my_matrix.csv
+cp -n code/offchain-ops/solutions/b77/assets.reference.csv b77-lab/assets.csv
 ls b77-lab
 ```
 
@@ -213,7 +213,7 @@ flowchart LR
 复用 B71 的矩阵，重新计算一次，确认数字没变：
 
 ```bash
-python3 practice-example-code/ops/solutions/b71/matrix_gap.py b77-lab/my_matrix.csv | sed -n 5,16p
+python3 code/offchain-ops/solutions/b71/matrix_gap.py b77-lab/my_matrix.csv | sed -n 5,16p
 ```
 
 ```text
@@ -256,7 +256,7 @@ awk -F, 'NR>1 && $5=="P1" && $8!="implemented"' b77-lab/my_matrix.csv | wc -l
 `evidence.py` 把 B71–B76 的关键检查重新跑一遍：20 条 SQL 勘察，14 次规则回放，1 次签名策略回放，1 次 workflow 静态检查。每条证据记录命令、真实输出和它支持的标准答案 ID。
 
 ```bash
-python3 practice-example-code/ops/solutions/b77/evidence.py --out b77-lab/evidence.csv
+python3 code/offchain-ops/solutions/b77/evidence.py --out b77-lab/evidence.csv
 ```
 
 ```text
@@ -348,7 +348,7 @@ S1-03 不被撞库规则（r01）抓到，要靠"改绑后加地址"规则（r03
 在跑评分之前，先用几行脚本做自检：
 
 ```bash
-cp -n practice-example-code/ops/solutions/b77/findings.reference.csv b77-lab/findings.csv   # 只在你还没写完时用
+cp -n code/offchain-ops/solutions/b77/findings.reference.csv b77-lab/findings.csv   # 只在你还没写完时用
 python3 -c "
 import csv
 from collections import Counter
@@ -400,7 +400,7 @@ print('没有证据的发现：', [r['finding_id'] for r in rows if not r['evide
 做完后检查：
 
 ```bash
-cp -n practice-example-code/ops/solutions/b77/risks.reference.csv b77-lab/risks.csv   # 只在你还没写完时用
+cp -n code/offchain-ops/solutions/b77/risks.reference.csv b77-lab/risks.csv   # 只在你还没写完时用
 python3 -c "
 import csv
 rows = list(csv.DictReader(open('b77-lab/risks.csv', encoding='utf-8')))
@@ -529,7 +529,7 @@ S6-01 之后 289 个请求照常签名：暂停失效等于 L1 损失继续，�
 每个条目要有：控制 ID、负责角色、人天、依赖、**度量**（基线与目标）。参考版有 13 个条目：
 
 ```bash
-cp -n practice-example-code/ops/solutions/b77/roadmap.reference.csv b77-lab/roadmap.csv   # 只在你还没写完时用
+cp -n code/offchain-ops/solutions/b77/roadmap.reference.csv b77-lab/roadmap.csv   # 只在你还没写完时用
 awk -F, 'NR>1 {n[$5]++} END {for (k in n) print k, n[k]}' b77-lab/roadmap.csv | sort
 awk -F, 'NR>1 && $7<=90 {s+=$9} END {print s " 人天（90 天内）"}' b77-lab/roadmap.csv
 ```
@@ -656,7 +656,7 @@ cat > b77-lab/rebuild.sh <<'EOF'
 #!/usr/bin/env bash
 # 从 web3-security-101/ 根目录运行：bash b77-lab/rebuild.sh
 set -e
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 python3 $OPS/solutions/b77/evidence.py --out b77-lab/evidence.csv
 python3 $OPS/solutions/b71/matrix_gap.py b77-lab/my_matrix.csv | grep "^合计"
 python3 $OPS/solutions/b77/check_capstone.py --dir b77-lab --capacity 192 "$@"
@@ -683,7 +683,7 @@ bash b77-lab/rebuild.sh --manual 28
 不加 `--manual` 时，满分只有 72，低于过关线 80，脚本会提示"不通过"。这是故意的：**人工项没打分前，不能说通过**。
 
 ```bash
-python3 practice-example-code/ops/solutions/b77/check_capstone.py | tail -3
+python3 code/offchain-ops/solutions/b77/check_capstone.py | tail -3
 ```
 
 ```text
@@ -709,7 +709,7 @@ for r in rows:
 w = csv.DictWriter(open('b77-lab-bad/findings.csv', 'w', encoding='utf-8', newline=''), fieldnames=list(rows[0]))
 w.writeheader(); w.writerows(rows)
 EOF
-python3 practice-example-code/ops/solutions/b77/check_capstone.py --dir b77-lab-bad --manual 28 | tail -5
+python3 code/offchain-ops/solutions/b77/check_capstone.py --dir b77-lab-bad --manual 28 | tail -5
 ```
 
 ```text
@@ -727,7 +727,7 @@ python3 practice-example-code/ops/solutions/b77/check_capstone.py --dir b77-lab-
 ```bash
 cp b77-lab/findings.csv b77-lab-bad/findings.csv
 grep -v '^R02,\|^R07,' b77-lab/roadmap.csv > b77-lab-bad/roadmap.csv
-python3 practice-example-code/ops/solutions/b77/check_capstone.py --dir b77-lab-bad --manual 28 | tail -2
+python3 code/offchain-ops/solutions/b77/check_capstone.py --dir b77-lab-bad --manual 28 | tail -2
 ```
 
 ```text
@@ -740,7 +740,7 @@ python3 practice-example-code/ops/solutions/b77/check_capstone.py --dir b77-lab-
 ```bash
 cp b77-lab/roadmap.csv b77-lab-bad/roadmap.csv
 sed 's/文档站不含发布凭证与签名权限；每月自动检查标签是否移动//' b77-lab/risks.csv > b77-lab-bad/risks.csv
-python3 practice-example-code/ops/solutions/b77/check_capstone.py --dir b77-lab-bad --manual 28 | tail -2
+python3 code/offchain-ops/solutions/b77/check_capstone.py --dir b77-lab-bad --manual 28 | tail -2
 rm -rf b77-lab-bad
 ```
 
@@ -867,7 +867,7 @@ rm -rf b77-lab-bad
 
 用真实数字判定。**没有标准答案也能判断。**
 
-- [ ] `python3 practice-example-code/ops/solutions/b77/evidence.py --out b77-lab/evidence.csv` 退出码为 0：36 条证据，0 条与预期不符。
+- [ ] `python3 code/offchain-ops/solutions/b77/evidence.py --out b77-lab/evidence.csv` 退出码为 0：36 条证据，0 条与预期不符。
 - [ ] `check_capstone.py` 的自动判分 ≥ 55 / 72（参考实现为 72），且红线为 0 条。
 - [ ] 24 个应当发现的项全部覆盖；S6-01、S6-02、S6-03 各有一条发现和有效证据。
 - [ ] 路线图覆盖全部 15 条未完全实施的 P0 控制，且都在 90 天内；90 天内人力不超过你写明的上限。

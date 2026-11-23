@@ -64,11 +64,11 @@ S14-01（储备低于负债）是同一起事件的另一面，留给 [B82](B82-
 先准备靶场（只依赖 Python 标准库）：
 
 ```bash
-bash practice-example-code/ops/setup.sh | tail -1
+bash code/offchain-ops/setup.sh | tail -1
 ```
 
 ```text
-靶场已就绪：数据在 practice-example-code/ops/data/ 与 data_x/，答案在 practice-example-code/ops/answers/（练习做完再看）
+靶场已就绪：数据在 code/offchain-ops/data/ 与 data_x/，答案在 code/offchain-ops/answers/（练习做完再看）
 ```
 
 ## 2. 第 1 步：默认对账，看差异分类
@@ -76,7 +76,7 @@ bash practice-example-code/ops/setup.sh | tail -1
 先不调任何参数，直接对账：
 
 ```bash
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 python3 $OPS/lib/recon3.py | sed -n 2p
 ```
 
@@ -99,7 +99,7 @@ python3 $OPS/lib/recon3.py | sed -n 2p
 先看"不是日期差、不是金额差"的 5 条：
 
 ```bash
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 python3 $OPS/lib/recon3.py --show 30 | grep -E "^  \[(duplicate_booking|internal_only|external_only|late_booking)\]" | cut -c1-150
 ```
 
@@ -116,7 +116,7 @@ python3 $OPS/lib/recon3.py --show 30 | grep -E "^  \[(duplicate_booking|internal
 再看其余的 timing 与 amount_mismatch 是什么样子（只看前 8 条）：
 
 ```bash
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 python3 $OPS/lib/recon3.py --show 30 | grep -E "^  \[(timing|amount_mismatch)\]" | cut -c1-120 | head -8
 ```
 
@@ -148,7 +148,7 @@ python3 $OPS/lib/recon3.py --show 30 | grep -E "^  \[(timing|amount_mismatch)\]"
 噪声来自两个参数：日期容忍 `--tol-days`（默认 1 天）和金额容忍 `--amount-tol`（默认 1 美元）。先扫一遍组合，用 `--score` 看命中与误报：
 
 ```bash
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 for t in 1 2 3 4 5; do for m in 1 25; do echo -n "tol-days $t amount-tol $m  "; python3 $OPS/lib/recon3.py --tol-days $t --amount-tol $m --score S14-02,S14-03,S14-04,S14-05 | tail -1 | sed 's/评分（目标 S14-02,S14-03,S14-04,S14-05）：//'; done; done
 ```
 
@@ -173,7 +173,7 @@ tol-days 5 amount-tol 25  命中 5，TP 5，误报 0（噪声 0、未解释 0）
 一个组合能不能接受，不能只看误报。给自己立门槛：召回满分，误报 0，退出码为 0：
 
 ```bash
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 python3 $OPS/lib/recon3.py --tol-days 5 --amount-tol 25 --score S14-02,S14-03,S14-04,S14-05 --max-fp 0 --min-recall 1 >/dev/null 2>&1; echo "退出码 $?"
 python3 $OPS/lib/recon3.py --score S14-02,S14-03,S14-04,S14-05 --max-fp 0 --min-recall 1 >/dev/null 2>&1; echo "退出码 $?"
 ```
@@ -188,7 +188,7 @@ python3 $OPS/lib/recon3.py --score S14-02,S14-03,S14-04,S14-05 --max-fp 0 --min-
 再看调过头会怎样。`--late-hours` 是"记账比外部执行晚多少小时算 late_booking"，默认 24。把它放宽到 72：
 
 ```bash
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 python3 $OPS/lib/recon3.py --tol-days 5 --amount-tol 25 --late-hours 72 --score S14-02,S14-03,S14-04,S14-05 | tail -2
 ```
 
@@ -202,7 +202,7 @@ python3 $OPS/lib/recon3.py --tol-days 5 --amount-tol 25 --late-hours 72 --score 
 最后看"完全没调过"是什么样子（`--naive`：容忍为 0，含手续费行、行间划转、利息、微额转入）：
 
 ```bash
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 python3 $OPS/lib/recon3.py --naive --score S14-02,S14-03,S14-04,S14-05 | sed -n '2p;$p'
 ```
 
@@ -222,7 +222,7 @@ python3 $OPS/lib/recon3.py --naive --score S14-02,S14-03,S14-04,S14-05 | sed -n 
 看 4 个时点：事发当晚 03-10 20:00、03-11 日终、03-12 日终、03-13 中午。
 
 ```bash
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 for t in 2026-03-10T20:00:00Z 2026-03-11T23:59:59Z 2026-03-12T23:59:59Z 2026-03-13T12:00:00Z; do echo "-- $t"; python3 $OPS/lib/recon3.py --tol-days 5 --amount-tol 25 --asof $t | grep -E "^发现|^  \[" | cut -c1-175 | sed -E 's/ ref=0x[0-9a-f]{64}//'; done
 ```
 
@@ -271,7 +271,7 @@ for t in 2026-03-10T20:00:00Z 2026-03-11T23:59:59Z 2026-03-12T23:59:59Z 2026-03-
 用 `--score` 验证当晚的结果：
 
 ```bash
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 python3 $OPS/lib/recon3.py --tol-days 5 --amount-tol 25 --asof 2026-03-10T20:00:00Z --score S14-02,S14-03,S14-04,S14-05 | tail -1
 ```
 
@@ -288,7 +288,7 @@ python3 $OPS/lib/recon3.py --tol-days 5 --amount-tol 25 --asof 2026-03-10T20:00:
 三方对账看的是结果。状态机看的是过程：每一步用了多久、有没有跳步、同一件事有没有被确认两次。先用默认参数跑 `state_audit.py`：
 
 ```bash
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 python3 $OPS/lib/state_audit.py | sed -n 2,20p | cut -c1-170 | sed -E 's/ ref=0x[0-9a-f]{64}//'
 ```
 
@@ -319,7 +319,7 @@ PW000762 的故障线索不只是一条：路径跳步、哈希核实失败，�
 `state_audit.py` 默认只报"必须有人看"的类别，同样需要调参。看几种配置的误报：
 
 ```bash
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 python3 $OPS/lib/state_audit.py --score S14-03,S14-04,S14-05 | tail -1
 python3 $OPS/lib/state_audit.py --sla approve=600 --score S14-03,S14-04,S14-05 | tail -1
 python3 $OPS/lib/state_audit.py --sla approve=600 --sla reserve=600 --score S14-03,S14-04,S14-05 | tail -1
@@ -346,7 +346,7 @@ python3 $OPS/lib/state_audit.py --naive --score S14-03,S14-04,S14-05 | sed -n '2
 `receipt_unverified` 需要把回执去外部流水里核对。关掉核对（`--no-verify`）会怎样：
 
 ```bash
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 python3 $OPS/lib/state_audit.py --no-verify --score S14-03,S14-04,S14-05 | sed -n '2p;$p'
 ```
 
@@ -362,7 +362,7 @@ python3 $OPS/lib/state_audit.py --no-verify --score S14-03,S14-04,S14-05 | sed -
 悬挂最怕"事后才看到"。同样用 `--asof`：
 
 ```bash
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 for t in 2026-03-07T12:00:00Z 2026-03-10T20:00:00Z 2026-03-11T23:59:59Z; do echo "-- $t"; python3 $OPS/lib/state_audit.py --asof $t | grep -E "^发现|^  \[hanging" | sed -E 's/ ref=0x[0-9a-f]{64}//'; done
 ```
 
@@ -422,7 +422,7 @@ for t in 2026-03-07T12:00:00Z 2026-03-10T20:00:00Z 2026-03-11T23:59:59Z; do echo
 先自己对着清单给 4 笔单据写结论，再运行参考实现 `solutions/b81/prerepay_check.py`（只读数据，不发起任何付款）：
 
 ```bash
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 python3 $OPS/solutions/b81/prerepay_check.py PW000761 PW000762 PW000764 PD000763 PW000616 | grep -E "^P|结论"
 ```
 
@@ -442,7 +442,7 @@ PW000616  withdrawal/bank  46780.44 USD
 `PW000616` 是正常的银行提币（对照组，只有周末造成的日期差），6 项核对全部通过。看 PW000762 的完整输出：
 
 ```bash
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 python3 $OPS/solutions/b81/prerepay_check.py PW000762
 ```
 
@@ -461,7 +461,7 @@ PW000762  withdrawal/chain  40000.0 USDT
 时点也会改变结论。PW000761 在 03-11 日终（还没补记）时：
 
 ```bash
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 python3 $OPS/solutions/b81/prerepay_check.py PW000761 --asof 2026-03-11T23:59:59Z | grep 结论
 python3 $OPS/solutions/b81/prerepay_check.py PW000764 --asof 2026-03-07T12:00:00Z | grep 结论
 ```
@@ -480,7 +480,7 @@ python3 $OPS/solutions/b81/prerepay_check.py PW000764 --asof 2026-03-07T12:00:00
 做完全部练习再看答案。只打印本章用到的 4 个答案：
 
 ```bash
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 python3 -c "
 import json
 for p in json.load(open('$OPS/answers/S14.json'))['positives'][1:]:
@@ -526,8 +526,8 @@ S14-05 3,200 USDT 充值收到两份不同编号的回执，并被记账两次
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
-| `找不到 ... data_x/...，请先运行 bash practice-example-code/ops/setup.sh` | 第二批数据还没生成 | 在 `web3-security-101/` 根目录运行 `bash practice-example-code/ops/setup.sh` |
-| `can't open file '.../lib/recon3.py'` | 不在 `web3-security-101/` 根目录，或没有设 `OPS` | `cd` 到根目录，并先运行 `OPS=practice-example-code/ops` |
+| `找不到 ... data_x/...，请先运行 bash code/offchain-ops/setup.sh` | 第二批数据还没生成 | 在 `web3-security-101/` 根目录运行 `bash code/offchain-ops/setup.sh` |
+| `can't open file '.../lib/recon3.py'` | 不在 `web3-security-101/` 根目录，或没有设 `OPS` | `cd` 到根目录，并先运行 `OPS=code/offchain-ops` |
 | 循环命令只出来一行或报语法错 | 复制时丢了换行或分号 | 整段复制；`for ... do ...; done` 必须完整 |
 | 调参后 `timing` 仍有 3 条 | `--tol-days` 小于 5 | 数据里最大日期差是 5 天，要设到 5 |
 | 调参后 `amount_mismatch` 仍有 3 条 | `--amount-tol` 小于 15 | 中间行手续费 15 美元，设到 25 |

@@ -9,7 +9,7 @@
 > 交互实验：[模糊测试](../interactive/audit-fuzz.html)
 > 预计用时：2～3 小时
 > 最后核对：2026-11-10
-> 配套代码：[practice-example-code/range/basics/](../../practice-example-code/range/basics)
+> 配套代码：[code/ranges/basics/](../../code/ranges/basics)
 
 ---
 
@@ -17,7 +17,7 @@
 
 [B06](B06-foundry-basics.md) 用手写的单元测试检查了 `Club`，又用 `cast` 和 `anvil` 操作了本地链。手写用例只覆盖你想到的情况。本篇先让工具生成随机输入和随机调用序列，再用分叉读取链上状态，最后搭起审计员的工作台：读存储、重放交易、写 PoC 骨架。
 
-准备工作：第 1 节的命令在配套工程 `practice-example-code/range/basics` 里运行。第 2、3 节要用一条本地链，链上有一个 `Club` 和一笔 `join` 交易。如果你刚做完 [B06 第 6 节](B06-foundry-basics.md)且 anvil 还在运行，直接用它。否则按下面的步骤重建（与 B06 第 6 节相同）。
+准备工作：第 1 节的命令在配套工程 `code/ranges/basics` 里运行。第 2、3 节要用一条本地链，链上有一个 `Club` 和一笔 `join` 交易。如果你刚做完 [B06 第 6 节](B06-foundry-basics.md)且 anvil 还在运行，直接用它。否则按下面的步骤重建（与 B06 第 6 节相同）。
 
 打开**第一个**终端：
 
@@ -28,7 +28,7 @@ anvil  # 启动本地测试链，占用这个终端
 打开**第二个**终端：
 
 ```bash
-cd practice-example-code/range/basics  # 从 web3-security-101/ 出发
+cd code/ranges/basics  # 从 web3-security-101/ 出发
 export RPC=http://127.0.0.1:8545  # 本地链的地址，后面命令复用
 export ME=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266     # anvil 的 0 号默认账户，私钥公开
 export ALICE=0x70997970C51812dc3A010C7d01b50e0d17dc79C8  # anvil 的 1 号默认账户

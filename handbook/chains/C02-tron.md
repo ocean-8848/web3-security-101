@@ -134,7 +134,7 @@ flowchart LR
 
 - 这个问题不会让资金被盗，但会让资金**被锁**。如果合约不可升级，资金可能永久无法取出。
 - 单元测试用的是模拟 USDT，测不出这个问题。必须在 TRON 测试网上用真实的 USDT 合约测试。
-- 示例代码见 [practice-example-code/05-SafeTokenOps.sol](../../practice-example-code/05-SafeTokenOps.sol)。
+- 示例代码见 [code/snippets/05-SafeTokenOps.sol](../../code/snippets/05-SafeTokenOps.sol)。
 
 ### 4.2 能量、CPU 时间与"失败但上链"的交易
 

@@ -66,15 +66,15 @@ flowchart LR
 准备工作。从 `web3-security-101/` 根目录出发（下文所有命令都从这里运行）：
 
 ```bash
-bash practice-example-code/ops/setup.sh --no-tests | tail -1
+bash code/offchain-ops/setup.sh --no-tests | tail -1
 mkdir -p my_b80
 ```
 
 ```text
-靶场已就绪：数据在 practice-example-code/ops/data/ 与 data_x/，答案在 practice-example-code/ops/answers/（练习做完再看）
+靶场已就绪：数据在 code/offchain-ops/data/ 与 data_x/，答案在 code/offchain-ops/answers/（练习做完再看）
 ```
 
-`setup.sh` 生成数据并装载。本章只读数据；你的产出放在 `my_b80/`，参考实现放在 `practice-example-code/ops/solutions/b80/`。
+`setup.sh` 生成数据并装载。本章只读数据；你的产出放在 `my_b80/`，参考实现放在 `code/offchain-ops/solutions/b80/`。
 
 ## 2. 第 1 步：在切主窗口里找重复成交与超量成交（S12）
 
@@ -83,7 +83,7 @@ X19 第 5 节说切主有三步：先停写，再验停写，再验停发。"验
 ### 2.1 用 replay_match 找出三类发现
 
 ```bash
-python3 practice-example-code/ops/lib/replay_match.py --score S12 --show 3
+python3 code/offchain-ops/lib/replay_match.py --score S12 --show 3
 ```
 
 ```text
@@ -114,7 +114,7 @@ python3 practice-example-code/ops/lib/replay_match.py --score S12 --show 3
 脚本默认对重复成交做"确认"：只有来自不同节点、或订单被超量成交，才算重复。关掉确认，看会发生什么：
 
 ```bash
-python3 practice-example-code/ops/lib/replay_match.py --no-confirm-dups --score S12 --show 0
+python3 code/offchain-ops/lib/replay_match.py --no-confirm-dups --score S12 --show 0
 ```
 
 ```text
@@ -132,7 +132,7 @@ python3 practice-example-code/ops/lib/replay_match.py --no-confirm-dups --score 
 很多团队的复市清单里有一行"分录借贷平衡"。用 `ledger_check.py` 看 S12：
 
 ```bash
-python3 practice-example-code/ops/lib/ledger_check.py --score S12 --show 0
+python3 code/offchain-ops/lib/ledger_check.py --score S12 --show 0
 ```
 
 ```text
@@ -151,7 +151,7 @@ python3 practice-example-code/ops/lib/ledger_check.py --score S12 --show 0
 `replay_match` 告诉你"有问题"。复市评审要的是"多少、多大、先做什么"。参考实现 `split_brain.py` 把发现整理成这几个数：
 
 ```bash
-python3 practice-example-code/ops/solutions/b80/split_brain.py --out my_b80/reversal.csv
+python3 code/offchain-ops/solutions/b80/split_brain.py --out my_b80/reversal.csv
 ```
 
 ```text
@@ -225,7 +225,7 @@ grep -c ",reverse," my_b80/reversal.csv; grep -c ",hold_for_review," my_b80/reve
 ### 3.1 用 liq_audit 找出强平问题
 
 ```bash
-python3 practice-example-code/ops/lib/liq_audit.py --score S13 --show 0
+python3 code/offchain-ops/lib/liq_audit.py --score S13 --show 0
 ```
 
 ```text
@@ -239,7 +239,7 @@ python3 practice-example-code/ops/lib/liq_audit.py --score S13 --show 0
 把穿仓下限调到 5,000 美元，再强制要求误报为 0：
 
 ```bash
-python3 practice-example-code/ops/lib/liq_audit.py --min-shortfall 5000 --score S13 --max-fp 0 --show 0; echo "退出码 $?"
+python3 code/offchain-ops/lib/liq_audit.py --min-shortfall 5000 --score S13 --max-fp 0 --show 0; echo "退出码 $?"
 ```
 
 ```text
@@ -258,7 +258,7 @@ python3 practice-example-code/ops/lib/liq_audit.py --min-shortfall 5000 --score 
 算缺口之前，先确认强平记录自洽：`--verify` 会重算每笔执行后的权益，并检查保险基金余额前后连续。
 
 ```bash
-python3 practice-example-code/ops/lib/liq_audit.py --verify --show 0
+python3 code/offchain-ops/lib/liq_audit.py --verify --show 0
 ```
 
 ```text
@@ -271,7 +271,7 @@ python3 practice-example-code/ops/lib/liq_audit.py --verify --show 0
 ### 3.3 走一遍保险基金：耗尽点在哪
 
 ```bash
-python3 practice-example-code/ops/solutions/b80/fund_walk.py
+python3 code/offchain-ops/solutions/b80/fund_walk.py
 ```
 
 ```text
@@ -311,7 +311,7 @@ LQ00091  A00149     600 穿仓         20128.52        0.00        0.00    20128
 别只信一个脚本。用 `awk` 直接从 CSV 把 LQ00082 到 LQ00091 的穿仓缺口加起来：
 
 ```bash
-awk -F, 'NR>1 && $1>="LQ00082" && $1<="LQ00091" {s+=$14} END {printf "%.2f\n", s}' practice-example-code/ops/data_x/liquidations.csv
+awk -F, 'NR>1 && $1>="LQ00082" && $1<="LQ00091" {s+=$14} END {printf "%.2f\n", s}' code/offchain-ops/data_x/liquidations.csv
 ```
 
 ```text
@@ -345,7 +345,7 @@ X19 第 6.2 节给出复市前的清单，第 6.4 节给出四档放量。本章
 C2 要用到 S15。事故当天，S12 与 S13 涉及的账户被限制；03-13 批量解除。解除合不合规，`case_audit.py` 能告诉你：
 
 ```bash
-python3 practice-example-code/ops/lib/case_audit.py --score S15 --show 0
+python3 code/offchain-ops/lib/case_audit.py --score S15 --show 0
 ```
 
 ```text
@@ -359,7 +359,7 @@ python3 practice-example-code/ops/lib/case_audit.py --score S15 --show 0
 ### 4.3 跑决策矩阵：现在能不能复市
 
 ```bash
-python3 practice-example-code/ops/solutions/b80/resume_gate.py
+python3 code/offchain-ops/solutions/b80/resume_gate.py
 ```
 
 ```text
@@ -393,7 +393,7 @@ python3 practice-example-code/ops/solutions/b80/resume_gate.py
 先冲销 16 笔重复副本：
 
 ```bash
-python3 practice-example-code/ops/solutions/b80/resume_gate.py --assume reverse-dups | tail -2
+python3 code/offchain-ops/solutions/b80/resume_gate.py --assume reverse-dups | tail -2
 ```
 
 ```text
@@ -404,7 +404,7 @@ python3 practice-example-code/ops/solutions/b80/resume_gate.py --assume reverse-
 卡点只剩 V3：V2 已通过，V3 从 56 降到 24（去掉 `| tail -2` 能看到全表）。32 张超量订单随副本冲销而恢复正常，剩下 24 张是单边陈旧成交的订单。再对这 12 笔做出裁定：
 
 ```bash
-python3 practice-example-code/ops/solutions/b80/resume_gate.py --assume reverse-dups,rule-stale | tail -2
+python3 code/offchain-ops/solutions/b80/resume_gate.py --assume reverse-dups,rule-stale | tail -2
 ```
 
 ```text
@@ -415,7 +415,7 @@ python3 practice-example-code/ops/solutions/b80/resume_gate.py --assume reverse-
 验证通过，可以进入"仅撤单"。下一个卡点是 P2：ADL 与补偿规则没有公告（人工项）。公告发出后：
 
 ```bash
-python3 practice-example-code/ops/solutions/b80/resume_gate.py --assume reverse-dups,rule-stale,adl-announced | tail -2
+python3 code/offchain-ops/solutions/b80/resume_gate.py --assume reverse-dups,rule-stale,adl-announced | tail -2
 ```
 
 ```text
@@ -426,7 +426,7 @@ python3 practice-example-code/ops/solutions/b80/resume_gate.py --assume reverse-
 可以进入"仅平仓"。最后两项是授信恢复条件：保险基金余额只有 3,227.84 美元，要达到 38,853.48 美元的门槛，至少要注资 35,625.64 美元；S15 的 15 个动作要补齐授权和回报。全部做完：
 
 ```bash
-python3 practice-example-code/ops/solutions/b80/resume_gate.py --assume reverse-dups,rule-stale,adl-announced,topup=36000,fix-s15
+python3 code/offchain-ops/solutions/b80/resume_gate.py --assume reverse-dups,rule-stale,adl-announced,topup=36000,fix-s15
 ```
 
 ```text
@@ -508,7 +508,7 @@ cat > my_b80/plan_draft.md <<'DRAFT'
 ### 全面交易
 最后全面开放。
 DRAFT
-python3 practice-example-code/ops/solutions/b80/plan_check.py plan my_b80/plan_draft.md; echo "退出码 $?"
+python3 code/offchain-ops/solutions/b80/plan_check.py plan my_b80/plan_draft.md; echo "退出码 $?"
 ```
 
 ```text
@@ -525,13 +525,13 @@ python3 practice-example-code/ops/solutions/b80/plan_check.py plan my_b80/plan_d
 写完自己的计划后检查：
 
 ```bash
-python3 practice-example-code/ops/solutions/b80/plan_check.py plan my_b80/plan.md
+python3 code/offchain-ops/solutions/b80/plan_check.py plan my_b80/plan.md
 ```
 
-目标是 4 项全部通过。参考写法 `practice-example-code/ops/solutions/b80/plan-reference.md` 通过时是这样（做完再看）：
+目标是 4 项全部通过。参考写法 `code/offchain-ops/solutions/b80/plan-reference.md` 通过时是这样（做完再看）：
 
 ```bash
-python3 practice-example-code/ops/solutions/b80/plan_check.py plan practice-example-code/ops/solutions/b80/plan-reference.md
+python3 code/offchain-ops/solutions/b80/plan_check.py plan code/offchain-ops/solutions/b80/plan-reference.md
 ```
 
 ```text
@@ -560,7 +560,7 @@ python3 practice-example-code/ops/solutions/b80/plan_check.py plan practice-exam
 cat > my_b80/announcement_draft.md <<'DRAFT'
 各位用户：系统遭到攻击，现已完全恢复，保证不会再发生。
 DRAFT
-python3 practice-example-code/ops/solutions/b80/plan_check.py announce my_b80/announcement_draft.md; echo "退出码 $?"
+python3 code/offchain-ops/solutions/b80/plan_check.py announce my_b80/announcement_draft.md; echo "退出码 $?"
 ```
 
 ```text
@@ -577,13 +577,13 @@ python3 practice-example-code/ops/solutions/b80/plan_check.py announce my_b80/an
 把自己的公告写到 `my_b80/announcement.md`（150–900 字符，中文），检查：
 
 ```bash
-python3 practice-example-code/ops/solutions/b80/plan_check.py announce my_b80/announcement.md
+python3 code/offchain-ops/solutions/b80/plan_check.py announce my_b80/announcement.md
 ```
 
 目标是 6 项全部通过。参考公告 `announcement-reference.md` 通过时是这样（做完再看）：
 
 ```bash
-python3 practice-example-code/ops/solutions/b80/plan_check.py announce practice-example-code/ops/solutions/b80/announcement-reference.md
+python3 code/offchain-ops/solutions/b80/plan_check.py announce code/offchain-ops/solutions/b80/announcement-reference.md
 ```
 
 ```text
@@ -616,8 +616,8 @@ python3 practice-example-code/ops/solutions/b80/plan_check.py announce practice-
 
 做完再看。对照的做法：
 
-1. 打开 `practice-example-code/ops/answers/S12.json`、`S13.json`，把 `expected_response` 与你的计划逐条比对。答案里 S12 的第一条是"停写停发：先隔离旧主，停止对外成交回报与清算"。你的计划如果没有把它放在所有放量动作之前，就是顺序错了。
-2. 打开参考实现目录 `practice-example-code/ops/solutions/b80/`：
+1. 打开 `code/offchain-ops/answers/S12.json`、`S13.json`，把 `expected_response` 与你的计划逐条比对。答案里 S12 的第一条是"停写停发：先隔离旧主，停止对外成交回报与清算"。你的计划如果没有把它放在所有放量动作之前，就是顺序错了。
+2. 打开参考实现目录 `code/offchain-ops/solutions/b80/`：
 
 | 文件 | 内容 |
 |---|---|

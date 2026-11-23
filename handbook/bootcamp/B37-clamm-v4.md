@@ -7,7 +7,7 @@
 >
 > 前置知识：AMM 恒定乘积公式（[B18 DEX 与 AMM](B18-dex-amm.md)、[B36 Uniswap V2](B36-case-uniswap-v2.md)）。
 > 预计用时：3–4 小时。
-> 示例：[practice-example-code/range/clamm/](../../practice-example-code/range/clamm/README.md)
+> 示例：[code/ranges/clamm/](../../code/ranges/clamm/README.md)
 > 关联章节：[06 算术与精度](../chapters/06-arithmetic-precision.md)｜[08 预言机与闪电贷](../chapters/08-oracle-flashloan.md)｜[B18 DEX 与 AMM](B18-dex-amm.md)｜交互实验 [audit-v2k.html](../interactive/audit-v2k.html)
 > 最后核对：2026-11-10（Uniswap v4-core 主分支代码；forge 1.5.1 本地运行；事故来源见文内链接）
 
@@ -133,7 +133,7 @@ inside = global − 区间下方增长 − 区间上方增长
 本地演示：
 
 ```bash
-cd practice-example-code/range/clamm  # 从 web3-security-101/ 出发，进入 CLAMM 配套目录
+cd code/ranges/clamm  # 从 web3-security-101/ 出发，进入 CLAMM 配套目录
 forge test --match-test wrongRounding -vv # 只跑错误取整的演示，打印差额
 ```
 
@@ -335,7 +335,7 @@ Suite result: ok. 13 passed; 0 failed; 0 skipped
 | 现象 | 原因 | 解决 |
 |---|---|---|
 | `forge: command not found` | Foundry 未安装 | 按 [B04](B04-setup.md) 安装 |
-| `Source "forge-std/Test.sol" not found` | 符号链接失效 | 在 `web3-security-101/` 目录运行 `bash practice-example-code/setup.sh` |
+| `Source "forge-std/Test.sol" not found` | 符号链接失效 | 在 `web3-security-101/` 目录运行 `bash code/setup.sh` |
 | `assertEq` 报多个候选函数 | `int24` 或 `uint160` 没有对应重载 | 显式转换成 `int256` 或 `uint256` |
 | 算出的 `sqrtPriceX96` 和链上差几位 | 教学库精度低 | 这是预期；真实审计要用 `TickMath` 做差分 |
 | 看不懂 Q64.96 | 定点数不熟 | 回看 [06 章](../chapters/06-arithmetic-precision.md) 的定点数部分 |

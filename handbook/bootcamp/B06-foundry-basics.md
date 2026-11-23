@@ -9,7 +9,7 @@
 > 交互实验：[调用树分析](../interactive/audit-trace.html)
 > 预计用时：2 小时
 > 最后核对：2026-11-10
-> 配套代码：[practice-example-code/range/basics/](../../practice-example-code/range/basics)
+> 配套代码：[code/ranges/basics/](../../code/ranges/basics)
 
 ---
 
@@ -32,7 +32,7 @@
 准备工作：进入配套工程。
 
 ```bash
-cd practice-example-code/range/basics  # 从 web3-security-101/ 出发，进入配套工程目录
+cd code/ranges/basics  # 从 web3-security-101/ 出发，进入配套工程目录
 forge test  # 运行工程里的全部测试
 ```
 
@@ -231,7 +231,7 @@ Listening on 127.0.0.1:8545
 打开**第二个**终端。进入配套工程，部署 `Club`，会费是 0.01 ETH（10¹⁶ wei）：
 
 ```bash
-cd practice-example-code/range/basics
+cd code/ranges/basics
 export RPC=http://127.0.0.1:8545  # 本地链的地址，后面命令复用
 # anvil 的 0 号默认账户，私钥公开
 export ME=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266

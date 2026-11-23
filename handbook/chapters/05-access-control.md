@@ -6,7 +6,7 @@
 > 3. 区分合约层权限和账户层权限（以 TRON 账户权限为例）。
 >
 > 前置章节：[03 EVM 与 Solidity 安全基础](03-evm-solidity-basics.md)
-> 交互实验：[storage-proxy-lab.html](../interactive/storage-proxy-lab.html) ｜ 示例合约：[practice-example-code/02-AccessControl.sol](../../practice-example-code/02-AccessControl.sol)
+> 交互实验：[storage-proxy-lab.html](../interactive/storage-proxy-lab.html) ｜ 示例合约：[code/snippets/02-AccessControl.sol](../../code/snippets/02-AccessControl.sol)
 
 > 最后核对：2026-11-09
 
@@ -195,11 +195,11 @@ L2 的桥合约持有用户全部跨链资产。谁能升级桥，谁就能决�
 
 ### 4.4 用代码验证修复
 
-示例合约 [02-AccessControl.sol](../../practice-example-code/02-AccessControl.sol) 同时包含 `VulnerableWallet` 和 `SafeWallet`。Foundry 靶场 `practice-example-code/foundry/test/AccessControl.t.sol` 用于对照这两个版本。
+示例合约 [02-AccessControl.sol](../../code/snippets/02-AccessControl.sol) 同时包含 `VulnerableWallet` 和 `SafeWallet`。Foundry 靶场 `code/foundry-demos/test/AccessControl.t.sol` 用于对照这两个版本。
 
 ```bash
 # 运行访问控制示例的测试
-cd practice-example-code/foundry && forge test --match-path test/AccessControl.t.sol -vv  # 从 web3-security-101/ 出发
+cd code/foundry-demos && forge test --match-path test/AccessControl.t.sol -vv  # 从 web3-security-101/ 出发
 ```
 
 > 💡 注意：修复验证需要两个结果：漏洞版上攻击成功，修复版上攻击失败（[A08](../assessment/A08-reproduce-attacks.md)）。

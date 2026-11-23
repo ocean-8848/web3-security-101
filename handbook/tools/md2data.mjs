@@ -39,7 +39,7 @@ export function convert(md, mdPath, mdMap, { bookDir = 'handbook' } = {}) {
     const raw = href.replace(/&amp;/g, '&');
     if (/^https?:\/\//.test(raw)) return `<a href="${href}" target="_blank" rel="noopener"${rest}>`;
     const [p, frag] = raw.split('#');
-    // 仓库根目录的 practice-example-code/ 链回手册时写 ../handbook/…，这里还原成手册内的路径
+    // 仓库根目录的 code/ 链回手册时写 ../handbook/…，这里还原成手册内的路径
     const norm = (p ? path.posix.normalize(path.posix.join(base, p)) : mdPath).replace(/^(\.\.\/)?handbook\//, '');
     const fromParent = path.posix.normalize(path.posix.join(bookDir, norm));
     for (const [k, url] of Object.entries(EXT_LINKS)) if (!k.startsWith(bookDir + '/') && (fromParent === k || '../' + k === norm)) return `<a href="${url}${frag ? '#' + frag : ''}" target="_blank" rel="noopener"${rest}>`;
@@ -48,7 +48,7 @@ export function convert(md, mdPath, mdMap, { bookDir = 'handbook' } = {}) {
       const id = name === 'index' ? 'labs' : 'lab-' + name;
       return `<a href="#${id}" data-nav="${id}" class="lab-link"${rest}>`;
     }
-    if (norm.startsWith('practice-example-code/') || norm.startsWith('../practice-example-code/')) return `<a href="#examples" data-nav="examples"${rest}>`;
+    if (norm.startsWith('code/') || norm.startsWith('../code/')) return `<a href="#examples" data-nav="examples"${rest}>`;
     if (norm === 'handbook.html' || norm === 'index.html') return `<a href="#home" data-nav="home"${rest}>`;
     if (norm.startsWith('video/')) return `<a href="#home" data-nav="home"${rest}>`;
     const key = norm.endsWith('.md') ? norm : norm.replace(/\/?$/, '/');

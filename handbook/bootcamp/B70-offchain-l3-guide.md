@@ -7,7 +7,7 @@
 >
 > 前置：完成链下赛道 L1（[L1 导读](B56-offchain-l1-guide.md)）与 L2（[L2 导读](B61-offchain-l2-guide.md)）。读过 [X01 安全体系怎么搭](../architecture/X01-security-program-controls.md) 与 [X07 交易所安全架构总览](../architecture/X07-cex-architecture-overview.md) 更好，也可以边学边读。会运行 `python3` 和写简单 SQL；不需要 Foundry，不需要联网。
 > 预计用时：B71–B76 约 15.5–20.5 小时，B77 另计（见第 5 节）；周计划示例见 [B00 第 4 节](B00-roadmap.md)。
-> 关联章节：[X01](../architecture/X01-security-program-controls.md)｜[X07](../architecture/X07-cex-architecture-overview.md)｜[MiniEx 靶场说明](../../practice-example-code/ops/README.md)｜[靶场 API](../../practice-example-code/ops/API.md)
+> 关联章节：[X01](../architecture/X01-security-program-controls.md)｜[X07](../architecture/X07-cex-architecture-overview.md)｜[MiniEx 靶场说明](../../code/offchain-ops/README.md)｜[靶场 API](../../code/offchain-ops/API.md)
 > 最后核对：2026-11-23（第 3 节的命令与场景表取自靶场 README 与 B71–B76 已运行的输出）
 
 > ⚠️ 警告：法律与道德边界。MiniEx 是虚构的交易所，所有数据由脚本合成，不含真实用户、真实地址或真实密钥。数据里的"攻击"只是日志与账务上的痕迹，没有针对真实系统的步骤。本赛道的规则、阈值和清单不要原样搬进真实环境：先用你自己的数据回放，并取得你所在组织的授权。
@@ -52,21 +52,21 @@ L3 要解决的就是这件事。它把手册的 [X01–X48](../architecture/X01
 MiniEx 是一个虚构的小型交易所，贯穿 B71–B77。先在 `web3-security-101/` 根目录运行：
 
 ```bash
-bash practice-example-code/ops/setup.sh              # 生成数据 + 装载 SQLite + 跑自检 + 回放参考规则
-bash practice-example-code/ops/setup.sh --no-tests   # 只生成与装载
+bash code/offchain-ops/setup.sh              # 生成数据 + 装载 SQLite + 跑自检 + 回放参考规则
+bash code/offchain-ops/setup.sh --no-tests   # 只生成与装载
 ```
 
 - **数据全部合成。** 由 `gen/generate.py` 按固定种子 20260301 生成；IP 只用保留段，链上地址是哈希出来的随机十六进制串，云密钥以 `AKSIM` 开头。不含任何真实用户、地址或密钥。
 - **只用 Python 3（≥ 3.9）标准库。** 不装第三方包，不联网。生成约 2 秒，`data/` 约 66 MB，自检约 9 秒。
 - **可重复。** 同一种子两次生成的所有文件逐字节一致；`data/` 可以随时删掉重新生成。
-- **答案在 `practice-example-code/ops/answers/`。** 做完练习再看。各章会告诉你何时对照。
+- **答案在 `code/offchain-ops/answers/`。** 做完练习再看。各章会告诉你何时对照。
 - **时间基准。** 2026-03-01 00:00 UTC（周日）起 14 天，时间戳均为 UTC。
 
 生成后，用下面两条命令确认环境可用：
 
 ```bash
-python3 practice-example-code/ops/lib/logread.py --tables                  # 所有表与行数
-python3 -m unittest discover -s practice-example-code/ops/tests -v         # 靶场自检
+python3 code/offchain-ops/lib/logread.py --tables                  # 所有表与行数
+python3 -m unittest discover -s code/offchain-ops/tests -v         # 靶场自检
 ```
 
 靶场里的 9 个注入场景：
@@ -83,7 +83,7 @@ python3 -m unittest discover -s practice-example-code/ops/tests -v         # 靶
 | S8 | 供应链：被篡改依赖、未固定 Action、未签名发布 | B75 |
 | S9 | 误报与噪声：103 个"看起来可疑但正常"的事件 | 全部（调参） |
 
-> 💡 注意：命令都从 `web3-security-101/` 根目录出发。工具用法与数据字典见 [靶场 API](../../practice-example-code/ops/API.md)。
+> 💡 注意：命令都从 `web3-security-101/` 根目录出发。工具用法与数据字典见 [靶场 API](../../code/offchain-ops/API.md)。
 
 ## 4. 章节顺序
 
@@ -170,15 +170,15 @@ L3 以"交付物 + 各章数字"判断，不靠记忆。
 
 ## 10. 常见问题
 
-**运行命令提示找不到文件？** 确认当前目录是 `web3-security-101/` 根目录。靶场命令里的路径都以 `practice-example-code/ops/` 开头。
+**运行命令提示找不到文件？** 确认当前目录是 `web3-security-101/` 根目录。靶场命令里的路径都以 `code/offchain-ops/` 开头。
 
 **提示 `python3: command not found`，或语法报错？** 靶场需要 Python 3（≥ 3.9），只用标准库。先运行 `python3 --version` 确认版本。各章在 macOS 上用系统 `python3` 跑通。
 
-**数据缺失，或不小心改坏了？** `data/` 不进仓库，可以随时重新生成：再运行一次 `bash practice-example-code/ops/setup.sh`。同一种子的结果逐字节一致。
+**数据缺失，或不小心改坏了？** `data/` 不进仓库，可以随时重新生成：再运行一次 `bash code/offchain-ops/setup.sh`。同一种子的结果逐字节一致。
 
 **我的数字和章里不一样？** 章里的数值按默认种子 20260301 得出。如果你用了 `setup.sh --seed N`，答案文件和数值都会变；改回默认种子重新生成即可。
 
-**自检失败？** 先重新生成数据再跑一次自检。仍失败，把 `python3 -m unittest discover -s practice-example-code/ops/tests -v` 的输出对照 [靶场 API](../../practice-example-code/ops/API.md) 查看。
+**自检失败？** 先重新生成数据再跑一次自检。仍失败，把 `python3 -m unittest discover -s code/offchain-ops/tests -v` 的输出对照 [靶场 API](../../code/offchain-ops/API.md) 查看。
 
 **没有 Foundry，能做吗？** 能。L3 不需要 Foundry，也不需要云账号、链节点或付费服务。
 

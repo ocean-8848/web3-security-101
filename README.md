@@ -5,7 +5,7 @@
 | 目录 | 内容 | 构建 |
 |---|---|---|
 | `handbook/` | 《Web3 安全学习手册》Markdown 源稿、交互实验页、构建脚本 | `node handbook/tools/build.mjs` → `handbook/dist/index.html` |
-| `practice-example-code/` | 示例代码：单文件示例合约（01–08）、Foundry 工程（`foundry/`）、MiniLend 靶场、训练营靶场（`range/`）、手敲练习工程（`bootcamp-lab/`） | 在各 Foundry 目录下运行 `forge test` |
+| `code/` | 示例代码：单文件示例合约（`snippets/`，01–08）、Foundry 演示工程（`foundry-demos/`）、训练营靶场（`ranges/`，含 MiniLend）、手敲练习工程（`bootcamp-lab/`）、链下运营练习（`offchain-ops/`） | 在各 Foundry 目录下运行 `forge test` |
 | `learning-site/` | Web3 安全学习站：学习进度层（`learn.js`、`visual.js`）、参考答案、构建脚本 | `python3 learning-site/build.py security` → `learning-site/security/index.html` |
 
 `handbook/` 的结构：
@@ -31,14 +31,14 @@
 ```bash
 git clone https://github.com/ocean-8848/web3-security-101.git
 cd web3-security-101
-bash practice-example-code/setup.sh  # 示例代码的依赖
+bash code/setup.sh  # 示例代码的依赖
 cd handbook/tools && npm install
 ```
 
 - 构建学习站之前，先构建手册。学习站读取 `handbook/dist/index.html`。
 - 发布前运行链接检查：`node handbook/tools/check-links.mjs`。
-- 示例代码用 Foundry。依赖（`lib/`）和构建产物（`out/`、`cache/`）不进仓库。克隆后在仓库根目录运行一次 `bash practice-example-code/setup.sh`，它下载固定版本的 forge-std（v1.11.0）和 OpenZeppelin（v5.6.1），并为各靶场建好 `lib/forge-std` 链接。
-- 学习时的根目录就是克隆下来的 `web3-security-101/`。手册里的命令（例如 `cd practice-example-code/foundry`）都从这里运行。步骤见训练营 B04 第 6 节。
+- 示例代码用 Foundry。依赖（`lib/`）和构建产物（`out/`、`cache/`）不进仓库。克隆后在仓库根目录运行一次 `bash code/setup.sh`，它下载固定版本的 forge-std（v1.11.0）和 OpenZeppelin（v5.6.1），并为各靶场建好 `lib/forge-std` 链接。
+- 学习时的根目录就是克隆下来的 `web3-security-101/`。手册里的命令（例如 `cd code/foundry-demos`）都从这里运行。步骤见训练营 B04 第 6 节。
 - 视频成品（`handbook/video/output/`）不进仓库，只保留脚本、幻灯片和工具源码。
 
 ## 说明

@@ -43,7 +43,7 @@ SITES = {
         src=f'{ROOT}/handbook/dist/index.html', title=('Web3 安全学习手册', 'Web3 安全学习站'),
         cfg=dict(key='cshb', name='Web3 安全'), config='docs-config.js',
         aux=lambda: [(p, s, None) for p, s in files_in(f'{ROOT}/handbook/interactive', 'interactive/', {'.html', '.css', '.js'})]
-                    + [(p, s, None) for p, s in files_in(f'{ROOT}/practice-example-code', 'practice-example-code/', {'.sol'})]
+                    + [(p, s, None) for p, s in files_in(f'{ROOT}/code', 'code/', {'.sol'})]
                     + [(p, s, None) for p, s in files_in(f'{ROOT}/handbook/decks/skeuomorphic', 'decks/skeuomorphic/', {'.html', '.woff2'})]
                     + [(p, s, None) for p, s in files_in(f'{ROOT}/handbook/decks/3b1b', 'decks/3b1b/', {'.html'})]),
     'scsec': dict(

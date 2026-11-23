@@ -7,7 +7,7 @@
 >
 > 前置章节：[B28 模式库](B28-bug-patterns.md)、[B29 为什么会漏掉漏洞](B29-why-audits-miss.md)、[A02 风险评级](../assessment/A02-risk-rating-reporting.md)
 > 预计时间：先独立审计 90 分钟，再跟读 90 分钟。
-> 靶场：[practice-example-code/range/thinkaloud](../../practice-example-code/range/thinkaloud) ｜ 定级练习：[severity-drill.html](../interactive/severity-drill.html)
+> 靶场：[code/ranges/thinkaloud](../../code/ranges/thinkaloud) ｜ 定级练习：[severity-drill.html](../interactive/severity-drill.html)
 
 > ⚠️ 警告：`MooringPool` 是含有故意漏洞的本地玩具合约。不要部署它。本章的方法只用于自己的代码、已授权的审计和本地靶场。
 
@@ -172,7 +172,7 @@ flowchart LR
 **[00:18] 跑工具。**
 
 ```bash
-cd practice-example-code/range/thinkaloud  # 从 web3-security-101/ 出发，进入 thinkaloud 靶场目录
+cd code/ranges/thinkaloud  # 从 web3-security-101/ 出发，进入 thinkaloud 靶场目录
 # 排除依赖、测试和答案目录，只看中高级别结果
 slither . --filter-paths "lib|test|solution" --exclude-informational --exclude-optimization
 ```
@@ -483,7 +483,7 @@ rate after : 5787037037037037
 在 `web3-security-101/` 目录（学习仓库根目录）运行：
 
 ```bash
-cd practice-example-code/range/thinkaloud # 进入 thinkaloud 靶场目录
+cd code/ranges/thinkaloud # 进入 thinkaloud 靶场目录
 forge test # 运行全部 PoC 和修复测试
 ```
 
@@ -505,7 +505,7 @@ Ran 2 test suites: 16 tests passed, 0 failed, 0 skipped (16 total tests)
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
-| `forge-std/Test.sol not found` | 软链接失效 | 在 `web3-security-101/` 目录运行 `bash practice-example-code/setup.sh` |
+| `forge-std/Test.sol not found` | 软链接失效 | 在 `web3-security-101/` 目录运行 `bash code/setup.sh` |
 | 你的 PoC 得到 0 | 累积器还是 0 | 先让时间前进，或者先产生一次罚金 |
 | 组合 PoC 没有收益 | 交易顺序错误 | 按抢跑、受害者、尾随的顺序排列 |
 | `slither` 找不到 forge | 环境变量 | 确认 `which forge` 有输出 |

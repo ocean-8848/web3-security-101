@@ -5,9 +5,9 @@ import path from 'node:path';
 import { convert, titleOf } from './md2data.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
-// 示例代码在仓库根目录 practice-example-code/（与 handbook/ 同级）；文档里仍用逻辑路径 practice-example-code/…
-const EXAMPLES = path.resolve(ROOT, '..', 'practice-example-code');
-const abs = p => p.startsWith('practice-example-code/') ? path.join(EXAMPLES, p.slice('practice-example-code/'.length)) : path.join(ROOT, p);
+// 示例代码在仓库根目录 code/（与 handbook/ 同级）；文档里仍用逻辑路径 code/…
+const EXAMPLES = path.resolve(ROOT, '..', 'code');
+const abs = p => p.startsWith('code/') ? path.join(EXAMPLES, p.slice('code/'.length)) : path.join(ROOT, p);
 const rd = p => fs.readFileSync(abs(p), 'utf8');
 
 const NAV = [
@@ -37,7 +37,7 @@ const NAV = [
   ['chain', '链专题 · ETH / BNB / TRON / Mantle', 'chains'],
   ['asm', '评估篇 · 交易所 / DeFi / 上币尽调', 'assessment'],
   ['tpl', '评估模板', 'templates'],
-  ['code', '示例合约', ['practice-example-code/README.md']],
+  ['code', '示例合约', ['code/README.md']],
   ['xa', '架构 A · 通用底座', ['architecture/X00-coverage-map.md', 'architecture/X01-security-program-controls.md', 'architecture/X02-standards-compliance-map.md', 'architecture/X03-production-infra-security.md', 'architecture/X04-delivery-supply-chain.md', 'architecture/X05-detection-response-engineering.md', 'architecture/X06-resilience-validation.md']],
   ['xb', '架构 B · 交易所', ['architecture/X07-cex-architecture-overview.md', 'architecture/X08-cex-identity-account-access.md', 'architecture/X09-cex-asset-listing-market-access.md', 'architecture/X10-cex-trading-settlement-credit.md', 'architecture/X11-cex-wallet-treasury-payment.md', 'architecture/X12-cex-production-data.md', 'architecture/X13-cex-fraud-compliance-secops.md', 'architecture/X14-cex-identity-verification.md', 'architecture/X15-cex-identity-recovery-ops.md', 'architecture/X16-cex-listing-verification.md', 'architecture/X17-cex-listing-recovery-ops.md', 'architecture/X18-cex-trading-verification.md', 'architecture/X19-cex-trading-recovery-ops.md', 'architecture/X20-cex-treasury-verification.md', 'architecture/X21-cex-treasury-recovery-ops.md', 'architecture/X22-cex-production-verification.md', 'architecture/X23-cex-production-recovery-ops.md', 'architecture/X24-cex-fraud-verification.md', 'architecture/X25-cex-fraud-recovery-ops.md', 'architecture/X26-cex-ledger-wallet-handoff.md', 'architecture/X27-cex-reserves-solvency.md']],
   ['xc', '架构 C · 公链与项目方', ['architecture/X28-chain-foundation-client-ops.md', 'architecture/X29-l2-bridge-oracle-ops.md', 'architecture/X30-defi-project-ops.md', 'architecture/X31-stablecoin-rwa-issuer-ops.md', 'architecture/X32-staking-validator-ops.md', 'architecture/X33-disclosure-bounty-ops.md']],
@@ -68,7 +68,7 @@ const LABS = [
 const idOf = file => {
   if (file === 'README.md') return 'home';
   if (file === 'docs/WRITING-GUIDE.md') return 'guide';
-  if (file === 'practice-example-code/README.md') return 'examples';
+  if (file === 'code/README.md') return 'examples';
   let m;
   if ((m = file.match(/^chapters\/(\d\d[a-z]?)-/))) return 's' + m[1];
   if ((m = file.match(/^audit\/R(\d\d)-/))) return 'r' + m[1];
@@ -102,14 +102,14 @@ for (const [old, id] of Object.entries(OLD_FILES)) mdMap[old] = id;
 const docs = {};
 for (const [file, group] of order) {
   let md = rd(file);
-  if (file === 'practice-example-code/README.md') {
+  if (file === 'code/README.md') {
     md += '\n\n## 源码\n';
-    for (const f of fs.readdirSync(EXAMPLES).filter(f => f.endsWith('.sol')).sort())
-      md += `\n### ${f}\n\n\`\`\`solidity\n${rd('practice-example-code/' + f).trimEnd()}\n\`\`\`\n`;
-    for (const sub of ['foundry/src', 'foundry/test', 'minilend/src', 'minilend/test'].concat(fs.existsSync(path.join(EXAMPLES, 'range')) ? fs.readdirSync(path.join(EXAMPLES, 'range')).flatMap(p => ['range/' + p + '/src', 'range/' + p + '/test']) : [])) {
+    for (const f of fs.readdirSync(path.join(EXAMPLES, 'snippets')).filter(f => f.endsWith('.sol')).sort())
+      md += `\n### ${f}\n\n\`\`\`solidity\n${rd('code/snippets/' + f).trimEnd()}\n\`\`\`\n`;
+    for (const sub of ['foundry-demos/src', 'foundry-demos/test'].concat(fs.existsSync(path.join(EXAMPLES, 'ranges')) ? fs.readdirSync(path.join(EXAMPLES, 'ranges')).flatMap(p => ['ranges/' + p + '/src', 'ranges/' + p + '/test']) : [])) {
       if (!fs.existsSync(path.join(EXAMPLES, sub))) continue;
       for (const f of fs.readdirSync(path.join(EXAMPLES, sub)).filter(f => f.endsWith('.sol')).sort())
-        md += `\n### ${sub}/${f}\n\n\`\`\`solidity\n${rd('practice-example-code/' + sub + '/' + f).trimEnd()}\n\`\`\`\n`;
+        md += `\n### ${sub}/${f}\n\n\`\`\`solidity\n${rd('code/' + sub + '/' + f).trimEnd()}\n\`\`\`\n`;
     }
   }
   const id = idOf(file);

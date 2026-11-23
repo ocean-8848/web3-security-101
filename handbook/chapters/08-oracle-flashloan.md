@@ -6,7 +6,7 @@
 > 3. 写出安全读取 Chainlink 类预言机的检查清单，包括 L2 排序器状态检查。
 >
 > 前置章节：[06 算术与精度](06-arithmetic-precision.md)
-> 交互实验：[oracle-manipulation-lab.html](../interactive/oracle-manipulation-lab.html) ｜ 示例合约：[practice-example-code/04-SpotOracle.sol](../../practice-example-code/04-SpotOracle.sol)
+> 交互实验：[oracle-manipulation-lab.html](../interactive/oracle-manipulation-lab.html) ｜ 示例合约：[code/snippets/04-SpotOracle.sol](../../code/snippets/04-SpotOracle.sol)
 
 > 最后核对：2026-11-09
 
@@ -243,11 +243,11 @@ BNB Chain 早期 DeFi 生态快速扩张，大量协议使用 PancakeSwap 池子
 
 ### 7.1 用代码验证修复
 
-示例合约 [04-SpotOracle.sol](../../practice-example-code/04-SpotOracle.sol) 同时包含 `SpotPriceLending` 和 `FeedPriceLending`。Foundry 靶场 `practice-example-code/foundry/test/SpotOracle.t.sol` 用于对照这两个版本。
+示例合约 [04-SpotOracle.sol](../../code/snippets/04-SpotOracle.sol) 同时包含 `SpotPriceLending` 和 `FeedPriceLending`。Foundry 靶场 `code/foundry-demos/test/SpotOracle.t.sol` 用于对照这两个版本。
 
 ```bash
 # 运行现货价预言机操纵示例的测试
-cd practice-example-code/foundry && forge test --match-path test/SpotOracle.t.sol -vv  # 从 web3-security-101/ 出发
+cd code/foundry-demos && forge test --match-path test/SpotOracle.t.sol -vv  # 从 web3-security-101/ 出发
 ```
 
 > 💡 注意：修复验证需要两个结果：漏洞版上操纵价格能多借，修复版上操纵不改变可借额度（[A08](../assessment/A08-reproduce-attacks.md)）。

@@ -8,7 +8,7 @@
 > 前置知识：读过 [X05 检测与响应工程](../architecture/X05-detection-response-engineering.md)（6.1、6.5、6.6、6.9、6.12、6.13 节）；会读 SQL（`SELECT`、`JOIN`、`GROUP BY`）；做过 [B72](B72-withdrawal-risk-rules-practice.md) 的规则回放更好；读过 [X03 生产基础设施安全](../architecture/X03-production-infra-security.md) 的签名命名空间部分。
 > 预计用时：约 3–4 小时。
 > 关联章节：[X05 检测与响应工程](../architecture/X05-detection-response-engineering.md)｜[X03 生产基础设施安全](../architecture/X03-production-infra-security.md)｜[T09 事件手册与值班](../templates/T09-incident-runbook-oncall.md)｜[B74 签名服务独立校验](B74-signing-policy-practice.md)
-> 靶场：`practice-example-code/ops/`（MiniEx 模拟交易所；说明见该目录的 `README.md` 与 `API.md`）
+> 靶场：`code/offchain-ops/`（MiniEx 模拟交易所；说明见该目录的 `README.md` 与 `API.md`）
 > 最后核对：2026-11-23（本章全部命令在本机用系统 `python3` 运行过；输出来自真实运行，数值由固定种子 20260301 决定）
 
 > ⚠️ 警告：法律与道德边界。本章的数据全部由脚本合成，不含真实用户、真实地址或真实密钥。数据里的"攻击"只是日志上的痕迹。不要把本章的规则原样放进真实环境：字段、阈值和白名单都要按你的环境重新回放。不要对你没有授权的系统采集或分析日志。
@@ -62,13 +62,13 @@ flowchart LR
 1. 生成靶场数据（约 2 秒）：
 
 ```bash
-bash practice-example-code/ops/setup.sh --no-tests
+bash code/offchain-ops/setup.sh --no-tests
 ```
 
 输出的最后一行是：
 
 ```text
-靶场已就绪：数据在 practice-example-code/ops/data/，答案在 practice-example-code/ops/answers/（练习做完再看）
+靶场已就绪：数据在 code/offchain-ops/data/，答案在 code/offchain-ops/answers/（练习做完再看）
 ```
 
 2. 建一个放自己规则的目录。本章所有规则都写在这里：
@@ -79,7 +79,7 @@ mkdir -p my_rules
 
 3. 约定：规则文件第一行写 `-- id: 名字`。本章用固定的名字，这样你的输出和下文一致。
 
-> 💡 注意：**先练习，再看 `practice-example-code/ops/answers/`。** `answers/` 里有标准答案和参考规则。如果你先看了，回放的数字就没有意义。
+> 💡 注意：**先练习，再看 `code/offchain-ops/answers/`。** `answers/` 里有标准答案和参考规则。如果你先看了，回放的数字就没有意义。
 
 ## 3. 第 1 步：从假设开始，不从 SQL 开始
 
@@ -97,7 +97,7 @@ mkdir -p my_rules
 2. 看一眼数据，把"正常"的形状弄清楚。先看客服每人的访问量：
 
 ```bash
-python3 practice-example-code/ops/lib/logread.py --sql "SELECT staff_id, COUNT(*) n, SUM(ticket_id IS NULL) no_ticket, SUM(ip NOT LIKE '192.0.2.%') off_office, SUM(action='export_kyc') exports FROM support_access GROUP BY staff_id ORDER BY n DESC LIMIT 6"
+python3 code/offchain-ops/lib/logread.py --sql "SELECT staff_id, COUNT(*) n, SUM(ticket_id IS NULL) no_ticket, SUM(ip NOT LIKE '192.0.2.%') off_office, SUM(action='export_kyc') exports FROM support_access GROUP BY staff_id ORDER BY n DESC LIMIT 6"
 ```
 
 ```text
@@ -149,7 +149,7 @@ HAVING accounts >= :min_reads
 2. 回放：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s5_v1_volume.sql --show 4
+python3 code/offchain-ops/lib/replay.py my_rules/s5_v1_volume.sql --show 4
 ```
 
 ```text
@@ -172,7 +172,7 @@ python3 practice-example-code/ops/lib/replay.py my_rules/s5_v1_volume.sql --show
 3. 看误报是谁。把 `--show` 调到 16，数一数 `[FP-噪声]` 行的标签：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s5_v1_volume.sql --show 16 | grep FP | sed 's/  {.*//' | sort | uniq -c
+python3 code/offchain-ops/lib/replay.py my_rules/s5_v1_volume.sql --show 16 | grep FP | sed 's/  {.*//' | sort | uniq -c
 ```
 
 ```text
@@ -194,7 +194,7 @@ python3 practice-example-code/ops/lib/replay.py my_rules/s5_v1_volume.sql --show
 2. 回放：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s5_v2_noticket.sql
+python3 code/offchain-ops/lib/replay.py my_rules/s5_v2_noticket.sql
 ```
 
 ```text
@@ -251,7 +251,7 @@ FROM support_access WHERE ticket_id IS NULL AND action = 'export_kyc'
 2. 回放：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s5_v3_stream.sql
+python3 code/offchain-ops/lib/replay.py my_rules/s5_v3_stream.sql
 ```
 
 ```text
@@ -282,7 +282,7 @@ S6 有 3 个事件，都发生在签名服务这一层：
 2. 回放：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s6_v1_no_approval.sql
+python3 code/offchain-ops/lib/replay.py my_rules/s6_v1_no_approval.sql
 ```
 
 ```text
@@ -323,7 +323,7 @@ WHERE s.signer_result = 'signed'
 2. 回放：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s6_v2_mismatch.sql --show 9 | cut -c1-110
+python3 code/offchain-ops/lib/replay.py my_rules/s6_v2_mismatch.sql --show 9 | cut -c1-110
 ```
 
 ```text
@@ -358,8 +358,8 @@ python3 practice-example-code/ops/lib/replay.py my_rules/s6_v2_mismatch.sql --sh
 3. 回放两条：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s6_v3_final.sql --show 0
-python3 practice-example-code/ops/lib/replay.py my_rules/s6_v4_post_hoc.sql --show 0
+python3 code/offchain-ops/lib/replay.py my_rules/s6_v3_final.sql --show 0
+python3 code/offchain-ops/lib/replay.py my_rules/s6_v4_post_hoc.sql --show 0
 ```
 
 ```text
@@ -414,8 +414,8 @@ X05 规则 3 和规则 4 是 Sigma。靶场没有 SIEM，日志在 SQLite 里。
 3. 回放：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/x05_rule3_exec_signing.sql --show 2
-python3 practice-example-code/ops/lib/replay.py my_rules/x05_rule4_pkg_spawns_net.sql
+python3 code/offchain-ops/lib/replay.py my_rules/x05_rule3_exec_signing.sql --show 2
+python3 code/offchain-ops/lib/replay.py my_rules/x05_rule4_pkg_spawns_net.sql
 ```
 
 ```text
@@ -459,7 +459,7 @@ python3 practice-example-code/ops/lib/replay.py my_rules/x05_rule4_pkg_spawns_ne
 三条的 `id` 就是文件名（去掉 `.sql`），`scenario` 都写 S7。输出列统一用 `staff_id`（云审计里写 `identity AS staff_id`）、`ts`、`ip` 或 `host`，至少包含一个可对答案的列。
 
 ```bash
-for f in s7_a_endpoint_tunnel s7_b_cloud_external_secret s7_c_k8s_signing_no_change; do python3 practice-example-code/ops/lib/replay.py my_rules/$f.sql --show 0 | sed -n 1,4p; done
+for f in s7_a_endpoint_tunnel s7_b_cloud_external_secret s7_c_k8s_signing_no_change; do python3 code/offchain-ops/lib/replay.py my_rules/$f.sql --show 0 | sed -n 1,4p; done
 ```
 
 ```text
@@ -533,9 +533,9 @@ WHERE e.event_type = 'process_start' AND e.image IN ('ngrok', 'cloudflared', 'rt
 3. 回放，并故意把窗口调短：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s7_d_chain2.sql
-python3 practice-example-code/ops/lib/replay.py my_rules/s7_e_chain3.sql --show 3 | cut -c1-120
-python3 practice-example-code/ops/lib/replay.py my_rules/s7_d_chain2.sql --param win_min=20
+python3 code/offchain-ops/lib/replay.py my_rules/s7_d_chain2.sql
+python3 code/offchain-ops/lib/replay.py my_rules/s7_e_chain3.sql --show 3 | cut -c1-120
+python3 code/offchain-ops/lib/replay.py my_rules/s7_d_chain2.sql --param win_min=20
 ```
 
 ```text
@@ -575,17 +575,17 @@ MTTD（Mean Time To Detect，平均检测时间）：从恶意动作**真正开�
 
 靶场的 `answers/` 给了每个事件事后还原的起点（`window.start`）。本章的脚本 `mttd.py` 把"起点"和你规则输出里的 `fire_ts`（没有就用 `ts`）相减。规则不是实时跑的，它按固定间隔调度，所以脚本把告警时间取整到下一个调度时刻。
 
-1. 看脚本的用法（脚本在 `practice-example-code/ops/solutions/b73/`，读者可以直接用）：
+1. 看脚本的用法（脚本在 `code/offchain-ops/solutions/b73/`，读者可以直接用）：
 
 ```bash
-python3 practice-example-code/ops/solutions/b73/mttd.py
+python3 code/offchain-ops/solutions/b73/mttd.py
 ```
 
 ```text
 B73：计算规则的 MTTD（从事后还原的真实起点，到告警触发的时间）。
 
 用法（从 web3-security-101/ 出发）：
-  python3 practice-example-code/ops/solutions/b73/mttd.py 规则.sql[:调度间隔分钟] ...
+  python3 code/offchain-ops/solutions/b73/mttd.py 规则.sql[:调度间隔分钟] ...
 
 起点：answers/ 里每个正例的 window.start（事后还原的真实起点）。
 触发时间：规则输出的 fire_ts 列（没有就用 ts 列），再向后取整到下一个调度时刻。
@@ -595,7 +595,7 @@ B73：计算规则的 MTTD（从事后还原的真实起点，到告警触发的
 2. 比较 S5 的两版规则。v2 按整小时统计，每小时跑一次（文件名后加 `:60`）；v3 是流式触发，每 5 分钟跑一次：
 
 ```bash
-python3 practice-example-code/ops/solutions/b73/mttd.py my_rules/s5_v2_noticket.sql:60 my_rules/s5_v3_stream.sql:5
+python3 code/offchain-ops/solutions/b73/mttd.py my_rules/s5_v2_noticket.sql:60 my_rules/s5_v3_stream.sql:5
 ```
 
 ```text
@@ -611,7 +611,7 @@ s5_v3_stream               S5-02   03-11 23:48:00       03-12 00:25:00       0:3
 3. 比较 S6 与 S7 的各版规则：
 
 ```bash
-python3 practice-example-code/ops/solutions/b73/mttd.py my_rules/s6_v3_final.sql my_rules/s7_c_k8s_signing_no_change.sql my_rules/s7_d_chain2.sql my_rules/s7_e_chain3.sql
+python3 code/offchain-ops/solutions/b73/mttd.py my_rules/s6_v3_final.sql my_rules/s7_c_k8s_signing_no_change.sql my_rules/s7_d_chain2.sql my_rules/s7_e_chain3.sql
 ```
 
 ```text
@@ -643,7 +643,7 @@ s7_e_chain3                S7-02   03-12 15:10:00       03-12 15:50:00       0:4
 1. 先算"朴素版"规则集（本章各规则的第一版）。每个参数是 `规则文件=级别`：
 
 ```bash
-python3 practice-example-code/ops/solutions/b73/triage.py my_rules/s5_v1_volume.sql=P2 my_rules/s6_v2_mismatch.sql=P1 my_rules/s7_a_endpoint_tunnel.sql=P2 my_rules/s7_b_cloud_external_secret.sql=P3
+python3 code/offchain-ops/solutions/b73/triage.py my_rules/s5_v1_volume.sql=P2 my_rules/s6_v2_mismatch.sql=P1 my_rules/s7_a_endpoint_tunnel.sql=P2 my_rules/s7_b_cloud_external_secret.sql=P3
 ```
 
 ```text
@@ -659,7 +659,7 @@ s7_b_cloud_external_secret   P3       4      2      0.3       40
 2. 再算"调优版"规则集：
 
 ```bash
-python3 practice-example-code/ops/solutions/b73/triage.py my_rules/s5_v3_stream.sql=P2 my_rules/s6_v3_final.sql=P1 my_rules/s6_v4_post_hoc.sql=P3 my_rules/s7_d_chain2.sql=P2 my_rules/s7_e_chain3.sql=P1
+python3 code/offchain-ops/solutions/b73/triage.py my_rules/s5_v3_stream.sql=P2 my_rules/s6_v3_final.sql=P1 my_rules/s6_v4_post_hoc.sql=P3 my_rules/s7_d_chain2.sql=P2 my_rules/s7_e_chain3.sql=P1
 ```
 
 ```text
@@ -711,15 +711,15 @@ s7_e_chain3                  P1       3      0      0.2       90
 
 做完上面所有步骤，再对照参考答案。
 
-1. 参考规则在 `practice-example-code/ops/answers/reference_rules/`。和本章相关的是：
+1. 参考规则在 `code/offchain-ops/answers/reference_rules/`。和本章相关的是：
    - `r08_support_bulk_no_ticket.sql`（S5）
    - `r09_signing_without_approval.sql`、`r10_chain_tx_without_request.sql`（S6）
    - `r11_dev_chain_to_signing.sql`（S7）
-2. 本章每一版规则的参考实现在 `practice-example-code/ops/solutions/b73/rules/`。文件名与你写的文件名一致。
+2. 本章每一版规则的参考实现在 `code/offchain-ops/solutions/b73/rules/`。文件名与你写的文件名一致。
 3. 用汇总命令一次回放本章全部参考规则：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py --dir practice-example-code/ops/solutions/b73/rules
+python3 code/offchain-ops/lib/replay.py --dir code/offchain-ops/solutions/b73/rules
 ```
 
 ```text
@@ -772,7 +772,7 @@ x05_rule4_pkg_spawns_net.sql       S7           0    0    0       0/2
 | 召回里出现"漏掉：…" | 规则没有输出可对答案的列（`staff_id`、`ip`、`request_id`、`host` 等） | 查 `API.md` 3.4 节的"命中字段"列表，把输出列改名 |
 | `no such column` | 列名拼错，或日志里的嵌套字段没用 `json_extract` | `logread.py --schema 表名` 查列 |
 | `mttd.py` 的告警时间比预期晚很多 | 调度间隔太大，或没有输出 `fire_ts` | 给规则文件名加 `:5`；规则输出里加 `fire_ts` 列 |
-| 数字与本章差 1–2 条 | 重新生成数据时换了种子 | `bash practice-example-code/ops/setup.sh --no-tests`（默认种子 20260301） |
+| 数字与本章差 1–2 条 | 重新生成数据时换了种子 | `bash code/offchain-ops/setup.sh --no-tests`（默认种子 20260301） |
 
 ## 12. 过关标准
 
@@ -781,7 +781,7 @@ x05_rule4_pkg_spawns_net.sql       S7           0    0    0       0/2
 - [ ] S5：`my_rules/s5_v3_stream.sql` 召回 2/2，误报 ≤ 2。（参考实现：召回 2/2，误报 0。）命令：
 
 ```bash
-python3 practice-example-code/ops/lib/replay.py my_rules/s5_v3_stream.sql --min-recall 1.0 --max-fp 2 > /dev/null; echo "退出码 $?"
+python3 code/offchain-ops/lib/replay.py my_rules/s5_v3_stream.sql --min-recall 1.0 --max-fp 2 > /dev/null; echo "退出码 $?"
 ```
 
 ```text

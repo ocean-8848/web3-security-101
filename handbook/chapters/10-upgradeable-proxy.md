@@ -6,7 +6,7 @@
 > 3. 制定一份安全升级的操作流程。
 >
 > 前置章节：[03 EVM 与 Solidity 安全基础](03-evm-solidity-basics.md)、[05 访问控制与权限](05-access-control.md)
-> 交互实验：[storage-proxy-lab.html](../interactive/storage-proxy-lab.html) ｜ 示例合约：[practice-example-code/07-ProxyStorage.sol](../../practice-example-code/07-ProxyStorage.sol)
+> 交互实验：[storage-proxy-lab.html](../interactive/storage-proxy-lab.html) ｜ 示例合约：[code/snippets/07-ProxyStorage.sol](../../code/snippets/07-ProxyStorage.sol)
 
 > 最后核对：2026-11-09
 
@@ -217,11 +217,11 @@ flowchart LR
 
 ### 6.1 用代码验证修复
 
-示例合约 [07-ProxyStorage.sol](../../practice-example-code/07-ProxyStorage.sol) 包含朴素代理、EIP-1967 代理、错误的 `BankV2Broken` 和正确的 `BankV2Good`。Foundry 靶场 `practice-example-code/foundry/test/ProxyStorage.t.sol` 对比这些布局。
+示例合约 [07-ProxyStorage.sol](../../code/snippets/07-ProxyStorage.sol) 包含朴素代理、EIP-1967 代理、错误的 `BankV2Broken` 和正确的 `BankV2Good`。Foundry 靶场 `code/foundry-demos/test/ProxyStorage.t.sol` 对比这些布局。
 
 ```bash
 # 运行代理存储冲突示例的测试
-cd practice-example-code/foundry && forge test --match-path test/ProxyStorage.t.sol -vv  # 从 web3-security-101/ 出发
+cd code/foundry-demos && forge test --match-path test/ProxyStorage.t.sol -vv  # 从 web3-security-101/ 出发
 ```
 
 > 💡 注意：修复验证需要"修复前失败、修复后通过"两个结果（[A08](../assessment/A08-reproduce-attacks.md)）。

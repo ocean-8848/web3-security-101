@@ -8,7 +8,7 @@
 >
 > 前置章节：[B06 Foundry 基本功](B06-foundry-basics.md)
 > 预计用时：3～4 小时
-> 配套代码：[practice-example-code/range/basics/src/b04/](../../practice-example-code/range/basics/src/b04)
+> 配套代码：[code/ranges/basics/src/b04/](../../code/ranges/basics/src/b04)
 > 交互实验：[授权流程](../interactive/audit-approve.html)
 
 ---
@@ -37,10 +37,10 @@ ERC-20 是可替代代币的接口标准。它规定了 `transfer`、`approve`�
 
 OpenZeppelin 提供经过广泛审计的实现。自己重写一遍 ERC-20 是常见的错误来源。
 
-本章继续在 `practice-example-code/bootcamp-lab/` 里做。本章的金库、破坏 A/B/C 的完整代码在 `practice-example-code/range/basics/src/b04/`，卡住时对照。依赖已经由 `setup.sh` 准备好：
+本章继续在 `code/bootcamp-lab/` 里做。本章的金库、破坏 A/B/C 的完整代码在 `code/ranges/basics/src/b04/`，卡住时对照。依赖已经由 `setup.sh` 准备好：
 
 ```bash
-cd practice-example-code/bootcamp-lab  # 从 web3-security-101/ 出发，进入练习工程
+cd code/bootcamp-lab  # 从 web3-security-101/ 出发，进入练习工程
 # 确认 OpenZeppelin 已就位；foundry.toml 里已有 @openzeppelin/ 的重映射
 ls lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol
 ```
@@ -51,7 +51,7 @@ ls lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol
 lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol
 ```
 
-> 💡 注意：`setup.sh` 固定下载 OpenZeppelin v5.6.1，保证你和手册的结果一致（2026-11-10 查询：npm 最新稳定版是 5.6.1，GitHub 上已有 v5.7.0 标签）。在学习仓库的子目录里运行 `forge install` 会报错，所以不用它。文件不存在时，回到 `web3-security-101/` 运行 `bash practice-example-code/setup.sh`。
+> 💡 注意：`setup.sh` 固定下载 OpenZeppelin v5.6.1，保证你和手册的结果一致（2026-11-10 查询：npm 最新稳定版是 5.6.1，GitHub 上已有 v5.7.0 标签）。在学习仓库的子目录里运行 `forge install` 会报错，所以不用它。文件不存在时，回到 `web3-security-101/` 运行 `bash code/setup.sh`。
 
 创建 `src/BootToken.sol`：
 
@@ -191,7 +191,7 @@ anvil  # 启动本地链
 第二个终端：
 
 ```bash
-cd practice-example-code/bootcamp-lab  # 从 web3-security-101/ 出发
+cd code/bootcamp-lab  # 从 web3-security-101/ 出发
 export RPC=http://127.0.0.1:8545
 export ME=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 # 运行部署脚本；--sender 指定发交易的账户，--broadcast 真正上链
@@ -289,7 +289,7 @@ status               1 (success)
 
 ### 5.1 破坏 A：取谁的钱，由调用者说了算（权限，ACC 类）
 
-在 `practice-example-code/bootcamp-lab` 里，复制金库：
+在 `code/bootcamp-lab` 里，复制金库：
 
 ```bash
 cp src/MiniVault.sol src/BrokenVault.sol  # 复制一份金库，用来改坏
@@ -377,7 +377,7 @@ Ran 1 test suite in 375.45ms (627.63µs CPU time): 1 tests passed, 0 failed, 0 s
 </details>
 
 ```bash
-cd practice-example-code/range/basics  # 从 web3-security-101/ 出发，切到配套工程
+cd code/ranges/basics  # 从 web3-security-101/ 出发，切到配套工程
 forge test --match-test test_BreakB  # 运行收费代币的 PoC
 ```
 

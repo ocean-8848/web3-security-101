@@ -7,7 +7,7 @@
 >
 > 前置章节：[B15 第 2 次审计：LuckyPot](B15-audit-2-luckypot.md)、[B18 DEX 与 AMM](B18-dex-amm.md)
 > 预计用时：8–10 小时。
-> 靶场：[practice-example-code/range/miniswap/](../../practice-example-code/range/miniswap/README.md)
+> 靶场：[code/ranges/miniswap/](../../code/ranges/miniswap/README.md)
 > 关联章节：[B18 DEX 与 AMM](B18-dex-amm.md)｜[06 算术与精度](../chapters/06-arithmetic-precision.md)｜[07 外部调用与代币](../chapters/07-external-calls-tokens.md)｜[09 MEV 与签名](../chapters/09-mev-signatures.md)｜[27 审计与测试流程](../chapters/27-audit-testing-workflow.md)｜[B25 实战项目](B25-capstone-minilend.md)｜[AMM 实验](../interactive/audit-amm.html)｜[不变量模糊测试器](../interactive/audit-fuzz.html)
 > 最后核对：2026-11-10（本地运行 forge 1.5.1、Echidna 2.3.3；公开发布信息显示 Echidna 已有 2.4.0，版本不同时输出可能有差异）
 
@@ -76,7 +76,7 @@ flowchart LR
 ## 2. 准备与范围
 
 ```bash
-cd practice-example-code/range/miniswap  # 从 web3-security-101/ 出发，进入 MiniSwap 靶场目录
+cd code/ranges/miniswap  # 从 web3-security-101/ 出发，进入 MiniSwap 靶场目录
 forge build # 编译；留意输出里的警告
 ```
 
@@ -548,7 +548,7 @@ return (reserveIn * amountOut * BPS) / ((reserveOut - amountOut) * (BPS - SWAP_F
 | `echidna: command not found` | 没有安装 | `brew install echidna`，或用 [官方 Release](https://github.com/crytic/echidna/releases) |
 | Echidna 报编译错误 | 系统 `solc` 低于 0.8.20 | 用 `solc-select` 切换到 0.8.20 或更高 |
 | Echidna 结果里有旧语料的干扰 | `echidna-corpus` 残留 | 删除该目录后重跑 |
-| `Source not found` | `lib/forge-std` 软链接失效 | 在 `web3-security-101/` 目录运行 `bash practice-example-code/setup.sh` |
+| `Source not found` | `lib/forge-std` 软链接失效 | 在 `web3-security-101/` 目录运行 `bash code/setup.sh` |
 
 ## 8. 过关标准
 

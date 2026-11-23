@@ -9,7 +9,7 @@
 > 预计用时：2 小时
 > 交互实验：[审计自查清单](../interactive/audit-checklist.html)
 > 最后核对：2026-11-10
-> 配套代码：[practice-example-code/range/basics/src/b05/LunchPool.sol](../../practice-example-code/range/basics/src/b05/LunchPool.sol)、[docs/lunchpool-spec.md](../../practice-example-code/range/basics/docs/lunchpool-spec.md)
+> 配套代码：[code/ranges/basics/src/b05/LunchPool.sol](../../code/ranges/basics/src/b05/LunchPool.sol)、[docs/lunchpool-spec.md](../../code/ranges/basics/docs/lunchpool-spec.md)
 
 ---
 
@@ -25,10 +25,10 @@
 
 ### 准备工作
 
-命令在配套工程 `practice-example-code/range/basics` 里运行。代码内笔记写在 LunchPool 的工作副本里，不改原文件。先建好副本：
+命令在配套工程 `code/ranges/basics` 里运行。代码内笔记写在 LunchPool 的工作副本里，不改原文件。先建好副本：
 
 ```bash
-cd practice-example-code/range/basics  # 从 web3-security-101/ 出发，进入配套工程
+cd code/ranges/basics  # 从 web3-security-101/ 出发，进入配套工程
 # 清掉旧副本，新建空目录
 rm -rf /tmp/lunchpool-audit && mkdir /tmp/lunchpool-audit
 cp -R src/b05 docs /tmp/lunchpool-audit/  # 复制合约源码和规格文档
@@ -97,7 +97,7 @@ flowchart LR
 4. **运行测试。** 确认环境可用，看一看覆盖率。
 5. **运行静态分析。** 拿到一份线索清单。
 
-现在，**先读** [docs/lunchpool-spec.md](../../practice-example-code/range/basics/docs/lunchpool-spec.md)，不要看代码。
+现在，**先读** [docs/lunchpool-spec.md](../../code/ranges/basics/docs/lunchpool-spec.md)，不要看代码。
 
 <details class="predict"><summary>🤔 先猜再看：只读规格，LunchPool 最值得攻击的目标是什么？</summary>
 

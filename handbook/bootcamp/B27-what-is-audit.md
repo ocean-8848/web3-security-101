@@ -9,7 +9,7 @@
 > 预计用时：3 小时
 > 交互实验：[风险评级计算器](../interactive/severity-calculator.html)
 > 最后核对：2026-11-10
-> 配套代码：[practice-example-code/range/basics/src/b05/LunchPool.sol](../../practice-example-code/range/basics/src/b05/LunchPool.sol)、[docs/lunchpool-spec.md](../../practice-example-code/range/basics/docs/lunchpool-spec.md)
+> 配套代码：[code/ranges/basics/src/b05/LunchPool.sol](../../code/ranges/basics/src/b05/LunchPool.sol)、[docs/lunchpool-spec.md](../../code/ranges/basics/docs/lunchpool-spec.md)
 
 ---
 
@@ -126,7 +126,7 @@ Rekt Test 是项目方的自评。受理（Intake）是审计方的判断：签�
 本章的练习对象仍是 LunchPool。如果你在 [B09](B09-reading-code-mindset.md) 建过工作副本，直接在副本里运行 `git rev-parse HEAD`。否则，创建一份带 git 的副本，得到提交哈希：
 
 ```bash
-cd practice-example-code/range/basics  # 从 web3-security-101/ 出发，进入配套工程
+cd code/ranges/basics  # 从 web3-security-101/ 出发，进入配套工程
 # 清掉旧副本，新建空目录
 rm -rf /tmp/lunchpool-audit && mkdir /tmp/lunchpool-audit
 cp -R src/b05 docs /tmp/lunchpool-audit/  # 复制合约源码和规格文档

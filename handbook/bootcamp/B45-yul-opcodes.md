@@ -9,7 +9,7 @@
 >
 > 前置章节：[03 EVM 与 Solidity 基础](../chapters/03-evm-solidity-basics.md)、[B06 Foundry 基础](B06-foundry-basics.md)
 > 预计用时：8–10 小时。
-> 交互实验：[EVM 单步执行器](../interactive/audit-evm.html) ｜ [选择器与槽位计算器](../interactive/audit-abi.html) ｜ [存储与代理](../interactive/storage-proxy-lab.html) ｜ 配套代码：[practice-example-code/range/yul/](../../practice-example-code/range/yul/README.md)
+> 交互实验：[EVM 单步执行器](../interactive/audit-evm.html) ｜ [选择器与槽位计算器](../interactive/audit-abi.html) ｜ [存储与代理](../interactive/storage-proxy-lab.html) ｜ 配套代码：[code/ranges/yul/](../../code/ranges/yul/README.md)
 >
 > 最后核对：2026-11-10
 
@@ -82,11 +82,11 @@ flowchart LR
 先进入配套目录。后面的所有命令（包括第 6–8 节）都在这个目录中运行。
 
 ```bash
-cd practice-example-code/range/yul  # 从 web3-security-101/ 出发，进入 Yul 配套目录
+cd code/ranges/yul  # 从 web3-security-101/ 出发，进入 Yul 配套目录
 forge build # 同时编译 .sol 和 .yul 文件
 ```
 
-如果 `lib/forge-std` 不存在，回到 `web3-security-101/` 目录运行 `bash practice-example-code/setup.sh`。
+如果 `lib/forge-std` 不存在，回到 `web3-security-101/` 目录运行 `bash code/setup.sh`。
 
 下面是审计中最常见的操作码。
 
@@ -470,7 +470,7 @@ Huff 是比 Yul 更底层的合约语言，开发者直接编排操作码。本�
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
-| `forge-std/Test.sol` 找不到 | `lib/forge-std` 符号链接缺失 | 在 `web3-security-101/` 目录运行 `bash practice-example-code/setup.sh` |
+| `forge-std/Test.sol` 找不到 | `lib/forge-std` 符号链接缺失 | 在 `web3-security-101/` 目录运行 `bash code/setup.sh` |
 | `vm.readFile` 报权限错误 | `foundry.toml` 缺少 `fs_permissions` | 添加 `fs_permissions = [{ access = "read", path = "./out" }]` |
 | `vm.getCode: no matching artifact found` | 该形式找不到 Yul 产物 | 改用 `vm.readFile` 加 `vm.parseJsonBytes` |
 | `Unreachable code` 警告 | `LockDemo` 故意演示 | 这是预期输出，保留用于教学 |

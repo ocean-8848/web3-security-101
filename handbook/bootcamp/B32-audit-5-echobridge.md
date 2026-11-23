@@ -8,7 +8,7 @@
 > 前置知识：[12 跨链桥](../chapters/12-cross-chain-bridges.md)、[09 MEV 与签名](../chapters/09-mev-signatures.md)；[B45 EVM 深入](B45-yul-opcodes.md)（可选，阶段 6 学；本章第 3 节讲了所需的 Yul）。
 > 预计用时：5–7 小时。
 > 交互实验：[signature-replay-lab.html](../interactive/signature-replay-lab.html)
-> 靶场目录：`practice-example-code/range/echobridge/`
+> 靶场目录：`code/ranges/echobridge/`
 > 最后核对：2026-11-10
 
 > ⚠️ 警告：本章只在本地运行玩具合约。不要对任何真实桥尝试这些攻击。未经授权测试他人系统可能违法。发现真实漏洞时，走项目方的漏洞赏金或负责任披露渠道。
@@ -43,12 +43,12 @@
 
 ## 2. 范围与简报
 
-打开 `practice-example-code/range/echobridge/README.md`，读范围和部署计划。**不要打开 `test/` 和 `solution/`。**
+打开 `code/ranges/echobridge/README.md`，读范围和部署计划。**不要打开 `test/` 和 `solution/`。**
 
 注意部署计划中的第三条链。它是下面第 5 节的线索。
 
 ```bash
-cd practice-example-code/range/echobridge  # 从 web3-security-101/ 出发，进入 EchoBridge 靶场目录
+cd code/ranges/echobridge  # 从 web3-security-101/ 出发，进入 EchoBridge 靶场目录
 forge build # 编译全部合约
 ```
 

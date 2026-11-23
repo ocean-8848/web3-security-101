@@ -8,7 +8,7 @@
 > 5. 用"同一模式、不同外衣"的视角，把新事故快速对应到已知模式。
 >
 > 前置章节：[03 EVM 与 Solidity 安全基础](../chapters/03-evm-solidity-basics.md)、[04 重入](../chapters/04-reentrancy.md)、[06 算术与精度](../chapters/06-arithmetic-precision.md)、[07 外部调用](../chapters/07-external-calls-tokens.md)、[08 预言机](../chapters/08-oracle-flashloan.md)、[09 MEV 与签名安全](../chapters/09-mev-signatures.md)、[10 代理升级](../chapters/10-upgradeable-proxy.md)、[15 账户抽象与新钱包范式](../chapters/15-account-abstraction-wallets.md)
-> 交互实验：[reentrancy-lab.html](../interactive/reentrancy-lab.html)、[oracle-manipulation-lab.html](../interactive/oracle-manipulation-lab.html)、[incident-explorer.html](../interactive/incident-explorer.html) ｜ 示例合约：[practice-example-code/08-RouterCallback.sol](../../practice-example-code/08-RouterCallback.sol)
+> 交互实验：[reentrancy-lab.html](../interactive/reentrancy-lab.html)、[oracle-manipulation-lab.html](../interactive/oracle-manipulation-lab.html)、[incident-explorer.html](../interactive/incident-explorer.html) ｜ 示例合约：[code/snippets/08-RouterCallback.sol](../../code/snippets/08-RouterCallback.sol)
 >
 > 最后核对：2026-11-09
 
@@ -352,7 +352,7 @@ function uniswapV3SwapCallback(int256 a0, int256 a1, bytes calldata data) extern
 
 **教训**：
 
-- "回调来自 `lastCalledPool`"只证明了"回调来自我刚才调用的地址"，没有证明"那是一个真实的池子"。正确做法是用工厂地址和代币对**计算**出池子地址再比较（Uniswap V3 的 `CallbackValidation` 思路），见 [practice-example-code/08-RouterCallback.sol](../../practice-example-code/08-RouterCallback.sol)。
+- "回调来自 `lastCalledPool`"只证明了"回调来自我刚才调用的地址"，没有证明"那是一个真实的池子"。正确做法是用工厂地址和代币对**计算**出池子地址再比较（Uniswap V3 的 `CallbackValidation` 思路），见 [code/snippets/08-RouterCallback.sol](../../code/snippets/08-RouterCallback.sol)。
 - 持有用户授权的合约，等于持有用户钱包的钥匙。它的任何"用户可控地址"都必须视为攻击入口（[05 章](../chapters/05-access-control.md) 3.4 节、[07 章](../chapters/07-external-calls-tokens.md) 第 5 节）。
 - 用户侧：只授权需要的额度；不用的授权及时撤销。
 

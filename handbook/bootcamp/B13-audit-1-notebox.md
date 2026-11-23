@@ -7,7 +7,7 @@
 >
 > 前置章节：[B09 读代码与攻击者思维](B09-reading-code-mindset.md)（审计的最小流程与 5 个术语）、[B12 Foundry 进阶](B12-foundry-advanced.md)（读存储、PoC 骨架）
 > 预计用时：2–3 小时。
-> 靶场：[practice-example-code/range/notebox/](../../practice-example-code/range/notebox/README.md)
+> 靶场：[code/ranges/notebox/](../../code/ranges/notebox/README.md)
 > 关联章节：[05 访问控制](../chapters/05-access-control.md)｜[03 EVM 与 Solidity 安全基础](../chapters/03-evm-solidity-basics.md)｜[A02 风险定级与报告](../assessment/A02-risk-rating-reporting.md)｜[T03 发现报告模板](../templates/T03-finding-report.md)｜[B25 实战项目](B25-capstone-minilend.md)
 > 最后核对：2026-11-10（forge 1.5.1、anvil、cast 均在本地运行过；下文输出来自真实运行）
 
@@ -41,7 +41,7 @@
 2. 进入靶场目录。路径以 `web3-security-101/` 目录（学习仓库根目录）为起点：
 
 ```bash
-cd practice-example-code/range/notebox  # 从 web3-security-101/ 出发，进入 NoteBox 靶场
+cd code/ranges/notebox  # 从 web3-security-101/ 出发，进入 NoteBox 靶场
 ```
 
 3. 编译：
@@ -475,7 +475,7 @@ function setSecret(bytes calldata newCiphertext) external onlyOwner { // ✅ 修
 | 现象 | 原因 | 处理 |
 |---|---|---|
 | `forge: command not found` | 没有安装 Foundry | 运行 `curl -L https://foundry.paradigm.xyz \| bash`，然后运行 `foundryup` |
-| `Source "forge-std/Test.sol" not found` | `lib/forge-std` 软链接失效 | 在 `web3-security-101/` 目录运行 `bash practice-example-code/setup.sh` |
+| `Source "forge-std/Test.sol" not found` | `lib/forge-std` 软链接失效 | 在 `web3-security-101/` 目录运行 `bash code/setup.sh` |
 | `forge create` 没有部署，只打印提示 | 缺少 `--broadcast` | 按第 6.3 节的完整命令运行 |
 | `Connection refused` | Anvil 没启动，或端口不一致 | 确认第二个终端的 `anvil --port 18545` 正在运行 |
 | 部署地址和本章不同 | Anvil 没有重启，nonce 变了 | 用你自己的输出地址，或重启 Anvil |

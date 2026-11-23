@@ -53,12 +53,12 @@ flowchart LR
 先在 `web3-security-101/` 根目录准备靶场（只依赖 Python 标准库）：
 
 ```bash
-bash practice-example-code/ops/setup.sh | tail -1
+bash code/offchain-ops/setup.sh | tail -1
 mkdir -p my_b74
 ```
 
 ```text
-靶场已就绪：数据在 practice-example-code/ops/data/，答案在 practice-example-code/ops/answers/（练习做完再看）
+靶场已就绪：数据在 code/offchain-ops/data/，答案在 code/offchain-ops/answers/（练习做完再看）
 ```
 
 > 🧪 动手验证：打开[签名请求独立校验](../interactive/signing-policy-lab.html)。8 个场景，每题选"放行 / 拒绝 / 升级人工"并选理由，满分 24 分。记录你的总分，以及哪几题的差异你一开始没有看出来。
@@ -68,7 +68,7 @@ mkdir -p my_b74
 签名请求有 1302 条（`signing_requests`）。其中 3 条是 S6。先把这 3 条和它们的审批单放在一起看：
 
 ```bash
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 python3 $OPS/lib/logread.py --sql "SELECT s.request_id id, s.wallet_tier tier, s.asset, substr(s.to_address,1,10) req_to, s.amount, s.approval_id ap, substr(a.to_address,1,10) ap_to, a.amount ap_amt, a.approver_count n FROM signing_requests s LEFT JOIN approvals a USING(approval_id) WHERE s.request_id IN ('SR000538','SR000828','SR001044')"
 ```
 
@@ -147,7 +147,7 @@ import argparse, hashlib, sys
 from collections import Counter
 from datetime import datetime, timezone
 
-sys.path.insert(0, "practice-example-code/ops/lib")
+sys.path.insert(0, "code/offchain-ops/lib")
 import mini
 
 # ---- 策略参数（示例）----
@@ -475,7 +475,7 @@ import sys
 from dataclasses import dataclass, replace
 from datetime import datetime
 
-sys.path.insert(0, "practice-example-code/ops/lib")
+sys.path.insert(0, "code/offchain-ops/lib")
 import mini
 
 POLICY = {  # 示例策略
@@ -596,11 +596,11 @@ python3 my_b74/sim.py
 
 ## 5. 对照答案
 
-两步都做完后，再看参考实现。参考实现放在 `practice-example-code/ops/solutions/b74/`：
+两步都做完后，再看参考实现。参考实现放在 `code/offchain-ops/solutions/b74/`：
 
 ```bash
-python3 practice-example-code/ops/solutions/b74/policy_engine.py | head -3
-python3 practice-example-code/ops/solutions/b74/transfer_sim.py | tail -4
+python3 code/offchain-ops/solutions/b74/policy_engine.py | head -3
+python3 code/offchain-ops/solutions/b74/transfer_sim.py | tail -4
 ```
 
 ```text
@@ -616,7 +616,7 @@ python3 practice-example-code/ops/solutions/b74/transfer_sim.py | tail -4
 `policy_engine.py` 的退出码是 0 表示过关，1 表示未过关。可以把它接进你自己的回放测试：
 
 ```bash
-python3 practice-example-code/ops/solutions/b74/policy_engine.py --json
+python3 code/offchain-ops/solutions/b74/policy_engine.py --json
 ```
 
 ```text
@@ -647,8 +647,8 @@ python3 practice-example-code/ops/solutions/b74/policy_engine.py --json
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
-| `ModuleNotFoundError: No module named 'mini'` | 不在 `web3-security-101/` 根目录运行，相对路径找不到 `practice-example-code/ops/lib` | `cd` 到根目录再运行 |
-| 数据库缺表或行数不对 | 数据被改动过 | 重新运行 `bash practice-example-code/ops/setup.sh` |
+| `ModuleNotFoundError: No module named 'mini'` | 不在 `web3-security-101/` 根目录运行，相对路径找不到 `code/offchain-ops/lib` | `cd` 到根目录再运行 |
+| 数据库缺表或行数不对 | 数据被改动过 | 重新运行 `bash code/offchain-ops/setup.sh` |
 | `--level 2` 没有出现 4 条误拒 | 你已经把 `c2_address` 改成了忽略大小写 | 正常，这是预期行为 |
 | 你的引擎误拒了 `SR000238`、`SR000352`、`SR000994` | 检查 3 写成了"金额必须相等" | 改成"请求金额 ≤ 审批金额 × 1.0001" |
 | 你的引擎误拒了 `SR000372`、`SR000835` | 补签的紧急调拨按"审批晚于请求"直接拒绝 | 状态为 `approved_post_hoc` 且间隔在 −15 到 0 分钟：升级人工 |

@@ -7,7 +7,7 @@
 >
 > 前置章节：[B45 深入 EVM：机器模型、操作码、Yul 与字节码审计](B45-yul-opcodes.md)
 > 预计时间：120 分钟。
-> 交互实验：[audit-abi.html](../interactive/audit-abi.html) ｜ 示例：[practice-example-code/range/abi](../../practice-example-code/range/abi)
+> 交互实验：[audit-abi.html](../interactive/audit-abi.html) ｜ 示例：[code/ranges/abi](../../code/ranges/abi)
 
 > ⚠️ 警告：本章的畸形编码只在本地 `forge test` 中使用。不要把它们发送到未授权的在线合约。
 
@@ -48,7 +48,7 @@
 在 `web3-security-101/` 目录（学习仓库根目录）运行：
 
 ```bash
-cd practice-example-code/range/abi  # 从 web3-security-101/ 出发，进入 ABI 配套目录
+cd code/ranges/abi  # 从 web3-security-101/ 出发，进入 ABI 配套目录
 forge test # 运行全部编码实验
 ```
 
@@ -169,7 +169,7 @@ a9059cbb                                                          ← 选择器
 
 ## 5. 不要信任 calldata 的形状
 
-ABI 规范定义了规范编码（canonical encoding）。合约收到的数据不一定规范。下表的结果来自 solc 0.8.30 的测试 [Malformed.t.sol](../../practice-example-code/range/abi/test/Malformed.t.sol)。
+ABI 规范定义了规范编码（canonical encoding）。合约收到的数据不一定规范。下表的结果来自 solc 0.8.30 的测试 [Malformed.t.sol](../../code/ranges/abi/test/Malformed.t.sol)。
 
 | 输入 | 高层解码器的行为 | 测试 |
 |---|---|---|
@@ -241,7 +241,7 @@ require(payload.length >= 4 && bytes4(payload[:4]) == this.ping.selector, "only 
 
 ## 6. 返回数据
 
-下面的结果来自 [Returndata.t.sol](../../practice-example-code/range/abi/test/Returndata.t.sol)。
+下面的结果来自 [Returndata.t.sol](../../code/ranges/abi/test/Returndata.t.sol)。
 
 | 情况 | 结果 | 测试 |
 |---|---|---|
@@ -295,7 +295,7 @@ forge test -vv --match-test ReturnBomb # 只跑返回数据炸弹测试，打印
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
-| `forge-std/Test.sol not found` | 软链接失效 | 在 `web3-security-101/` 目录运行 `bash practice-example-code/setup.sh` |
+| `forge-std/Test.sol not found` | 软链接失效 | 在 `web3-security-101/` 目录运行 `bash code/setup.sh` |
 | gas 数字和本章不同 | 编译器或优化器设置不同 | 比较两行的差额，不比较绝对值 |
 | `test_DirtyAddressReverts` 失败 | 使用了 ABI coder v1 | 确认没有写 `pragma abicoder v1` |
 | 手工解码偏移量错位 | 基准选错 | 嵌套偏移量从所在数组或结构体的起点算起 |

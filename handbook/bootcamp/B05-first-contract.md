@@ -7,7 +7,7 @@
 >
 > 前置章节：[B04 环境搭建](B04-setup.md)
 > 预计用时：2～3 小时
-> 配套代码：[practice-example-code/range/basics/src/b02/](../../practice-example-code/range/basics/src/b02)（8 步的完整文件）
+> 配套代码：[code/ranges/basics/src/b02/](../../code/ranges/basics/src/b02)（8 步的完整文件）
 
 ---
 
@@ -36,7 +36,7 @@
 在 B04 第 7 节进入的练习工程里工作。
 
 ```bash
-cd practice-example-code/bootcamp-lab  # 从 web3-security-101/ 出发，进入练习工程
+cd code/bootcamp-lab  # 从 web3-security-101/ 出发，进入练习工程
 touch src/Club.sol  # 新建一个空的合约文件
 ```
 

@@ -9,7 +9,7 @@
 > 前置知识：读过 [X27 储备与偿付能力](../architecture/X27-cex-reserves-solvency.md)（3.1–3.4、6.2、6.3、7.7 节）；会读 CSV；会写几十行 Python（`hashlib`、`json`、`csv`）；做过 [B81](B81-wallet-channel-recon-practice.md) 的三方对账更好。
 > 预计用时：约 3–4 小时（Merkle 小工具占一半）。
 > 关联章节：[X27 储备与偿付能力](../architecture/X27-cex-reserves-solvency.md)｜[X26 账务与钱包交接](../architecture/X26-cex-ledger-wallet-handoff.md)｜[X11 钱包、资金调拨与支付](../architecture/X11-cex-wallet-treasury-payment.md)｜[Merkle 树实验](../interactive/audit-merkle.html)｜[T09 事件手册与值班](../templates/T09-incident-runbook-oncall.md)
-> 靶场：`practice-example-code/ops/`（MiniEx 模拟交易所；第二批数据说明见该目录的 `API_X.md`）
+> 靶场：`code/offchain-ops/`（MiniEx 模拟交易所；第二批数据说明见该目录的 `API_X.md`）
 > 最后核对：2026-11-23（本章全部命令在本机用系统 `python3` 运行过；输出来自真实运行，数值由固定种子 20260302 决定）
 
 > ⚠️ 警告：法律与道德边界。本章的数据、账户和"用户余额"全部由脚本合成，不含真实用户、真实地址或真实密钥。Merkle 小工具是教学版，没有做生产级安全加固（盐的保管、叶子顺序随机化、每币种一棵树、可验证的树更新都没做）。不要把本章的阈值、分级和披露措辞原样用到真实平台：先在你自己的历史快照上回放，再让法务与合规复核对外措辞。本章不涉及对任何真实系统的攻击步骤。
@@ -56,8 +56,8 @@ flowchart LR
 
 | 步骤 | 脚本 | 位置 | 谁写的 |
 |---|---|---|---|
-| 1、6 | `solvency_grade.py`（算覆盖率、分级、假设对账） | `practice-example-code/ops/solutions/b82/` | 参考实现 |
-| 2–5 | `reserve_check.py`、`recon3.py` | `practice-example-code/ops/lib/` | 靶场自带 |
+| 1、6 | `solvency_grade.py`（算覆盖率、分级、假设对账） | `code/offchain-ops/solutions/b82/` | 参考实现 |
+| 2–5 | `reserve_check.py`、`recon3.py` | `code/offchain-ops/lib/` | 靶场自带 |
 | 7 | `merkle_sum.py` | 你写在 `b82-lab/`；参考实现在 `solutions/b82/` | 你 |
 | 8 | `report_check.py`（查月报与披露草稿） | `solutions/b82/` | 参考实现 |
 
@@ -70,18 +70,18 @@ flowchart LR
 1. 生成靶场数据（约 5 秒）：
 
 ```bash
-bash practice-example-code/ops/setup.sh --no-tests | tail -1
+bash code/offchain-ops/setup.sh --no-tests | tail -1
 ```
 
 ```text
-靶场已就绪：数据在 practice-example-code/ops/data/ 与 data_x/，答案在 practice-example-code/ops/answers/（练习做完再看）
+靶场已就绪：数据在 code/offchain-ops/data/ 与 data_x/，答案在 code/offchain-ops/answers/（练习做完再看）
 ```
 
 2. 建工作目录，并设两个变量（每开新终端都要重设）：
 
 ```bash
 mkdir -p b82-lab
-OPS=practice-example-code/ops
+OPS=code/offchain-ops
 SOL=$OPS/solutions/b82
 ```
 
@@ -99,7 +99,7 @@ reserve_snapshots.csv:2026-03-10,USD,bank,6247537.35,6247537.35
 
 读法：`liabilities.csv` 有 4 列科目（`user_balance` 用户余额、`pending_withdrawal` 在途提币、`accrued_fees` 应付手续费、`margin_net` 保证金净权益，后两项只出现在 USDT）。`reserve_snapshots.csv` 的 `source` 有钱包三层、`bank`、`custodian`（USD 只有 `bank`）。
 
-> 💡 注意：**先练习，再看 `practice-example-code/ops/answers/S14.json`。** 答案里有 S14-01 的标准命中清单；先看了，第 2 步的数字就没有意义。
+> 💡 注意：**先练习，再看 `code/offchain-ops/answers/S14.json`。** 答案里有 S14-01 的标准命中清单；先看了，第 2 步的数字就没有意义。
 
 ## 3. 第 1 步：手算一次覆盖率，再让脚本算
 
@@ -143,7 +143,7 @@ date       asset         reserve       liability  coverage            gap 级   
 ```bash
 python3 - <<'PY'
 import csv
-D = "practice-example-code/ops/data_x/"
+D = "code/offchain-ops/data_x/"
 for d in ["2026-03-10", "2026-03-11", "2026-03-12"]:
     R = sum(float(r["amount_usd"]) for r in csv.DictReader(open(D + "reserve_snapshots.csv")) if r["date"] == d)
     L = sum(float(r["amount_usd"]) for r in csv.DictReader(open(D + "liabilities.csv")) if r["date"] == d)
@@ -704,7 +704,7 @@ python3 $SOL/report_check.py b82-lab/monthly_report.md
 
 做完上面所有步骤，再对照参考答案。
 
-1. 靶场答案在 `practice-example-code/ops/answers/S14.json`；本章的参考实现在 `practice-example-code/ops/solutions/b82/`：
+1. 靶场答案在 `code/offchain-ops/answers/S14.json`；本章的参考实现在 `code/offchain-ops/solutions/b82/`：
 
 | 文件 | 内容 |
 |---|---|
@@ -774,7 +774,7 @@ python3 $SOL/report_check.py $SOL/report.reference.md; echo "退出码 $?"
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
-| `reserve_check.py` 报找不到 `data_x` 文件 | 没跑 `setup.sh`，或不在 `web3-security-101/` 根目录 | `pwd` 确认目录；运行 `bash practice-example-code/ops/setup.sh --no-tests` |
+| `reserve_check.py` 报找不到 `data_x` 文件 | 没跑 `setup.sh`，或不在 `web3-security-101/` 根目录 | `pwd` 确认目录；运行 `bash code/offchain-ops/setup.sh --no-tests` |
 | 覆盖率与本章差几分钱 | 用了浮点数求和 | 用整数"分"（或 `Decimal`） |
 | `--basis usd` 的数字与本章不同 | 手工改了数据，或换了种子 | 重新运行 `setup.sh`（第二批种子固定为 20260302） |
 | `solvency_grade.py` 的 `--adjust` 没有效果 | 日期范围写成了 `起-止`，或币种写错 | 格式是 `资产@起:止=金额`，例如 `USD@2026-03-10:2026-03-12=480000` |

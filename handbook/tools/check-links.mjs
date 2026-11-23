@@ -3,7 +3,7 @@ import fs from 'node:fs'; import path from 'node:path';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const walk = d => fs.readdirSync(d, { withFileTypes: true }).flatMap(e => ['node_modules','dist','lib','out','cache','video'].includes(e.name) ? [] : e.isDirectory() ? walk(path.join(d, e.name)) : e.name.endsWith('.md') ? [path.join(d, e.name)] : []);
 const ext = new Map(); let bad = 0;
-for (const f of [...walk(ROOT), ...walk(path.resolve(ROOT, "..", "practice-example-code"))]) {
+for (const f of [...walk(ROOT), ...walk(path.resolve(ROOT, "..", "code"))]) {
   const s = fs.readFileSync(f, 'utf8');
   for (const [, u] of s.matchAll(/\]\(([^)\s]+)\)/g)) {
     if (/^https?:/.test(u)) { if (!ext.has(u)) ext.set(u, path.relative(ROOT, f)); continue; }
@@ -14,7 +14,7 @@ for (const f of [...walk(ROOT), ...walk(path.resolve(ROOT, "..", "practice-examp
 }
 
 // Question sections must be one continuous numbered list: the learning site attaches answer boxes to the first list only.
-for (const f of [...walk(ROOT), ...walk(path.resolve(ROOT, "..", "practice-example-code"))]) {
+for (const f of [...walk(ROOT), ...walk(path.resolve(ROOT, "..", "code"))]) {
   const s = fs.readFileSync(f, 'utf8');
   for (const m of s.matchAll(/^#{2,3} .*思考题.*$/gm)) {
     let body = s.slice(m.index + m[0].length); const e = body.search(/^#{1,3} /m); if (e >= 0) body = body.slice(0, e);
