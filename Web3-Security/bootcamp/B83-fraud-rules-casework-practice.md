@@ -8,7 +8,7 @@
 >
 > 前置知识：会读 SQL；做过 [B72 提币与账户风控规则实战](B72-withdrawal-risk-rules-practice.md)（会用 `replay.py` 读召回与误报）；读过 [X24 第 4.2、4.3、5 节](../arch/X24-cex-fraud-verification.md) 和 [X25 第 4、5、7 节](../arch/X25-cex-fraud-recovery-ops.md)。
 > 预计用时：约 3 小时。
-> 关联章节：[X24 反欺诈、合规与安全运营·工程验收](../arch/X24-cex-fraud-verification.md)｜[X25 反欺诈、合规与安全运营·运营与恢复](../arch/X25-cex-fraud-recovery-ops.md)｜[X23 欺诈、合规与安全运营](../arch/X23-cex-fraud-compliance-secops.md)｜[B72 提币与账户风控规则实战](B72-withdrawal-risk-rules-practice.md)｜[B80 复市与恢复演练实战](B80-resumption-recovery-practice.md)
+> 关联章节：[X24 反欺诈、合规与安全运营·工程验收](../arch/X24-cex-fraud-verification.md)｜[X25 反欺诈、合规与安全运营·运营与恢复](../arch/X25-cex-fraud-recovery-ops.md)｜[X13 欺诈、合规与安全运营](../arch/X13-cex-fraud-compliance-secops.md)｜[B72 提币与账户风控规则实战](B72-withdrawal-risk-rules-practice.md)｜[B80 复市与恢复演练实战](B80-resumption-recovery-practice.md)
 > 最后核对：2026-11-23（Python 3.12.3；下文每条命令都在本机用靶场默认种子运行过，输出来自真实运行。第一批种子 20260301，第二批种子 20260302）
 
 > ⚠️ 警告：法律与道德边界。本章的数据是虚构交易所"MiniEx"的合成数据，不含真实用户、真实地址和真实密钥。本章教你验收"限制与解除"这套内部控制，不教怎样绕过它。案件、文书编号（`LO-`、`SAN-`）和员工编号都是编出来的，与任何真实案件无关。

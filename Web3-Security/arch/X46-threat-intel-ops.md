@@ -7,7 +7,7 @@
 >
 > 适用角色：交易所、项目方、钱包与托管机构的安全负责人、检测工程师、威胁情报分析师
 > 前置章节：[X05 检测与响应工程](X05-detection-response-engineering.md)、[25 资金追踪、冻结与事后处置](../25-fund-tracing-response.md)、[X33 漏洞披露、赏金与安全社区协作](X33-disclosure-bounty-ops.md)
-> 相关章节：[X09 客户身份与访问·工程验收](X09-cex-identity-verification.md)（接管信号回放）、[21 社工与内部人员](../21-social-engineering-insiders.md)、[19 用户诈骗](../19-user-scams.md)
+> 相关章节：[X14 客户身份与访问·工程验收](X14-cex-identity-verification.md)（接管信号回放）、[21 社工与内部人员](../21-social-engineering-insiders.md)、[19 用户诈骗](../19-user-scams.md)
 > 模板：本章给出情报条目模板、标签分级表、TLP 共享规则、Sigma 风格规则与 SQL 示例
 > 最后核对：2026-11-23（机构活动、金额与组织状态均以官方最新页面为准）
 
@@ -375,10 +375,10 @@ stateDiagram-v2
 
 > 💡 注意：把"事实"与"推断"分行写。事故中最常见的错误，就是把推断当成事实传给下一个人。
 
-### 6.9 与 X05、X09 的分工
+### 6.9 与 X05、X14 的分工
 
 - [X05](X05-detection-response-engineering.md) 讲检测平台、规则生命周期与值班。本章讲规则的"原料"：来源、置信度、过期日。规则落地之后的调参与值班，归 X05。
-- [X09](X09-cex-identity-verification.md) 用接管风险信号做回放验收。本章为这些信号提供外部输入，例如已知的钓鱼域名、撞库来源与被盗资金地址。
+- [X14](X14-cex-identity-verification.md) 用接管风险信号做回放验收。本章为这些信号提供外部输入，例如已知的钓鱼域名、撞库来源与被盗资金地址。
 - [25 资金追踪](../25-fund-tracing-response.md) 讲追踪方法。本章讲追踪结论的入账与回收。
 
 ### 6.10 常见坑

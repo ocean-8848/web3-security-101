@@ -6,7 +6,7 @@
 > 3. 以"协议运营方"身份，列出证明系统、升级与治理、前端与中继、可选披露四个域的运营控制，并做一次监管变化推演。
 >
 > 适用角色：交易所与托管机构的合规和风控工程师、隐私协议及其前端 / 钱包的运营与安全负责人、链上情报分析师。
-> 前置章节：[24 数据与隐私](../24-data-privacy.md)、[23 托管、充提与合规安全](../23-custody-exchange-ops.md)（Tornado Cash 的制裁与诉讼时间线在 5.3 节）、[25 资金追踪与响应](../25-fund-tracing-response.md)、[X23 反欺诈、合规与安全运营](X23-cex-fraud-compliance-secops.md)
+> 前置章节：[24 数据与隐私](../24-data-privacy.md)、[23 托管、充提与合规安全](../23-custody-exchange-ops.md)（Tornado Cash 的制裁与诉讼时间线在 5.3 节）、[25 资金追踪与响应](../25-fund-tracing-response.md)、[X13 反欺诈、合规与安全运营](X13-cex-fraud-compliance-secops.md)
 > 交互实验：[去匿名化实验](../interactive/deanonymization-lab.html)
 > 最后核对：2026-11-23
 
@@ -305,7 +305,7 @@ if violated:
 
 ### 6.8 接收方：隐私币上币与下架评估清单
 
-隐私币（默认隐私链上的原生资产）与隐私池来源资金是两个问题：前者是"要不要上币、怎样持续运营"，后者是"来的钱怎么处理"。上币评估建议至少回答下面六类问题，结论写入上币记录（与 [X11 资产与市场准入](X11-cex-asset-listing-market-access.md) 的流程衔接）。
+隐私币（默认隐私链上的原生资产）与隐私池来源资金是两个问题：前者是"要不要上币、怎样持续运营"，后者是"来的钱怎么处理"。上币评估建议至少回答下面六类问题，结论写入上币记录（与 [X09 资产与市场准入](X09-cex-asset-listing-market-access.md) 的流程衔接）。
 
 | 评估项 | 要问什么 | 通过条件（建议） |
 |---|---|---|
@@ -390,7 +390,7 @@ if violated:
 
 **复盘问题**：本月有没有一个决定，我们不能用规则版本和证据向外部解释？有，就说明留痕机制不够。
 
-**与相邻章节的衔接**：链上异常的响应流程用 [X05](X05-detection-response-engineering.md) 的值班与升级机制；被盗资金的追踪与冻结沟通见 [25 章](../25-fund-tracing-response.md)；制裁命中后的处置权限与上报见 [X23](X23-cex-fraud-compliance-secops.md)。
+**与相邻章节的衔接**：链上异常的响应流程用 [X05](X05-detection-response-engineering.md) 的值班与升级机制；被盗资金的追踪与冻结沟通见 [25 章](../25-fund-tracing-response.md)；制裁命中后的处置权限与上报见 [X13](X13-cex-fraud-compliance-secops.md)。
 
 ---
 

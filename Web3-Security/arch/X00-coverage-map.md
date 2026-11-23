@@ -19,10 +19,10 @@
 
 | 层次 | 回答的问题 | 典型产出 | 对应章节类型 |
 |---|---|---|---|
-| 业务需求层 | 要保护什么？谁对什么负责？ | 保护目标、信任边界、资产清单 | 设计章（X08、X11、X14、X17、X20、X23 等）的前半 |
+| 业务需求层 | 要保护什么？谁对什么负责？ | 保护目标、信任边界、资产清单 | 设计章（X08、X09、X10、X11、X12、X13 等）的前半 |
 | 架构逻辑层 | 授权和核验怎样划分？ | 参考架构、控制清单、分级落地 | 设计章的后半 |
-| 工程技术层 | 控制做出来了吗？怎么证明有效？ | 验收用例、回放脚本、上线门禁 | **工程验收章**（X09、X12、X15、X18、X21、X24） |
-| 运营服务层 | 出事后怎样发现、处置、恢复？ | 恢复状态机、决策矩阵、演练剧本 | **运营与恢复章**（X10、X13、X16、X19、X22、X25） |
+| 工程技术层 | 控制做出来了吗？怎么证明有效？ | 验收用例、回放脚本、上线门禁 | **工程验收章**（X14、X16、X18、X20、X22、X24） |
+| 运营服务层 | 出事后怎样发现、处置、恢复？ | 恢复状态机、决策矩阵、演练剧本 | **运营与恢复章**（X15、X17、X19、X21、X23、X25） |
 
 ```mermaid
 flowchart LR
@@ -43,12 +43,12 @@ flowchart LR
 
 | 保护域 | 需求与逻辑（设计） | 工程验收 | 运营与恢复 | 练习章（训练营） |
 |---|---|---|---|---|
-| 客户身份、账户与访问 | [X08](X08-cex-identity-account-access.md) | [X09](X09-cex-identity-verification.md) | [X10](X10-cex-identity-recovery-ops.md) | B83（部分） |
-| 资产与市场准入 | [X11](X11-cex-asset-listing-market-access.md) | [X12](X12-cex-listing-verification.md) | [X13](X13-cex-listing-recovery-ops.md) | — |
-| 交易、结算与信用 | [X14](X14-cex-trading-settlement-credit.md) | [X15](X15-cex-trading-verification.md) | [X16](X16-cex-trading-recovery-ops.md) | B79、B80 |
-| 钱包、财资与支付渠道 | [X17](X17-cex-wallet-treasury-payment.md) | [X18](X18-cex-treasury-verification.md) | [X19](X19-cex-treasury-recovery-ops.md) | B81 |
-| 生产环境与数据 | [X20](X20-cex-production-data.md) | [X21](X21-cex-production-verification.md) | [X22](X22-cex-production-recovery-ops.md) | B80（部分） |
-| 反欺诈、合规与安全运营 | [X23](X23-cex-fraud-compliance-secops.md) | [X24](X24-cex-fraud-verification.md) | [X25](X25-cex-fraud-recovery-ops.md) | B83 |
+| 客户身份、账户与访问 | [X08](X08-cex-identity-account-access.md) | [X14](X14-cex-identity-verification.md) | [X15](X15-cex-identity-recovery-ops.md) | B83（部分） |
+| 资产与市场准入 | [X09](X09-cex-asset-listing-market-access.md) | [X16](X16-cex-listing-verification.md) | [X17](X17-cex-listing-recovery-ops.md) | — |
+| 交易、结算与信用 | [X10](X10-cex-trading-settlement-credit.md) | [X18](X18-cex-trading-verification.md) | [X19](X19-cex-trading-recovery-ops.md) | B79、B80 |
+| 钱包、财资与支付渠道 | [X11](X11-cex-wallet-treasury-payment.md) | [X20](X20-cex-treasury-verification.md) | [X21](X21-cex-treasury-recovery-ops.md) | B81 |
+| 生产环境与数据 | [X12](X12-cex-production-data.md) | [X22](X22-cex-production-verification.md) | [X23](X23-cex-production-recovery-ops.md) | B80（部分） |
+| 反欺诈、合规与安全运营 | [X13](X13-cex-fraud-compliance-secops.md) | [X24](X24-cex-fraud-verification.md) | [X25](X25-cex-fraud-recovery-ops.md) | B83 |
 
 跨域的两章：
 
@@ -74,10 +74,10 @@ flowchart LR
 | 你是 | 先读 | 再读 | 然后动手 |
 |---|---|---|---|
 | 刚入行的安全工程师 | X01 → X07 → X05 | 你所在领域的设计章 | B71 控制矩阵，B73 检测工程 |
-| 交易所安全工程师 | X07 → 各域设计章 | X08–X27 全部（每域的设计、验收、恢复连着读） | B72、B74、B79–B83 |
-| 交易所风控、账务、运营 | X14 → X15 → X16 → X26 | X27、X25 | B79、B80、B82 |
+| 交易所安全工程师 | X07 → X08–X13 各域设计章 | X14–X27 全部（验收、恢复、交接、储备） | B72、B74、B79–B83 |
+| 交易所风控、账务、运营 | X10 → X18 → X19 → X26 | X27、X25 | B79、B80、B82 |
 | 项目方安全负责人 | X30 → X42 → X33 | X29、X31、X39–X41 | B75、B76 |
-| 钱包或托管团队 | X34、X35 → X45 | X44、X18、X19 | B74 |
+| 钱包或托管团队 | X34、X35 → X45 | X44、X20、X21 | B74 |
 | 安全负责人（管理者） | X01 → X02 → X06 | X47、X48、X46 | B77 毕业项目 |
 
 ## 6. 有意没有展开的地方

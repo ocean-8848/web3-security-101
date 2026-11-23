@@ -8,7 +8,7 @@
 >
 > 前置知识：读过 [X27 储备与偿付能力](../arch/X27-cex-reserves-solvency.md)（3.1–3.4、6.2、6.3、7.7 节）；会读 CSV；会写几十行 Python（`hashlib`、`json`、`csv`）；做过 [B81](B81-wallet-channel-recon-practice.md) 的三方对账更好。
 > 预计用时：约 3–4 小时（Merkle 小工具占一半）。
-> 关联章节：[X27 储备与偿付能力](../arch/X27-cex-reserves-solvency.md)｜[X26 账务与钱包交接](../arch/X26-cex-ledger-wallet-handoff.md)｜[X17 钱包、资金调拨与支付](../arch/X17-cex-wallet-treasury-payment.md)｜[Merkle 树实验](../interactive/audit-merkle.html)｜[T09 事件手册与值班](../templates/T09-incident-runbook-oncall.md)
+> 关联章节：[X27 储备与偿付能力](../arch/X27-cex-reserves-solvency.md)｜[X26 账务与钱包交接](../arch/X26-cex-ledger-wallet-handoff.md)｜[X11 钱包、资金调拨与支付](../arch/X11-cex-wallet-treasury-payment.md)｜[Merkle 树实验](../interactive/audit-merkle.html)｜[T09 事件手册与值班](../templates/T09-incident-runbook-oncall.md)
 > 靶场：`practice-example-code/ops/`（MiniEx 模拟交易所；第二批数据说明见该目录的 `API_X.md`）
 > 最后核对：2026-11-23（本章全部命令在本机用系统 `python3` 运行过；输出来自真实运行，数值由固定种子 20260302 决定）
 

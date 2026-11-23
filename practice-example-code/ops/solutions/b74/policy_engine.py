@@ -16,7 +16,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "lib"))
 import mini  # noqa: E402
 
-# ---- 策略参数（示例，来自 X17 的调拨策略与靶场的正常数值）----
+# ---- 策略参数（示例，来自 X11 的调拨策略与靶场的正常数值）----
 SOURCES = {  # 请求来源 -> (允许的 requester, 允许的审批单类型)
     "hot-withdraw-svc": ("svc-withdraw", "withdrawal"),
     "treasury-transfer": ("svc-treasury", "treasury_transfer"),

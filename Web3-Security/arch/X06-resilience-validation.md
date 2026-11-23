@@ -455,7 +455,7 @@ out_of_band_path:
 4. 日志出现空洞。证据怎么保全？谁来负责？是否需要外部取证公司？
 5. 大客户要求处理提币，你怎么回答？谁来拒绝？
 6. 恢复签名能力的路径是什么：修复现有环境，还是在新环境重建？各自的风险与耗时？
-7. 密钥是否需要轮换？轮换意味着链上要做哪些动作？（旧多签向新多签迁移，见 [X17](X17-cex-wallet-treasury-payment.md)）
+7. 密钥是否需要轮换？轮换意味着链上要做哪些动作？（旧多签向新多签迁移，见 [X11](X11-cex-wallet-treasury-payment.md)）
 8. 什么时候通知客户？通知里写什么？
 
 **评分点**
@@ -705,7 +705,7 @@ print(f"MTTD={mttd:.1f} 分钟  MTTR={mttr:.1f} 分钟")
 
 - **事实**：2025 年 2 月 21 日，Bybit 的以太坊多签冷钱包被转走约 40 万枚 ETH，事发时估值约 14 亿美元。Safe 的内部调查与取证报告显示，攻击起点是一名 Safe 开发者的 macOS 工作站被入侵；攻击者随后修改了托管在 Safe 云存储中的前端 JavaScript，让它只在针对 Bybit 的冷钱包交易时触发。签名人在界面上看到的是正常的调拨，实际签名的数据被换成了对攻击者合约的 delegatecall，使钱包的实现地址被改写。Bybit 聘请的取证公司称没有发现 Bybit 自己的基础设施被入侵。公开报道归因于朝鲜关联的 Lazarus 组织。
 - **绕过了哪条控制**：对**签名界面**的信任。签名人没有独立解码，硬件设备在当时的流程里也不能清晰显示数据。
-- **映射控制**：RES-5（暂停与响应路径）、RES-10（红队：假设前端失陷）、RES-14（复盘回流到签名流程）；上游控制见 [29 章](../29-signing-path-2026.md)、[X04](X04-delivery-supply-chain.md)、[X17](X17-cex-wallet-treasury-payment.md)。
+- **映射控制**：RES-5（暂停与响应路径）、RES-10（红队：假设前端失陷）、RES-14（复盘回流到签名流程）；上游控制见 [29 章](../29-signing-path-2026.md)、[X04](X04-delivery-supply-chain.md)、[X11](X11-cex-wallet-treasury-payment.md)。
 - **教训**：剧本 C 与剧本 A 的合并场景。把"前端被篡改"和"签名人被欺骗"放进推演，检验独立解码和策略引擎拦截是否存在。
 - **来源类型**：安全公司分析（NCC Group 技术分析）、媒体报道对 Safe 内部调查与 Sygnia / Verichains 取证报告的转述（The Block、CryptoSlate、BleepingComputer）。
 

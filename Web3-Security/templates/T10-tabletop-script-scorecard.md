@@ -1,7 +1,7 @@
 # T10 桌面推演剧本、评分表与复盘模板
 
 > 用途：主持一次 30–60 分钟的桌面推演。第 1 部分是剧本模板，第 2 部分是填好的短示例，第 3 部分是 100 分评分表，第 4 部分是复盘模板。
-> 配套：[X06 韧性与验证](../arch/X06-resilience-validation.md)（桌面推演、无责复盘）、[X05 检测与响应工程](../arch/X05-detection-response-engineering.md)（告警演练）、[X23 反欺诈、合规与安全运营](../arch/X23-cex-fraud-compliance-secops.md)（处置权限、恢复提币）、[X17 钱包、财资与支付渠道](../arch/X17-cex-wallet-treasury-payment.md)、[T09 事件响应 Runbook](T09-incident-runbook-oncall.md)
+> 配套：[X06 韧性与验证](../arch/X06-resilience-validation.md)（桌面推演、无责复盘）、[X05 检测与响应工程](../arch/X05-detection-response-engineering.md)（告警演练）、[X13 反欺诈、合规与安全运营](../arch/X13-cex-fraud-compliance-secops.md)（处置权限、恢复提币）、[X11 钱包、财资与支付渠道](../arch/X11-cex-wallet-treasury-payment.md)、[T09 事件响应 Runbook](T09-incident-runbook-oncall.md)
 > 说明：示例剧本是虚构场景，不对应任何真实机构或事故。
 
 ## 使用方法

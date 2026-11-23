@@ -895,8 +895,8 @@ X01–X48 是 L3 的原理底稿。毕业项目只用到了其中一部分。按
 
 | 你想做 | 读 | 为什么 |
 |---|---|---|
-| 把检测做深 | [X05 检测与响应工程](../arch/X05-detection-response-engineering.md)、[X23 欺诈、合规与安全运营](../arch/X23-cex-fraud-compliance-secops.md) | F-19 说明单条规则有盲区。X05 讲怎样用覆盖矩阵和红队注入证明规则有效 |
-| 把资金链路做深 | [X17 钱包、财资与支付渠道](../arch/X17-cex-wallet-treasury-payment.md)、[X35 托管商安全](../arch/X35-custodian-security.md) | 本章最严重的 3 条发现都在这里 |
+| 把检测做深 | [X05 检测与响应工程](../arch/X05-detection-response-engineering.md)、[X13 欺诈、合规与安全运营](../arch/X13-cex-fraud-compliance-secops.md) | F-19 说明单条规则有盲区。X05 讲怎样用覆盖矩阵和红队注入证明规则有效 |
+| 把资金链路做深 | [X11 钱包、财资与支付渠道](../arch/X11-cex-wallet-treasury-payment.md)、[X35 托管商安全](../arch/X35-custodian-security.md) | 本章最严重的 3 条发现都在这里 |
 | 把韧性做深 | [X06 韧性与验证](../arch/X06-resilience-validation.md) | R10 与 R13 只是起点。X06 讲 RTO、暂停开关分级、月度安全报告 |
 | 评估别人的系统 | [X34 钱包厂商安全](../arch/X34-wallet-vendor-security.md)、[X30 DeFi 项目运营](../arch/X30-defi-project-ops.md)、[X29 L2 与桥运营](../arch/X29-l2-bridge-oracle-ops.md) | 把本章的方法用在另一类机构上。模板 [T11](../templates/T11-vendor-custodian-assessment.md) 是评估单 |
 | 做标准对照 | [X02 标准与合规映射](../arch/X02-standards-compliance-map.md) | 路线图完成后，做一次对照标准的差距分析 |

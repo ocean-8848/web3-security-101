@@ -1,4 +1,4 @@
-# X13 资产与市场准入·运营与恢复：异常资产处置、分叉迁移与复牌
+# X17 资产与市场准入·运营与恢复：异常资产处置、分叉迁移与复牌
 
 > 学习目标：读完本章，你能——
 > 1. 画出"正常 → 暂停 → 评估 → 迁移 / 下架 / 复牌"的状态机，并为每次转换写出进入条件、退出条件和授权人。
@@ -6,7 +6,7 @@
 > 3. 设计分叉与迁移的快照口径，写出未结订单、衍生品头寸和借贷头寸的处理规则，并用两个桌面推演检验。
 >
 > 适用角色：交易所安全工程师、上币与市场运营、风控与财务、合规与客服负责人。
-> 前置章节：[X11 资产与市场准入](X11-cex-asset-listing-market-access.md)、[X12 资产与市场准入·工程验收](X12-cex-listing-verification.md)、[A05 上币与合作项目尽调](../assessment/A05-listing-due-diligence.md)、[X05 检测与响应工程](X05-detection-response-engineering.md)、[X06 韧性与验证](X06-resilience-validation.md)
+> 前置章节：[X09 资产与市场准入](X09-cex-asset-listing-market-access.md)、[X16 资产与市场准入·工程验收](X16-cex-listing-verification.md)、[A05 上币与合作项目尽调](../assessment/A05-listing-due-diligence.md)、[X05 检测与响应工程](X05-detection-response-engineering.md)、[X06 韧性与验证](X06-resilience-validation.md)
 > 交互实验 / 模板：[T09 事件手册与值班](../templates/T09-incident-runbook-oncall.md) ｜ [T10 桌面推演剧本与评分表](../templates/T10-tabletop-script-scorecard.md) ｜ [事件响应模拟](../interactive/incident-response-sim.html)
 > 最后核对：2026-11-23
 
@@ -38,9 +38,9 @@
 
 | 章节 | 回答的问题 |
 |---|---|
-| [X11](X11-cex-asset-listing-market-access.md) | 怎样准入、分级、监控；给出暂停与下架的基本权限（LST-C13、LST-C14）。 |
-| [X12](X12-cex-listing-verification.md) | 开关是否真能独立生效；怎样验收。 |
-| **X13（本章）** | 事件发生后，怎样一步步处置、迁移、分配、复牌，以及怎样对外沟通。 |
+| [X09](X09-cex-asset-listing-market-access.md) | 怎样准入、分级、监控；给出暂停与下架的基本权限（LST-C13、LST-C14）。 |
+| [X16](X16-cex-listing-verification.md) | 开关是否真能独立生效；怎样验收。 |
+| **X17（本章）** | 事件发生后，怎样一步步处置、迁移、分配、复牌，以及怎样对外沟通。 |
 | [A05](../assessment/A05-listing-due-diligence.md) | 复评时怎样重新给项目打分。 |
 
 ---
@@ -385,7 +385,7 @@ def resume_gate(asset, ledger_liability, wallet_balance, onchain_supply,
 事件期间的信息有两个风险：说错，和说早。说错会让用户做出错误决定，说早会让内部人先于公众交易。规则如下。
 
 1. 公告只由一个人发出，审批链固定：事件负责人、合规、公关。
-2. 暂停与复牌的时间，在公告发出前只限事件小组知道，并登记名单。名单内人员及关联账户，在事件期间不得交易该币。这与 [X11](X11-cex-asset-listing-market-access.md) 的保密名单是同一套机制。
+2. 暂停与复牌的时间，在公告发出前只限事件小组知道，并登记名单。名单内人员及关联账户，在事件期间不得交易该币。这与 [X09](X09-cex-asset-listing-market-access.md) 的保密名单是同一套机制。
 3. 客服只使用公告里的话术。用户问到公告没有的内容，回答"我们会在公告中更新"。
 4. 发现假公告、假迁移地址时，在官方渠道置顶提醒，并向用户说明"我们不会通过私信提供迁移地址"。
 

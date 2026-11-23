@@ -362,7 +362,7 @@ cast call $SAFE "getTransactionHash(address,uint256,bytes,uint8,uint256,uint256,
   --rpc-url $RPC
 ```
 
-> ⚠️ 警告：钱包界面、模拟器和区块浏览器可能同时被同一个攻击者影响。"换一个工具"的意思是换一条独立的数据路径，例如自己的 RPC 加本地解码。更完整的签名链路讨论见 [29 2026 签名链路](../29-signing-path-2026.md) 和 [X17](X17-cex-wallet-treasury-payment.md)。
+> ⚠️ 警告：钱包界面、模拟器和区块浏览器可能同时被同一个攻击者影响。"换一个工具"的意思是换一条独立的数据路径，例如自己的 RPC 加本地解码。更完整的签名链路讨论见 [29 2026 签名链路](../29-signing-path-2026.md) 和 [X11](X11-cex-wallet-treasury-payment.md)。
 
 ### 6.4 时间锁与治理：配置检查与提案审查
 
@@ -421,7 +421,7 @@ cast code $PROP --rpc-url $RPC | grep -o -E "ff|f4" | sort | uniq -c
 4. **稳定币与代币的集中度**：金库里的协议自有代币，不能被计入"储备"来证明偿付能力。
 5. **链上与账面对账**：每周一次，把链上余额与财务表对账，差异写入记录。
 
-> 💡 注意：金库如果存放在交易所或托管商，其风险按 [X35](X35-custodian-security.md) 和 [X17](X17-cex-wallet-treasury-payment.md) 的方法评估。
+> 💡 注意：金库如果存放在交易所或托管商，其风险按 [X35](X35-custodian-security.md) 和 [X11](X11-cex-wallet-treasury-payment.md) 的方法评估。
 
 ### 6.6 参数变更管理
 

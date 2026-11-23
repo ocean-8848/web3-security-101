@@ -469,7 +469,7 @@ WHERE c.h = date_trunc('hour', now())
 
 ### 6.10 规则 8：Safe 多签 delegatecall 到未审核目标（SQL，链上）
 
-假设：多签钱包执行 `operation = 1`（delegatecall）几乎不是日常转账。NCC Group 对 Bybit 事件的分析指出，签名人看到的是普通转账，实际签署的是 delegatecall 到攻击者合约。本规则在链上看到结果；更好的做法是签名前模拟（见 [X17](X17-cex-wallet-treasury-payment.md)、[29 签名路径](../29-signing-path-2026.md)）。
+假设：多签钱包执行 `operation = 1`（delegatecall）几乎不是日常转账。NCC Group 对 Bybit 事件的分析指出，签名人看到的是普通转账，实际签署的是 delegatecall 到攻击者合约。本规则在链上看到结果；更好的做法是签名前模拟（见 [X11](X11-cex-wallet-treasury-payment.md)、[29 签名路径](../29-signing-path-2026.md)）。
 
 ```sql
 -- 示例表（由 indexer 解码）：safe_exec(tx_hash, safe_address, to_address, operation, value_wei, block_ts)
@@ -766,14 +766,14 @@ actions:
 - **来源类型**：安全公司分析（NCC Group）、Safe 的初步调查报告（经媒体转述）。
 - **经过**：2025 年 2 月 21 日，Bybit 一个多签冷钱包被转出超过 14 亿美元资产，含约 40.1 万 ETH。NCC Group 的分析指出，攻击者在 Safe{Wallet} 前端注入恶意 JavaScript。签名人界面显示常规转账，实际签署的操作被改为 delegatecall 到攻击者合约，替换了钱包逻辑。Safe 的调查（媒体转述）称，一台开发者的 macOS 机器曾与恶意 Docker 项目交互；公开报道将攻击归因于朝鲜相关的 Lazarus 组织。
 - **绕过了哪条控制**：签名前独立解码（本章规则 8 的链上检测只能在事后触发）；开发机终端检测（规则 4）；前端发布完整性。
-- **教训**：对多签 delegatecall 做链上告警，但更重要的是在签名前拦截。检测要覆盖"供应商前端被改"这种共识外依赖。对应章节：[X17](X17-cex-wallet-treasury-payment.md)、[X04](X04-delivery-supply-chain.md)、[29](../29-signing-path-2026.md)。
+- **教训**：对多签 delegatecall 做链上告警，但更重要的是在签名前拦截。检测要覆盖"供应商前端被改"这种共识外依赖。对应章节：[X11](X11-cex-wallet-treasury-payment.md)、[X04](X04-delivery-supply-chain.md)、[29](../29-signing-path-2026.md)。
 
 ### 案例 3：Coinbase 客服数据泄露（2024 年 12 月至 2025 年 5 月，链下）——发现了异常，但没有及时关闭
 
 - **来源类型**：公司向美国 SEC 提交的 8-K（经媒体转述）、缅因州总检察长披露、媒体报道。
 - **经过**：公司披露称，不法分子贿赂海外客服人员，复制客户支持工具里的数据，涉及不足 1% 的月度交易用户；缅因州披露的受影响客户数约 6.9 万。公司表示，在 2025 年 5 月 11 日收到勒索邮件之前的几个月，监控已发现部分客服人员访问了与其职责无关的数据。公司没有支付 2,000 万美元勒索，改为设立同额悬赏。公司在 8-K 中估计整改和自愿补偿成本约 1.8 亿至 4 亿美元（估计值，会变化）。
 - **绕过了哪条控制**：不是没有检测，而是检测到之后遏制太慢（对应 DET-9、DET-10）。数据在被发现之前已长期外流。
-- **教训**：规则 7 这类"偏离基线"规则必须配套处置权限：发现后多久内关闭权限、停止导出。内部人员风险需要访问最小化、导出控制和岗位轮换，不只是监控。对应 [X20](X20-cex-production-data.md)。
+- **教训**：规则 7 这类"偏离基线"规则必须配套处置权限：发现后多久内关闭权限、停止导出。内部人员风险需要访问最小化、导出控制和岗位轮换，不只是监控。对应 [X12](X12-cex-production-data.md)。
 
 ### 案例 4：Balancer v2（2025 年 11 月，多链）——检测很快，部分池子没有开关
 

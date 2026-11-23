@@ -3,7 +3,7 @@
 -- param: min_linked=20
 -- param: min_usd=50000
 -- param: exclude_mm=0
--- X14 市场监测：成交对手方与自己共 IP 或共设备（“关联成交”）的笔数与金额很大
+-- X10 市场监测：成交对手方与自己共 IP 或共设备（“关联成交”）的笔数与金额很大
 --   exclude_mm=1 时排除登记为 market_maker 的账户（做市商同机房对冲）
 WITH t AS (
   SELECT symbol, buyer_account_id AS account_id, seller_account_id AS peer, quote_qty, ts,

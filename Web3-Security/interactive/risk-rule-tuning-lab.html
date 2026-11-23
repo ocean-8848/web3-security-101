@@ -23,7 +23,7 @@
     <a class="back" href="index.html">← 返回实验目录</a>
     <h1>风控规则调参</h1>
   </header>
-  <p class="lead">页面里合成了 498 笔提币事件：8 笔是被注入的“被盗”事件，其余是正常用户，其中不少“看起来可疑”（新地址、刚改密、换了网络环境、大额）。拖动阈值，看召回率、误报和被拦截的正常用户怎么变。配套章节：<a href="../arch/X08-cex-identity-account-access.md">X08 身份与账户</a>、<a href="../arch/X14-cex-trading-settlement-credit.md">X14</a>、<a href="../arch/X17-cex-wallet-treasury-payment.md">X17</a>、<a href="../arch/X23-cex-fraud-compliance-secops.md">X23 风控与安全运营</a>。</p>
+  <p class="lead">页面里合成了 498 笔提币事件：8 笔是被注入的“被盗”事件，其余是正常用户，其中不少“看起来可疑”（新地址、刚改密、换了网络环境、大额）。拖动阈值，看召回率、误报和被拦截的正常用户怎么变。配套章节：<a href="../arch/X08-cex-identity-account-access.md">X08 身份与账户</a>、<a href="../arch/X10-cex-trading-settlement-credit.md">X10</a>、<a href="../arch/X11-cex-wallet-treasury-payment.md">X11</a>、<a href="../arch/X13-cex-fraud-compliance-secops.md">X13 风控与安全运营</a>。</p>
 
   <div class="callout info small">
     <strong>怎么玩：</strong>
@@ -76,7 +76,7 @@
   <h2>拦得越多越好吗？</h2>
   <div class="card small">
     <p>不是。每多一个误报，就多一位被卡住的正常用户和一张人工复核单。复核人手固定时，队列变长会让真正的可疑单等得更久，这是把风险从“漏报”换成“延迟”。</p>
-    <p>规则只处理“看起来像”的单子；像“金额小、地址不新、没改密”的慢速盗取，规则很难拦，需要额外的行为画像、额度上限或事后对账（见 X23）。</p>
+    <p>规则只处理“看起来像”的单子；像“金额小、地址不新、没改密”的慢速盗取，规则很难拦，需要额外的行为画像、额度上限或事后对账（见 X13）。</p>
     <p>更实用的做法：规则不直接拒绝，而是分档处置，例如放行 / 延迟 + 通知 / 人工复核 / 冻结，并定期用新事件回测阈值。</p>
   </div>
 

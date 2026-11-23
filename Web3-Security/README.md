@@ -190,27 +190,27 @@ flowchart TD
 | X05 | [检测与响应工程](arch/X05-detection-response-engineering.md) | 日志源、SIEM、检测工程方法、链上加链下规则、SOAR 边界、值班 | [T09](templates/T09-incident-runbook-oncall.md) |
 | X06 | [韧性与验证](arch/X06-resilience-validation.md) | 灾备与暂停开关、红蓝对抗、三份桌面推演剧本、安全度量与复盘 | [T10](templates/T10-tabletop-script-scorecard.md) |
 
-**B 组 · 交易所**（从总览到六个保护域）
+**B 组 · 交易所**（从总览到六个保护域，再到各域的工程验收与运营恢复）
 
 | # | 章节 | 你会学到 | 配套 |
 |---|---|---|---|
 | X07 | [交易所安全架构总览](arch/X07-cex-architecture-overview.md) | 系统分区、信任边界与数据流、六个保护域、成熟度模型 | [T12](templates/T12-security-architecture-review.md) |
 | X08 | [客户身份、账户与访问](arch/X08-cex-identity-account-access.md) | 认证与账户找回、账户接管对策、API Key 管理、机构权限与客服工具 | [风控规则调参](interactive/risk-rule-tuning-lab.html) |
-| X09 | [客户身份与访问·工程验收](arch/X09-cex-identity-verification.md) | 撤权、越权与找回流程怎么证明有效 | — |
-| X10 | [客户身份与访问·运营与恢复](arch/X10-cex-identity-recovery-ops.md) | 接管事件、批量重置与账户恢复 | — |
-| X11 | [资产与市场准入](arch/X11-cex-asset-listing-market-access.md) | 上币全周期、信息保护与内幕检测、分级准入与持续监控、下架 | [A05](assessment/A05-listing-due-diligence.md) |
-| X12 | [资产与市场准入·工程验收](arch/X12-cex-listing-verification.md) | 准入开关、参数核对与下架演练 | — |
-| X13 | [资产与市场准入·运营与恢复](arch/X13-cex-listing-recovery-ops.md) | 异常资产处置、分叉迁移与复牌 | — |
-| X14 | [交易、结算与信用](arch/X14-cex-trading-settlement-credit.md) | 价格保护、账务一致与对账、抵押授信与强平、市场操纵检测、参数变更控制 | [风控规则调参](interactive/risk-rule-tuning-lab.html) |
-| X15 | [交易、结算与信用·工程验收](arch/X15-cex-trading-verification.md) | 回放撤单与异常价格，核订单、成交、分录与估值 | — |
-| X16 | [交易、结算与信用·运营与恢复](arch/X16-cex-trading-recovery-ops.md) | 过载保撮合、切主验停写、复市与恢复授信 | — |
-| X17 | [钱包、财资与支付渠道](arch/X17-cex-wallet-treasury-payment.md) | 钱包分层、签名服务架构、资金调拨、链上权限监控、法币渠道隔离 | [签名请求独立校验](interactive/signing-policy-lab.html) |
-| X18 | [钱包、财资与支付·工程验收](arch/X18-cex-treasury-verification.md) | 越权签名、假回执、拒签与额度占用 | — |
-| X19 | [钱包、财资与支付·运营与恢复](arch/X19-cex-treasury-recovery-ops.md) | 复付、迁移、轮换与渠道恢复 | — |
-| X20 | [交易所生产环境与数据](arch/X20-cex-production-data.md) | 核心系统分区、数据分级、可信日志与证据、备份恢复、第三方与数据泄露应对 | [T12](templates/T12-security-architecture-review.md) |
-| X21 | [生产环境与数据·工程验收](arch/X21-cex-production-verification.md) | 权限、证据与备份怎么证明可信 | — |
-| X22 | [生产环境与数据·运营与恢复](arch/X22-cex-production-recovery-ops.md) | 证据保全、数据恢复与可用性演练 | — |
-| X23 | [反欺诈、合规与安全运营](arch/X23-cex-fraud-compliance-secops.md) | 欺诈监测、合规落点、处置权限矩阵、调查取证、分阶段恢复 | [T09](templates/T09-incident-runbook-oncall.md) |
+| X09 | [资产与市场准入](arch/X09-cex-asset-listing-market-access.md) | 上币全周期、信息保护与内幕检测、分级准入与持续监控、下架 | [A05](assessment/A05-listing-due-diligence.md) |
+| X10 | [交易、结算与信用](arch/X10-cex-trading-settlement-credit.md) | 价格保护、账务一致与对账、抵押授信与强平、市场操纵检测、参数变更控制 | [风控规则调参](interactive/risk-rule-tuning-lab.html) |
+| X11 | [钱包、财资与支付渠道](arch/X11-cex-wallet-treasury-payment.md) | 钱包分层、签名服务架构、资金调拨、链上权限监控、法币渠道隔离 | [签名请求独立校验](interactive/signing-policy-lab.html) |
+| X12 | [交易所生产环境与数据](arch/X12-cex-production-data.md) | 核心系统分区、数据分级、可信日志与证据、备份恢复、第三方与数据泄露应对 | [T12](templates/T12-security-architecture-review.md) |
+| X13 | [反欺诈、合规与安全运营](arch/X13-cex-fraud-compliance-secops.md) | 欺诈监测、合规落点、处置权限矩阵、调查取证、分阶段恢复 | [T09](templates/T09-incident-runbook-oncall.md) |
+| X14 | [客户身份与访问·工程验收](arch/X14-cex-identity-verification.md) | 撤权、越权与找回流程怎么证明有效 | — |
+| X15 | [客户身份与访问·运营与恢复](arch/X15-cex-identity-recovery-ops.md) | 接管事件、批量重置与账户恢复 | — |
+| X16 | [资产与市场准入·工程验收](arch/X16-cex-listing-verification.md) | 准入开关、参数核对与下架演练 | — |
+| X17 | [资产与市场准入·运营与恢复](arch/X17-cex-listing-recovery-ops.md) | 异常资产处置、分叉迁移与复牌 | — |
+| X18 | [交易、结算与信用·工程验收](arch/X18-cex-trading-verification.md) | 回放撤单与异常价格，核订单、成交、分录与估值 | — |
+| X19 | [交易、结算与信用·运营与恢复](arch/X19-cex-trading-recovery-ops.md) | 过载保撮合、切主验停写、复市与恢复授信 | — |
+| X20 | [钱包、财资与支付·工程验收](arch/X20-cex-treasury-verification.md) | 越权签名、假回执、拒签与额度占用 | — |
+| X21 | [钱包、财资与支付·运营与恢复](arch/X21-cex-treasury-recovery-ops.md) | 复付、迁移、轮换与渠道恢复 | — |
+| X22 | [生产环境与数据·工程验收](arch/X22-cex-production-verification.md) | 权限、证据与备份怎么证明可信 | — |
+| X23 | [生产环境与数据·运营与恢复](arch/X23-cex-production-recovery-ops.md) | 证据保全、数据恢复与可用性演练 | — |
 | X24 | [反欺诈、合规与安全运营·工程验收](arch/X24-cex-fraud-verification.md) | 规则回放、处置授权与限制落地 | — |
 | X25 | [反欺诈、合规与安全运营·运营与恢复](arch/X25-cex-fraud-recovery-ops.md) | 调查取证、执行复核与解除限制 | — |
 | X26 | [域间交接](arch/X26-cex-ledger-wallet-handoff.md) | 原单、预留、批准、实收、实付与未决状态 | — |

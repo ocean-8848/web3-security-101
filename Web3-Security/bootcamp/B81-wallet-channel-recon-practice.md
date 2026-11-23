@@ -8,7 +8,7 @@
 >
 > 前置知识：会用 Python 3（≥ 3.9，只用标准库）和命令行；读过 [X26 域间交接](../arch/X26-cex-ledger-wallet-handoff.md) 的 §3.2–§3.6 更好；做过 [B72](B72-withdrawal-risk-rules-practice.md) 或 [B73](B73-detection-engineering-practice.md) 的调参练习更好。
 > 预计用时：约 2–3 小时。
-> 关联章节：[X18 钱包、财资与支付·工程验收](../arch/X18-cex-treasury-verification.md)｜[X19 钱包、财资与支付·恢复运营](../arch/X19-cex-treasury-recovery-ops.md)｜[X26 域间交接：原单、预留、批准、实收、实付与未决状态](../arch/X26-cex-ledger-wallet-handoff.md)｜[B74 签名服务独立校验](B74-signing-policy-practice.md)｜[B80 复市与恢复演练](B80-resumption-recovery-practice.md)｜[B82 储备与偿付对账](B82-reserves-solvency-practice.md)｜[T09 事故运行手册](../templates/T09-incident-runbook-oncall.md)
+> 关联章节：[X20 钱包、财资与支付·工程验收](../arch/X20-cex-treasury-verification.md)｜[X21 钱包、财资与支付·恢复运营](../arch/X21-cex-treasury-recovery-ops.md)｜[X26 域间交接：原单、预留、批准、实收、实付与未决状态](../arch/X26-cex-ledger-wallet-handoff.md)｜[B74 签名服务独立校验](B74-signing-policy-practice.md)｜[B80 复市与恢复演练](B80-resumption-recovery-practice.md)｜[B82 储备与偿付对账](B82-reserves-solvency-practice.md)｜[T09 事故运行手册](../templates/T09-incident-runbook-oncall.md)
 > 最后核对：2026-11-23（Python 3.12.3；下文命令在本机从 `web3-security-handbook/` 根目录逐条运行，输出来自真实运行）
 
 > ⚠️ 警告：法律与道德边界。本章的数据全部由脚本合成，银行账户、链上地址、单据编号都是虚构的，不对应任何真实系统。本章只写"怎样发现并处置差异"，不写任何针对真实银行或渠道的操作。本章的参考实现只读数据，不会向任何系统发起付款；不要把"复付"的判断直接接到真实的付款流程上。
@@ -29,7 +29,7 @@
 
 ## 1. 本章怎么练
 
-原理不在这里重讲：提币状态机和未决状态的处理见 [X26 §3.2–§3.5](../arch/X26-cex-ledger-wallet-handoff.md)；验收用例里的假回执见 [X18 §4.3](../arch/X18-cex-treasury-verification.md)；事故后复付前要过的三道门见 [X19 §3.2](../arch/X19-cex-treasury-recovery-ops.md)。三方对账（Three-way Reconciliation）：把账务记录、链上转账、银行流水按单据逐笔对，再反过来查外部流水里有没有"没有单据"的行。未决状态（Pending State）：单据已经发出，但还没有确定的结果，既不能算成功，也不能算失败。
+原理不在这里重讲：提币状态机和未决状态的处理见 [X26 §3.2–§3.5](../arch/X26-cex-ledger-wallet-handoff.md)；验收用例里的假回执见 [X20 §4.3](../arch/X20-cex-treasury-verification.md)；事故后复付前要过的三道门见 [X21 §3.2](../arch/X21-cex-treasury-recovery-ops.md)。三方对账（Three-way Reconciliation）：把账务记录、链上转账、银行流水按单据逐笔对，再反过来查外部流水里有没有"没有单据"的行。未决状态（Pending State）：单据已经发出，但还没有确定的结果，既不能算成功，也不能算失败。
 
 ```mermaid
 flowchart LR
@@ -48,7 +48,7 @@ flowchart LR
 读图要点：
 - 账务这一侧取状态机里的 `book` 事件，外部这一侧取链上转账与银行流水。两边用单据号和 `ref`（链上哈希或银行参考号）对上。
 - `recon3.py` 看"账和外部对不对得上"，`state_audit.py` 看"状态机自己走得对不对"。同一笔问题单据常常两边都会亮，互相印证。
-- 局限：本章的数据是离线快照。真实对账要面对流式数据、渠道方延迟和多币种，见 [X26 §3.6](../arch/X26-cex-ledger-wallet-handoff.md) 与 [X19](../arch/X19-cex-treasury-recovery-ops.md)。
+- 局限：本章的数据是离线快照。真实对账要面对流式数据、渠道方延迟和多币种，见 [X26 §3.6](../arch/X26-cex-ledger-wallet-handoff.md) 与 [X21](../arch/X21-cex-treasury-recovery-ops.md)。
 
 本章用 S14 里的 4 个答案：
 
@@ -404,7 +404,7 @@ for t in 2026-03-07T12:00:00Z 2026-03-10T20:00:00Z 2026-03-11T23:59:59Z; do echo
 
 ### 6.1 复付前核对
 
-复付是最容易放大事故的一步：开场里"重新付一次吧"，对 PW000761 是错的，对 PW000762 要先冲销再说。下面是核对清单，每一项都要有证据（[X19 §3.2](../arch/X19-cex-treasury-recovery-ops.md) 的"复付三道门"解决"现在能不能放量"，本清单解决"这一笔能不能再付"）：
+复付是最容易放大事故的一步：开场里"重新付一次吧"，对 PW000761 是错的，对 PW000762 要先冲销再说。下面是核对清单，每一项都要有证据（[X21 §3.2](../arch/X21-cex-treasury-recovery-ops.md) 的"复付三道门"解决"现在能不能放量"，本清单解决"这一笔能不能再付"）：
 
 | 编号 | 核对项 | 怎么查 | 不通过说明什么 |
 |---|---|---|---|
@@ -513,11 +513,11 @@ S14-05 3,200 USDT 充值收到两份不同编号的回执，并被记账两次
 | 检查项 | 内容 | 本章练习 | 对应 | 结论 | 证据 |
 |---|---|---|---|---|---|
 | **RCN-1** | 账务、链上、银行三方按单据号与 `ref` 逐笔对账，外部流水里没有单据的行也要查 | 第 1 步 | HND-C14 | | |
-| **RCN-2** | 对账容忍（日期、金额、账龄）有数字依据，调参前后的召回与误报都留记录 | 第 2 步 | X18 §5 | | |
+| **RCN-2** | 对账容忍（日期、金额、账龄）有数字依据，调参前后的召回与误报都留记录 | 第 2 步 | X20 §5 | | |
 | **RCN-3** | 能回到任意时点看未决单据，未决单据按账龄分级、计入"在途" | 第 3 步 | X26 §3.5、HND-C06 | | |
-| **RCN-4** | 实付回执有不依赖状态机的外部证据；状态不得跳步 | 第 4 步 | HND-C09、X18 TSV-T22 | | |
-| **RCN-5** | 重复回执只记一次账，幂等键为回执编号或 `ref` | 第 4 步 | HND-C13、X18 TSV-T25 | | |
-| **RCN-6** | 复付前逐单核对（外部流水、金额、路径、回执来源、记账次数、批准有效期），复付走新单 | 第 5 步 | X19 §3.2、HND-C05、HND-C07 | | |
+| **RCN-4** | 实付回执有不依赖状态机的外部证据；状态不得跳步 | 第 4 步 | HND-C09、X20 TSV-T22 | | |
+| **RCN-5** | 重复回执只记一次账，幂等键为回执编号或 `ref` | 第 4 步 | HND-C13、X20 TSV-T25 | | |
+| **RCN-6** | 复付前逐单核对（外部流水、金额、路径、回执来源、记账次数、批准有效期），复付走新单 | 第 5 步 | X21 §3.2、HND-C05、HND-C07 | | |
 | **RCN-7** | "批准后未签名""已广播未确认"有超时告警与升级 | 第 4 步 | HND-C06 | | |
 
 定级用 [A02](../assessment/A02-risk-rating-reporting.md) 复核；写进控制矩阵时用 [T08](../templates/T08-control-matrix-risk-register.md)。

@@ -1,4 +1,4 @@
-# X19 钱包、财资与支付·运营与恢复：复付、迁移、轮换与渠道恢复
+# X21 钱包、财资与支付·运营与恢复：复付、迁移、轮换与渠道恢复
 
 > 学习目标：读完本章，你能——
 > 1. 画出钱包或渠道事故后的恢复状态机，并说清每个状态的进入条件、退出条件和有权推动的人。
@@ -6,11 +6,11 @@
 > 3. 设计资金迁移与密钥轮换的演练剧本，并写出对用户、监管和合作方的公告。
 >
 > 适用角色：交易所钱包与财资运营、安全工程师、事件指挥官、客服与合规负责人。
-> 前置章节：X17-cex-wallet-treasury-payment.md、X18-cex-treasury-verification.md、X26-cex-ledger-wallet-handoff.md、[23 托管、充提与合规安全](../23-custody-exchange-ops.md)、[A09 事件响应](../assessment/A09-incident-response.md)
+> 前置章节：X11-cex-wallet-treasury-payment.md、X20-cex-treasury-verification.md、X26-cex-ledger-wallet-handoff.md、[23 托管、充提与合规安全](../23-custody-exchange-ops.md)、[A09 事件响应](../assessment/A09-incident-response.md)
 > 交互实验 / 模板：[T09 事件手册与值班](../templates/T09-incident-runbook-oncall.md)、[T10 桌面推演剧本与评分](../templates/T10-tabletop-script-scorecard.md)、[确认深度实验](../interactive/confirmation-depth-lab.html)
 > 最后核对：2026-11-23
 
-> 💡 注意：分工。[X17](X17-cex-wallet-treasury-payment.md) 第 6.7 节给出事故"前 60 分钟"清单。[X18](X18-cex-treasury-verification.md) 证明控制有效。[X26](X26-cex-ledger-wallet-handoff.md) 讲账务与钱包之间的单据状态。[X36](X36-payment-otc-fiat-security.md) 第 6.7 节讲渠道方事故的连续性设计。本章只回答事故被控制住之后的问题：**什么时候可以重新付款，先付谁，怎样付，付完怎样证明没有错。** 控制项写作 `TSR-Cxx`，检查项写作 `TSR-n`。
+> 💡 注意：分工。[X11](X11-cex-wallet-treasury-payment.md) 第 6.7 节给出事故"前 60 分钟"清单。[X20](X20-cex-treasury-verification.md) 证明控制有效。[X26](X26-cex-ledger-wallet-handoff.md) 讲账务与钱包之间的单据状态。[X36](X36-payment-otc-fiat-security.md) 第 6.7 节讲渠道方事故的连续性设计。本章只回答事故被控制住之后的问题：**什么时候可以重新付款，先付谁，怎样付，付完怎样证明没有错。** 控制项写作 `TSR-Cxx`，检查项写作 `TSR-n`。
 
 ---
 
@@ -92,7 +92,7 @@ flowchart LR
 - 复付决定只依赖实线上的三类来源：已对账的总账、多源确认的链上数据、银行原件。
 - 钱包后台和渠道回执是声明，要和第一类来源核对，不能直接当依据。
 - 事故前的审批、白名单、旧密钥、涉事终端一律视为被污染。恢复时要重新审批、重新生成、重新装机。
-- 局限：如果总账本身被篡改，这张图不成立。总账完整性由 [X20](X20-cex-production-data.md) 保证。
+- 局限：如果总账本身被篡改，这张图不成立。总账完整性由 [X12](X12-cex-production-data.md) 保证。
 
 > ⚠️ 警告：事故期间最容易犯的错，是为了尽快开闸而"沿用"旧白名单、旧审批或旧签名人。攻击者可能已经在其中留下了东西。
 
@@ -137,7 +137,7 @@ flowchart TD
   S["复付申请"] --> G1{"门 1 权益<br/>余额与总账一致?"}
   G1 -->|否| F1["修账，保持暂停"]
   G1 -->|是| G2{"门 2 头寸<br/>热钱包够覆盖?"}
-  G2 -->|否| F2["调拨补充<br/>走 X17 审批"]
+  G2 -->|否| F2["调拨补充<br/>走 X11 审批"]
   G2 -->|是| G3{"门 3 未决<br/>非终态单据有定论?"}
   G3 -->|否| F3["逐条判定<br/>先不放行"]
   G3 -->|是| R["放行本阶段<br/>启动观察期"]
@@ -193,7 +193,7 @@ sequenceDiagram
 
 ## 4. 控制清单
 
-控制 ID 写作 `TSR-Cxx`。X17 的 `TRS-Cxx` 是设计控制，本章控制是"事故之后"才用的。
+控制 ID 写作 `TSR-Cxx`。X11 的 `TRS-Cxx` 是设计控制，本章控制是"事故之后"才用的。
 
 | ID | 控制项 | 要防什么 | 优先级 | 怎么验证 |
 |---|---|---|---|---|
@@ -316,9 +316,9 @@ def should_halt(stage, live):
 ### 6.6 迁移与轮换要点
 
 - **只迁一次，不要来回。** 每次迁移都是一次暴露窗口。迁移计划按链列出顺序、批次和上限。
-- **新地址先进白名单，再迁资金。** 白名单走 [X17](X17-cex-wallet-treasury-payment.md) 第 6.3 节的双人审批和冷却期。事故模式下可以缩短冷却期，但缩短要记录并由安全负责人批准。
+- **新地址先进白名单，再迁资金。** 白名单走 [X11](X11-cex-wallet-treasury-payment.md) 第 6.3 节的双人审批和冷却期。事故模式下可以缩短冷却期，但缩短要记录并由安全负责人批准。
 - **MPC 与多签的轮换不同。** MPC 要重新分片或重新生成密钥；多签要换签名人并更新所有者集合。两者都只做演练过的步骤。
-- **别忘了链上权限。** 旧地址的授权、代理管理员、EIP-7702 委托都要逐条撤销。见 [X17](X17-cex-wallet-treasury-payment.md) 第 6.4 节。
+- **别忘了链上权限。** 旧地址的授权、代理管理员、EIP-7702 委托都要逐条撤销。见 [X11](X11-cex-wallet-treasury-payment.md) 第 6.4 节。
 - **终端重装才能回归。** 涉事终端和账号一律重装、换凭证；"清理过"不算。
 
 ### 6.7 渠道方事故的恢复
@@ -381,7 +381,7 @@ def should_halt(stage, live):
 
 ### 8.1 剧本 A：热钱包被盗后的复付
 
-**背景：** 某交易所 02:10 对账发现 ETH 热钱包少了约 2 万 ETH（示例）。值班按 X17 的前 60 分钟清单，已暂停全平台提币并停了签名集群入口。现在是第 3 天上午，涉事终端已隔离，攻击入口已确认关闭。
+**背景：** 某交易所 02:10 对账发现 ETH 热钱包少了约 2 万 ETH（示例）。值班按 X11 的前 60 分钟清单，已暂停全平台提币并停了签名集群入口。现在是第 3 天上午，涉事终端已隔离，攻击入口已确认关闭。
 
 | 时间 | 注入 | 参与者要回答 | 评分点 |
 |---|---|---|---|
@@ -421,7 +421,7 @@ def should_halt(stage, live):
 
 ### 9.2 恢复前清单
 
-- [ ] 证据已保全：镜像、日志、签名请求记录已做哈希并封存（见 [X22](X22-cex-production-recovery-ops.md)）。
+- [ ] 证据已保全：镜像、日志、签名请求记录已做哈希并封存（见 [X23](X23-cex-production-recovery-ops.md)）。
 - [ ] 攻击入口已确认关闭，涉事终端已重装，涉事凭证已更换。
 - [ ] 三核对报告已生成，差异清零或逐条登记。
 - [ ] 新地址已完成小额进出验证。
@@ -486,7 +486,7 @@ def should_halt(stage, live):
 
 ### 10.4 Bitget：分阶段重开与净流出（2026 年 9 月）
 
-- **事实：** Bitget 于 2026 年 9 月被盗并暂停提币（原因与损失口径见 [X18](X18-cex-treasury-verification.md) 第 8.4 节）。The Block 报道，Bitget 要求每条链通过一系列安全检查后才重开，并按计划分阶段：9 月 28 日 BTC（比特币与 BSC 网络），9 月 29 日 ETH 及部分二层网络，9 月 30 日多条链上的 USDT，10 月 2 日其余资产、法币与 P2P。Bitget 称用户保护基金（5,500 BTC）覆盖全部损失，这是公司自己的说法。Bloomberg Government 报道，重开后出现约 4.63 亿美元的客户净流出。来源：[The Block](https://theblock.co/news/business/2026-09-28-bitget-starts-phased-withdrawal-resumption-416965)、[Bloomberg Government](https://news.bgov.com/crypto/crypto-hack-spurs-463-million-in-customer-outflows-at-bitget)。
+- **事实：** Bitget 于 2026 年 9 月被盗并暂停提币（原因与损失口径见 [X20](X20-cex-treasury-verification.md) 第 8.4 节）。The Block 报道，Bitget 要求每条链通过一系列安全检查后才重开，并按计划分阶段：9 月 28 日 BTC（比特币与 BSC 网络），9 月 29 日 ETH 及部分二层网络，9 月 30 日多条链上的 USDT，10 月 2 日其余资产、法币与 P2P。Bitget 称用户保护基金（5,500 BTC）覆盖全部损失，这是公司自己的说法。Bloomberg Government 报道，重开后出现约 4.63 亿美元的客户净流出。来源：[The Block](https://theblock.co/news/business/2026-09-28-bitget-starts-phased-withdrawal-resumption-416965)、[Bloomberg Government](https://news.bgov.com/crypto/crypto-hack-spurs-463-million-in-customer-outflows-at-bitget)。
 - **映射：** TSR-C04（阶段与顺序）、TSR-C11 与 [X27](X27-cex-reserves-solvency.md)（头寸要为开闸后的净流出做准备）。
 - **教训：** 重开本身就是一次压力测试。阶段计划要预先估算净流出，并让熔断与头寸联动。
 
@@ -517,7 +517,7 @@ def should_halt(stage, live):
 - [ ] **TSR-15** 恢复后 7 天每日三方对账。
 - [ ] **TSR-16** 用户公告、监管通报、合作方通知模板已批准。
 - [ ] **TSR-17** 每季度测试网恢复演练，每年含渠道方的联合演练。
-- [ ] **TSR-18** 复盘后，漏掉的控制补回 X17 清单和 X18 用例。
+- [ ] **TSR-18** 复盘后，漏掉的控制补回 X11 清单和 X20 用例。
 
 **把检查结果写进报告：**
 
@@ -535,7 +535,7 @@ def should_halt(stage, live):
 
 ## 12. 上手路径
 
-- **第一周：** 读 X17 第 6.7 节与 X26 第 3.5 节；列出所有链、币种、渠道；找出每个币种当前是否有备用干净地址；起草一页恢复手册。
+- **第一周：** 读 X11 第 6.7 节与 X26 第 3.5 节；列出所有链、币种、渠道；找出每个币种当前是否有备用干净地址；起草一页恢复手册。
 - **第一个月：** 把三核对写成 SQL 与报告；定阶段参数；在测试网做一次迁移与轮换；做剧本 A 的桌面推演。
 - **第一个季度：** 把放量与熔断做成配置；做剧本 B；与一家渠道方做联合演练；把恢复指标放进季度汇报。
 

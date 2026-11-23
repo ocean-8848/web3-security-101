@@ -1,7 +1,7 @@
 # T09 事件响应 Runbook 与值班手册
 
 > 用途：给机构一份可以直接改写的事件响应骨架和值班手册。第 1–6 部分是 runbook（事故中使用），第 7–9 部分是值班手册（日常运营使用）。
-> 配套：[X05 检测与响应工程](../arch/X05-detection-response-engineering.md)（分级、值班、SOAR、证据保全）、[X23 反欺诈、合规与安全运营](../arch/X23-cex-fraud-compliance-secops.md)（处置权限）、[X06 韧性与验证](../arch/X06-resilience-validation.md)（演练、复盘）、[X33 漏洞披露与赏金](../arch/X33-disclosure-bounty-ops.md)（对外协作）、[A09 应急响应](../assessment/A09-incident-response.md)、[T10 桌面推演剧本与评分表](T10-tabletop-script-scorecard.md)
+> 配套：[X05 检测与响应工程](../arch/X05-detection-response-engineering.md)（分级、值班、SOAR、证据保全）、[X13 反欺诈、合规与安全运营](../arch/X13-cex-fraud-compliance-secops.md)（处置权限）、[X06 韧性与验证](../arch/X06-resilience-validation.md)（演练、复盘）、[X33 漏洞披露与赏金](../arch/X33-disclosure-bounty-ops.md)（对外协作）、[A09 应急响应](../assessment/A09-incident-response.md)、[T10 桌面推演剧本与评分表](T10-tabletop-script-scorecard.md)
 > 说明：带"示例"的数值和角色名需要替换成自家的。表中空白处由使用者填写。
 
 ## 使用方法
@@ -51,7 +51,7 @@
 
 ## 3. 处置权限矩阵
 
-> 💡 注意：这是骨架示例。权限的详细设计见 X23 第 4 节。每个机构必须按自己的法律与业务情况修改。
+> 💡 注意：这是骨架示例。权限的详细设计见 X13 第 4 节。每个机构必须按自己的法律与业务情况修改。
 
 | 动作 | 可执行人 | 批准人 | 决策时限（示例） | 必须记录 | 可逆性 |
 |---|---|---|---|---|---|
