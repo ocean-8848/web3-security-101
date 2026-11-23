@@ -39,11 +39,10 @@ const NAV = [
   ['tpl', '评估模板', 'templates'],
   ['code', '示例合约', ['practice-example-code/README.md']],
   ['xa', '架构 A · 通用底座', ['arch/X00-coverage-map.md', 'arch/X01-security-program-controls.md', 'arch/X02-standards-compliance-map.md', 'arch/X03-production-infra-security.md', 'arch/X04-delivery-supply-chain.md', 'arch/X05-detection-response-engineering.md', 'arch/X06-resilience-validation.md']],
-  ['xb', '架构 B · 交易所', ['arch/X07-cex-architecture-overview.md', 'arch/X08-cex-identity-account-access.md', 'arch/X09-cex-asset-listing-market-access.md', 'arch/X10-cex-trading-settlement-credit.md', 'arch/X11-cex-wallet-treasury-payment.md', 'arch/X12-cex-production-data.md', 'arch/X13-cex-fraud-compliance-secops.md']],
+  ['xb', '架构 B · 交易所（含纵深验收与恢复）', ['arch/X07-cex-architecture-overview.md', 'arch/X08-cex-identity-account-access.md', 'arch/X25-cex-identity-verification.md', 'arch/X26-cex-identity-recovery-ops.md', 'arch/X09-cex-asset-listing-market-access.md', 'arch/X27-cex-listing-verification.md', 'arch/X28-cex-listing-recovery-ops.md', 'arch/X10-cex-trading-settlement-credit.md', 'arch/X29-cex-trading-verification.md', 'arch/X30-cex-trading-recovery-ops.md', 'arch/X11-cex-wallet-treasury-payment.md', 'arch/X31-cex-treasury-verification.md', 'arch/X32-cex-treasury-recovery-ops.md', 'arch/X12-cex-production-data.md', 'arch/X33-cex-production-verification.md', 'arch/X34-cex-production-recovery-ops.md', 'arch/X13-cex-fraud-compliance-secops.md', 'arch/X35-cex-fraud-verification.md', 'arch/X36-cex-fraud-recovery-ops.md', 'arch/X37-cex-ledger-wallet-handoff.md', 'arch/X38-cex-reserves-solvency.md']],
   ['xc', '架构 C · 公链与项目方', ['arch/X14-chain-foundation-client-ops.md', 'arch/X15-l2-bridge-oracle-ops.md', 'arch/X16-defi-project-ops.md', 'arch/X17-stablecoin-rwa-issuer-ops.md', 'arch/X18-staking-validator-ops.md', 'arch/X19-disclosure-bounty-ops.md']],
   ['xd', '架构 D · 其他应用场景', ['arch/X20-wallet-vendor-security.md', 'arch/X21-custodian-security.md', 'arch/X22-payment-otc-fiat-security.md', 'arch/X23-market-maker-security.md', 'arch/X24-agent-platform-security.md']],
-  ['xe', '架构 E · 交易所纵深', ['arch/X25-cex-identity-verification.md', 'arch/X26-cex-identity-recovery-ops.md', 'arch/X27-cex-listing-verification.md', 'arch/X28-cex-listing-recovery-ops.md', 'arch/X29-cex-trading-verification.md', 'arch/X30-cex-trading-recovery-ops.md', 'arch/X31-cex-treasury-verification.md', 'arch/X32-cex-treasury-recovery-ops.md', 'arch/X33-cex-production-verification.md', 'arch/X34-cex-production-recovery-ops.md', 'arch/X35-cex-fraud-verification.md', 'arch/X36-cex-fraud-recovery-ops.md', 'arch/X37-cex-ledger-wallet-handoff.md', 'arch/X38-cex-reserves-solvency.md']],
-  ['xf', '架构 F · 场景与能力补缺', ['arch/X39-nft-gamefi-ops.md', 'arch/X40-prediction-derivatives-ops.md', 'arch/X41-restaking-lst-ops.md', 'arch/X42-dao-governance-ops.md', 'arch/X43-privacy-protocol-ops.md', 'arch/X44-mobile-client-security.md', 'arch/X45-tee-hsm-key-ceremony.md', 'arch/X46-threat-intel-ops.md', 'arch/X47-people-security.md', 'arch/X48-security-team-management.md']],
+  ['xe', '架构 E · 场景与能力补缺', ['arch/X39-nft-gamefi-ops.md', 'arch/X40-prediction-derivatives-ops.md', 'arch/X41-restaking-lst-ops.md', 'arch/X42-dao-governance-ops.md', 'arch/X43-privacy-protocol-ops.md', 'arch/X44-mobile-client-security.md', 'arch/X45-tee-hsm-key-ceremony.md', 'arch/X46-threat-intel-ops.md', 'arch/X47-people-security.md', 'arch/X48-security-team-management.md']],
 ];
 // Old 合约安全学习手册 anchors -> new ids (old links keep working).
 // Old anchors -> current ids (c..: 合约手册; r..: 第九篇, folded 2026-11-10; b..: bootcamp before sequential renumbering 2026-11-11). Targets must never be alias keys.
@@ -90,7 +89,7 @@ const NAV_PARTS = { camp: 'Web3 安全训练营', know: 'Web3 安全知识', arc
 const nav = [], order = [];
 for (const [key, name, spec] of NAV) {
   const files = filesFor(spec);
-  const part = key === 'start' ? null : /^(bcr|bc\d|bl\d|bax)$/.test(key) ? 'camp' : /^x[a-f]$/.test(key) ? 'arch' : 'know';
+  const part = key === 'start' ? null : /^(bcr|bc\d|bl\d|bax)$/.test(key) ? 'camp' : /^x[a-e]$/.test(key) ? 'arch' : 'know';
   nav.push({ key, name, part, full: part ? NAV_PARTS[part] + (name ? ' · ' + name : '') : name, items: files.map(idOf) });
   for (const f of files) order.push([f, key]);
 }

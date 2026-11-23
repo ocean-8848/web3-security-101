@@ -8,7 +8,7 @@
 
 > 💡 注意：本手册由《合约安全学习手册》升级而来，全书已重新编号。原 01–13 章现在是 01、03–12、27、28 章。旧链接会自动跳转到新章节。全部 28 章已完成。
 
-> 🆕 **新增「Web3 安全架构与运营」**（X00–X48，6 组）：教你把防御建成体系并持续运营，覆盖通用底座、交易所、公链与项目方、钱包 / 托管 / 支付 / 做市 / AI Agent 等场景；配套 5 份模板（T08–T12）、3 个交互实验和训练营 L3 赛道（靶场 MiniEx）。见第 2 节「安全架构与运营」，或直接从 [X01 安全体系怎么搭](arch/X01-security-program-controls.md) 开始。
+> 🆕 **新增「Web3 安全架构与运营」**（X00–X48，5 组）：教你把防御建成体系并持续运营，覆盖通用底座、交易所、公链与项目方、钱包 / 托管 / 支付 / 做市 / AI Agent 等场景；配套 5 份模板（T08–T12）、3 个交互实验和训练营 L3 赛道（靶场 MiniEx）。见第 2 节「安全架构与运营」，或直接从 [X01 安全体系怎么搭](arch/X01-security-program-controls.md) 开始。
 
 > 🧭 不知道从哪里开始？打开[学习路径导航](interactive/learning-paths.html)，回答 4 个问题，得到适合你的路径。
 
@@ -196,11 +196,25 @@ flowchart TD
 |---|---|---|---|
 | X07 | [交易所安全架构总览](arch/X07-cex-architecture-overview.md) | 系统分区、信任边界与数据流、六个保护域、成熟度模型 | [T12](templates/T12-security-architecture-review.md) |
 | X08 | [客户身份、账户与访问](arch/X08-cex-identity-account-access.md) | 认证与账户找回、账户接管对策、API Key 管理、机构权限与客服工具 | [风控规则调参](interactive/risk-rule-tuning-lab.html) |
+| X25 | [客户身份与访问·工程验收](arch/X25-cex-identity-verification.md) | 撤权、越权与找回流程怎么证明有效 | — |
+| X26 | [客户身份与访问·运营与恢复](arch/X26-cex-identity-recovery-ops.md) | 接管事件、批量重置与账户恢复 | — |
 | X09 | [资产与市场准入](arch/X09-cex-asset-listing-market-access.md) | 上币全周期、信息保护与内幕检测、分级准入与持续监控、下架 | [A05](assessment/A05-listing-due-diligence.md) |
+| X27 | [资产与市场准入·工程验收](arch/X27-cex-listing-verification.md) | 准入开关、参数核对与下架演练 | — |
+| X28 | [资产与市场准入·运营与恢复](arch/X28-cex-listing-recovery-ops.md) | 异常资产处置、分叉迁移与复牌 | — |
 | X10 | [交易、结算与信用](arch/X10-cex-trading-settlement-credit.md) | 价格保护、账务一致与对账、抵押授信与强平、市场操纵检测、参数变更控制 | [风控规则调参](interactive/risk-rule-tuning-lab.html) |
+| X29 | [交易、结算与信用·工程验收](arch/X29-cex-trading-verification.md) | 回放撤单与异常价格，核订单、成交、分录与估值 | — |
+| X30 | [交易、结算与信用·运营与恢复](arch/X30-cex-trading-recovery-ops.md) | 过载保撮合、切主验停写、复市与恢复授信 | — |
 | X11 | [钱包、财资与支付渠道](arch/X11-cex-wallet-treasury-payment.md) | 钱包分层、签名服务架构、资金调拨、链上权限监控、法币渠道隔离 | [签名请求独立校验](interactive/signing-policy-lab.html) |
+| X31 | [钱包、财资与支付·工程验收](arch/X31-cex-treasury-verification.md) | 越权签名、假回执、拒签与额度占用 | — |
+| X32 | [钱包、财资与支付·运营与恢复](arch/X32-cex-treasury-recovery-ops.md) | 复付、迁移、轮换与渠道恢复 | — |
 | X12 | [交易所生产环境与数据](arch/X12-cex-production-data.md) | 核心系统分区、数据分级、可信日志与证据、备份恢复、第三方与数据泄露应对 | [T12](templates/T12-security-architecture-review.md) |
+| X33 | [生产环境与数据·工程验收](arch/X33-cex-production-verification.md) | 权限、证据与备份怎么证明可信 | — |
+| X34 | [生产环境与数据·运营与恢复](arch/X34-cex-production-recovery-ops.md) | 证据保全、数据恢复与可用性演练 | — |
 | X13 | [反欺诈、合规与安全运营](arch/X13-cex-fraud-compliance-secops.md) | 欺诈监测、合规落点、处置权限矩阵、调查取证、分阶段恢复 | [T09](templates/T09-incident-runbook-oncall.md) |
+| X35 | [反欺诈、合规与安全运营·工程验收](arch/X35-cex-fraud-verification.md) | 规则回放、处置授权与限制落地 | — |
+| X36 | [反欺诈、合规与安全运营·运营与恢复](arch/X36-cex-fraud-recovery-ops.md) | 调查取证、执行复核与解除限制 | — |
+| X37 | [域间交接](arch/X37-cex-ledger-wallet-handoff.md) | 原单、预留、批准、实收、实付与未决状态 | — |
+| X38 | [储备与偿付能力](arch/X38-cex-reserves-solvency.md) | 负债、储备、对账与证明 | — |
 
 **C 组 · 公链与项目方**
 
@@ -223,26 +237,7 @@ flowchart TD
 | X23 | [做市与量化团队安全](arch/X23-market-maker-security.md) | API Key 台账、交易系统与资金划转控制、内部人风险、与交易所的安全协作 | [T08](templates/T08-control-matrix-risk-register.md) |
 | X24 | [AI Agent 平台安全](arch/X24-agent-platform-security.md) | 权限与预算、策略引擎运营、工具调用审计、Session Key 与暂停撤销 | [T12](templates/T12-security-architecture-review.md) |
 
-**E 组 · 交易所纵深**（每个保护域的工程验收与运营恢复，另有域间交接与储备偿付）
-
-| # | 章节 | 你会学到 | 配套 |
-|---|---|---|---|
-| X25 | [客户身份与访问·工程验收](arch/X25-cex-identity-verification.md) | 撤权、越权与找回流程怎么证明有效 | — |
-| X26 | [客户身份与访问·运营与恢复](arch/X26-cex-identity-recovery-ops.md) | 接管事件、批量重置与账户恢复 | — |
-| X27 | [资产与市场准入·工程验收](arch/X27-cex-listing-verification.md) | 准入开关、参数核对与下架演练 | — |
-| X28 | [资产与市场准入·运营与恢复](arch/X28-cex-listing-recovery-ops.md) | 异常资产处置、分叉迁移与复牌 | — |
-| X29 | [交易、结算与信用·工程验收](arch/X29-cex-trading-verification.md) | 回放撤单与异常价格，核订单、成交、分录与估值 | — |
-| X30 | [交易、结算与信用·运营与恢复](arch/X30-cex-trading-recovery-ops.md) | 过载保撮合、切主验停写、复市与恢复授信 | — |
-| X31 | [钱包、财资与支付·工程验收](arch/X31-cex-treasury-verification.md) | 越权签名、假回执、拒签与额度占用 | — |
-| X32 | [钱包、财资与支付·运营与恢复](arch/X32-cex-treasury-recovery-ops.md) | 复付、迁移、轮换与渠道恢复 | — |
-| X33 | [生产环境与数据·工程验收](arch/X33-cex-production-verification.md) | 权限、证据与备份怎么证明可信 | — |
-| X34 | [生产环境与数据·运营与恢复](arch/X34-cex-production-recovery-ops.md) | 证据保全、数据恢复与可用性演练 | — |
-| X35 | [反欺诈、合规与安全运营·工程验收](arch/X35-cex-fraud-verification.md) | 规则回放、处置授权与限制落地 | — |
-| X36 | [反欺诈、合规与安全运营·运营与恢复](arch/X36-cex-fraud-recovery-ops.md) | 调查取证、执行复核与解除限制 | — |
-| X37 | [域间交接](arch/X37-cex-ledger-wallet-handoff.md) | 原单、预留、批准、实收、实付与未决状态 | — |
-| X38 | [储备与偿付能力](arch/X38-cex-reserves-solvency.md) | 负债、储备、对账与证明 | — |
-
-**F 组 · 场景与能力补缺**
+**E 组 · 场景与能力补缺**
 
 | # | 章节 | 你会学到 | 配套 |
 |---|---|---|---|
