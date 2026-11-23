@@ -6,7 +6,7 @@
 > 3. 主持一次 30 分钟的发行日推演，覆盖铸造合约被卡死、官方渠道被盗、授权钓鱼三类事件。
 >
 > 适用角色：NFT / GameFi 项目方安全负责人、合约与游戏服务端工程师、社区与发行运营
-> 前置章节：[02 密码学与随机数](../02-cryptography-randomness.md)、[05 访问控制与权限](../05-access-control.md)、[09 MEV 与签名](../09-mev-signatures.md)、[19 用户诈骗](../19-user-scams.md)、[20 前端、DNS 与供应链](../20-frontend-dns-supply-chain.md)、[X16 DeFi 项目方安全运营](X16-defi-project-ops.md)、[X05 检测与响应工程](X05-detection-response-engineering.md)
+> 前置章节：[02 密码学与随机数](../02-cryptography-randomness.md)、[05 访问控制与权限](../05-access-control.md)、[09 MEV 与签名](../09-mev-signatures.md)、[19 用户诈骗](../19-user-scams.md)、[20 前端、DNS 与供应链](../20-frontend-dns-supply-chain.md)、[X30 DeFi 项目方安全运营](X30-defi-project-ops.md)、[X05 检测与响应工程](X05-detection-response-engineering.md)
 > 交互实验 / 模板：[T04 上线门禁清单](../templates/T04-go-live-gate.md)；本章给出发行门禁表、铸造合约骨架、监控规则和推演剧本
 > 最后核对：2026-11-23
 
@@ -190,7 +190,7 @@ function mintAllowed(uint256 qty, uint256 deadline, uint256 nonce, bytes calldat
 | NFT-11 | 元数据存储使用内容寻址并固定；可变元数据有登记与时间锁 | 项目方或被盗账号改图 | P1 | 检查 `tokenURI` 指向，评估是否可被单方更改 |
 | NFT-12 | 游戏服务器的结算请求带限额、频率和幂等键；链上合约自带每日上限 | 无限铸币、重复结算 | P0 | 在测试环境重放同一请求 100 次，确认只生效一次 |
 | NFT-13 | 游戏代币的铸币权限分层：不允许服务器热钱包直接无限铸币 | 服务器被盗等于无限增发 | P0 | 读取铸币角色与限额 |
-| NFT-14 | 资产桥与验证者采用 X15 的控制；验证者密钥分散、白名单定期复核 | 桥被盗 | P0 | 见 [X15 L2、跨链桥与预言机运营方](X15-l2-bridge-oracle-ops.md) |
+| NFT-14 | 资产桥与验证者采用 X29 的控制；验证者密钥分散、白名单定期复核 | 桥被盗 | P0 | 见 [X29 L2、跨链桥与预言机运营方](X29-l2-bridge-oracle-ops.md) |
 | NFT-15 | 经济监控：水龙头与水槽比、单地址占比、异常铸造速度 | 通胀、女巫、外挂刷资源 | P1 | 用本章 SQL 在历史数据上回放 |
 | NFT-16 | 反外挂：服务端权威、行为异常检测、封禁与申诉 | 外挂刷资源 | P1 | 抽样复核异常账号 |
 | NFT-17 | 暂停开关：铸造、交易、游戏结算、桥分别可停；守护者只有刹车权 | 事件扩大 | P0 | 每季度演练，记录从决定到生效的分钟数 |
@@ -258,7 +258,7 @@ cast storage $NFT 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d38
 cast call $NFT "hasRole(bytes32,address)(bool)" $MINTER_ROLE $GAME_SERVER --rpc-url $RPC
 ```
 
-核对结果写入权限登记表：地址、角色、持有人、轮换日期、对应多签的签名人。登记表做法见 [X16 DeFi 项目方安全运营](X16-defi-project-ops.md)。
+核对结果写入权限登记表：地址、角色、持有人、轮换日期、对应多签的签名人。登记表做法见 [X30 DeFi 项目方安全运营](X30-defi-project-ops.md)。
 
 ### 6.3 随机与揭示：三种做法比较
 
@@ -386,7 +386,7 @@ NFT 市场多用"链下签名订单、链上成交"的模式。用户签的是�
 2. 巡检并上报已知的钓鱼订单地址，与市场和钱包厂商共享。
 3. 对集合设置"异常成交价"监控：成交价远低于地板价，且买方是新地址，就告警。
 
-钱包与签名展示的通用问题见 [X20 钱包厂商安全](X20-wallet-vendor-security.md)。
+钱包与签名展示的通用问题见 [X34 钱包厂商安全](X34-wallet-vendor-security.md)。
 
 ### 6.11 常见坑
 
@@ -571,7 +571,7 @@ action: throttle gateway, review top addresses
 - [ ] **NFT-11** 元数据存储内容寻址，可变元数据有登记与时间锁
 - [ ] **NFT-12** 游戏结算有限额、频率和幂等键
 - [ ] **NFT-13** 铸币权限分层，服务器热钱包不能无限铸币
-- [ ] **NFT-14** 桥与验证者符合 X15 的控制
+- [ ] **NFT-14** 桥与验证者符合 X29 的控制
 - [ ] **NFT-15** 经济监控上线，已在历史数据回放
 - [ ] **NFT-16** 反外挂与申诉流程存在
 - [ ] **NFT-17** 铸造、交易、结算、桥各有独立暂停，并有演练记录
@@ -603,7 +603,7 @@ action: throttle gateway, review top addresses
 **第一个季度**
 1. 做一次桌面推演（第 7.4 节）。
 2. 对游戏服务器与链的结算边界做一次专项复核。
-3. 建立假站巡检与披露渠道，接入 [X19 漏洞披露、赏金与安全社区协作](X19-disclosure-bounty-ops.md)。
+3. 建立假站巡检与披露渠道，接入 [X33 漏洞披露、赏金与安全社区协作](X33-disclosure-bounty-ops.md)。
 
 ---
 
@@ -656,4 +656,4 @@ action: throttle gateway, review top addresses
 
 建议配套（后续在 L3 训练营实现）：发行日推演剧本卡片与授权钓鱼巡检脚本。
 
-相关章节：[X15 L2、跨链桥与预言机运营方](X15-l2-bridge-oracle-ops.md)、[X20 钱包厂商安全](X20-wallet-vendor-security.md)、[21 社会工程与内部人](../21-social-engineering-insiders.md)、[12 跨链桥安全](../12-cross-chain-bridges.md)。
+相关章节：[X29 L2、跨链桥与预言机运营方](X29-l2-bridge-oracle-ops.md)、[X34 钱包厂商安全](X34-wallet-vendor-security.md)、[21 社会工程与内部人](../21-social-engineering-insiders.md)、[12 跨链桥安全](../12-cross-chain-bridges.md)。

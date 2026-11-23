@@ -13,7 +13,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "lib"))
 import mini  # noqa: E402
 
-# 每条路径的策略（示例，数值取自 X11 的示例策略并按靶场数据调整）
+# 每条路径的策略（示例，数值取自 X17 的示例策略并按靶场数据调整）
 POLICY = {
     "cold_to_warm": dict(min_approvers=2, delay_min=240, window_min=72 * 60, max_single_usd=20_000_000, daily_usd=None),
     "warm_to_hot": dict(min_approvers=2, delay_min=0, window_min=120, max_single_usd=500_000, daily_usd=1_000_000),

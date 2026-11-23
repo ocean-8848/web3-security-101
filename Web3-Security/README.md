@@ -196,46 +196,46 @@ flowchart TD
 |---|---|---|---|
 | X07 | [交易所安全架构总览](arch/X07-cex-architecture-overview.md) | 系统分区、信任边界与数据流、六个保护域、成熟度模型 | [T12](templates/T12-security-architecture-review.md) |
 | X08 | [客户身份、账户与访问](arch/X08-cex-identity-account-access.md) | 认证与账户找回、账户接管对策、API Key 管理、机构权限与客服工具 | [风控规则调参](interactive/risk-rule-tuning-lab.html) |
-| X25 | [客户身份与访问·工程验收](arch/X25-cex-identity-verification.md) | 撤权、越权与找回流程怎么证明有效 | — |
-| X26 | [客户身份与访问·运营与恢复](arch/X26-cex-identity-recovery-ops.md) | 接管事件、批量重置与账户恢复 | — |
-| X09 | [资产与市场准入](arch/X09-cex-asset-listing-market-access.md) | 上币全周期、信息保护与内幕检测、分级准入与持续监控、下架 | [A05](assessment/A05-listing-due-diligence.md) |
-| X27 | [资产与市场准入·工程验收](arch/X27-cex-listing-verification.md) | 准入开关、参数核对与下架演练 | — |
-| X28 | [资产与市场准入·运营与恢复](arch/X28-cex-listing-recovery-ops.md) | 异常资产处置、分叉迁移与复牌 | — |
-| X10 | [交易、结算与信用](arch/X10-cex-trading-settlement-credit.md) | 价格保护、账务一致与对账、抵押授信与强平、市场操纵检测、参数变更控制 | [风控规则调参](interactive/risk-rule-tuning-lab.html) |
-| X29 | [交易、结算与信用·工程验收](arch/X29-cex-trading-verification.md) | 回放撤单与异常价格，核订单、成交、分录与估值 | — |
-| X30 | [交易、结算与信用·运营与恢复](arch/X30-cex-trading-recovery-ops.md) | 过载保撮合、切主验停写、复市与恢复授信 | — |
-| X11 | [钱包、财资与支付渠道](arch/X11-cex-wallet-treasury-payment.md) | 钱包分层、签名服务架构、资金调拨、链上权限监控、法币渠道隔离 | [签名请求独立校验](interactive/signing-policy-lab.html) |
-| X31 | [钱包、财资与支付·工程验收](arch/X31-cex-treasury-verification.md) | 越权签名、假回执、拒签与额度占用 | — |
-| X32 | [钱包、财资与支付·运营与恢复](arch/X32-cex-treasury-recovery-ops.md) | 复付、迁移、轮换与渠道恢复 | — |
-| X12 | [交易所生产环境与数据](arch/X12-cex-production-data.md) | 核心系统分区、数据分级、可信日志与证据、备份恢复、第三方与数据泄露应对 | [T12](templates/T12-security-architecture-review.md) |
-| X33 | [生产环境与数据·工程验收](arch/X33-cex-production-verification.md) | 权限、证据与备份怎么证明可信 | — |
-| X34 | [生产环境与数据·运营与恢复](arch/X34-cex-production-recovery-ops.md) | 证据保全、数据恢复与可用性演练 | — |
-| X13 | [反欺诈、合规与安全运营](arch/X13-cex-fraud-compliance-secops.md) | 欺诈监测、合规落点、处置权限矩阵、调查取证、分阶段恢复 | [T09](templates/T09-incident-runbook-oncall.md) |
-| X35 | [反欺诈、合规与安全运营·工程验收](arch/X35-cex-fraud-verification.md) | 规则回放、处置授权与限制落地 | — |
-| X36 | [反欺诈、合规与安全运营·运营与恢复](arch/X36-cex-fraud-recovery-ops.md) | 调查取证、执行复核与解除限制 | — |
-| X37 | [域间交接](arch/X37-cex-ledger-wallet-handoff.md) | 原单、预留、批准、实收、实付与未决状态 | — |
-| X38 | [储备与偿付能力](arch/X38-cex-reserves-solvency.md) | 负债、储备、对账与证明 | — |
+| X09 | [客户身份与访问·工程验收](arch/X09-cex-identity-verification.md) | 撤权、越权与找回流程怎么证明有效 | — |
+| X10 | [客户身份与访问·运营与恢复](arch/X10-cex-identity-recovery-ops.md) | 接管事件、批量重置与账户恢复 | — |
+| X11 | [资产与市场准入](arch/X11-cex-asset-listing-market-access.md) | 上币全周期、信息保护与内幕检测、分级准入与持续监控、下架 | [A05](assessment/A05-listing-due-diligence.md) |
+| X12 | [资产与市场准入·工程验收](arch/X12-cex-listing-verification.md) | 准入开关、参数核对与下架演练 | — |
+| X13 | [资产与市场准入·运营与恢复](arch/X13-cex-listing-recovery-ops.md) | 异常资产处置、分叉迁移与复牌 | — |
+| X14 | [交易、结算与信用](arch/X14-cex-trading-settlement-credit.md) | 价格保护、账务一致与对账、抵押授信与强平、市场操纵检测、参数变更控制 | [风控规则调参](interactive/risk-rule-tuning-lab.html) |
+| X15 | [交易、结算与信用·工程验收](arch/X15-cex-trading-verification.md) | 回放撤单与异常价格，核订单、成交、分录与估值 | — |
+| X16 | [交易、结算与信用·运营与恢复](arch/X16-cex-trading-recovery-ops.md) | 过载保撮合、切主验停写、复市与恢复授信 | — |
+| X17 | [钱包、财资与支付渠道](arch/X17-cex-wallet-treasury-payment.md) | 钱包分层、签名服务架构、资金调拨、链上权限监控、法币渠道隔离 | [签名请求独立校验](interactive/signing-policy-lab.html) |
+| X18 | [钱包、财资与支付·工程验收](arch/X18-cex-treasury-verification.md) | 越权签名、假回执、拒签与额度占用 | — |
+| X19 | [钱包、财资与支付·运营与恢复](arch/X19-cex-treasury-recovery-ops.md) | 复付、迁移、轮换与渠道恢复 | — |
+| X20 | [交易所生产环境与数据](arch/X20-cex-production-data.md) | 核心系统分区、数据分级、可信日志与证据、备份恢复、第三方与数据泄露应对 | [T12](templates/T12-security-architecture-review.md) |
+| X21 | [生产环境与数据·工程验收](arch/X21-cex-production-verification.md) | 权限、证据与备份怎么证明可信 | — |
+| X22 | [生产环境与数据·运营与恢复](arch/X22-cex-production-recovery-ops.md) | 证据保全、数据恢复与可用性演练 | — |
+| X23 | [反欺诈、合规与安全运营](arch/X23-cex-fraud-compliance-secops.md) | 欺诈监测、合规落点、处置权限矩阵、调查取证、分阶段恢复 | [T09](templates/T09-incident-runbook-oncall.md) |
+| X24 | [反欺诈、合规与安全运营·工程验收](arch/X24-cex-fraud-verification.md) | 规则回放、处置授权与限制落地 | — |
+| X25 | [反欺诈、合规与安全运营·运营与恢复](arch/X25-cex-fraud-recovery-ops.md) | 调查取证、执行复核与解除限制 | — |
+| X26 | [域间交接](arch/X26-cex-ledger-wallet-handoff.md) | 原单、预留、批准、实收、实付与未决状态 | — |
+| X27 | [储备与偿付能力](arch/X27-cex-reserves-solvency.md) | 负债、储备、对账与证明 | — |
 
 **C 组 · 公链与项目方**
 
 | # | 章节 | 你会学到 | 配套 |
 |---|---|---|---|
-| X14 | [公链基金会与客户端团队](arch/X14-chain-foundation-client-ops.md) | 漏洞披露与协调、客户端发布、链级紧急响应、治理权限、生态通知 | [T09](templates/T09-incident-runbook-oncall.md) |
-| X15 | [L2、跨链桥与预言机运营方](arch/X15-l2-bridge-oracle-ops.md) | 升级密钥与安全委员会、排序器、桥限额与暂停、预言机偏离与停更 | [T12](templates/T12-security-architecture-review.md) |
-| X16 | [DeFi 项目方安全运营](arch/X16-defi-project-ops.md) | 上线就绪、多签与时间锁运营、暂停守护者、监控、金库与参数变更 | [T04](templates/T04-go-live-gate.md)、[多签签前复核](interactive/multisig-review-lab.html) |
-| X17 | [稳定币与 RWA 发行方](arch/X17-stablecoin-rwa-issuer-ops.md) | 铸销控制、储备与对账、赎回与脱锚预案、冻结权限、RWA 链下链上绑定 | [T11](templates/T11-vendor-custodian-assessment.md) |
-| X18 | [质押、节点与验证者运营](arch/X18-staking-validator-ops.md) | 验证者密钥分层、防罚没与故障转移、监控、Pectra 之后的运营变化 | [T09](templates/T09-incident-runbook-oncall.md) |
-| X19 | [漏洞披露、赏金与安全社区协作](arch/X19-disclosure-bounty-ops.md) | 披露政策与 security.txt、赏金计划、分诊 SLA、SEAL 协调、公告与复盘 | [A07](assessment/A07-external-audit-bounty.md) |
+| X28 | [公链基金会与客户端团队](arch/X28-chain-foundation-client-ops.md) | 漏洞披露与协调、客户端发布、链级紧急响应、治理权限、生态通知 | [T09](templates/T09-incident-runbook-oncall.md) |
+| X29 | [L2、跨链桥与预言机运营方](arch/X29-l2-bridge-oracle-ops.md) | 升级密钥与安全委员会、排序器、桥限额与暂停、预言机偏离与停更 | [T12](templates/T12-security-architecture-review.md) |
+| X30 | [DeFi 项目方安全运营](arch/X30-defi-project-ops.md) | 上线就绪、多签与时间锁运营、暂停守护者、监控、金库与参数变更 | [T04](templates/T04-go-live-gate.md)、[多签签前复核](interactive/multisig-review-lab.html) |
+| X31 | [稳定币与 RWA 发行方](arch/X31-stablecoin-rwa-issuer-ops.md) | 铸销控制、储备与对账、赎回与脱锚预案、冻结权限、RWA 链下链上绑定 | [T11](templates/T11-vendor-custodian-assessment.md) |
+| X32 | [质押、节点与验证者运营](arch/X32-staking-validator-ops.md) | 验证者密钥分层、防罚没与故障转移、监控、Pectra 之后的运营变化 | [T09](templates/T09-incident-runbook-oncall.md) |
+| X33 | [漏洞披露、赏金与安全社区协作](arch/X33-disclosure-bounty-ops.md) | 披露政策与 security.txt、赏金计划、分诊 SLA、SEAL 协调、公告与复盘 | [A07](assessment/A07-external-audit-bounty.md) |
 
 **D 组 · 其他应用场景**
 
 | # | 章节 | 你会学到 | 配套 |
 |---|---|---|---|
-| X20 | [钱包厂商安全](arch/X20-wallet-vendor-security.md) | 钱包产品威胁模型、签名界面护栏、发布路径与商店风险、MPC 服务运营 | [T12](templates/T12-security-architecture-review.md) |
-| X21 | [托管机构安全](arch/X21-custodian-security.md) | 客户资产隔离、密钥仪式、独立审计与保险、机构客户评估托管商 | [T11](templates/T11-vendor-custodian-assessment.md) |
-| X22 | [支付、OTC 与法币出入金安全](arch/X22-payment-otc-fiat-security.md) | 付款验证与 BEC、OTC 放行、卡入金风险、渠道隔离与对账 | [T11](templates/T11-vendor-custodian-assessment.md) |
-| X23 | [做市与量化团队安全](arch/X23-market-maker-security.md) | API Key 台账、交易系统与资金划转控制、内部人风险、与交易所的安全协作 | [T08](templates/T08-control-matrix-risk-register.md) |
-| X24 | [AI Agent 平台安全](arch/X24-agent-platform-security.md) | 权限与预算、策略引擎运营、工具调用审计、Session Key 与暂停撤销 | [T12](templates/T12-security-architecture-review.md) |
+| X34 | [钱包厂商安全](arch/X34-wallet-vendor-security.md) | 钱包产品威胁模型、签名界面护栏、发布路径与商店风险、MPC 服务运营 | [T12](templates/T12-security-architecture-review.md) |
+| X35 | [托管机构安全](arch/X35-custodian-security.md) | 客户资产隔离、密钥仪式、独立审计与保险、机构客户评估托管商 | [T11](templates/T11-vendor-custodian-assessment.md) |
+| X36 | [支付、OTC 与法币出入金安全](arch/X36-payment-otc-fiat-security.md) | 付款验证与 BEC、OTC 放行、卡入金风险、渠道隔离与对账 | [T11](templates/T11-vendor-custodian-assessment.md) |
+| X37 | [做市与量化团队安全](arch/X37-market-maker-security.md) | API Key 台账、交易系统与资金划转控制、内部人风险、与交易所的安全协作 | [T08](templates/T08-control-matrix-risk-register.md) |
+| X38 | [AI Agent 平台安全](arch/X38-agent-platform-security.md) | 权限与预算、策略引擎运营、工具调用审计、Session Key 与暂停撤销 | [T12](templates/T12-security-architecture-review.md) |
 
 **E 组 · 场景与能力补缺**
 
@@ -305,7 +305,7 @@ flowchart TD
 | 审计 / 安全研究 | 01 → 02 → 03 → 04–14 全部 → 27 → 28 → C00–C03；动手主线走[审计训练营](bootcamp/B00-roadmap.md) | 漏洞模式识别；跨生态的复盘能力 |
 | 交易所 / 钱包 / 产品 | 01 → 07 → 09 → 12 → 15 → 18–25 → 28 → C02 → C03 | 集成风险、签名界面、托管运营、用户诈骗、事后处置 |
 | 安全评估负责人 | 01 → 04–12 通读 → 18 → 20 → 21 → A01 → A02 → 按对象选 A03 / A04 / A05 → A06 → A07 → A08 → A09 → 25 | 方法论、评级、门禁、尽调、应急 |
-| 安全工程师（架构与运营） | 01 → X01 → X02 → X03–X06（通用底座）→ 按所在机构选 X07–X13（交易所）/ X14–X19（公链与项目方）/ X20–X24（其他）→ 训练营 L3（B70–B77）→ T08–T12 | 建体系、写规则、做演练、能交付安全架构评估 |
+| 安全工程师（架构与运营） | 01 → X01 → X02 → X03–X06（通用底座）→ 按所在机构选 X07–X27（交易所）/ X28–X33（公链与项目方）/ X34–X38（其他）→ 训练营 L3（B70–B77）→ T08–T12 | 建体系、写规则、做演练、能交付安全架构评估 |
 
 ## 4. 怎么用交互实验和示例合约
 

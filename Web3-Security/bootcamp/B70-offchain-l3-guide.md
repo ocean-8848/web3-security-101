@@ -20,7 +20,7 @@ L1 教你守住个人与终端，L2 教你加固一条条具体的链路：前�
 
 但一家机构的安全不是一串单点修补。有人问"我们到底有多少资产要保护""哪些控制写在文档里、哪些真的在运行""这条告警规则上线后每天会响多少次""下次事故我们几分钟发现、几分钟止血"，靠"懂攻击"回答不了。这些问题要靠**体系**：资产清单、威胁模型、控制矩阵、规则与检测、独立校验、发布门禁、推演与复盘，并且持续运营。
 
-L3 要解决的就是这件事。它把手册的 [X01–X24](../arch/X01-security-program-controls.md) 里的方法，变成你能在笔记本上亲手跑通的练习：每一步都用同一个虚构交易所 MiniEx 的合成数据，产出可以量化的结果（召回、误报、覆盖率、MTTD），最后交付一份带 90 天路线图的安全架构评估。
+L3 要解决的就是这件事。它把手册的 [X01–X48](../arch/X01-security-program-controls.md) 里的方法，变成你能在笔记本上亲手跑通的练习：每一步都用同一个虚构交易所 MiniEx 的合成数据，产出可以量化的结果（召回、误报、覆盖率、MTTD），最后交付一份带 90 天路线图的安全架构评估。
 
 ## 1. 本阶段学完能做什么
 
@@ -37,13 +37,13 @@ L3 要解决的就是这件事。它把手册的 [X01–X24](../arch/X01-securit
 | 主题 | 在哪学 | 掌握标准 |
 |---|---|---|
 | 资产清单、威胁模型与控制矩阵 | [B71](B71-control-matrix-practice.md)、[X01](../arch/X01-security-program-controls.md)、[X02](../arch/X02-standards-compliance-map.md)、[X07](../arch/X07-cex-architecture-overview.md) | `assets.csv` 至少 14 项并有证据编号；找出全部 3 条员工权限治理发现 G1–G3；10 个保护域各至少 1 行；合计覆盖率 31.1%，缺口排名第 1 的域是"内部人与权限"。 |
-| 账户接管与 API Key 滥用的风控规则 | [B72](B72-withdrawal-risk-rules-practice.md)（S1、S2）、[X08](../arch/X08-cex-identity-account-access.md)、[X13](../arch/X13-cex-fraud-compliance-secops.md) | S1 三条规则合起来召回 3/3 且无答案漏报；S2 两条规则都召回 2/2、误报 0；朴素版"任何调用来自新 IP"误报 > 30，你能说出原因。 |
-| 洗钱漏斗、对敲与标记价规则的调参 | [B72](B72-withdrawal-risk-rules-practice.md)（S3、S4、S9）、[X10](../arch/X10-cex-trading-settlement-credit.md)、[X11](../arch/X11-cex-wallet-treasury-payment.md) | S3 调阈值后召回 3/3、误报 0，并指出 10,000 与 9,000 之间的悬崖；8 条规则的互补矩阵覆盖全部 11 个答案、误报 0；每条规则写出一个盲区。 |
+| 账户接管与 API Key 滥用的风控规则 | [B72](B72-withdrawal-risk-rules-practice.md)（S1、S2）、[X08](../arch/X08-cex-identity-account-access.md)、[X23](../arch/X23-cex-fraud-compliance-secops.md) | S1 三条规则合起来召回 3/3 且无答案漏报；S2 两条规则都召回 2/2、误报 0；朴素版"任何调用来自新 IP"误报 > 30，你能说出原因。 |
+| 洗钱漏斗、对敲与标记价规则的调参 | [B72](B72-withdrawal-risk-rules-practice.md)（S3、S4、S9）、[X14](../arch/X14-cex-trading-settlement-credit.md)、[X17](../arch/X17-cex-wallet-treasury-payment.md) | S3 调阈值后召回 3/3、误报 0，并指出 10,000 与 9,000 之间的悬崖；8 条规则的互补矩阵覆盖全部 11 个答案、误报 0；每条规则写出一个盲区。 |
 | 检测工程：假设、回放与关联 | [B73](B73-detection-engineering-practice.md)（S5、S6、S7、S9）、[X05](../arch/X05-detection-response-engineering.md)、[X03](../arch/X03-production-infra-security.md) | S5 规则召回 2/2、误报 ≤ 2；S7 关联规则把三份日志串成一条链；你量出朴素规则的告警量与噪声类型，并起草 P1–P4 分级。 |
-| 签名服务独立校验与调拨审批 | [B74](B74-signing-policy-practice.md)（S6）、[X11](../arch/X11-cex-wallet-treasury-payment.md)、[X21](../arch/X21-custodian-security.md) | `policy.py` 输出共 1302 条、放行 1293、拒绝 6、升级人工 3，漏掉的 S6 为"无"，误拒为"无"；说出 3 种绕过各被哪条规则拦下。 |
+| 签名服务独立校验与调拨审批 | [B74](B74-signing-policy-practice.md)（S6）、[X17](../arch/X17-cex-wallet-treasury-payment.md)、[X35](../arch/X35-custodian-security.md) | `policy.py` 输出共 1302 条、放行 1293、拒绝 6、升级人工 3，漏掉的 S6 为"无"，误拒为"无"；说出 3 种绕过各被哪条规则拦下。 |
 | 发布门禁与软件供应链 | [B75](B75-release-gate-practice.md)（S8）、[X04](../arch/X04-delivery-supply-chain.md) | `release.yml` 的 9 处缺陷找出至少 7 处；linter 报 9 条发现，对 `ci.yml` 报 0 条；`replay.py` 对 S8 召回 3/3、误报 0；发布清单用无签名制品测出变 ❌ 的行。 |
-| 桌面推演与事故复盘 | [B76](B76-tabletop-postmortem-practice.md)（S1、S6、S7）、[X06](../arch/X06-resilience-validation.md)、[X13](../arch/X13-cex-fraud-compliance-secops.md) | 8 份时间线 `check_timeline.py` 都是"覆盖 n/n"；缺口表每个场景至少 3 行并有控制 ID；S1-01 的 MTTD 是 48.1 分钟；完成一份含行动项的无责复盘。 |
-| 安全架构评估与 90 天路线图 | [B77](B77-security-architecture-capstone.md)、[X01–X24](../arch/X01-security-program-controls.md)、[T12](../templates/T12-security-architecture-review.md) | 评估与路线图按 B77 的过关标准交付，并引用 B71–B76 的证据（第 7 节）。 |
+| 桌面推演与事故复盘 | [B76](B76-tabletop-postmortem-practice.md)（S1、S6、S7）、[X06](../arch/X06-resilience-validation.md)、[X23](../arch/X23-cex-fraud-compliance-secops.md) | 8 份时间线 `check_timeline.py` 都是"覆盖 n/n"；缺口表每个场景至少 3 行并有控制 ID；S1-01 的 MTTD 是 48.1 分钟；完成一份含行动项的无责复盘。 |
+| 安全架构评估与 90 天路线图 | [B77](B77-security-architecture-capstone.md)、[X01–X48](../arch/X01-security-program-controls.md)、[T12](../templates/T12-security-architecture-review.md) | 评估与路线图按 B77 的过关标准交付，并引用 B71–B76 的证据（第 7 节）。 |
 
 > 💡 注意：S9 不是单独一章，而是每个场景周围的 103 个"看起来可疑但正常"的事件。它让你在 B72、B73 里练调参：召回和误报要一起看。
 
@@ -100,23 +100,23 @@ python3 -m unittest discover -s practice-example-code/ops/tests -v         # 靶
 | 章 | 预计用时 | 靶场场景 | 配套 X 章 |
 |---|---|---|---|
 | B71 | 2–2.5 小时 | — | X01、X02、X07 |
-| B72 | 2.5–3 小时 | S1 S2 S3 S4 S9 | X08、X10、X11、X13 |
+| B72 | 2.5–3 小时 | S1 S2 S3 S4 S9 | X08、X14、X17、X23 |
 | B73 | 3–4 小时 | S5 S6 S7 S9 | X05、X03 |
-| B74 | 2–3 小时 | S6 | X11、X21 |
+| B74 | 2–3 小时 | S6 | X17、X35 |
 | B75 | 3–4 小时 | S8 | X04 |
-| B76 | 3–4 小时 | S1 S6 S7 | X06、X13 |
-| B77 | 约 3–4 小时（预估；以章内为准） | 全部 | X01–X24 |
+| B76 | 3–4 小时 | S1 S6 S7 | X06、X23 |
+| B77 | 约 3–4 小时（预估；以章内为准） | 全部 | X01–X48 |
 
 B71–B76 合计约 15.5–20.5 小时，按每周 6–8 小时，约 3 周完成练习，再加 B77。
 
 ```mermaid
 flowchart LR
-    B71["B71 控制矩阵<br/>X01 X02 X07"] --> B72["B72 风控规则<br/>X08 X10 X11 X13<br/>S1 S2 S3 S4 S9"]
+    B71["B71 控制矩阵<br/>X01 X02 X07"] --> B72["B72 风控规则<br/>X08 X14 X17 X23<br/>S1 S2 S3 S4 S9"]
     B72 --> B73["B73 检测工程<br/>X05 X03<br/>S5 S6 S7 S9"]
-    B73 --> B74["B74 签名校验<br/>X11 X21<br/>S6"]
+    B73 --> B74["B74 签名校验<br/>X17 X35<br/>S6"]
     B74 --> B75["B75 发布门禁<br/>X04<br/>S8"]
-    B75 --> B76["B76 推演与复盘<br/>X06 X13<br/>S1 S6 S7"]
-    B76 --> B77["B77 毕业项目<br/>X01-X24<br/>全部场景"]
+    B75 --> B76["B76 推演与复盘<br/>X06 X23<br/>S1 S6 S7"]
+    B76 --> B77["B77 毕业项目<br/>X01–X48<br/>全部场景"]
 ```
 
 ## 6. 手册 X 章怎么和练习配合读
@@ -128,9 +128,9 @@ X 章讲"为什么这样设计"，练习章让你在数据上验证。建议先�
 | [X01 安全体系怎么搭](../arch/X01-security-program-controls.md)、[X07 交易所安全架构总览](../arch/X07-cex-architecture-overview.md) | [B71](B71-control-matrix-practice.md) | 资产怎么分级？一条控制要有什么证据才算"已实施"？ |
 | [X02 标准与合规映射](../arch/X02-standards-compliance-map.md) | [B71](B71-control-matrix-practice.md)、[T08](../templates/T08-control-matrix-risk-register.md) | 控制矩阵怎样映射到外部标准？ |
 | [X08 客户身份、账户与访问](../arch/X08-cex-identity-account-access.md) | [B72](B72-withdrawal-risk-rules-practice.md) 第 1–4 步 | 撞库、找回、API Key 的风险信号各是什么？ |
-| [X10 交易、结算与信用](../arch/X10-cex-trading-settlement-credit.md)、[X13 欺诈、合规与安全运营](../arch/X13-cex-fraud-compliance-secops.md) | [B72](B72-withdrawal-risk-rules-practice.md) 第 5–7 步 | 洗钱漏斗、对敲、标记价偏离怎样用规则看见？ |
+| [X14 交易、结算与信用](../arch/X14-cex-trading-settlement-credit.md)、[X23 欺诈、合规与安全运营](../arch/X23-cex-fraud-compliance-secops.md) | [B72](B72-withdrawal-risk-rules-practice.md) 第 5–7 步 | 洗钱漏斗、对敲、标记价偏离怎样用规则看见？ |
 | [X05 检测与响应工程](../arch/X05-detection-response-engineering.md)、[X03 生产基础设施安全](../arch/X03-production-infra-security.md) | [B73](B73-detection-engineering-practice.md)、[T09](../templates/T09-incident-runbook-oncall.md) | 一条检测规则怎样从假设走到上线？分级和升级路径怎么定？ |
-| [X11 钱包、财资与支付渠道](../arch/X11-cex-wallet-treasury-payment.md)、[X21 托管机构安全](../arch/X21-custodian-security.md) | [B74](B74-signing-policy-practice.md) | 签名服务为什么不能只信上游？调拨审批要绑定哪些字段？ |
+| [X17 钱包、财资与支付渠道](../arch/X17-cex-wallet-treasury-payment.md)、[X35 托管机构安全](../arch/X35-custodian-security.md) | [B74](B74-signing-policy-practice.md) | 签名服务为什么不能只信上游？调拨审批要绑定哪些字段？ |
 | [X04 软件交付与供应链安全](../arch/X04-delivery-supply-chain.md) | [B75](B75-release-gate-practice.md)、[T04](../templates/T04-go-live-gate.md) | 发布门禁查哪些条件？每条条件的证据是什么？ |
 | [X06 韧性与验证](../arch/X06-resilience-validation.md) | [B76](B76-tabletop-postmortem-practice.md)、[T10](../templates/T10-tabletop-script-scorecard.md) | 桌面推演怎么设计和打分？无责复盘怎么写？ |
 | 全部相关 X 章 | [B77](B77-security-architecture-capstone.md)、[T12](../templates/T12-security-architecture-review.md) | 怎样把证据合成评估与路线图？ |

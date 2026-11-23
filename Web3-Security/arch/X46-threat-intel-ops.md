@@ -6,8 +6,8 @@
 > 3. 用 TLP 标签与法律边界规则参与社区共享，并用"落地率、命中率、误报率"度量情报团队。
 >
 > 适用角色：交易所、项目方、钱包与托管机构的安全负责人、检测工程师、威胁情报分析师
-> 前置章节：[X05 检测与响应工程](X05-detection-response-engineering.md)、[25 资金追踪、冻结与事后处置](../25-fund-tracing-response.md)、[X19 漏洞披露、赏金与安全社区协作](X19-disclosure-bounty-ops.md)
-> 相关章节：[X25 客户身份与访问·工程验收](X25-cex-identity-verification.md)（接管信号回放）、[21 社工与内部人员](../21-social-engineering-insiders.md)、[19 用户诈骗](../19-user-scams.md)
+> 前置章节：[X05 检测与响应工程](X05-detection-response-engineering.md)、[25 资金追踪、冻结与事后处置](../25-fund-tracing-response.md)、[X33 漏洞披露、赏金与安全社区协作](X33-disclosure-bounty-ops.md)
+> 相关章节：[X09 客户身份与访问·工程验收](X09-cex-identity-verification.md)（接管信号回放）、[21 社工与内部人员](../21-social-engineering-insiders.md)、[19 用户诈骗](../19-user-scams.md)
 > 模板：本章给出情报条目模板、标签分级表、TLP 共享规则、Sigma 风格规则与 SQL 示例
 > 最后核对：2026-11-23（机构活动、金额与组织状态均以官方最新页面为准）
 
@@ -290,7 +290,7 @@ stateDiagram-v2
 **常见渠道（通用事实，截至 2026 年公开资料）：**
 
 - 行业信息共享与分析中心（Information Sharing and Analysis Center，ISAC）：同行互相共享威胁信息的非营利组织。公开资料显示，Crypto ISAC 于 2024 年 5 月宣布成立，创始成员包括多家交易所、稳定币发行方与基础设施公司，并为成员提供情报共享；另有 SEAL 体系下的 SEAL-ISAC（2024 年 4 月宣布）。加入条件、费用与规则以各组织官方为准。
-- 应急与救援网络：见 [X19 漏洞披露、赏金与安全社区协作](X19-disclosure-bounty-ops.md) 第 6.7 节的 SEAL 911 与联络清单。
+- 应急与救援网络：见 [X33 漏洞披露、赏金与安全社区协作](X33-disclosure-bounty-ops.md) 第 6.7 节的 SEAL 911 与联络清单。
 - 公私合作冻结机制：例如 T3 金融犯罪组（T3 Financial Crime Unit，由 Tether、TRON 与 TRM Labs 公开宣布设立）。其公开资料称，该组织协助冻结涉嫌犯罪相关的 USDT；2025 年 1 月报道累计约 1 亿美元，之后持续增长。该例说明，同一事实源能同时服务检测、冻结与执法。
 - 执法与监管渠道：向执法机关报案与提供证据。
 
@@ -375,10 +375,10 @@ stateDiagram-v2
 
 > 💡 注意：把"事实"与"推断"分行写。事故中最常见的错误，就是把推断当成事实传给下一个人。
 
-### 6.9 与 X05、X25 的分工
+### 6.9 与 X05、X09 的分工
 
 - [X05](X05-detection-response-engineering.md) 讲检测平台、规则生命周期与值班。本章讲规则的"原料"：来源、置信度、过期日。规则落地之后的调参与值班，归 X05。
-- [X25](X25-cex-identity-verification.md) 用接管风险信号做回放验收。本章为这些信号提供外部输入，例如已知的钓鱼域名、撞库来源与被盗资金地址。
+- [X09](X09-cex-identity-verification.md) 用接管风险信号做回放验收。本章为这些信号提供外部输入，例如已知的钓鱼域名、撞库来源与被盗资金地址。
 - [25 资金追踪](../25-fund-tracing-response.md) 讲追踪方法。本章讲追踪结论的入账与回收。
 
 ### 6.10 常见坑

@@ -4,7 +4,7 @@
 -- param: min_sources=5
 -- param: out_ratio=0.9
 -- param: max_kyc=1
--- X13 规则示例 1（调优版）：入金（链上入金 + 内部转入）汇聚，24 小时内转出占比 >= 90%，来源多，且 KYC 低 / 注册不久
+-- X23 规则示例 1（调优版）：入金（链上入金 + 内部转入）汇聚，24 小时内转出占比 >= 90%，来源多，且 KYC 低 / 注册不久
 WITH inflow AS (
   SELECT account_id, SUM(amount_usd) AS in_usd, COUNT(*) AS sources, MIN(ts) AS ts
   FROM ledger

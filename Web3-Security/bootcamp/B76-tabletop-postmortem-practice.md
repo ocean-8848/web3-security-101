@@ -8,7 +8,7 @@
 > 前置章节：[B73 检测工程实战](B73-detection-engineering-practice.md)（你已经会用 `logread.py` 和 `replay.py`）；建议先读 [B72](B72-withdrawal-risk-rules-practice.md)（S1 的风控规则）和 [B74](B74-signing-policy-practice.md)（S6 的签名校验）。
 > 前置知识：会写 20 行以内的 Python 脚本；读过 [B65](B65-incident-response-practice.md) 的沙盘。
 > 预计用时：约 3–4 小时（脚本与时间线 1.5 小时；推演 30 分钟加准备；复盘 1 小时）。
-> 配套章节：[X06 韧性与验证](../arch/X06-resilience-validation.md)（桌面推演、无责复盘）｜[X13 反欺诈、合规与安全运营](../arch/X13-cex-fraud-compliance-secops.md)（处置权限、恢复）｜[X05 检测与响应工程](../arch/X05-detection-response-engineering.md)（指挥与证据保全）｜[T10 推演剧本与复盘模板](../templates/T10-tabletop-script-scorecard.md)｜[T09 事故 runbook](../templates/T09-incident-runbook-oncall.md)｜[A09 应急响应](../assessment/A09-incident-response.md)
+> 配套章节：[X06 韧性与验证](../arch/X06-resilience-validation.md)（桌面推演、无责复盘）｜[X23 反欺诈、合规与安全运营](../arch/X23-cex-fraud-compliance-secops.md)（处置权限、恢复）｜[X05 检测与响应工程](../arch/X05-detection-response-engineering.md)（指挥与证据保全）｜[T10 推演剧本与复盘模板](../templates/T10-tabletop-script-scorecard.md)｜[T09 事故 runbook](../templates/T09-incident-runbook-oncall.md)｜[A09 应急响应](../assessment/A09-incident-response.md)
 > 最后核对：2026-11-23（命令在本机 Python 3.12.3 上运行过；下文输出来自真实运行）
 
 > ⚠️ 警告：本章的数据全部是合成的。MiniEx 是虚构交易所，账户、IP、地址、员工号都不对应任何真实对象。推演只在笔记本上做。不要对真实系统执行本章的"处置"动作。
@@ -382,7 +382,7 @@ phone_change          26
 
 提币里只有 1 笔 `frozen`（W000293，S1-02）。账户事件里没有"冻结账户""重置会话""撤销找回"这类事件类型。云审计和 k8s 审计里也没有"隔离主机""吊销凭证"的记录。
 
-结论一：**处置动作没有进入日志**。复盘时无法证明"当时做了什么"，也算不出 MTTR。这对应 X13 的 FRD-3（处置动作经执行器执行，带原因码和不可篡改日志）。
+结论一：**处置动作没有进入日志**。复盘时无法证明"当时做了什么"，也算不出 MTTR。这对应 X23 的 FRD-3（处置动作经执行器执行，带原因码和不可篡改日志）。
 
 ### 4.1 S1：账户接管
 

@@ -1,7 +1,7 @@
 # T11 第三方、托管商与钱包 / 支付渠道供应商安全评估
 
 > 用途：新引入或年度复核一家供应商（托管商、钱包 / MPC 供应商、支付与法币渠道、外包客服等）时使用。分 8 个域提问，要求证据，设红线，最后评分。
-> 配套：[X21 托管机构安全](../arch/X21-custodian-security.md)（机构客户评估托管商）、[X20 钱包供应商安全](../arch/X20-wallet-vendor-security.md)、[X22 支付、OTC 与法币渠道安全](../arch/X22-payment-otc-fiat-security.md)、[X01 安全体系怎么搭](../arch/X01-security-program-controls.md)、[T05 上币尽调问卷](T05-listing-dd-questionnaire.md)、[T06 运营安全自查清单](T06-ops-security-self-check.md)
+> 配套：[X35 托管机构安全](../arch/X35-custodian-security.md)（机构客户评估托管商）、[X34 钱包供应商安全](../arch/X34-wallet-vendor-security.md)、[X36 支付、OTC 与法币渠道安全](../arch/X36-payment-otc-fiat-security.md)、[X01 安全体系怎么搭](../arch/X01-security-program-controls.md)、[T05 上币尽调问卷](T05-listing-dd-questionnaire.md)、[T06 运营安全自查清单](T06-ops-security-self-check.md)
 > 说明：本表是机构评估供应商用的。供应商填"回答"，评估方填"证据核验"与"状态"。
 
 ## 使用方法

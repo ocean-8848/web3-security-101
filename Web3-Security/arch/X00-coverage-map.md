@@ -19,10 +19,10 @@
 
 | 层次 | 回答的问题 | 典型产出 | 对应章节类型 |
 |---|---|---|---|
-| 业务需求层 | 要保护什么？谁对什么负责？ | 保护目标、信任边界、资产清单 | 设计章（X07–X13 等）的前半 |
+| 业务需求层 | 要保护什么？谁对什么负责？ | 保护目标、信任边界、资产清单 | 设计章（X08、X11、X14、X17、X20、X23 等）的前半 |
 | 架构逻辑层 | 授权和核验怎样划分？ | 参考架构、控制清单、分级落地 | 设计章的后半 |
-| 工程技术层 | 控制做出来了吗？怎么证明有效？ | 验收用例、回放脚本、上线门禁 | **工程验收章**（X25、X27、X29、X31、X33、X35） |
-| 运营服务层 | 出事后怎样发现、处置、恢复？ | 恢复状态机、决策矩阵、演练剧本 | **运营与恢复章**（X26、X28、X30、X32、X34、X36） |
+| 工程技术层 | 控制做出来了吗？怎么证明有效？ | 验收用例、回放脚本、上线门禁 | **工程验收章**（X09、X12、X15、X18、X21、X24） |
+| 运营服务层 | 出事后怎样发现、处置、恢复？ | 恢复状态机、决策矩阵、演练剧本 | **运营与恢复章**（X10、X13、X16、X19、X22、X25） |
 
 ```mermaid
 flowchart LR
@@ -43,19 +43,19 @@ flowchart LR
 
 | 保护域 | 需求与逻辑（设计） | 工程验收 | 运营与恢复 | 练习章（训练营） |
 |---|---|---|---|---|
-| 客户身份、账户与访问 | [X08](X08-cex-identity-account-access.md) | [X25](X25-cex-identity-verification.md) | [X26](X26-cex-identity-recovery-ops.md) | B83（部分） |
-| 资产与市场准入 | [X09](X09-cex-asset-listing-market-access.md) | [X27](X27-cex-listing-verification.md) | [X28](X28-cex-listing-recovery-ops.md) | — |
-| 交易、结算与信用 | [X10](X10-cex-trading-settlement-credit.md) | [X29](X29-cex-trading-verification.md) | [X30](X30-cex-trading-recovery-ops.md) | B79、B80 |
-| 钱包、财资与支付渠道 | [X11](X11-cex-wallet-treasury-payment.md) | [X31](X31-cex-treasury-verification.md) | [X32](X32-cex-treasury-recovery-ops.md) | B81 |
-| 生产环境与数据 | [X12](X12-cex-production-data.md) | [X33](X33-cex-production-verification.md) | [X34](X34-cex-production-recovery-ops.md) | B80（部分） |
-| 反欺诈、合规与安全运营 | [X13](X13-cex-fraud-compliance-secops.md) | [X35](X35-cex-fraud-verification.md) | [X36](X36-cex-fraud-recovery-ops.md) | B83 |
+| 客户身份、账户与访问 | [X08](X08-cex-identity-account-access.md) | [X09](X09-cex-identity-verification.md) | [X10](X10-cex-identity-recovery-ops.md) | B83（部分） |
+| 资产与市场准入 | [X11](X11-cex-asset-listing-market-access.md) | [X12](X12-cex-listing-verification.md) | [X13](X13-cex-listing-recovery-ops.md) | — |
+| 交易、结算与信用 | [X14](X14-cex-trading-settlement-credit.md) | [X15](X15-cex-trading-verification.md) | [X16](X16-cex-trading-recovery-ops.md) | B79、B80 |
+| 钱包、财资与支付渠道 | [X17](X17-cex-wallet-treasury-payment.md) | [X18](X18-cex-treasury-verification.md) | [X19](X19-cex-treasury-recovery-ops.md) | B81 |
+| 生产环境与数据 | [X20](X20-cex-production-data.md) | [X21](X21-cex-production-verification.md) | [X22](X22-cex-production-recovery-ops.md) | B80（部分） |
+| 反欺诈、合规与安全运营 | [X23](X23-cex-fraud-compliance-secops.md) | [X24](X24-cex-fraud-verification.md) | [X25](X25-cex-fraud-recovery-ops.md) | B83 |
 
 跨域的两章：
 
 | 主题 | 章节 | 说明 |
 |---|---|---|
-| 交易账务与钱包支付之间的交接（原单、预留、批准、实收、实付、未决状态） | [X37](X37-cex-ledger-wallet-handoff.md) | 大量对账差异和资损出在这条接缝上，配 B81 |
-| 储备、负债与偿付能力 | [X38](X38-cex-reserves-solvency.md) | 配 B82 |
+| 交易账务与钱包支付之间的交接（原单、预留、批准、实收、实付、未决状态） | [X26](X26-cex-ledger-wallet-handoff.md) | 大量对账差异和资损出在这条接缝上，配 B81 |
+| 储备、负债与偿付能力 | [X27](X27-cex-reserves-solvency.md) | 配 B82 |
 
 总览见 [X07 交易所安全架构总览](X07-cex-architecture-overview.md)；已有的攻击与运营基础见 [23 托管、充提与合规安全](../23-custody-exchange-ops.md) 和 [29 控制签名路径与签名服务架构](../29-signing-path-2026.md)。
 
@@ -64,8 +64,8 @@ flowchart LR
 | 领域 | 章节 | 主要内容 |
 |---|---|---|
 | 通用底座 | [X01](X01-security-program-controls.md)–[X06](X06-resilience-validation.md) | 控制矩阵、标准与合规、生产基础设施、软件交付、检测响应、灾备与演练 |
-| 公链与项目方 | [X14](X14-chain-foundation-client-ops.md)–[X19](X19-disclosure-bounty-ops.md) | 基金会与客户端、L2/桥/预言机、DeFi 项目方、稳定币与 RWA、验证者、披露与赏金 |
-| 钱包、托管、支付、做市、Agent | [X20](X20-wallet-vendor-security.md)–[X24](X24-agent-platform-security.md) | 钱包厂商、托管机构、法币出入金、做市商、AI Agent 平台 |
+| 公链与项目方 | [X28](X28-chain-foundation-client-ops.md)–[X33](X33-disclosure-bounty-ops.md) | 基金会与客户端、L2/桥/预言机、DeFi 项目方、稳定币与 RWA、验证者、披露与赏金 |
+| 钱包、托管、支付、做市、Agent | [X34](X34-wallet-vendor-security.md)–[X38](X38-agent-platform-security.md) | 钱包厂商、托管机构、法币出入金、做市商、AI Agent 平台 |
 | 其他链上应用 | [X39](X39-nft-gamefi-ops.md)–[X43](X43-privacy-protocol-ops.md) | NFT 与 GameFi、预测市场与衍生品、再质押、DAO、隐私协议 |
 | 工程与组织能力 | [X44](X44-mobile-client-security.md)–[X48](X48-security-team-management.md) | 移动端、TEE/HSM 与密钥仪式、威胁情报、人员安全、安全团队建设 |
 
@@ -74,10 +74,10 @@ flowchart LR
 | 你是 | 先读 | 再读 | 然后动手 |
 |---|---|---|---|
 | 刚入行的安全工程师 | X01 → X07 → X05 | 你所在领域的设计章 | B71 控制矩阵，B73 检测工程 |
-| 交易所安全工程师 | X07 → X08–X13 | X25–X38 全部 | B72、B74、B79–B83 |
-| 交易所风控、账务、运营 | X10 → X29 → X30 → X37 | X38、X36 | B79、B80、B82 |
-| 项目方安全负责人 | X16 → X42 → X19 | X15、X17、X39–X41 | B75、B76 |
-| 钱包或托管团队 | X20、X21 → X45 | X44、X31、X32 | B74 |
+| 交易所安全工程师 | X07 → 各域设计章 | X08–X27 全部（每域的设计、验收、恢复连着读） | B72、B74、B79–B83 |
+| 交易所风控、账务、运营 | X14 → X15 → X16 → X26 | X27、X25 | B79、B80、B82 |
+| 项目方安全负责人 | X30 → X42 → X33 | X29、X31、X39–X41 | B75、B76 |
+| 钱包或托管团队 | X34、X35 → X45 | X44、X18、X19 | B74 |
 | 安全负责人（管理者） | X01 → X02 → X06 | X47、X48、X46 | B77 毕业项目 |
 
 ## 6. 有意没有展开的地方
@@ -90,7 +90,7 @@ flowchart LR
 | 具体链的差异（以太坊、BNB、TRON、Mantle 等） | 链专题 C00–C03 |
 | 各辖区法律条文的细节 | 本书只写与安全直接相关的通用事实，条文以官方最新文本和法务意见为准 |
 | 零知识证明系统的审计 | 14 章与 [B69 ZK 与跨链实现风险](../bootcamp/B69-zk-bridge-practice.md) |
-| 非交易所类中心化机构（保险、托管银行等） | X21 的托管部分可迁移，其他未单独成章 |
+| 非交易所类中心化机构（保险、托管银行等） | X35 的托管部分可迁移，其他未单独成章 |
 
 ## 7. 怎样用这张地图自查
 
