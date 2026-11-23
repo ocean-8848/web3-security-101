@@ -1,6 +1,6 @@
 # yul：B45 配套代码
 
-本目录只用于本地 `forge test`。配套章节：[B45 Yul 与字节码](../../../Web3-Security/bootcamp/B45-yul-opcodes.md)。
+本目录只用于本地 `forge test`。配套章节：[B45 Yul 与字节码](../../../handbook/bootcamp/B45-yul-opcodes.md)。
 
 | 文件 | 内容 |
 |---|---|

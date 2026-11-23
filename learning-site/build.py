@@ -39,13 +39,13 @@ SITES = {
         cfg=dict(key='w3chb', name='Web3 合约'), config='docs-config.js',
         aux=lambda: [(p, s, None) for p, s in files_in(f'{ROOT}/Contract/interactive', 'interactive/', {'.html', '.css', '.js'})]),
     'security': dict(
-        # Built straight from the Web3 安全学习手册 build output (Web3-Security/tools/build.mjs).
-        src=f'{ROOT}/Web3-Security/dist/index.html', title=('Web3 安全学习手册', 'Web3 安全学习站'),
+        # Built straight from the Web3 安全学习手册 build output (handbook/tools/build.mjs).
+        src=f'{ROOT}/handbook/dist/index.html', title=('Web3 安全学习手册', 'Web3 安全学习站'),
         cfg=dict(key='cshb', name='Web3 安全'), config='docs-config.js',
-        aux=lambda: [(p, s, None) for p, s in files_in(f'{ROOT}/Web3-Security/interactive', 'interactive/', {'.html', '.css', '.js'})]
+        aux=lambda: [(p, s, None) for p, s in files_in(f'{ROOT}/handbook/interactive', 'interactive/', {'.html', '.css', '.js'})]
                     + [(p, s, None) for p, s in files_in(f'{ROOT}/practice-example-code', 'practice-example-code/', {'.sol'})]
-                    + [(p, s, None) for p, s in files_in(f'{ROOT}/Web3-Security/deck', 'deck/', {'.html', '.woff2'})]
-                    + [(p, s, None) for p, s in files_in(f'{ROOT}/Web3-Security/deck3b', 'deck3b/', {'.html'})]),
+                    + [(p, s, None) for p, s in files_in(f'{ROOT}/handbook/decks/skeuomorphic', 'decks/skeuomorphic/', {'.html', '.woff2'})]
+                    + [(p, s, None) for p, s in files_in(f'{ROOT}/handbook/decks/3b1b', 'decks/3b1b/', {'.html'})]),
     'scsec': dict(
         # Independent site: the original 13-chapter smart contract security book (Contract-Security/tools/build.mjs).
         src=f'{ROOT}/Contract-Security/dist/index.html', title=('Web3 智能合约安全手册', 'Web3 智能合约安全学习站'),
@@ -57,7 +57,7 @@ SITES = {
         cfg=None, config='sca-config.js', aux=lambda: []),
 }
 
-# Old 合约安全学习手册 chapter ids -> Web3 安全学习手册 ids (same map as Web3-Security/tools/build.mjs ALIASES).
+# Old 合约安全学习手册 chapter ids -> Web3 安全学习手册 ids (same map as handbook/tools/build.mjs ALIASES).
 REMAP = {'security': {f'c{i:02d}': f's{j:02d}' for i, j in zip(range(1, 14), [1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 27, 28])}}
 # Diagrams whose anchor sections were rewritten away (A06 slimmed to a checklist in the Web3 upgrade).
 DROP_DIAG = {'security': {'a06'}}

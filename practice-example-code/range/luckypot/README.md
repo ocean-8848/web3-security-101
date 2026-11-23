@@ -25,4 +25,4 @@ LuckyPot 是按轮次运行的抽奖合约。
 forge test
 ```
 
-配套章节：[B15 第 2 次审计：LuckyPot](../../../Web3-Security/bootcamp/B15-audit-2-luckypot.md)。`test/` 和 `solution/` 含答案，第一遍审计前不要打开。
+配套章节：[B15 第 2 次审计：LuckyPot](../../../handbook/bootcamp/B15-audit-2-luckypot.md)。`test/` 和 `solution/` 含答案，第一遍审计前不要打开。

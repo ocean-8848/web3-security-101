@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>链上去匿名化实验</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); }
+  svg.g { width: 100%; height: auto; display: block; }
+  .e { stroke-width: 2; }
+  .e.false { stroke-dasharray: 5 4; }
+  .n { stroke: var(--surface); stroke-width: 2; }
+  input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); vertical-align: middle; }
+  label.ck { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; color: var(--text); margin: 8px 0; }
+  .big { font-size: 22px; font-weight: 650; font-family: var(--mono); }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="back" href="index.html">← 交互实验目录</a>
+    <h1>链上去匿名化实验</h1>
+  </header>
+  <p class="lead">链上分析靠启发式规则把地址聚成实体。规则越宽，聚得越多，错得也越多。本页用一张玩具交易图展示聚类和误判。配套章节：<a href="../chapters/24-data-privacy.md">24 数据与隐私</a>、<a href="../chapters/25-fund-tracing-response.md">25 资金追踪</a>。</p>
+
+  <div class="callout info small">
+    <strong>怎么玩：</strong>
+    1. 打开三条启发式规则，观察聚类。
+    2. 选一个“已知 KYC”的地址，看身份能传播多远。
+    3. 点“揭示真相”，看精确率和召回率，以及哪些链接是错的。
+    4. 用排除规则和滑块打破错误链接。目标：精确率 100%，召回率 100%。
+  </div>
+
+  <h2>1. 规则</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <label class="ck"><input type="checkbox" id="cio" checked><span><strong>共同输入：</strong>同一笔交易的多个输入归为一个所有者。</span></label>
+      <label class="ck"><input type="checkbox" id="exCJ"><span>排除规则：跳过疑似 CoinJoin（多个输入、输出金额相等）。</span></label>
+      <label class="ck"><input type="checkbox" id="dep" checked><span><strong>充值地址复用：</strong>转入同一交易所充值地址的地址，归为一个用户。</span></label>
+      <label class="ck"><input type="checkbox" id="exSvc"><span>排除规则：跳过已知的服务地址（OTC 代付、支付网关）。</span></label>
+      <label class="ck"><input type="checkbox" id="tim" checked><span><strong>时间与金额：</strong>跨链转出和转入的时间、金额接近，就关联。</span></label>
+      <label for="win">时间窗口（秒，示例）</label>
+      <div class="range-row"><input type="range" id="win" min="30" max="600" step="10" value="600"><output id="winOut"></output></div>
+      <label for="tol">金额容差（%，示例）</label>
+      <div class="range-row"><input type="range" id="tol" min="0.1" max="10" step="0.1" value="10"><output id="tolOut"></output></div>
+    </div>
+    <div class="card">
+      <label for="kyc">已知 KYC 的地址</label>
+      <select id="kyc"></select>
+      <div id="kOut" class="small" style="margin-top:8px"></div>
+      <div class="btn-row"><button id="reveal" class="primary">揭示真相</button></div>
+      <div id="metrics"></div>
+    </div>
+  </div>
+
+  <h2>2. 交易图</h2>
+  <div class="card">
+    <div id="graph"></div>
+    <p class="small muted">节点颜色表示当前聚类。揭示真相后，红色虚线是错误链接。</p>
+  </div>
+
+  <h2>3. 证据清单</h2>
+  <div class="card">
+    <div class="table-wrap"><table>
+      <thead><tr><th>规则</th><th>链接</th><th>依据</th><th id="thT"></th></tr></thead>
+      <tbody id="ev"></tbody>
+    </table></div>
+    <div id="lesson" class="small"></div>
+  </div>
+
+  <h2>4. 反思</h2>
+  <div class="card">
+    <ol class="small">
+      <li>你的一个公开地址和一个私有地址之间，有没有共同输入、共同充值地址，或时间接近的转账？</li>
+      <li>如果你的合规系统把用户错误地并入一个制裁地址簇，用户如何申诉？你靠什么证据撤销？</li>
+      <li>启发式结果写进报告时，你如何标注置信度，并说明它不是事实？</li>
+    </ol>
+  </div>
+
+  <footer class="note">全部地址、金额和时间都是示例。真实分析需要更多证据，启发式结果不能单独作为定罪或拒绝服务的依据。</footer>
+</div>
+<script>
+/*LOGIC*/
+const ADDR = {
+  a1: { o: 'Alice' }, a2: { o: 'Alice' }, a3: { o: 'Alice' }, dA: { o: 'Alice', dep: true },
+  b1: { o: 'Bob' }, b2: { o: 'Bob' }, dB: { o: 'Bob', dep: true },
+  c1: { o: 'Carol' }, c2: { o: 'Carol' }, dC: { o: 'Carol', dep: true },
+  d1: { o: 'Dave' }, e1: { o: 'Erin' }, r1: { o: 'Erin' }, f1: { o: 'Frank' }, otc: { o: 'OTC 商', svc: true },
+};
+const TXS = [
+  { id: 'T1', ins: ['a1', 'a2'], note: '普通合并支付' },
+  { id: 'T2', ins: ['b1', 'b2'], note: '普通合并支付' },
+  { id: 'T3', ins: ['a3', 'b2', 'c1', 'd1'], coinjoin: true, note: '4 个输入，4 个相等输出（1.00 BTC）' },
+];
+const DEPOSITS = [['a2', 'dA'], ['a3', 'dA'], ['b1', 'dB'], ['c1', 'dC'], ['c2', 'dC'], ['otc', 'dA'], ['otc', 'dC']];
+const BRIDGE_DST = { id: 'r1', t: 1120, amt: 9.97 };
+const BRIDGE_SRC = [{ id: 'e1', t: 1000, amt: 10.00 }, { id: 'b2', t: 720, amt: 9.95 }, { id: 'f1', t: 1090, amt: 10.60 }];
+function edges(c) {
+  const E = [];
+  if (c.cio) TXS.forEach(t => { if (c.exCJ && t.coinjoin) return; for (let i = 1; i < t.ins.length; i++) E.push({ a: t.ins[0], b: t.ins[i], rule: '共同输入', why: t.id + '：' + t.note }); });
+  if (c.dep) DEPOSITS.forEach(([f, d]) => { if (c.exSvc && ADDR[f].svc) return; E.push({ a: f, b: d, rule: '充值地址', why: f + ' 转入充值地址 ' + d }); });
+  if (c.tim) BRIDGE_SRC.forEach(s => {
+    const dt = BRIDGE_DST.t - s.t, diff = Math.abs(BRIDGE_DST.amt - s.amt) / s.amt * 100;
+    if (dt >= 0 && dt <= c.win && diff <= c.tol) E.push({ a: s.id, b: BRIDGE_DST.id, rule: '时间金额', why: '间隔 ' + dt + ' 秒，金额差 ' + diff.toFixed(2) + '%' });
+  });
+  return E;
+}
+function clusters(E) {
+  const par = {}; Object.keys(ADDR).forEach(k => { par[k] = k; });
+  const find = x => par[x] === x ? x : (par[x] = find(par[x]));
+  E.forEach(e => { par[find(e.a)] = find(e.b); });
+  const g = {}; Object.keys(ADDR).forEach(k => { (g[find(k)] = g[find(k)] || []).push(k); });
+  return Object.values(g).sort((x, y) => y.length - x.length);
+}
+function metrics(cl) {
+  const keys = Object.keys(ADDR); let tp = 0, fp = 0, fn = 0;
+  const of = {}; cl.forEach((c, i) => c.forEach(a => { of[a] = i; }));
+  for (let i = 0; i < keys.length; i++) for (let j = i + 1; j < keys.length; j++) {
+    const same = of[keys[i]] === of[keys[j]], truth = ADDR[keys[i]].o === ADDR[keys[j]].o;
+    if (same && truth) tp++; else if (same) fp++; else if (truth) fn++;
+  }
+  return { tp, fp, fn, precision: tp + fp ? tp / (tp + fp) : 1, recall: tp + fn ? tp / (tp + fn) : 1 };
+}
+const isTrue = e => ADDR[e.a].o === ADDR[e.b].o;
+/*END*/
+(function () {
+  const $ = id => document.getElementById(id);
+  let revealed = false;
+  const POS = { a1: [60, 50], a2: [60, 130], a3: [60, 220], dA: [210, 170], b1: [660, 50], b2: [520, 90], dB: [660, 150], c1: [290, 330], c2: [160, 400], dC: [100, 330], d1: [400, 270], e1: [540, 340], r1: [660, 400], f1: [680, 280], otc: [240, 260] };
+  const COL = ['var(--info)', 'var(--buy)', 'var(--warn)', 'var(--sell)', 'var(--accent)'];
+  const cfg = () => ({ cio: $('cio').checked, exCJ: $('exCJ').checked, dep: $('dep').checked, exSvc: $('exSvc').checked, tim: $('tim').checked, win: +$('win').value, tol: +$('tol').value });
+  $('kyc').innerHTML = Object.keys(ADDR).map(k => '<option value="' + k + '"' + (k === 'a1' ? ' selected' : '') + '>' + k + '</option>').join('');
+  function draw() {
+    const c = cfg(), E = edges(c), cl = clusters(E);
+    $('winOut').textContent = c.win + ' 秒'; $('tolOut').textContent = c.tol.toFixed(1) + '%';
+    const color = {}; let ci = 0;
+    cl.forEach(g => { const col = g.length > 1 ? COL[Math.min(ci++, COL.length - 1)] : 'var(--text-2)'; g.forEach(a => { color[a] = col; }); });
+    let s = '<svg class="g" viewBox="0 0 740 440" role="img" aria-label="地址聚类图">';
+    E.forEach(e => {
+      const p = POS[e.a], q = POS[e.b], wrong = revealed && !isTrue(e);
+      s += '<line class="e' + (wrong ? ' false' : '') + '" x1="' + p[0] + '" y1="' + p[1] + '" x2="' + q[0] + '" y2="' + q[1] + '" stroke="' + (wrong ? 'var(--sell)' : 'var(--text-2)') + '"/>';
+    });
+    Object.keys(ADDR).forEach(k => {
+      const p = POS[k];
+      s += '<circle class="n" cx="' + p[0] + '" cy="' + p[1] + '" r="18" fill="' + color[k] + '"/><text x="' + p[0] + '" y="' + (p[1] + 34) + '" font-size="13" text-anchor="middle">' + k + (revealed ? '·' + ADDR[k].o : '') + '</text>';
+    });
+    $('graph').innerHTML = s + '</svg>';
+    const a = $('kyc').value, g = cl.find(x => x.includes(a));
+    const owners = [...new Set(g.map(x => ADDR[x].o))];
+    $('kOut').innerHTML = '身份传播到 <strong>' + g.length + '</strong> 个地址：<span class="mono">' + g.join(', ') + '</span>' + (revealed ? '<br>这些地址的真实归属：' + owners.join('、') + (owners.length > 1 ? '。<span class="down">KYC 身份被错误地扩散到其他人。</span>' : '。') : '');
+    $('thT').textContent = revealed ? '真相' : '';
+    $('ev').innerHTML = E.length ? E.map(e => '<tr><td>' + e.rule + '</td><td class="mono">' + e.a + ' — ' + e.b + '</td><td>' + e.why + '</td><td>' + (revealed ? (isTrue(e) ? '<span class="pill buy">真</span>' : '<span class="pill sell">假</span>') : '') + '</td></tr>').join('') : '<tr><td colspan="4" class="muted">没有链接。</td></tr>';
+    if (revealed) {
+      const m = metrics(cl), perfect = m.precision === 1 && m.recall === 1;
+      $('metrics').innerHTML = '<div class="stat"><span class="k">精确率（聚对的 / 聚到一起的）</span><span class="big">' + (m.precision * 100).toFixed(1) + '%</span></div><div class="stat" style="margin-top:8px"><span class="k">召回率（聚对的 / 应该聚的）</span><span class="big">' + (m.recall * 100).toFixed(1) + '%</span></div><p class="small">地址对：正确 ' + m.tp + '，错误 ' + m.fp + '，漏掉 ' + m.fn + '。</p>' + (perfect ? '<div class="callout info small">目标达成。真实世界没有这张答案表，所以你无法这样校准。</div>' : '');
+      const notes = [];
+      if (E.some(e => e.rule === '共同输入' && e.why.startsWith('T3'))) notes.push('CoinJoin 让互不相识的人共享输入。共同输入规则在这里失效，会把 4 个人并成一个簇。');
+      if (E.some(e => e.a === 'otc')) notes.push('OTC 商替多个客户打款。充值地址规则会经由它把两名客户错误连接。');
+      if (E.some(e => e.rule === '时间金额' && !isTrue(e))) notes.push('跨链时间窗口太宽或金额容差太大，就会把偶然相近的转账连起来。');
+      if (!c.cio && !c.dep && !c.tim) notes.push('全部规则关闭后，没有误判，也没有任何结果。');
+      if (m.recall < 1 && notes.length === 0) notes.push('排除规则过严，或窗口、容差过窄，真实关联也被丢掉了。这是精确率和召回率的取舍。');
+      $('lesson').innerHTML = notes.length ? '<div class="callout warn">' + notes.join('<br>') + '</div>' : '';
+    } else { $('metrics').innerHTML = ''; $('lesson').innerHTML = ''; }
+  }
+  ['cio', 'exCJ', 'dep', 'exSvc', 'tim', 'kyc'].forEach(i => $(i).addEventListener('change', draw));
+  ['win', 'tol'].forEach(i => $(i).addEventListener('input', draw));
+  $('reveal').onclick = () => { revealed = !revealed; $('reveal').textContent = revealed ? '隐藏真相' : '揭示真相'; draw(); };
+  draw();
+})();
+</script>
+<script>
+/* 在单文件阅读版的 iframe 中打开时，把章节链接交给外层阅读器处理 */
+(function () {
+  if (window.parent === window) return;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href');
+    if (/\.md(#|$)/.test(h)) { e.preventDefault(); window.parent.postMessage({ cexNavMd: h }, '*'); }
+  });
+})();
+</script>
+</body>
+</html>

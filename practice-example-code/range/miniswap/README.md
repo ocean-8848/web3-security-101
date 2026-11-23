@@ -23,6 +23,6 @@ MiniSwap 是单交易对的恒定乘积做市池。
 forge test --match-path test/PoC.t.sol
 ```
 
-配套章节：[B19 第 3 次审计：MiniSwap](../../../Web3-Security/bootcamp/B19-audit-3-miniswap.md)。`test/` 和 `solution/` 含答案，第一遍审计前不要打开。
+配套章节：[B19 第 3 次审计：MiniSwap](../../../handbook/bootcamp/B19-audit-3-miniswap.md)。`test/` 和 `solution/` 含答案，第一遍审计前不要打开。
 
 > 💡 注意：`test/Fuzz.t.sol` 和 `test/Invariant.t.sol` 里针对漏洞版的测试会失败。这是预期结果。

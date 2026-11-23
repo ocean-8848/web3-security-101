@@ -13,4 +13,4 @@ forge test                       # 预期全部通过
 FOUNDRY_PROFILE=vuln forge test  # 预期 1 个不变量失败
 ```
 
-配套章节：[B43 第 7 次审计：PerpLite](../../../Web3-Security/bootcamp/B43-audit-7-perplite.md)。
+配套章节：[B43 第 7 次审计：PerpLite](../../../handbook/bootcamp/B43-audit-7-perplite.md)。
