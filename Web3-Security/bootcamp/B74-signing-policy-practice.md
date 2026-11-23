@@ -9,7 +9,7 @@
 > 预计用时：约 2–3 小时。
 > 交互实验：[签名请求独立校验](../interactive/signing-policy-lab.html)
 > 关联章节：[X11 钱包、财资与支付渠道](../arch/X11-cex-wallet-treasury-payment.md)｜[X35 托管机构安全](../arch/X35-custodian-security.md)｜[29 2026 签名路径专题](../29-signing-path-2026.md)｜[B64 热钱包水位、提现风控与多签复核](B64-custody-ops-ir-practice.md)｜[T12 安全架构评审](../templates/T12-security-architecture-review.md)
-> 最后核对：2026-11-23（Python 3.12.3；下文命令在本机从 `web3-security-handbook/` 根目录逐条运行，输出来自真实运行）
+> 最后核对：2026-11-23（Python 3.12.3；下文命令在本机从 `web3-security-101/` 根目录逐条运行，输出来自真实运行）
 
 > ⚠️ 警告：法律与道德边界。本章的数据全部由脚本合成，地址、金额、审批单都是虚构的，不对应任何真实系统。本章只写"检查规则"，不写任何绕过真实签名服务的步骤。不要把本章的参考实现直接接到真实的签名服务上。真实的策略引擎要经过你所在组织的变更评审和回放测试。
 
@@ -50,7 +50,7 @@ flowchart LR
 
 第 1 步先看数据。第 2 步写引擎，覆盖场景 S6。第 3 步模拟冷 → 温 → 热的调拨审批，演示三种绕过。
 
-先在 `web3-security-handbook/` 根目录准备靶场（只依赖 Python 标准库）：
+先在 `web3-security-101/` 根目录准备靶场（只依赖 Python 标准库）：
 
 ```bash
 bash practice-example-code/ops/setup.sh | tail -1
@@ -142,7 +142,7 @@ AP-W000829   2  2
 创建 `my_b74/policy.py`。检查 1–3 已写好，检查 4–9 留给你。`--level N` 启用前 N 项检查，方便一项一项加：
 
 ```python
-# my_b74/policy.py —— 签名策略引擎骨架（从 web3-security-handbook/ 根目录运行）
+# my_b74/policy.py —— 签名策略引擎骨架（从 web3-security-101/ 根目录运行）
 import argparse, hashlib, sys
 from collections import Counter
 from datetime import datetime, timezone
@@ -470,7 +470,7 @@ stateDiagram-v2
 创建 `my_b74/sim.py`。它用同样的 7 个场景，比较"朴素签名服务"和"严格签名服务"。朴素版已经写好，严格版 `strict_sign` 留给你：
 
 ```python
-# my_b74/sim.py —— 冷 -> 温 -> 热 调拨审批模拟骨架（从 web3-security-handbook/ 根目录运行）
+# my_b74/sim.py —— 冷 -> 温 -> 热 调拨审批模拟骨架（从 web3-security-101/ 根目录运行）
 import sys
 from dataclasses import dataclass, replace
 from datetime import datetime
@@ -647,7 +647,7 @@ python3 practice-example-code/ops/solutions/b74/policy_engine.py --json
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
-| `ModuleNotFoundError: No module named 'mini'` | 不在 `web3-security-handbook/` 根目录运行，相对路径找不到 `practice-example-code/ops/lib` | `cd` 到根目录再运行 |
+| `ModuleNotFoundError: No module named 'mini'` | 不在 `web3-security-101/` 根目录运行，相对路径找不到 `practice-example-code/ops/lib` | `cd` 到根目录再运行 |
 | 数据库缺表或行数不对 | 数据被改动过 | 重新运行 `bash practice-example-code/ops/setup.sh` |
 | `--level 2` 没有出现 4 条误拒 | 你已经把 `c2_address` 改成了忽略大小写 | 正常，这是预期行为 |
 | 你的引擎误拒了 `SR000238`、`SR000352`、`SR000994` | 检查 3 写成了"金额必须相等" | 改成"请求金额 ≤ 审批金额 × 1.0001" |

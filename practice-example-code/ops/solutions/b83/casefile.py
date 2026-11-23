@@ -5,7 +5,7 @@
 同账户在窗口内的订单（只列受理的新订单，按受限状态标注）；执行复核记录（能由数据填的已填，需要人确认的写"待填"）。
 证据清单：每条引用的原始行给出所在文件、行号与 SHA-256（取该行文本），清单本身再取一个 SHA-256，用来说明"证据没被改过"。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b83/casefile.py CS00033
   python3 practice-example-code/ops/solutions/b83/casefile.py CS00204 --window-hours 4
 """

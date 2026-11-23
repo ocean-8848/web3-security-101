@@ -10,7 +10,7 @@
   adl-announced  ADL 与补偿规则已公告（人工项）
   topup=金额     向保险基金注资这么多美元
   fix-s15        限制 / 解除限制的授权与回报缺口已补齐
-示例（从 web3-security-handbook/ 根目录）：
+示例（从 web3-security-101/ 根目录）：
   python3 practice-example-code/ops/solutions/b80/resume_gate.py
   python3 practice-example-code/ops/solutions/b80/resume_gate.py --assume reverse-dups,rule-stale
 """

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B72 参数扫描：对一条规则的一个参数取多个值，逐个回放，打印召回与误报表。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b72/sweep.py my_rules/s3.sql min_in_usd 20000,15000,10000,8000,5000
 可选：--fixed name=value（固定其他参数，可重复）。
 这个脚本只是 replay.py --json 的包装：每个取值调用一次 replay.py，读它的 JSON 结果。

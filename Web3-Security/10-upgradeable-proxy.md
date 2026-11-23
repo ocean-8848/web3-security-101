@@ -221,7 +221,7 @@ flowchart LR
 
 ```bash
 # 运行代理存储冲突示例的测试
-cd practice-example-code/foundry && forge test --match-path test/ProxyStorage.t.sol -vv  # 从 web3-security-handbook/ 出发
+cd practice-example-code/foundry && forge test --match-path test/ProxyStorage.t.sol -vv  # 从 web3-security-101/ 出发
 ```
 
 > 💡 注意：修复验证需要"修复前失败、修复后通过"两个结果（[A08](assessment/A08-reproduce-attacks.md)）。

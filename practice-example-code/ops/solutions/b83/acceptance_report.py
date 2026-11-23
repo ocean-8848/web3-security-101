@@ -5,7 +5,7 @@
 门禁：目标全部召回，且误报 = 0，才算通过。任何一行不通过，整体不放行，退出码 1。
 整体覆盖：S1–S4 与 S15（以及 S11-03）里的全部答案，每个至少被一行命中。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b83/acceptance_report.py            # 调过的配置
   python3 practice-example-code/ops/solutions/b83/acceptance_report.py --naive    # 没调过的配置
   python3 practice-example-code/ops/solutions/b83/acceptance_report.py --markdown # 输出 Markdown 表格，可贴进报告

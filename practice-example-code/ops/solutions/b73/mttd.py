@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B73：计算规则的 MTTD（从事后还原的真实起点，到告警触发的时间）。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b73/mttd.py 规则.sql[:调度间隔分钟] ...
 
 起点：answers/ 里每个正例的 window.start（事后还原的真实起点）。

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B82 参考实现：检查一份偿付能力月报 + 对外披露草稿是否具备"该有的东西"。只用标准库。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b82/report_check.py b82-lab/monthly_report.md
 
 约定：文件里要有一个标题含"对外披露"的小节；它之前是内部月报，之后（含该标题）是对外草稿。

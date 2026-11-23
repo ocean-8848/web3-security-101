@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B79 验收报告生成器：把 S10、S11 的回放结果汇成一份报告（Markdown，输出固定，可直接贴进验收单）。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b79/report.py
 报告含：范围与方法、每个检查的参数与召回 / 误报、逐条答案的发现情况、噪声账、结论与待办。
 调参前后的对比用 --naive 查看（同样的检查，用没调过的参数）。

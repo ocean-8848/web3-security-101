@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B83 回报 SLA 扫描：对 case_audit 的 --report-sla 取多个值，打印命中、TP、误报与召回。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b83/sla_sweep.py 60,300,600,1200,1800,3600
 只是 lib/case_audit.py 的 detect() 的包装：每个取值调用一次，对 S15 评分。
 """

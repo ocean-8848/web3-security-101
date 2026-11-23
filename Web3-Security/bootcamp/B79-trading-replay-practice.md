@@ -62,7 +62,7 @@ flowchart LR
 
 ## 2. 第 0 步：准备，认识数据
 
-> 💡 注意：以下所有命令都从 `web3-security-handbook/` 根目录出发。
+> 💡 注意：以下所有命令都从 `web3-security-101/` 根目录出发。
 
 1. 确认第二批数据存在：
 
@@ -839,7 +839,7 @@ S11-03 撤销交易权限后仍被受理的订单
 |---|---|---|
 | `找不到 .../data_x/...` | 第二批数据没生成 | `bash practice-example-code/ops/setup.sh --no-tests` |
 | 数字与本章差几条 | 重新生成数据时换了种子 | 用默认种子 20260302（`gen/generate_x.py` 不带 `--seed`） |
-| `No such file` 指向 `my_b79/valuation.py` | 没有先创建目录，或不在仓库根目录 | `pwd` 确认在 `web3-security-handbook/`，先运行 `mkdir -p my_b79` |
+| `No such file` 指向 `my_b79/valuation.py` | 没有先创建目录，或不在仓库根目录 | `pwd` 确认在 `web3-security-101/`，先运行 `mkdir -p my_b79` |
 | `explain.py` 提示没有该订单或成交 | ID 写错 | 订单是 `OX` 加 6 位，成交是 `MT` 加 6 位 |
 | 自己写的检查"召回 0/…" | 输出的字段名与答案不一致 | 用 `trade_id`、`order_id`、`seq_key`、`gap_key`（见 API_X.md 第 3.10 节） |
 | `python3` 版本报错 | 版本过旧 | 需要 Python 3.9 以上 |

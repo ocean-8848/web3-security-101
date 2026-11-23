@@ -57,7 +57,7 @@ flowchart LR
 
 ## 2. 准备
 
-> 本章所有命令从 `web3-security-handbook/` 根目录出发。
+> 本章所有命令从 `web3-security-101/` 根目录出发。
 
 1. 生成靶场数据（约 2 秒）：
 
@@ -584,7 +584,7 @@ python3 practice-example-code/ops/solutions/b73/mttd.py
 ```text
 B73：计算规则的 MTTD（从事后还原的真实起点，到告警触发的时间）。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b73/mttd.py 规则.sql[:调度间隔分钟] ...
 
 起点：answers/ 里每个正例的 window.start（事后还原的真实起点）。
@@ -767,7 +767,7 @@ x05_rule4_pkg_spawns_net.sql       S7           0    0    0       0/2
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
-| `replay.py` 报找不到规则文件 | 路径写错，或不在 `web3-security-handbook/` 根目录 | `pwd` 确认目录；规则放在 `my_rules/` |
+| `replay.py` 报找不到规则文件 | 路径写错，或不在 `web3-security-101/` 根目录 | `pwd` 确认目录；规则放在 `my_rules/` |
 | 命中 0 条，但你认为应该有 | 字段值写错（例如 `signer` 与 `signing`），或 `scenario` 写错 | 用 `logread.py` 查字段的真实取值：`logread.py --sql "SELECT DISTINCT namespace FROM k8s_audit"` |
 | 召回里出现"漏掉：…" | 规则没有输出可对答案的列（`staff_id`、`ip`、`request_id`、`host` 等） | 查 `API.md` 3.4 节的"命中字段"列表，把输出列改名 |
 | `no such column` | 列名拼错，或日志里的嵌套字段没用 `json_extract` | `logread.py --schema 表名` 查列 |

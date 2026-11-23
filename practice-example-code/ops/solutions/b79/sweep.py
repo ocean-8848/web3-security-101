@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B79 参数扫描：对 lib 里某个检测器的一个参数取多个值，逐个回放并评分，打印一张表。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b79/sweep.py order_audit band 0.03,0.05,0.08,0.10,0.15 S11
   python3 practice-example-code/ops/solutions/b79/sweep.py ledger_check tol 0,0.005,0.011,0.05 S10-03,S10-04,S10-05
   python3 practice-example-code/ops/solutions/b79/sweep.py order_audit grace 0,60,300 S11-03

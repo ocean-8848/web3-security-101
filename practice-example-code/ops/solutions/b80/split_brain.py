@@ -7,7 +7,7 @@
   3. 把旧主成交分成两类：与新主重复的（可冲销）、只有旧主写过的（陈旧，待裁定）
   4. 算受影响账户与金额；--out 写出冲销清单；再模拟"冲销重复副本"后用 replay_match 复查
 
-用法（从 web3-security-handbook/ 根目录）：
+用法（从 web3-security-101/ 根目录）：
   python3 practice-example-code/ops/solutions/b80/split_brain.py
   python3 practice-example-code/ops/solutions/b80/split_brain.py --out my_b80/reversal.csv
 """

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B71 参考实现：读一份填好的控制矩阵 CSV，按保护域算覆盖率并给缺口排序。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b71/matrix_gap.py b71-lab/my_matrix.csv
   python3 practice-example-code/ops/solutions/b71/matrix_gap.py b71-lab/my_matrix.csv --top 3
   python3 practice-example-code/ops/solutions/b71/matrix_gap.py b71-lab/my_matrix.csv --min-domain-coverage 0.5

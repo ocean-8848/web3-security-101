@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B77 毕业项目自动检查与评分（只用标准库）。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b77/check_capstone.py [--dir b77-lab] [--capacity 200] [--manual 0]
 
 读取目录里的 6 个文件：assets.csv、my_matrix.csv、evidence.csv、findings.csv、risks.csv、roadmap.csv。

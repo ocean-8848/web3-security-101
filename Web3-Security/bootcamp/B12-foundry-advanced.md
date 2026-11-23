@@ -28,7 +28,7 @@ anvil  # 启动本地测试链，占用这个终端
 打开**第二个**终端：
 
 ```bash
-cd practice-example-code/range/basics  # 从 web3-security-handbook/ 出发
+cd practice-example-code/range/basics  # 从 web3-security-101/ 出发
 export RPC=http://127.0.0.1:8545  # 本地链的地址，后面命令复用
 export ME=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266     # anvil 的 0 号默认账户，私钥公开
 export ALICE=0x70997970C51812dc3A010C7d01b50e0d17dc79C8  # anvil 的 1 号默认账户

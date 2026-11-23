@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B73：估算告警量与分诊工作量。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b73/triage.py 规则.sql=P2 规则2.sql=P3 ...
 
 每条规则要带级别（P1–P4）。每条告警的分诊时间是示例值（分钟）：P1 30、P2 20、P3 10、P4 3。

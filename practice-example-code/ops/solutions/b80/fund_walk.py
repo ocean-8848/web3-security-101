@@ -8,7 +8,7 @@
   - 反事实：如果按触发时的标记价成交，账户权益是多少（只用来衡量"延迟的代价"）
   - 核对：基金余额链连续；缺口 = 基金支付 + 未覆盖亏损
 
-用法（从 web3-security-handbook/ 根目录）：
+用法（从 web3-security-101/ 根目录）：
   python3 practice-example-code/ops/solutions/b80/fund_walk.py
   python3 practice-example-code/ops/solutions/b80/fund_walk.py --start 2026-03-12T09:15:00Z --end 2026-03-12T09:55:00Z --sla 60
 """

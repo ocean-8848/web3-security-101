@@ -3,7 +3,7 @@
 
 用同一批场景，对比"朴素签名服务"（只看有无审批单、金额是否不超）与"严格签名服务"。
 场景 1-8 用虚构地址；场景 9 用靶场里真实的 S6-03（SR001044 / AP-T0048）。
-用法（从 web3-security-handbook/ 出发）：python3 practice-example-code/ops/solutions/b74/transfer_sim.py
+用法（从 web3-security-101/ 出发）：python3 practice-example-code/ops/solutions/b74/transfer_sim.py
 只用标准库。
 """
 import sys

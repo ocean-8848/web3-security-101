@@ -50,7 +50,7 @@
 1. 进入靶场：
 
 ```bash
-cd practice-example-code/range/luckypot  # 从 web3-security-handbook/ 出发，进入 LuckyPot 靶场
+cd practice-example-code/range/luckypot  # 从 web3-security-101/ 出发，进入 LuckyPot 靶场
 forge build  # 先确认能编译
 ```
 

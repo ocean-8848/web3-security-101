@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B71 参考实现：用 staff / support_access / k8s_audit 查出员工权限治理发现，并与 answers/governance.json 对照。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b71/staff_audit.py
 退出码：0 = 查出的 G1-G3 与标准答案完全一致；1 = 有漏查或多查。
 """

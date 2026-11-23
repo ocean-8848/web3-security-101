@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B82 参考实现：Merkle 求和树负债证明（教学版，只用标准库，未做生产级加固）。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   P=practice-example-code/ops/solutions/b82/merkle_sum.py
   python3 $P build  --date 2026-03-10 --asset USDT --out b82-lab/tree
   python3 $P check  --dir b82-lab/tree

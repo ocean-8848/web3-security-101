@@ -181,7 +181,7 @@ TRON 的 TVM 在签名上有三处与 EVM 不同：`CHAINID` 是 `728126428`，�
 
 ```bash
 # 运行签名重放示例的测试
-cd practice-example-code/foundry && forge test --match-path test/SignatureReplay.t.sol -vv  # 从 web3-security-handbook/ 出发
+cd practice-example-code/foundry && forge test --match-path test/SignatureReplay.t.sol -vv  # 从 web3-security-101/ 出发
 ```
 
 > 💡 注意：修复验证需要"修复前失败、修复后通过"两个结果。只跑通修复版，不能证明测试真的覆盖了重放（[A08](assessment/A08-reproduce-attacks.md)）。

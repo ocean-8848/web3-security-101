@@ -199,7 +199,7 @@ L2 的桥合约持有用户全部跨链资产。谁能升级桥，谁就能决�
 
 ```bash
 # 运行访问控制示例的测试
-cd practice-example-code/foundry && forge test --match-path test/AccessControl.t.sol -vv  # 从 web3-security-handbook/ 出发
+cd practice-example-code/foundry && forge test --match-path test/AccessControl.t.sol -vv  # 从 web3-security-101/ 出发
 ```
 
 > 💡 注意：修复验证需要两个结果：漏洞版上攻击成功，修复版上攻击失败（[A08](assessment/A08-reproduce-attacks.md)）。

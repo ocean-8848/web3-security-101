@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """读日志与表：筛选、统计、直接跑 SQL。
 
-示例（从 web3-security-handbook/ 出发）：
+示例（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/lib/logread.py --tables
   python3 practice-example-code/ops/lib/logread.py --schema withdrawals
   python3 practice-example-code/ops/lib/logread.py logins --where result=failed_password --since 2026-03-04T01:00:00Z --until 2026-03-04T01:10:00Z --limit 5

@@ -103,7 +103,7 @@ flowchart LR
 
 ## 4. 第 0 步：准备
 
-所有命令从 `web3-security-handbook/` 根目录出发。
+所有命令从 `web3-security-101/` 根目录出发。
 
 ```bash
 cd /Users/k/Workon/Learning/web3
@@ -115,7 +115,7 @@ bash practice-example-code/ops/setup.sh --no-tests | tail -2
 靶场已就绪：数据在 practice-example-code/ops/data/，答案在 practice-example-code/ops/answers/（练习做完再看）
 ```
 
-（第一行的 `cd` 只对作者的机器有意义。读者已经在自己克隆的 `web3-security-handbook/` 里。）
+（第一行的 `cd` 只对作者的机器有意义。读者已经在自己克隆的 `web3-security-101/` 里。）
 
 建工作目录，复用 B71 的成果：
 
@@ -654,7 +654,7 @@ wc -m b77-lab/summary.md
 ```bash
 cat > b77-lab/rebuild.sh <<'EOF'
 #!/usr/bin/env bash
-# 从 web3-security-handbook/ 根目录运行：bash b77-lab/rebuild.sh
+# 从 web3-security-101/ 根目录运行：bash b77-lab/rebuild.sh
 set -e
 OPS=practice-example-code/ops
 python3 $OPS/solutions/b77/evidence.py --out b77-lab/evidence.csv

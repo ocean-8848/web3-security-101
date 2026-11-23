@@ -51,7 +51,7 @@
 ## 3. 第一步：构建靶场
 
 ```bash
-cd practice-example-code/range/flashdesk  # 从 web3-security-handbook/ 出发，进入 FlashDesk 靶场目录
+cd practice-example-code/range/flashdesk  # 从 web3-security-101/ 出发，进入 FlashDesk 靶场目录
 forge build # 编译全部合约
 ```
 
@@ -439,7 +439,7 @@ owner 按团队部署流程是单个 EOA。
 
 | 现象 | 原因 | 解决 |
 |---|---|---|
-| `forge-std/Test.sol` 找不到 | 符号链接断开或目录被移动 | 在 `web3-security-handbook/` 目录运行 `bash practice-example-code/setup.sh` |
+| `forge-std/Test.sol` 找不到 | 符号链接断开或目录被移动 | 在 `web3-security-101/` 目录运行 `bash practice-example-code/setup.sh` |
 | `jq: command not found` | 没有安装 jq | macOS 运行 `brew install jq` |
 | `diff <(...)` 语法错误 | 当前 shell 是 sh | 运行 `bash` 后重新定义 `L` 函数 |
 | `forge inspect` 输出的 JSON 没有 `.storage` | Foundry 版本较旧 | 运行 `foundryup`。本章使用 forge 1.5.1 |

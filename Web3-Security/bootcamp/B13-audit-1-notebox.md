@@ -38,10 +38,10 @@
 ## 2. 第 1 步：准备环境
 
 1. 打开终端。
-2. 进入靶场目录。路径以 `web3-security-handbook/` 目录（学习仓库根目录）为起点：
+2. 进入靶场目录。路径以 `web3-security-101/` 目录（学习仓库根目录）为起点：
 
 ```bash
-cd practice-example-code/range/notebox  # 从 web3-security-handbook/ 出发，进入 NoteBox 靶场
+cd practice-example-code/range/notebox  # 从 web3-security-101/ 出发，进入 NoteBox 靶场
 ```
 
 3. 编译：
@@ -475,7 +475,7 @@ function setSecret(bytes calldata newCiphertext) external onlyOwner { // ✅ 修
 | 现象 | 原因 | 处理 |
 |---|---|---|
 | `forge: command not found` | 没有安装 Foundry | 运行 `curl -L https://foundry.paradigm.xyz \| bash`，然后运行 `foundryup` |
-| `Source "forge-std/Test.sol" not found` | `lib/forge-std` 软链接失效 | 在 `web3-security-handbook/` 目录运行 `bash practice-example-code/setup.sh` |
+| `Source "forge-std/Test.sol" not found` | `lib/forge-std` 软链接失效 | 在 `web3-security-101/` 目录运行 `bash practice-example-code/setup.sh` |
 | `forge create` 没有部署，只打印提示 | 缺少 `--broadcast` | 按第 6.3 节的完整命令运行 |
 | `Connection refused` | Anvil 没启动，或端口不一致 | 确认第二个终端的 `anvil --port 18545` 正在运行 |
 | 部署地址和本章不同 | Anvil 没有重启，nonce 变了 | 用你自己的输出地址，或重启 Anvil |

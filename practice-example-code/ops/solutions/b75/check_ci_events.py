@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B75 参考实现：用 ci_events.jsonl 与 lockfile 找供应链事件（只用标准库）。
 
-用法（从 web3-security-handbook/ 根出发）：
+用法（从 web3-security-101/ 根出发）：
   python3 practice-example-code/ops/solutions/b75/check_ci_events.py [--all] [--json]
 默认只报"会进入发布路径、且没有正当解释"的发现；--all 同时列出被排除的噪声及原因。
 """

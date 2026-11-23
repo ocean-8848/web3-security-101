@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # MiniEx 靶场一键生成 + 自检（第一批 S1–S9 + 第二批 S10–S15）。只依赖 python3（>= 3.9）标准库，不联网。
-# 用法：在 web3-security-handbook/ 目录运行  bash practice-example-code/ops/setup.sh
+# 用法：在 web3-security-101/ 目录运行  bash practice-example-code/ops/setup.sh
 #       可选参数：--no-tests 只生成数据；--seed N 换第一批的种子（默认 20260301，答案文件会随之改变，练习章按默认种子写；第二批固定 20260302）
 set -euo pipefail
 cd "$(dirname "$0")"

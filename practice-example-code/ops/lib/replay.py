@@ -12,7 +12,7 @@
 命中字段（任选其一或多个输出）：account_id、ip、key_id、wd_id、request_id、to_address、tx_hash、staff_id、host、run_id、symbol、approval_id、package、action、artifact；
 可选 ts（命中时间，用于按时间窗匹配 symbol 类答案）。
 
-示例（从 web3-security-handbook/ 出发）：
+示例（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/lib/replay.py practice-example-code/ops/answers/reference_rules/r01_credential_stuffing.sql
   python3 practice-example-code/ops/lib/replay.py my_rule.sql --param min_users=30 --show 10
   python3 practice-example-code/ops/lib/replay.py my_rule.sql --scenario S1 --min-recall 1.0 --max-fp 5

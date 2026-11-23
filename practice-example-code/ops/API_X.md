@@ -2,7 +2,7 @@
 
 给练习章作者（B79–B83）与读者查。第一批（S1–S9）见 [API.md](API.md)，本文件只写第二批新增的数据、场景与脚本；两批互不改动。
 
-所有命令从 `web3-security-handbook/` 出发；下文把 `practice-example-code/ops` 简写为 `$OPS`：
+所有命令从 `web3-security-101/` 出发；下文把 `practice-example-code/ops` 简写为 `$OPS`：
 
 ```bash
 OPS=practice-example-code/ops

@@ -36,7 +36,7 @@
 在 B04 第 7 节进入的练习工程里工作。
 
 ```bash
-cd practice-example-code/bootcamp-lab  # 从 web3-security-handbook/ 出发，进入练习工程
+cd practice-example-code/bootcamp-lab  # 从 web3-security-101/ 出发，进入练习工程
 touch src/Club.sol  # 新建一个空的合约文件
 ```
 

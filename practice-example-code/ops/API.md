@@ -1,6 +1,6 @@
 # MiniEx 靶场 API（给练习章作者与读者）
 
-所有命令从 `web3-security-handbook/` 出发；下文把 `practice-example-code/ops` 简写为 `$OPS`：
+所有命令从 `web3-security-101/` 出发；下文把 `practice-example-code/ops` 简写为 `$OPS`：
 
 ```bash
 OPS=practice-example-code/ops

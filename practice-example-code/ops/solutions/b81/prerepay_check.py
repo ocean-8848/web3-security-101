@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B81 参考实现：复付前核对。对指定单据逐项核对状态机、外部流水与记账，给出"能不能复付"的结论。
 
-用法（从 web3-security-handbook/ 出发；只用标准库）：
+用法（从 web3-security-101/ 出发；只用标准库）：
   python3 practice-example-code/ops/solutions/b81/prerepay_check.py PW000761 PW000762 PW000764 PD000763
   python3 practice-example-code/ops/solutions/b81/prerepay_check.py PW000762 --asof 2026-03-10T14:40:00Z
   python3 practice-example-code/ops/solutions/b81/prerepay_check.py --json PW000762

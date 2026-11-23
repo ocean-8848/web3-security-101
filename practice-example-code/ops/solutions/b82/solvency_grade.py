@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B82 参考实现：按（日期，资产）算储备覆盖率，给差额分级，可做"如果这笔钱没出去"的假设对账。只用标准库。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b82/solvency_grade.py --from 2026-03-09 --to 2026-03-13
   python3 practice-example-code/ops/solutions/b82/solvency_grade.py --only-breach
   python3 practice-example-code/ops/solutions/b82/solvency_grade.py --no-netting --only-breach

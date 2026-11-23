@@ -196,14 +196,14 @@ Build Profile: maxperf
 
 ## 6. 下载学习仓库
 
-本训练营的示例合约和靶场都在学习仓库 `web3-security-handbook` 里。之后各章的命令都**以 `web3-security-handbook/` 目录为起点**，例如 `cd practice-example-code/range/basics`。
+本训练营的示例合约和靶场都在学习仓库 `web3-security-101` 里。之后各章的命令都**以 `web3-security-101/` 目录为起点**，例如 `cd practice-example-code/range/basics`。
 
 仓库是私有的。克隆前，先用有访问权限的 GitHub 账号登录，例如运行 `gh auth login`。
 
 ```bash
 cd ~
-git clone https://github.com/ocean-8848/web3-security-handbook.git  # 下载学习仓库
-cd web3-security-handbook  # 之后各章都从这里出发
+git clone https://github.com/ocean-8848/web3-security-101.git  # 下载学习仓库
+cd web3-security-101  # 之后各章都从这里出发
 bash practice-example-code/setup.sh  # 下载依赖：forge-std 和 OpenZeppelin（lib/ 不进仓库）
 ```
 
@@ -224,14 +224,14 @@ bash practice-example-code/setup.sh  # 下载依赖：forge-std 和 OpenZeppelin
 确认依赖可用：
 
 ```bash
-cd practice-example-code/range/basics  # 从 web3-security-handbook/ 出发
+cd practice-example-code/range/basics  # 从 web3-security-101/ 出发
 forge test  # B06 会详细讲这条命令
-cd ../../..  # 回到 web3-security-handbook/
+cd ../../..  # 回到 web3-security-101/
 ```
 
 最后一行显示 `27 tests passed, 0 failed, 1 skipped` 就说明环境就绪。
 
-> 💡 注意：之后每章开头的 `cd practice-example-code/...` 都假设你在 `web3-security-handbook/` 目录。不确定时先运行 `pwd`，输出应以 `/web3-security-handbook` 结尾。
+> 💡 注意：之后每章开头的 `cd practice-example-code/...` 都假设你在 `web3-security-101/` 目录。不确定时先运行 `pwd`，输出应以 `/web3-security-101` 结尾。
 
 ---
 
@@ -240,7 +240,7 @@ cd ../../..  # 回到 web3-security-handbook/
 练习工程在学习仓库的 `practice-example-code/bootcamp-lab/` 里。B05 到 B08 的手敲练习都在这个目录里做。
 
 ```bash
-cd ~/web3-security-handbook             # 确认从仓库根目录出发
+cd ~/web3-security-101             # 确认从仓库根目录出发
 cd practice-example-code/bootcamp-lab   # 进入练习工程
 forge build                             # 编译 src/ 里的合约
 forge test                              # 运行 test/ 里的测试
@@ -307,7 +307,7 @@ Ran 2 test suites in 398.34ms (10.13ms CPU time): 3 tests passed, 0 failed, 0 sk
 | 下载 `forge-std` 失败 | 网络连不上 GitHub | 检查网络和代理设置，再重试 |
 | Windows 上命令不可用 | 在 PowerShell 或 CMD 里运行 | 改用 WSL |
 | `git clone` 提示 `Repository not found` 或要求输入密码 | 没有登录，或账号没有仓库权限 | 运行 `gh auth login` 登录有权限的账号，再重试 |
-| `cd practice-example-code/...` 报 `no such file or directory` | 当前不在 `web3-security-handbook/` 目录 | 运行 `cd ~/web3-security-handbook` 再重试 |
+| `cd practice-example-code/...` 报 `no such file or directory` | 当前不在 `web3-security-101/` 目录 | 运行 `cd ~/web3-security-101` 再重试 |
 
 ---
 
@@ -316,8 +316,8 @@ Ran 2 test suites in 398.34ms (10.13ms CPU time): 3 tests passed, 0 failed, 0 sk
 - [ ] 你能背出 `pwd`、`ls`、`cd`、`cat` 的作用。
 - [ ] `git log --oneline` 至少显示 1 条提交。
 - [ ] `forge --version` 正常输出版本。
-- [ ] `~/web3-security-handbook/practice-example-code/bootcamp-lab` 里 `forge test` 显示 `3 tests passed`。
-- [ ] `~/web3-security-handbook/practice-example-code/range/basics` 里 `forge test` 显示 `27 tests passed, 0 failed, 1 skipped`。
+- [ ] `~/web3-security-101/practice-example-code/bootcamp-lab` 里 `forge test` 显示 `3 tests passed`。
+- [ ] `~/web3-security-101/practice-example-code/range/basics` 里 `forge test` 显示 `27 tests passed, 0 failed, 1 skipped`。
 - [ ] 你能用一句话说出本训练营的规则：所有练习只在本机运行。
 
 ---

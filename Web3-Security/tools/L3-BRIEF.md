@@ -25,7 +25,7 @@ practice-example-code/ops/
 
 - 只用 Python 3（≥ 3.9）标准库（sqlite3、csv、json、argparse、datetime、hashlib、re、statistics）；不用第三方包，不联网。
 - 同一个种子生成的数据完全一致；`setup.sh` 可重复运行。
-- 命令从 `web3-security-handbook/` 根目录出发（读者的工作目录），例如 `bash practice-example-code/ops/setup.sh`、`python3 practice-example-code/ops/lib/replay.py ...`。
+- 命令从 `web3-security-101/` 根目录出发（读者的工作目录），例如 `bash practice-example-code/ops/setup.sh`、`python3 practice-example-code/ops/lib/replay.py ...`。
 - 数据与答案里**不出现**针对真实系统的攻击步骤；注入场景只写"事件长什么样"，用于检测与处置练习。
 
 ## 3. 数据集与注入场景

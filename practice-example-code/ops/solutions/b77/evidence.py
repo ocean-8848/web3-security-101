@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B77 参考实现：把 B71–B76 的检查重新运行一遍，生成证据表 evidence.csv（只用标准库）。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b77/evidence.py --out b77-lab/evidence.csv
   python3 practice-example-code/ops/solutions/b77/evidence.py --show        # 只打印，不写文件
 
@@ -13,7 +13,7 @@ import argparse, csv, json, os, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OPS_ABS = os.path.abspath(os.path.join(HERE, "..", ".."))
-OPS = "practice-example-code/ops"      # 章内展示的命令前缀（读者从 web3-security-handbook/ 出发）
+OPS = "practice-example-code/ops"      # 章内展示的命令前缀（读者从 web3-security-101/ 出发）
 RULES = OPS + "/answers/reference_rules/"
 LOGREAD = "python3 %s/lib/logread.py" % OPS
 REPLAY = "python3 %s/lib/replay.py" % OPS

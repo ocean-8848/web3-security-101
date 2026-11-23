@@ -49,7 +49,7 @@ L3 要解决的就是这件事。它把手册的 [X01–X48](../arch/X01-securit
 
 ## 3. MiniEx 靶场：一键生成
 
-MiniEx 是一个虚构的小型交易所，贯穿 B71–B77。先在 `web3-security-handbook/` 根目录运行：
+MiniEx 是一个虚构的小型交易所，贯穿 B71–B77。先在 `web3-security-101/` 根目录运行：
 
 ```bash
 bash practice-example-code/ops/setup.sh              # 生成数据 + 装载 SQLite + 跑自检 + 回放参考规则
@@ -83,7 +83,7 @@ python3 -m unittest discover -s practice-example-code/ops/tests -v         # 靶
 | S8 | 供应链：被篡改依赖、未固定 Action、未签名发布 | B75 |
 | S9 | 误报与噪声：103 个"看起来可疑但正常"的事件 | 全部（调参） |
 
-> 💡 注意：命令都从 `web3-security-handbook/` 根目录出发。工具用法与数据字典见 [靶场 API](../../practice-example-code/ops/API.md)。
+> 💡 注意：命令都从 `web3-security-101/` 根目录出发。工具用法与数据字典见 [靶场 API](../../practice-example-code/ops/API.md)。
 
 ## 4. 章节顺序
 
@@ -170,7 +170,7 @@ L3 以"交付物 + 各章数字"判断，不靠记忆。
 
 ## 10. 常见问题
 
-**运行命令提示找不到文件？** 确认当前目录是 `web3-security-handbook/` 根目录。靶场命令里的路径都以 `practice-example-code/ops/` 开头。
+**运行命令提示找不到文件？** 确认当前目录是 `web3-security-101/` 根目录。靶场命令里的路径都以 `practice-example-code/ops/` 开头。
 
 **提示 `python3: command not found`，或语法报错？** 靶场需要 Python 3（≥ 3.9），只用标准库。先运行 `python3 --version` 确认版本。各章在 macOS 上用系统 `python3` 跑通。
 

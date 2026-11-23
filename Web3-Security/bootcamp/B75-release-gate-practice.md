@@ -62,10 +62,10 @@ flowchart LR
 
 ## 2. 第 0 步：准备
 
-1. 从 `web3-security-handbook/` 根目录出发，设置变量并确认数据已生成：
+1. 从 `web3-security-101/` 根目录出发，设置变量并确认数据已生成：
 
 ```bash
-cd web3-security-handbook          # 从这里出发；本章所有命令都在这个目录运行
+cd web3-security-101          # 从这里出发；本章所有命令都在这个目录运行
 OPS=practice-example-code/ops
 ls $OPS/data/workflows
 ```

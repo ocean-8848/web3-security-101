@@ -57,7 +57,7 @@ flowchart LR
 | S6 签名服务异常 | S6-01、S6-02、S6-03 | 03-06 16:20；03-09 21:05；03-12 02:15 | 签名请求无审批单，或与审批单不一致 |
 | S7 开发终端失陷 | S7-01、S7-02 | 03-09 11:02–11:52；03-12 15:10–16:00 | 外联隧道 → 云凭证外部使用 → 签名命名空间 |
 
-准备工作。从 `web3-security-handbook/` 根目录出发（下文所有命令都从这里运行）：
+准备工作。从 `web3-security-101/` 根目录出发（下文所有命令都从这里运行）：
 
 ```bash
 bash practice-example-code/ops/setup.sh --no-tests
@@ -76,7 +76,7 @@ mkdir -p my_b76
 
 ```python
 #!/usr/bin/env python3
-"""把多源日志按时间合并成事故时间线。从 web3-security-handbook/ 根目录运行。"""
+"""把多源日志按时间合并成事故时间线。从 web3-security-101/ 根目录运行。"""
 import argparse, csv, json, sys
 from pathlib import Path
 

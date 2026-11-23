@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B79 参考实现：不用 lib 的检测器，自己写四条回放检查，再用 minix.score 对答案。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b79/own_checks.py seq      # 序号缺口与冲突（S10-01、S10-02）
   python3 practice-example-code/ops/solutions/b79/own_checks.py ledger   # 无分录、借贷不平、估值（S10-03、04、05）
   python3 practice-example-code/ops/solutions/b79/own_checks.py cancel   # 撤单确认之后仍成交（S11-02）

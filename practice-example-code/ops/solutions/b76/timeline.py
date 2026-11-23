@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B76 参考实现：把多源日志按时间合并成一条事故时间线（只用标准库）。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b76/timeline.py \
       --entity A01367 --entity 203.0.113.10 --since 2026-03-04T00:55:00Z --until 2026-03-04T03:00:00Z
 """

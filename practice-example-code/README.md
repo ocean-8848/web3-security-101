@@ -19,7 +19,7 @@
 
 靶场只运行本地玩具合约。靶场没有主网分叉，没有 RPC 配置，也不包含真实地址。
 
-下面的命令从 `web3-security-handbook/` 目录出发。克隆后先运行一次 `bash practice-example-code/setup.sh` 下载依赖（`lib/` 不进仓库）。
+下面的命令从 `web3-security-101/` 目录出发。克隆后先运行一次 `bash practice-example-code/setup.sh` 下载依赖（`lib/` 不进仓库）。
 
 ```bash
 # 主题靶场（导入上面的 01–08 示例，并包含新增演示）

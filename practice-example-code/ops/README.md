@@ -6,7 +6,7 @@ MiniEx 是一个**虚构**的小型交易所。所有数据由 `gen/generate.py`
 
 ## 一键生成
 
-在 `web3-security-handbook/` 目录运行：
+在 `web3-security-101/` 目录运行：
 
 ```bash
 bash practice-example-code/ops/setup.sh              # 生成数据 + 装载 SQLite + 跑自检 + 回放参考规则

@@ -65,7 +65,7 @@ flowchart LR
 
 ## 2. 准备
 
-> 本章所有命令从 `web3-security-handbook/` 根目录出发。
+> 本章所有命令从 `web3-security-101/` 根目录出发。
 
 1. 生成靶场数据（约 5 秒）：
 
@@ -774,7 +774,7 @@ python3 $SOL/report_check.py $SOL/report.reference.md; echo "退出码 $?"
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
-| `reserve_check.py` 报找不到 `data_x` 文件 | 没跑 `setup.sh`，或不在 `web3-security-handbook/` 根目录 | `pwd` 确认目录；运行 `bash practice-example-code/ops/setup.sh --no-tests` |
+| `reserve_check.py` 报找不到 `data_x` 文件 | 没跑 `setup.sh`，或不在 `web3-security-101/` 根目录 | `pwd` 确认目录；运行 `bash practice-example-code/ops/setup.sh --no-tests` |
 | 覆盖率与本章差几分钱 | 用了浮点数求和 | 用整数"分"（或 `Decimal`） |
 | `--basis usd` 的数字与本章不同 | 手工改了数据，或换了种子 | 重新运行 `setup.sh`（第二批种子固定为 20260302） |
 | `solvency_grade.py` 的 `--adjust` 没有效果 | 日期范围写成了 `起-止`，或币种写错 | 格式是 `资产@起:止=金额`，例如 `USD@2026-03-10:2026-03-12=480000` |

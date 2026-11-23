@@ -63,7 +63,7 @@ flowchart LR
 | S13 强平延迟与穿仓 | S13-01、S13-02、S13-03 | 03-12 09:15–09:55 | 10 笔强平超 SLA，8 笔穿仓，保险基金耗尽 |
 | S15 限制与解除限制 | S15-01 至 S15-04 | 03-11 至 03-13 | 解除限制的授权与回报有缺口（本章只用它做授信恢复条件） |
 
-准备工作。从 `web3-security-handbook/` 根目录出发（下文所有命令都从这里运行）：
+准备工作。从 `web3-security-101/` 根目录出发（下文所有命令都从这里运行）：
 
 ```bash
 bash practice-example-code/ops/setup.sh --no-tests | tail -1

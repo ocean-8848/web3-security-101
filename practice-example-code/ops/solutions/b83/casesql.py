@@ -8,7 +8,7 @@
   order_events   订单事件（event_id seq ts symbol event_type order_id account_id side price qty ...）
 空值是 NULL。规则文件写法同 B72：开头 `-- id:`、`-- scenario:`、`-- param: name=value`，其余是一条 SELECT，参数在 SQL 里写 :name。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b83/casesql.py --tables
   python3 practice-example-code/ops/solutions/b83/casesql.py --sql "SELECT action, COUNT(*) n FROM case_actions GROUP BY 1"
   python3 practice-example-code/ops/solutions/b83/casesql.py my_rules/f1.sql --score S15-01 [--param name=value] [--show N]

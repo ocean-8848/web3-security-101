@@ -9,7 +9,7 @@
 > 前置知识：会用 Python 3（≥ 3.9，只用标准库）和命令行；读过 [X26 域间交接](../arch/X26-cex-ledger-wallet-handoff.md) 的 §3.2–§3.6 更好；做过 [B72](B72-withdrawal-risk-rules-practice.md) 或 [B73](B73-detection-engineering-practice.md) 的调参练习更好。
 > 预计用时：约 2–3 小时。
 > 关联章节：[X20 钱包、财资与支付·工程验收](../arch/X20-cex-treasury-verification.md)｜[X21 钱包、财资与支付·恢复运营](../arch/X21-cex-treasury-recovery-ops.md)｜[X26 域间交接：原单、预留、批准、实收、实付与未决状态](../arch/X26-cex-ledger-wallet-handoff.md)｜[B74 签名服务独立校验](B74-signing-policy-practice.md)｜[B80 复市与恢复演练](B80-resumption-recovery-practice.md)｜[B82 储备与偿付对账](B82-reserves-solvency-practice.md)｜[T09 事故运行手册](../templates/T09-incident-runbook-oncall.md)
-> 最后核对：2026-11-23（Python 3.12.3；下文命令在本机从 `web3-security-handbook/` 根目录逐条运行，输出来自真实运行）
+> 最后核对：2026-11-23（Python 3.12.3；下文命令在本机从 `web3-security-101/` 根目录逐条运行，输出来自真实运行）
 
 > ⚠️ 警告：法律与道德边界。本章的数据全部由脚本合成，银行账户、链上地址、单据编号都是虚构的，不对应任何真实系统。本章只写"怎样发现并处置差异"，不写任何针对真实银行或渠道的操作。本章的参考实现只读数据，不会向任何系统发起付款；不要把"复付"的判断直接接到真实的付款流程上。
 
@@ -526,8 +526,8 @@ S14-05 3,200 USDT 充值收到两份不同编号的回执，并被记账两次
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
-| `找不到 ... data_x/...，请先运行 bash practice-example-code/ops/setup.sh` | 第二批数据还没生成 | 在 `web3-security-handbook/` 根目录运行 `bash practice-example-code/ops/setup.sh` |
-| `can't open file '.../lib/recon3.py'` | 不在 `web3-security-handbook/` 根目录，或没有设 `OPS` | `cd` 到根目录，并先运行 `OPS=practice-example-code/ops` |
+| `找不到 ... data_x/...，请先运行 bash practice-example-code/ops/setup.sh` | 第二批数据还没生成 | 在 `web3-security-101/` 根目录运行 `bash practice-example-code/ops/setup.sh` |
+| `can't open file '.../lib/recon3.py'` | 不在 `web3-security-101/` 根目录，或没有设 `OPS` | `cd` 到根目录，并先运行 `OPS=practice-example-code/ops` |
 | 循环命令只出来一行或报语法错 | 复制时丢了换行或分号 | 整段复制；`for ... do ...; done` 必须完整 |
 | 调参后 `timing` 仍有 3 条 | `--tol-days` 小于 5 | 数据里最大日期差是 5 天，要设到 5 |
 | 调参后 `amount_mismatch` 仍有 3 条 | `--amount-tol` 小于 15 | 中间行手续费 15 美元，设到 25 |

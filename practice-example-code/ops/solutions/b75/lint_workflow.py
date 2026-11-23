@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B75 参考实现：GitHub Actions workflow 静态 linter（只用标准库）。
 
-用法（从 web3-security-handbook/ 根出发）：
+用法（从 web3-security-101/ 根出发）：
   python3 practice-example-code/ops/solutions/b75/lint_workflow.py FILE [FILE ...] [--json] [--lockfile LOCK]
 退出码：有 HIGH 发现 -> 1；否则 0。
 

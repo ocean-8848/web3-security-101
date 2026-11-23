@@ -163,4 +163,4 @@ HSM、KMS、TEE（SGX、SEV、Nitro Enclaves 等）、MPC 的区别与选型；�
 
 ## 6. 交付
 
-沿用 ARCH-BRIEF.md §7，目录是 `/Users/k/Workon/Learning/web3/web3-security-handbook/Web3-Security`（不是旧目录）。回复格式同 ARCH-BRIEF.md §7（不超过 60 次工具调用，禁止 pkill / kill）。
+沿用 ARCH-BRIEF.md §7，目录是 `/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security`（不是旧目录）。回复格式同 ARCH-BRIEF.md §7（不超过 60 次工具调用，禁止 pkill / kill）。

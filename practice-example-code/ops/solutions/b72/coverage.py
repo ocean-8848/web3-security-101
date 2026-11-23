@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B72 规则互补矩阵：把多条规则都回放一遍，列出每个答案（S1-01 ...）被哪些规则命中。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b72/coverage.py rule1.sql rule2.sql ... [--scenarios S1,S2]
 规则参数写在文件名后面：my_rules/s3.sql::min_in_usd=8000,only_new=1（"::" 后用逗号分隔 name=value）。
 行是答案编号，列是规则；X 表示该规则命中了这个答案，. 表示没有。

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B79 取证小工具：给定一个对象，把支持"这是真问题"的原始证据摆出来，不看标准答案。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b79/explain.py trade MT000802      # 一笔成交：撮合日志、两侧回报、分录、重算金额
   python3 practice-example-code/ops/solutions/b79/explain.py order OX006542      # 一张订单的全部事件，按 seq 排序
   python3 practice-example-code/ops/solutions/b79/explain.py gap BTC-USDT 1548 1559   # 序号区间两侧的事件，以及区间内的成交与回报

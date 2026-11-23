@@ -58,7 +58,7 @@ PerpLite 只有一个合约文件，约 240 行。它有 LP 金库、两步下�
 ## 3. 环境
 
 ```bash
-cd practice-example-code/range/perplite  # 从 web3-security-handbook/ 出发，进入 PerpLite 靶场目录
+cd practice-example-code/range/perplite  # 从 web3-security-101/ 出发，进入 PerpLite 靶场目录
 forge build # 编译全部合约
 ```
 
@@ -428,7 +428,7 @@ FixProofs 11 个测试通过。Handler 不变量 3 项，各 128 轮 × 60 步�
 | 现象 | 原因 | 解决 |
 |---|---|---|
 | `forge: command not found` | Foundry 未安装 | 按 [B04](B04-setup.md) 安装 |
-| `Source "forge-std/Test.sol" not found` | `lib/forge-std` 符号链接失效 | 在 `web3-security-handbook/` 目录运行 `bash practice-example-code/setup.sh` |
+| `Source "forge-std/Test.sol" not found` | `lib/forge-std` 符号链接失效 | 在 `web3-security-101/` 目录运行 `bash practice-example-code/setup.sh` |
 | 自己写的 PoC 报 `keeper` 回滚 | `vm.prank` 被紧跟的外部调用消耗 | 先把 `oracle.latestRoundId()` 存进变量，再 `vm.prank` |
 | 不变量全部 `reverts` 很高 | Handler 常命中合法回滚 | 这是正常现象；检查有效调用足够多，比如 `open` 不回滚 |
 | `FOUNDRY_PROFILE=vuln` 也通过 | 模糊器没遇到清算 | 把 `depth` 调大，或换 `--fuzz-seed` |

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B74 参考实现：签名策略引擎。对每条 signing_requests 独立校验，输出 allow / reject / escalate。
 
-用法（从 web3-security-handbook/ 出发）：
+用法（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/solutions/b74/policy_engine.py
   python3 practice-example-code/ops/solutions/b74/policy_engine.py --show reject
   python3 practice-example-code/ops/solutions/b74/policy_engine.py --json

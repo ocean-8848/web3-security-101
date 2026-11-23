@@ -7,7 +7,7 @@
   dup_identical   同一序号、内容完全相同（网关重传），默认不报
   out_of_order    文件里序号比已见最大值小（到达乱序），默认不检查（--check-order）
 
-示例（从 web3-security-handbook/ 出发）：
+示例（从 web3-security-101/ 出发）：
   python3 practice-example-code/ops/lib/seqcheck.py
   python3 practice-example-code/ops/lib/seqcheck.py --symbol BTC-USDT --show 20
   python3 practice-example-code/ops/lib/seqcheck.py --score S10 --max-fp 0

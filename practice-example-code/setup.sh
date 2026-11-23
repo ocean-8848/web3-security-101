@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # 恢复示例代码的依赖。lib/ 不进仓库，克隆后运行一次即可。
-# 用法：在 web3-security-handbook/ 目录运行  bash practice-example-code/setup.sh
+# 用法：在 web3-security-101/ 目录运行  bash practice-example-code/setup.sh
 set -euo pipefail
 cd "$(dirname "$0")"
 

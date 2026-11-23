@@ -55,7 +55,7 @@ flowchart LR
 
 ## 2. 准备
 
-所有命令从 `web3-security-handbook/` 目录出发。
+所有命令从 `web3-security-101/` 目录出发。
 
 1. 生成靶场数据（约 2 秒，只用 Python 标准库）：
 
@@ -906,7 +906,7 @@ diff b71-lab/my_matrix.csv practice-example-code/ops/solutions/b71/matrix.refere
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
-| `logread.py` 报找不到表或文件 | 数据没有生成，或不在 `web3-security-handbook/` 目录下运行 | 回到根目录，运行 `bash practice-example-code/ops/setup.sh --no-tests` |
+| `logread.py` 报找不到表或文件 | 数据没有生成，或不在 `web3-security-101/` 目录下运行 | 回到根目录，运行 `bash practice-example-code/ops/setup.sh --no-tests` |
 | `$OPS` 为空，路径变成 `/lib/logread.py` | 换了终端窗口，变量丢失 | 重新运行 `OPS=practice-example-code/ops` |
 | Q17 的数字和本章不同 | 用了 `setup.sh --seed` 换了种子 | 本章数值按默认种子 20260301。重新运行 `setup.sh --no-tests`（不带 `--seed`） |
 | `matrix_gap.py` 报"矩阵格式有问题" | `priority` 不是 P0/P1/P2，`status` 拼错，或 `control` 没有以 `[类型]` 开头 | 按报错的行号逐项修改 |
