@@ -57,7 +57,7 @@
 | [QuillCTF](https://www.quillaudits.com/academy/ctf)、[Cipher Shastra](https://ciphershastra.com/) | 中级题集，侧重 DeFi 与真实漏洞改编；QuillCTF 已迁至 QuillAudits Academy；Cipher Shastra 站点在线，页脚仍为 2023 年，维护状态不明 |
 | [unhackedctf](https://github.com/unhackedctf) | 已停止维护（GitHub 最后更新于 2022 年） |
 
-各平台的链接汇总见 [B70 资源索引](B70-glossary-resources.md) 的 "CTF" 一行。
+各平台的链接汇总见 [B78 资源索引](B78-glossary-resources.md) 的 "CTF" 一行。
 
 ## 4. 过关标准
 

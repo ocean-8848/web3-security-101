@@ -1,0 +1,92 @@
+{
+  "id": "S7",
+  "name": "开发终端失陷痕迹：开发机拉起外联工具 -> 云凭证被使用 -> 访问签名命名空间",
+  "window": {
+    "start": "2026-03-09T11:02:00Z",
+    "end": "2026-03-12T16:00:00Z"
+  },
+  "expected_detections": [
+    "X05 端点 + 云审计 + K8s 审计的链式关联",
+    "云凭证来源 IP 不在办公出口",
+    "X03 签名命名空间访问控制"
+  ],
+  "expected_response": [
+    "隔离该开发机、吊销该员工的云凭证与会话令牌",
+    "核查签名命名空间内被读取的 secret，必要时轮换",
+    "回溯同一依赖 / 同一来源的其他开发机"
+  ],
+  "positive_count": 2,
+  "positives": [
+    {
+      "id": "S7-01",
+      "scenario": "S7",
+      "name": "开发机拉起外联隧道 -> 云凭证从外部 IP 被使用 -> 签名命名空间 exec",
+      "window": {
+        "start": "2026-03-09T11:02:00Z",
+        "end": "2026-03-09T11:52:00Z"
+      },
+      "match": {
+        "staff_id": [
+          "ST021"
+        ],
+        "host": [
+          "dev-mbp-021"
+        ],
+        "ip": [
+          "198.51.100.77",
+          "203.0.113.77"
+        ]
+      },
+      "summary": "ST021 的开发机 dev-mbp-021 在 npm postinstall 后拉起 rtunnel-agent（向 203.0.113.77:443 持续外联）；24 分钟后该员工的云凭证从 198.51.100.77（非办公出口，UA 为 python-requests）读取 prod/signing-config；40 分钟起访问 signing 命名空间，读取 secret 并 exec 进入 signer-0（成功）。",
+      "evidence": {
+        "endpoint_events": [
+          "EP001426"
+        ],
+        "cloud_audit": [
+          "CA002542",
+          "CA002545",
+          "CA002546"
+        ],
+        "k8s_audit": [
+          "K8001295",
+          "K8001297"
+        ]
+      }
+    },
+    {
+      "id": "S7-02",
+      "scenario": "S7",
+      "name": "同样的前半段，进入签名命名空间被拒绝",
+      "window": {
+        "start": "2026-03-12T15:10:00Z",
+        "end": "2026-03-12T16:00:00Z"
+      },
+      "match": {
+        "staff_id": [
+          "ST024"
+        ],
+        "host": [
+          "dev-mbp-024"
+        ],
+        "ip": [
+          "198.51.100.78",
+          "203.0.113.78"
+        ]
+      },
+      "summary": "ST024 的开发机 dev-mbp-024 出现同样的外联隧道；云凭证从 198.51.100.78 读取 prod/signing-config；k8s 读取 signing 命名空间 secret 返回 403。属于“失陷已发生但被权限挡住”的事件，仍要召回并处置。",
+      "evidence": {
+        "endpoint_events": [
+          "EP002213"
+        ],
+        "cloud_audit": [
+          "CA003859",
+          "CA003860",
+          "CA003861"
+        ],
+        "k8s_audit": [
+          "K8001864"
+        ]
+      }
+    }
+  ]
+}

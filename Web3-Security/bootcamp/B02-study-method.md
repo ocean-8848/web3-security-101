@@ -126,7 +126,7 @@ sequenceDiagram
 - 每月：做一次竞赛审计，或完整审计一个开源协议。
 - 输出：把学到的写成文章或推文串。
 
-更多资源按主题列在 [B70 术语表与资源索引](B70-glossary-resources.md)。
+更多资源按主题列在 [B78 术语表与资源索引](B78-glossary-resources.md)。
 
 ## 2. 每天怎么学
 
@@ -155,7 +155,7 @@ sequenceDiagram
 
 ## 3. 外部免费资源
 
-按阶段排列的免费课程、练习平台和参考资料，见 [B70 术语表与资源索引](B70-glossary-resources.md) 的"按阶段的免费课程与练习"。本训练营受 Cyfrin Updraft 课程的覆盖范围和慢雾路线图的条目启发。靶场、代码和文字都是原创。几者可以配合学习。
+按阶段排列的免费课程、练习平台和参考资料，见 [B78 术语表与资源索引](B78-glossary-resources.md) 的"按阶段的免费课程与练习"。本训练营受 Cyfrin Updraft 课程的覆盖范围和慢雾路线图的条目启发。靶场、代码和文字都是原创。几者可以配合学习。
 
 ## 4. 覆盖慢雾审计工程师路线图
 
@@ -184,7 +184,7 @@ sequenceDiagram
 | 破门而出 | 方法论、工程化工具 | [B27](B27-what-is-audit.md)、[B29](B29-why-audits-miss.md)、[B31](B31-automation-tools.md)、[B52](B52-ai-assisted-audit.md) |
 | 项目实例 | Uniswap V2、Aave V3、Lido、Safe、ERC-4626 | [B35](B35-case-method.md)–[B41](B41-case-erc4626.md) |
 | 实战与求职 | 实战项目、求职、面试 | [B25](B25-capstone-minilend.md)、[B33](B33-audit-6-guardvault.md)、[B54](B54-expert.md)、[B55](B55-interview.md) |
-| 与同道者同行 | 研究员与博客 | 本章 1.5 节、[B70](B70-glossary-resources.md) |
+| 与同道者同行 | 研究员与博客 | 本章 1.5 节、[B78](B78-glossary-resources.md) |
 
 > 💡 注意：原路线图是线性的，真实学习是螺旋的。每读完一段，就回到 CTF 和真实报告里验证。
 

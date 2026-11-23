@@ -1,0 +1,27 @@
+# B75 参考答案：把 release.yml 的 9 处缺陷逐条改掉（合成示例；SHA 为示例值，实际使用前换成你审核过的提交）
+name: release
+on:
+  workflow_dispatch:              # 修 1：去掉 pull_request_target，只允许手动触发
+    inputs:
+      version:
+        required: true
+permissions:
+  contents: read                  # 修 2：默认只读
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: production       # 修 3：绑定带审批人的环境
+    permissions:
+      contents: read
+      id-token: write             # 修 8：用 OIDC 换短期身份，不再存长期令牌
+    steps:
+      - uses: thirdparty/setup-foo@0123456789abcdef0123456789abcdef01234567    # 修 4：固定到提交哈希
+      - uses: actions/checkout@130210f4e17c8f865ecd3ca463d2af18aa69af4d       # 修 5：不再检出 PR 提交
+      - uses: sigstore/cosign-installer@c102c96a754555ff18e3c0ed454ebce135fb93d0
+      - run: npm ci --ignore-scripts                 # 修 6：按 lockfile 安装，不执行安装脚本
+      - run: npm run build
+      - run: cosign sign-blob --yes dist/app.tgz --output-signature dist/app.sig   # 修 9：签名
+      - run: cosign verify-blob dist/app.tgz --signature dist/app.sig --certificate-identity-regexp 'miniex/.*' --certificate-oidc-issuer https://token.actions.githubusercontent.com   # 修 9：发布前验证
+      - run: ./scripts/publish.sh "$VERSION"          # 修 7：输入先进环境变量
+        env:
+          VERSION: ${{ inputs.version }}

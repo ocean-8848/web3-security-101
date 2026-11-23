@@ -58,4 +58,4 @@
 ## 6. 下一步
 
 - 想补链下与运营安全：进入 [链下赛道 L1 导读：守好家门——个人与终端安全](B56-offchain-l1-guide.md)（可选）。
-- 术语和外部资源随时查 [B70 术语表与资源索引](B70-glossary-resources.md)。
+- 术语和外部资源随时查 [B78 术语表与资源索引](B78-glossary-resources.md)。

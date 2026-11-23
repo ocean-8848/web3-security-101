@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>控制矩阵覆盖率</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); }
+  .dom { margin: 0 0 14px; }
+  .dom h3 { display: flex; justify-content: space-between; gap: 8px; margin: 0 0 6px; font-size: 15px; }
+  .ctl { display: flex; align-items: flex-start; gap: 8px; margin: 0; padding: 5px 0; color: var(--text); font-size: 14px; border-bottom: 1px dashed var(--border); }
+  .ctl input { margin-top: 5px; flex: none; width: 16px; height: 16px; accent-color: var(--accent); }
+  .ctl .tags { margin-left: auto; flex: none; display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+  .ctl .tags .pill { font-size: 11px; padding: 0 6px; }
+  .bar { height: 8px; background: var(--surface-2); border-radius: 4px; overflow: hidden; margin-bottom: 6px; }
+  .bar i { display: block; height: 100%; background: var(--buy); transition: width .2s; }
+  table.heat td, table.heat th { text-align: center; padding: 4px; }
+  table.heat td.c { border: 2px solid var(--surface); border-radius: 6px; font-family: var(--mono); font-size: 12px; min-width: 40px; }
+  table.heat th:first-child, table.heat td:first-child { text-align: left; white-space: nowrap; }
+  .h0 { background: var(--sell-soft); color: var(--sell); }
+  .h1 { background: var(--warn-soft); color: var(--warn); }
+  .h2 { background: var(--accent-soft); color: var(--text); }
+  .h3 { background: var(--buy-soft); color: var(--buy); }
+  .hn { color: var(--text-2); }
+  ol.next li { margin: 6px 0; }
+  .big { font-size: 22px; font-weight: 650; font-family: var(--mono); }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="back" href="index.html">← 返回实验目录</a>
+    <h1>控制矩阵覆盖率</h1>
+  </header>
+  <p class="lead">一家虚构的小型交易所（示例）已经“做了很多事”，但这些事是否覆盖了六个保护域、六类控制？勾选已实施的控制，看覆盖率、缺口热力图、红线告警，再看系统建议先补哪三项。配套章节：<a href="../arch/X01-security-program-controls.md">X01 安全体系</a>、<a href="../arch/X07-cex-architecture-overview.md">X07 交易所架构总览</a>。</p>
+
+  <div class="callout info small">
+    <strong>怎么玩：</strong>
+    1. 先点“载入示例现状”，这是一家“只做了预防类控制”的交易所。<br>
+    2. 在左侧勾选 / 取消控制，右侧覆盖率、热力图和建议实时变化。<br>
+    3. 按“先补哪三项”提示补齐后，再观察红线告警是否消失。<br>
+    <strong>观察什么：</strong>热力图里整列（某一类控制）发红，说明体系偏科；红线项未做时，覆盖率再高也不算合格。<br>
+    <strong>思考：</strong>如果预算只够补一项，为什么不一定补“优先级最高”的那项？成本和类别缺口各占多大权重？<br>
+    <strong>数据为示例，机制用于演示。</strong>控制项是本页自行归纳的 30 项，不是任何标准的完整清单。
+  </div>
+
+  <div class="callout small">
+    <strong>排序规则：</strong>未实施的控制得分 = 优先级 P（1–3）× 10 − 成本 C（1–3）× 2 + 红线 +100 + 该域该类别尚无任何控制 +4。得分高者先补；同分按 ID 排。红线项永远排在非红线项之前。
+  </div>
+
+  <div class="btn-row">
+    <button id="preset">载入示例现状</button>
+    <button id="all">全部勾选</button>
+    <button id="none">全部清空</button>
+  </div>
+
+  <div class="grid cols-2">
+    <div id="list"></div>
+    <div>
+      <div class="card">
+        <h3>总覆盖率</h3>
+        <div class="big" id="total"></div>
+        <div class="bar"><i id="totalBar"></i></div>
+        <div id="redline"></div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h3>各域覆盖率</h3>
+        <div id="domCov"></div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h3>缺口热力图（域 × 控制类别，已做 / 总数）</h3>
+        <div class="table-wrap"><table class="heat" id="heat"></table></div>
+        <p class="small muted">红：该格一项都没做；橙：不足一半；黄：过半；绿：全部做完；“—”：本页没有该格的控制项。</p>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h3>先补哪三项</h3>
+        <ol class="next" id="next"></ol>
+      </div>
+    </div>
+  </div>
+
+  <footer class="note">虚构交易所、控制项、优先级和成本都是示例，用于演示“按域和类别看缺口”的方法。真实机构应按自己的资产清单、威胁模型和合规要求重新归纳，并为每项控制指定负责人与验证方法（见 X01 第 4 节）。</footer>
+</div>
+<script>
+const DOMS = ['身份与账户','钱包与资金','生产与云','交付与供应链','风控与合规','数据与内部人'];
+const TYPES = ['预防','检测','响应','恢复','阻断扩散','证据保全'];
+// [id, domain, type, priority 1-3, cost 1-3, redline, text, preset(示例现状)]
+const C = [
+ ['A1',0,0,3,1,true ,'员工与管理员强制抗钓鱼 MFA（硬件密钥）',1],
+ ['A2',0,1,2,2,false,'异常登录与改密 / 改绑告警',0],
+ ['A3',0,2,2,2,false,'账户被盗一键冻结与人工接管流程',0],
+ ['A4',0,4,2,2,false,'特权账号分级，管理后台按角色隔离',1],
+ ['A5',0,5,1,1,false,'登录与权限变更日志集中留存 ≥ 1 年',1],
+ ['W1',1,0,3,3,true ,'热钱包限额，大额走冷 / 多签并分离签名人',1],
+ ['W2',1,1,3,2,true ,'出入金与余额异常实时对账告警',0],
+ ['W3',1,2,2,2,false,'钱包被盗应急手册：暂停提币、转移余额、联系外部',0],
+ ['W4',1,3,2,3,false,'冷备份与签名设备异地恢复演练',0],
+ ['W5',1,4,2,2,false,'签名服务与业务系统网络隔离，出口白名单',1],
+ ['W6',1,5,1,2,false,'每笔签名保留审批单与请求的哈希对照记录',0],
+ ['P1',2,0,2,2,false,'云账号 SCP / 最小权限，根账号不日常使用',1],
+ ['P2',2,1,2,2,false,'云审计日志与密钥使用告警',0],
+ ['P3',2,2,2,1,false,'事件分级与值班轮换，有联系人清单',0],
+ ['P4',2,3,2,3,false,'基础设施即代码，可在新账号重建生产',0],
+ ['P5',2,4,2,2,false,'生产环境按服务分网段，禁止东西向全通',0],
+ ['D1',3,0,3,2,true ,'构建流水线签名与双人审核，禁止个人机器发布',0],
+ ['D2',3,1,2,2,false,'依赖与镜像漏洞 / 投毒扫描',1],
+ ['D3',3,2,2,1,false,'依赖投毒事件处置手册：吊销、回滚、通知',0],
+ ['D4',3,3,2,2,false,'制品可回滚到上一可信版本，保留历史版本',1],
+ ['R1',4,0,2,2,false,'新地址冷却期、改密后提币延迟',1],
+ ['R2',4,1,3,2,true ,'提币风控规则 + 人工复核队列',0],
+ ['R3',4,2,2,2,false,'可疑资金追踪与交易所间联络流程',0],
+ ['R4',4,4,2,2,false,'触发规则后自动限额并暂停该账户提币',0],
+ ['R5',4,5,2,1,false,'风控决策（命中规则、操作人）不可篡改留存',0],
+ ['I1',5,0,2,2,false,'客服后台最小可见字段，导出需审批',1],
+ ['I2',5,1,3,2,true ,'客服 / 运维批量查询与导出行为告警',0],
+ ['I3',5,2,2,1,false,'数据泄露响应与监管通报流程',0],
+ ['I4',5,3,1,2,false,'受影响用户恢复与补偿流程',0],
+ ['I5',5,4,2,2,false,'外包账号隔离环境，无法访问全量数据',0],
+];
+const state = {}; C.forEach(c => state[c[0]] = false);
+const $ = id => document.getElementById(id);
+const PRI = ['', 'P3 低', 'P2 中', 'P1 高']; // priority 3 shown as 高
+function priLabel(p){ return p===3?'优先级高':p===2?'优先级中':'优先级低'; }
+function costLabel(c){ return c===3?'成本高':c===2?'成本中':'成本低'; }
+
+function buildList(){
+  const root = $('list');
+  root.innerHTML = '';
+  DOMS.forEach((d, di) => {
+    const card = document.createElement('div'); card.className = 'card dom'; card.style.marginBottom = '16px';
+    const h = document.createElement('h3');
+    h.innerHTML = '<span>' + d + '</span><span class="muted small" id="dc' + di + '"></span>';
+    card.appendChild(h);
+    C.filter(c => c[1] === di).forEach(c => {
+      const lab = document.createElement('label'); lab.className = 'ctl';
+      const cb = document.createElement('input'); cb.type = 'checkbox'; cb.id = 'cb_' + c[0];
+      cb.addEventListener('change', () => { state[c[0]] = cb.checked; render(); });
+      const tx = document.createElement('span');
+      tx.textContent = c[0] + ' ' + c[6];
+      const tags = document.createElement('span'); tags.className = 'tags';
+      tags.innerHTML = '<span class="pill info">' + TYPES[c[2]] + '</span>' +
+        '<span class="pill ' + (c[3]===3?'warn':'accent') + '">' + priLabel(c[3]) + '</span>' +
+        '<span class="pill accent">' + costLabel(c[4]) + '</span>' +
+        (c[5] ? '<span class="pill sell">红线</span>' : '');
+      lab.append(cb, tx, tags);
+      card.appendChild(lab);
+    });
+    root.appendChild(card);
+  });
+}
+function setAll(fn){ C.forEach(c => { state[c[0]] = fn(c); $('cb_' + c[0]).checked = state[c[0]]; }); render(); }
+
+function heatClass(done, tot){
+  if (tot === 0) return 'hn';
+  if (done === 0) return 'h0';
+  if (done === tot) return 'h3';
+  return done / tot >= 0.5 ? 'h2' : 'h1';
+}
+function render(){
+  const done = C.filter(c => state[c[0]]).length;
+  const pct = Math.round(done / C.length * 100);
+  $('total').textContent = pct + '%（' + done + ' / ' + C.length + '）';
+  $('totalBar').style.width = pct + '%';
+  // redline
+  const miss = C.filter(c => c[5] && !state[c[0]]);
+  $('redline').innerHTML = miss.length
+    ? '<div class="callout warn small"><strong>红线告警：</strong>' + miss.length + ' 项红线控制未实施：' +
+      miss.map(c => c[0]).join('、') + '。红线项未补齐前，不论总覆盖率多高，体系都不算合格。</div>'
+    : '<div class="callout info small">所有红线控制均已实施。</div>';
+  // domain coverage
+  $('domCov').innerHTML = DOMS.map((d, di) => {
+    const all = C.filter(c => c[1] === di), ok = all.filter(c => state[c[0]]).length;
+    const p = Math.round(ok / all.length * 100);
+    $('dc' + di).textContent = ok + ' / ' + all.length + '（' + p + '%）';
+    return '<div class="small">' + d + ' ' + p + '%</div><div class="bar"><i style="width:' + p + '%"></i></div>';
+  }).join('');
+  // heat
+  let h = '<thead><tr><th>保护域</th>' + TYPES.map(t => '<th>' + t + '</th>').join('') + '</tr></thead><tbody>';
+  DOMS.forEach((d, di) => {
+    h += '<tr><td>' + d + '</td>';
+    TYPES.forEach((t, ti) => {
+      const all = C.filter(c => c[1] === di && c[2] === ti), ok = all.filter(c => state[c[0]]).length;
+      h += '<td class="c ' + heatClass(ok, all.length) + '">' + (all.length ? ok + '/' + all.length : '—') + '</td>';
+    });
+    h += '</tr>';
+  });
+  $('heat').innerHTML = h + '</tbody>';
+  // next three
+  const gapCell = (di, ti) => !C.some(c => c[1] === di && c[2] === ti && state[c[0]]);
+  const scored = C.filter(c => !state[c[0]]).map(c => ({
+    c, s: c[3] * 10 - c[4] * 2 + (c[5] ? 100 : 0) + (gapCell(c[1], c[2]) ? 4 : 0)
+  })).sort((a, b) => b.s - a.s || (a.c[0] < b.c[0] ? -1 : 1)).slice(0, 3);
+  $('next').innerHTML = scored.length ? scored.map(x =>
+    '<li><strong>' + x.c[0] + '</strong> ' + x.c[6] + '<br><span class="small muted">' + DOMS[x.c[1]] + ' · ' + TYPES[x.c[2]] +
+    ' · ' + priLabel(x.c[3]) + ' · ' + costLabel(x.c[4]) + (x.c[5] ? ' · 红线' : '') + ' · 得分 ' + x.s + '</span></li>').join('')
+    : '<li>全部控制已勾选。下一步是验证它们是否真的有效：演练、抽查、留证据。</li>';
+}
+$('preset').onclick = () => setAll(c => c[7] === 1);
+$('all').onclick = () => setAll(() => true);
+$('none').onclick = () => setAll(() => false);
+buildList(); setAll(c => c[7] === 1);
+</script>
+</body>
+</html>

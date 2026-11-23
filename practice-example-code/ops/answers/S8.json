@@ -1,0 +1,104 @@
+{
+  "id": "S8",
+  "name": "供应链：CI 中被篡改的依赖版本 / 未固定的 Action / 未签名制品被发布",
+  "window": {
+    "start": "2026-03-10T15:20:00Z",
+    "end": "2026-03-13T17:45:00Z"
+  },
+  "expected_detections": [
+    "X04 依赖哈希与 lockfile 校验",
+    "X04 Action 固定到提交哈希",
+    "X04 发布前验证制品签名"
+  ],
+  "expected_response": [
+    "阻断发布并回滚制品",
+    "吊销发布令牌，换为短期身份",
+    "对受影响依赖版本做全库扫描"
+  ],
+  "positive_count": 3,
+  "positives": [
+    {
+      "id": "S8-01",
+      "scenario": "S8",
+      "name": "安装的依赖版本与哈希同 lockfile 不一致",
+      "window": {
+        "start": "2026-03-10T15:20:00Z",
+        "end": "2026-03-10T15:25:00Z"
+      },
+      "match": {
+        "run_id": [
+          "run-00503"
+        ],
+        "package": [
+          "web3-helper"
+        ]
+      },
+      "summary": "wallet-service 主干构建安装了 web3-helper@2.3.1，哈希与 lockfile（2.3.0）不符，且这次提交没有改 lockfile。",
+      "evidence": {
+        "ci_events": [
+          "CI003279"
+        ]
+      }
+    },
+    {
+      "id": "S8-02",
+      "scenario": "S8",
+      "name": "发布流水线引用未固定的第三方 Action（@main）",
+      "window": {
+        "start": "2026-03-11T11:00:00Z",
+        "end": "2026-03-11T11:05:00Z"
+      },
+      "match": {
+        "run_id": [
+          "run-00504"
+        ],
+        "action": [
+          "thirdparty/setup-foo"
+        ]
+      },
+      "summary": "release.yml 的一次运行使用 thirdparty/setup-foo@main（可变引用），触发方式为 pull_request_target；其余 Action 都固定到了 40 位提交哈希。",
+      "evidence": {
+        "ci_events": [
+          "CI003571"
+        ]
+      }
+    },
+    {
+      "id": "S8-03",
+      "scenario": "S8",
+      "name": "未签名制品被发布到 release 通道",
+      "window": {
+        "start": "2026-03-13T17:40:00Z",
+        "end": "2026-03-13T17:45:00Z"
+      },
+      "match": {
+        "run_id": [
+          "run-00505"
+        ],
+        "artifact": [
+          "wallet-service:v1.8.0"
+        ]
+      },
+      "summary": "wallet-service:v1.8.0 的 release.yml 运行里没有 artifact_sign 步骤，publish 事件的 signature 为 null，通道为 release。",
+      "evidence": {
+        "ci_events": [
+          "CI004656"
+        ]
+      }
+    }
+  ],
+  "workflow_defects": {
+    "file": "workflows/release.yml",
+    "defects": [
+      "pull_request_target 触发",
+      "permissions: write-all",
+      "无环境审批",
+      "第三方 Action 使用 @main",
+      "检出不可信 PR 的提交",
+      "npm install 未 --ignore-scripts",
+      "输入直接拼进命令",
+      "长期 REGISTRY_TOKEN",
+      "没有签名与验证步骤"
+    ]
+  }
+}

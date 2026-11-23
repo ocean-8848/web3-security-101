@@ -44,14 +44,14 @@
 | 会写 Python 或 JavaScript，或做过 Web2 安全 | 阶段 0，快速过 [B05](B05-first-contract.md) | 路线 B | 2–3 个月到阶段 3 |
 | 写过 Solidity，没做过审计，准备求职 | [B09 读代码与攻击者思维](B09-reading-code-mindset.md) | 路线 C | 6–8 周到阶段 4 |
 | 做过审计练习，想冲竞赛或专精 | 先做[阶段测验](../interactive/bootcamp-quiz.html)，再选择阶段 | 按测验结果 | — |
-| 在交易所、钱包或项目方做安全、运维或风控，不审合约 | [B03](B03-blockchain-basics.md)，然后链下赛道 L1 | 路线 D | 6–8 周完成 L1 和 L2 |
+| 在交易所、钱包或项目方做安全、运维或风控，不审合约 | [B03](B03-blockchain-basics.md)，然后链下赛道 L1 | 路线 D | 6–8 周完成 L1 和 L2，再用 3–4 周完成 L3 |
 
 四条路线：
 
 - **路线 A（零基础）**：按阶段 0 → 1 → 2 → 3 的顺序走。每个阶段先读导读，按导读的章节顺序学。
 - **路线 B（Web2 开发或安全工程师）**：阶段 0 快速过 → 主线 [03](../03-evm-solidity-basics.md)–[09](../09-mev-signatures.md) → 阶段 1 → 阶段 2 → 阶段 3。
 - **路线 C（有 Solidity 经验，准备求职）**：主线 [04](../04-reentrancy.md)–[09](../09-mev-signatures.md) 快速复习 → [B09](B09-reading-code-mindset.md) → 阶段 2 → 阶段 3 → 阶段 4 → 阶段 5 → 阶段 7 的 [B53](B53-contests-and-habits.md)、[B54](B54-expert.md)、[B55](B55-interview.md)。阶段 6 按岗位需要补。
-- **路线 D（链下与运营安全）**：[B03](B03-blockchain-basics.md) → [B04](B04-setup.md)（只装 Foundry 和 Node.js）→ L1 → L2。需要看懂合约风险时，再补 [B08](B08-tokens-and-vault.md)、[B09](B09-reading-code-mindset.md)、[B14](B14-writing-findings.md)。
+- **路线 D（链下与运营安全）**：[B03](B03-blockchain-basics.md) → [B04](B04-setup.md)（只装 Foundry 和 Node.js）→ L1 → L2 → L3（要把防御建成体系并持续运营时，配合手册 [X01–X24](../arch/X01-security-program-controls.md)）。需要看懂合约风险时，再补 [B08](B08-tokens-and-vault.md)、[B09](B09-reading-code-mindset.md)、[B14](B14-writing-findings.md)。
 
 > 💡 注意：路线 B 和路线 C 是快速通道。跳过的章节不是不重要。如果某个靶场卡住，回到被跳过的章节补课。
 
@@ -77,7 +77,9 @@
 | 7 登堂入室：走向专家 | 审非 EVM 链，用 AI 辅助审计，参加竞赛和赏金，求职 | [B49](B49-stage7-guide.md) |
 | L1 链下赛道 · 守好家门：个人与终端安全 | 管好私钥，读懂签名，识破社工，守住账号与权限 | [B56](B56-offchain-l1-guide.md) |
 | L2 链下赛道 · 固若金汤：基础设施与运营 | 加固前端与节点，做托管风控与应急，追踪资金，识别密码学实现风险 | [B61](B61-offchain-l2-guide.md) |
-| 附录 · 与同道者行 | 术语表与资源索引，全程查阅 | [B70](B70-glossary-resources.md) |
+| L3 链下赛道 · 运筹帷幄：架构与运营 | 建控制矩阵，写并调风控规则，写检测规则并回放，做签名策略校验，审发布流水线，做桌面推演，交付安全架构评估与 90 天路线图 | [B70](B70-offchain-l3-guide.md) |
+| L3 链下赛道 · 纵深验收：验收与恢复 | 对订单序号、分录、撮合切主、强平穿仓做回放验收，三方对账与复付核对，储备偿付与 Merkle 证明，案件授权与限制验收 | [B79](B79-trading-replay-practice.md)、[B80](B80-resumption-recovery-practice.md)、[B81](B81-wallet-channel-recon-practice.md)、[B82](B82-reserves-solvency-practice.md)、[B83](B83-fraud-rules-casework-practice.md) |
+| 附录 · 与同道者行 | 术语表与资源索引，全程查阅 | [B78](B78-glossary-resources.md) |
 
 > 🧪 动手验证：打开[训练营阶段测验](../interactive/bootcamp-quiz.html)，选择你认为自己所在的阶段。得分 ≥ 80% 才算通过。结果保存在浏览器中。
 
@@ -94,6 +96,7 @@ flowchart LR
   S6 --> S7["7 登堂入室<br/>走向专家"]
   S1 -.完成阶段 1 后可并行.-> L1["L1 守好家门<br/>个人与终端安全"]
   L1 --> L2["L2 固若金汤<br/>基础设施与运营"]
+  L2 --> L3["L3 运筹帷幄<br/>架构与运营"]
   G{{"每阶段：测验 ≥ 80%<br/>+ 交付物"}}
   S2 -.-> G
   S4 -.-> G
@@ -106,7 +109,7 @@ flowchart LR
 
 - 实线是学习顺序。每个阶段都要通过门槛才能前进。
 - 每一章只依赖它前面的章节和主线章节。后面阶段的章节可以查阅，但不是前置。
-- 链下赛道从阶段 1 之后开始，可以和阶段 2–7 交替学习。不审合约的读者可以只走 B03 → L1 → L2。
+- 链下赛道从阶段 1 之后开始，可以和阶段 2–7 交替学习。不审合约的读者可以只走 B03 → L1 → L2 → L3。
 - 虚线连到"门槛"的只画了 2 条。实际上每个阶段都有门槛，写在各阶段导读里。
 - 局限：本图不表示时间长短。阶段 3 章节最多，通常最耗时。
 
@@ -126,6 +129,7 @@ flowchart LR
 | 7 登堂入室：走向专家 | 持续，见 [B54](B54-expert.md) 的 12 个月计划 | — |
 | L1 守好家门：个人与终端安全 | 3（可与阶段 2–7 并行） | — |
 | L2 固若金汤：基础设施与运营 | 5（可与阶段 2–7 并行） | — |
+| L3 运筹帷幄：架构与运营 | 4（完成 L2 后；可与阶段 4–7 并行） | — |
 
 > 💡 注意：周数和过关门槛里的百分比都是本手册设定的示例，不是行业标准。门槛的作用是逼你用数字复盘。
 

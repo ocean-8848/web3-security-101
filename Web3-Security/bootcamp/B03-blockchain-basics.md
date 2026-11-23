@@ -107,7 +107,7 @@ Gas：EVM 执行每条指令消耗的计算单位。它防止死循环，也给�
 
 ## 8. 延伸阅读
 
-延伸阅读见 [B70 资源索引](B70-glossary-resources.md) 的"区块链基础"一行。本章的哈希链实验是 Anders Brownworth Blockchain Demo 的简化版。
+延伸阅读见 [B78 资源索引](B78-glossary-resources.md) 的"区块链基础"一行。本章的哈希链实验是 Anders Brownworth Blockchain Demo 的简化版。
 
 > 🪞 反思：选一条你常用的链。
 > 1. 你能说出它的确认规则吗？

@@ -1,0 +1,16 @@
+asset_id,asset,level,worst_case,owner,location,evidence
+A-01,热钱包（3 个地址）,L1,签名被滥用后资金在 24 小时内转出,财资,chain_txs,Q3
+A-02,温钱包（3 个地址）,L1,调拨路径被篡改后大额资金转到陌生地址,财资,chain_txs,Q3
+A-03,冷钱包（2 个地址）,L1,多签被误导后大额资金不可逆流出,财资,chain_txs,Q3
+A-04,签名服务（signing 命名空间；1302 个签名请求）,L1,伪造请求被签名后资金流出,钱包安全,signing_requests / k8s_audit,Q7 Q9
+A-05,内部账本（52310 笔双分录）,L1,账务被改写后账实不符,账务,ledger,Q1
+A-06,客户账户（2000 个）,L1,账户接管后资金被提走,账户安全,accounts / logins,Q2
+A-07,API Key（31 个，3 个带提币权限）,L1,Key 被滥用后从新 IP 提币,账户安全,api_keys / api_calls,Q4
+A-08,客户 KYC 与资料,L1,批量查看或导出后大规模泄露,合规,support_access,Q1
+A-09,员工特权（43 人 66 条授予）,L2,特权被滥用或遗留后成为 L1 入口,安全,staff,Q5
+A-10,云账号（14 个员工身份 4 个服务角色）,L2,云凭证外泄后读到签名配置,平台,cloud_audit,Q6
+A-11,K8s 集群（5 个命名空间）,L2,进入签名命名空间后读密钥或执行命令,平台,k8s_audit,Q7
+A-12,CI/CD 流水线（3 个仓库 6 条流水线）,L2,被篡改的依赖或制品被发布,发布,ci_events / workflows,Q8
+A-13,开发终端（9 台）,L2,终端失陷后成为云与签名的跳板,平台,endpoint_events,Q9
+A-14,审计日志（云 K8s CI 终端）,L2,日志缺失或被删后无法取证,安全运营,cloud_audit 等,Q1
+A-15,提币审批与风控流程,L2,审批被绕过后异常提币放行,风控,approvals / withdrawals,Q1

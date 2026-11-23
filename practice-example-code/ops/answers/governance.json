@@ -1,0 +1,27 @@
+{
+  "id": "G",
+  "name": "员工与权限治理发现（非 S 场景，供控制矩阵与权限审计练习）",
+  "findings": [
+    {
+      "id": "G1",
+      "staff_id": "ST015",
+      "finding": "已于 2026-01-20 离职，kyc_read 特权仍有效（到 2026-12-31），并在 2026-03-07 15:00 有一次 view_kyc 访问",
+      "evidence": "staff.csv + support_access.csv",
+      "expected_control": "离职联动停用 / 特权到期自动回收"
+    },
+    {
+      "id": "G2",
+      "staff_id": "ST050",
+      "finding": "prod_exec 特权已于 2026-02-15 过期，2026-03-07 10:00 仍在 risk 命名空间 exec 成功",
+      "evidence": "staff.csv + k8s_audit.jsonl",
+      "expected_control": "特权到期后在网关侧失效，而不只是目录里的字段"
+    },
+    {
+      "id": "G3",
+      "staff_id": "ST051",
+      "finding": "cloud_admin 特权没有审批人（approver_id 为空）",
+      "evidence": "staff.csv",
+      "expected_control": "特权授予必须有审批记录"
+    }
+  ]
+}

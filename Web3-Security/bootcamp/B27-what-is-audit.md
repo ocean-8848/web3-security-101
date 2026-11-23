@@ -407,7 +407,7 @@ nSLOC 的定义见 [B09 第 1 节](B09-reading-code-mindset.md)。
 - [B28 漏洞模式库](B28-bug-patterns.md)、[B29 为什么会漏掉漏洞](B29-why-audits-miss.md)、[B31 自动化工具](B31-automation-tools.md)
 - 评估：[A01 方法论](../assessment/A01-methodology.md)、[A02 风险评级与报告](../assessment/A02-risk-rating-reporting.md)、[A07 外部审计与赏金](../assessment/A07-external-audit-bounty.md)、[A08 复现攻击与验证修复](../assessment/A08-reproduce-attacks.md)、[A09 应急响应](../assessment/A09-incident-response.md)
 - 模板：[T01 受理清单](../templates/T01-intake-checklist.md)、[T03 报告模板](../templates/T03-finding-report.md)、[T04 上线门禁](../templates/T04-go-live-gate.md)
-- 外部免费资源见 [B70 资源索引](B70-glossary-resources.md)。
+- 外部免费资源见 [B78 资源索引](B78-glossary-resources.md)。
 - 下一章：[B28 高频漏洞模式库](B28-bug-patterns.md)
 
 > 🪞 反思：

@@ -1,0 +1,543 @@
+{
+  "id": "S14",
+  "name": "储备与负债差额，及银行流水 / 链上 / 账务三方对账不平（含假回执与悬挂）",
+  "window": {
+    "start": "2026-03-06T16:00:00Z",
+    "end": "2026-03-13T10:16:00Z"
+  },
+  "expected_detections": [
+    "储备覆盖率低于 100%（X38）",
+    "银行流水与账务三方对账：无记录的外流（X31、X37）",
+    "回执核验：已记账但链上不存在（X31）",
+    "状态机悬挂：已上链未记账、已批准未签名（X37）",
+    "重复回执导致重复记账（X37）"
+  ],
+  "expected_response": [
+    "先确认储备差额的原因再决定是否暂停提币",
+    "向银行发起回拨 / 查询，向对手账户追索",
+    "冲销假回执记账，查调用方与来源，必要时停用该回执通道",
+    "补记已上链的提币，清理悬挂项并设超时告警",
+    "对重复记账冲正并加幂等键"
+  ],
+  "positive_count": 5,
+  "positives": [
+    {
+      "id": "S14-01",
+      "scenario": "S14",
+      "name": "储备覆盖率低于 100%",
+      "match": {
+        "reserve_key": [
+          "USD@2026-03-10",
+          "USDT@2026-03-10",
+          "USD@2026-03-11",
+          "USDT@2026-03-11",
+          "USD@2026-03-12"
+        ]
+      },
+      "summary": "USD 在 03-10 至 03-12 的储备低于负债（银行外流未入账），USDT 在 03-10 与 03-11 低于负债（已上链提币未记账）",
+      "evidence": {},
+      "window": {
+        "start": "2026-03-10T00:00:00Z",
+        "end": "2026-03-13T00:00:00Z"
+      }
+    },
+    {
+      "id": "S14-02",
+      "scenario": "S14",
+      "name": "银行外流 480,000 美元没有账务记录，3 天后同额回拨也没有记录",
+      "match": {
+        "ref": [
+          "BKX-77001",
+          "RTX-77001"
+        ]
+      },
+      "summary": "BK-OPS-1 在 03-10 11:42 向陌生账户 ACCT-9F31A2 汇出 480,000 美元，03-13 10:15 同额回拨；账务没有任何对应记录",
+      "evidence": {},
+      "window": {
+        "start": "2026-03-10T11:42:00Z",
+        "end": "2026-03-13T10:16:00Z"
+      }
+    },
+    {
+      "id": "S14-03",
+      "scenario": "S14",
+      "name": "假回执：已确认并记账，但没有广播也没有链上交易",
+      "match": {
+        "item_id": [
+          "PW000762"
+        ],
+        "ref": [
+          "0xd8dc1eb702d03ec8bdd26675b2de499b1f751e4eabf786e52b2328c9678a8980"
+        ]
+      },
+      "summary": "40,000 USDT 提币从签名直接跳到确认，回执哈希在链上不存在，账务已扣减",
+      "evidence": {
+        "pending_states": [
+          "PE002390",
+          "PE002395",
+          "PE002396",
+          "PE002407",
+          "PE002410"
+        ]
+      },
+      "window": {
+        "start": "2026-03-10T14:00:00Z",
+        "end": "2026-03-10T15:00:00Z"
+      }
+    },
+    {
+      "id": "S14-04",
+      "scenario": "S14",
+      "name": "状态机悬挂：已上链未记账、已批准未签名",
+      "match": {
+        "item_id": [
+          "PW000761",
+          "PW000764"
+        ],
+        "ref": [
+          "0x29d3d250235af677612daccd6cec3f9d6bfbcb7e0db9773c954ef7b5663826b5"
+        ]
+      },
+      "summary": "380,000 USDT 已上链却 48 小时后才确认记账；15,000 美元银行提币批准后 8 天未签名",
+      "evidence": {
+        "pending_states": [
+          "PE001505",
+          "PE001524",
+          "PE002245",
+          "PE002253",
+          "PE002255",
+          "PE002256",
+          "PE002850",
+          "PE002851"
+        ]
+      },
+      "window": {
+        "start": "2026-03-06T16:00:00Z",
+        "end": "2026-03-12T09:01:00Z"
+      }
+    },
+    {
+      "id": "S14-05",
+      "scenario": "S14",
+      "name": "重复回执与重复记账",
+      "match": {
+        "item_id": [
+          "PD000763"
+        ],
+        "ref": [
+          "0xdc1bb6bc4795d5e4d5438d6c925f338effbda7542fff24cedc122fc156570371"
+        ]
+      },
+      "summary": "3,200 USDT 充值收到两份不同编号的回执，并被记账两次",
+      "evidence": {
+        "pending_states": [
+          "PE002104",
+          "PE002105",
+          "PE002106",
+          "PE002107",
+          "PE002109"
+        ]
+      },
+      "window": {
+        "start": "2026-03-09T17:00:00Z",
+        "end": "2026-03-09T17:10:00Z"
+      }
+    }
+  ],
+  "decoy_count": 15,
+  "decoys": [
+    {
+      "id": "S14-N01",
+      "mimics": "S14",
+      "category": "price_skew",
+      "name": "估值口径差异",
+      "match": {
+        "reserve_key": [
+          "BTC@2026-03-01",
+          "ETH@2026-03-01",
+          "BTC@2026-03-02",
+          "BTC@2026-03-05",
+          "BTC@2026-03-06",
+          "BTC@2026-03-07",
+          "ETH@2026-03-07",
+          "ETH@2026-03-10",
+          "ETH@2026-03-12"
+        ]
+      },
+      "summary": "按美元计的覆盖率低于 1，但按币数覆盖率高于 1（储备与负债取价时点不同）",
+      "count": 9,
+      "evidence": {}
+    },
+    {
+      "id": "S14-N02",
+      "mimics": "S14",
+      "category": "usdt_inflight",
+      "name": "在途款项造成的小幅覆盖率不足",
+      "match": {
+        "reserve_key": [
+          "USDT@2026-03-04",
+          "USDT@2026-03-08"
+        ]
+      },
+      "summary": "USDT 覆盖率 99.85%–99.92%，是已付款未记账的在途窗口",
+      "count": 2,
+      "evidence": {}
+    },
+    {
+      "id": "S14-N03",
+      "mimics": "S14",
+      "category": "timing_weekend",
+      "name": "周末造成的入账日期差",
+      "match": {
+        "item_id": [
+          "PW000616",
+          "PW000629",
+          "PW000634",
+          "PW000635",
+          "PW000650",
+          "PW000677",
+          "PW000678",
+          "PW000679",
+          "PW000680",
+          "PW000681",
+          "PW000682",
+          "PW000683",
+          "PW000684",
+          "PW000709",
+          "PW000730",
+          "PW000748"
+        ]
+      },
+      "summary": "银行次日 / 下周一入账，账务与流水相差 2–3 天",
+      "count": 16,
+      "evidence": {}
+    },
+    {
+      "id": "S14-N04",
+      "mimics": "S14",
+      "category": "intermediary_fee",
+      "name": "中间行费用",
+      "match": {
+        "item_id": [
+          "PD000637",
+          "PD000643",
+          "PD000723"
+        ]
+      },
+      "summary": "银行入账比账务少 15 美元（中间行费）",
+      "count": 3,
+      "evidence": {}
+    },
+    {
+      "id": "S14-N05",
+      "mimics": "S14",
+      "category": "bank_fee_line",
+      "name": "银行手续费行",
+      "match": {
+        "ref": [
+          "BK000001-FEE",
+          "BK000003-FEE",
+          "BK000004-FEE",
+          "BK000005-FEE",
+          "BK000006-FEE",
+          "BK000007-FEE",
+          "BK000008-FEE",
+          "BK000017-FEE",
+          "BK000018-FEE",
+          "BK000019-FEE",
+          "BK000020-FEE",
+          "BK000021-FEE",
+          "BK000022-FEE",
+          "BK000023-FEE",
+          "BK000024-FEE",
+          "BK000033-FEE",
+          "BK000034-FEE",
+          "BK000035-FEE",
+          "BK000036-FEE",
+          "BK000037-FEE",
+          "BK000038-FEE",
+          "BK000039-FEE",
+          "BK000040-FEE",
+          "BK000049-FEE",
+          "BK000051-FEE",
+          "BK000052-FEE",
+          "BK000053-FEE",
+          "BK000054-FEE",
+          "BK000055-FEE",
+          "BK000056-FEE",
+          "BK000065-FEE",
+          "BK000066-FEE",
+          "BK000067-FEE",
+          "BK000068-FEE",
+          "BK000069-FEE",
+          "BK000070-FEE",
+          "BK000071-FEE",
+          "BK000072-FEE",
+          "BK000081-FEE",
+          "BK000082-FEE",
+          "BK000083-FEE",
+          "BK000084-FEE",
+          "BK000085-FEE",
+          "BK000086-FEE",
+          "BK000087-FEE",
+          "BK000088-FEE",
+          "BK000097-FEE",
+          "BK000098-FEE",
+          "BK000099-FEE",
+          "BK000100-FEE",
+          "BK000101-FEE",
+          "BK000102-FEE",
+          "BK000103-FEE",
+          "BK000104-FEE",
+          "BK000113-FEE",
+          "BK000114-FEE",
+          "BK000115-FEE",
+          "BK000116-FEE",
+          "BK000117-FEE",
+          "BK000118-FEE",
+          "BK000119-FEE",
+          "BK000120-FEE",
+          "BK000129-FEE",
+          "BK000130-FEE",
+          "BK000131-FEE",
+          "BK000132-FEE",
+          "BK000133-FEE",
+          "BK000134-FEE",
+          "BK000135-FEE",
+          "BK000136-FEE"
+        ]
+      },
+      "summary": "每笔电汇另有一行 25 美元的银行费用，没有账务对应",
+      "count": 70,
+      "evidence": {}
+    },
+    {
+      "id": "S14-N06",
+      "mimics": "S14",
+      "category": "own_sweep",
+      "name": "行间划转",
+      "match": {
+        "ref": [
+          "SW0001",
+          "SW0002",
+          "SW0003",
+          "SW0004",
+          "SW0005",
+          "SW0008",
+          "SW0009",
+          "SW0010",
+          "SW0011",
+          "SW0012"
+        ]
+      },
+      "summary": "BK-OPS-1 与 BK-OPS-2 之间的划转，两侧都在流水里",
+      "count": 10,
+      "evidence": {}
+    },
+    {
+      "id": "S14-N07",
+      "mimics": "S14",
+      "category": "pending_then_settled",
+      "name": "先 pending 后 settled",
+      "match": {
+        "item_id": [
+          "PW000616",
+          "PW000629",
+          "PW000634",
+          "PW000635",
+          "PW000650",
+          "PW000680",
+          "PW000709",
+          "PW000730",
+          "PW000748"
+        ],
+        "ref": [
+          "BK000004",
+          "BK000017",
+          "BK000022",
+          "BK000023",
+          "BK000038",
+          "BK000068",
+          "BK000097",
+          "BK000118",
+          "BK000136"
+        ]
+      },
+      "summary": "同一笔先出现 pending 行，之后 settled",
+      "count": 9,
+      "evidence": {}
+    },
+    {
+      "id": "S14-N08",
+      "mimics": "S14",
+      "category": "bank_return",
+      "name": "银行退回",
+      "match": {
+        "item_id": [
+          "PW000614",
+          "PW000662"
+        ],
+        "ref": [
+          "BK000002",
+          "BK000050"
+        ]
+      },
+      "summary": "汇出后被银行退回，状态机走 fail / release，流水净额为 0",
+      "count": 2,
+      "evidence": {}
+    },
+    {
+      "id": "S14-N09",
+      "mimics": "S14",
+      "category": "bank_interest",
+      "name": "利息",
+      "match": {
+        "ref": [
+          "INT-0314"
+        ]
+      },
+      "summary": "银行利息入账，没有账务对应",
+      "count": 1,
+      "evidence": {}
+    },
+    {
+      "id": "S14-N10",
+      "mimics": "S14",
+      "category": "dust_inbound",
+      "name": "微额来历不明转入",
+      "match": {
+        "ref": [
+          "0x1a9e112d02c9ca7e4a9426a4da9c6fdc4570760186bba1d5d0a72663924cb2c4",
+          "0x1bbf7ab3429543721c12ccad027e920e6cb3b941a4ff2f9155f13e2abc8e10f7",
+          "0x23985c60b6ab14c1f34f2eb71747d53f5404faa746df744bda89139f0c02cd87",
+          "0x916b020fb8d83fb893658ad3378a7dc57e72fc215b8588ffd3ad699ce8051dfc",
+          "0xe5a95cb5f07f54ac53dc4bf860a22b5b9c3640b606bb813f7b4b2aeb64520b40",
+          "0x8d4bb9b9b5580cd78156ef6be84593363aefb92007f0582b66496c7ab8e4bdb3",
+          "0x1a3fb5566e28cd1499fb117ac00b5146c341aab7139ee6dd59f38643549b84bd",
+          "0xbdf721bcd9b5837daab14b0ceee6ce287045cb9887e1b1451994da7a11997261",
+          "0x5ea269c5888cc88cc4290697516475776cc34d491305cfed3a9e48fa7fc726ff",
+          "0x83a570a0c61d3ddc76f31ce0f4807bb77a8eb89ec3c74b8089ee83e359ad06c5",
+          "0x95f0d920378fae1c6cc950d532fe6831cef7e00db7bcb59a0863a295249c2f76",
+          "0x0bab0a4e59e7d5c591bda71e2622f6cca629f6d6e544ebe1ea707205b421c51d",
+          "0x5dc1124cc46d747d0e4e43f7ef11abab1a9336664e3cca5bf5af61aa6e223c65",
+          "0x97360ae1f9648151d9be379e2c17509e4b3df60069829103da7b3fa87b379740",
+          "0x70a04fd7bb4e4657e54f1ce20bb64d28655f41b11740c53579c703b13598a141"
+        ]
+      },
+      "summary": "不足 5 USDT 的转入，没有充值申请，未入账",
+      "count": 15,
+      "evidence": {}
+    },
+    {
+      "id": "S14-N11",
+      "mimics": "S14",
+      "category": "timeout_rebroadcast",
+      "name": "超时后重广播",
+      "match": {
+        "item_id": [
+          "PW000012",
+          "PW000041",
+          "PW000064",
+          "PW000096",
+          "PW000104",
+          "PW000134",
+          "PW000141",
+          "PW000166",
+          "PW000193",
+          "PW000231",
+          "PW000234",
+          "PW000238",
+          "PW000297"
+        ]
+      },
+      "summary": "30 分钟未确认后超时、重广播（新哈希），随后确认并记账",
+      "count": 13,
+      "evidence": {}
+    },
+    {
+      "id": "S14-N12",
+      "mimics": "S14",
+      "category": "dup_confirm_idempotent",
+      "name": "重复回执但只记一次账",
+      "match": {
+        "item_id": [
+          "PW000070",
+          "PW000081",
+          "PW000083",
+          "PW000104",
+          "PW000125",
+          "PW000151",
+          "PW000229",
+          "PW000241",
+          "PW000271",
+          "PW000272",
+          "PD000341",
+          "PD000366",
+          "PD000420",
+          "PD000509",
+          "PD000518",
+          "PD000527",
+          "PD000538",
+          "PD000610"
+        ]
+      },
+      "summary": "同一回执编号再次到达，只记账一次",
+      "count": 18,
+      "evidence": {}
+    },
+    {
+      "id": "S14-N13",
+      "mimics": "S14",
+      "category": "reorg_deposit",
+      "name": "充值重组",
+      "match": {
+        "item_id": [
+          "PD000317",
+          "PD000371",
+          "PD000386",
+          "PD000411",
+          "PD000425",
+          "PD000533"
+        ]
+      },
+      "summary": "先看到后回滚，随后换哈希再确认",
+      "count": 6,
+      "evidence": {}
+    },
+    {
+      "id": "S14-N14",
+      "mimics": "S14",
+      "category": "cancel_after_approve",
+      "name": "批准后取消",
+      "match": {
+        "item_id": [
+          "PW000013",
+          "PW000017",
+          "PW000122",
+          "PW000168",
+          "PW000250"
+        ]
+      },
+      "summary": "用户取消，预留已释放",
+      "count": 5,
+      "evidence": {}
+    },
+    {
+      "id": "S14-N15",
+      "mimics": "S14",
+      "category": "open_at_end",
+      "name": "统计截止时仍在处理",
+      "match": {
+        "item_id": [
+          "PW000757",
+          "PW000758",
+          "PW000759",
+          "PW000760"
+        ]
+      },
+      "summary": "截止前 1 小时内才创建，尚未超时",
+      "count": 4,
+      "evidence": {}
+    }
+  ]
+}

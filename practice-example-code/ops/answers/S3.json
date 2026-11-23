@@ -1,0 +1,141 @@
+{
+  "id": "S3",
+  "name": "洗钱漏斗：多个小额入账汇聚到少数账户后快速提走",
+  "window": {
+    "start": "2026-03-08T09:00:00Z",
+    "end": "2026-03-13T16:00:00Z"
+  },
+  "expected_detections": [
+    "X13 规则示例 1 快进快出",
+    "关联账户（同新注册、同入金来源模式）",
+    "入金来源污染 X13 规则示例 2"
+  ],
+  "expected_response": [
+    "暂缓放行提币，升级到 L3 人工复核",
+    "合规官决定是否上报可疑交易",
+    "保留证据（入金来源、IP、设备）"
+  ],
+  "positive_count": 3,
+  "positives": [
+    {
+      "id": "S3-01",
+      "scenario": "S3",
+      "name": "漏斗：9 个新账户小额入金汇聚到 1 个账户，3 个地址提走",
+      "window": {
+        "start": "2026-03-08T09:00:00Z",
+        "end": "2026-03-08T17:00:00Z"
+      },
+      "match": {
+        "account_id": [
+          "A00476",
+          "A01068",
+          "A00138",
+          "A00845",
+          "A01035",
+          "A00536",
+          "A00348",
+          "A00026",
+          "A00911",
+          "A00709"
+        ],
+        "wd_id": [
+          "W000717",
+          "W000718",
+          "W000719"
+        ]
+      },
+      "summary": "9 个注册不足 10 天的 KYC1 账户各入金 2,000–2,900 USDT（总计约 23793），内部转给归集账户 A00476，约 6 小时后 3 个新地址分三笔提走约 95%。",
+      "evidence": {
+        "chain_txs": [
+          "0x58b000f98b26bef0c1303f2a3256c09252e1c7caa1746eb4f84bfa4dfe1a3cfa",
+          "0xf3e313e31efc7d8195e5f3b9d4b0d358317d2f82e68798562aa687c28f618af4",
+          "0xc7e85407344acd5c7b763402a1a1eca86e76d23620c6c04f6e7c3f9ac3c98118",
+          "0x40b762d4f08aa6f1700fd24b6858128b477c5a5325a2828967e384caea35eced",
+          "0xdea30bb6f03a1da86d5ae7487dc469f2ee797e46ee18e054be9f101f2fb85e26",
+          "0x1477a07340a48a46285a728f16823d6fdecbb6ab20147f18e8ecf1b76916856e",
+          "0x1181854af20ebd4194f9893d4e001bda39a33e93992af1f4e09c2d187b56fc9e",
+          "0xd3360bd5812cf73b3334e05b0c56b5f71294938074f4745b9709bc4feb8b9b7f",
+          "0xea20270bfc93caf04d47e077071bc320e6572e7a178aa9cf46ef5a7f28f4d874"
+        ],
+        "internal_transfer_refs": [
+          "IT-d0ac7b1b39",
+          "IT-961c2a36fd",
+          "IT-6c7e43eac3",
+          "IT-d9634ccf32",
+          "IT-624c0f815e",
+          "IT-8fa26ebc4c",
+          "IT-5429b7b6ef",
+          "IT-c33c228290",
+          "IT-ee659da116"
+        ],
+        "withdrawals": [
+          "W000717",
+          "W000718",
+          "W000719"
+        ]
+      }
+    },
+    {
+      "id": "S3-02",
+      "scenario": "S3",
+      "name": "漏斗：6 笔小额入金后整笔提走（低于 20k）",
+      "window": {
+        "start": "2026-03-13T08:00:00Z",
+        "end": "2026-03-13T13:00:00Z"
+      },
+      "match": {
+        "account_id": [
+          "A01228"
+        ],
+        "wd_id": [
+          "W001171"
+        ]
+      },
+      "summary": "新账户 6 笔 1,100–1,900 USDT 入金（来源地址互不相同），入金总额 9108 USDT，约 2.5 小时后单笔提走 97%；总额低于“24 小时 20,000”的阈值，需要调参才能召回。",
+      "evidence": {
+        "chain_txs": [
+          "0x0a61c374a5de6c6758e2f4e7ef2d11c63c9241a72dabc552947ea055e9591f53",
+          "0xd6c97a58eb45eaf39986889e3e9826b3c5a118f1d95544cca1daeb42cf4a165c",
+          "0x3945a2e45414fbc63089eaf7ed3c31ec4b69612d8fe3c31b18fdb6058872a51f",
+          "0x1c377398b6c837ee4959d5b84487389923b39f600925ff7c09dcf02526df2880",
+          "0xc64ee856d6b531e98f313f3375246256d2dfcf2ed53d7119d406f495433d4967",
+          "0x25872ae77cd75ef622eba9dbb62a8c690f079078e5b469fcf332d5b1786eabdf"
+        ],
+        "withdrawals": [
+          "W001171"
+        ]
+      }
+    },
+    {
+      "id": "S3-03",
+      "scenario": "S3",
+      "name": "漏斗：6 笔小额入金后整笔提走（低于 20k）",
+      "window": {
+        "start": "2026-03-13T11:00:00Z",
+        "end": "2026-03-13T16:00:00Z"
+      },
+      "match": {
+        "account_id": [
+          "A00112"
+        ],
+        "wd_id": [
+          "W001182"
+        ]
+      },
+      "summary": "新账户 6 笔 1,100–1,900 USDT 入金（来源地址互不相同），入金总额 9435 USDT，约 2.5 小时后单笔提走 97%；总额低于“24 小时 20,000”的阈值，需要调参才能召回。",
+      "evidence": {
+        "chain_txs": [
+          "0x9d62fe853d0c17efbbf8867a21be940c1fe31790bb813fcada707da5158354f4",
+          "0x2177a17fca286ce07b3dadd14047331dff5aa6e7659e0bc8cf0adab56857fdb8",
+          "0x9cf8f713950c75f815956e3837b507933f65d8f572d415738e3dbf858b93e943",
+          "0x2cce692eeccc17130e371f1b186c2d6e6a6947751db933b2c336f6800aa4fa30",
+          "0x15742ebf74a5e23507aa8a99d024d842a6cefbc7b1dbe7915e3d157d51013191",
+          "0xfad54f821dc4ec56be402be865c36b7a6b6fb760cb2b54c6f8b0f7f96ba47b65"
+        ],
+        "withdrawals": [
+          "W001182"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "id": "S2",
+  "name": "API Key 滥用：新开提币权限的 Key 从新 IP 调用",
+  "window": {
+    "start": "2026-03-06T03:00:00Z",
+    "end": "2026-03-11T23:30:00Z"
+  },
+  "expected_detections": [
+    "X08 规则 4 提币权限无 IP 绑定",
+    "X08 规则 7 Key 新 IP 调用",
+    "IC-10 IP 绑定、IC-11 批量撤销"
+  ],
+  "expected_response": [
+    "立即停用 Key，冻结该账户 API 提币",
+    "核对 Key 创建 / 权限变更来源是否为账户所有者",
+    "通知用户并要求重新绑定白名单"
+  ],
+  "positive_count": 2,
+  "positives": [
+    {
+      "id": "S2-01",
+      "scenario": "S2",
+      "name": "已有 Key 被加上提币权限，从新 IP 调用",
+      "window": {
+        "start": "2026-03-06T03:00:00Z",
+        "end": "2026-03-06T04:00:00Z"
+      },
+      "match": {
+        "key_id": [
+          "K0001"
+        ],
+        "account_id": [
+          "A00208"
+        ],
+        "ip": [
+          "198.51.100.21"
+        ],
+        "wd_id": [
+          "W000476",
+          "W000478"
+        ]
+      },
+      "summary": "Key 原为 read,trade，无 IP 白名单；3:05 从陌生设备加提币权限，3:09 和 3:10 从 198.51.100.21 两次 create_withdrawal，合计 12,900 USDT（已完成）。",
+      "evidence": {
+        "account_events": [
+          "AE000080",
+          "AE000081"
+        ],
+        "api_calls": [
+          "AC011409",
+          "AC011417",
+          "AC011420"
+        ],
+        "withdrawals": [
+          "W000476",
+          "W000478"
+        ]
+      }
+    },
+    {
+      "id": "S2-02",
+      "scenario": "S2",
+      "name": "新建带提币权限且无白名单的 Key，三个新 IP 轮换",
+      "window": {
+        "start": "2026-03-11T22:30:00Z",
+        "end": "2026-03-11T23:30:00Z"
+      },
+      "match": {
+        "key_id": [
+          "K9001"
+        ],
+        "account_id": [
+          "A01399"
+        ],
+        "ip": [
+          "198.51.100.45",
+          "198.51.100.46",
+          "198.51.100.47"
+        ],
+        "wd_id": [
+          "W001035"
+        ]
+      },
+      "summary": "登录后 11 分钟创建 Key（read,trade,withdraw，白名单为空），12 分钟内从 3 个 IP 调用，最后一次 create_withdrawal 3,100 USDT 被新地址延迟规则拒绝。",
+      "evidence": {
+        "logins": [
+          "L012212"
+        ],
+        "account_events": [
+          "AE000198"
+        ],
+        "api_calls": [
+          "AC024599",
+          "AC024600",
+          "AC024601",
+          "AC024602",
+          "AC024603",
+          "AC024604",
+          "AC024605",
+          "AC024606",
+          "AC024607"
+        ],
+        "withdrawals": [
+          "W001035"
+        ]
+      }
+    }
+  ]
+}

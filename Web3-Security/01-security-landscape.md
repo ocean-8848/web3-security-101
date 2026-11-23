@@ -244,7 +244,7 @@ flowchart TD
 | 第一至八篇 | 全景、合约代码、DeFi、非 EVM、链与基础设施、钱包与运营、AI、工程与复盘 | [README](README.md)、本章 | 所有读者 |
 | 链专题 | 以太坊、BNB Chain、TRON、Mantle 的差异和案例 | [C00](chains/C00-ethereum.md) | 部署或接入这些链的人 |
 | 评估篇 | 方法、定级、报告、尽调、复现、应急 | [A01](assessment/A01-methodology.md)–[A11](assessment/A11-blockchain-system-testing.md)，模板 [T01](templates/T01-intake-checklist.md)–[T07](templates/T07-staff-anti-social-engineering.md) | 要做评估并交付结论的人 |
-| Web3 安全训练营 | 从零基础走到能独立交付审计报告：主线 8 个阶段（整装待发、初窥门径、小试牛刀、渐入佳境、独当一面、庖丁解牛、追本溯源、登堂入室），链下赛道 L1 守好家门、L2 固若金汤；每个阶段有导读，列出要掌握的主题 | [B00 路线](bootcamp/B00-roadmap.md)–[B70 附录](bootcamp/B70-glossary-resources.md) | 准备做智能合约审计的人，包括没写过合约的新手 |
+| Web3 安全训练营 | 从零基础走到能独立交付审计报告：主线 8 个阶段（整装待发、初窥门径、小试牛刀、渐入佳境、独当一面、庖丁解牛、追本溯源、登堂入室），链下赛道 L1 守好家门、L2 固若金汤；每个阶段有导读，列出要掌握的主题 | [B00 路线](bootcamp/B00-roadmap.md)–[B78 附录](bootcamp/B78-glossary-resources.md) | 准备做智能合约审计的人，包括没写过合约的新手 |
 | 2026 专题 | 2026 年的签名路径与签名服务架构 | [29](29-signing-path-2026.md) | 负责签名系统、托管和钱包的人 |
 
 **读表要点：**

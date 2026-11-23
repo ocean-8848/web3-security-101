@@ -1,0 +1,111 @@
+{
+  "id": "S6",
+  "name": "签名服务异常：有签名请求缺少对应审批单；目标地址与审批单不一致",
+  "window": {
+    "start": "2026-03-06T16:20:00Z",
+    "end": "2026-03-12T02:20:00Z"
+  },
+  "expected_detections": [
+    "X05 跨域规则：链上转出 + 链下无审批单",
+    "X11 签名服务独立校验：审批单 / 地址 / 金额三者一致",
+    "X11 三方对账"
+  ],
+  "expected_response": [
+    "立即冻结签名服务并切到应急开关状态",
+    "核对热钱包水位与链上转出，必要时转移剩余资金",
+    "取证：调用方身份、请求来源、审批系统日志"
+  ],
+  "positive_count": 3,
+  "positives": [
+    {
+      "id": "S6-01",
+      "scenario": "S6",
+      "name": "热钱包签名请求没有审批单，链上已转出",
+      "window": {
+        "start": "2026-03-06T16:20:00Z",
+        "end": "2026-03-06T16:25:00Z"
+      },
+      "match": {
+        "request_id": [
+          "SR000538"
+        ],
+        "to_address": [
+          "0xd687f6ac55a05f0c8a6c01281aae5dc7dcf5d3c2"
+        ],
+        "tx_hash": [
+          "0xe4e30013e9b096cda21d72e9463e21074a94b442d26c2ff8dc40ae0f5d78318a"
+        ]
+      },
+      "summary": "hot-withdraw-svc 在 16:20 提交 13.186267 ETH（约 48,000 美元）到 0xd687f6ac...，approval_id 为空，签名服务照签并上链；链上这笔转出没有对应的提币申请（wd_id 为空）。",
+      "evidence": {
+        "signing_requests": [
+          "SR000538"
+        ],
+        "chain_txs": [
+          "0xe4e30013e9b096cda21d72e9463e21074a94b442d26c2ff8dc40ae0f5d78318a"
+        ]
+      }
+    },
+    {
+      "id": "S6-02",
+      "scenario": "S6",
+      "name": "审批单被借用：目标地址与金额都与审批单不一致",
+      "window": {
+        "start": "2026-03-09T21:05:00Z",
+        "end": "2026-03-09T21:10:00Z"
+      },
+      "match": {
+        "request_id": [
+          "SR000828"
+        ],
+        "to_address": [
+          "0xbf491b67d00f3b194114aba65ab6a7bc42d45892"
+        ],
+        "tx_hash": [
+          "0xf4be652139ea5f1d643109c7e3dd98584ad4a2a21826f77ea22d005a2171d41d"
+        ],
+        "approval_id": [
+          "AP-W000829"
+        ]
+      },
+      "summary": "签名请求引用一张 150 USDT 的正常提币审批单，但目标地址换成陌生地址、金额改成 60,000 USDT，签名服务照签并上链。",
+      "evidence": {
+        "signing_requests": [
+          "SR000828"
+        ],
+        "chain_txs": [
+          "0xf4be652139ea5f1d643109c7e3dd98584ad4a2a21826f77ea22d005a2171d41d"
+        ],
+        "withdrawals": [
+          "W000829"
+        ]
+      }
+    },
+    {
+      "id": "S6-03",
+      "scenario": "S6",
+      "name": "调拨审批的目标地址被换成陌生地址（金额一致）",
+      "window": {
+        "start": "2026-03-12T02:15:00Z",
+        "end": "2026-03-12T02:20:00Z"
+      },
+      "match": {
+        "request_id": [
+          "SR001044"
+        ],
+        "to_address": [
+          "0x8dc7d972648c15a7fff85370057eb878a8c0c976"
+        ],
+        "approval_id": [
+          "AP-T0048"
+        ]
+      },
+      "summary": "treasury-transfer 在凌晨 02:15 请求温钱包转 250,000 USDT；审批单 AP-T0048 批准的目标是热钱包，请求里的目标是陌生地址，金额与审批一致，因此只看“有无审批单”或“金额是否超限”都会漏掉。",
+      "evidence": {
+        "signing_requests": [
+          "SR001044"
+        ]
+      }
+    }
+  ]
+}

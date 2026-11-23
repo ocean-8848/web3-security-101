@@ -130,7 +130,7 @@ flowchart TB
 
 ## 5. 合法的练习与学习路径
 
-练习时用专门设计的靶场，不拿真实协议开刀。关卡地图见 [B10 CTF 练习](../bootcamp/B10-ctf-practice.md)（DeFi 关卡见 [B24](../bootcamp/B24-defi-ctf.md)）。审计竞赛的公开报告和官方事后报告也适合练习，资源见 [B70](../bootcamp/B70-glossary-resources.md)。本手册的[交互实验](../interactive/index.html)在浏览器内模拟，不涉及真实合约。练习规则见 [B04 第 1 节](../bootcamp/B04-setup.md)：只在靶场、本地环境或测试网练习；发现真实漏洞时，通过漏洞赏金或安全联系渠道报告，不自行利用。
+练习时用专门设计的靶场，不拿真实协议开刀。关卡地图见 [B10 CTF 练习](../bootcamp/B10-ctf-practice.md)（DeFi 关卡见 [B24](../bootcamp/B24-defi-ctf.md)）。审计竞赛的公开报告和官方事后报告也适合练习，资源见 [B78](../bootcamp/B78-glossary-resources.md)。本手册的[交互实验](../interactive/index.html)在浏览器内模拟，不涉及真实合约。练习规则见 [B04 第 1 节](../bootcamp/B04-setup.md)：只在靶场、本地环境或测试网练习；发现真实漏洞时，通过漏洞赏金或安全联系渠道报告，不自行利用。
 
 ---
 
