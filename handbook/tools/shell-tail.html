@@ -244,9 +244,25 @@ function showDoc(id) {
     <nav class="pager">${prev ? `<a href="#${prev}" data-nav="${prev}"><span class="k">← 上一篇</span><span class="t">${shortTitle(docs[prev].title)}</span></a>` : ''}
     ${next ? `<a class="next" href="#${next}" data-nav="${next}"><span class="k">下一篇 →</span><span class="t">${shortTitle(docs[next].title)}</span></a>` : ''}</nav>`;
   initChecks(id);
+  initDecks(view);
   enhanceCode(view);
   renderMermaid(view);
   buildToc();
+}
+// ---------- 章节顶部的幻灯讲解：标签页切换拟物化 / 3b1b，只加载选中的那套 ----------
+let deckWant = null;  // 从旧链接 #vNN / #dNN 跳来时指定的标签
+function initDecks(root) {
+  const box = root.querySelector('.deck-tabs'); if (!box) return;
+  const tabs = [...box.querySelectorAll('[role="tab"]')], frames = [...box.querySelectorAll('iframe')], hint = box.querySelector('.deck-hint');
+  const pick = k => {
+    tabs.forEach(b => b.setAttribute('aria-selected', String(b.dataset.deck === k)));
+    frames.forEach(f => { const on = f.dataset.deck === k; f.hidden = !on; if (on) { if (!f.getAttribute('src')) f.src = f.dataset.src; hint.textContent = f.dataset.hint; } });
+  };
+  let saved = null; try { saved = localStorage.getItem('deckStyle'); } catch (e) {}
+  const want = [deckWant, saved, 'skeuo'].find(k => k && tabs.some(b => b.dataset.deck === k)) || tabs[0].dataset.deck;
+  deckWant = null;
+  pick(want);
+  tabs.forEach(b => b.addEventListener('click', () => { pick(b.dataset.deck); try { localStorage.setItem('deckStyle', b.dataset.deck); } catch (e) {} }));
 }
 // ---------- 本页目录（悬浮） ----------
 const tocEl = document.getElementById('toc'), tocList = document.getElementById('tocList'), tocFab = document.getElementById('tocFab'), mainEl = document.getElementById('main');
@@ -361,6 +377,7 @@ function showLab(id) {
 function route() {
   viewer.close();
   let id = (location.hash || '#home').slice(1);
+  if (/^[vd]\d\d$/.test(id) && aliases[id]) deckWant = id[0] === 'v' ? 'skeuo' : '3b1b';
   if (aliases[id]) { id = aliases[id]; history.replaceState(null, '', '#' + id); }
   document.body.classList.remove('menu-open');
   if (docs[id]) showDoc(id);

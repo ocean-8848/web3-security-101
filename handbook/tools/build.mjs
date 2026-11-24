@@ -180,52 +180,24 @@ if (fs.existsSync(path.join(ROOT, 'tools/topics.json'))) {
     }
   }
 }
-// 拟物化知识讲解：media/decks/skeuo/chNN/ 由视频工程生成（media/video/skeuo/tools/make_deck.py），每章一个幻灯片页 vNN，按篇分组。
-NAV_PARTS.vis = '拟物化知识讲解';
+// 知识讲解幻灯：media/decks/skeuo/chNN/（拟物化）和 media/decks/3b1b/chNN.html（3b1b 风格）由视频工程生成
+// （media/video/{skeuo,3b1b}/tools/make_deck.py）。两套幻灯嵌在对应知识章节 sNN 的标题下方，用标签页切换，
+// 选中的那套才加载（shell-tail.html 的 initDecks）。旧的独立页 vNN / dNN 经 ALIASES 跳回章节并打开对应标签。
 {
-  const deckDir = path.join(MEDIA, 'decks/skeuo');
-  const have = fs.existsSync(deckDir) ? fs.readdirSync(deckDir).filter(d => /^ch\d\d$/.test(d)).map(d => d.slice(2)).sort() : [];
+  const skeuo = fs.existsSync(path.join(MEDIA, 'decks/skeuo')) ? fs.readdirSync(path.join(MEDIA, 'decks/skeuo')).filter(d => /^ch\d\d$/.test(d)).map(d => d.slice(2)) : [];
+  const b3 = fs.existsSync(path.join(MEDIA, 'decks/3b1b')) ? fs.readdirSync(path.join(MEDIA, 'decks/3b1b')).filter(f => /^ch\d\d\.html$/.test(f)).map(f => f.slice(2, 4)) : [];
   const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
-  for (const [key, name, spec] of NAV.filter(([k]) => /^p\d$/.test(k))) {
-    const nums = spec.filter(n => have.includes(n));
-    if (!nums.length) continue;
-    const items = [];
-    for (const n of nums) {
-      const sid = 's' + n, vid = 'v' + n, ch = docs[sid];
-      if (!ch) throw new Error('deck ch' + n + ' has no chapter ' + sid);
-      const t = ch.title.replace(/^\d\d[a-z]?\s+/, '');
-      docs[vid] = { id: vid, file: `decks/skeuo/ch${n}/index.html`, title: `V${n} ${t}`, group: 'v' + key.slice(1), html:
-        `<h1>V${n} ${esc(t)}</h1>\n<p>用等距拟物动画，一页一页讲完第 ${+n} 章。每页直接显示这一步的结论画面，点画面或按 → 翻页；想看推导过程，点「▶ 看过程」（P）。按 F 全屏，按 N 看讲稿。文字版见 <a href="#${sid}" data-nav="${sid}">${esc(ch.title)}</a>。</p>\n` +
-        `<div class="deck-embed"><iframe src="decks/skeuo/ch${n}/index.html" title="拟物化讲解：${esc(t)}" allow="fullscreen" allowfullscreen></iframe></div>` };
-      // 文字章节开头加入口
-      ch.html = ch.html.replace(/(<\/h1>)/, `$1\n<blockquote class="info"><p>🎞 本章有拟物化动画讲解：<a href="#${vid}" data-nav="${vid}">V${n} 一页一页看懂这一章 ▸</a></p>\n</blockquote>`);
-      items.push(vid);
-    }
-    nav.push({ key: 'v' + key.slice(1), name, part: 'vis', full: NAV_PARTS.vis + ' · ' + name, items });
-  }
-}
-// 3b1b 风格知识讲解：media/decks/3b1b/chNN.html 由视频工程生成（media/video/3b1b/tools/make_deck.py），每章一个单文件幻灯片页 dNN，按篇分组。
-NAV_PARTS.deck3 = '3b1b 风格知识讲解';
-{
-  const deckDir = path.join(MEDIA, 'decks/3b1b');
-  const have = fs.existsSync(deckDir) ? fs.readdirSync(deckDir).filter(f => /^ch\d\d\.html$/.test(f)).map(f => f.slice(2, 4)).sort() : [];
-  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
-  for (const [key, name, spec] of NAV.filter(([k]) => /^p\d$/.test(k))) {
-    const nums = spec.filter(n => have.includes(n));
-    if (!nums.length) continue;
-    const items = [];
-    for (const n of nums) {
-      const sid = 's' + n, did = 'd' + n, ch = docs[sid];
-      if (!ch) throw new Error('deck3b ch' + n + ' has no chapter ' + sid);
-      const t = ch.title.replace(/^\d\d[a-z]?\s+/, '');
-      docs[did] = { id: did, file: `decks/3b1b/ch${n}.html`, title: `D${n} ${t}`, group: 'd' + key.slice(1), html:
-        `<h1>D${n} ${esc(t)}</h1>\n<p>用 3b1b 风格的动画画面，一页一页讲完第 ${+n} 章：每页一个想法，配标题、要点和讲稿，最后 3 道自测题。点画面或按 → 翻页，按 N 看讲稿，按 Z 放大，按 F 全屏。文字版见 <a href="#${sid}" data-nav="${sid}">${esc(ch.title)}</a>。</p>\n` +
-        `<div class="deck-embed"><iframe src="decks/3b1b/ch${n}.html" title="3b1b 风格讲解：${esc(t)}" allow="fullscreen" allowfullscreen></iframe></div>` };
-      // 文字章节开头加入口（排在拟物化入口之后）
-      ch.html = ch.html.replace(/(<\/h1>)(\n<blockquote class="info"><p>🎞[^\n]*\n<\/blockquote>)?/, (m, h, prev) => `${h}${prev || ''}\n<blockquote class="info"><p>🎬 本章有 3b1b 风格知识讲解：<a href="#${did}" data-nav="${did}">D${n} 一页一页看懂这一章，含自测 ▸</a></p>\n</blockquote>`);
-      items.push(did);
-    }
-    nav.push({ key: 'd' + key.slice(1), name, part: 'deck3', full: NAV_PARTS.deck3 + ' · ' + name, items });
+  for (const n of [...new Set([...skeuo, ...b3])].sort()) {
+    const sid = 's' + n, ch = docs[sid];
+    if (!ch) throw new Error('deck ch' + n + ' has no chapter ' + sid);
+    const t = esc(ch.title.replace(/^\d\d[a-z]?\s+/, ''));
+    const tabs = [];
+    if (skeuo.includes(n)) { tabs.push(['skeuo', '拟物化讲解', `decks/skeuo/ch${n}/index.html`, '每页直接显示结论画面，点「▶ 看过程」（P）看推导；点画面或按 → 翻页，N 看讲稿，F 全屏。']); ALIASES['v' + n] = sid; }
+    if (b3.includes(n)) { tabs.push(['3b1b', '3b1b 风格讲解', `decks/3b1b/ch${n}.html`, '每页一个想法，配要点和讲稿，最后 3 道自测题；点画面或按 → 翻页，N 看讲稿，Z 放大，F 全屏。']); ALIASES['d' + n] = sid; }
+    const block = `\n<section class="deck-tabs" aria-label="本章幻灯讲解">` +
+      `<div class="deck-bar" role="tablist">${tabs.map(([k, label]) => `<button type="button" role="tab" data-deck="${k}" aria-selected="false">${label}</button>`).join('')}<span class="deck-hint"></span></div>` +
+      `<div class="deck-embed">${tabs.map(([k, label, src, hint]) => `<iframe data-deck="${k}" data-src="${src}" data-hint="${hint}" title="${label}：${t}" allow="fullscreen" allowfullscreen hidden></iframe>`).join('')}</div></section>`;
+    ch.html = ch.html.replace(/(<\/h1>)/, `$1${block}`);
   }
 }
 const DATA = { parts: NAV_PARTS,

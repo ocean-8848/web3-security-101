@@ -48,12 +48,14 @@ web3-security-101/
 
 `media/` 的结构：
 
-| 路径 | 内容 | 站内 ID |
-|---|---|---|
-| `decks/skeuo/` | 拟物化知识讲解（每章一个目录 `chNN/`），由 `video/skeuo/tools/make_deck.py` 生成 | `v01`–`v30` |
-| `decks/3b1b/` | 3b1b 风格知识讲解（每章一个文件 `chNN.html`），由 `video/3b1b/tools/make_deck.py` 生成 | `d01`–`d30` |
-| `video/` | 视频工程：拟物化（`skeuo/`）、3b1b 风格（`3b1b/`）、讲解页（`scripts/`、`slides/`）、渲染工具（`tools/`）；`index.html` 是选集播放器，由 `node media/video/tools/make-player.mjs` 生成 | — |
-| `video/CLAUDE.md`、`video/AGENTS.md` | HyperFrames 工程说明，各集共用这一份（`hyperframes init` 在新一集里生成的副本不进仓库） | — |
+两套幻灯嵌在对应知识章节 `sNN` 的标题下方，用标签页切换（默认拟物化，记住读者上次的选择）。旧链接 `#vNN`、`#dNN` 跳回章节并打开对应标签。
+
+| 路径 | 内容 |
+|---|---|
+| `decks/skeuo/` | 拟物化知识讲解（每章一个目录 `chNN/`），由 `video/skeuo/tools/make_deck.py` 生成 |
+| `decks/3b1b/` | 3b1b 风格知识讲解（每章一个文件 `chNN.html`），由 `video/3b1b/tools/make_deck.py` 生成 |
+| `video/` | 视频工程：拟物化（`skeuo/`）、3b1b 风格（`3b1b/`）、讲解页（`scripts/`、`slides/`）、渲染工具（`tools/`）；`index.html` 是选集播放器，由 `node media/video/tools/make-player.mjs` 生成 |
+| `video/CLAUDE.md`、`video/AGENTS.md` | HyperFrames 工程说明，各集共用这一份（`hyperframes init` 在新一集里生成的副本不进仓库） |
 
 `code/` 的结构：
 
