@@ -1,0 +1,2208 @@
+{
+ "id": "seg5a",
+ "title": "守住余数",
+ "pill": 5,
+ "total": 126.8,
+ "lines": [
+  {
+   "id": "seg5a-00",
+   "text": "怎么防？有四种做法。",
+   "spoken": "怎么防？有四种做法。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-00.mp3",
+   "start": 1.6,
+   "dur": 2.928,
+   "speechStart": 1.698,
+   "speechEnd": 3.695
+  },
+  {
+   "id": "seg5a-01",
+   "text": "第一，虚拟份额加偏移。OpenZeppelin 从 4.9 版起提供。",
+   "spoken": "第一，虚拟份额加偏移。OpenZeppelin 从 4.9 版起提供。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-01.mp3",
+   "start": 4.748,
+   "dur": 5.88,
+   "speechStart": 4.846,
+   "speechEnd": 9.784
+  },
+  {
+   "id": "seg5a-02",
+   "text": "计算份额时，总份额加上 10 的偏移次方，总资产加上 1。",
+   "spoken": "计算份额时，总份额加上 10 的偏移次方，总资产加上 1。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-02.mp3",
+   "start": 10.848,
+   "dur": 5.688,
+   "speechStart": 10.946,
+   "speechEnd": 15.684
+  },
+  {
+   "id": "seg5a-03",
+   "text": "攻击者想造成同样的损失，需要捐赠 10 的偏移次方倍的资金。",
+   "spoken": "攻击者想造成同样的损失，需要捐赠 10 的偏移次方倍的资金。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-03.mp3",
+   "start": 16.756,
+   "dur": 5.184,
+   "speechStart": 16.854,
+   "speechEnd": 21.092
+  },
+  {
+   "id": "seg5a-04",
+   "text": "第二，初始存款销毁。部署时先存入一笔，把份额发给死地址。",
+   "spoken": "第二，初始存款销毁。部署时先存入一笔，把份额发给死地址。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-04.mp3",
+   "start": 22.16,
+   "dur": 6.36,
+   "speechStart": 22.258,
+   "speechEnd": 27.696
+  },
+  {
+   "id": "seg5a-05",
+   "text": "这样金库永远不会是空的。",
+   "spoken": "这样金库永远不会是空的。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-05.mp3",
+   "start": 28.74,
+   "dur": 2.592,
+   "speechStart": 28.838,
+   "speechEnd": 30.492
+  },
+  {
+   "id": "seg5a-06",
+   "text": "Uniswap V2 也是这个思路：首次添加流动性时，永久锁定 1000 份 LP 代币。",
+   "spoken": "Uniswap V2 也是这个思路：首次添加流动性时，永久锁定 1000 份 LP 代币。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-06.mp3",
+   "start": 31.552,
+   "dur": 7.2,
+   "speechStart": 31.65,
+   "speechEnd": 37.911
+  },
+  {
+   "id": "seg5a-07",
+   "text": "第三，内部记账。用状态变量记录总资产，不读余额。",
+   "spoken": "第三，内部记账。用状态变量记录总资产，不读余额。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-07.mp3",
+   "start": 38.972,
+   "dur": 6.336,
+   "speechStart": 39.07,
+   "speechEnd": 44.46
+  },
+  {
+   "id": "seg5a-08",
+   "text": "捐赠多少，都无法改变份额价格。",
+   "spoken": "捐赠多少，都无法改变份额价格。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-08.mp3",
+   "start": 45.528,
+   "dur": 3.672,
+   "speechStart": 45.626,
+   "speechEnd": 48.364
+  },
+  {
+   "id": "seg5a-09",
+   "text": "第四，最小份额检查。份额是 0 就回滚，用户也可以设最少到账份额。",
+   "spoken": "第四，最小份额检查。份额是 0 就回滚，用户也可以设最少到账份额。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-09.mp3",
+   "start": 49.42,
+   "dur": 6.84,
+   "speechStart": 49.518,
+   "speechEnd": 55.42
+  },
+  {
+   "id": "seg5a-10",
+   "text": "这样受害者的交易会回滚，而不是换回 0 份额。",
+   "spoken": "这样受害者的交易会回滚，而不是换回 0 份额。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-10.mp3",
+   "start": 56.48,
+   "dur": 4.344,
+   "speechStart": 56.578,
+   "speechEnd": 59.994
+  },
+  {
+   "id": "seg5a-11",
+   "text": "修好了，怎么证明？要两个结果。",
+   "spoken": "修好了，怎么证明？要两个结果。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-11.mp3",
+   "start": 61.044,
+   "dur": 3.84,
+   "speechStart": 61.142,
+   "speechEnd": 64.032
+  },
+  {
+   "id": "seg5a-12",
+   "text": "漏洞版上，受害者损失资产。修复版上，攻击无利可图。",
+   "spoken": "漏洞版上，受害者损失资产。修复版上，攻击无利可图。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-12.mp3",
+   "start": 65.104,
+   "dur": 6.216,
+   "speechStart": 65.202,
+   "speechEnd": 70.473
+  },
+  {
+   "id": "seg5a-13",
+   "text": "最后一个案例，是另一种失误。",
+   "spoken": "最后一个案例，是另一种失误。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-13.mp3",
+   "start": 71.54,
+   "dur": 3.12,
+   "speechStart": 71.638,
+   "speechEnd": 73.816
+  },
+  {
+   "id": "seg5a-14",
+   "text": "2021 年 4 月，BNB Chain 上的 Uranium Finance，分叉自 Uniswap V2。",
+   "spoken": "2021 年 4 月，BNB Chain 上的 Uranium Finance，分岔自 Uniswap V2。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-14.mp3",
+   "start": 74.88,
+   "dur": 6.432,
+   "speechStart": 74.978,
+   "speechEnd": 80.478
+  },
+  {
+   "id": "seg5a-15",
+   "text": "按公开分析，开发者把手续费从百分之 0.3，改成了百分之 0.16。",
+   "spoken": "按公开分析，开发者把手续费从百分之 0.3，改成了百分之 0.16。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-15.mp3",
+   "start": 81.532,
+   "dur": 6.432,
+   "speechStart": 81.63,
+   "speechEnd": 87.13
+  },
+  {
+   "id": "seg5a-16",
+   "text": "余额检查左边的放大系数，从 1000 改成了 1 万。",
+   "spoken": "余额检查左边的放大系数，从 1000 改成了 1 万。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-16.mp3",
+   "start": 88.184,
+   "dur": 4.68,
+   "speechStart": 88.282,
+   "speechEnd": 92.044
+  },
+  {
+   "id": "seg5a-17",
+   "text": "右边那一处，仍是 1000 的平方，漏改了。",
+   "spoken": "右边那一处，仍是 1000 的平方，漏改了。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-17.mp3",
+   "start": 93.084,
+   "dur": 4.584,
+   "speechStart": 93.182,
+   "speechEnd": 96.848
+  },
+  {
+   "id": "seg5a-18",
+   "text": "左边被放大了 100 倍，右边没有。",
+   "spoken": "左边被放大了 100 倍，右边没有。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-18.mp3",
+   "start": 97.888,
+   "dur": 3.456,
+   "speechStart": 97.986,
+   "speechEnd": 100.521
+  },
+  {
+   "id": "seg5a-19",
+   "text": "不变量 x 乘 y 不小于 k，退化成了不小于 k 的百分之一。",
+   "spoken": "不变量 x 乘 y 不小于 k，退化成了不小于 k 的百分之一。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-19.mp3",
+   "start": 101.564,
+   "dur": 5.088,
+   "speechStart": 101.662,
+   "speechEnd": 105.816
+  },
+  {
+   "id": "seg5a-20",
+   "text": "攻击者只投入极少量代币，就换出了池子约百分之 99 的储备。",
+   "spoken": "攻击者只投入极少量代币，就换出了池子约百分之 99 的储备。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-20.mp3",
+   "start": 106.872,
+   "dur": 5.448,
+   "speechStart": 106.97,
+   "speechEnd": 111.47
+  },
+  {
+   "id": "seg5a-21",
+   "text": "按公开报道，损失约 5000 万美元。",
+   "spoken": "按公开报道，损失约 5000 万美元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-21.mp3",
+   "start": 112.54,
+   "dur": 3.84,
+   "speechStart": 112.638,
+   "speechEnd": 115.53
+  },
+  {
+   "id": "seg5a-22",
+   "text": "教训是：修改过的分叉代码，等于新代码。",
+   "spoken": "教训是：修改过的分岔代码，等于新代码。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-22.mp3",
+   "start": 116.6,
+   "dur": 4.488,
+   "speechStart": 116.698,
+   "speechEnd": 120.257
+  },
+  {
+   "id": "seg5a-23",
+   "text": "改过的常数，每一个使用位置，都要同步。",
+   "spoken": "改过的常数，每一个使用位置，都要同步。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep06/audio/lines/seg5a-23.mp3",
+   "start": 121.308,
+   "dur": 4.296,
+   "speechStart": 121.406,
+   "speechEnd": 124.763
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "怎么",
+   "start": 1.698,
+   "end": 1.912
+  },
+  {
+   "line": 0,
+   "text": "防",
+   "start": 1.912,
+   "end": 2.221
+  },
+  {
+   "line": 0,
+   "text": "有",
+   "start": 2.743,
+   "end": 2.91
+  },
+  {
+   "line": 0,
+   "text": "四",
+   "start": 2.921,
+   "end": 3.136
+  },
+  {
+   "line": 0,
+   "text": "种",
+   "start": 3.136,
+   "end": 3.267
+  },
+  {
+   "line": 0,
+   "text": "做法",
+   "start": 3.279,
+   "end": 3.695
+  },
+  {
+   "line": 1,
+   "text": "第一",
+   "start": 4.846,
+   "end": 5.215
+  },
+  {
+   "line": 1,
+   "text": "虚拟",
+   "start": 5.596,
+   "end": 5.977
+  },
+  {
+   "line": 1,
+   "text": "份额",
+   "start": 5.988,
+   "end": 6.262
+  },
+  {
+   "line": 1,
+   "text": "加",
+   "start": 6.286,
+   "end": 6.429
+  },
+  {
+   "line": 1,
+   "text": "偏移",
+   "start": 6.441,
+   "end": 6.893
+  },
+  {
+   "line": 1,
+   "text": "OpenZeppelin",
+   "start": 7.438,
+   "end": 8.296
+  },
+  {
+   "line": 1,
+   "text": "从",
+   "start": 8.391,
+   "end": 8.677
+  },
+  {
+   "line": 1,
+   "text": "4.9",
+   "start": 8.688,
+   "end": 9.153
+  },
+  {
+   "line": 1,
+   "text": "版",
+   "start": 9.153,
+   "end": 9.308
+  },
+  {
+   "line": 1,
+   "text": "起",
+   "start": 9.308,
+   "end": 9.415
+  },
+  {
+   "line": 1,
+   "text": "提供",
+   "start": 9.427,
+   "end": 9.784
+  },
+  {
+   "line": 2,
+   "text": "计算",
+   "start": 10.946,
+   "end": 11.267
+  },
+  {
+   "line": 2,
+   "text": "份额",
+   "start": 11.279,
+   "end": 11.529
+  },
+  {
+   "line": 2,
+   "text": "时",
+   "start": 11.529,
+   "end": 11.922
+  },
+  {
+   "line": 2,
+   "text": "总份额",
+   "start": 12.184,
+   "end": 12.767
+  },
+  {
+   "line": 2,
+   "text": "加上",
+   "start": 12.791,
+   "end": 13.112
+  },
+  {
+   "line": 2,
+   "text": "10",
+   "start": 13.136,
+   "end": 13.338
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 13.338,
+   "end": 13.469
+  },
+  {
+   "line": 2,
+   "text": "偏移",
+   "start": 13.493,
+   "end": 13.755
+  },
+  {
+   "line": 2,
+   "text": "次方",
+   "start": 13.767,
+   "end": 14.231
+  },
+  {
+   "line": 2,
+   "text": "总",
+   "start": 14.493,
+   "end": 14.743
+  },
+  {
+   "line": 2,
+   "text": "资产",
+   "start": 14.743,
+   "end": 15.148
+  },
+  {
+   "line": 2,
+   "text": "加上",
+   "start": 15.172,
+   "end": 15.446
+  },
+  {
+   "line": 2,
+   "text": "1",
+   "start": 15.458,
+   "end": 15.684
+  },
+  {
+   "line": 3,
+   "text": "攻击",
+   "start": 16.854,
+   "end": 17.199
+  },
+  {
+   "line": 3,
+   "text": "者",
+   "start": 17.199,
+   "end": 17.377
+  },
+  {
+   "line": 3,
+   "text": "想",
+   "start": 17.401,
+   "end": 17.544
+  },
+  {
+   "line": 3,
+   "text": "造成",
+   "start": 17.556,
+   "end": 17.806
+  },
+  {
+   "line": 3,
+   "text": "同样",
+   "start": 17.83,
+   "end": 18.104
+  },
+  {
+   "line": 3,
+   "text": "的",
+   "start": 18.104,
+   "end": 18.163
+  },
+  {
+   "line": 3,
+   "text": "损失",
+   "start": 18.175,
+   "end": 18.723
+  },
+  {
+   "line": 3,
+   "text": "需要",
+   "start": 18.949,
+   "end": 19.27
+  },
+  {
+   "line": 3,
+   "text": "捐赠",
+   "start": 19.282,
+   "end": 19.627
+  },
+  {
+   "line": 3,
+   "text": "10",
+   "start": 19.651,
+   "end": 19.794
+  },
+  {
+   "line": 3,
+   "text": "的",
+   "start": 19.794,
+   "end": 19.937
+  },
+  {
+   "line": 3,
+   "text": "偏",
+   "start": 19.961,
+   "end": 20.151
+  },
+  {
+   "line": 3,
+   "text": "移次",
+   "start": 20.151,
+   "end": 20.33
+  },
+  {
+   "line": 3,
+   "text": "方倍",
+   "start": 20.342,
+   "end": 20.592
+  },
+  {
+   "line": 3,
+   "text": "的",
+   "start": 20.592,
+   "end": 20.663
+  },
+  {
+   "line": 3,
+   "text": "资金",
+   "start": 20.675,
+   "end": 21.092
+  },
+  {
+   "line": 4,
+   "text": "第",
+   "start": 22.258,
+   "end": 22.412
+  },
+  {
+   "line": 4,
+   "text": "二",
+   "start": 22.412,
+   "end": 22.698
+  },
+  {
+   "line": 4,
+   "text": "初始",
+   "start": 22.936,
+   "end": 23.258
+  },
+  {
+   "line": 4,
+   "text": "存款",
+   "start": 23.27,
+   "end": 23.579
+  },
+  {
+   "line": 4,
+   "text": "销毁",
+   "start": 23.591,
+   "end": 24.031
+  },
+  {
+   "line": 4,
+   "text": "部署",
+   "start": 24.577,
+   "end": 24.91
+  },
+  {
+   "line": 4,
+   "text": "时",
+   "start": 24.91,
+   "end": 25.208
+  },
+  {
+   "line": 4,
+   "text": "先",
+   "start": 25.231,
+   "end": 25.434
+  },
+  {
+   "line": 4,
+   "text": "存入",
+   "start": 25.446,
+   "end": 25.743
+  },
+  {
+   "line": 4,
+   "text": "一",
+   "start": 25.755,
+   "end": 25.874
+  },
+  {
+   "line": 4,
+   "text": "笔",
+   "start": 25.874,
+   "end": 26.089
+  },
+  {
+   "line": 4,
+   "text": "把",
+   "start": 26.35,
+   "end": 26.481
+  },
+  {
+   "line": 4,
+   "text": "份额",
+   "start": 26.493,
+   "end": 26.815
+  },
+  {
+   "line": 4,
+   "text": "发给",
+   "start": 26.839,
+   "end": 27.065
+  },
+  {
+   "line": 4,
+   "text": "死",
+   "start": 27.077,
+   "end": 27.291
+  },
+  {
+   "line": 4,
+   "text": "地址",
+   "start": 27.291,
+   "end": 27.696
+  },
+  {
+   "line": 5,
+   "text": "这样",
+   "start": 28.838,
+   "end": 29.135
+  },
+  {
+   "line": 5,
+   "text": "金库",
+   "start": 29.147,
+   "end": 29.469
+  },
+  {
+   "line": 5,
+   "text": "永远",
+   "start": 29.492,
+   "end": 29.766
+  },
+  {
+   "line": 5,
+   "text": "不会",
+   "start": 29.778,
+   "end": 29.98
+  },
+  {
+   "line": 5,
+   "text": "是",
+   "start": 29.98,
+   "end": 30.064
+  },
+  {
+   "line": 5,
+   "text": "空",
+   "start": 30.076,
+   "end": 30.29
+  },
+  {
+   "line": 5,
+   "text": "的",
+   "start": 30.29,
+   "end": 30.492
+  },
+  {
+   "line": 6,
+   "text": "Uniswap",
+   "start": 31.65,
+   "end": 32.328
+  },
+  {
+   "line": 6,
+   "text": "V",
+   "start": 32.34,
+   "end": 32.566
+  },
+  {
+   "line": 6,
+   "text": "2",
+   "start": 32.566,
+   "end": 32.876
+  },
+  {
+   "line": 6,
+   "text": "也",
+   "start": 32.959,
+   "end": 33.102
+  },
+  {
+   "line": 6,
+   "text": "是",
+   "start": 33.102,
+   "end": 33.197
+  },
+  {
+   "line": 6,
+   "text": "这个",
+   "start": 33.209,
+   "end": 33.364
+  },
+  {
+   "line": 6,
+   "text": "思路",
+   "start": 33.376,
+   "end": 33.733
+  },
+  {
+   "line": 6,
+   "text": "首次",
+   "start": 34.078,
+   "end": 34.483
+  },
+  {
+   "line": 6,
+   "text": "添加",
+   "start": 34.495,
+   "end": 34.781
+  },
+  {
+   "line": 6,
+   "text": "流动性",
+   "start": 34.804,
+   "end": 35.257
+  },
+  {
+   "line": 6,
+   "text": "时",
+   "start": 35.257,
+   "end": 35.59
+  },
+  {
+   "line": 6,
+   "text": "永久",
+   "start": 35.804,
+   "end": 36.161
+  },
+  {
+   "line": 6,
+   "text": "锁定",
+   "start": 36.173,
+   "end": 36.495
+  },
+  {
+   "line": 6,
+   "text": "1000 份",
+   "start": 36.519,
+   "end": 37.138
+  },
+  {
+   "line": 6,
+   "text": "LP",
+   "start": 37.221,
+   "end": 37.578
+  },
+  {
+   "line": 6,
+   "text": "代币",
+   "start": 37.59,
+   "end": 37.911
+  },
+  {
+   "line": 7,
+   "text": "第三",
+   "start": 39.07,
+   "end": 39.534
+  },
+  {
+   "line": 7,
+   "text": "内部",
+   "start": 39.903,
+   "end": 40.177
+  },
+  {
+   "line": 7,
+   "text": "记账",
+   "start": 40.189,
+   "end": 40.582
+  },
+  {
+   "line": 7,
+   "text": "用",
+   "start": 41.127,
+   "end": 41.424
+  },
+  {
+   "line": 7,
+   "text": "状态",
+   "start": 41.448,
+   "end": 41.793
+  },
+  {
+   "line": 7,
+   "text": "变量",
+   "start": 41.805,
+   "end": 42.246
+  },
+  {
+   "line": 7,
+   "text": "记录",
+   "start": 42.341,
+   "end": 42.722
+  },
+  {
+   "line": 7,
+   "text": "总",
+   "start": 42.734,
+   "end": 42.936
+  },
+  {
+   "line": 7,
+   "text": "资产",
+   "start": 42.936,
+   "end": 43.401
+  },
+  {
+   "line": 7,
+   "text": "不",
+   "start": 43.662,
+   "end": 43.853
+  },
+  {
+   "line": 7,
+   "text": "读",
+   "start": 43.853,
+   "end": 43.984
+  },
+  {
+   "line": 7,
+   "text": "余额",
+   "start": 43.996,
+   "end": 44.46
+  },
+  {
+   "line": 8,
+   "text": "捐赠",
+   "start": 45.626,
+   "end": 46.09
+  },
+  {
+   "line": 8,
+   "text": "多少",
+   "start": 46.102,
+   "end": 46.578
+  },
+  {
+   "line": 8,
+   "text": "都",
+   "start": 46.78,
+   "end": 46.899
+  },
+  {
+   "line": 8,
+   "text": "无法",
+   "start": 46.911,
+   "end": 47.185
+  },
+  {
+   "line": 8,
+   "text": "改变",
+   "start": 47.197,
+   "end": 47.554
+  },
+  {
+   "line": 8,
+   "text": "份额",
+   "start": 47.578,
+   "end": 47.899
+  },
+  {
+   "line": 8,
+   "text": "价格",
+   "start": 47.911,
+   "end": 48.364
+  },
+  {
+   "line": 9,
+   "text": "第",
+   "start": 49.518,
+   "end": 49.672
+  },
+  {
+   "line": 9,
+   "text": "四",
+   "start": 49.672,
+   "end": 49.922
+  },
+  {
+   "line": 9,
+   "text": "最小",
+   "start": 50.256,
+   "end": 50.625
+  },
+  {
+   "line": 9,
+   "text": "份额",
+   "start": 50.637,
+   "end": 50.922
+  },
+  {
+   "line": 9,
+   "text": "检查",
+   "start": 50.934,
+   "end": 51.422
+  },
+  {
+   "line": 9,
+   "text": "份额",
+   "start": 51.968,
+   "end": 52.36
+  },
+  {
+   "line": 9,
+   "text": "是",
+   "start": 52.372,
+   "end": 52.539
+  },
+  {
+   "line": 9,
+   "text": "0",
+   "start": 52.539,
+   "end": 52.67
+  },
+  {
+   "line": 9,
+   "text": "就",
+   "start": 52.682,
+   "end": 52.801
+  },
+  {
+   "line": 9,
+   "text": "回滚",
+   "start": 52.801,
+   "end": 53.277
+  },
+  {
+   "line": 9,
+   "text": "用户",
+   "start": 53.634,
+   "end": 53.98
+  },
+  {
+   "line": 9,
+   "text": "也",
+   "start": 53.991,
+   "end": 54.099
+  },
+  {
+   "line": 9,
+   "text": "可以",
+   "start": 54.11,
+   "end": 54.277
+  },
+  {
+   "line": 9,
+   "text": "设",
+   "start": 54.289,
+   "end": 54.444
+  },
+  {
+   "line": 9,
+   "text": "最少",
+   "start": 54.468,
+   "end": 54.753
+  },
+  {
+   "line": 9,
+   "text": "到账",
+   "start": 54.765,
+   "end": 55.027
+  },
+  {
+   "line": 9,
+   "text": "份额",
+   "start": 55.027,
+   "end": 55.42
+  },
+  {
+   "line": 10,
+   "text": "这样",
+   "start": 56.578,
+   "end": 56.863
+  },
+  {
+   "line": 10,
+   "text": "受害者",
+   "start": 56.887,
+   "end": 57.292
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 57.292,
+   "end": 57.363
+  },
+  {
+   "line": 10,
+   "text": "交易会",
+   "start": 57.375,
+   "end": 57.744
+  },
+  {
+   "line": 10,
+   "text": "回滚",
+   "start": 57.756,
+   "end": 58.244
+  },
+  {
+   "line": 10,
+   "text": "而",
+   "start": 58.625,
+   "end": 58.78
+  },
+  {
+   "line": 10,
+   "text": "不是",
+   "start": 58.792,
+   "end": 59.006
+  },
+  {
+   "line": 10,
+   "text": "换回",
+   "start": 59.03,
+   "end": 59.351
+  },
+  {
+   "line": 10,
+   "text": "0 份",
+   "start": 59.375,
+   "end": 59.744
+  },
+  {
+   "line": 10,
+   "text": "额",
+   "start": 59.744,
+   "end": 59.994
+  },
+  {
+   "line": 11,
+   "text": "修好",
+   "start": 61.142,
+   "end": 61.534
+  },
+  {
+   "line": 11,
+   "text": "了",
+   "start": 61.534,
+   "end": 61.749
+  },
+  {
+   "line": 11,
+   "text": "怎么",
+   "start": 62.046,
+   "end": 62.225
+  },
+  {
+   "line": 11,
+   "text": "证明",
+   "start": 62.237,
+   "end": 62.618
+  },
+  {
+   "line": 11,
+   "text": "要",
+   "start": 63.151,
+   "end": 63.318
+  },
+  {
+   "line": 11,
+   "text": "两",
+   "start": 63.33,
+   "end": 63.508
+  },
+  {
+   "line": 11,
+   "text": "个",
+   "start": 63.508,
+   "end": 63.592
+  },
+  {
+   "line": 11,
+   "text": "结果",
+   "start": 63.604,
+   "end": 64.032
+  },
+  {
+   "line": 12,
+   "text": "漏洞",
+   "start": 65.202,
+   "end": 65.523
+  },
+  {
+   "line": 12,
+   "text": "版",
+   "start": 65.523,
+   "end": 65.69
+  },
+  {
+   "line": 12,
+   "text": "上",
+   "start": 65.69,
+   "end": 66.011
+  },
+  {
+   "line": 12,
+   "text": "受害者",
+   "start": 66.285,
+   "end": 66.928
+  },
+  {
+   "line": 12,
+   "text": "损失",
+   "start": 66.952,
+   "end": 67.321
+  },
+  {
+   "line": 12,
+   "text": "资产",
+   "start": 67.333,
+   "end": 67.737
+  },
+  {
+   "line": 12,
+   "text": "修复",
+   "start": 68.283,
+   "end": 68.664
+  },
+  {
+   "line": 12,
+   "text": "版",
+   "start": 68.664,
+   "end": 68.83
+  },
+  {
+   "line": 12,
+   "text": "上",
+   "start": 68.83,
+   "end": 69.116
+  },
+  {
+   "line": 12,
+   "text": "攻击",
+   "start": 69.306,
+   "end": 69.687
+  },
+  {
+   "line": 12,
+   "text": "无利可图",
+   "start": 69.711,
+   "end": 70.473
+  },
+  {
+   "line": 13,
+   "text": "最后",
+   "start": 71.638,
+   "end": 71.983
+  },
+  {
+   "line": 13,
+   "text": "一个",
+   "start": 71.995,
+   "end": 72.138
+  },
+  {
+   "line": 13,
+   "text": "案例",
+   "start": 72.15,
+   "end": 72.59
+  },
+  {
+   "line": 13,
+   "text": "是",
+   "start": 72.852,
+   "end": 73.054
+  },
+  {
+   "line": 13,
+   "text": "另",
+   "start": 73.066,
+   "end": 73.197
+  },
+  {
+   "line": 13,
+   "text": "一种",
+   "start": 73.197,
+   "end": 73.411
+  },
+  {
+   "line": 13,
+   "text": "失误",
+   "start": 73.423,
+   "end": 73.816
+  },
+  {
+   "line": 14,
+   "text": "2021",
+   "start": 74.978,
+   "end": 75.442
+  },
+  {
+   "line": 14,
+   "text": "年",
+   "start": 75.442,
+   "end": 75.597
+  },
+  {
+   "line": 14,
+   "text": "4 月",
+   "start": 75.609,
+   "end": 76.061
+  },
+  {
+   "line": 14,
+   "text": "BNB",
+   "start": 76.299,
+   "end": 76.632
+  },
+  {
+   "line": 14,
+   "text": "Chain",
+   "start": 76.644,
+   "end": 76.942
+  },
+  {
+   "line": 14,
+   "text": "上",
+   "start": 76.942,
+   "end": 77.132
+  },
+  {
+   "line": 14,
+   "text": "的",
+   "start": 77.132,
+   "end": 77.347
+  },
+  {
+   "line": 14,
+   "text": "Uranium",
+   "start": 77.442,
+   "end": 77.93
+  },
+  {
+   "line": 14,
+   "text": "Finance",
+   "start": 77.942,
+   "end": 78.537
+  },
+  {
+   "line": 14,
+   "text": "分叉",
+   "start": 78.799,
+   "end": 79.132
+  },
+  {
+   "line": 14,
+   "text": "自",
+   "start": 79.132,
+   "end": 79.335
+  },
+  {
+   "line": 14,
+   "text": "Uniswap",
+   "start": 79.359,
+   "end": 80.025
+  },
+  {
+   "line": 14,
+   "text": "V",
+   "start": 80.037,
+   "end": 80.228
+  },
+  {
+   "line": 14,
+   "text": "2",
+   "start": 80.228,
+   "end": 80.478
+  },
+  {
+   "line": 15,
+   "text": "按",
+   "start": 81.63,
+   "end": 81.844
+  },
+  {
+   "line": 15,
+   "text": "公开",
+   "start": 81.868,
+   "end": 82.118
+  },
+  {
+   "line": 15,
+   "text": "分析",
+   "start": 82.13,
+   "end": 82.606
+  },
+  {
+   "line": 15,
+   "text": "开发者",
+   "start": 83.07,
+   "end": 83.618
+  },
+  {
+   "line": 15,
+   "text": "把",
+   "start": 83.618,
+   "end": 83.713
+  },
+  {
+   "line": 15,
+   "text": "手续费",
+   "start": 83.725,
+   "end": 84.308
+  },
+  {
+   "line": 15,
+   "text": "从",
+   "start": 84.332,
+   "end": 84.534
+  },
+  {
+   "line": 15,
+   "text": "百分之",
+   "start": 84.546,
+   "end": 84.903
+  },
+  {
+   "line": 15,
+   "text": "0.3",
+   "start": 84.903,
+   "end": 85.475
+  },
+  {
+   "line": 15,
+   "text": "改成",
+   "start": 85.725,
+   "end": 86.011
+  },
+  {
+   "line": 15,
+   "text": "了",
+   "start": 86.011,
+   "end": 86.094
+  },
+  {
+   "line": 15,
+   "text": "百分之",
+   "start": 86.118,
+   "end": 86.511
+  },
+  {
+   "line": 15,
+   "text": "0.16",
+   "start": 86.522,
+   "end": 87.13
+  },
+  {
+   "line": 16,
+   "text": "余额",
+   "start": 88.282,
+   "end": 88.603
+  },
+  {
+   "line": 16,
+   "text": "检查",
+   "start": 88.615,
+   "end": 89.008
+  },
+  {
+   "line": 16,
+   "text": "左边",
+   "start": 89.032,
+   "end": 89.365
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 89.365,
+   "end": 89.448
+  },
+  {
+   "line": 16,
+   "text": "放大",
+   "start": 89.472,
+   "end": 89.758
+  },
+  {
+   "line": 16,
+   "text": "系数",
+   "start": 89.77,
+   "end": 90.246
+  },
+  {
+   "line": 16,
+   "text": "从",
+   "start": 90.52,
+   "end": 90.734
+  },
+  {
+   "line": 16,
+   "text": "1000",
+   "start": 90.746,
+   "end": 91.246
+  },
+  {
+   "line": 16,
+   "text": "改成",
+   "start": 91.27,
+   "end": 91.567
+  },
+  {
+   "line": 16,
+   "text": "了",
+   "start": 91.567,
+   "end": 91.639
+  },
+  {
+   "line": 16,
+   "text": "1 万",
+   "start": 91.651,
+   "end": 92.044
+  },
+  {
+   "line": 17,
+   "text": "右边",
+   "start": 93.182,
+   "end": 93.586
+  },
+  {
+   "line": 17,
+   "text": "那",
+   "start": 93.598,
+   "end": 93.705
+  },
+  {
+   "line": 17,
+   "text": "一",
+   "start": 93.705,
+   "end": 93.824
+  },
+  {
+   "line": 17,
+   "text": "处",
+   "start": 93.824,
+   "end": 94.182
+  },
+  {
+   "line": 17,
+   "text": "仍是",
+   "start": 94.42,
+   "end": 94.836
+  },
+  {
+   "line": 17,
+   "text": "1000 的平方",
+   "start": 94.86,
+   "end": 95.801
+  },
+  {
+   "line": 17,
+   "text": "漏改",
+   "start": 96.134,
+   "end": 96.634
+  },
+  {
+   "line": 17,
+   "text": "了",
+   "start": 96.634,
+   "end": 96.848
+  },
+  {
+   "line": 18,
+   "text": "左边",
+   "start": 97.986,
+   "end": 98.414
+  },
+  {
+   "line": 18,
+   "text": "被",
+   "start": 98.438,
+   "end": 98.521
+  },
+  {
+   "line": 18,
+   "text": "放大",
+   "start": 98.533,
+   "end": 98.819
+  },
+  {
+   "line": 18,
+   "text": "了",
+   "start": 98.819,
+   "end": 98.878
+  },
+  {
+   "line": 18,
+   "text": "100 倍",
+   "start": 98.902,
+   "end": 99.438
+  },
+  {
+   "line": 18,
+   "text": "右边",
+   "start": 99.783,
+   "end": 100.176
+  },
+  {
+   "line": 18,
+   "text": "没有",
+   "start": 100.176,
+   "end": 100.521
+  },
+  {
+   "line": 19,
+   "text": "不",
+   "start": 101.662,
+   "end": 101.804
+  },
+  {
+   "line": 19,
+   "text": "变量",
+   "start": 101.816,
+   "end": 102.162
+  },
+  {
+   "line": 19,
+   "text": "x",
+   "start": 102.162,
+   "end": 102.59
+  },
+  {
+   "line": 19,
+   "text": "乘",
+   "start": 102.685,
+   "end": 102.947
+  },
+  {
+   "line": 19,
+   "text": "y",
+   "start": 102.947,
+   "end": 103.174
+  },
+  {
+   "line": 19,
+   "text": "不",
+   "start": 103.197,
+   "end": 103.316
+  },
+  {
+   "line": 19,
+   "text": "小于",
+   "start": 103.316,
+   "end": 103.531
+  },
+  {
+   "line": 19,
+   "text": "k",
+   "start": 103.543,
+   "end": 103.84
+  },
+  {
+   "line": 19,
+   "text": "退化",
+   "start": 104.15,
+   "end": 104.412
+  },
+  {
+   "line": 19,
+   "text": "成",
+   "start": 104.424,
+   "end": 104.554
+  },
+  {
+   "line": 19,
+   "text": "了",
+   "start": 104.554,
+   "end": 104.626
+  },
+  {
+   "line": 19,
+   "text": "不",
+   "start": 104.65,
+   "end": 104.757
+  },
+  {
+   "line": 19,
+   "text": "小于",
+   "start": 104.757,
+   "end": 105.007
+  },
+  {
+   "line": 19,
+   "text": "k",
+   "start": 105.019,
+   "end": 105.197
+  },
+  {
+   "line": 19,
+   "text": "的",
+   "start": 105.197,
+   "end": 105.257
+  },
+  {
+   "line": 19,
+   "text": "百分之一",
+   "start": 105.281,
+   "end": 105.816
+  },
+  {
+   "line": 20,
+   "text": "攻击者",
+   "start": 106.97,
+   "end": 107.565
+  },
+  {
+   "line": 20,
+   "text": "只",
+   "start": 107.589,
+   "end": 107.72
+  },
+  {
+   "line": 20,
+   "text": "投入",
+   "start": 107.72,
+   "end": 107.982
+  },
+  {
+   "line": 20,
+   "text": "极",
+   "start": 108.005,
+   "end": 108.16
+  },
+  {
+   "line": 20,
+   "text": "少量",
+   "start": 108.16,
+   "end": 108.422
+  },
+  {
+   "line": 20,
+   "text": "代币",
+   "start": 108.434,
+   "end": 108.851
+  },
+  {
+   "line": 20,
+   "text": "就",
+   "start": 109.053,
+   "end": 109.196
+  },
+  {
+   "line": 20,
+   "text": "换出",
+   "start": 109.196,
+   "end": 109.505
+  },
+  {
+   "line": 20,
+   "text": "了",
+   "start": 109.505,
+   "end": 109.589
+  },
+  {
+   "line": 20,
+   "text": "池子",
+   "start": 109.601,
+   "end": 110.053
+  },
+  {
+   "line": 20,
+   "text": "约",
+   "start": 110.077,
+   "end": 110.208
+  },
+  {
+   "line": 20,
+   "text": "百分之",
+   "start": 110.22,
+   "end": 110.624
+  },
+  {
+   "line": 20,
+   "text": "99",
+   "start": 110.636,
+   "end": 111.041
+  },
+  {
+   "line": 20,
+   "text": "的",
+   "start": 111.041,
+   "end": 111.112
+  },
+  {
+   "line": 20,
+   "text": "储备",
+   "start": 111.124,
+   "end": 111.47
+  },
+  {
+   "line": 21,
+   "text": "按",
+   "start": 112.638,
+   "end": 112.864
+  },
+  {
+   "line": 21,
+   "text": "公开",
+   "start": 112.888,
+   "end": 113.173
+  },
+  {
+   "line": 21,
+   "text": "报道",
+   "start": 113.185,
+   "end": 113.566
+  },
+  {
+   "line": 21,
+   "text": "损失",
+   "start": 113.828,
+   "end": 114.399
+  },
+  {
+   "line": 21,
+   "text": "约",
+   "start": 114.423,
+   "end": 114.614
+  },
+  {
+   "line": 21,
+   "text": "5000 万",
+   "start": 114.626,
+   "end": 115.126
+  },
+  {
+   "line": 21,
+   "text": "美元",
+   "start": 115.138,
+   "end": 115.53
+  },
+  {
+   "line": 22,
+   "text": "教训",
+   "start": 116.698,
+   "end": 117.043
+  },
+  {
+   "line": 22,
+   "text": "是",
+   "start": 117.043,
+   "end": 117.4
+  },
+  {
+   "line": 22,
+   "text": "修改",
+   "start": 117.662,
+   "end": 118.079
+  },
+  {
+   "line": 22,
+   "text": "过",
+   "start": 118.079,
+   "end": 118.198
+  },
+  {
+   "line": 22,
+   "text": "的",
+   "start": 118.198,
+   "end": 118.34
+  },
+  {
+   "line": 22,
+   "text": "分叉",
+   "start": 118.364,
+   "end": 118.698
+  },
+  {
+   "line": 22,
+   "text": "代码",
+   "start": 118.71,
+   "end": 119.162
+  },
+  {
+   "line": 22,
+   "text": "等于",
+   "start": 119.352,
+   "end": 119.602
+  },
+  {
+   "line": 22,
+   "text": "新",
+   "start": 119.626,
+   "end": 119.876
+  },
+  {
+   "line": 22,
+   "text": "代码",
+   "start": 119.876,
+   "end": 120.257
+  },
+  {
+   "line": 23,
+   "text": "改过",
+   "start": 121.406,
+   "end": 121.715
+  },
+  {
+   "line": 23,
+   "text": "的",
+   "start": 121.715,
+   "end": 121.787
+  },
+  {
+   "line": 23,
+   "text": "常数",
+   "start": 121.798,
+   "end": 122.322
+  },
+  {
+   "line": 23,
+   "text": "每",
+   "start": 122.703,
+   "end": 122.906
+  },
+  {
+   "line": 23,
+   "text": "一个",
+   "start": 122.906,
+   "end": 123.108
+  },
+  {
+   "line": 23,
+   "text": "使用",
+   "start": 123.132,
+   "end": 123.382
+  },
+  {
+   "line": 23,
+   "text": "位置",
+   "start": 123.394,
+   "end": 123.87
+  },
+  {
+   "line": 23,
+   "text": "都",
+   "start": 124.108,
+   "end": 124.227
+  },
+  {
+   "line": 23,
+   "text": "要",
+   "start": 124.227,
+   "end": 124.346
+  },
+  {
+   "line": 23,
+   "text": "同步",
+   "start": 124.358,
+   "end": 124.763
+  }
+ ],
+ "captions": [
+  {
+   "text": "怎么防",
+   "start": 1.648,
+   "end": 2.341,
+   "id": "c0"
+  },
+  {
+   "text": "有四种做法",
+   "start": 2.693,
+   "end": 3.815,
+   "id": "c1"
+  },
+  {
+   "text": "第一 虚拟份额加偏移",
+   "start": 4.796,
+   "end": 7.013,
+   "id": "c2"
+  },
+  {
+   "text": "OpenZeppelin 从 4.9 版起提供",
+   "start": 7.388,
+   "end": 9.904,
+   "id": "c3"
+  },
+  {
+   "text": "计算份额时",
+   "start": 10.896,
+   "end": 12.042,
+   "id": "c4"
+  },
+  {
+   "text": "总份额加上 10 的偏移次方",
+   "start": 12.134,
+   "end": 14.351,
+   "id": "c5"
+  },
+  {
+   "text": "总资产加上 1",
+   "start": 14.443,
+   "end": 15.804,
+   "id": "c6"
+  },
+  {
+   "text": "攻击者想造成同样的损失",
+   "start": 16.804,
+   "end": 18.843,
+   "id": "c7"
+  },
+  {
+   "text": "需要捐赠 10 的偏移次方倍的资金",
+   "start": 18.899,
+   "end": 21.212,
+   "id": "c8"
+  },
+  {
+   "text": "第二 初始存款销毁",
+   "start": 22.208,
+   "end": 24.151,
+   "id": "c9"
+  },
+  {
+   "text": "部署时先存入一笔",
+   "start": 24.527,
+   "end": 26.209,
+   "id": "c10"
+  },
+  {
+   "text": "把份额发给死地址",
+   "start": 26.3,
+   "end": 27.816,
+   "id": "c11"
+  },
+  {
+   "text": "这样金库永远不会是空的",
+   "start": 28.788,
+   "end": 30.612,
+   "id": "c12"
+  },
+  {
+   "text": "Uniswap V2 也是这个思路",
+   "start": 31.6,
+   "end": 33.853,
+   "id": "c13"
+  },
+  {
+   "text": "首次添加流动性时",
+   "start": 34.028,
+   "end": 35.71,
+   "id": "c14"
+  },
+  {
+   "text": "永久锁定 1000 份 LP 代币",
+   "start": 35.754,
+   "end": 38.031,
+   "id": "c15"
+  },
+  {
+   "text": "第三 内部记账",
+   "start": 39.02,
+   "end": 40.702,
+   "id": "c16"
+  },
+  {
+   "text": "用状态变量记录总资产",
+   "start": 41.077,
+   "end": 43.521,
+   "id": "c17"
+  },
+  {
+   "text": "不读余额",
+   "start": 43.612,
+   "end": 44.58,
+   "id": "c18"
+  },
+  {
+   "text": "捐赠多少",
+   "start": 45.576,
+   "end": 46.698,
+   "id": "c19"
+  },
+  {
+   "text": "都无法改变份额价格",
+   "start": 46.73,
+   "end": 48.484,
+   "id": "c20"
+  },
+  {
+   "text": "第四 最小份额检查",
+   "start": 49.468,
+   "end": 51.542,
+   "id": "c21"
+  },
+  {
+   "text": "份额是 0 就回滚",
+   "start": 51.918,
+   "end": 53.397,
+   "id": "c22"
+  },
+  {
+   "text": "用户也可以设最少到账份额",
+   "start": 53.584,
+   "end": 55.54,
+   "id": "c23"
+  },
+  {
+   "text": "这样受害者的交易会回滚",
+   "start": 56.528,
+   "end": 58.364,
+   "id": "c24"
+  },
+  {
+   "text": "而不是换回 0 份额",
+   "start": 58.575,
+   "end": 60.114,
+   "id": "c25"
+  },
+  {
+   "text": "修好了 怎么证明",
+   "start": 61.092,
+   "end": 62.738,
+   "id": "c26"
+  },
+  {
+   "text": "要两个结果",
+   "start": 63.101,
+   "end": 64.152,
+   "id": "c27"
+  },
+  {
+   "text": "漏洞版上",
+   "start": 65.152,
+   "end": 66.131,
+   "id": "c28"
+  },
+  {
+   "text": "受害者损失资产",
+   "start": 66.235,
+   "end": 67.857,
+   "id": "c29"
+  },
+  {
+   "text": "修复版上",
+   "start": 68.233,
+   "end": 69.236,
+   "id": "c30"
+  },
+  {
+   "text": "攻击无利可图",
+   "start": 69.256,
+   "end": 70.593,
+   "id": "c31"
+  },
+  {
+   "text": "最后一个案例",
+   "start": 71.588,
+   "end": 72.71,
+   "id": "c32"
+  },
+  {
+   "text": "是另一种失误",
+   "start": 72.802,
+   "end": 73.936,
+   "id": "c33"
+  },
+  {
+   "text": "2021 年 4 月",
+   "start": 74.928,
+   "end": 76.181,
+   "id": "c34"
+  },
+  {
+   "text": "BNB Chain 上的 Uranium",
+   "start": 76.249,
+   "end": 77.872,
+   "id": "c35"
+  },
+  {
+   "text": "Finance",
+   "start": 77.892,
+   "end": 78.657,
+   "id": "c36"
+  },
+  {
+   "text": "分叉自 Uniswap V2",
+   "start": 78.749,
+   "end": 80.598,
+   "id": "c37"
+  },
+  {
+   "text": "按公开分析",
+   "start": 81.58,
+   "end": 82.726,
+   "id": "c38"
+  },
+  {
+   "text": "开发者把手续费从百分之 0.3",
+   "start": 83.02,
+   "end": 85.595,
+   "id": "c39"
+  },
+  {
+   "text": "改成了百分之 0.16",
+   "start": 85.675,
+   "end": 87.25,
+   "id": "c40"
+  },
+  {
+   "text": "余额检查左边的放大系数",
+   "start": 88.232,
+   "end": 90.366,
+   "id": "c41"
+  },
+  {
+   "text": "从 1000 改成了 1 万",
+   "start": 90.47,
+   "end": 92.164,
+   "id": "c42"
+  },
+  {
+   "text": "右边那一处",
+   "start": 93.132,
+   "end": 94.302,
+   "id": "c43"
+  },
+  {
+   "text": "仍是 1000 的平方 漏改了",
+   "start": 94.37,
+   "end": 96.968,
+   "id": "c44"
+  },
+  {
+   "text": "左边被放大了 100 倍",
+   "start": 97.936,
+   "end": 99.558,
+   "id": "c45"
+  },
+  {
+   "text": "右边没有",
+   "start": 99.733,
+   "end": 100.641,
+   "id": "c46"
+  },
+  {
+   "text": "不变量 x 乘 y 不小于 k",
+   "start": 101.612,
+   "end": 103.96,
+   "id": "c47"
+  },
+  {
+   "text": "退化成了不小于 k 的百分之一",
+   "start": 104.1,
+   "end": 105.936,
+   "id": "c48"
+  },
+  {
+   "text": "攻击者只投入极少量代币",
+   "start": 106.92,
+   "end": 108.971,
+   "id": "c49"
+  },
+  {
+   "text": "就换出了池子约百分之 99 的储备",
+   "start": 109.003,
+   "end": 111.59,
+   "id": "c50"
+  },
+  {
+   "text": "按公开报道",
+   "start": 112.588,
+   "end": 113.686,
+   "id": "c51"
+  },
+  {
+   "text": "损失约 5000 万美元",
+   "start": 113.778,
+   "end": 115.65,
+   "id": "c52"
+  },
+  {
+   "text": "教训是 修改过的分叉代码",
+   "start": 116.648,
+   "end": 119.282,
+   "id": "c53"
+  },
+  {
+   "text": "等于新代码",
+   "start": 119.302,
+   "end": 120.377,
+   "id": "c54"
+  },
+  {
+   "text": "改过的常数",
+   "start": 121.356,
+   "end": 122.442,
+   "id": "c55"
+  },
+  {
+   "text": "每一个使用位置",
+   "start": 122.653,
+   "end": 123.99,
+   "id": "c56"
+  },
+  {
+   "text": "都要同步",
+   "start": 124.058,
+   "end": 124.883,
+   "id": "c57"
+  }
+ ]
+}

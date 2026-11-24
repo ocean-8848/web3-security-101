@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Build the Web3 安全学习站: the handbook page (handbook/dist/index.html) plus the learning layer
-(learn.js, visual.js, docs-config.js), reference answers (answers/out) and diagrams (diagrams/out),
+(src/: learn.js, visual.js, docs-config.js), reference answers (answers/out) and diagrams (diagrams/out),
 with the handbook's labs, example contracts and decks copied alongside.
 Usage: python3 learning-site/build.py   (build handbook/tools/build.mjs first)
 Output: learning-site/security/ (index.html, preview.html, files.json and supporting files)."""
@@ -25,8 +25,8 @@ SITE = dict(
     cfg=dict(key='cshb', name='Web3 安全'), config='docs-config.js',
     aux=lambda: files_in(f'{ROOT}/handbook/interactive', 'interactive/', {'.html', '.css', '.js'})
                 + files_in(f'{ROOT}/code', 'code/', {'.sol'})
-                + files_in(f'{ROOT}/handbook/decks/skeuomorphic', 'decks/skeuomorphic/', {'.html', '.woff2', '.webp'})
-                + files_in(f'{ROOT}/handbook/decks/3b1b', 'decks/3b1b/', {'.html'}))
+                + files_in(f'{ROOT}/media/decks/skeuo', 'decks/skeuo/', {'.html', '.woff2', '.webp'})
+                + files_in(f'{ROOT}/media/decks/3b1b', 'decks/3b1b/', {'.html'}))
 
 # Old 合约安全学习手册 chapter ids -> Web3 安全学习手册 ids (same map as handbook/tools/build.mjs ALIASES).
 REMAP = {f'c{i:02d}': f's{j:02d}' for i, j in zip(range(1, 14), [1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 27, 28])}
@@ -97,11 +97,11 @@ def build():
     old, new = s['title']
     assert f'<title>{old}</title>' in html[:8192], s['src']
     html = html.replace(f'<title>{old}</title>', f'<title>{new}</title>', 1)
-    layer = open(os.path.join(HERE, 'learn.js'), encoding='utf-8').read()
-    cfg = open(os.path.join(HERE, s['config']), encoding='utf-8').read()
+    layer = open(os.path.join(HERE, 'src', 'learn.js'), encoding='utf-8').read()
+    cfg = open(os.path.join(HERE, 'src', s['config']), encoding='utf-8').read()
     pre = f'const LL_SITE = {json.dumps(s["cfg"], ensure_ascii=False)};\n'
-    visual = open(os.path.join(HERE, 'visual.js'), encoding='utf-8').read()
-    sys.path.insert(0, os.path.join(HERE, 'answers'))
+    visual = open(os.path.join(HERE, 'src', 'visual.js'), encoding='utf-8').read()
+    sys.path.insert(0, os.path.join(HERE, 'tools'))
     import emit
     raw = {remap(k): v for k, v in emit.answers(NAME).items()}
     ans = 'window.LL_ANSWERS = ' + json.dumps(raw, ensure_ascii=False).replace('</', '<\\/') + ';\n'

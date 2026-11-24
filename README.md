@@ -1,12 +1,13 @@
 # Web3 安全学习手册与学习站
 
-本仓库存放三部分源码：
+本仓库存放四部分源码：
 
 | 目录 | 内容 | 构建 |
 |---|---|---|
 | `handbook/` | 《Web3 安全学习手册》Markdown 源稿、交互实验页、构建脚本 | `node handbook/tools/build.mjs` → `handbook/dist/index.html` |
 | `code/` | 示例代码与靶场（结构见下表） | `bash code/setup.sh` 装依赖，再在各 Foundry 目录下运行 `forge test` |
-| `learning-site/` | Web3 安全学习站：学习进度层（`learn.js`、`visual.js`）、参考答案（`answers/`）、补充图解（`diagrams/`）、构建脚本 | `python3 learning-site/build.py` → `learning-site/security/index.html` |
+| `media/` | 知识讲解幻灯（`decks/`）和视频工程（`video/`），幻灯由视频工程生成，手册构建时读取 | 见下表 |
+| `learning-site/` | Web3 安全学习站：学习进度层（`src/`）、参考答案（`answers/`）、补充图解（`diagrams/`）、辅助脚本（`tools/`） | `python3 learning-site/build.py` → `learning-site/security/index.html` |
 
 ```
 web3-security-101/
@@ -16,12 +17,18 @@ web3-security-101/
 │   ├── architecture/  架构与运营 X00–X48
 │   ├── chains/  assessment/  templates/
 │   ├── interactive/   交互实验页
-│   ├── decks/         skeuomorphic/、3b1b/ 两套知识讲解幻灯
-│   ├── video/         视频工程与选集播放器
-│   ├── docs/          写作规范与写作简报
+│   ├── docs/          写作规范、待对齐事项；archive/ 存放已完成的写作简报
 │   └── tools/         构建与链接检查脚本
 ├── code/            示例代码与靶场
+├── media/           幻灯与视频
+│   ├── decks/         skeuo/、3b1b/ 两套知识讲解幻灯
+│   └── video/         视频工程与选集播放器
 └── learning-site/   学习站
+    ├── build.py       构建入口
+    ├── src/           学习进度层 learn.js、visual.js 和站点配置
+    ├── answers/       思考题参考答案（in/ 题目，out/ 答案）
+    ├── diagrams/      补充图解（in/ 输入，out/ 图解）
+    └── tools/         答案准备与导出脚本 prep.py、emit.py
 ```
 
 `handbook/` 的结构：
@@ -36,11 +43,17 @@ web3-security-101/
 | `assessment/` | 评估篇 | `A01`–`A11` → `a01`–`a11` |
 | `templates/` | 评估模板 | `T01`–`T12` → `t01`–`t12` |
 | `interactive/` | 交互实验页 | `lab-<文件名>` |
-| `decks/skeuomorphic/` | 拟物化知识讲解（每章一个目录 `chNN/`） | `v01`–`v30` |
-| `decks/3b1b/` | 3b1b 风格知识讲解（每章一个文件 `chNN.html`） | `d01`–`d30` |
-| `video/` | 视频工程：拟物化（`skeuo/`）、3b1b 风格（`3b1b/`）、讲解页（`scripts/`、`slides/`）、渲染工具（`tools/`）；`index.html` 是选集播放器，由 `node handbook/video/tools/make-player.mjs` 生成 | — |
-| `docs/` | 写作规范、写作简报和待对齐事项 | `WRITING-GUIDE.md` → `guide` |
+| `docs/` | 写作规范和待对齐事项；`archive/` 存放已完成的写作简报 | `WRITING-GUIDE.md` → `guide` |
 | `tools/` | 构建与链接检查脚本、专题映射 `topics.json` | — |
+
+`media/` 的结构：
+
+| 路径 | 内容 | 站内 ID |
+|---|---|---|
+| `decks/skeuo/` | 拟物化知识讲解（每章一个目录 `chNN/`），由 `video/skeuo/tools/make_deck.py` 生成 | `v01`–`v30` |
+| `decks/3b1b/` | 3b1b 风格知识讲解（每章一个文件 `chNN.html`），由 `video/3b1b/tools/make_deck.py` 生成 | `d01`–`d30` |
+| `video/` | 视频工程：拟物化（`skeuo/`）、3b1b 风格（`3b1b/`）、讲解页（`scripts/`、`slides/`）、渲染工具（`tools/`）；`index.html` 是选集播放器，由 `node media/video/tools/make-player.mjs` 生成 | — |
+| `video/CLAUDE.md`、`video/AGENTS.md` | HyperFrames 工程说明，各集共用这一份（`hyperframes init` 在新一集里生成的副本不进仓库） | — |
 
 `code/` 的结构：
 
@@ -67,7 +80,7 @@ cd handbook/tools && npm install
 - 发布前运行链接检查：`node handbook/tools/check-links.mjs`。
 - 示例代码用 Foundry。依赖（`lib/`）和构建产物（`out/`、`cache/`）不进仓库。克隆后在仓库根目录运行一次 `bash code/setup.sh`，它下载固定版本的 forge-std（v1.11.0）和 OpenZeppelin（v5.6.1），并为各靶场建好 `lib/forge-std` 链接。
 - 学习时的根目录就是克隆下来的 `web3-security-101/`。手册里的命令（例如 `cd code/foundry-demos`）都从这里运行。步骤见训练营 B04 第 6 节。
-- 视频成品不进仓库，只保留脚本、幻灯片和工具源码：`handbook/video/output/`、`handbook/video/skeuo/epNN/out/`、`handbook/video/3b1b/output/`，以及视频工程里的字体和配乐。
+- 视频成品不进仓库，只保留脚本、幻灯片和工具源码：`media/video/output/`、`media/video/skeuo/epNN/out/`、`media/video/3b1b/output/`，以及视频工程里的字体和配乐。
 - 构建产物不进仓库，都能从源码重建：`handbook/dist/`、`handbook/preview.html`、`learning-site/security/`。
 
 ## 说明

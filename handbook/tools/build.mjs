@@ -7,6 +7,7 @@ import { convert, titleOf } from './md2data.mjs';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 // 示例代码在仓库根目录 code/（与 handbook/ 同级）；文档里仍用逻辑路径 code/…
 const EXAMPLES = path.resolve(ROOT, '..', 'code');
+const MEDIA = path.resolve(ROOT, '..', 'media');
 const abs = p => p.startsWith('code/') ? path.join(EXAMPLES, p.slice('code/'.length)) : path.join(ROOT, p);
 const rd = p => fs.readFileSync(abs(p), 'utf8');
 
@@ -179,10 +180,10 @@ if (fs.existsSync(path.join(ROOT, 'tools/topics.json'))) {
     }
   }
 }
-// 拟物化知识讲解：decks/skeuomorphic/chNN/ 由视频工程生成（video/hf/tools/make_deck.py），每章一个幻灯片页 vNN，按篇分组。
+// 拟物化知识讲解：media/decks/skeuo/chNN/ 由视频工程生成（media/video/skeuo/tools/make_deck.py），每章一个幻灯片页 vNN，按篇分组。
 NAV_PARTS.vis = '拟物化知识讲解';
 {
-  const deckDir = path.join(ROOT, 'decks/skeuomorphic');
+  const deckDir = path.join(MEDIA, 'decks/skeuo');
   const have = fs.existsSync(deckDir) ? fs.readdirSync(deckDir).filter(d => /^ch\d\d$/.test(d)).map(d => d.slice(2)).sort() : [];
   const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
   for (const [key, name, spec] of NAV.filter(([k]) => /^p\d$/.test(k))) {
@@ -193,9 +194,9 @@ NAV_PARTS.vis = '拟物化知识讲解';
       const sid = 's' + n, vid = 'v' + n, ch = docs[sid];
       if (!ch) throw new Error('deck ch' + n + ' has no chapter ' + sid);
       const t = ch.title.replace(/^\d\d[a-z]?\s+/, '');
-      docs[vid] = { id: vid, file: `decks/skeuomorphic/ch${n}/index.html`, title: `V${n} ${t}`, group: 'v' + key.slice(1), html:
+      docs[vid] = { id: vid, file: `decks/skeuo/ch${n}/index.html`, title: `V${n} ${t}`, group: 'v' + key.slice(1), html:
         `<h1>V${n} ${esc(t)}</h1>\n<p>用等距拟物动画，一页一页讲完第 ${+n} 章。每页直接显示这一步的结论画面，点画面或按 → 翻页；想看推导过程，点「▶ 看过程」（P）。按 F 全屏，按 N 看讲稿。文字版见 <a href="#${sid}" data-nav="${sid}">${esc(ch.title)}</a>。</p>\n` +
-        `<div class="deck-embed"><iframe src="decks/skeuomorphic/ch${n}/index.html" title="拟物化讲解：${esc(t)}" allow="fullscreen" allowfullscreen></iframe></div>` };
+        `<div class="deck-embed"><iframe src="decks/skeuo/ch${n}/index.html" title="拟物化讲解：${esc(t)}" allow="fullscreen" allowfullscreen></iframe></div>` };
       // 文字章节开头加入口
       ch.html = ch.html.replace(/(<\/h1>)/, `$1\n<blockquote class="info"><p>🎞 本章有拟物化动画讲解：<a href="#${vid}" data-nav="${vid}">V${n} 一页一页看懂这一章 ▸</a></p>\n</blockquote>`);
       items.push(vid);
@@ -203,10 +204,10 @@ NAV_PARTS.vis = '拟物化知识讲解';
     nav.push({ key: 'v' + key.slice(1), name, part: 'vis', full: NAV_PARTS.vis + ' · ' + name, items });
   }
 }
-// 3b1b 风格知识讲解：decks/3b1b/chNN.html 由视频工程生成（video-3b1b/tools/make_deck.py），每章一个单文件幻灯片页 dNN，按篇分组。
+// 3b1b 风格知识讲解：media/decks/3b1b/chNN.html 由视频工程生成（media/video/3b1b/tools/make_deck.py），每章一个单文件幻灯片页 dNN，按篇分组。
 NAV_PARTS.deck3 = '3b1b 风格知识讲解';
 {
-  const deckDir = path.join(ROOT, 'decks/3b1b');
+  const deckDir = path.join(MEDIA, 'decks/3b1b');
   const have = fs.existsSync(deckDir) ? fs.readdirSync(deckDir).filter(f => /^ch\d\d\.html$/.test(f)).map(f => f.slice(2, 4)).sort() : [];
   const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
   for (const [key, name, spec] of NAV.filter(([k]) => /^p\d$/.test(k))) {
@@ -238,5 +239,5 @@ const page = fs.readFileSync(path.join(ROOT, 'tools/shell-head.html'), 'utf8') +
 fs.mkdirSync(path.join(ROOT, 'dist'), { recursive: true });
 fs.writeFileSync(path.join(ROOT, 'dist/index.html'), page);
 const skel = '<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>\n';
-fs.writeFileSync(path.join(ROOT, 'preview.html'), skel + page.replace(/src="interactive\//g, 'src="interactive/'));
+fs.writeFileSync(path.join(ROOT, 'preview.html'), skel + page.replace(/src=\\"decks\//g, 'src=\\"../media/decks/'));  // 预览页在 handbook/ 下，幻灯在 media/decks/
 console.log(`docs ${Object.keys(docs).length} (draft ${Object.values(docs).filter(d => d.draft).length}), labs ${DATA.labs.length}, ${(page.length / 1024).toFixed(0)} KB`);

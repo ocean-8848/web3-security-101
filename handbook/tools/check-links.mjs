@@ -1,7 +1,7 @@
 // Link check for the handbook: node tools/check-links.mjs  (internal links always; add --ext for external URLs).
 import fs from 'node:fs'; import path from 'node:path';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
-const walk = d => fs.readdirSync(d, { withFileTypes: true }).flatMap(e => ['node_modules','dist','lib','out','cache','video'].includes(e.name) ? [] : e.isDirectory() ? walk(path.join(d, e.name)) : e.name.endsWith('.md') ? [path.join(d, e.name)] : []);
+const walk = d => fs.readdirSync(d, { withFileTypes: true }).flatMap(e => ['node_modules','dist','lib','out','cache','archive'].includes(e.name) ? [] : e.isDirectory() ? walk(path.join(d, e.name)) : e.name.endsWith('.md') ? [path.join(d, e.name)] : []);
 const ext = new Map(); let bad = 0;
 for (const f of [...walk(ROOT), ...walk(path.resolve(ROOT, "..", "code"))]) {
   const s = fs.readFileSync(f, 'utf8');

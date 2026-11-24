@@ -1,0 +1,2480 @@
+{
+ "id": "seg3",
+ "title": "怪代币",
+ "pill": 3,
+ "total": 148.25,
+ "lines": [
+  {
+   "id": "seg3-00",
+   "text": "第二类风险，来自代币本身。",
+   "spoken": "第二类风险，来自代币本身。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-00.mp3",
+   "start": 1.6,
+   "dur": 3.096,
+   "speechStart": 1.698,
+   "speechEnd": 3.864
+  },
+  {
+   "id": "seg3-01",
+   "text": "ERC-20 只规定了接口，没有规定行为。",
+   "spoken": "ERC-20 只规定了接口，没有规定行为。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-01.mp3",
+   "start": 4.916,
+   "dur": 3.984,
+   "speechStart": 5.014,
+   "speechEnd": 8.061
+  },
+  {
+   "id": "seg3-02",
+   "text": "常见的非标准行为，有八种。",
+   "spoken": "常见的非标准行为，有八种。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-02.mp3",
+   "start": 9.12,
+   "dur": 3.288,
+   "speechStart": 9.218,
+   "speechEnd": 11.575
+  },
+  {
+   "id": "seg3-03",
+   "text": "一，transfer 不返回值，比如以太坊上的 USDT。用 SafeERC20 兼容。",
+   "spoken": "一，transfer 不返回值，比如以太坊上的 USDT。用 SafeERC20 兼容。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-03.mp3",
+   "start": 12.628,
+   "dur": 7.872,
+   "speechStart": 12.726,
+   "speechEnd": 19.676
+  },
+  {
+   "id": "seg3-04",
+   "text": "二，transfer 成功了，却返回 false。这是 TRON 上的 USDT。",
+   "spoken": "二，transfer 成功了，却返回 false。这是 TRON 上的 USDT。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-04.mp3",
+   "start": 20.72,
+   "dur": 6.408,
+   "speechStart": 20.818,
+   "speechEnd": 26.28
+  },
+  {
+   "id": "seg3-05",
+   "text": "三，转账收税。到账的钱，比转出的少。",
+   "spoken": "三，转账收税。到账的钱，比转出的少。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-05.mp3",
+   "start": 27.348,
+   "dur": 5.088,
+   "speechStart": 27.446,
+   "speechEnd": 31.61
+  },
+  {
+   "id": "seg3-06",
+   "text": "四，余额自动变化，比如 stETH。缓存的余额会失效，要用份额记账。",
+   "spoken": "四，余额自动变化，比如 stETH。缓存的余额会失效，要用份额记账。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-06.mp3",
+   "start": 32.656,
+   "dur": 7.872,
+   "speechStart": 32.754,
+   "speechEnd": 39.692
+  },
+  {
+   "id": "seg3-07",
+   "text": "五，黑名单和冻结。",
+   "spoken": "五，黑名单和冻结。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-07.mp3",
+   "start": 40.748,
+   "dur": 2.904,
+   "speechStart": 40.846,
+   "speechEnd": 42.822
+  },
+  {
+   "id": "seg3-08",
+   "text": "六，可暂停。",
+   "spoken": "六，可暂停。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-08.mp3",
+   "start": 43.872,
+   "dur": 2.352,
+   "speechStart": 43.97,
+   "speechEnd": 45.386
+  },
+  {
+   "id": "seg3-09",
+   "text": "七，转账钩子，比如 ERC-777，会带来重入。",
+   "spoken": "七，转账钩子，比如 ERC-777，会带来虫入。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-09.mp3",
+   "start": 46.444,
+   "dur": 5.544,
+   "speechStart": 46.542,
+   "speechEnd": 51.149
+  },
+  {
+   "id": "seg3-10",
+   "text": "八，可升级。行为以后可能改变。",
+   "spoken": "八，可升级。行为以后可能改变。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-10.mp3",
+   "start": 52.208,
+   "dur": 4.272,
+   "speechStart": 52.306,
+   "speechEnd": 55.625
+  },
+  {
+   "id": "seg3-11",
+   "text": "细看第二种。OpenZeppelin 在 2026 年，审计了 Across 协议的 TRON 部署。",
+   "spoken": "细看第二种。OpenZeppelin 在 2026 年，审计了 Across 协议的 TRON 部署。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-11.mp3",
+   "start": 56.7,
+   "dur": 6.912,
+   "speechStart": 56.798,
+   "speechEnd": 62.76
+  },
+  {
+   "id": "seg3-12",
+   "text": "TRON 上的 USDT，转账成功时，也返回 false。",
+   "spoken": "TRON 上的 USDT，转账成功时，也返回 false。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-12.mp3",
+   "start": 63.832,
+   "dur": 5.112,
+   "speechStart": 63.93,
+   "speechEnd": 68.12
+  },
+  {
+   "id": "seg3-13",
+   "text": "于是，用 safeTransfer 推送 USDT 的代码，在 TRON 上一律回滚。",
+   "spoken": "于是，用 safeTransfer 推送 USDT 的代码，在 TRON 上一律回滚。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-13.mp3",
+   "start": 69.164,
+   "dur": 6.144,
+   "speechStart": 69.262,
+   "speechEnd": 74.464
+  },
+  {
+   "id": "seg3-14",
+   "text": "存款走拉取方向的 transferFrom，不受影响。",
+   "spoken": "存款走拉取方向的 transferFrom，不受影响。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-14.mp3",
+   "start": 75.528,
+   "dur": 4.104,
+   "speechStart": 75.626,
+   "speechEnd": 78.792
+  },
+  {
+   "id": "seg3-15",
+   "text": "症状就是：存款正常，提款全部失败。",
+   "spoken": "症状就是：存款正常，提款全部失败。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-15.mp3",
+   "start": 79.852,
+   "dur": 4.584,
+   "speechStart": 79.95,
+   "speechEnd": 83.592
+  },
+  {
+   "id": "seg3-16",
+   "text": "修复是不读返回值，只看接收方的余额涨了多少。",
+   "spoken": "修复是不读返回值，只看接收方的余额涨了多少。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-16.mp3",
+   "start": 84.656,
+   "dur": 4.68,
+   "speechStart": 84.754,
+   "speechEnd": 88.492
+  },
+  {
+   "id": "seg3-17",
+   "text": "涨的正好等于金额，才算到账。",
+   "spoken": "涨的正好等于金额，才算到账。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-17.mp3",
+   "start": 89.556,
+   "dur": 3.48,
+   "speechStart": 89.654,
+   "speechEnd": 92.201
+  },
+  {
+   "id": "seg3-18",
+   "text": "这个方案假设不收手续费。而 Tether 保留了开启它的能力。",
+   "spoken": "这个方案假设不收手续费。而 Tether 保留了开启它的能力。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-18.mp3",
+   "start": 93.256,
+   "dur": 5.736,
+   "speechStart": 93.354,
+   "speechEnd": 98.149
+  },
+  {
+   "id": "seg3-19",
+   "text": "再看第三种，收税代币。",
+   "spoken": "再看第三种，收税代币。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-19.mp3",
+   "start": 99.212,
+   "dur": 3.024,
+   "speechStart": 99.31,
+   "speechEnd": 101.393
+  },
+  {
+   "id": "seg3-20",
+   "text": "协议按参数记账：用户说存 100，账上就记 100。",
+   "spoken": "协议按参数记账：用户说存 100，账上就记 100。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-20.mp3",
+   "start": 102.456,
+   "dur": 5.28,
+   "speechStart": 102.554,
+   "speechEnd": 106.899
+  },
+  {
+   "id": "seg3-21",
+   "text": "可代币扣了税，金库实际只收到 98。",
+   "spoken": "可代币扣了税，金库实际只收到 98。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-21.mp3",
+   "start": 107.956,
+   "dur": 3.864,
+   "speechStart": 108.054,
+   "speechEnd": 110.982
+  },
+  {
+   "id": "seg3-22",
+   "text": "账面比实收多出 2 枚。这个差额，由其他用户承担。",
+   "spoken": "账面比实收多出 2 枚。这个差额，由其他用户承担。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-22.mp3",
+   "start": 112.04,
+   "dur": 5.616,
+   "speechStart": 112.138,
+   "speechEnd": 116.814
+  },
+  {
+   "id": "seg3-23",
+   "text": "所有用户都这样存取，协议就会资不抵债。",
+   "spoken": "所有用户都这样存取，协议就会资不抵债。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-23.mp3",
+   "start": 117.876,
+   "dur": 4.176,
+   "speechStart": 117.974,
+   "speechEnd": 121.212
+  },
+  {
+   "id": "seg3-24",
+   "text": "修复是按实收记账：转账前后，各读一次余额，只记增量。",
+   "spoken": "修复是按实收记账：转账前后，各读一次余额，只记增量。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-24.mp3",
+   "start": 122.272,
+   "dur": 5.856,
+   "speechStart": 122.37,
+   "speechEnd": 127.286
+  },
+  {
+   "id": "seg3-25",
+   "text": "这一步要配合重入锁，防止回调干扰前后两次读数。",
+   "spoken": "这一步要配合虫入锁，防止回掉干扰前后两次读数。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-25.mp3",
+   "start": 128.348,
+   "dur": 4.896,
+   "speechStart": 128.446,
+   "speechEnd": 132.398
+  },
+  {
+   "id": "seg3-26",
+   "text": "没有一个库，能防住所有怪代币。",
+   "spoken": "没有一个库，能防住所有怪代币。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-26.mp3",
+   "start": 133.464,
+   "dur": 3.552,
+   "speechStart": 133.562,
+   "speechEnd": 136.181
+  },
+  {
+   "id": "seg3-27",
+   "text": "审计时，先问项目方：你们支持哪些代币？",
+   "spoken": "审计时，先问项目方：你们支持哪些代币？",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-27.mp3",
+   "start": 137.236,
+   "dur": 4.704,
+   "speechStart": 137.334,
+   "speechEnd": 141.095
+  },
+  {
+   "id": "seg3-28",
+   "text": "不支持的类型，比如收税和变基，要显式拒绝。",
+   "spoken": "不支持的类型，比如收税和变基，要显式拒绝。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep07/audio/lines/seg3-28.mp3",
+   "start": 142.44,
+   "dur": 4.608,
+   "speechStart": 142.538,
+   "speechEnd": 146.204
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "第二类",
+   "start": 1.698,
+   "end": 2.007
+  },
+  {
+   "line": 0,
+   "text": "风险",
+   "start": 2.019,
+   "end": 2.495
+  },
+  {
+   "line": 0,
+   "text": "来自",
+   "start": 2.817,
+   "end": 3.126
+  },
+  {
+   "line": 0,
+   "text": "代币",
+   "start": 3.15,
+   "end": 3.46
+  },
+  {
+   "line": 0,
+   "text": "本身",
+   "start": 3.471,
+   "end": 3.864
+  },
+  {
+   "line": 1,
+   "text": "ERC",
+   "start": 5.014,
+   "end": 5.514
+  },
+  {
+   "line": 1,
+   "text": "20",
+   "start": 5.609,
+   "end": 6.002
+  },
+  {
+   "line": 1,
+   "text": "只",
+   "start": 6.002,
+   "end": 6.156
+  },
+  {
+   "line": 1,
+   "text": "规定",
+   "start": 6.18,
+   "end": 6.454
+  },
+  {
+   "line": 1,
+   "text": "了",
+   "start": 6.454,
+   "end": 6.537
+  },
+  {
+   "line": 1,
+   "text": "接口",
+   "start": 6.549,
+   "end": 6.93
+  },
+  {
+   "line": 1,
+   "text": "没有",
+   "start": 7.133,
+   "end": 7.383
+  },
+  {
+   "line": 1,
+   "text": "规定",
+   "start": 7.395,
+   "end": 7.656
+  },
+  {
+   "line": 1,
+   "text": "行为",
+   "start": 7.668,
+   "end": 8.061
+  },
+  {
+   "line": 2,
+   "text": "常见",
+   "start": 9.218,
+   "end": 9.646
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 9.646,
+   "end": 9.718
+  },
+  {
+   "line": 2,
+   "text": "非标准",
+   "start": 9.741,
+   "end": 10.218
+  },
+  {
+   "line": 2,
+   "text": "行为",
+   "start": 10.23,
+   "end": 10.694
+  },
+  {
+   "line": 2,
+   "text": "有",
+   "start": 10.968,
+   "end": 11.134
+  },
+  {
+   "line": 2,
+   "text": "八",
+   "start": 11.134,
+   "end": 11.384
+  },
+  {
+   "line": 2,
+   "text": "种",
+   "start": 11.384,
+   "end": 11.575
+  },
+  {
+   "line": 3,
+   "text": "一",
+   "start": 12.726,
+   "end": 13.047
+  },
+  {
+   "line": 3,
+   "text": "transfer",
+   "start": 13.392,
+   "end": 14.071
+  },
+  {
+   "line": 3,
+   "text": "不",
+   "start": 14.166,
+   "end": 14.297
+  },
+  {
+   "line": 3,
+   "text": "返",
+   "start": 14.297,
+   "end": 14.428
+  },
+  {
+   "line": 3,
+   "text": "回值",
+   "start": 14.428,
+   "end": 14.928
+  },
+  {
+   "line": 3,
+   "text": "比如",
+   "start": 15.118,
+   "end": 15.38
+  },
+  {
+   "line": 3,
+   "text": "以",
+   "start": 15.404,
+   "end": 15.499
+  },
+  {
+   "line": 3,
+   "text": "太坊",
+   "start": 15.511,
+   "end": 15.868
+  },
+  {
+   "line": 3,
+   "text": "上",
+   "start": 15.868,
+   "end": 16.047
+  },
+  {
+   "line": 3,
+   "text": "的",
+   "start": 16.047,
+   "end": 16.249
+  },
+  {
+   "line": 3,
+   "text": "USDT",
+   "start": 16.345,
+   "end": 17.19
+  },
+  {
+   "line": 3,
+   "text": "用",
+   "start": 17.735,
+   "end": 18.057
+  },
+  {
+   "line": 3,
+   "text": "SafeERC",
+   "start": 18.08,
+   "end": 18.938
+  },
+  {
+   "line": 3,
+   "text": "20",
+   "start": 18.949,
+   "end": 19.259
+  },
+  {
+   "line": 3,
+   "text": "兼容",
+   "start": 19.259,
+   "end": 19.676
+  },
+  {
+   "line": 4,
+   "text": "二",
+   "start": 20.818,
+   "end": 21.199
+  },
+  {
+   "line": 4,
+   "text": "transfer",
+   "start": 21.449,
+   "end": 21.996
+  },
+  {
+   "line": 4,
+   "text": "成功",
+   "start": 22.008,
+   "end": 22.365
+  },
+  {
+   "line": 4,
+   "text": "了",
+   "start": 22.365,
+   "end": 22.58
+  },
+  {
+   "line": 4,
+   "text": "却",
+   "start": 22.758,
+   "end": 22.925
+  },
+  {
+   "line": 4,
+   "text": "返回",
+   "start": 22.937,
+   "end": 23.246
+  },
+  {
+   "line": 4,
+   "text": "false",
+   "start": 23.246,
+   "end": 23.746
+  },
+  {
+   "line": 4,
+   "text": "这",
+   "start": 24.28,
+   "end": 24.422
+  },
+  {
+   "line": 4,
+   "text": "是",
+   "start": 24.422,
+   "end": 24.565
+  },
+  {
+   "line": 4,
+   "text": "TRON",
+   "start": 24.589,
+   "end": 24.839
+  },
+  {
+   "line": 4,
+   "text": "上",
+   "start": 24.839,
+   "end": 25.029
+  },
+  {
+   "line": 4,
+   "text": "的",
+   "start": 25.03,
+   "end": 25.256
+  },
+  {
+   "line": 4,
+   "text": "USDT",
+   "start": 25.351,
+   "end": 26.28
+  },
+  {
+   "line": 5,
+   "text": "三",
+   "start": 27.446,
+   "end": 27.886
+  },
+  {
+   "line": 5,
+   "text": "转账",
+   "start": 28.243,
+   "end": 28.636
+  },
+  {
+   "line": 5,
+   "text": "收税",
+   "start": 28.648,
+   "end": 29.088
+  },
+  {
+   "line": 5,
+   "text": "到账",
+   "start": 29.634,
+   "end": 29.991
+  },
+  {
+   "line": 5,
+   "text": "的",
+   "start": 29.991,
+   "end": 30.074
+  },
+  {
+   "line": 5,
+   "text": "钱",
+   "start": 30.074,
+   "end": 30.467
+  },
+  {
+   "line": 5,
+   "text": "比",
+   "start": 30.765,
+   "end": 30.908
+  },
+  {
+   "line": 5,
+   "text": "转出",
+   "start": 30.908,
+   "end": 31.181
+  },
+  {
+   "line": 5,
+   "text": "的",
+   "start": 31.193,
+   "end": 31.265
+  },
+  {
+   "line": 5,
+   "text": "少",
+   "start": 31.265,
+   "end": 31.61
+  },
+  {
+   "line": 6,
+   "text": "四",
+   "start": 32.754,
+   "end": 33.182
+  },
+  {
+   "line": 6,
+   "text": "余额",
+   "start": 33.623,
+   "end": 33.956
+  },
+  {
+   "line": 6,
+   "text": "自动",
+   "start": 33.98,
+   "end": 34.254
+  },
+  {
+   "line": 6,
+   "text": "变化",
+   "start": 34.266,
+   "end": 34.67
+  },
+  {
+   "line": 6,
+   "text": "比如",
+   "start": 34.908,
+   "end": 35.313
+  },
+  {
+   "line": 6,
+   "text": "stETH",
+   "start": 35.396,
+   "end": 36.444
+  },
+  {
+   "line": 6,
+   "text": "缓存",
+   "start": 36.989,
+   "end": 37.358
+  },
+  {
+   "line": 6,
+   "text": "的",
+   "start": 37.358,
+   "end": 37.43
+  },
+  {
+   "line": 6,
+   "text": "余额",
+   "start": 37.442,
+   "end": 37.763
+  },
+  {
+   "line": 6,
+   "text": "会",
+   "start": 37.787,
+   "end": 37.918
+  },
+  {
+   "line": 6,
+   "text": "失效",
+   "start": 37.93,
+   "end": 38.43
+  },
+  {
+   "line": 6,
+   "text": "要",
+   "start": 38.656,
+   "end": 38.787
+  },
+  {
+   "line": 6,
+   "text": "用",
+   "start": 38.787,
+   "end": 38.894
+  },
+  {
+   "line": 6,
+   "text": "份额",
+   "start": 38.918,
+   "end": 39.299
+  },
+  {
+   "line": 6,
+   "text": "记账",
+   "start": 39.311,
+   "end": 39.692
+  },
+  {
+   "line": 7,
+   "text": "五",
+   "start": 40.846,
+   "end": 41.179
+  },
+  {
+   "line": 7,
+   "text": "黑名单",
+   "start": 41.548,
+   "end": 42.179
+  },
+  {
+   "line": 7,
+   "text": "和",
+   "start": 42.203,
+   "end": 42.334
+  },
+  {
+   "line": 7,
+   "text": "冻结",
+   "start": 42.346,
+   "end": 42.822
+  },
+  {
+   "line": 8,
+   "text": "六",
+   "start": 43.97,
+   "end": 44.398
+  },
+  {
+   "line": 8,
+   "text": "可",
+   "start": 44.648,
+   "end": 44.839
+  },
+  {
+   "line": 8,
+   "text": "暂停",
+   "start": 44.839,
+   "end": 45.386
+  },
+  {
+   "line": 9,
+   "text": "七",
+   "start": 46.542,
+   "end": 46.934
+  },
+  {
+   "line": 9,
+   "text": "转账",
+   "start": 47.304,
+   "end": 47.696
+  },
+  {
+   "line": 9,
+   "text": "钩子",
+   "start": 47.708,
+   "end": 48.149
+  },
+  {
+   "line": 9,
+   "text": "比如",
+   "start": 48.446,
+   "end": 48.863
+  },
+  {
+   "line": 9,
+   "text": "ERC",
+   "start": 48.97,
+   "end": 49.351
+  },
+  {
+   "line": 9,
+   "text": "777",
+   "start": 49.446,
+   "end": 50.101
+  },
+  {
+   "line": 9,
+   "text": "会",
+   "start": 50.304,
+   "end": 50.47
+  },
+  {
+   "line": 9,
+   "text": "带来",
+   "start": 50.482,
+   "end": 50.673
+  },
+  {
+   "line": 9,
+   "text": "重",
+   "start": 50.684,
+   "end": 50.982
+  },
+  {
+   "line": 9,
+   "text": "入",
+   "start": 50.982,
+   "end": 51.149
+  },
+  {
+   "line": 10,
+   "text": "八",
+   "start": 52.306,
+   "end": 52.687
+  },
+  {
+   "line": 10,
+   "text": "可",
+   "start": 52.984,
+   "end": 53.127
+  },
+  {
+   "line": 10,
+   "text": "升级",
+   "start": 53.139,
+   "end": 53.627
+  },
+  {
+   "line": 10,
+   "text": "行为",
+   "start": 54.172,
+   "end": 54.494
+  },
+  {
+   "line": 10,
+   "text": "以后",
+   "start": 54.506,
+   "end": 54.91
+  },
+  {
+   "line": 10,
+   "text": "可能",
+   "start": 54.934,
+   "end": 55.196
+  },
+  {
+   "line": 10,
+   "text": "改变",
+   "start": 55.208,
+   "end": 55.625
+  },
+  {
+   "line": 11,
+   "text": "细看",
+   "start": 56.798,
+   "end": 57.25
+  },
+  {
+   "line": 11,
+   "text": "第二",
+   "start": 57.274,
+   "end": 57.559
+  },
+  {
+   "line": 11,
+   "text": "种",
+   "start": 57.56,
+   "end": 57.798
+  },
+  {
+   "line": 11,
+   "text": "OpenZeppelin",
+   "start": 58.331,
+   "end": 59.212
+  },
+  {
+   "line": 11,
+   "text": "在",
+   "start": 59.307,
+   "end": 59.462
+  },
+  {
+   "line": 11,
+   "text": "2026",
+   "start": 59.474,
+   "end": 59.926
+  },
+  {
+   "line": 11,
+   "text": "年",
+   "start": 59.926,
+   "end": 60.236
+  },
+  {
+   "line": 11,
+   "text": "审计",
+   "start": 60.367,
+   "end": 60.748
+  },
+  {
+   "line": 11,
+   "text": "了",
+   "start": 60.748,
+   "end": 60.902
+  },
+  {
+   "line": 11,
+   "text": "Across",
+   "start": 60.926,
+   "end": 61.355
+  },
+  {
+   "line": 11,
+   "text": "协议",
+   "start": 61.367,
+   "end": 61.664
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 61.664,
+   "end": 61.902
+  },
+  {
+   "line": 11,
+   "text": "TRON",
+   "start": 61.998,
+   "end": 62.367
+  },
+  {
+   "line": 11,
+   "text": "部署",
+   "start": 62.379,
+   "end": 62.76
+  },
+  {
+   "line": 12,
+   "text": "TRON",
+   "start": 63.93,
+   "end": 64.227
+  },
+  {
+   "line": 12,
+   "text": "上",
+   "start": 64.227,
+   "end": 64.418
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 64.418,
+   "end": 64.668
+  },
+  {
+   "line": 12,
+   "text": "USDT",
+   "start": 64.763,
+   "end": 65.727
+  },
+  {
+   "line": 12,
+   "text": "转账",
+   "start": 65.965,
+   "end": 66.311
+  },
+  {
+   "line": 12,
+   "text": "成功",
+   "start": 66.322,
+   "end": 66.656
+  },
+  {
+   "line": 12,
+   "text": "时",
+   "start": 66.656,
+   "end": 66.977
+  },
+  {
+   "line": 12,
+   "text": "也",
+   "start": 67.144,
+   "end": 67.275
+  },
+  {
+   "line": 12,
+   "text": "返回",
+   "start": 67.287,
+   "end": 67.62
+  },
+  {
+   "line": 12,
+   "text": "false",
+   "start": 67.62,
+   "end": 68.12
+  },
+  {
+   "line": 13,
+   "text": "于是",
+   "start": 69.262,
+   "end": 69.774
+  },
+  {
+   "line": 13,
+   "text": "用",
+   "start": 70.095,
+   "end": 70.357
+  },
+  {
+   "line": 13,
+   "text": "safeTransfer",
+   "start": 70.357,
+   "end": 71.143
+  },
+  {
+   "line": 13,
+   "text": "推送",
+   "start": 71.154,
+   "end": 71.607
+  },
+  {
+   "line": 13,
+   "text": "USDT",
+   "start": 71.702,
+   "end": 72.369
+  },
+  {
+   "line": 13,
+   "text": "的",
+   "start": 72.369,
+   "end": 72.452
+  },
+  {
+   "line": 13,
+   "text": "代码",
+   "start": 72.464,
+   "end": 72.881
+  },
+  {
+   "line": 13,
+   "text": "在",
+   "start": 73.071,
+   "end": 73.214
+  },
+  {
+   "line": 13,
+   "text": "TRON",
+   "start": 73.226,
+   "end": 73.452
+  },
+  {
+   "line": 13,
+   "text": "上",
+   "start": 73.452,
+   "end": 73.738
+  },
+  {
+   "line": 13,
+   "text": "一律",
+   "start": 73.821,
+   "end": 74.059
+  },
+  {
+   "line": 13,
+   "text": "回滚",
+   "start": 74.071,
+   "end": 74.464
+  },
+  {
+   "line": 14,
+   "text": "存款",
+   "start": 75.626,
+   "end": 76.066
+  },
+  {
+   "line": 14,
+   "text": "走拉取",
+   "start": 76.078,
+   "end": 76.435
+  },
+  {
+   "line": 14,
+   "text": "方向",
+   "start": 76.447,
+   "end": 76.757
+  },
+  {
+   "line": 14,
+   "text": "的",
+   "start": 76.757,
+   "end": 76.983
+  },
+  {
+   "line": 14,
+   "text": "transferFrom",
+   "start": 77.09,
+   "end": 77.959
+  },
+  {
+   "line": 14,
+   "text": "不",
+   "start": 78.173,
+   "end": 78.292
+  },
+  {
+   "line": 14,
+   "text": "受",
+   "start": 78.292,
+   "end": 78.435
+  },
+  {
+   "line": 14,
+   "text": "影响",
+   "start": 78.447,
+   "end": 78.792
+  },
+  {
+   "line": 15,
+   "text": "症状",
+   "start": 79.95,
+   "end": 80.319
+  },
+  {
+   "line": 15,
+   "text": "就",
+   "start": 80.331,
+   "end": 80.462
+  },
+  {
+   "line": 15,
+   "text": "是",
+   "start": 80.462,
+   "end": 80.819
+  },
+  {
+   "line": 15,
+   "text": "存款",
+   "start": 81.033,
+   "end": 81.533
+  },
+  {
+   "line": 15,
+   "text": "正常",
+   "start": 81.545,
+   "end": 82.152
+  },
+  {
+   "line": 15,
+   "text": "提款",
+   "start": 82.331,
+   "end": 82.723
+  },
+  {
+   "line": 15,
+   "text": "全部",
+   "start": 82.747,
+   "end": 83.164
+  },
+  {
+   "line": 15,
+   "text": "失败",
+   "start": 83.176,
+   "end": 83.592
+  },
+  {
+   "line": 16,
+   "text": "修复",
+   "start": 84.754,
+   "end": 85.266
+  },
+  {
+   "line": 16,
+   "text": "是",
+   "start": 85.289,
+   "end": 85.385
+  },
+  {
+   "line": 16,
+   "text": "不",
+   "start": 85.396,
+   "end": 85.551
+  },
+  {
+   "line": 16,
+   "text": "读",
+   "start": 85.551,
+   "end": 85.67
+  },
+  {
+   "line": 16,
+   "text": "返回",
+   "start": 85.682,
+   "end": 86.027
+  },
+  {
+   "line": 16,
+   "text": "值",
+   "start": 86.027,
+   "end": 86.325
+  },
+  {
+   "line": 16,
+   "text": "只",
+   "start": 86.587,
+   "end": 86.766
+  },
+  {
+   "line": 16,
+   "text": "看",
+   "start": 86.766,
+   "end": 86.956
+  },
+  {
+   "line": 16,
+   "text": "接",
+   "start": 86.98,
+   "end": 87.111
+  },
+  {
+   "line": 16,
+   "text": "收方",
+   "start": 87.111,
+   "end": 87.373
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 87.373,
+   "end": 87.444
+  },
+  {
+   "line": 16,
+   "text": "余额",
+   "start": 87.456,
+   "end": 87.849
+  },
+  {
+   "line": 16,
+   "text": "涨",
+   "start": 87.873,
+   "end": 88.051
+  },
+  {
+   "line": 16,
+   "text": "了",
+   "start": 88.051,
+   "end": 88.111
+  },
+  {
+   "line": 16,
+   "text": "多少",
+   "start": 88.123,
+   "end": 88.492
+  },
+  {
+   "line": 17,
+   "text": "涨",
+   "start": 89.654,
+   "end": 89.88
+  },
+  {
+   "line": 17,
+   "text": "的",
+   "start": 89.88,
+   "end": 89.951
+  },
+  {
+   "line": 17,
+   "text": "正好",
+   "start": 89.975,
+   "end": 90.308
+  },
+  {
+   "line": 17,
+   "text": "等于",
+   "start": 90.32,
+   "end": 90.535
+  },
+  {
+   "line": 17,
+   "text": "金额",
+   "start": 90.546,
+   "end": 91.154
+  },
+  {
+   "line": 17,
+   "text": "才",
+   "start": 91.475,
+   "end": 91.665
+  },
+  {
+   "line": 17,
+   "text": "算",
+   "start": 91.666,
+   "end": 91.796
+  },
+  {
+   "line": 17,
+   "text": "到账",
+   "start": 91.808,
+   "end": 92.201
+  },
+  {
+   "line": 18,
+   "text": "这个",
+   "start": 93.354,
+   "end": 93.58
+  },
+  {
+   "line": 18,
+   "text": "方案",
+   "start": 93.592,
+   "end": 94.056
+  },
+  {
+   "line": 18,
+   "text": "假设",
+   "start": 94.151,
+   "end": 94.58
+  },
+  {
+   "line": 18,
+   "text": "不",
+   "start": 94.604,
+   "end": 94.794
+  },
+  {
+   "line": 18,
+   "text": "收",
+   "start": 94.794,
+   "end": 94.973
+  },
+  {
+   "line": 18,
+   "text": "手续费",
+   "start": 94.985,
+   "end": 95.496
+  },
+  {
+   "line": 18,
+   "text": "而",
+   "start": 96.042,
+   "end": 96.22
+  },
+  {
+   "line": 18,
+   "text": "Tether",
+   "start": 96.244,
+   "end": 96.792
+  },
+  {
+   "line": 18,
+   "text": "保留",
+   "start": 96.887,
+   "end": 97.196
+  },
+  {
+   "line": 18,
+   "text": "了",
+   "start": 97.196,
+   "end": 97.28
+  },
+  {
+   "line": 18,
+   "text": "开启",
+   "start": 97.304,
+   "end": 97.601
+  },
+  {
+   "line": 18,
+   "text": "它",
+   "start": 97.613,
+   "end": 97.72
+  },
+  {
+   "line": 18,
+   "text": "的",
+   "start": 97.72,
+   "end": 97.804
+  },
+  {
+   "line": 18,
+   "text": "能力",
+   "start": 97.816,
+   "end": 98.149
+  },
+  {
+   "line": 19,
+   "text": "再",
+   "start": 99.31,
+   "end": 99.488
+  },
+  {
+   "line": 19,
+   "text": "看",
+   "start": 99.488,
+   "end": 99.702
+  },
+  {
+   "line": 19,
+   "text": "第三",
+   "start": 99.726,
+   "end": 100.083
+  },
+  {
+   "line": 19,
+   "text": "种",
+   "start": 100.083,
+   "end": 100.333
+  },
+  {
+   "line": 19,
+   "text": "收税",
+   "start": 100.524,
+   "end": 101.012
+  },
+  {
+   "line": 19,
+   "text": "代币",
+   "start": 101.024,
+   "end": 101.393
+  },
+  {
+   "line": 20,
+   "text": "协议",
+   "start": 102.554,
+   "end": 102.923
+  },
+  {
+   "line": 20,
+   "text": "按",
+   "start": 102.946,
+   "end": 103.089
+  },
+  {
+   "line": 20,
+   "text": "参数",
+   "start": 103.101,
+   "end": 103.47
+  },
+  {
+   "line": 20,
+   "text": "记账",
+   "start": 103.482,
+   "end": 103.887
+  },
+  {
+   "line": 20,
+   "text": "用户",
+   "start": 104.256,
+   "end": 104.589
+  },
+  {
+   "line": 20,
+   "text": "说存",
+   "start": 104.601,
+   "end": 104.958
+  },
+  {
+   "line": 20,
+   "text": "100",
+   "start": 104.97,
+   "end": 105.399
+  },
+  {
+   "line": 20,
+   "text": "账",
+   "start": 105.601,
+   "end": 105.839
+  },
+  {
+   "line": 20,
+   "text": "上",
+   "start": 105.839,
+   "end": 106.089
+  },
+  {
+   "line": 20,
+   "text": "就",
+   "start": 106.113,
+   "end": 106.315
+  },
+  {
+   "line": 20,
+   "text": "记",
+   "start": 106.316,
+   "end": 106.482
+  },
+  {
+   "line": 20,
+   "text": "100",
+   "start": 106.494,
+   "end": 106.899
+  },
+  {
+   "line": 21,
+   "text": "可",
+   "start": 108.054,
+   "end": 108.22
+  },
+  {
+   "line": 21,
+   "text": "代币",
+   "start": 108.22,
+   "end": 108.482
+  },
+  {
+   "line": 21,
+   "text": "扣",
+   "start": 108.482,
+   "end": 108.637
+  },
+  {
+   "line": 21,
+   "text": "了",
+   "start": 108.637,
+   "end": 108.72
+  },
+  {
+   "line": 21,
+   "text": "税",
+   "start": 108.72,
+   "end": 109.006
+  },
+  {
+   "line": 21,
+   "text": "金库",
+   "start": 109.316,
+   "end": 109.661
+  },
+  {
+   "line": 21,
+   "text": "实际",
+   "start": 109.673,
+   "end": 110.089
+  },
+  {
+   "line": 21,
+   "text": "只",
+   "start": 110.113,
+   "end": 110.232
+  },
+  {
+   "line": 21,
+   "text": "收到",
+   "start": 110.232,
+   "end": 110.482
+  },
+  {
+   "line": 21,
+   "text": "98",
+   "start": 110.506,
+   "end": 110.982
+  },
+  {
+   "line": 22,
+   "text": "账面",
+   "start": 112.138,
+   "end": 112.709
+  },
+  {
+   "line": 22,
+   "text": "比",
+   "start": 112.733,
+   "end": 112.84
+  },
+  {
+   "line": 22,
+   "text": "实收",
+   "start": 112.84,
+   "end": 113.269
+  },
+  {
+   "line": 22,
+   "text": "多",
+   "start": 113.292,
+   "end": 113.447
+  },
+  {
+   "line": 22,
+   "text": "出",
+   "start": 113.447,
+   "end": 113.566
+  },
+  {
+   "line": 22,
+   "text": "2",
+   "start": 113.578,
+   "end": 113.745
+  },
+  {
+   "line": 22,
+   "text": "枚",
+   "start": 113.745,
+   "end": 114.042
+  },
+  {
+   "line": 22,
+   "text": "这个",
+   "start": 114.576,
+   "end": 114.814
+  },
+  {
+   "line": 22,
+   "text": "差额",
+   "start": 114.826,
+   "end": 115.504
+  },
+  {
+   "line": 22,
+   "text": "由",
+   "start": 115.73,
+   "end": 115.861
+  },
+  {
+   "line": 22,
+   "text": "其他",
+   "start": 115.873,
+   "end": 116.207
+  },
+  {
+   "line": 22,
+   "text": "用户",
+   "start": 116.219,
+   "end": 116.433
+  },
+  {
+   "line": 22,
+   "text": "承担",
+   "start": 116.445,
+   "end": 116.814
+  },
+  {
+   "line": 23,
+   "text": "所有",
+   "start": 117.974,
+   "end": 118.331
+  },
+  {
+   "line": 23,
+   "text": "用户",
+   "start": 118.343,
+   "end": 118.628
+  },
+  {
+   "line": 23,
+   "text": "都",
+   "start": 118.652,
+   "end": 118.771
+  },
+  {
+   "line": 23,
+   "text": "这样",
+   "start": 118.783,
+   "end": 118.974
+  },
+  {
+   "line": 23,
+   "text": "存取",
+   "start": 118.986,
+   "end": 119.509
+  },
+  {
+   "line": 23,
+   "text": "协议",
+   "start": 119.831,
+   "end": 120.283
+  },
+  {
+   "line": 23,
+   "text": "就",
+   "start": 120.295,
+   "end": 120.39
+  },
+  {
+   "line": 23,
+   "text": "会",
+   "start": 120.39,
+   "end": 120.509
+  },
+  {
+   "line": 23,
+   "text": "资不抵债",
+   "start": 120.533,
+   "end": 121.212
+  },
+  {
+   "line": 24,
+   "text": "修复",
+   "start": 122.37,
+   "end": 122.798
+  },
+  {
+   "line": 24,
+   "text": "是",
+   "start": 122.81,
+   "end": 122.929
+  },
+  {
+   "line": 24,
+   "text": "按",
+   "start": 122.929,
+   "end": 123.048
+  },
+  {
+   "line": 24,
+   "text": "实收",
+   "start": 123.072,
+   "end": 123.405
+  },
+  {
+   "line": 24,
+   "text": "记账",
+   "start": 123.417,
+   "end": 123.822
+  },
+  {
+   "line": 24,
+   "text": "转账",
+   "start": 124.215,
+   "end": 124.596
+  },
+  {
+   "line": 24,
+   "text": "前后",
+   "start": 124.608,
+   "end": 125.072
+  },
+  {
+   "line": 24,
+   "text": "各",
+   "start": 125.334,
+   "end": 125.536
+  },
+  {
+   "line": 24,
+   "text": "读",
+   "start": 125.536,
+   "end": 125.643
+  },
+  {
+   "line": 24,
+   "text": "一次",
+   "start": 125.655,
+   "end": 125.882
+  },
+  {
+   "line": 24,
+   "text": "余额",
+   "start": 125.893,
+   "end": 126.31
+  },
+  {
+   "line": 24,
+   "text": "只",
+   "start": 126.477,
+   "end": 126.751
+  },
+  {
+   "line": 24,
+   "text": "记",
+   "start": 126.751,
+   "end": 126.905
+  },
+  {
+   "line": 24,
+   "text": "增量",
+   "start": 126.917,
+   "end": 127.286
+  },
+  {
+   "line": 25,
+   "text": "这",
+   "start": 128.446,
+   "end": 128.612
+  },
+  {
+   "line": 25,
+   "text": "一",
+   "start": 128.612,
+   "end": 128.731
+  },
+  {
+   "line": 25,
+   "text": "步",
+   "start": 128.731,
+   "end": 128.898
+  },
+  {
+   "line": 25,
+   "text": "要",
+   "start": 128.922,
+   "end": 129.041
+  },
+  {
+   "line": 25,
+   "text": "配合",
+   "start": 129.053,
+   "end": 129.327
+  },
+  {
+   "line": 25,
+   "text": "重",
+   "start": 129.35,
+   "end": 129.553
+  },
+  {
+   "line": 25,
+   "text": "入锁",
+   "start": 129.553,
+   "end": 129.981
+  },
+  {
+   "line": 25,
+   "text": "防止",
+   "start": 130.35,
+   "end": 130.731
+  },
+  {
+   "line": 25,
+   "text": "回调",
+   "start": 130.743,
+   "end": 131.029
+  },
+  {
+   "line": 25,
+   "text": "干扰",
+   "start": 131.041,
+   "end": 131.291
+  },
+  {
+   "line": 25,
+   "text": "前后",
+   "start": 131.303,
+   "end": 131.66
+  },
+  {
+   "line": 25,
+   "text": "两",
+   "start": 131.684,
+   "end": 131.874
+  },
+  {
+   "line": 25,
+   "text": "次",
+   "start": 131.874,
+   "end": 132.041
+  },
+  {
+   "line": 25,
+   "text": "读数",
+   "start": 132.053,
+   "end": 132.398
+  },
+  {
+   "line": 26,
+   "text": "没有",
+   "start": 133.562,
+   "end": 133.859
+  },
+  {
+   "line": 26,
+   "text": "一个",
+   "start": 133.871,
+   "end": 134.157
+  },
+  {
+   "line": 26,
+   "text": "库",
+   "start": 134.157,
+   "end": 134.514
+  },
+  {
+   "line": 26,
+   "text": "能防",
+   "start": 134.812,
+   "end": 135.169
+  },
+  {
+   "line": 26,
+   "text": "住",
+   "start": 135.169,
+   "end": 135.276
+  },
+  {
+   "line": 26,
+   "text": "所有",
+   "start": 135.3,
+   "end": 135.704
+  },
+  {
+   "line": 26,
+   "text": "怪代币",
+   "start": 135.716,
+   "end": 136.181
+  },
+  {
+   "line": 27,
+   "text": "审计",
+   "start": 137.334,
+   "end": 137.715
+  },
+  {
+   "line": 27,
+   "text": "时",
+   "start": 137.715,
+   "end": 138.131
+  },
+  {
+   "line": 27,
+   "text": "先",
+   "start": 138.429,
+   "end": 138.667
+  },
+  {
+   "line": 27,
+   "text": "问",
+   "start": 138.667,
+   "end": 138.774
+  },
+  {
+   "line": 27,
+   "text": "项目",
+   "start": 138.786,
+   "end": 139.072
+  },
+  {
+   "line": 27,
+   "text": "方",
+   "start": 139.072,
+   "end": 139.369
+  },
+  {
+   "line": 27,
+   "text": "你们",
+   "start": 139.703,
+   "end": 140.131
+  },
+  {
+   "line": 27,
+   "text": "支持",
+   "start": 140.143,
+   "end": 140.441
+  },
+  {
+   "line": 27,
+   "text": "哪些",
+   "start": 140.465,
+   "end": 140.715
+  },
+  {
+   "line": 27,
+   "text": "代币",
+   "start": 140.726,
+   "end": 141.095
+  },
+  {
+   "line": 28,
+   "text": "不",
+   "start": 142.538,
+   "end": 142.704
+  },
+  {
+   "line": 28,
+   "text": "支持",
+   "start": 142.704,
+   "end": 142.966
+  },
+  {
+   "line": 28,
+   "text": "的",
+   "start": 142.966,
+   "end": 143.05
+  },
+  {
+   "line": 28,
+   "text": "类型",
+   "start": 143.061,
+   "end": 143.585
+  },
+  {
+   "line": 28,
+   "text": "比如",
+   "start": 143.823,
+   "end": 144.061
+  },
+  {
+   "line": 28,
+   "text": "收税",
+   "start": 144.085,
+   "end": 144.478
+  },
+  {
+   "line": 28,
+   "text": "和",
+   "start": 144.502,
+   "end": 144.597
+  },
+  {
+   "line": 28,
+   "text": "变基",
+   "start": 144.609,
+   "end": 145.085
+  },
+  {
+   "line": 28,
+   "text": "要",
+   "start": 145.288,
+   "end": 145.442
+  },
+  {
+   "line": 28,
+   "text": "显式",
+   "start": 145.442,
+   "end": 145.716
+  },
+  {
+   "line": 28,
+   "text": "拒绝",
+   "start": 145.728,
+   "end": 146.204
+  }
+ ],
+ "captions": [
+  {
+   "text": "第二类风险",
+   "start": 1.648,
+   "end": 2.615,
+   "id": "c0"
+  },
+  {
+   "text": "来自代币本身",
+   "start": 2.767,
+   "end": 3.984,
+   "id": "c1"
+  },
+  {
+   "text": "ERC-20 只规定了接口",
+   "start": 4.964,
+   "end": 7.05,
+   "id": "c2"
+  },
+  {
+   "text": "没有规定行为",
+   "start": 7.083,
+   "end": 8.181,
+   "id": "c3"
+  },
+  {
+   "text": "常见的非标准行为 有八种",
+   "start": 9.168,
+   "end": 11.695,
+   "id": "c4"
+  },
+  {
+   "text": "一 transfer 不返回值",
+   "start": 12.676,
+   "end": 15.048,
+   "id": "c5"
+  },
+  {
+   "text": "比如以太坊上的 USDT",
+   "start": 15.068,
+   "end": 17.31,
+   "id": "c6"
+  },
+  {
+   "text": "用 SafeERC20 兼容",
+   "start": 17.685,
+   "end": 19.796,
+   "id": "c7"
+  },
+  {
+   "text": "二 transfer 成功了",
+   "start": 20.768,
+   "end": 22.688,
+   "id": "c8"
+  },
+  {
+   "text": "却返回 false",
+   "start": 22.708,
+   "end": 23.866,
+   "id": "c9"
+  },
+  {
+   "text": "这是 TRON 上的 USDT",
+   "start": 24.23,
+   "end": 26.4,
+   "id": "c10"
+  },
+  {
+   "text": "三 转账收税",
+   "start": 27.396,
+   "end": 29.208,
+   "id": "c11"
+  },
+  {
+   "text": "到账的钱",
+   "start": 29.584,
+   "end": 30.587,
+   "id": "c12"
+  },
+  {
+   "text": "比转出的少",
+   "start": 30.715,
+   "end": 31.73,
+   "id": "c13"
+  },
+  {
+   "text": "四 余额自动变化",
+   "start": 32.704,
+   "end": 34.79,
+   "id": "c14"
+  },
+  {
+   "text": "比如 stETH",
+   "start": 34.858,
+   "end": 36.564,
+   "id": "c15"
+  },
+  {
+   "text": "缓存的余额会失效",
+   "start": 36.939,
+   "end": 38.55,
+   "id": "c16"
+  },
+  {
+   "text": "要用份额记账",
+   "start": 38.606,
+   "end": 39.812,
+   "id": "c17"
+  },
+  {
+   "text": "五 黑名单和冻结",
+   "start": 40.796,
+   "end": 42.942,
+   "id": "c18"
+  },
+  {
+   "text": "六 可暂停",
+   "start": 43.92,
+   "end": 45.506,
+   "id": "c19"
+  },
+  {
+   "text": "七 转账钩子",
+   "start": 46.492,
+   "end": 48.269,
+   "id": "c20"
+  },
+  {
+   "text": "比如 ERC-777",
+   "start": 48.396,
+   "end": 50.221,
+   "id": "c21"
+  },
+  {
+   "text": "会带来重入",
+   "start": 50.254,
+   "end": 51.269,
+   "id": "c22"
+  },
+  {
+   "text": "八 可升级",
+   "start": 52.256,
+   "end": 53.747,
+   "id": "c23"
+  },
+  {
+   "text": "行为以后可能改变",
+   "start": 54.122,
+   "end": 55.745,
+   "id": "c24"
+  },
+  {
+   "text": "细看第二种",
+   "start": 56.748,
+   "end": 57.918,
+   "id": "c25"
+  },
+  {
+   "text": "OpenZeppelin 在 2026 年",
+   "start": 58.281,
+   "end": 60.297,
+   "id": "c26"
+  },
+  {
+   "text": "审计了 Across 协议的 TRON 部署",
+   "start": 60.317,
+   "end": 62.88,
+   "id": "c27"
+  },
+  {
+   "text": "TRON 上的 USDT",
+   "start": 63.88,
+   "end": 65.847,
+   "id": "c28"
+  },
+  {
+   "text": "转账成功时",
+   "start": 65.915,
+   "end": 67.074,
+   "id": "c29"
+  },
+  {
+   "text": "也返回 false",
+   "start": 67.094,
+   "end": 68.24,
+   "id": "c30"
+  },
+  {
+   "text": "于是",
+   "start": 69.212,
+   "end": 69.894,
+   "id": "c31"
+  },
+  {
+   "text": "用 safeTransfer 推送 USDT 的代码",
+   "start": 70.045,
+   "end": 73.001,
+   "id": "c32"
+  },
+  {
+   "text": "在 TRON 上一律回滚",
+   "start": 73.021,
+   "end": 74.584,
+   "id": "c33"
+  },
+  {
+   "text": "存款走拉取方向的 transferFrom",
+   "start": 75.576,
+   "end": 78.079,
+   "id": "c34"
+  },
+  {
+   "text": "不受影响",
+   "start": 78.123,
+   "end": 78.912,
+   "id": "c35"
+  },
+  {
+   "text": "症状就是",
+   "start": 79.9,
+   "end": 80.939,
+   "id": "c36"
+  },
+  {
+   "text": "存款正常",
+   "start": 80.983,
+   "end": 82.261,
+   "id": "c37"
+  },
+  {
+   "text": "提款全部失败",
+   "start": 82.281,
+   "end": 83.712,
+   "id": "c38"
+  },
+  {
+   "text": "修复是不读返回值",
+   "start": 84.704,
+   "end": 86.445,
+   "id": "c39"
+  },
+  {
+   "text": "只看接收方的余额涨了多少",
+   "start": 86.537,
+   "end": 88.612,
+   "id": "c40"
+  },
+  {
+   "text": "涨的正好等于金额",
+   "start": 89.604,
+   "end": 91.274,
+   "id": "c41"
+  },
+  {
+   "text": "才算到账",
+   "start": 91.425,
+   "end": 92.321,
+   "id": "c42"
+  },
+  {
+   "text": "这个方案假设不收手续费",
+   "start": 93.304,
+   "end": 95.616,
+   "id": "c43"
+  },
+  {
+   "text": "而 Tether 保留了开启它的能力",
+   "start": 95.992,
+   "end": 98.269,
+   "id": "c44"
+  },
+  {
+   "text": "再看第三种",
+   "start": 99.26,
+   "end": 100.453,
+   "id": "c45"
+  },
+  {
+   "text": "收税代币",
+   "start": 100.474,
+   "end": 101.513,
+   "id": "c46"
+  },
+  {
+   "text": "协议按参数记账",
+   "start": 102.504,
+   "end": 104.007,
+   "id": "c47"
+  },
+  {
+   "text": "用户说存 100",
+   "start": 104.206,
+   "end": 105.519,
+   "id": "c48"
+  },
+  {
+   "text": "账上就记 100",
+   "start": 105.551,
+   "end": 107.019,
+   "id": "c49"
+  },
+  {
+   "text": "可代币扣了税",
+   "start": 108.004,
+   "end": 109.126,
+   "id": "c50"
+  },
+  {
+   "text": "金库实际只收到 98",
+   "start": 109.266,
+   "end": 111.102,
+   "id": "c51"
+  },
+  {
+   "text": "账面比实收多出 2 枚",
+   "start": 112.088,
+   "end": 114.162,
+   "id": "c52"
+  },
+  {
+   "text": "这个差额",
+   "start": 114.526,
+   "end": 115.624,
+   "id": "c53"
+  },
+  {
+   "text": "由其他用户承担",
+   "start": 115.68,
+   "end": 116.934,
+   "id": "c54"
+  },
+  {
+   "text": "所有用户都这样存取",
+   "start": 117.924,
+   "end": 119.629,
+   "id": "c55"
+  },
+  {
+   "text": "协议就会资不抵债",
+   "start": 119.781,
+   "end": 121.332,
+   "id": "c56"
+  },
+  {
+   "text": "修复是按实收记账",
+   "start": 122.32,
+   "end": 123.942,
+   "id": "c57"
+  },
+  {
+   "text": "转账前后",
+   "start": 124.165,
+   "end": 125.192,
+   "id": "c58"
+  },
+  {
+   "text": "各读一次余额",
+   "start": 125.284,
+   "end": 126.407,
+   "id": "c59"
+  },
+  {
+   "text": "只记增量",
+   "start": 126.427,
+   "end": 127.406,
+   "id": "c60"
+  },
+  {
+   "text": "这一步要配合重入锁",
+   "start": 128.396,
+   "end": 130.101,
+   "id": "c61"
+  },
+  {
+   "text": "防止回调干扰前后两次读数",
+   "start": 130.3,
+   "end": 132.518,
+   "id": "c62"
+  },
+  {
+   "text": "没有一个库",
+   "start": 133.512,
+   "end": 134.634,
+   "id": "c63"
+  },
+  {
+   "text": "能防住所有怪代币",
+   "start": 134.762,
+   "end": 136.301,
+   "id": "c64"
+  },
+  {
+   "text": "审计时 先问项目方",
+   "start": 137.284,
+   "end": 139.489,
+   "id": "c65"
+  },
+  {
+   "text": "你们支持哪些代币",
+   "start": 139.653,
+   "end": 141.215,
+   "id": "c66"
+  },
+  {
+   "text": "不支持的类型",
+   "start": 142.488,
+   "end": 143.705,
+   "id": "c67"
+  },
+  {
+   "text": "比如收税和变基",
+   "start": 143.773,
+   "end": 145.205,
+   "id": "c68"
+  },
+  {
+   "text": "要显式拒绝",
+   "start": 145.238,
+   "end": 146.324,
+   "id": "c69"
+  }
+ ]
+}

@@ -1,0 +1,1142 @@
+{
+ "id": "seg1",
+ "title": "一个捐赠函数",
+ "pill": 1,
+ "total": 68.94,
+ "lines": [
+  {
+   "id": "seg1-00",
+   "text": "2023 年 3 月 13 日，借贷协议 Euler Finance，损失约 1.97 亿美元，按事发时估值。",
+   "spoken": "2023 年 3 月 13 日，借贷协议 Euler Finance，损失约 1.97 亿美元，按事发时估值。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep11/audio/lines/seg1-00.mp3",
+   "start": 1.6,
+   "dur": 7.92,
+   "speechStart": 1.698,
+   "speechEnd": 8.674
+  },
+  {
+   "id": "seg1-01",
+   "text": "入口，是一个捐赠函数。",
+   "spoken": "入口，是一个捐赠函数。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep11/audio/lines/seg1-01.mp3",
+   "start": 9.74,
+   "dur": 3.12,
+   "speechStart": 9.838,
+   "speechEnd": 12.016
+  },
+  {
+   "id": "seg1-02",
+   "text": "它让用户把自己的存款，捐给协议的储备。",
+   "spoken": "它让用户把自己的存款，捐给协议的储备。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep11/audio/lines/seg1-02.mp3",
+   "start": 13.08,
+   "dur": 3.984,
+   "speechStart": 13.178,
+   "speechEnd": 16.213
+  },
+  {
+   "id": "seg1-03",
+   "text": "捐出去，账户的抵押品就少了。",
+   "spoken": "捐出去，账户的抵押品就少了。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep11/audio/lines/seg1-03.mp3",
+   "start": 17.284,
+   "dur": 3.312,
+   "speechStart": 17.382,
+   "speechEnd": 19.763
+  },
+  {
+   "id": "seg1-04",
+   "text": "但这个函数，不检查账户是否仍然健康。",
+   "spoken": "但这个函数，不检查账户是否仍然健康。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep11/audio/lines/seg1-04.mp3",
+   "start": 20.816,
+   "dur": 4.464,
+   "speechStart": 20.914,
+   "speechEnd": 24.437
+  },
+  {
+   "id": "seg1-05",
+   "text": "先猜一道题。",
+   "spoken": "先猜一道题。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep11/audio/lines/seg1-05.mp3",
+   "start": 25.5,
+   "dur": 2.088,
+   "speechStart": 25.598,
+   "speechEnd": 26.752
+  },
+  {
+   "id": "seg1-06",
+   "text": "举个例子。一个账户有 100 美元抵押品，借了 90 美元。",
+   "spoken": "举个例子。一个账户有 100 美元抵押品，借了 90 美元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep11/audio/lines/seg1-06.mp3",
+   "start": 27.808,
+   "dur": 5.808,
+   "speechStart": 27.906,
+   "speechEnd": 32.772
+  },
+  {
+   "id": "seg1-07",
+   "text": "它捐出 30 美元抵押品，没人检查，也没人偿还。协议的缺口是多少？",
+   "spoken": "它捐出 30 美元抵押品，没人检查，也没人偿环。协议的缺口是多少？",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep11/audio/lines/seg1-07.mp3",
+   "start": 33.836,
+   "dur": 6.912,
+   "speechStart": 33.934,
+   "speechEnd": 39.907
+  },
+  {
+   "id": "seg1-08",
+   "text": "缺口是 20 美元。",
+   "spoken": "缺口是 20 美元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep11/audio/lines/seg1-08.mp3",
+   "start": 41.248,
+   "dur": 2.4,
+   "speechStart": 41.346,
+   "speechEnd": 42.81
+  },
+  {
+   "id": "seg1-09",
+   "text": "账户只剩 70 美元抵押品，却欠着 90 美元。",
+   "spoken": "账户只剩 70 美元抵押品，却欠着 90 美元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep11/audio/lines/seg1-09.mp3",
+   "start": 43.868,
+   "dur": 4.584,
+   "speechStart": 43.966,
+   "speechEnd": 47.62
+  },
+  {
+   "id": "seg1-10",
+   "text": "这 20 美元成了坏账，最后由存款人或保险基金承担。",
+   "spoken": "这 20 美元成了坏账，最后由存款人或保险基金承担。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep11/audio/lines/seg1-10.mp3",
+   "start": 48.672,
+   "dur": 5.088,
+   "speechStart": 48.77,
+   "speechEnd": 52.924
+  },
+  {
+   "id": "seg1-11",
+   "text": "每个函数单独看，都没有错。",
+   "spoken": "每个函数单独看，都没有错。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep11/audio/lines/seg1-11.mp3",
+   "start": 53.98,
+   "dur": 3.24,
+   "speechStart": 54.078,
+   "speechEnd": 56.387
+  },
+  {
+   "id": "seg1-12",
+   "text": "攻击者也没有利用代码 bug。他只是按规则操作，换了一种设计者没想到的组合。",
+   "spoken": "攻击者也没有利用代码 bug。他只是按规则操作，换了一种设计者没想到的组合。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep11/audio/lines/seg1-12.mp3",
+   "start": 57.44,
+   "dur": 6.696,
+   "speechStart": 57.538,
+   "speechEnd": 63.309
+  },
+  {
+   "id": "seg1-13",
+   "text": "规则本身，怎么会让协议亏钱？",
+   "spoken": "规则本身，怎么会让协议亏钱？",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep11/audio/lines/seg1-13.mp3",
+   "start": 64.356,
+   "dur": 3.384,
+   "speechStart": 64.454,
+   "speechEnd": 66.906
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "2023 年 3 月 13 日",
+   "start": 1.698,
+   "end": 3.198
+  },
+  {
+   "line": 0,
+   "text": "借贷",
+   "start": 3.376,
+   "end": 3.65
+  },
+  {
+   "line": 0,
+   "text": "协议",
+   "start": 3.662,
+   "end": 4.055
+  },
+  {
+   "line": 0,
+   "text": "Euler",
+   "start": 4.162,
+   "end": 4.567
+  },
+  {
+   "line": 0,
+   "text": "Finance",
+   "start": 4.579,
+   "end": 5.233
+  },
+  {
+   "line": 0,
+   "text": "损失",
+   "start": 5.46,
+   "end": 5.971
+  },
+  {
+   "line": 0,
+   "text": "约",
+   "start": 5.995,
+   "end": 6.21
+  },
+  {
+   "line": 0,
+   "text": "1.97 亿",
+   "start": 6.221,
+   "end": 6.959
+  },
+  {
+   "line": 0,
+   "text": "美元",
+   "start": 6.971,
+   "end": 7.376
+  },
+  {
+   "line": 0,
+   "text": "按",
+   "start": 7.555,
+   "end": 7.71
+  },
+  {
+   "line": 0,
+   "text": "事发",
+   "start": 7.721,
+   "end": 7.995
+  },
+  {
+   "line": 0,
+   "text": "时",
+   "start": 7.995,
+   "end": 8.21
+  },
+  {
+   "line": 0,
+   "text": "估值",
+   "start": 8.221,
+   "end": 8.674
+  },
+  {
+   "line": 1,
+   "text": "入口",
+   "start": 9.838,
+   "end": 10.504
+  },
+  {
+   "line": 1,
+   "text": "是",
+   "start": 10.707,
+   "end": 10.909
+  },
+  {
+   "line": 1,
+   "text": "一个",
+   "start": 10.909,
+   "end": 11.135
+  },
+  {
+   "line": 1,
+   "text": "捐赠",
+   "start": 11.159,
+   "end": 11.528
+  },
+  {
+   "line": 1,
+   "text": "函数",
+   "start": 11.54,
+   "end": 12.016
+  },
+  {
+   "line": 2,
+   "text": "它",
+   "start": 13.178,
+   "end": 13.309
+  },
+  {
+   "line": 2,
+   "text": "让",
+   "start": 13.309,
+   "end": 13.416
+  },
+  {
+   "line": 2,
+   "text": "用户",
+   "start": 13.428,
+   "end": 13.916
+  },
+  {
+   "line": 2,
+   "text": "把",
+   "start": 13.94,
+   "end": 14.07
+  },
+  {
+   "line": 2,
+   "text": "自己",
+   "start": 14.082,
+   "end": 14.297
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 14.297,
+   "end": 14.356
+  },
+  {
+   "line": 2,
+   "text": "存款",
+   "start": 14.368,
+   "end": 14.916
+  },
+  {
+   "line": 2,
+   "text": "捐",
+   "start": 15.142,
+   "end": 15.356
+  },
+  {
+   "line": 2,
+   "text": "给",
+   "start": 15.356,
+   "end": 15.451
+  },
+  {
+   "line": 2,
+   "text": "协议",
+   "start": 15.475,
+   "end": 15.761
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 15.761,
+   "end": 15.82
+  },
+  {
+   "line": 2,
+   "text": "储备",
+   "start": 15.832,
+   "end": 16.213
+  },
+  {
+   "line": 3,
+   "text": "捐",
+   "start": 17.382,
+   "end": 17.62
+  },
+  {
+   "line": 3,
+   "text": "出去",
+   "start": 17.62,
+   "end": 18.096
+  },
+  {
+   "line": 3,
+   "text": "账户",
+   "start": 18.346,
+   "end": 18.667
+  },
+  {
+   "line": 3,
+   "text": "的",
+   "start": 18.667,
+   "end": 18.763
+  },
+  {
+   "line": 3,
+   "text": "抵押品",
+   "start": 18.774,
+   "end": 19.203
+  },
+  {
+   "line": 3,
+   "text": "就",
+   "start": 19.227,
+   "end": 19.334
+  },
+  {
+   "line": 3,
+   "text": "少",
+   "start": 19.334,
+   "end": 19.56
+  },
+  {
+   "line": 3,
+   "text": "了",
+   "start": 19.56,
+   "end": 19.763
+  },
+  {
+   "line": 4,
+   "text": "但",
+   "start": 20.914,
+   "end": 21.092
+  },
+  {
+   "line": 4,
+   "text": "这个",
+   "start": 21.104,
+   "end": 21.271
+  },
+  {
+   "line": 4,
+   "text": "函数",
+   "start": 21.283,
+   "end": 21.783
+  },
+  {
+   "line": 4,
+   "text": "不",
+   "start": 22.128,
+   "end": 22.283
+  },
+  {
+   "line": 4,
+   "text": "检查",
+   "start": 22.283,
+   "end": 22.556
+  },
+  {
+   "line": 4,
+   "text": "账户",
+   "start": 22.568,
+   "end": 23.092
+  },
+  {
+   "line": 4,
+   "text": "是否",
+   "start": 23.187,
+   "end": 23.628
+  },
+  {
+   "line": 4,
+   "text": "仍然",
+   "start": 23.652,
+   "end": 23.961
+  },
+  {
+   "line": 4,
+   "text": "健康",
+   "start": 23.973,
+   "end": 24.437
+  },
+  {
+   "line": 5,
+   "text": "先",
+   "start": 25.598,
+   "end": 25.967
+  },
+  {
+   "line": 5,
+   "text": "猜",
+   "start": 25.967,
+   "end": 26.121
+  },
+  {
+   "line": 5,
+   "text": "一道",
+   "start": 26.133,
+   "end": 26.348
+  },
+  {
+   "line": 5,
+   "text": "题",
+   "start": 26.348,
+   "end": 26.752
+  },
+  {
+   "line": 6,
+   "text": "举",
+   "start": 27.906,
+   "end": 28.144
+  },
+  {
+   "line": 6,
+   "text": "个",
+   "start": 28.144,
+   "end": 28.239
+  },
+  {
+   "line": 6,
+   "text": "例子",
+   "start": 28.251,
+   "end": 28.632
+  },
+  {
+   "line": 6,
+   "text": "一个",
+   "start": 29.177,
+   "end": 29.403
+  },
+  {
+   "line": 6,
+   "text": "账户",
+   "start": 29.415,
+   "end": 29.951
+  },
+  {
+   "line": 6,
+   "text": "有",
+   "start": 30.058,
+   "end": 30.237
+  },
+  {
+   "line": 6,
+   "text": "100 美元",
+   "start": 30.248,
+   "end": 30.832
+  },
+  {
+   "line": 6,
+   "text": "抵押品",
+   "start": 30.844,
+   "end": 31.367
+  },
+  {
+   "line": 6,
+   "text": "借",
+   "start": 31.665,
+   "end": 31.82
+  },
+  {
+   "line": 6,
+   "text": "了",
+   "start": 31.82,
+   "end": 31.927
+  },
+  {
+   "line": 6,
+   "text": "90 美元",
+   "start": 31.951,
+   "end": 32.772
+  },
+  {
+   "line": 7,
+   "text": "它",
+   "start": 33.934,
+   "end": 34.1
+  },
+  {
+   "line": 7,
+   "text": "捐出",
+   "start": 34.1,
+   "end": 34.41
+  },
+  {
+   "line": 7,
+   "text": "30 美元",
+   "start": 34.434,
+   "end": 35.041
+  },
+  {
+   "line": 7,
+   "text": "抵押品",
+   "start": 35.053,
+   "end": 35.565
+  },
+  {
+   "line": 7,
+   "text": "没",
+   "start": 35.85,
+   "end": 36.076
+  },
+  {
+   "line": 7,
+   "text": "人",
+   "start": 36.076,
+   "end": 36.195
+  },
+  {
+   "line": 7,
+   "text": "检查",
+   "start": 36.207,
+   "end": 36.791
+  },
+  {
+   "line": 7,
+   "text": "也",
+   "start": 37.053,
+   "end": 37.196
+  },
+  {
+   "line": 7,
+   "text": "没",
+   "start": 37.207,
+   "end": 37.374
+  },
+  {
+   "line": 7,
+   "text": "人",
+   "start": 37.374,
+   "end": 37.481
+  },
+  {
+   "line": 7,
+   "text": "偿",
+   "start": 37.493,
+   "end": 37.743
+  },
+  {
+   "line": 7,
+   "text": "还",
+   "start": 37.743,
+   "end": 38.029
+  },
+  {
+   "line": 7,
+   "text": "协议",
+   "start": 38.562,
+   "end": 38.955
+  },
+  {
+   "line": 7,
+   "text": "的",
+   "start": 38.955,
+   "end": 39.026
+  },
+  {
+   "line": 7,
+   "text": "缺口",
+   "start": 39.038,
+   "end": 39.36
+  },
+  {
+   "line": 7,
+   "text": "是",
+   "start": 39.384,
+   "end": 39.455
+  },
+  {
+   "line": 7,
+   "text": "多少",
+   "start": 39.467,
+   "end": 39.907
+  },
+  {
+   "line": 8,
+   "text": "缺口",
+   "start": 41.346,
+   "end": 41.881
+  },
+  {
+   "line": 8,
+   "text": "是",
+   "start": 41.905,
+   "end": 42.0
+  },
+  {
+   "line": 8,
+   "text": "20 美元",
+   "start": 42.012,
+   "end": 42.81
+  },
+  {
+   "line": 9,
+   "text": "账户",
+   "start": 43.966,
+   "end": 44.418
+  },
+  {
+   "line": 9,
+   "text": "只",
+   "start": 44.43,
+   "end": 44.597
+  },
+  {
+   "line": 9,
+   "text": "剩",
+   "start": 44.597,
+   "end": 44.799
+  },
+  {
+   "line": 9,
+   "text": "70 美元",
+   "start": 44.823,
+   "end": 45.454
+  },
+  {
+   "line": 9,
+   "text": "抵押品",
+   "start": 45.466,
+   "end": 46.001
+  },
+  {
+   "line": 9,
+   "text": "却",
+   "start": 46.216,
+   "end": 46.382
+  },
+  {
+   "line": 9,
+   "text": "欠",
+   "start": 46.394,
+   "end": 46.573
+  },
+  {
+   "line": 9,
+   "text": "着",
+   "start": 46.573,
+   "end": 46.716
+  },
+  {
+   "line": 9,
+   "text": "90 美元",
+   "start": 46.739,
+   "end": 47.62
+  },
+  {
+   "line": 10,
+   "text": "这",
+   "start": 48.77,
+   "end": 48.901
+  },
+  {
+   "line": 10,
+   "text": "20 美元",
+   "start": 48.912,
+   "end": 49.472
+  },
+  {
+   "line": 10,
+   "text": "成",
+   "start": 49.496,
+   "end": 49.615
+  },
+  {
+   "line": 10,
+   "text": "了",
+   "start": 49.615,
+   "end": 49.674
+  },
+  {
+   "line": 10,
+   "text": "坏账",
+   "start": 49.686,
+   "end": 50.174
+  },
+  {
+   "line": 10,
+   "text": "最后",
+   "start": 50.508,
+   "end": 50.877
+  },
+  {
+   "line": 10,
+   "text": "由",
+   "start": 50.889,
+   "end": 51.032
+  },
+  {
+   "line": 10,
+   "text": "存款人",
+   "start": 51.043,
+   "end": 51.71
+  },
+  {
+   "line": 10,
+   "text": "或",
+   "start": 51.734,
+   "end": 51.912
+  },
+  {
+   "line": 10,
+   "text": "保险基金",
+   "start": 51.924,
+   "end": 52.508
+  },
+  {
+   "line": 10,
+   "text": "承担",
+   "start": 52.52,
+   "end": 52.924
+  },
+  {
+   "line": 11,
+   "text": "每个",
+   "start": 54.078,
+   "end": 54.387
+  },
+  {
+   "line": 11,
+   "text": "函数",
+   "start": 54.399,
+   "end": 54.744
+  },
+  {
+   "line": 11,
+   "text": "单独",
+   "start": 54.768,
+   "end": 55.066
+  },
+  {
+   "line": 11,
+   "text": "看",
+   "start": 55.066,
+   "end": 55.387
+  },
+  {
+   "line": 11,
+   "text": "都",
+   "start": 55.72,
+   "end": 55.887
+  },
+  {
+   "line": 11,
+   "text": "没有",
+   "start": 55.899,
+   "end": 56.113
+  },
+  {
+   "line": 11,
+   "text": "错",
+   "start": 56.113,
+   "end": 56.387
+  },
+  {
+   "line": 12,
+   "text": "攻击者",
+   "start": 57.538,
+   "end": 58.109
+  },
+  {
+   "line": 12,
+   "text": "也",
+   "start": 58.133,
+   "end": 58.264
+  },
+  {
+   "line": 12,
+   "text": "没有",
+   "start": 58.264,
+   "end": 58.49
+  },
+  {
+   "line": 12,
+   "text": "利用",
+   "start": 58.514,
+   "end": 58.669
+  },
+  {
+   "line": 12,
+   "text": "代码",
+   "start": 58.68,
+   "end": 58.907
+  },
+  {
+   "line": 12,
+   "text": "bug",
+   "start": 58.907,
+   "end": 59.3
+  },
+  {
+   "line": 12,
+   "text": "他",
+   "start": 59.833,
+   "end": 59.976
+  },
+  {
+   "line": 12,
+   "text": "只是",
+   "start": 59.988,
+   "end": 60.166
+  },
+  {
+   "line": 12,
+   "text": "按",
+   "start": 60.178,
+   "end": 60.309
+  },
+  {
+   "line": 12,
+   "text": "规则",
+   "start": 60.333,
+   "end": 60.642
+  },
+  {
+   "line": 12,
+   "text": "操作",
+   "start": 60.654,
+   "end": 61.166
+  },
+  {
+   "line": 12,
+   "text": "换",
+   "start": 61.416,
+   "end": 61.595
+  },
+  {
+   "line": 12,
+   "text": "了",
+   "start": 61.595,
+   "end": 61.654
+  },
+  {
+   "line": 12,
+   "text": "一种",
+   "start": 61.666,
+   "end": 61.892
+  },
+  {
+   "line": 12,
+   "text": "设计者",
+   "start": 61.916,
+   "end": 62.369
+  },
+  {
+   "line": 12,
+   "text": "没",
+   "start": 62.392,
+   "end": 62.535
+  },
+  {
+   "line": 12,
+   "text": "想到",
+   "start": 62.535,
+   "end": 62.761
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 62.761,
+   "end": 62.833
+  },
+  {
+   "line": 12,
+   "text": "组合",
+   "start": 62.845,
+   "end": 63.309
+  },
+  {
+   "line": 13,
+   "text": "规则",
+   "start": 64.454,
+   "end": 64.775
+  },
+  {
+   "line": 13,
+   "text": "本身",
+   "start": 64.787,
+   "end": 65.323
+  },
+  {
+   "line": 13,
+   "text": "怎么",
+   "start": 65.668,
+   "end": 65.894
+  },
+  {
+   "line": 13,
+   "text": "会",
+   "start": 65.906,
+   "end": 66.013
+  },
+  {
+   "line": 13,
+   "text": "让",
+   "start": 66.013,
+   "end": 66.085
+  },
+  {
+   "line": 13,
+   "text": "协议",
+   "start": 66.096,
+   "end": 66.418
+  },
+  {
+   "line": 13,
+   "text": "亏钱",
+   "start": 66.43,
+   "end": 66.906
+  }
+ ],
+ "captions": [
+  {
+   "text": "2023 年 3 月 13 日",
+   "start": 1.648,
+   "end": 3.306,
+   "id": "c0"
+  },
+  {
+   "text": "借贷协议 Euler Finance",
+   "start": 3.326,
+   "end": 5.353,
+   "id": "c1"
+  },
+  {
+   "text": "损失约 1.97 亿美元",
+   "start": 5.41,
+   "end": 7.485,
+   "id": "c2"
+  },
+  {
+   "text": "按事发时估值",
+   "start": 7.505,
+   "end": 8.794,
+   "id": "c3"
+  },
+  {
+   "text": "入口 是一个捐赠函数",
+   "start": 9.788,
+   "end": 12.136,
+   "id": "c4"
+  },
+  {
+   "text": "它让用户把自己的存款",
+   "start": 13.128,
+   "end": 15.036,
+   "id": "c5"
+  },
+  {
+   "text": "捐给协议的储备",
+   "start": 15.092,
+   "end": 16.333,
+   "id": "c6"
+  },
+  {
+   "text": "捐出去 账户的抵押品就少了",
+   "start": 17.332,
+   "end": 19.883,
+   "id": "c7"
+  },
+  {
+   "text": "但这个函数",
+   "start": 20.864,
+   "end": 21.903,
+   "id": "c8"
+  },
+  {
+   "text": "不检查账户是否仍然健康",
+   "start": 22.078,
+   "end": 24.557,
+   "id": "c9"
+  },
+  {
+   "text": "先猜一道题",
+   "start": 25.548,
+   "end": 26.872,
+   "id": "c10"
+  },
+  {
+   "text": "举个例子",
+   "start": 27.856,
+   "end": 28.752,
+   "id": "c11"
+  },
+  {
+   "text": "一个账户有 100 美元抵押品",
+   "start": 29.127,
+   "end": 31.487,
+   "id": "c12"
+  },
+  {
+   "text": "借了 90 美元",
+   "start": 31.615,
+   "end": 32.892,
+   "id": "c13"
+  },
+  {
+   "text": "它捐出 30 美元抵押品",
+   "start": 33.884,
+   "end": 35.685,
+   "id": "c14"
+  },
+  {
+   "text": "没人检查",
+   "start": 35.8,
+   "end": 36.911,
+   "id": "c15"
+  },
+  {
+   "text": "也没人偿还",
+   "start": 37.003,
+   "end": 38.149,
+   "id": "c16"
+  },
+  {
+   "text": "协议的缺口是多少",
+   "start": 38.512,
+   "end": 40.027,
+   "id": "c17"
+  },
+  {
+   "text": "缺口是 20 美元",
+   "start": 41.296,
+   "end": 42.93,
+   "id": "c18"
+  },
+  {
+   "text": "账户只剩 70 美元抵押品",
+   "start": 43.916,
+   "end": 46.121,
+   "id": "c19"
+  },
+  {
+   "text": "却欠着 90 美元",
+   "start": 46.166,
+   "end": 47.74,
+   "id": "c20"
+  },
+  {
+   "text": "这 20 美元成了坏账",
+   "start": 48.72,
+   "end": 50.294,
+   "id": "c21"
+  },
+  {
+   "text": "最后由存款人或保险基金承担",
+   "start": 50.458,
+   "end": 53.044,
+   "id": "c22"
+  },
+  {
+   "text": "每个函数单独看",
+   "start": 54.028,
+   "end": 55.507,
+   "id": "c23"
+  },
+  {
+   "text": "都没有错",
+   "start": 55.67,
+   "end": 56.507,
+   "id": "c24"
+  },
+  {
+   "text": "攻击者也没有利用代码 bug",
+   "start": 57.488,
+   "end": 59.42,
+   "id": "c25"
+  },
+  {
+   "text": "他只是按规则操作",
+   "start": 59.783,
+   "end": 61.286,
+   "id": "c26"
+  },
+  {
+   "text": "换了一种设计者没想到的组合",
+   "start": 61.366,
+   "end": 63.429,
+   "id": "c27"
+  },
+  {
+   "text": "规则本身",
+   "start": 64.404,
+   "end": 65.443,
+   "id": "c28"
+  },
+  {
+   "text": "怎么会让协议亏钱",
+   "start": 65.618,
+   "end": 67.026,
+   "id": "c29"
+  }
+ ]
+}

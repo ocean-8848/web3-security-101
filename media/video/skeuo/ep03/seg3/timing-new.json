@@ -1,0 +1,2486 @@
+{
+ "id": "seg3",
+ "title": "存储槽",
+ "pill": 3,
+ "total": 142.77,
+ "lines": [
+  {
+   "id": "seg3-00",
+   "text": "接下来，看数据存在哪里。",
+   "spoken": "接下来，看数据存在哪里。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-00.mp3",
+   "start": 1.6,
+   "dur": 3.288,
+   "speechStart": 1.698,
+   "speechEnd": 4.055
+  },
+  {
+   "id": "seg3-01",
+   "text": "每个合约都有一张巨大的键值表，叫存储。键和值都是 32 字节，键叫做槽位。",
+   "spoken": "每个合约都有一张巨大的键值表，叫存储。键和值都是 32 字节，键叫做槽位。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-01.mp3",
+   "start": 5.108,
+   "dur": 8.112,
+   "speechStart": 5.206,
+   "speechEnd": 12.37
+  },
+  {
+   "id": "seg3-02",
+   "text": "可以把它想成一排抽屉柜。每个抽屉 32 字节，从 0 号开始编号。",
+   "spoken": "可以把它想成一排抽屉柜。每个抽屉 32 字节，从 0 号开始编号。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-02.mp3",
+   "start": 13.44,
+   "dur": 6.36,
+   "speechStart": 13.538,
+   "speechEnd": 18.964
+  },
+  {
+   "id": "seg3-03",
+   "text": "规则一，状态变量按声明顺序，从 0 号槽开始放。",
+   "spoken": "规则一，状态变量按声明顺序，从 0 号槽开始放。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-03.mp3",
+   "start": 20.02,
+   "dur": 5.232,
+   "speechStart": 20.118,
+   "speechEnd": 24.427
+  },
+  {
+   "id": "seg3-04",
+   "text": "规则二，相邻的变量加起来不超过 32 字节，编译器就把它们打包进同一个槽。",
+   "spoken": "规则二，相邻的变量加起来不超过 32 字节，编译器就把它们打包进同一个槽。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-04.mp3",
+   "start": 25.472,
+   "dur": 7.152,
+   "speechStart": 25.57,
+   "speechEnd": 31.808
+  },
+  {
+   "id": "seg3-05",
+   "text": "看一个例子。owner 是地址，占 20 字节，放进 0 号槽。",
+   "spoken": "看一个例子。owner 是地址，占 20 字节，放进 0 号槽。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-05.mp3",
+   "start": 32.844,
+   "dur": 5.64,
+   "speechStart": 32.942,
+   "speechEnd": 37.665
+  },
+  {
+   "id": "seg3-06",
+   "text": "paused 是布尔值，占 1 字节，也挤进 0 号槽。",
+   "spoken": "paused 是布尔值，占 1 字节，也挤进 0 号槽。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-06.mp3",
+   "start": 38.704,
+   "dur": 4.344,
+   "speechStart": 38.802,
+   "speechEnd": 42.23
+  },
+  {
+   "id": "seg3-07",
+   "text": "fee 是 96 位整数，占 12 字节。20 加 1 加 12 是 33，放不下了。",
+   "spoken": "fee 是 96 位整数，占 12 字节。20 加 1 加 12 是 33，放不下了。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-07.mp3",
+   "start": 43.268,
+   "dur": 6.936,
+   "speechStart": 43.366,
+   "speechEnd": 49.363
+  },
+  {
+   "id": "seg3-08",
+   "text": "所以 fee 去了 1 号槽，total 顺延到 2 号槽。",
+   "spoken": "所以 fee 去了 1 号槽，total 顺延到 2 号槽。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-08.mp3",
+   "start": 50.424,
+   "dur": 4.704,
+   "speechStart": 50.522,
+   "speechEnd": 54.319
+  },
+  {
+   "id": "seg3-09",
+   "text": "如果把 fee 改成 88 位，也就是 11 字节，三个变量正好 32 字节，全部挤进 0 号槽。",
+   "spoken": "如果把 fee 改成 88 位，也就是 11 字节，三个变量正好 32 字节，全部挤进 0 号槽。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-09.mp3",
+   "start": 55.348,
+   "dur": 7.848,
+   "speechStart": 55.446,
+   "speechEnd": 62.374
+  },
+  {
+   "id": "seg3-10",
+   "text": "total 就从 2 号槽，挪到了 1 号槽。代理升级时，这种挪动会让后面的变量全部错位。",
+   "spoken": "total 就从 2 号槽，挪到了 1 号槽。代理升级时，这种挪动会让后面的变量全部错位。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-10.mp3",
+   "start": 63.416,
+   "dur": 8.232,
+   "speechStart": 63.514,
+   "speechEnd": 70.797
+  },
+  {
+   "id": "seg3-11",
+   "text": "规则三，mapping 自己占一个槽，这个槽是空的。元素放在键和槽号一起哈希出来的位置。",
+   "spoken": "规则三，mapping 自己占一个槽，这个槽是空的。元素放在键和槽号一起哈希出来的位置。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-11.mp3",
+   "start": 71.868,
+   "dur": 8.472,
+   "speechStart": 71.966,
+   "speechEnd": 79.499
+  },
+  {
+   "id": "seg3-12",
+   "text": "规则四，动态数组的槽里存长度。元素从槽号的哈希开始，依次往后排。",
+   "spoken": "规则四，动态数组的槽里存常度。元素从槽号的哈希开始，依次往后排。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-12.mp3",
+   "start": 80.56,
+   "dur": 7.44,
+   "speechStart": 80.658,
+   "speechEnd": 87.167
+  },
+  {
+   "id": "seg3-13",
+   "text": "规则五，常量和不可变量，不占存储槽。",
+   "spoken": "规则五，常量和不可变量，不占存储槽。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-13.mp3",
+   "start": 88.22,
+   "dur": 4.272,
+   "speechStart": 88.318,
+   "speechEnd": 91.663
+  },
+  {
+   "id": "seg3-14",
+   "text": "为什么这是安全问题？看四个场景。",
+   "spoken": "为什么这是安全问题？看四个场景。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-14.mp3",
+   "start": 92.712,
+   "dur": 3.792,
+   "speechStart": 92.81,
+   "speechEnd": 95.652
+  },
+  {
+   "id": "seg3-15",
+   "text": "第一，代理合约和实现合约的变量顺序不一致。实现合约以为在写 owner，实际改写了代理的实现地址。",
+   "spoken": "第一，代理合约和实现合约的变量顺序不一致。实现合约以为在写 owner，实际改写了代理的实现地址。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-15.mp3",
+   "start": 96.724,
+   "dur": 9.264,
+   "speechStart": 96.822,
+   "speechEnd": 105.141
+  },
+  {
+   "id": "seg3-16",
+   "text": "第二，升级时在中间插入新变量。后面的变量全部错位，余额可能被当成地址来读。",
+   "spoken": "第二，升级时在中间插入新变量。后面的变量全部错位，余额可能被荡成地址来读。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-16.mp3",
+   "start": 106.208,
+   "dur": 8.064,
+   "speechStart": 106.306,
+   "speechEnd": 113.446
+  },
+  {
+   "id": "seg3-17",
+   "text": "第三，用 private 变量存密码或种子。任何人通过 RPC 读一下存储，就能看到。",
+   "spoken": "第三，用 private 变量存密码或种子。任何人通过 RPC 读一下存储，就能看到。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-17.mp3",
+   "start": 114.492,
+   "dur": 7.8,
+   "speechStart": 114.59,
+   "speechEnd": 121.456
+  },
+  {
+   "id": "seg3-18",
+   "text": "第四，用 delegatecall 去调用不受信任的合约。对方的代码可以改写你的任何槽位，甚至让合约自毁。",
+   "spoken": "第四，用 delegatecall 去掉用不受信任的合约。对方的代码可以改写你的任何槽位，甚至让合约自毁。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-18.mp3",
+   "start": 122.512,
+   "dur": 9.072,
+   "speechStart": 122.61,
+   "speechEnd": 130.75
+  },
+  {
+   "id": "seg3-19",
+   "text": "所以 EIP-1967 给代理定了固定的槽位。用哈希算出一个看起来随机的位置，避免和实现合约冲突。",
+   "spoken": "所以 EIP-1967 给代理定了固定的槽位。用哈希算出一个看起来随机的位置，避免和实现合约冲突。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep03/audio/lines/seg3-19.mp3",
+   "start": 131.804,
+   "dur": 9.768,
+   "speechStart": 131.902,
+   "speechEnd": 140.733
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "接下来",
+   "start": 1.698,
+   "end": 2.364
+  },
+  {
+   "line": 0,
+   "text": "看",
+   "start": 2.59,
+   "end": 2.781
+  },
+  {
+   "line": 0,
+   "text": "数据",
+   "start": 2.793,
+   "end": 3.317
+  },
+  {
+   "line": 0,
+   "text": "存在",
+   "start": 3.34,
+   "end": 3.662
+  },
+  {
+   "line": 0,
+   "text": "哪里",
+   "start": 3.674,
+   "end": 4.055
+  },
+  {
+   "line": 1,
+   "text": "每个",
+   "start": 5.206,
+   "end": 5.515
+  },
+  {
+   "line": 1,
+   "text": "合约",
+   "start": 5.527,
+   "end": 5.967
+  },
+  {
+   "line": 1,
+   "text": "都",
+   "start": 5.991,
+   "end": 6.11
+  },
+  {
+   "line": 1,
+   "text": "有",
+   "start": 6.11,
+   "end": 6.206
+  },
+  {
+   "line": 1,
+   "text": "一",
+   "start": 6.218,
+   "end": 6.301
+  },
+  {
+   "line": 1,
+   "text": "张",
+   "start": 6.301,
+   "end": 6.444
+  },
+  {
+   "line": 1,
+   "text": "巨大",
+   "start": 6.468,
+   "end": 6.741
+  },
+  {
+   "line": 1,
+   "text": "的",
+   "start": 6.741,
+   "end": 6.825
+  },
+  {
+   "line": 1,
+   "text": "键值",
+   "start": 6.837,
+   "end": 7.146
+  },
+  {
+   "line": 1,
+   "text": "表",
+   "start": 7.146,
+   "end": 7.408
+  },
+  {
+   "line": 1,
+   "text": "叫",
+   "start": 7.622,
+   "end": 7.813
+  },
+  {
+   "line": 1,
+   "text": "存储",
+   "start": 7.825,
+   "end": 8.313
+  },
+  {
+   "line": 1,
+   "text": "键",
+   "start": 8.858,
+   "end": 9.096
+  },
+  {
+   "line": 1,
+   "text": "和",
+   "start": 9.108,
+   "end": 9.298
+  },
+  {
+   "line": 1,
+   "text": "值",
+   "start": 9.298,
+   "end": 9.667
+  },
+  {
+   "line": 1,
+   "text": "都",
+   "start": 9.775,
+   "end": 9.941
+  },
+  {
+   "line": 1,
+   "text": "是",
+   "start": 9.941,
+   "end": 10.048
+  },
+  {
+   "line": 1,
+   "text": "32 字节",
+   "start": 10.072,
+   "end": 11.037
+  },
+  {
+   "line": 1,
+   "text": "键",
+   "start": 11.358,
+   "end": 11.608
+  },
+  {
+   "line": 1,
+   "text": "叫做",
+   "start": 11.62,
+   "end": 11.87
+  },
+  {
+   "line": 1,
+   "text": "槽位",
+   "start": 11.894,
+   "end": 12.37
+  },
+  {
+   "line": 2,
+   "text": "可以",
+   "start": 13.538,
+   "end": 13.823
+  },
+  {
+   "line": 2,
+   "text": "把",
+   "start": 13.835,
+   "end": 13.93
+  },
+  {
+   "line": 2,
+   "text": "它",
+   "start": 13.93,
+   "end": 14.038
+  },
+  {
+   "line": 2,
+   "text": "想成",
+   "start": 14.038,
+   "end": 14.371
+  },
+  {
+   "line": 2,
+   "text": "一",
+   "start": 14.395,
+   "end": 14.466
+  },
+  {
+   "line": 2,
+   "text": "排",
+   "start": 14.466,
+   "end": 14.645
+  },
+  {
+   "line": 2,
+   "text": "抽屉柜",
+   "start": 14.669,
+   "end": 15.323
+  },
+  {
+   "line": 2,
+   "text": "每个",
+   "start": 15.869,
+   "end": 16.154
+  },
+  {
+   "line": 2,
+   "text": "抽屉",
+   "start": 16.166,
+   "end": 16.559
+  },
+  {
+   "line": 2,
+   "text": "32 字节",
+   "start": 16.583,
+   "end": 17.464
+  },
+  {
+   "line": 2,
+   "text": "从",
+   "start": 17.642,
+   "end": 17.88
+  },
+  {
+   "line": 2,
+   "text": "0",
+   "start": 17.88,
+   "end": 18.047
+  },
+  {
+   "line": 2,
+   "text": "号",
+   "start": 18.047,
+   "end": 18.273
+  },
+  {
+   "line": 2,
+   "text": "开始",
+   "start": 18.297,
+   "end": 18.547
+  },
+  {
+   "line": 2,
+   "text": "编号",
+   "start": 18.559,
+   "end": 18.964
+  },
+  {
+   "line": 3,
+   "text": "规则",
+   "start": 20.118,
+   "end": 20.427
+  },
+  {
+   "line": 3,
+   "text": "一",
+   "start": 20.427,
+   "end": 20.713
+  },
+  {
+   "line": 3,
+   "text": "状态",
+   "start": 21.058,
+   "end": 21.439
+  },
+  {
+   "line": 3,
+   "text": "变量",
+   "start": 21.451,
+   "end": 21.796
+  },
+  {
+   "line": 3,
+   "text": "按",
+   "start": 21.82,
+   "end": 21.987
+  },
+  {
+   "line": 3,
+   "text": "声明",
+   "start": 21.999,
+   "end": 22.296
+  },
+  {
+   "line": 3,
+   "text": "顺序",
+   "start": 22.308,
+   "end": 22.808
+  },
+  {
+   "line": 3,
+   "text": "从",
+   "start": 23.034,
+   "end": 23.26
+  },
+  {
+   "line": 3,
+   "text": "0",
+   "start": 23.26,
+   "end": 23.427
+  },
+  {
+   "line": 3,
+   "text": "号",
+   "start": 23.427,
+   "end": 23.594
+  },
+  {
+   "line": 3,
+   "text": "槽",
+   "start": 23.606,
+   "end": 23.891
+  },
+  {
+   "line": 3,
+   "text": "开始",
+   "start": 23.915,
+   "end": 24.201
+  },
+  {
+   "line": 3,
+   "text": "放",
+   "start": 24.201,
+   "end": 24.427
+  },
+  {
+   "line": 4,
+   "text": "规则",
+   "start": 25.57,
+   "end": 25.867
+  },
+  {
+   "line": 4,
+   "text": "二",
+   "start": 25.867,
+   "end": 26.129
+  },
+  {
+   "line": 4,
+   "text": "相邻",
+   "start": 26.498,
+   "end": 26.832
+  },
+  {
+   "line": 4,
+   "text": "的",
+   "start": 26.832,
+   "end": 26.903
+  },
+  {
+   "line": 4,
+   "text": "变量",
+   "start": 26.915,
+   "end": 27.272
+  },
+  {
+   "line": 4,
+   "text": "加",
+   "start": 27.296,
+   "end": 27.498
+  },
+  {
+   "line": 4,
+   "text": "起来",
+   "start": 27.498,
+   "end": 27.879
+  },
+  {
+   "line": 4,
+   "text": "不",
+   "start": 27.974,
+   "end": 28.141
+  },
+  {
+   "line": 4,
+   "text": "超过",
+   "start": 28.141,
+   "end": 28.427
+  },
+  {
+   "line": 4,
+   "text": "32 字节",
+   "start": 28.451,
+   "end": 29.296
+  },
+  {
+   "line": 4,
+   "text": "编译器",
+   "start": 29.641,
+   "end": 30.236
+  },
+  {
+   "line": 4,
+   "text": "就",
+   "start": 30.26,
+   "end": 30.391
+  },
+  {
+   "line": 4,
+   "text": "把",
+   "start": 30.391,
+   "end": 30.462
+  },
+  {
+   "line": 4,
+   "text": "它们",
+   "start": 30.474,
+   "end": 30.677
+  },
+  {
+   "line": 4,
+   "text": "打包",
+   "start": 30.701,
+   "end": 31.01
+  },
+  {
+   "line": 4,
+   "text": "进同",
+   "start": 31.01,
+   "end": 31.32
+  },
+  {
+   "line": 4,
+   "text": "一个",
+   "start": 31.332,
+   "end": 31.474
+  },
+  {
+   "line": 4,
+   "text": "槽",
+   "start": 31.474,
+   "end": 31.808
+  },
+  {
+   "line": 5,
+   "text": "看",
+   "start": 32.942,
+   "end": 33.18
+  },
+  {
+   "line": 5,
+   "text": "一个",
+   "start": 33.18,
+   "end": 33.311
+  },
+  {
+   "line": 5,
+   "text": "例子",
+   "start": 33.323,
+   "end": 33.692
+  },
+  {
+   "line": 5,
+   "text": "owner",
+   "start": 34.237,
+   "end": 34.677
+  },
+  {
+   "line": 5,
+   "text": "是",
+   "start": 34.701,
+   "end": 34.832
+  },
+  {
+   "line": 5,
+   "text": "地址",
+   "start": 34.844,
+   "end": 35.308
+  },
+  {
+   "line": 5,
+   "text": "占",
+   "start": 35.499,
+   "end": 35.701
+  },
+  {
+   "line": 5,
+   "text": "20 字节",
+   "start": 35.713,
+   "end": 36.463
+  },
+  {
+   "line": 5,
+   "text": "放进",
+   "start": 36.654,
+   "end": 37.023
+  },
+  {
+   "line": 5,
+   "text": "0",
+   "start": 37.046,
+   "end": 37.189
+  },
+  {
+   "line": 5,
+   "text": "号槽",
+   "start": 37.189,
+   "end": 37.665
+  },
+  {
+   "line": 6,
+   "text": "paused",
+   "start": 38.802,
+   "end": 39.337
+  },
+  {
+   "line": 6,
+   "text": "是",
+   "start": 39.337,
+   "end": 39.504
+  },
+  {
+   "line": 6,
+   "text": "布尔值",
+   "start": 39.516,
+   "end": 40.123
+  },
+  {
+   "line": 6,
+   "text": "占",
+   "start": 40.314,
+   "end": 40.504
+  },
+  {
+   "line": 6,
+   "text": "1 字节",
+   "start": 40.516,
+   "end": 41.063
+  },
+  {
+   "line": 6,
+   "text": "也",
+   "start": 41.242,
+   "end": 41.373
+  },
+  {
+   "line": 6,
+   "text": "挤进",
+   "start": 41.385,
+   "end": 41.611
+  },
+  {
+   "line": 6,
+   "text": "0",
+   "start": 41.635,
+   "end": 41.754
+  },
+  {
+   "line": 6,
+   "text": "号槽",
+   "start": 41.754,
+   "end": 42.23
+  },
+  {
+   "line": 7,
+   "text": "fee",
+   "start": 43.366,
+   "end": 43.711
+  },
+  {
+   "line": 7,
+   "text": "是",
+   "start": 43.711,
+   "end": 43.889
+  },
+  {
+   "line": 7,
+   "text": "96 位",
+   "start": 43.901,
+   "end": 44.377
+  },
+  {
+   "line": 7,
+   "text": "整数",
+   "start": 44.389,
+   "end": 44.854
+  },
+  {
+   "line": 7,
+   "text": "占",
+   "start": 45.044,
+   "end": 45.282
+  },
+  {
+   "line": 7,
+   "text": "12 字节",
+   "start": 45.294,
+   "end": 46.044
+  },
+  {
+   "line": 7,
+   "text": "20 加 1 加 12",
+   "start": 46.578,
+   "end": 47.72
+  },
+  {
+   "line": 7,
+   "text": "是",
+   "start": 47.72,
+   "end": 47.923
+  },
+  {
+   "line": 7,
+   "text": "33",
+   "start": 47.935,
+   "end": 48.47
+  },
+  {
+   "line": 7,
+   "text": "放",
+   "start": 48.768,
+   "end": 48.97
+  },
+  {
+   "line": 7,
+   "text": "不",
+   "start": 48.97,
+   "end": 49.042
+  },
+  {
+   "line": 7,
+   "text": "下",
+   "start": 49.042,
+   "end": 49.208
+  },
+  {
+   "line": 7,
+   "text": "了",
+   "start": 49.208,
+   "end": 49.363
+  },
+  {
+   "line": 8,
+   "text": "所以",
+   "start": 50.522,
+   "end": 51.022
+  },
+  {
+   "line": 8,
+   "text": "fee",
+   "start": 51.117,
+   "end": 51.403
+  },
+  {
+   "line": 8,
+   "text": "去",
+   "start": 51.426,
+   "end": 51.569
+  },
+  {
+   "line": 8,
+   "text": "了",
+   "start": 51.569,
+   "end": 51.641
+  },
+  {
+   "line": 8,
+   "text": "1",
+   "start": 51.653,
+   "end": 51.772
+  },
+  {
+   "line": 8,
+   "text": "号槽",
+   "start": 51.772,
+   "end": 52.295
+  },
+  {
+   "line": 8,
+   "text": "total",
+   "start": 52.522,
+   "end": 53.01
+  },
+  {
+   "line": 8,
+   "text": "顺延",
+   "start": 53.105,
+   "end": 53.498
+  },
+  {
+   "line": 8,
+   "text": "到",
+   "start": 53.498,
+   "end": 53.629
+  },
+  {
+   "line": 8,
+   "text": "2",
+   "start": 53.653,
+   "end": 53.819
+  },
+  {
+   "line": 8,
+   "text": "号槽",
+   "start": 53.819,
+   "end": 54.319
+  },
+  {
+   "line": 9,
+   "text": "如果",
+   "start": 55.446,
+   "end": 55.672
+  },
+  {
+   "line": 9,
+   "text": "把",
+   "start": 55.684,
+   "end": 55.838
+  },
+  {
+   "line": 9,
+   "text": "fee",
+   "start": 55.838,
+   "end": 56.136
+  },
+  {
+   "line": 9,
+   "text": "改成",
+   "start": 56.16,
+   "end": 56.458
+  },
+  {
+   "line": 9,
+   "text": "88 位",
+   "start": 56.481,
+   "end": 57.088
+  },
+  {
+   "line": 9,
+   "text": "也",
+   "start": 57.243,
+   "end": 57.374
+  },
+  {
+   "line": 9,
+   "text": "就是",
+   "start": 57.386,
+   "end": 57.684
+  },
+  {
+   "line": 9,
+   "text": "11 字节",
+   "start": 57.708,
+   "end": 58.517
+  },
+  {
+   "line": 9,
+   "text": "三个",
+   "start": 58.827,
+   "end": 59.172
+  },
+  {
+   "line": 9,
+   "text": "变量",
+   "start": 59.184,
+   "end": 59.6
+  },
+  {
+   "line": 9,
+   "text": "正好",
+   "start": 59.684,
+   "end": 60.077
+  },
+  {
+   "line": 9,
+   "text": "32 字节",
+   "start": 60.1,
+   "end": 60.91
+  },
+  {
+   "line": 9,
+   "text": "全部",
+   "start": 61.077,
+   "end": 61.493
+  },
+  {
+   "line": 9,
+   "text": "挤进",
+   "start": 61.505,
+   "end": 61.755
+  },
+  {
+   "line": 9,
+   "text": "0",
+   "start": 61.779,
+   "end": 61.91
+  },
+  {
+   "line": 9,
+   "text": "号槽",
+   "start": 61.91,
+   "end": 62.374
+  },
+  {
+   "line": 10,
+   "text": "total",
+   "start": 63.514,
+   "end": 64.026
+  },
+  {
+   "line": 10,
+   "text": "就",
+   "start": 64.133,
+   "end": 64.299
+  },
+  {
+   "line": 10,
+   "text": "从",
+   "start": 64.299,
+   "end": 64.466
+  },
+  {
+   "line": 10,
+   "text": "2",
+   "start": 64.49,
+   "end": 64.645
+  },
+  {
+   "line": 10,
+   "text": "号槽",
+   "start": 64.645,
+   "end": 65.168
+  },
+  {
+   "line": 10,
+   "text": "挪到",
+   "start": 65.347,
+   "end": 65.633
+  },
+  {
+   "line": 10,
+   "text": "了",
+   "start": 65.633,
+   "end": 65.728
+  },
+  {
+   "line": 10,
+   "text": "1",
+   "start": 65.752,
+   "end": 65.859
+  },
+  {
+   "line": 10,
+   "text": "号槽",
+   "start": 65.859,
+   "end": 66.359
+  },
+  {
+   "line": 10,
+   "text": "代理",
+   "start": 66.88,
+   "end": 67.118
+  },
+  {
+   "line": 10,
+   "text": "升级",
+   "start": 67.13,
+   "end": 67.428
+  },
+  {
+   "line": 10,
+   "text": "时",
+   "start": 67.428,
+   "end": 67.821
+  },
+  {
+   "line": 10,
+   "text": "这种",
+   "start": 68.178,
+   "end": 68.487
+  },
+  {
+   "line": 10,
+   "text": "挪动",
+   "start": 68.499,
+   "end": 68.94
+  },
+  {
+   "line": 10,
+   "text": "会",
+   "start": 69.047,
+   "end": 69.214
+  },
+  {
+   "line": 10,
+   "text": "让",
+   "start": 69.214,
+   "end": 69.297
+  },
+  {
+   "line": 10,
+   "text": "后面",
+   "start": 69.321,
+   "end": 69.559
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 69.559,
+   "end": 69.63
+  },
+  {
+   "line": 10,
+   "text": "变量",
+   "start": 69.642,
+   "end": 69.987
+  },
+  {
+   "line": 10,
+   "text": "全部",
+   "start": 70.011,
+   "end": 70.404
+  },
+  {
+   "line": 10,
+   "text": "错位",
+   "start": 70.416,
+   "end": 70.797
+  },
+  {
+   "line": 11,
+   "text": "规则",
+   "start": 71.966,
+   "end": 72.263
+  },
+  {
+   "line": 11,
+   "text": "三",
+   "start": 72.263,
+   "end": 72.608
+  },
+  {
+   "line": 11,
+   "text": "mapping",
+   "start": 72.847,
+   "end": 73.418
+  },
+  {
+   "line": 11,
+   "text": "自己",
+   "start": 73.525,
+   "end": 73.823
+  },
+  {
+   "line": 11,
+   "text": "占",
+   "start": 73.835,
+   "end": 73.978
+  },
+  {
+   "line": 11,
+   "text": "一个",
+   "start": 73.989,
+   "end": 74.144
+  },
+  {
+   "line": 11,
+   "text": "槽",
+   "start": 74.144,
+   "end": 74.537
+  },
+  {
+   "line": 11,
+   "text": "这个",
+   "start": 74.739,
+   "end": 74.93
+  },
+  {
+   "line": 11,
+   "text": "槽",
+   "start": 74.942,
+   "end": 75.168
+  },
+  {
+   "line": 11,
+   "text": "是",
+   "start": 75.192,
+   "end": 75.287
+  },
+  {
+   "line": 11,
+   "text": "空",
+   "start": 75.287,
+   "end": 75.525
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 75.525,
+   "end": 75.656
+  },
+  {
+   "line": 11,
+   "text": "元素",
+   "start": 76.189,
+   "end": 76.582
+  },
+  {
+   "line": 11,
+   "text": "放",
+   "start": 76.594,
+   "end": 76.761
+  },
+  {
+   "line": 11,
+   "text": "在键",
+   "start": 76.761,
+   "end": 77.237
+  },
+  {
+   "line": 11,
+   "text": "和",
+   "start": 77.344,
+   "end": 77.487
+  },
+  {
+   "line": 11,
+   "text": "槽号",
+   "start": 77.499,
+   "end": 77.88
+  },
+  {
+   "line": 11,
+   "text": "一起",
+   "start": 77.892,
+   "end": 78.308
+  },
+  {
+   "line": 11,
+   "text": "哈希",
+   "start": 78.416,
+   "end": 78.928
+  },
+  {
+   "line": 11,
+   "text": "出来",
+   "start": 78.928,
+   "end": 79.106
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 79.106,
+   "end": 79.177
+  },
+  {
+   "line": 11,
+   "text": "位置",
+   "start": 79.189,
+   "end": 79.499
+  },
+  {
+   "line": 12,
+   "text": "规则",
+   "start": 80.658,
+   "end": 81.003
+  },
+  {
+   "line": 12,
+   "text": "四",
+   "start": 81.003,
+   "end": 81.336
+  },
+  {
+   "line": 12,
+   "text": "动态",
+   "start": 81.67,
+   "end": 82.027
+  },
+  {
+   "line": 12,
+   "text": "数组",
+   "start": 82.039,
+   "end": 82.312
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 82.312,
+   "end": 82.396
+  },
+  {
+   "line": 12,
+   "text": "槽",
+   "start": 82.408,
+   "end": 82.693
+  },
+  {
+   "line": 12,
+   "text": "里",
+   "start": 82.693,
+   "end": 82.848
+  },
+  {
+   "line": 12,
+   "text": "存",
+   "start": 82.872,
+   "end": 83.086
+  },
+  {
+   "line": 12,
+   "text": "长度",
+   "start": 83.086,
+   "end": 83.515
+  },
+  {
+   "line": 12,
+   "text": "元素",
+   "start": 84.048,
+   "end": 84.548
+  },
+  {
+   "line": 12,
+   "text": "从",
+   "start": 84.572,
+   "end": 84.739
+  },
+  {
+   "line": 12,
+   "text": "槽号",
+   "start": 84.762,
+   "end": 85.084
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 85.084,
+   "end": 85.143
+  },
+  {
+   "line": 12,
+   "text": "哈希",
+   "start": 85.167,
+   "end": 85.489
+  },
+  {
+   "line": 12,
+   "text": "开始",
+   "start": 85.5,
+   "end": 85.953
+  },
+  {
+   "line": 12,
+   "text": "依次",
+   "start": 86.227,
+   "end": 86.548
+  },
+  {
+   "line": 12,
+   "text": "往后排",
+   "start": 86.56,
+   "end": 87.167
+  },
+  {
+   "line": 13,
+   "text": "规则",
+   "start": 88.318,
+   "end": 88.651
+  },
+  {
+   "line": 13,
+   "text": "五",
+   "start": 88.651,
+   "end": 88.984
+  },
+  {
+   "line": 13,
+   "text": "常量",
+   "start": 89.234,
+   "end": 89.675
+  },
+  {
+   "line": 13,
+   "text": "和",
+   "start": 89.699,
+   "end": 89.794
+  },
+  {
+   "line": 13,
+   "text": "不可",
+   "start": 89.806,
+   "end": 90.008
+  },
+  {
+   "line": 13,
+   "text": "变量",
+   "start": 90.02,
+   "end": 90.425
+  },
+  {
+   "line": 13,
+   "text": "不",
+   "start": 90.722,
+   "end": 90.877
+  },
+  {
+   "line": 13,
+   "text": "占存",
+   "start": 90.877,
+   "end": 91.234
+  },
+  {
+   "line": 13,
+   "text": "储槽",
+   "start": 91.234,
+   "end": 91.663
+  },
+  {
+   "line": 14,
+   "text": "为什么",
+   "start": 92.81,
+   "end": 93.179
+  },
+  {
+   "line": 14,
+   "text": "这",
+   "start": 93.202,
+   "end": 93.274
+  },
+  {
+   "line": 14,
+   "text": "是",
+   "start": 93.274,
+   "end": 93.345
+  },
+  {
+   "line": 14,
+   "text": "安全",
+   "start": 93.357,
+   "end": 93.631
+  },
+  {
+   "line": 14,
+   "text": "问题",
+   "start": 93.643,
+   "end": 94.119
+  },
+  {
+   "line": 14,
+   "text": "看",
+   "start": 94.664,
+   "end": 94.891
+  },
+  {
+   "line": 14,
+   "text": "四",
+   "start": 94.914,
+   "end": 95.093
+  },
+  {
+   "line": 14,
+   "text": "个",
+   "start": 95.093,
+   "end": 95.164
+  },
+  {
+   "line": 14,
+   "text": "场景",
+   "start": 95.176,
+   "end": 95.652
+  },
+  {
+   "line": 15,
+   "text": "第一",
+   "start": 96.822,
+   "end": 97.214
+  },
+  {
+   "line": 15,
+   "text": "代理",
+   "start": 97.595,
+   "end": 97.822
+  },
+  {
+   "line": 15,
+   "text": "合约",
+   "start": 97.834,
+   "end": 98.226
+  },
+  {
+   "line": 15,
+   "text": "和",
+   "start": 98.25,
+   "end": 98.405
+  },
+  {
+   "line": 15,
+   "text": "实现",
+   "start": 98.417,
+   "end": 98.714
+  },
+  {
+   "line": 15,
+   "text": "合约",
+   "start": 98.726,
+   "end": 98.988
+  },
+  {
+   "line": 15,
+   "text": "的",
+   "start": 98.988,
+   "end": 99.084
+  },
+  {
+   "line": 15,
+   "text": "变量",
+   "start": 99.107,
+   "end": 99.429
+  },
+  {
+   "line": 15,
+   "text": "顺序",
+   "start": 99.441,
+   "end": 99.798
+  },
+  {
+   "line": 15,
+   "text": "不",
+   "start": 99.822,
+   "end": 99.941
+  },
+  {
+   "line": 15,
+   "text": "一致",
+   "start": 99.941,
+   "end": 100.31
+  },
+  {
+   "line": 15,
+   "text": "实现",
+   "start": 100.843,
+   "end": 101.272
+  },
+  {
+   "line": 15,
+   "text": "合约",
+   "start": 101.284,
+   "end": 101.736
+  },
+  {
+   "line": 15,
+   "text": "以为",
+   "start": 101.831,
+   "end": 102.081
+  },
+  {
+   "line": 15,
+   "text": "在",
+   "start": 102.081,
+   "end": 102.2
+  },
+  {
+   "line": 15,
+   "text": "写",
+   "start": 102.212,
+   "end": 102.391
+  },
+  {
+   "line": 15,
+   "text": "owner",
+   "start": 102.391,
+   "end": 102.807
+  },
+  {
+   "line": 15,
+   "text": "实际",
+   "start": 103.105,
+   "end": 103.45
+  },
+  {
+   "line": 15,
+   "text": "改写",
+   "start": 103.462,
+   "end": 103.748
+  },
+  {
+   "line": 15,
+   "text": "了",
+   "start": 103.748,
+   "end": 103.891
+  },
+  {
+   "line": 15,
+   "text": "代理",
+   "start": 103.914,
+   "end": 104.164
+  },
+  {
+   "line": 15,
+   "text": "的",
+   "start": 104.164,
+   "end": 104.331
+  },
+  {
+   "line": 15,
+   "text": "实现",
+   "start": 104.355,
+   "end": 104.724
+  },
+  {
+   "line": 15,
+   "text": "地址",
+   "start": 104.736,
+   "end": 105.141
+  },
+  {
+   "line": 16,
+   "text": "第二",
+   "start": 106.306,
+   "end": 106.687
+  },
+  {
+   "line": 16,
+   "text": "升级",
+   "start": 106.996,
+   "end": 107.341
+  },
+  {
+   "line": 16,
+   "text": "时",
+   "start": 107.341,
+   "end": 107.675
+  },
+  {
+   "line": 16,
+   "text": "在",
+   "start": 107.698,
+   "end": 107.853
+  },
+  {
+   "line": 16,
+   "text": "中间",
+   "start": 107.865,
+   "end": 108.175
+  },
+  {
+   "line": 16,
+   "text": "插入",
+   "start": 108.187,
+   "end": 108.472
+  },
+  {
+   "line": 16,
+   "text": "新",
+   "start": 108.496,
+   "end": 108.734
+  },
+  {
+   "line": 16,
+   "text": "变量",
+   "start": 108.734,
+   "end": 109.127
+  },
+  {
+   "line": 16,
+   "text": "后面",
+   "start": 109.66,
+   "end": 109.97
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 109.97,
+   "end": 110.041
+  },
+  {
+   "line": 16,
+   "text": "变量",
+   "start": 110.053,
+   "end": 110.363
+  },
+  {
+   "line": 16,
+   "text": "全部",
+   "start": 110.387,
+   "end": 110.72
+  },
+  {
+   "line": 16,
+   "text": "错位",
+   "start": 110.732,
+   "end": 111.184
+  },
+  {
+   "line": 16,
+   "text": "余额",
+   "start": 111.577,
+   "end": 112.017
+  },
+  {
+   "line": 16,
+   "text": "可能",
+   "start": 112.041,
+   "end": 112.291
+  },
+  {
+   "line": 16,
+   "text": "被",
+   "start": 112.303,
+   "end": 112.422
+  },
+  {
+   "line": 16,
+   "text": "当成",
+   "start": 112.422,
+   "end": 112.756
+  },
+  {
+   "line": 16,
+   "text": "地址",
+   "start": 112.779,
+   "end": 113.065
+  },
+  {
+   "line": 16,
+   "text": "来",
+   "start": 113.077,
+   "end": 113.232
+  },
+  {
+   "line": 16,
+   "text": "读",
+   "start": 113.232,
+   "end": 113.446
+  },
+  {
+   "line": 17,
+   "text": "第三",
+   "start": 114.59,
+   "end": 115.054
+  },
+  {
+   "line": 17,
+   "text": "用",
+   "start": 115.387,
+   "end": 115.613
+  },
+  {
+   "line": 17,
+   "text": "private",
+   "start": 115.637,
+   "end": 116.173
+  },
+  {
+   "line": 17,
+   "text": "变量",
+   "start": 116.185,
+   "end": 116.53
+  },
+  {
+   "line": 17,
+   "text": "存密码",
+   "start": 116.542,
+   "end": 117.066
+  },
+  {
+   "line": 17,
+   "text": "或",
+   "start": 117.09,
+   "end": 117.244
+  },
+  {
+   "line": 17,
+   "text": "种子",
+   "start": 117.256,
+   "end": 117.637
+  },
+  {
+   "line": 17,
+   "text": "任何",
+   "start": 118.182,
+   "end": 118.504
+  },
+  {
+   "line": 17,
+   "text": "人",
+   "start": 118.504,
+   "end": 118.635
+  },
+  {
+   "line": 17,
+   "text": "通过",
+   "start": 118.647,
+   "end": 119.099
+  },
+  {
+   "line": 17,
+   "text": "RPC",
+   "start": 119.206,
+   "end": 119.837
+  },
+  {
+   "line": 17,
+   "text": "读",
+   "start": 119.849,
+   "end": 119.98
+  },
+  {
+   "line": 17,
+   "text": "一下",
+   "start": 119.992,
+   "end": 120.171
+  },
+  {
+   "line": 17,
+   "text": "存储",
+   "start": 120.182,
+   "end": 120.611
+  },
+  {
+   "line": 17,
+   "text": "就",
+   "start": 120.813,
+   "end": 120.968
+  },
+  {
+   "line": 17,
+   "text": "能",
+   "start": 120.968,
+   "end": 121.063
+  },
+  {
+   "line": 17,
+   "text": "看到",
+   "start": 121.075,
+   "end": 121.456
+  },
+  {
+   "line": 18,
+   "text": "第",
+   "start": 122.61,
+   "end": 122.764
+  },
+  {
+   "line": 18,
+   "text": "四",
+   "start": 122.764,
+   "end": 123.086
+  },
+  {
+   "line": 18,
+   "text": "用",
+   "start": 123.431,
+   "end": 123.705
+  },
+  {
+   "line": 18,
+   "text": "delegatecall",
+   "start": 123.705,
+   "end": 124.479
+  },
+  {
+   "line": 18,
+   "text": "去调",
+   "start": 124.586,
+   "end": 124.907
+  },
+  {
+   "line": 18,
+   "text": "用",
+   "start": 124.907,
+   "end": 125.074
+  },
+  {
+   "line": 18,
+   "text": "不",
+   "start": 125.098,
+   "end": 125.229
+  },
+  {
+   "line": 18,
+   "text": "受",
+   "start": 125.229,
+   "end": 125.372
+  },
+  {
+   "line": 18,
+   "text": "信任",
+   "start": 125.383,
+   "end": 125.705
+  },
+  {
+   "line": 18,
+   "text": "的",
+   "start": 125.705,
+   "end": 125.776
+  },
+  {
+   "line": 18,
+   "text": "合约",
+   "start": 125.788,
+   "end": 126.145
+  },
+  {
+   "line": 18,
+   "text": "对方",
+   "start": 126.691,
+   "end": 127.0
+  },
+  {
+   "line": 18,
+   "text": "的",
+   "start": 127.0,
+   "end": 127.071
+  },
+  {
+   "line": 18,
+   "text": "代码",
+   "start": 127.083,
+   "end": 127.607
+  },
+  {
+   "line": 18,
+   "text": "可以",
+   "start": 127.702,
+   "end": 127.929
+  },
+  {
+   "line": 18,
+   "text": "改写",
+   "start": 127.941,
+   "end": 128.214
+  },
+  {
+   "line": 18,
+   "text": "你",
+   "start": 128.238,
+   "end": 128.31
+  },
+  {
+   "line": 18,
+   "text": "的",
+   "start": 128.31,
+   "end": 128.381
+  },
+  {
+   "line": 18,
+   "text": "任何",
+   "start": 128.393,
+   "end": 128.702
+  },
+  {
+   "line": 18,
+   "text": "槽位",
+   "start": 128.714,
+   "end": 129.179
+  },
+  {
+   "line": 18,
+   "text": "甚至",
+   "start": 129.512,
+   "end": 129.857
+  },
+  {
+   "line": 18,
+   "text": "让",
+   "start": 129.869,
+   "end": 129.929
+  },
+  {
+   "line": 18,
+   "text": "合约",
+   "start": 129.941,
+   "end": 130.262
+  },
+  {
+   "line": 18,
+   "text": "自",
+   "start": 130.274,
+   "end": 130.452
+  },
+  {
+   "line": 18,
+   "text": "毁",
+   "start": 130.452,
+   "end": 130.75
+  },
+  {
+   "line": 19,
+   "text": "所以",
+   "start": 131.902,
+   "end": 132.485
+  },
+  {
+   "line": 19,
+   "text": "EIP",
+   "start": 132.592,
+   "end": 133.366
+  },
+  {
+   "line": 19,
+   "text": "1967",
+   "start": 133.473,
+   "end": 134.247
+  },
+  {
+   "line": 19,
+   "text": "给",
+   "start": 134.354,
+   "end": 134.509
+  },
+  {
+   "line": 19,
+   "text": "代理",
+   "start": 134.521,
+   "end": 134.771
+  },
+  {
+   "line": 19,
+   "text": "定",
+   "start": 134.771,
+   "end": 134.914
+  },
+  {
+   "line": 19,
+   "text": "了",
+   "start": 134.914,
+   "end": 134.997
+  },
+  {
+   "line": 19,
+   "text": "固定",
+   "start": 135.021,
+   "end": 135.294
+  },
+  {
+   "line": 19,
+   "text": "的",
+   "start": 135.294,
+   "end": 135.354
+  },
+  {
+   "line": 19,
+   "text": "槽",
+   "start": 135.366,
+   "end": 135.604
+  },
+  {
+   "line": 19,
+   "text": "位",
+   "start": 135.604,
+   "end": 135.83
+  },
+  {
+   "line": 19,
+   "text": "用",
+   "start": 136.364,
+   "end": 136.554
+  },
+  {
+   "line": 19,
+   "text": "哈希",
+   "start": 136.566,
+   "end": 137.006
+  },
+  {
+   "line": 19,
+   "text": "算出",
+   "start": 137.006,
+   "end": 137.28
+  },
+  {
+   "line": 19,
+   "text": "一个",
+   "start": 137.292,
+   "end": 137.435
+  },
+  {
+   "line": 19,
+   "text": "看起来",
+   "start": 137.459,
+   "end": 137.852
+  },
+  {
+   "line": 19,
+   "text": "随机",
+   "start": 137.875,
+   "end": 138.221
+  },
+  {
+   "line": 19,
+   "text": "的",
+   "start": 138.221,
+   "end": 138.292
+  },
+  {
+   "line": 19,
+   "text": "位置",
+   "start": 138.304,
+   "end": 138.733
+  },
+  {
+   "line": 19,
+   "text": "避免",
+   "start": 138.971,
+   "end": 139.447
+  },
+  {
+   "line": 19,
+   "text": "和",
+   "start": 139.471,
+   "end": 139.602
+  },
+  {
+   "line": 19,
+   "text": "实现",
+   "start": 139.614,
+   "end": 139.983
+  },
+  {
+   "line": 19,
+   "text": "合约",
+   "start": 140.006,
+   "end": 140.304
+  },
+  {
+   "line": 19,
+   "text": "冲突",
+   "start": 140.316,
+   "end": 140.733
+  }
+ ],
+ "captions": [
+  {
+   "text": "接下来 看数据存在哪里",
+   "start": 1.648,
+   "end": 4.175,
+   "id": "c0"
+  },
+  {
+   "text": "每个合约都有一张巨大的键值表 叫存储",
+   "start": 5.156,
+   "end": 8.433,
+   "id": "c1"
+  },
+  {
+   "text": "键和值都是 32 字节",
+   "start": 8.808,
+   "end": 11.157,
+   "id": "c2"
+  },
+  {
+   "text": "键叫做槽位",
+   "start": 11.308,
+   "end": 12.49,
+   "id": "c3"
+  },
+  {
+   "text": "可以把它想成一排抽屉柜",
+   "start": 13.488,
+   "end": 15.443,
+   "id": "c4"
+  },
+  {
+   "text": "每个抽屉 32 字节",
+   "start": 15.819,
+   "end": 17.572,
+   "id": "c5"
+  },
+  {
+   "text": "从 0 号开始编号",
+   "start": 17.592,
+   "end": 19.084,
+   "id": "c6"
+  },
+  {
+   "text": "规则一 状态变量按声明顺序",
+   "start": 20.068,
+   "end": 22.928,
+   "id": "c7"
+  },
+  {
+   "text": "从 0 号槽开始放",
+   "start": 22.984,
+   "end": 24.547,
+   "id": "c8"
+  },
+  {
+   "text": "规则二 相邻的变量加起来不超过 32 字节",
+   "start": 25.52,
+   "end": 29.416,
+   "id": "c9"
+  },
+  {
+   "text": "编译器就把它们打包进同一个槽",
+   "start": 29.591,
+   "end": 31.928,
+   "id": "c10"
+  },
+  {
+   "text": "看一个例子",
+   "start": 32.892,
+   "end": 33.812,
+   "id": "c11"
+  },
+  {
+   "text": "owner 是地址",
+   "start": 34.187,
+   "end": 35.428,
+   "id": "c12"
+  },
+  {
+   "text": "占 20 字节",
+   "start": 35.449,
+   "end": 36.583,
+   "id": "c13"
+  },
+  {
+   "text": "放进 0 号槽",
+   "start": 36.604,
+   "end": 37.785,
+   "id": "c14"
+  },
+  {
+   "text": "paused 是布尔值",
+   "start": 38.752,
+   "end": 40.243,
+   "id": "c15"
+  },
+  {
+   "text": "占 1 字节",
+   "start": 40.264,
+   "end": 41.172,
+   "id": "c16"
+  },
+  {
+   "text": "也挤进 0 号槽",
+   "start": 41.192,
+   "end": 42.35,
+   "id": "c17"
+  },
+  {
+   "text": "fee 是 96 位整数",
+   "start": 43.316,
+   "end": 44.974,
+   "id": "c18"
+  },
+  {
+   "text": "占 12 字节",
+   "start": 44.994,
+   "end": 46.164,
+   "id": "c19"
+  },
+  {
+   "text": "20 加 1 加 12 是 33",
+   "start": 46.528,
+   "end": 48.59,
+   "id": "c20"
+  },
+  {
+   "text": "放不下了",
+   "start": 48.718,
+   "end": 49.483,
+   "id": "c21"
+  },
+  {
+   "text": "所以 fee 去了 1 号槽",
+   "start": 50.472,
+   "end": 52.415,
+   "id": "c22"
+  },
+  {
+   "text": "total 顺延到 2 号槽",
+   "start": 52.472,
+   "end": 54.439,
+   "id": "c23"
+  },
+  {
+   "text": "如果把 fee 改成 88 位",
+   "start": 55.396,
+   "end": 57.173,
+   "id": "c24"
+  },
+  {
+   "text": "也就是 11 字节",
+   "start": 57.193,
+   "end": 58.637,
+   "id": "c25"
+  },
+  {
+   "text": "三个变量正好 32 字节",
+   "start": 58.777,
+   "end": 61.007,
+   "id": "c26"
+  },
+  {
+   "text": "全部挤进 0 号槽",
+   "start": 61.027,
+   "end": 62.494,
+   "id": "c27"
+  },
+  {
+   "text": "total 就从 2 号槽",
+   "start": 63.464,
+   "end": 65.277,
+   "id": "c28"
+  },
+  {
+   "text": "挪到了 1 号槽",
+   "start": 65.297,
+   "end": 66.479,
+   "id": "c29"
+  },
+  {
+   "text": "代理升级时",
+   "start": 66.83,
+   "end": 67.941,
+   "id": "c30"
+  },
+  {
+   "text": "这种挪动会让后面的变量全部错位",
+   "start": 68.128,
+   "end": 70.917,
+   "id": "c31"
+  },
+  {
+   "text": "规则三 mapping 自己占一个槽",
+   "start": 71.916,
+   "end": 74.657,
+   "id": "c32"
+  },
+  {
+   "text": "这个槽是空的",
+   "start": 74.689,
+   "end": 75.776,
+   "id": "c33"
+  },
+  {
+   "text": "元素放在键和槽号一起哈希出来的位置",
+   "start": 76.139,
+   "end": 79.619,
+   "id": "c34"
+  },
+  {
+   "text": "规则四 动态数组的槽里存长度",
+   "start": 80.608,
+   "end": 83.635,
+   "id": "c35"
+  },
+  {
+   "text": "元素从槽号的哈希开始",
+   "start": 83.998,
+   "end": 86.073,
+   "id": "c36"
+  },
+  {
+   "text": "依次往后排",
+   "start": 86.177,
+   "end": 87.287,
+   "id": "c37"
+  },
+  {
+   "text": "规则五 常量和不可变量",
+   "start": 88.268,
+   "end": 90.545,
+   "id": "c38"
+  },
+  {
+   "text": "不占存储槽",
+   "start": 90.672,
+   "end": 91.783,
+   "id": "c39"
+  },
+  {
+   "text": "为什么这是安全问题",
+   "start": 92.76,
+   "end": 94.239,
+   "id": "c40"
+  },
+  {
+   "text": "看四个场景",
+   "start": 94.614,
+   "end": 95.772,
+   "id": "c41"
+  },
+  {
+   "text": "第一 代理合约和实现合约的变量顺序不一致",
+   "start": 96.772,
+   "end": 100.43,
+   "id": "c42"
+  },
+  {
+   "text": "实现合约以为在写 owner",
+   "start": 100.793,
+   "end": 102.927,
+   "id": "c43"
+  },
+  {
+   "text": "实际改写了代理的实现地址",
+   "start": 103.055,
+   "end": 105.261,
+   "id": "c44"
+  },
+  {
+   "text": "第二 升级时在中间插入新变量",
+   "start": 106.256,
+   "end": 109.247,
+   "id": "c45"
+  },
+  {
+   "text": "后面的变量全部错位",
+   "start": 109.61,
+   "end": 111.304,
+   "id": "c46"
+  },
+  {
+   "text": "余额可能被当成地址来读",
+   "start": 111.527,
+   "end": 113.566,
+   "id": "c47"
+  },
+  {
+   "text": "第三 用 private 变量存密码或种子",
+   "start": 114.54,
+   "end": 117.757,
+   "id": "c48"
+  },
+  {
+   "text": "任何人通过 RPC 读一下存储",
+   "start": 118.132,
+   "end": 120.731,
+   "id": "c49"
+  },
+  {
+   "text": "就能看到",
+   "start": 120.763,
+   "end": 121.576,
+   "id": "c50"
+  },
+  {
+   "text": "第四",
+   "start": 122.56,
+   "end": 123.206,
+   "id": "c51"
+  },
+  {
+   "text": "用 delegatecall",
+   "start": 123.381,
+   "end": 124.516,
+   "id": "c52"
+  },
+  {
+   "text": "去调用不受信任的合约",
+   "start": 124.536,
+   "end": 126.265,
+   "id": "c53"
+  },
+  {
+   "text": "对方的代码可以改写你的任何槽位",
+   "start": 126.641,
+   "end": 129.299,
+   "id": "c54"
+  },
+  {
+   "text": "甚至让合约自毁",
+   "start": 129.462,
+   "end": 130.87,
+   "id": "c55"
+  },
+  {
+   "text": "所以 EIP-1967 给代理定了固定的槽位",
+   "start": 131.852,
+   "end": 135.95,
+   "id": "c56"
+  },
+  {
+   "text": "用哈希算出一个看起来随机的位置",
+   "start": 136.314,
+   "end": 138.853,
+   "id": "c57"
+  },
+  {
+   "text": "避免和实现合约冲突",
+   "start": 138.921,
+   "end": 140.853,
+   "id": "c58"
+  }
+ ]
+}

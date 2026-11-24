@@ -1,0 +1,1250 @@
+{
+ "id": "seg1",
+ "title": "没校验的账户",
+ "pill": 1,
+ "total": 67.6,
+ "lines": [
+  {
+   "id": "seg1-00",
+   "text": "2022 年 2 月，Wormhole 跨链桥在 Solana 一侧，被铸出约 12 万枚 wETH。",
+   "spoken": "2022 年 2 月，Wormhole 跨链桥在 Solana 一侧，被铸出约 12 万枚 wETH。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep13/audio/lines/seg1-00.mp3",
+   "start": 1.6,
+   "dur": 6.84,
+   "speechStart": 1.698,
+   "speechEnd": 7.602
+  },
+  {
+   "id": "seg1-01",
+   "text": "按事发时的价格，约 3.2 亿美元。",
+   "spoken": "按事发时的价格，约 3.2 亿美元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep13/audio/lines/seg1-01.mp3",
+   "start": 8.66,
+   "dur": 3.72,
+   "speechStart": 8.758,
+   "speechEnd": 11.531
+  },
+  {
+   "id": "seg1-02",
+   "text": "攻击者往程序里，传了一个伪造的系统账户。",
+   "spoken": "攻击者往程序里，传了一个伪造的系统账户。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep13/audio/lines/seg1-02.mp3",
+   "start": 12.6,
+   "dur": 4.08,
+   "speechStart": 12.698,
+   "speechEnd": 15.84
+  },
+  {
+   "id": "seg1-03",
+   "text": "程序读了这个账户，没有核对它是不是真的。",
+   "spoken": "程序读了这个账户，没有核对它是不是真的。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep13/audio/lines/seg1-03.mp3",
+   "start": 16.9,
+   "dur": 4.488,
+   "speechStart": 16.998,
+   "speechEnd": 20.557
+  },
+  {
+   "id": "seg1-04",
+   "text": "守护者的签名验证，就这样被绕开。",
+   "spoken": "守护者的签名验证，就这样被绕开。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep13/audio/lines/seg1-04.mp3",
+   "start": 21.608,
+   "dur": 3.96,
+   "speechStart": 21.706,
+   "speechEnd": 24.753
+  },
+  {
+   "id": "seg1-05",
+   "text": "先猜一道题。",
+   "spoken": "先猜一道题。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep13/audio/lines/seg1-05.mp3",
+   "start": 25.788,
+   "dur": 2.088,
+   "speechStart": 25.886,
+   "speechEnd": 27.04
+  },
+  {
+   "id": "seg1-06",
+   "text": "在以太坊上，合约要读另一个合约，地址写在代码或存储里。",
+   "spoken": "在以太坊上，合约要读另一个合约，地址写在代码或存储里。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep13/audio/lines/seg1-06.mp3",
+   "start": 28.096,
+   "dur": 5.592,
+   "speechStart": 28.194,
+   "speechEnd": 32.86
+  },
+  {
+   "id": "seg1-07",
+   "text": "在 Solana 上，程序要读的账户，由谁提供？",
+   "spoken": "在 Solana 上，程序要读的账户，由谁提供？",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep13/audio/lines/seg1-07.mp3",
+   "start": 33.908,
+   "dur": 4.056,
+   "speechStart": 34.006,
+   "speechEnd": 37.113
+  },
+  {
+   "id": "seg1-08",
+   "text": "先记住这个问题。",
+   "spoken": "先记住这个问题。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep13/audio/lines/seg1-08.mp3",
+   "start": 38.464,
+   "dur": 2.208,
+   "speechStart": 38.562,
+   "speechEnd": 39.835
+  },
+  {
+   "id": "seg1-09",
+   "text": "按 Kudelski 和 Halborn 的分析，问题出在一个已经弃用的读取函数。",
+   "spoken": "按 Kudelski 和 Halborn 的分析，问题出在一个已经弃用的读取函数。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep13/audio/lines/seg1-09.mp3",
+   "start": 40.892,
+   "dur": 6.024,
+   "speechStart": 40.99,
+   "speechEnd": 46.085
+  },
+  {
+   "id": "seg1-10",
+   "text": "它不检查传进来的系统账户，是不是真的系统账户。",
+   "spoken": "它不检查传进来的系统账户，是不是真的系统账户。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep13/audio/lines/seg1-10.mp3",
+   "start": 47.136,
+   "dur": 4.68,
+   "speechStart": 47.234,
+   "speechEnd": 50.972
+  },
+  {
+   "id": "seg1-11",
+   "text": "修复的办法，是改用带校验的函数。Jump Crypto 补足了全部 ETH。",
+   "spoken": "修复的办法，是改用带较验的函数。Jump Crypto 补足了全部 ETH。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep13/audio/lines/seg1-11.mp3",
+   "start": 52.036,
+   "dur": 6.192,
+   "speechStart": 52.134,
+   "speechEnd": 57.393
+  },
+  {
+   "id": "seg1-12",
+   "text": "同样的错误，换一条链，就换了一副样子。",
+   "spoken": "同样的错误，换一条链，就换了一副样子。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep13/audio/lines/seg1-12.mp3",
+   "start": 58.448,
+   "dur": 4.128,
+   "speechStart": 58.546,
+   "speechEnd": 61.724
+  },
+  {
+   "id": "seg1-13",
+   "text": "每种链上的程序，到底在相信什么？",
+   "spoken": "每种链上的程序，到底在相信什么？",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep13/audio/lines/seg1-13.mp3",
+   "start": 62.796,
+   "dur": 3.6,
+   "speechStart": 62.894,
+   "speechEnd": 65.56
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "2022",
+   "start": 1.698,
+   "end": 2.174
+  },
+  {
+   "line": 0,
+   "text": "年",
+   "start": 2.174,
+   "end": 2.317
+  },
+  {
+   "line": 0,
+   "text": "2 月",
+   "start": 2.329,
+   "end": 2.733
+  },
+  {
+   "line": 0,
+   "text": "Wormhole",
+   "start": 3.031,
+   "end": 3.543
+  },
+  {
+   "line": 0,
+   "text": "跨链桥",
+   "start": 3.555,
+   "end": 4.114
+  },
+  {
+   "line": 0,
+   "text": "在",
+   "start": 4.198,
+   "end": 4.364
+  },
+  {
+   "line": 0,
+   "text": "Solana",
+   "start": 4.376,
+   "end": 4.769
+  },
+  {
+   "line": 0,
+   "text": "一",
+   "start": 4.781,
+   "end": 4.876
+  },
+  {
+   "line": 0,
+   "text": "侧",
+   "start": 4.876,
+   "end": 5.138
+  },
+  {
+   "line": 0,
+   "text": "被",
+   "start": 5.436,
+   "end": 5.567
+  },
+  {
+   "line": 0,
+   "text": "铸出",
+   "start": 5.579,
+   "end": 5.864
+  },
+  {
+   "line": 0,
+   "text": "约",
+   "start": 5.864,
+   "end": 6.031
+  },
+  {
+   "line": 0,
+   "text": "12 万",
+   "start": 6.043,
+   "end": 6.471
+  },
+  {
+   "line": 0,
+   "text": "枚",
+   "start": 6.471,
+   "end": 6.721
+  },
+  {
+   "line": 0,
+   "text": "wETH",
+   "start": 6.745,
+   "end": 7.602
+  },
+  {
+   "line": 1,
+   "text": "按",
+   "start": 8.758,
+   "end": 8.96
+  },
+  {
+   "line": 1,
+   "text": "事发",
+   "start": 8.984,
+   "end": 9.329
+  },
+  {
+   "line": 1,
+   "text": "时",
+   "start": 9.329,
+   "end": 9.472
+  },
+  {
+   "line": 1,
+   "text": "的",
+   "start": 9.472,
+   "end": 9.543
+  },
+  {
+   "line": 1,
+   "text": "价格",
+   "start": 9.555,
+   "end": 10.008
+  },
+  {
+   "line": 1,
+   "text": "约",
+   "start": 10.234,
+   "end": 10.472
+  },
+  {
+   "line": 1,
+   "text": "3.2 亿",
+   "start": 10.472,
+   "end": 11.067
+  },
+  {
+   "line": 1,
+   "text": "美元",
+   "start": 11.079,
+   "end": 11.531
+  },
+  {
+   "line": 2,
+   "text": "攻击者",
+   "start": 12.698,
+   "end": 13.162
+  },
+  {
+   "line": 2,
+   "text": "往",
+   "start": 13.162,
+   "end": 13.305
+  },
+  {
+   "line": 2,
+   "text": "程序",
+   "start": 13.317,
+   "end": 13.674
+  },
+  {
+   "line": 2,
+   "text": "里",
+   "start": 13.674,
+   "end": 13.936
+  },
+  {
+   "line": 2,
+   "text": "传",
+   "start": 14.114,
+   "end": 14.329
+  },
+  {
+   "line": 2,
+   "text": "了",
+   "start": 14.329,
+   "end": 14.4
+  },
+  {
+   "line": 2,
+   "text": "一个",
+   "start": 14.412,
+   "end": 14.579
+  },
+  {
+   "line": 2,
+   "text": "伪造",
+   "start": 14.602,
+   "end": 14.924
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 14.924,
+   "end": 15.031
+  },
+  {
+   "line": 2,
+   "text": "系统",
+   "start": 15.055,
+   "end": 15.4
+  },
+  {
+   "line": 2,
+   "text": "账户",
+   "start": 15.412,
+   "end": 15.84
+  },
+  {
+   "line": 3,
+   "text": "程序",
+   "start": 16.998,
+   "end": 17.402
+  },
+  {
+   "line": 3,
+   "text": "读",
+   "start": 17.426,
+   "end": 17.545
+  },
+  {
+   "line": 3,
+   "text": "了",
+   "start": 17.545,
+   "end": 17.617
+  },
+  {
+   "line": 3,
+   "text": "这个",
+   "start": 17.629,
+   "end": 17.783
+  },
+  {
+   "line": 3,
+   "text": "账户",
+   "start": 17.795,
+   "end": 18.343
+  },
+  {
+   "line": 3,
+   "text": "没有",
+   "start": 18.664,
+   "end": 18.95
+  },
+  {
+   "line": 3,
+   "text": "核对",
+   "start": 18.962,
+   "end": 19.319
+  },
+  {
+   "line": 3,
+   "text": "它",
+   "start": 19.319,
+   "end": 19.7
+  },
+  {
+   "line": 3,
+   "text": "是不是",
+   "start": 19.807,
+   "end": 20.224
+  },
+  {
+   "line": 3,
+   "text": "真",
+   "start": 20.236,
+   "end": 20.414
+  },
+  {
+   "line": 3,
+   "text": "的",
+   "start": 20.414,
+   "end": 20.557
+  },
+  {
+   "line": 4,
+   "text": "守护者",
+   "start": 21.706,
+   "end": 22.253
+  },
+  {
+   "line": 4,
+   "text": "的",
+   "start": 22.253,
+   "end": 22.325
+  },
+  {
+   "line": 4,
+   "text": "签名",
+   "start": 22.348,
+   "end": 22.706
+  },
+  {
+   "line": 4,
+   "text": "验证",
+   "start": 22.718,
+   "end": 23.182
+  },
+  {
+   "line": 4,
+   "text": "就",
+   "start": 23.468,
+   "end": 23.634
+  },
+  {
+   "line": 4,
+   "text": "这样",
+   "start": 23.634,
+   "end": 24.027
+  },
+  {
+   "line": 4,
+   "text": "被",
+   "start": 24.122,
+   "end": 24.277
+  },
+  {
+   "line": 4,
+   "text": "绕开",
+   "start": 24.277,
+   "end": 24.753
+  },
+  {
+   "line": 5,
+   "text": "先",
+   "start": 25.886,
+   "end": 26.255
+  },
+  {
+   "line": 5,
+   "text": "猜",
+   "start": 26.255,
+   "end": 26.409
+  },
+  {
+   "line": 5,
+   "text": "一道",
+   "start": 26.421,
+   "end": 26.636
+  },
+  {
+   "line": 5,
+   "text": "题",
+   "start": 26.636,
+   "end": 27.04
+  },
+  {
+   "line": 6,
+   "text": "在",
+   "start": 28.194,
+   "end": 28.36
+  },
+  {
+   "line": 6,
+   "text": "以",
+   "start": 28.36,
+   "end": 28.42
+  },
+  {
+   "line": 6,
+   "text": "太坊",
+   "start": 28.432,
+   "end": 28.765
+  },
+  {
+   "line": 6,
+   "text": "上",
+   "start": 28.765,
+   "end": 29.075
+  },
+  {
+   "line": 6,
+   "text": "合约",
+   "start": 29.444,
+   "end": 29.694
+  },
+  {
+   "line": 6,
+   "text": "要",
+   "start": 29.706,
+   "end": 29.86
+  },
+  {
+   "line": 6,
+   "text": "读",
+   "start": 29.86,
+   "end": 30.027
+  },
+  {
+   "line": 6,
+   "text": "另",
+   "start": 30.051,
+   "end": 30.182
+  },
+  {
+   "line": 6,
+   "text": "一个",
+   "start": 30.182,
+   "end": 30.336
+  },
+  {
+   "line": 6,
+   "text": "合约",
+   "start": 30.348,
+   "end": 30.765
+  },
+  {
+   "line": 6,
+   "text": "地址",
+   "start": 31.003,
+   "end": 31.36
+  },
+  {
+   "line": 6,
+   "text": "写",
+   "start": 31.372,
+   "end": 31.527
+  },
+  {
+   "line": 6,
+   "text": "在",
+   "start": 31.527,
+   "end": 31.634
+  },
+  {
+   "line": 6,
+   "text": "代码",
+   "start": 31.646,
+   "end": 32.075
+  },
+  {
+   "line": 6,
+   "text": "或",
+   "start": 32.098,
+   "end": 32.253
+  },
+  {
+   "line": 6,
+   "text": "存储",
+   "start": 32.265,
+   "end": 32.717
+  },
+  {
+   "line": 6,
+   "text": "里",
+   "start": 32.717,
+   "end": 32.86
+  },
+  {
+   "line": 7,
+   "text": "在",
+   "start": 34.006,
+   "end": 34.208
+  },
+  {
+   "line": 7,
+   "text": "Solana",
+   "start": 34.232,
+   "end": 34.589
+  },
+  {
+   "line": 7,
+   "text": "上",
+   "start": 34.589,
+   "end": 34.91
+  },
+  {
+   "line": 7,
+   "text": "程序",
+   "start": 35.125,
+   "end": 35.458
+  },
+  {
+   "line": 7,
+   "text": "要",
+   "start": 35.47,
+   "end": 35.589
+  },
+  {
+   "line": 7,
+   "text": "读",
+   "start": 35.589,
+   "end": 35.708
+  },
+  {
+   "line": 7,
+   "text": "的",
+   "start": 35.708,
+   "end": 35.768
+  },
+  {
+   "line": 7,
+   "text": "账户",
+   "start": 35.779,
+   "end": 36.184
+  },
+  {
+   "line": 7,
+   "text": "由",
+   "start": 36.363,
+   "end": 36.553
+  },
+  {
+   "line": 7,
+   "text": "谁",
+   "start": 36.553,
+   "end": 36.72
+  },
+  {
+   "line": 7,
+   "text": "提供",
+   "start": 36.732,
+   "end": 37.113
+  },
+  {
+   "line": 8,
+   "text": "先",
+   "start": 38.562,
+   "end": 38.943
+  },
+  {
+   "line": 8,
+   "text": "记住",
+   "start": 38.943,
+   "end": 39.145
+  },
+  {
+   "line": 8,
+   "text": "这个",
+   "start": 39.169,
+   "end": 39.323
+  },
+  {
+   "line": 8,
+   "text": "问题",
+   "start": 39.335,
+   "end": 39.835
+  },
+  {
+   "line": 9,
+   "text": "按",
+   "start": 40.99,
+   "end": 41.228
+  },
+  {
+   "line": 9,
+   "text": "Kudelski",
+   "start": 41.252,
+   "end": 41.93
+  },
+  {
+   "line": 9,
+   "text": "和",
+   "start": 42.025,
+   "end": 42.168
+  },
+  {
+   "line": 9,
+   "text": "Halborn",
+   "start": 42.18,
+   "end": 42.692
+  },
+  {
+   "line": 9,
+   "text": "的",
+   "start": 42.692,
+   "end": 42.752
+  },
+  {
+   "line": 9,
+   "text": "分析",
+   "start": 42.763,
+   "end": 43.216
+  },
+  {
+   "line": 9,
+   "text": "问题",
+   "start": 43.561,
+   "end": 43.847
+  },
+  {
+   "line": 9,
+   "text": "出",
+   "start": 43.847,
+   "end": 44.168
+  },
+  {
+   "line": 9,
+   "text": "在",
+   "start": 44.263,
+   "end": 44.454
+  },
+  {
+   "line": 9,
+   "text": "一个",
+   "start": 44.454,
+   "end": 44.621
+  },
+  {
+   "line": 9,
+   "text": "已经",
+   "start": 44.644,
+   "end": 44.871
+  },
+  {
+   "line": 9,
+   "text": "弃用",
+   "start": 44.882,
+   "end": 45.192
+  },
+  {
+   "line": 9,
+   "text": "的",
+   "start": 45.192,
+   "end": 45.359
+  },
+  {
+   "line": 9,
+   "text": "读取",
+   "start": 45.382,
+   "end": 45.692
+  },
+  {
+   "line": 9,
+   "text": "函数",
+   "start": 45.704,
+   "end": 46.085
+  },
+  {
+   "line": 10,
+   "text": "它",
+   "start": 47.234,
+   "end": 47.4
+  },
+  {
+   "line": 10,
+   "text": "不",
+   "start": 47.4,
+   "end": 47.555
+  },
+  {
+   "line": 10,
+   "text": "检查",
+   "start": 47.555,
+   "end": 47.948
+  },
+  {
+   "line": 10,
+   "text": "传",
+   "start": 47.972,
+   "end": 48.186
+  },
+  {
+   "line": 10,
+   "text": "进来",
+   "start": 48.186,
+   "end": 48.365
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 48.365,
+   "end": 48.472
+  },
+  {
+   "line": 10,
+   "text": "系统",
+   "start": 48.496,
+   "end": 48.853
+  },
+  {
+   "line": 10,
+   "text": "账户",
+   "start": 48.865,
+   "end": 49.341
+  },
+  {
+   "line": 10,
+   "text": "是不是",
+   "start": 49.555,
+   "end": 49.96
+  },
+  {
+   "line": 10,
+   "text": "真的",
+   "start": 49.984,
+   "end": 50.222
+  },
+  {
+   "line": 10,
+   "text": "系统",
+   "start": 50.234,
+   "end": 50.543
+  },
+  {
+   "line": 10,
+   "text": "账户",
+   "start": 50.555,
+   "end": 50.972
+  },
+  {
+   "line": 11,
+   "text": "修复",
+   "start": 52.134,
+   "end": 52.515
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 52.515,
+   "end": 52.586
+  },
+  {
+   "line": 11,
+   "text": "办法",
+   "start": 52.598,
+   "end": 53.11
+  },
+  {
+   "line": 11,
+   "text": "是",
+   "start": 53.324,
+   "end": 53.503
+  },
+  {
+   "line": 11,
+   "text": "改用",
+   "start": 53.515,
+   "end": 53.765
+  },
+  {
+   "line": 11,
+   "text": "带",
+   "start": 53.765,
+   "end": 53.931
+  },
+  {
+   "line": 11,
+   "text": "校",
+   "start": 53.943,
+   "end": 54.145
+  },
+  {
+   "line": 11,
+   "text": "验",
+   "start": 54.146,
+   "end": 54.288
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 54.288,
+   "end": 54.348
+  },
+  {
+   "line": 11,
+   "text": "函数",
+   "start": 54.36,
+   "end": 54.788
+  },
+  {
+   "line": 11,
+   "text": "Jump",
+   "start": 55.334,
+   "end": 55.679
+  },
+  {
+   "line": 11,
+   "text": "Crypto",
+   "start": 55.691,
+   "end": 56.203
+  },
+  {
+   "line": 11,
+   "text": "补足",
+   "start": 56.298,
+   "end": 56.572
+  },
+  {
+   "line": 11,
+   "text": "了",
+   "start": 56.572,
+   "end": 56.667
+  },
+  {
+   "line": 11,
+   "text": "全部",
+   "start": 56.679,
+   "end": 57.048
+  },
+  {
+   "line": 11,
+   "text": "ETH",
+   "start": 57.048,
+   "end": 57.393
+  },
+  {
+   "line": 12,
+   "text": "同样的错",
+   "start": 58.546,
+   "end": 59.248
+  },
+  {
+   "line": 12,
+   "text": "误",
+   "start": 59.248,
+   "end": 59.498
+  },
+  {
+   "line": 12,
+   "text": "换",
+   "start": 59.796,
+   "end": 60.022
+  },
+  {
+   "line": 12,
+   "text": "一条",
+   "start": 60.022,
+   "end": 60.272
+  },
+  {
+   "line": 12,
+   "text": "链",
+   "start": 60.272,
+   "end": 60.486
+  },
+  {
+   "line": 12,
+   "text": "就",
+   "start": 60.772,
+   "end": 60.903
+  },
+  {
+   "line": 12,
+   "text": "换",
+   "start": 60.915,
+   "end": 61.105
+  },
+  {
+   "line": 12,
+   "text": "了",
+   "start": 61.105,
+   "end": 61.177
+  },
+  {
+   "line": 12,
+   "text": "一",
+   "start": 61.188,
+   "end": 61.26
+  },
+  {
+   "line": 12,
+   "text": "副",
+   "start": 61.26,
+   "end": 61.367
+  },
+  {
+   "line": 12,
+   "text": "样子",
+   "start": 61.379,
+   "end": 61.724
+  },
+  {
+   "line": 13,
+   "text": "每种",
+   "start": 62.894,
+   "end": 63.286
+  },
+  {
+   "line": 13,
+   "text": "链",
+   "start": 63.286,
+   "end": 63.453
+  },
+  {
+   "line": 13,
+   "text": "上",
+   "start": 63.453,
+   "end": 63.56
+  },
+  {
+   "line": 13,
+   "text": "的",
+   "start": 63.56,
+   "end": 63.62
+  },
+  {
+   "line": 13,
+   "text": "程序",
+   "start": 63.632,
+   "end": 64.215
+  },
+  {
+   "line": 13,
+   "text": "到底",
+   "start": 64.596,
+   "end": 64.846
+  },
+  {
+   "line": 13,
+   "text": "在",
+   "start": 64.858,
+   "end": 64.929
+  },
+  {
+   "line": 13,
+   "text": "相信",
+   "start": 64.941,
+   "end": 65.251
+  },
+  {
+   "line": 13,
+   "text": "什么",
+   "start": 65.263,
+   "end": 65.56
+  }
+ ],
+ "captions": [
+  {
+   "text": "2022 年 2 月",
+   "start": 1.648,
+   "end": 2.853,
+   "id": "c0"
+  },
+  {
+   "text": "Wormhole 跨链桥在 Solana 一侧",
+   "start": 2.981,
+   "end": 5.258,
+   "id": "c1"
+  },
+  {
+   "text": "被铸出约 12 万枚 wETH",
+   "start": 5.386,
+   "end": 7.722,
+   "id": "c2"
+  },
+  {
+   "text": "按事发时的价格",
+   "start": 8.708,
+   "end": 10.128,
+   "id": "c3"
+  },
+  {
+   "text": "约 3.2 亿美元",
+   "start": 10.184,
+   "end": 11.651,
+   "id": "c4"
+  },
+  {
+   "text": "攻击者往程序里",
+   "start": 12.648,
+   "end": 14.044,
+   "id": "c5"
+  },
+  {
+   "text": "传了一个伪造的系统账户",
+   "start": 14.064,
+   "end": 15.96,
+   "id": "c6"
+  },
+  {
+   "text": "程序读了这个账户",
+   "start": 16.948,
+   "end": 18.463,
+   "id": "c7"
+  },
+  {
+   "text": "没有核对它是不是真的",
+   "start": 18.614,
+   "end": 20.677,
+   "id": "c8"
+  },
+  {
+   "text": "守护者的签名验证",
+   "start": 21.656,
+   "end": 23.302,
+   "id": "c9"
+  },
+  {
+   "text": "就这样被绕开",
+   "start": 23.418,
+   "end": 24.873,
+   "id": "c10"
+  },
+  {
+   "text": "先猜一道题",
+   "start": 25.836,
+   "end": 27.16,
+   "id": "c11"
+  },
+  {
+   "text": "在以太坊上",
+   "start": 28.144,
+   "end": 29.195,
+   "id": "c12"
+  },
+  {
+   "text": "合约要读另一个合约",
+   "start": 29.394,
+   "end": 30.885,
+   "id": "c13"
+  },
+  {
+   "text": "地址写在代码或存储里",
+   "start": 30.953,
+   "end": 32.98,
+   "id": "c14"
+  },
+  {
+   "text": "在 Solana 上",
+   "start": 33.956,
+   "end": 35.03,
+   "id": "c15"
+  },
+  {
+   "text": "程序要读的账户",
+   "start": 35.075,
+   "end": 36.293,
+   "id": "c16"
+  },
+  {
+   "text": "由谁提供",
+   "start": 36.313,
+   "end": 37.233,
+   "id": "c17"
+  },
+  {
+   "text": "先记住这个问题",
+   "start": 38.512,
+   "end": 39.955,
+   "id": "c18"
+  },
+  {
+   "text": "按 Kudelski 和 Halborn 的分析",
+   "start": 40.94,
+   "end": 43.336,
+   "id": "c19"
+  },
+  {
+   "text": "问题出在一个已经弃用的读取函数",
+   "start": 43.511,
+   "end": 46.205,
+   "id": "c20"
+  },
+  {
+   "text": "它不检查传进来的系统账户",
+   "start": 47.184,
+   "end": 49.461,
+   "id": "c21"
+  },
+  {
+   "text": "是不是真的系统账户",
+   "start": 49.505,
+   "end": 51.092,
+   "id": "c22"
+  },
+  {
+   "text": "修复的办法",
+   "start": 52.084,
+   "end": 53.23,
+   "id": "c23"
+  },
+  {
+   "text": "是改用带校验的函数",
+   "start": 53.274,
+   "end": 54.908,
+   "id": "c24"
+  },
+  {
+   "text": "Jump Crypto 补足了全部 ETH",
+   "start": 55.284,
+   "end": 57.513,
+   "id": "c25"
+  },
+  {
+   "text": "同样的错误",
+   "start": 58.496,
+   "end": 59.618,
+   "id": "c26"
+  },
+  {
+   "text": "换一条链",
+   "start": 59.746,
+   "end": 60.606,
+   "id": "c27"
+  },
+  {
+   "text": "就换了一副样子",
+   "start": 60.722,
+   "end": 61.844,
+   "id": "c28"
+  },
+  {
+   "text": "每种链上的程序",
+   "start": 62.844,
+   "end": 64.335,
+   "id": "c29"
+  },
+  {
+   "text": "到底在相信什么",
+   "start": 64.546,
+   "end": 65.68,
+   "id": "c30"
+  }
+ ]
+}

@@ -1,0 +1,2088 @@
+{
+ "id": "seg3",
+ "title": "熵不够",
+ "pill": 3,
+ "total": 133.16,
+ "lines": [
+  {
+   "id": "seg3-00",
+   "text": "先看第一处，熵不足。攻击路径有四步。",
+   "spoken": "先看第一处，熵不足。攻击路径有四步。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep02/audio/lines/seg3-00.mp3",
+   "start": 1.6,
+   "dur": 4.896,
+   "speechStart": 1.698,
+   "speechEnd": 5.683
+  },
+  {
+   "id": "seg3-01",
+   "text": "第一，生成器用了状态很小的伪随机数生成器，比如只用 32 位种子初始化的 mt19937。",
+   "spoken": "第一，生成器用了状态很小的伪随机数生成器，比如只用 32 位种子初始化的 MT 一九九三七。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep02/audio/lines/seg3-01.mp3",
+   "start": 6.716,
+   "dur": 9.024,
+   "speechStart": 6.814,
+   "speechEnd": 14.897
+  },
+  {
+   "id": "seg3-02",
+   "text": "第二，种子只有约 43 亿种，私钥也就只有约 43 亿种。",
+   "spoken": "第二，种子只有约 43 亿种，私钥也就只有约 43 亿种。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep02/audio/lines/seg3-02.mp3",
+   "start": 15.96,
+   "dur": 5.496,
+   "speechStart": 16.058,
+   "speechEnd": 20.629
+  },
+  {
+   "id": "seg3-03",
+   "text": "第三，攻击者在 GPU 上枚举全部种子，算出对应的地址。",
+   "spoken": "第三，攻击者在 GPU 上枚举全部种子，算出对应的地址。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep02/audio/lines/seg3-03.mp3",
+   "start": 21.676,
+   "dur": 6.024,
+   "speechStart": 21.774,
+   "speechEnd": 26.869
+  },
+  {
+   "id": "seg3-04",
+   "text": "第四，和链上有余额的地址比对。命中，就转走资产。",
+   "spoken": "第四，和链上有余额的地址比对。命中，就转走资产。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep02/audio/lines/seg3-04.mp3",
+   "start": 27.92,
+   "dur": 6.312,
+   "speechStart": 28.018,
+   "speechEnd": 33.384
+  },
+  {
+   "id": "seg3-05",
+   "text": "看起来随机，不等于安全。私钥必须来自 CSPRNG，也就是密码学安全随机数生成器，满 256 位熵。",
+   "spoken": "看起来随机，不等于安全。私钥必须来自 CSPRNG，也就是密码学安全随机数生成器，满 256 位熵。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep02/audio/lines/seg3-05.mp3",
+   "start": 34.452,
+   "dur": 9.696,
+   "speechStart": 34.55,
+   "speechEnd": 43.309
+  },
+  {
+   "id": "seg3-06",
+   "text": "三个案例，走的都是这条路。",
+   "spoken": "三个案例，走的都是这条路。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep02/audio/lines/seg3-06.mp3",
+   "start": 44.368,
+   "dur": 3.096,
+   "speechStart": 44.466,
+   "speechEnd": 46.644
+  },
+  {
+   "id": "seg3-07",
+   "text": "第一个是 Profanity。1.60 及以前的版本只用 32 位种子。",
+   "spoken": "第一个是 Profanity。1.60 及以前的版本只用 32 位种子。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep02/audio/lines/seg3-07.mp3",
+   "start": 47.684,
+   "dur": 6.048,
+   "speechStart": 47.782,
+   "speechEnd": 52.886
+  },
+  {
+   "id": "seg3-08",
+   "text": "2022 年 9 月 15 日，1inch 公开披露。5 天后，Wintermute 被盗。同期还有多个受害者。",
+   "spoken": "2022 年 9 月 15 日，1inch 公开批路。5 天后，Wintermute 被盗。同期还有多个受害者。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep02/audio/lines/seg3-08.mp3",
+   "start": 53.952,
+   "dur": 8.352,
+   "speechStart": 54.05,
+   "speechEnd": 61.476
+  },
+  {
+   "id": "seg3-09",
+   "text": "第二个，Trust Wallet 浏览器扩展。Wallet Core 的 WASM 版本生成助记词，用的是 mt19937，熵从 256 位降到 32 位。",
+   "spoken": "第二个，TrustWallet 浏览器扩展。WalletCore 的 WASM 版本生成助记词，用的是 MT 一九九三七，熵从 256 位降到 32 位。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep02/audio/lines/seg3-09.mp3",
+   "start": 62.524,
+   "dur": 12.744,
+   "speechStart": 62.622,
+   "speechEnd": 74.429
+  },
+  {
+   "id": "seg3-10",
+   "text": "受影响的，是 2022 年 11 月 14 日到 23 日新建的扩展钱包。Ledger 的安全团队报告后，几天内就修复了。",
+   "spoken": "受影响的，是 2022 年 11 月 14 日到 23 日新建的扩展钱包。Ledger 的安全团队报告后，几天内就修复了。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep02/audio/lines/seg3-10.mp3",
+   "start": 75.488,
+   "dur": 9.936,
+   "speechStart": 75.586,
+   "speechEnd": 84.583
+  },
+  {
+   "id": "seg3-11",
+   "text": "但部分弱钱包后来还是被盗，损失约 17 万美元，Trust Wallet 承诺补偿。",
+   "spoken": "但部分弱钱包后来还是被盗，损失约 17 万美元，TrustWallet 承诺补偿。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep02/audio/lines/seg3-11.mp3",
+   "start": 85.644,
+   "dur": 6.888,
+   "speechStart": 85.742,
+   "speechEnd": 91.694
+  },
+  {
+   "id": "seg3-12",
+   "text": "第三个，Libbitcoin Explorer 的 Milk Sad 漏洞。它生成种子的命令，用的是一个 32 位的时间值。",
+   "spoken": "第三个，LibbitcoinExplorer 的 MilkSad 漏洞。它生成种子的命令，用的是一个 32 位的时间值。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep02/audio/lines/seg3-12.mp3",
+   "start": 92.752,
+   "dur": 8.04,
+   "speechStart": 92.85,
+   "speechEnd": 99.954
+  },
+  {
+   "id": "seg3-13",
+   "text": "2023 年 7 月 12 日发生集中盗取，损失至少约 90 万美元。",
+   "spoken": "2023 年 7 月 12 日发生集中盗取，损失至少约 90 万美元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep02/audio/lines/seg3-13.mp3",
+   "start": 101.012,
+   "dur": 6.456,
+   "speechStart": 101.11,
+   "speechEnd": 106.622
+  },
+  {
+   "id": "seg3-14",
+   "text": "厂商认为，文档早有警告。",
+   "spoken": "厂商认为，文档早有警告。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep02/audio/lines/seg3-14.mp3",
+   "start": 107.688,
+   "dur": 3.48,
+   "speechStart": 107.786,
+   "speechEnd": 110.321
+  },
+  {
+   "id": "seg3-15",
+   "text": "教训有三条。在 WASM 或 JS 里替换随机源，要单独审计。",
+   "spoken": "教训有三条。在 WASM 或 JS 里替换随机源，要单独审计。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep02/audio/lines/seg3-15.mp3",
+   "start": 111.388,
+   "dur": 6.6,
+   "speechStart": 111.486,
+   "speechEnd": 117.15
+  },
+  {
+   "id": "seg3-16",
+   "text": "文档里的警告挡不住误用，生成密钥的接口必须默认安全。",
+   "spoken": "文档里的警告挡不住误用，生成密钥的接口必须默认安全。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep02/audio/lines/seg3-16.mp3",
+   "start": 118.208,
+   "dur": 5.688,
+   "speechStart": 118.306,
+   "speechEnd": 123.044
+  },
+  {
+   "id": "seg3-17",
+   "text": "最容易漏掉的一条是，修好代码，修不好已经生成的弱私钥。用户必须迁移到新地址。",
+   "spoken": "最容易漏掉的一条是，修好代码，修不好已经生成的弱私钥。用户必须迁移到新地址。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/media/video/skeuo/ep02/audio/lines/seg3-17.mp3",
+   "start": 124.116,
+   "dur": 7.848,
+   "speechStart": 124.214,
+   "speechEnd": 131.128
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "先",
+   "start": 1.698,
+   "end": 1.96
+  },
+  {
+   "line": 0,
+   "text": "看",
+   "start": 1.96,
+   "end": 2.126
+  },
+  {
+   "line": 0,
+   "text": "第一",
+   "start": 2.138,
+   "end": 2.436
+  },
+  {
+   "line": 0,
+   "text": "处",
+   "start": 2.436,
+   "end": 2.721
+  },
+  {
+   "line": 0,
+   "text": "熵",
+   "start": 3.007,
+   "end": 3.293
+  },
+  {
+   "line": 0,
+   "text": "不足",
+   "start": 3.305,
+   "end": 3.733
+  },
+  {
+   "line": 0,
+   "text": "攻击",
+   "start": 4.279,
+   "end": 4.695
+  },
+  {
+   "line": 0,
+   "text": "路径",
+   "start": 4.707,
+   "end": 4.981
+  },
+  {
+   "line": 0,
+   "text": "有",
+   "start": 5.005,
+   "end": 5.124
+  },
+  {
+   "line": 0,
+   "text": "四步",
+   "start": 5.124,
+   "end": 5.683
+  },
+  {
+   "line": 1,
+   "text": "第一",
+   "start": 6.814,
+   "end": 7.183
+  },
+  {
+   "line": 1,
+   "text": "生成器",
+   "start": 7.564,
+   "end": 8.207
+  },
+  {
+   "line": 1,
+   "text": "用",
+   "start": 8.23,
+   "end": 8.337
+  },
+  {
+   "line": 1,
+   "text": "了",
+   "start": 8.337,
+   "end": 8.421
+  },
+  {
+   "line": 1,
+   "text": "状态",
+   "start": 8.433,
+   "end": 8.766
+  },
+  {
+   "line": 1,
+   "text": "很",
+   "start": 8.778,
+   "end": 8.968
+  },
+  {
+   "line": 1,
+   "text": "小",
+   "start": 8.968,
+   "end": 9.123
+  },
+  {
+   "line": 1,
+   "text": "的",
+   "start": 9.123,
+   "end": 9.302
+  },
+  {
+   "line": 1,
+   "text": "伪",
+   "start": 9.326,
+   "end": 9.552
+  },
+  {
+   "line": 1,
+   "text": "随机数",
+   "start": 9.552,
+   "end": 9.992
+  },
+  {
+   "line": 1,
+   "text": "生成器",
+   "start": 10.004,
+   "end": 10.552
+  },
+  {
+   "line": 1,
+   "text": "比如",
+   "start": 10.873,
+   "end": 11.302
+  },
+  {
+   "line": 1,
+   "text": "只",
+   "start": 11.421,
+   "end": 11.659
+  },
+  {
+   "line": 1,
+   "text": "用",
+   "start": 11.659,
+   "end": 11.826
+  },
+  {
+   "line": 1,
+   "text": "32 位",
+   "start": 11.849,
+   "end": 12.433
+  },
+  {
+   "line": 1,
+   "text": "种子",
+   "start": 12.445,
+   "end": 12.718
+  },
+  {
+   "line": 1,
+   "text": "初始化",
+   "start": 12.742,
+   "end": 13.159
+  },
+  {
+   "line": 1,
+   "text": "的",
+   "start": 13.159,
+   "end": 13.361
+  },
+  {
+   "line": 1,
+   "text": "MT",
+   "start": 13.456,
+   "end": 14.028
+  },
+  {
+   "line": 1,
+   "text": "一九九三七",
+   "start": 14.04,
+   "end": 14.897
+  },
+  {
+   "line": 2,
+   "text": "第二",
+   "start": 16.058,
+   "end": 16.439
+  },
+  {
+   "line": 2,
+   "text": "种子",
+   "start": 16.76,
+   "end": 17.26
+  },
+  {
+   "line": 2,
+   "text": "只有",
+   "start": 17.272,
+   "end": 17.498
+  },
+  {
+   "line": 2,
+   "text": "约",
+   "start": 17.522,
+   "end": 17.653
+  },
+  {
+   "line": 2,
+   "text": "43 亿",
+   "start": 17.665,
+   "end": 18.212
+  },
+  {
+   "line": 2,
+   "text": "种",
+   "start": 18.212,
+   "end": 18.45
+  },
+  {
+   "line": 2,
+   "text": "私钥",
+   "start": 18.712,
+   "end": 19.272
+  },
+  {
+   "line": 2,
+   "text": "也",
+   "start": 19.296,
+   "end": 19.415
+  },
+  {
+   "line": 2,
+   "text": "就",
+   "start": 19.415,
+   "end": 19.498
+  },
+  {
+   "line": 2,
+   "text": "只有",
+   "start": 19.51,
+   "end": 19.724
+  },
+  {
+   "line": 2,
+   "text": "约",
+   "start": 19.748,
+   "end": 19.879
+  },
+  {
+   "line": 2,
+   "text": "43 亿",
+   "start": 19.891,
+   "end": 20.427
+  },
+  {
+   "line": 2,
+   "text": "种",
+   "start": 20.427,
+   "end": 20.629
+  },
+  {
+   "line": 3,
+   "text": "第三",
+   "start": 21.774,
+   "end": 22.238
+  },
+  {
+   "line": 3,
+   "text": "攻击者",
+   "start": 22.619,
+   "end": 23.059
+  },
+  {
+   "line": 3,
+   "text": "在",
+   "start": 23.071,
+   "end": 23.381
+  },
+  {
+   "line": 3,
+   "text": "GPU",
+   "start": 23.476,
+   "end": 23.976
+  },
+  {
+   "line": 3,
+   "text": "上枚举",
+   "start": 23.976,
+   "end": 24.547
+  },
+  {
+   "line": 3,
+   "text": "全部",
+   "start": 24.571,
+   "end": 24.94
+  },
+  {
+   "line": 3,
+   "text": "种子",
+   "start": 24.952,
+   "end": 25.393
+  },
+  {
+   "line": 3,
+   "text": "算",
+   "start": 25.583,
+   "end": 25.845
+  },
+  {
+   "line": 3,
+   "text": "出",
+   "start": 25.845,
+   "end": 26.047
+  },
+  {
+   "line": 3,
+   "text": "对应",
+   "start": 26.071,
+   "end": 26.357
+  },
+  {
+   "line": 3,
+   "text": "的",
+   "start": 26.357,
+   "end": 26.428
+  },
+  {
+   "line": 3,
+   "text": "地址",
+   "start": 26.44,
+   "end": 26.869
+  },
+  {
+   "line": 4,
+   "text": "第",
+   "start": 28.018,
+   "end": 28.172
+  },
+  {
+   "line": 4,
+   "text": "四",
+   "start": 28.172,
+   "end": 28.529
+  },
+  {
+   "line": 4,
+   "text": "和",
+   "start": 28.899,
+   "end": 29.089
+  },
+  {
+   "line": 4,
+   "text": "链",
+   "start": 29.089,
+   "end": 29.244
+  },
+  {
+   "line": 4,
+   "text": "上",
+   "start": 29.244,
+   "end": 29.482
+  },
+  {
+   "line": 4,
+   "text": "有",
+   "start": 29.506,
+   "end": 29.637
+  },
+  {
+   "line": 4,
+   "text": "余额",
+   "start": 29.649,
+   "end": 29.982
+  },
+  {
+   "line": 4,
+   "text": "的",
+   "start": 29.982,
+   "end": 30.137
+  },
+  {
+   "line": 4,
+   "text": "地址",
+   "start": 30.16,
+   "end": 30.482
+  },
+  {
+   "line": 4,
+   "text": "比对",
+   "start": 30.494,
+   "end": 30.899
+  },
+  {
+   "line": 4,
+   "text": "命中",
+   "start": 31.444,
+   "end": 32.051
+  },
+  {
+   "line": 4,
+   "text": "就",
+   "start": 32.349,
+   "end": 32.539
+  },
+  {
+   "line": 4,
+   "text": "转走",
+   "start": 32.539,
+   "end": 32.944
+  },
+  {
+   "line": 4,
+   "text": "资产",
+   "start": 32.956,
+   "end": 33.384
+  },
+  {
+   "line": 5,
+   "text": "看起来",
+   "start": 34.55,
+   "end": 34.954
+  },
+  {
+   "line": 5,
+   "text": "随机",
+   "start": 34.966,
+   "end": 35.431
+  },
+  {
+   "line": 5,
+   "text": "不",
+   "start": 35.704,
+   "end": 35.847
+  },
+  {
+   "line": 5,
+   "text": "等于",
+   "start": 35.847,
+   "end": 36.05
+  },
+  {
+   "line": 5,
+   "text": "安全",
+   "start": 36.062,
+   "end": 36.466
+  },
+  {
+   "line": 5,
+   "text": "私钥",
+   "start": 37.012,
+   "end": 37.416
+  },
+  {
+   "line": 5,
+   "text": "必须",
+   "start": 37.44,
+   "end": 37.631
+  },
+  {
+   "line": 5,
+   "text": "来自",
+   "start": 37.642,
+   "end": 38.083
+  },
+  {
+   "line": 5,
+   "text": "CSPRNG",
+   "start": 38.166,
+   "end": 39.262
+  },
+  {
+   "line": 5,
+   "text": "也",
+   "start": 39.476,
+   "end": 39.619
+  },
+  {
+   "line": 5,
+   "text": "就",
+   "start": 39.619,
+   "end": 39.726
+  },
+  {
+   "line": 5,
+   "text": "是",
+   "start": 39.726,
+   "end": 39.94
+  },
+  {
+   "line": 5,
+   "text": "密码学",
+   "start": 39.964,
+   "end": 40.369
+  },
+  {
+   "line": 5,
+   "text": "安全",
+   "start": 40.381,
+   "end": 40.773
+  },
+  {
+   "line": 5,
+   "text": "随机数",
+   "start": 40.797,
+   "end": 41.25
+  },
+  {
+   "line": 5,
+   "text": "生成器",
+   "start": 41.262,
+   "end": 41.773
+  },
+  {
+   "line": 5,
+   "text": "满",
+   "start": 42.035,
+   "end": 42.238
+  },
+  {
+   "line": 5,
+   "text": "256 位",
+   "start": 42.25,
+   "end": 43.011
+  },
+  {
+   "line": 5,
+   "text": "熵",
+   "start": 43.012,
+   "end": 43.309
+  },
+  {
+   "line": 6,
+   "text": "三个",
+   "start": 44.466,
+   "end": 44.894
+  },
+  {
+   "line": 6,
+   "text": "案例",
+   "start": 44.906,
+   "end": 45.418
+  },
+  {
+   "line": 6,
+   "text": "走",
+   "start": 45.608,
+   "end": 45.823
+  },
+  {
+   "line": 6,
+   "text": "的",
+   "start": 45.823,
+   "end": 45.894
+  },
+  {
+   "line": 6,
+   "text": "都",
+   "start": 45.918,
+   "end": 46.073
+  },
+  {
+   "line": 6,
+   "text": "是",
+   "start": 46.073,
+   "end": 46.156
+  },
+  {
+   "line": 6,
+   "text": "这",
+   "start": 46.168,
+   "end": 46.275
+  },
+  {
+   "line": 6,
+   "text": "条",
+   "start": 46.275,
+   "end": 46.454
+  },
+  {
+   "line": 6,
+   "text": "路",
+   "start": 46.454,
+   "end": 46.644
+  },
+  {
+   "line": 7,
+   "text": "第一个",
+   "start": 47.782,
+   "end": 48.091
+  },
+  {
+   "line": 7,
+   "text": "是",
+   "start": 48.103,
+   "end": 48.448
+  },
+  {
+   "line": 7,
+   "text": "Profanity",
+   "start": 48.567,
+   "end": 49.282
+  },
+  {
+   "line": 7,
+   "text": "1.60",
+   "start": 49.827,
+   "end": 50.577
+  },
+  {
+   "line": 7,
+   "text": "及",
+   "start": 50.601,
+   "end": 50.755
+  },
+  {
+   "line": 7,
+   "text": "以前",
+   "start": 50.767,
+   "end": 51.005
+  },
+  {
+   "line": 7,
+   "text": "的",
+   "start": 51.005,
+   "end": 51.065
+  },
+  {
+   "line": 7,
+   "text": "版本",
+   "start": 51.077,
+   "end": 51.505
+  },
+  {
+   "line": 7,
+   "text": "只",
+   "start": 51.613,
+   "end": 51.815
+  },
+  {
+   "line": 7,
+   "text": "用",
+   "start": 51.815,
+   "end": 51.946
+  },
+  {
+   "line": 7,
+   "text": "32 位",
+   "start": 51.97,
+   "end": 52.47
+  },
+  {
+   "line": 7,
+   "text": "种子",
+   "start": 52.482,
+   "end": 52.886
+  },
+  {
+   "line": 8,
+   "text": "2022 年 9 月 15 日",
+   "start": 54.05,
+   "end": 55.621
+  },
+  {
+   "line": 8,
+   "text": "1",
+   "start": 55.812,
+   "end": 56.002
+  },
+  {
+   "line": 8,
+   "text": "inch",
+   "start": 56.002,
+   "end": 56.347
+  },
+  {
+   "line": 8,
+   "text": "公开",
+   "start": 56.371,
+   "end": 56.657
+  },
+  {
+   "line": 8,
+   "text": "披露",
+   "start": 56.669,
+   "end": 57.014
+  },
+  {
+   "line": 8,
+   "text": "5 天",
+   "start": 57.559,
+   "end": 57.869
+  },
+  {
+   "line": 8,
+   "text": "后",
+   "start": 57.869,
+   "end": 58.142
+  },
+  {
+   "line": 8,
+   "text": "Wintermute",
+   "start": 58.345,
+   "end": 58.904
+  },
+  {
+   "line": 8,
+   "text": "被",
+   "start": 58.916,
+   "end": 59.071
+  },
+  {
+   "line": 8,
+   "text": "盗",
+   "start": 59.071,
+   "end": 59.321
+  },
+  {
+   "line": 8,
+   "text": "同期",
+   "start": 59.857,
+   "end": 60.392
+  },
+  {
+   "line": 8,
+   "text": "还有",
+   "start": 60.416,
+   "end": 60.654
+  },
+  {
+   "line": 8,
+   "text": "多个",
+   "start": 60.666,
+   "end": 60.869
+  },
+  {
+   "line": 8,
+   "text": "受害者",
+   "start": 60.881,
+   "end": 61.476
+  },
+  {
+   "line": 9,
+   "text": "第二个",
+   "start": 62.622,
+   "end": 63.122
+  },
+  {
+   "line": 9,
+   "text": "TrustWallet",
+   "start": 63.312,
+   "end": 64.181
+  },
+  {
+   "line": 9,
+   "text": "浏览器",
+   "start": 64.205,
+   "end": 64.693
+  },
+  {
+   "line": 9,
+   "text": "扩展",
+   "start": 64.705,
+   "end": 65.074
+  },
+  {
+   "line": 9,
+   "text": "WalletCore",
+   "start": 65.619,
+   "end": 66.274
+  },
+  {
+   "line": 9,
+   "text": "的",
+   "start": 66.274,
+   "end": 66.524
+  },
+  {
+   "line": 9,
+   "text": "WASM",
+   "start": 66.619,
+   "end": 67.631
+  },
+  {
+   "line": 9,
+   "text": "版本",
+   "start": 67.643,
+   "end": 68.083
+  },
+  {
+   "line": 9,
+   "text": "生",
+   "start": 68.179,
+   "end": 68.441
+  },
+  {
+   "line": 9,
+   "text": "成助",
+   "start": 68.441,
+   "end": 68.726
+  },
+  {
+   "line": 9,
+   "text": "记词",
+   "start": 68.726,
+   "end": 69.167
+  },
+  {
+   "line": 9,
+   "text": "用",
+   "start": 69.345,
+   "end": 69.5
+  },
+  {
+   "line": 9,
+   "text": "的",
+   "start": 69.5,
+   "end": 69.584
+  },
+  {
+   "line": 9,
+   "text": "是",
+   "start": 69.584,
+   "end": 69.905
+  },
+  {
+   "line": 9,
+   "text": "MT",
+   "start": 70.012,
+   "end": 70.655
+  },
+  {
+   "line": 9,
+   "text": "一九九三七",
+   "start": 70.667,
+   "end": 71.572
+  },
+  {
+   "line": 9,
+   "text": "熵从",
+   "start": 71.881,
+   "end": 72.334
+  },
+  {
+   "line": 9,
+   "text": "256 位",
+   "start": 72.357,
+   "end": 73.25
+  },
+  {
+   "line": 9,
+   "text": "降到",
+   "start": 73.345,
+   "end": 73.75
+  },
+  {
+   "line": 9,
+   "text": "32 位",
+   "start": 73.774,
+   "end": 74.429
+  },
+  {
+   "line": 10,
+   "text": "受",
+   "start": 75.586,
+   "end": 75.836
+  },
+  {
+   "line": 10,
+   "text": "影响",
+   "start": 75.848,
+   "end": 76.193
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 76.193,
+   "end": 76.431
+  },
+  {
+   "line": 10,
+   "text": "是",
+   "start": 76.621,
+   "end": 76.8
+  },
+  {
+   "line": 10,
+   "text": "2022 年 11 月 14 日",
+   "start": 76.824,
+   "end": 78.514
+  },
+  {
+   "line": 10,
+   "text": "到",
+   "start": 78.514,
+   "end": 78.621
+  },
+  {
+   "line": 10,
+   "text": "23 日",
+   "start": 78.633,
+   "end": 79.383
+  },
+  {
+   "line": 10,
+   "text": "新建",
+   "start": 79.49,
+   "end": 79.943
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 79.943,
+   "end": 80.086
+  },
+  {
+   "line": 10,
+   "text": "扩展",
+   "start": 80.109,
+   "end": 80.407
+  },
+  {
+   "line": 10,
+   "text": "钱包",
+   "start": 80.419,
+   "end": 80.824
+  },
+  {
+   "line": 10,
+   "text": "Ledger",
+   "start": 81.357,
+   "end": 81.809
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 81.809,
+   "end": 81.905
+  },
+  {
+   "line": 10,
+   "text": "安全",
+   "start": 81.928,
+   "end": 82.226
+  },
+  {
+   "line": 10,
+   "text": "团队",
+   "start": 82.238,
+   "end": 82.488
+  },
+  {
+   "line": 10,
+   "text": "报告",
+   "start": 82.5,
+   "end": 82.786
+  },
+  {
+   "line": 10,
+   "text": "后",
+   "start": 82.786,
+   "end": 83.095
+  },
+  {
+   "line": 10,
+   "text": "几",
+   "start": 83.428,
+   "end": 83.643
+  },
+  {
+   "line": 10,
+   "text": "天",
+   "start": 83.643,
+   "end": 83.786
+  },
+  {
+   "line": 10,
+   "text": "内",
+   "start": 83.786,
+   "end": 83.964
+  },
+  {
+   "line": 10,
+   "text": "就",
+   "start": 83.988,
+   "end": 84.095
+  },
+  {
+   "line": 10,
+   "text": "修复",
+   "start": 84.107,
+   "end": 84.405
+  },
+  {
+   "line": 10,
+   "text": "了",
+   "start": 84.405,
+   "end": 84.583
+  },
+  {
+   "line": 11,
+   "text": "但",
+   "start": 85.742,
+   "end": 85.956
+  },
+  {
+   "line": 11,
+   "text": "部分",
+   "start": 85.968,
+   "end": 86.265
+  },
+  {
+   "line": 11,
+   "text": "弱",
+   "start": 86.277,
+   "end": 86.384
+  },
+  {
+   "line": 11,
+   "text": "钱包",
+   "start": 86.396,
+   "end": 86.849
+  },
+  {
+   "line": 11,
+   "text": "后来",
+   "start": 86.944,
+   "end": 87.206
+  },
+  {
+   "line": 11,
+   "text": "还是",
+   "start": 87.23,
+   "end": 87.42
+  },
+  {
+   "line": 11,
+   "text": "被",
+   "start": 87.432,
+   "end": 87.575
+  },
+  {
+   "line": 11,
+   "text": "盗",
+   "start": 87.575,
+   "end": 87.813
+  },
+  {
+   "line": 11,
+   "text": "损失",
+   "start": 88.146,
+   "end": 88.682
+  },
+  {
+   "line": 11,
+   "text": "约",
+   "start": 88.706,
+   "end": 88.861
+  },
+  {
+   "line": 11,
+   "text": "17 万",
+   "start": 88.873,
+   "end": 89.325
+  },
+  {
+   "line": 11,
+   "text": "美元",
+   "start": 89.337,
+   "end": 89.754
+  },
+  {
+   "line": 11,
+   "text": "TrustWallet",
+   "start": 89.92,
+   "end": 90.825
+  },
+  {
+   "line": 11,
+   "text": "承诺",
+   "start": 90.92,
+   "end": 91.218
+  },
+  {
+   "line": 11,
+   "text": "补偿",
+   "start": 91.23,
+   "end": 91.694
+  },
+  {
+   "line": 12,
+   "text": "第三个",
+   "start": 92.85,
+   "end": 93.445
+  },
+  {
+   "line": 12,
+   "text": "LibbitcoinExplorer",
+   "start": 93.635,
+   "end": 94.826
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 94.826,
+   "end": 95.04
+  },
+  {
+   "line": 12,
+   "text": "MilkSad",
+   "start": 95.064,
+   "end": 95.6
+  },
+  {
+   "line": 12,
+   "text": "漏洞",
+   "start": 95.612,
+   "end": 95.957
+  },
+  {
+   "line": 12,
+   "text": "它",
+   "start": 96.502,
+   "end": 96.633
+  },
+  {
+   "line": 12,
+   "text": "生成",
+   "start": 96.645,
+   "end": 96.99
+  },
+  {
+   "line": 12,
+   "text": "种子",
+   "start": 97.014,
+   "end": 97.252
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 97.252,
+   "end": 97.335
+  },
+  {
+   "line": 12,
+   "text": "命令",
+   "start": 97.347,
+   "end": 97.835
+  },
+  {
+   "line": 12,
+   "text": "用",
+   "start": 98.085,
+   "end": 98.276
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 98.276,
+   "end": 98.347
+  },
+  {
+   "line": 12,
+   "text": "是",
+   "start": 98.359,
+   "end": 98.49
+  },
+  {
+   "line": 12,
+   "text": "一个",
+   "start": 98.49,
+   "end": 98.657
+  },
+  {
+   "line": 12,
+   "text": "32 位",
+   "start": 98.681,
+   "end": 99.24
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 99.24,
+   "end": 99.3
+  },
+  {
+   "line": 12,
+   "text": "时间",
+   "start": 99.312,
+   "end": 99.669
+  },
+  {
+   "line": 12,
+   "text": "值",
+   "start": 99.669,
+   "end": 99.954
+  },
+  {
+   "line": 13,
+   "text": "2023 年 7 月 12 日",
+   "start": 101.11,
+   "end": 102.848
+  },
+  {
+   "line": 13,
+   "text": "发生",
+   "start": 102.955,
+   "end": 103.324
+  },
+  {
+   "line": 13,
+   "text": "集中",
+   "start": 103.348,
+   "end": 103.633
+  },
+  {
+   "line": 13,
+   "text": "盗取",
+   "start": 103.645,
+   "end": 104.098
+  },
+  {
+   "line": 13,
+   "text": "损失",
+   "start": 104.431,
+   "end": 105.074
+  },
+  {
+   "line": 13,
+   "text": "至少",
+   "start": 105.181,
+   "end": 105.55
+  },
+  {
+   "line": 13,
+   "text": "约",
+   "start": 105.562,
+   "end": 105.717
+  },
+  {
+   "line": 13,
+   "text": "90 万",
+   "start": 105.741,
+   "end": 106.217
+  },
+  {
+   "line": 13,
+   "text": "美元",
+   "start": 106.229,
+   "end": 106.622
+  },
+  {
+   "line": 14,
+   "text": "厂商",
+   "start": 107.786,
+   "end": 108.25
+  },
+  {
+   "line": 14,
+   "text": "认为",
+   "start": 108.262,
+   "end": 108.69
+  },
+  {
+   "line": 14,
+   "text": "文档",
+   "start": 109.024,
+   "end": 109.512
+  },
+  {
+   "line": 14,
+   "text": "早",
+   "start": 109.536,
+   "end": 109.75
+  },
+  {
+   "line": 14,
+   "text": "有",
+   "start": 109.75,
+   "end": 109.893
+  },
+  {
+   "line": 14,
+   "text": "警告",
+   "start": 109.905,
+   "end": 110.321
+  },
+  {
+   "line": 15,
+   "text": "教训",
+   "start": 111.486,
+   "end": 111.938
+  },
+  {
+   "line": 15,
+   "text": "有",
+   "start": 111.938,
+   "end": 112.021
+  },
+  {
+   "line": 15,
+   "text": "三",
+   "start": 112.033,
+   "end": 112.224
+  },
+  {
+   "line": 15,
+   "text": "条",
+   "start": 112.224,
+   "end": 112.593
+  },
+  {
+   "line": 15,
+   "text": "在",
+   "start": 113.126,
+   "end": 113.376
+  },
+  {
+   "line": 15,
+   "text": "WASM",
+   "start": 113.4,
+   "end": 114.269
+  },
+  {
+   "line": 15,
+   "text": "或",
+   "start": 114.281,
+   "end": 114.495
+  },
+  {
+   "line": 15,
+   "text": "JS",
+   "start": 114.507,
+   "end": 114.936
+  },
+  {
+   "line": 15,
+   "text": "里",
+   "start": 114.936,
+   "end": 115.174
+  },
+  {
+   "line": 15,
+   "text": "替",
+   "start": 115.198,
+   "end": 115.364
+  },
+  {
+   "line": 15,
+   "text": "换随",
+   "start": 115.364,
+   "end": 115.65
+  },
+  {
+   "line": 15,
+   "text": "机源",
+   "start": 115.662,
+   "end": 116.078
+  },
+  {
+   "line": 15,
+   "text": "要",
+   "start": 116.233,
+   "end": 116.436
+  },
+  {
+   "line": 15,
+   "text": "单独",
+   "start": 116.448,
+   "end": 116.745
+  },
+  {
+   "line": 15,
+   "text": "审计",
+   "start": 116.757,
+   "end": 117.15
+  },
+  {
+   "line": 16,
+   "text": "文档",
+   "start": 118.306,
+   "end": 118.651
+  },
+  {
+   "line": 16,
+   "text": "里",
+   "start": 118.651,
+   "end": 118.722
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 118.722,
+   "end": 118.818
+  },
+  {
+   "line": 16,
+   "text": "警告",
+   "start": 118.829,
+   "end": 119.317
+  },
+  {
+   "line": 16,
+   "text": "挡",
+   "start": 119.413,
+   "end": 119.615
+  },
+  {
+   "line": 16,
+   "text": "不住",
+   "start": 119.615,
+   "end": 119.806
+  },
+  {
+   "line": 16,
+   "text": "误用",
+   "start": 119.818,
+   "end": 120.234
+  },
+  {
+   "line": 16,
+   "text": "生成",
+   "start": 120.591,
+   "end": 121.056
+  },
+  {
+   "line": 16,
+   "text": "密钥",
+   "start": 121.079,
+   "end": 121.258
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 121.258,
+   "end": 121.329
+  },
+  {
+   "line": 16,
+   "text": "接口",
+   "start": 121.341,
+   "end": 121.794
+  },
+  {
+   "line": 16,
+   "text": "必须",
+   "start": 121.901,
+   "end": 122.246
+  },
+  {
+   "line": 16,
+   "text": "默认",
+   "start": 122.27,
+   "end": 122.591
+  },
+  {
+   "line": 16,
+   "text": "安全",
+   "start": 122.603,
+   "end": 123.044
+  },
+  {
+   "line": 17,
+   "text": "最",
+   "start": 124.214,
+   "end": 124.44
+  },
+  {
+   "line": 17,
+   "text": "容易",
+   "start": 124.44,
+   "end": 124.666
+  },
+  {
+   "line": 17,
+   "text": "漏掉",
+   "start": 124.69,
+   "end": 124.952
+  },
+  {
+   "line": 17,
+   "text": "的",
+   "start": 124.952,
+   "end": 125.023
+  },
+  {
+   "line": 17,
+   "text": "一条",
+   "start": 125.035,
+   "end": 125.309
+  },
+  {
+   "line": 17,
+   "text": "是",
+   "start": 125.321,
+   "end": 125.678
+  },
+  {
+   "line": 17,
+   "text": "修好",
+   "start": 125.916,
+   "end": 126.333
+  },
+  {
+   "line": 17,
+   "text": "代码",
+   "start": 126.345,
+   "end": 126.797
+  },
+  {
+   "line": 17,
+   "text": "修",
+   "start": 126.999,
+   "end": 127.249
+  },
+  {
+   "line": 17,
+   "text": "不好",
+   "start": 127.249,
+   "end": 127.618
+  },
+  {
+   "line": 17,
+   "text": "已经",
+   "start": 127.642,
+   "end": 127.821
+  },
+  {
+   "line": 17,
+   "text": "生成",
+   "start": 127.833,
+   "end": 128.13
+  },
+  {
+   "line": 17,
+   "text": "的",
+   "start": 128.13,
+   "end": 128.19
+  },
+  {
+   "line": 17,
+   "text": "弱私钥",
+   "start": 128.214,
+   "end": 128.761
+  },
+  {
+   "line": 17,
+   "text": "用户",
+   "start": 129.306,
+   "end": 129.771
+  },
+  {
+   "line": 17,
+   "text": "必须",
+   "start": 129.795,
+   "end": 130.092
+  },
+  {
+   "line": 17,
+   "text": "迁移",
+   "start": 130.104,
+   "end": 130.378
+  },
+  {
+   "line": 17,
+   "text": "到",
+   "start": 130.378,
+   "end": 130.533
+  },
+  {
+   "line": 17,
+   "text": "新",
+   "start": 130.556,
+   "end": 130.759
+  },
+  {
+   "line": 17,
+   "text": "地址",
+   "start": 130.759,
+   "end": 131.128
+  }
+ ],
+ "captions": [
+  {
+   "text": "先看第一处 熵不足",
+   "start": 1.648,
+   "end": 3.853,
+   "id": "c0"
+  },
+  {
+   "text": "攻击路径有四步",
+   "start": 4.229,
+   "end": 5.803,
+   "id": "c1"
+  },
+  {
+   "text": "第一 生成器用了状态很小的伪随机数生成器",
+   "start": 6.764,
+   "end": 10.672,
+   "id": "c2"
+  },
+  {
+   "text": "比如只用 32 位种子初始化的 mt19937",
+   "start": 10.823,
+   "end": 15.017,
+   "id": "c3"
+  },
+  {
+   "text": "第二 种子只有约 43 亿种",
+   "start": 16.008,
+   "end": 18.57,
+   "id": "c4"
+  },
+  {
+   "text": "私钥也就只有约 43 亿种",
+   "start": 18.662,
+   "end": 20.749,
+   "id": "c5"
+  },
+  {
+   "text": "第三 攻击者在 GPU 上枚举全部种子",
+   "start": 21.724,
+   "end": 25.513,
+   "id": "c6"
+  },
+  {
+   "text": "算出对应的地址",
+   "start": 25.533,
+   "end": 26.989,
+   "id": "c7"
+  },
+  {
+   "text": "第四 和链上有余额的地址比对",
+   "start": 27.968,
+   "end": 31.019,
+   "id": "c8"
+  },
+  {
+   "text": "命中 就转走资产",
+   "start": 31.394,
+   "end": 33.504,
+   "id": "c9"
+  },
+  {
+   "text": "看起来随机",
+   "start": 34.5,
+   "end": 35.551,
+   "id": "c10"
+  },
+  {
+   "text": "不等于安全",
+   "start": 35.654,
+   "end": 36.586,
+   "id": "c11"
+  },
+  {
+   "text": "私钥必须来自 CSPRNG",
+   "start": 36.962,
+   "end": 39.382,
+   "id": "c12"
+  },
+  {
+   "text": "也就是密码学安全随机数生成器",
+   "start": 39.426,
+   "end": 41.893,
+   "id": "c13"
+  },
+  {
+   "text": "满 256 位熵",
+   "start": 41.985,
+   "end": 43.429,
+   "id": "c14"
+  },
+  {
+   "text": "三个案例",
+   "start": 44.416,
+   "end": 45.538,
+   "id": "c15"
+  },
+  {
+   "text": "走的都是这条路",
+   "start": 45.558,
+   "end": 46.764,
+   "id": "c16"
+  },
+  {
+   "text": "第一个是 Profanity",
+   "start": 47.732,
+   "end": 49.402,
+   "id": "c17"
+  },
+  {
+   "text": "1.60 及以前的版本只用 32 位种子",
+   "start": 49.777,
+   "end": 53.006,
+   "id": "c18"
+  },
+  {
+   "text": "2022 年 9 月 15 日",
+   "start": 54.0,
+   "end": 55.741,
+   "id": "c19"
+  },
+  {
+   "text": "1inch 公开披露",
+   "start": 55.762,
+   "end": 57.134,
+   "id": "c20"
+  },
+  {
+   "text": "5 天后 Wintermute 被盗",
+   "start": 57.509,
+   "end": 59.441,
+   "id": "c21"
+  },
+  {
+   "text": "同期还有多个受害者",
+   "start": 59.807,
+   "end": 61.596,
+   "id": "c22"
+  },
+  {
+   "text": "第二个 Trust Wallet 浏览器扩展",
+   "start": 62.572,
+   "end": 65.194,
+   "id": "c23"
+  },
+  {
+   "text": "Wallet Core 的 WASM 版本生成助记词",
+   "start": 65.569,
+   "end": 69.275,
+   "id": "c24"
+  },
+  {
+   "text": "用的是 mt19937",
+   "start": 69.295,
+   "end": 71.692,
+   "id": "c25"
+  },
+  {
+   "text": "熵从 256 位降到 32 位",
+   "start": 71.831,
+   "end": 74.549,
+   "id": "c26"
+  },
+  {
+   "text": "受影响的",
+   "start": 75.536,
+   "end": 76.551,
+   "id": "c27"
+  },
+  {
+   "text": "是 2022 年 11 月 14 日",
+   "start": 76.571,
+   "end": 78.444,
+   "id": "c28"
+  },
+  {
+   "text": "到 23 日新建的扩展钱包",
+   "start": 78.464,
+   "end": 80.944,
+   "id": "c29"
+  },
+  {
+   "text": "Ledger 的安全团队报告后",
+   "start": 81.307,
+   "end": 83.215,
+   "id": "c30"
+  },
+  {
+   "text": "几天内就修复了",
+   "start": 83.378,
+   "end": 84.703,
+   "id": "c31"
+  },
+  {
+   "text": "但部分弱钱包后来还是被盗",
+   "start": 85.692,
+   "end": 87.933,
+   "id": "c32"
+  },
+  {
+   "text": "损失约 17 万美元",
+   "start": 88.096,
+   "end": 89.85,
+   "id": "c33"
+  },
+  {
+   "text": "Trust Wallet 承诺补偿",
+   "start": 89.87,
+   "end": 91.814,
+   "id": "c34"
+  },
+  {
+   "text": "第三个",
+   "start": 92.8,
+   "end": 93.565,
+   "id": "c35"
+  },
+  {
+   "text": "Libbitcoin Explorer",
+   "start": 93.585,
+   "end": 94.756,
+   "id": "c36"
+  },
+  {
+   "text": "的 Milk Sad 漏洞",
+   "start": 94.776,
+   "end": 96.077,
+   "id": "c37"
+  },
+  {
+   "text": "它生成种子的命令",
+   "start": 96.452,
+   "end": 97.955,
+   "id": "c38"
+  },
+  {
+   "text": "用的是一个 32 位的时间值",
+   "start": 98.035,
+   "end": 100.074,
+   "id": "c39"
+  },
+  {
+   "text": "2023 年 7 月 12 日发生集中盗取",
+   "start": 101.06,
+   "end": 104.218,
+   "id": "c40"
+  },
+  {
+   "text": "损失至少约 90 万美元",
+   "start": 104.381,
+   "end": 106.742,
+   "id": "c41"
+  },
+  {
+   "text": "厂商认为",
+   "start": 107.736,
+   "end": 108.81,
+   "id": "c42"
+  },
+  {
+   "text": "文档早有警告",
+   "start": 108.974,
+   "end": 110.441,
+   "id": "c43"
+  },
+  {
+   "text": "教训有三条",
+   "start": 111.436,
+   "end": 112.713,
+   "id": "c44"
+  },
+  {
+   "text": "在 WASM 或 JS 里替换随机源",
+   "start": 113.076,
+   "end": 116.163,
+   "id": "c45"
+  },
+  {
+   "text": "要单独审计",
+   "start": 116.183,
+   "end": 117.27,
+   "id": "c46"
+  },
+  {
+   "text": "文档里的警告挡不住误用",
+   "start": 118.256,
+   "end": 120.354,
+   "id": "c47"
+  },
+  {
+   "text": "生成密钥的接口必须默认安全",
+   "start": 120.541,
+   "end": 123.164,
+   "id": "c48"
+  },
+  {
+   "text": "最容易漏掉的一条是",
+   "start": 124.164,
+   "end": 125.798,
+   "id": "c49"
+  },
+  {
+   "text": "修好代码",
+   "start": 125.866,
+   "end": 126.917,
+   "id": "c50"
+  },
+  {
+   "text": "修不好已经生成的弱私钥",
+   "start": 126.949,
+   "end": 128.881,
+   "id": "c51"
+  },
+  {
+   "text": "用户必须迁移到新地址",
+   "start": 129.256,
+   "end": 131.248,
+   "id": "c52"
+  }
+ ]
+}
