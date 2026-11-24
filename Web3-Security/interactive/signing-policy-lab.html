@@ -25,7 +25,7 @@
     <a class="back" href="index.html">← 返回实验目录</a>
     <h1>签名请求独立校验</h1>
   </header>
-  <p class="lead">业务系统发来签名请求时，签名侧的策略引擎不能只信请求本身，要拿它去和独立保存的“审批单”逐字段比对。你来当这个策略引擎：8 个场景，判断放行、拒绝还是升级人工，并选出理由。配套章节：<a href="../arch/X11-cex-wallet-treasury-payment.md">X11 钱包与资金</a>、<a href="../arch/X35-custodian-security.md">X35 托管机构</a>、<a href="../29-signing-path-2026.md">29 签名路径</a>。</p>
+  <p class="lead">业务系统发来签名请求时，签名侧的策略引擎不能只信请求本身，要拿它去和独立保存的“审批单”逐字段比对。你来当这个策略引擎：8 个场景，判断放行、拒绝还是升级人工，并选出理由。配套章节：<a href="../arch/X14-cex-wallet-treasury-payment.md">X14 钱包与资金</a>、<a href="../arch/X38-custodian-security.md">X38 托管机构</a>、<a href="../29-signing-path-2026.md">29 签名路径</a>。</p>
 
   <div class="callout info small">
     <strong>怎么玩：</strong>
@@ -120,7 +120,7 @@ $('next').onclick = () => {
   if (i < SC.length - 1) { i++; show(); return; }
   $('form').hidden = true; $('next').hidden = true; $('result').innerHTML = ''; $('prog').textContent = '全部完成';
   $('appr').innerHTML = ''; $('req').innerHTML = '';
-  const tip = score >= 21 ? '你对“独立校验 + 台账”的理解很扎实。' : score >= 14 ? '大方向对。重点复习：哪些检查必须依赖独立台账，而不是请求自身。' : '建议重读 X11 和 29 章，再来一次。';
+  const tip = score >= 21 ? '你对“独立校验 + 台账”的理解很扎实。' : score >= 14 ? '大方向对。重点复习：哪些检查必须依赖独立台账，而不是请求自身。' : '建议重读 X14 和 29 章，再来一次。';
   $('final').innerHTML = '<div class="card"><h2 style="margin-top:0">总分</h2><div class="big">' + score + ' / 24</div><p>' + tip + '</p><div class="btn-row"><button class="primary" id="again">再来一次</button></div></div>';
   $('again').onclick = () => { i = 0; score = 0; log = []; $('final').innerHTML = ''; $('form').hidden = false; show(); };
 };

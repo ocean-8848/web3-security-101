@@ -42,7 +42,10 @@ button { font: inherit; color: inherit; }
   box-shadow: 0 1px 0 var(--rule), 0 8px 28px rgba(60, 50, 30, .14); cursor: pointer; touch-action: pan-y; user-select: none; }
 .screen iframe { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; border: 0; transform-origin: 0 0; visibility: hidden; pointer-events: none; }
 .screen iframe.on { visibility: visible; }
-.screen .wait { position: absolute; inset: 0; display: grid; place-items: center; color: #8a826f; font-size: 14px; background: #efebe3; }
+.screen .still { position: absolute; inset: 0; background-repeat: no-repeat; background-color: #efebe3; }
+.screen.live .still { visibility: hidden; }
+.screen .wait { position: absolute; left: 12px; bottom: 12px; padding: 4px 12px; border-radius: 999px; color: #fff; font-size: 13px; background: rgba(28, 28, 28, .72); }
+.btn.play { border-color: var(--accent); color: var(--accent); }
 .screen .wait[hidden] { display: none; }
 
 .side { min-height: 0; overflow-y: auto; border-left: 1px solid var(--rule); background: var(--paper); padding: 18px 20px 24px; }
@@ -102,7 +105,7 @@ button { font: inherit; color: inherit; }
     <button class="btn hide-narrow" id="fs" title="全屏（F）">⛶ 全屏</button>
   </header>
   <div class="body">
-    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="wait" id="wait">载入动画…</div></div></div>
+    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="still" id="still" role="img"></div><div class="wait" id="wait" hidden>载入动画…</div></div></div>
     <aside class="side" aria-live="polite">
       <div class="sec" id="sec"></div>
       <h2 id="stitle"></h2>
@@ -112,7 +115,7 @@ button { font: inherit; color: inherit; }
   </div>
   <nav class="ctrl" aria-label="翻页">
     <button class="btn" id="prev" aria-label="上一页（←）">‹ 上一页</button>
-    <button class="btn" id="replay" aria-label="重播本页动画（R）">⟳ 重播</button>
+    <button class="btn play" id="replay" aria-label="看这一页的动画过程（P）">▶ 看过程</button>
     <button class="btn primary" id="next" aria-label="下一页（→ 或空格）">下一页 ›</button>
     <span class="count" id="count"></span>
     <div class="prog" id="prog"></div>
@@ -123,10 +126,10 @@ button { font: inherit; color: inherit; }
 </div>
 <script>
 (function () {
-  var D = {"chapter": "s04", "title": "重入攻击：在你记账之前再取一次钱", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 17.55, "title": "The DAO：两行代码写反", "points": ["2016 年 6 月，被提走约 360 万 ETH", "按事发时价格约 6000 万美元", "合约没有被破解，只是两行代码的顺序写反了"], "notes": ["2016 年 6 月，以太坊上的 The DAO，被提走了约 360 万 ETH。", "按事发时的价格，约 6000 万美元。", "合约没有被破解。", "它只是把两行代码的顺序，写反了。"], "section": "顺序写反了"}, {"seg": "1", "t0": 17.55, "t1": 30.01, "title": "先猜一道题", "points": ["银行合约金库有 10 个 ETH，你的余额是 1 个", "只调用一次取款函数，最多能取走多少？"], "notes": ["先猜一道题。", "一个银行合约，金库里有 10 个 ETH。你在里面的余额，是 1 个。", "你只调用一次取款函数，最多能取走多少？"], "section": "顺序写反了"}, {"seg": "1", "t0": 30.01, "t1": 47.77, "title": "答案：全部 10 个", "points": ["前提：银行先转账、后清零，而你是一个合约", "每收到一笔钱，就在收款那一刻再调用一次取款", "账本清零要等所有嵌套调用都返回之后"], "notes": ["答案是，全部 10 个。", "前提有两个：银行先转账、后清零。而你，是一个合约。", "你每收到一笔钱，就在收款的那一刻，再调用一次取款。", "账本清零，要等到所有嵌套调用都返回之后。"], "section": "顺序写反了"}, {"seg": "1", "t0": 47.77, "t1": 62.26, "title": "这就是重入", "points": ["最古老，也最常复发的合约漏洞", "本集：控制权在哪交出去、重入有哪几种、怎样把顺序写对"], "notes": ["这就是重入。最古老，也最常复发的合约漏洞。", "这一集讲三件事：控制权在哪里交出去，重入有哪几种，怎样把顺序写对。"], "section": "顺序写反了"}, {"seg": "2", "t0": 0.0, "t1": 18.11, "title": "重入的定义", "points": ["合约更新账本之前，把控制权交给了外部地址", "外部地址趁账本还是旧的，再次调用合约", "严格说：函数还没执行完，就被外部调用再次进入"], "notes": ["先给一句话的定义。", "合约在更新自己的账本之前，把控制权交给了外部地址。", "外部地址趁账本还是旧的，再次调用合约。", "严格来说，重入是一个函数还没执行完，就被外部调用再次进入。"], "section": "交出控制权"}, {"seg": "2", "t0": 18.11, "t1": 41.93, "title": "先给钱、后改账的柜员", "points": ["柜员先把 100 元现金递给你，然后才改账本", "接钱瞬间同伴说再取 100，账本上还是 100", "一直先给钱后改账，就能取到金库见底"], "notes": ["打个比方。你去银行取 100 元。", "柜员先把现金递给你，然后才去改账本。", "你接过现金的瞬间，同伴在旁边说：他要再取 100 元。", "柜员一查，账本上还是 100，于是又给了一次。", "只要柜员一直先给钱、后改账，你们就能一直取，直到金库见底。"], "section": "交出控制权"}, {"seg": "2", "t0": 41.93, "t1": 55.39, "title": "不是并发，而是嵌套", "points": ["现实里柜员可以同时接待两个人", "EVM 是单线程的", "第二次取款整个发生在第一次取款的中间"], "notes": ["这个比方有一处不成立。现实里，柜员可以同时接待两个人。", "EVM 是单线程的。重入不是并发，而是嵌套。", "第二次取款，整个发生在第一次取款的中间。"], "section": "交出控制权"}, {"seg": "2", "t0": 55.39, "t1": 71.17, "title": "重入的两个前提", "points": ["函数中途发起外部调用，被调用方受攻击者控制", "外部调用发生时，状态还没更新到最终值"], "notes": ["所以，重入的前提只有两个。", "第一，合约在函数中途发起外部调用，而被调用的一方，受攻击者控制。", "第二，外部调用发生的时候，合约的状态，还没有更新到最终值。"], "section": "交出控制权"}, {"seg": "2", "t0": 71.17, "t1": 92.93, "title": "交出控制权的操作", "points": ["用 call 转 ETH，会执行接收合约的 receive 或 fallback", "调用攻击者部署的代币 transfer，代码可以是任意的", "ERC-777 代币转账会触发接收方的钩子"], "notes": ["哪些操作会交出控制权？一共有六类。", "用 call 转 ETH。接收方是合约时，会执行它的 receive，或者 fallback。", "调用代币的 transfer。代币如果是攻击者部署的，里面的代码可以是任意的。", "ERC-777 代币转账，会触发接收方的钩子。"], "section": "交出控制权"}, {"seg": "2", "t0": 92.93, "t1": 108.79, "title": "回调与用户提供的地址", "points": ["NFT 安全转账和安全铸造会回调接收方", "闪电贷回调，设计上就交出控制权", "调用任何用户提供的地址：路由器、钩子、预言机"], "notes": ["NFT 的安全转账和安全铸造，会回调接收方。", "闪电贷的回调，设计上就是把控制权交给借款人。", "还有，调用任何用户提供的地址，包括路由器、钩子和预言机。"], "section": "交出控制权"}, {"seg": "2", "t0": 108.79, "t1": 133.8, "title": "换一条链，入口不一样", "points": ["TRON：转 TRX 不执行 fallback，附带 callValue 才会", "Mantle：ETH 是 ERC-20，转它不触发 receive", "Mantle 上转原生币 MNT 才会触发"], "notes": ["再补一个细节。同一份代码，换一条链，回调入口就不一样。", "在 TRON 上，用系统交易转 TRX，不会执行接收合约的 fallback。", "附带 callValue 去调用合约，才会执行。", "在 Mantle 上，ETH 以 ERC-20 的形式存在，转它不触发 receive。转原生币 MNT，才会触发。"], "section": "交出控制权"}, {"seg": "3", "t0": 0.0, "t1": 23.21, "title": "第一种：单函数重入", "points": ["漏洞版取款：读余额、转账、清零", "银行读到余额 1 个 ETH，用 call 转过去", "攻击合约的 receive 被触发，再调用一次取款"], "notes": ["接下来，按调用栈，一种一种看。", "第一种，单函数重入。", "漏洞版的取款函数，分三步：读余额，转账，清零。", "攻击者调用取款。银行读到余额 1 个 ETH，用 call 把钱转过去。", "攻击合约的 receive 被触发。银行还有钱，它就再调用一次取款。"], "section": "四种重入"}, {"seg": "3", "t0": 23.21, "t1": 49.05, "title": "一层套一层，最后才清零", "points": ["第二层读到的余额还是 1 个，第一层还没清零", "递归到金库不够才停，再依次返回、依次清零", "gas 和调用深度 1024 限制递归，所以每次取尽量多"], "notes": ["第二层读到的余额，还是 1 个。因为第一层的清零，还没执行。", "一层套一层，直到金库余额不够，递归才停下来。", "然后各层依次返回，依次清零。这时钱已经没了。", "递归有上限。gas 和调用深度 1024，都会限制它。所以攻击者会每次取尽量大的金额，减少层数。"], "section": "四种重入"}, {"seg": "3", "t0": 49.05, "t1": 57.81, "title": "第二种：跨函数重入", "points": ["攻击者不回到取款函数", "而是进入另一个共享同一份余额的函数，比如转账"], "notes": ["第二种，跨函数重入。", "攻击者不回到取款函数，而是进入另一个共享同一份余额的函数，比如转账。"], "section": "四种重入"}, {"seg": "3", "t0": 57.81, "t1": 63.11, "title": "先猜：锁住取款够不够", "points": ["取款加了重入锁，转账没加", "攻击者还能利用回调吗？"], "notes": ["取款加了重入锁，转账没加。攻击者还能利用回调吗？"], "section": "四种重入"}, {"seg": "3", "t0": 63.11, "t1": 77.29, "title": "答案：能", "points": ["锁只拦截进入被锁函数的调用", "回调里把还没清零的余额转给同伙，外层返回后才清零", "同一笔钱，既被提走了，又被转走了"], "notes": ["能。锁只拦截进入被锁函数的调用。", "在回调里，攻击者把还没清零的余额，转给同伙。外层返回之后，才清零。", "同一笔钱，既被提走了，又被转走了。"], "section": "四种重入"}, {"seg": "3", "t0": 77.29, "t1": 94.67, "title": "Fei Rari 案例", "points": ["2022 年 4 月，跨函数重入的真实版本", "借款函数先用 call 发送 ETH，后写借款记录", "回调里调用没被锁覆盖的退出市场函数，取回抵押品"], "notes": ["2022 年 4 月的 Fei Rari，就是它的真实版本，损失约 8000 万美元。", "借款函数先用 call 发送 ETH，后写借款记录。", "攻击者在回调里，调用了没有被锁覆盖的退出市场函数，取回了全部抵押品。"], "section": "四种重入"}, {"seg": "3", "t0": 94.67, "t1": 111.25, "title": "第三种：跨合约重入", "points": ["协议由多个共享状态的合约组成，如金库和份额代币", "合约 A 的锁挡不住对合约 B 的调用", "B 读到的是 A 还没更新的状态"], "notes": ["第三种，跨合约重入。", "协议由多个合约组成，比如金库合约和份额代币合约，它们共享状态。", "合约 A 的锁，挡不住对合约 B 的调用。B 此刻读到的，是 A 还没更新的状态。"], "section": "四种重入"}, {"seg": "3", "t0": 111.25, "t1": 129.97, "title": "第四种：只读重入", "points": ["回调里不改目标合约，而是让第三方协议去读它", "如 AMM 池移除流动性：先转出代币，后更新总量", "回调那一刻，储备已减少，总量还没减少"], "notes": ["第四种，只读重入，最隐蔽。", "攻击者在回调里不修改目标合约，而是让第三方协议去读它。", "比如一个 AMM 池，移除流动性时，先转出代币，后更新总量。", "在回调的那一刻，储备已经减少，总量还没减少。"], "section": "四种重入"}, {"seg": "3", "t0": 129.97, "t1": 149.43, "title": "读到中间状态的第三方", "points": ["借贷协议读到被扭曲的价格，再按它放贷或清算", "池子自己的状态最终是对的", "view 函数通常不加锁，重入锁挡不住"], "notes": ["这时借贷协议来读池子的价格函数，读到一个被扭曲的价格，再按它放贷或清算。", "池子自己的状态，最终是对的。出错的，是在中间时刻读数据的第三方。", "池子的 view 函数通常不加锁，所以重入锁挡不住。"], "section": "四种重入"}, {"seg": "3", "t0": 149.43, "t1": 161.68, "title": "dForce 约 360 万", "points": ["2023 年 2 月，只读重入的真实案例", "用 Curve 池在回调期间返回的虚拟价格给抵押品定价"], "notes": ["2023 年 2 月的 dForce，就是这样，损失约 360 万美元。", "它用 Curve 池在回调期间返回的虚拟价格，给抵押品定价。"], "section": "四种重入"}, {"seg": "4", "t0": 0.0, "t1": 25.61, "title": "首选：CEI 模式", "points": ["检查、修改状态、外部交互，按这个顺序写", "只改一处：把清零挪到转账之前", "重入进来读到余额 0，require 直接回滚"], "notes": ["怎么防？首选，是 CEI 模式。", "CEI 是三个词：检查，修改状态，外部交互。函数按这个顺序写。", "取款函数只改一处：把清零，挪到转账之前。", "这样重入进来时，读到的余额是 0，require 直接回滚。", "交出控制权放在最后，此时账本已经一致。"], "section": "CEI与锁"}, {"seg": "4", "t0": 25.61, "t1": 52.07, "title": "第二道防线：重入锁", "points": ["执行期间再进入任何加锁函数都会回滚", "只保护加锁函数，不防只读重入，跨合约要共享同一把锁", "0.8.24 起可用瞬态存储做锁，目标链须支持 EIP-1153"], "notes": ["第二道防线，是重入锁。", "执行期间，再次进入任何一个加锁的函数，都会回滚。", "但锁有边界。它只保护加了锁的函数，不防只读重入，跨合约还要共享同一把锁。", "0.8.24 起，可以用瞬态存储做锁，gas 更低。", "但目标链必须支持 EIP-1153，部署前要确认。"], "section": "CEI与锁"}, {"seg": "4", "t0": 52.07, "t1": 68.57, "title": "拉取式支付与 CEI 局限", "points": ["合约只记账，由收款人自己来取", "代价是用户要多走一步", "复杂函数里很难做到所有交互都在最后"], "notes": ["还有一种思路，叫拉取式支付。合约只记账，由收款人自己来取。", "合约不主动推送，代价是用户要多走一步。", "CEI 也有局限。复杂函数里，很难做到所有交互都在最后。"], "section": "CEI与锁"}, {"seg": "4", "t0": 68.57, "t1": 96.71, "title": "纵深防御四条", "points": ["CEI 当默认写法；修改共享状态的入口加同一把锁", "view 不给中间状态的关键价格，或提供锁状态查询", "不变量测试：合约余额不少于用户余额之和"], "notes": ["所以要做纵深防御，分四条。", "一，把 CEI 当作默认写法。", "二，所有修改共享状态的外部入口，加同一把锁。", "三，不在 view 函数里给出中间状态的关键价格。必须给出，就提供锁状态查询。", "四，用不变量测试守住一件事：任何调用序列之后，合约余额都不少于用户余额之和。"], "section": "CEI与锁"}, {"seg": "4", "t0": 96.71, "t1": 108.75, "title": "修复要用代码验证", "points": ["同一个攻击测试，漏洞版要能提走资金", "修复版上要回滚", "只跑通修复版，无法证明测试覆盖了漏洞"], "notes": ["修复还要用代码验证。同一个攻击测试，在漏洞版上要能提走资金，在修复版上要回滚。", "只跑通修复版，无法证明测试真的覆盖了漏洞。"], "section": "CEI与锁"}, {"seg": "4", "t0": 108.75, "t1": 123.17, "title": "锁写对了，也不一定生效", "points": ["2023 年 7 月，Curve 一些池子源码里写了重入锁", "Vyper 编译器三个版本生成的锁不正确", "不同函数用了不同的锁槽"], "notes": ["最后，锁写对了，也不一定生效。", "2023 年 7 月，Curve 的一些池子，源码里写了重入锁。", "但 Vyper 编译器的三个版本，生成的锁不正确，不同函数用了不同的锁槽。"], "section": "CEI与锁"}, {"seg": "4", "t0": 123.17, "t1": 140.52, "title": "源码对不等于字节码对", "points": ["攻击者对原生 ETH 池子发起跨函数重入", "按多方公开复盘，损失约 7000 万美元", "审计范围要包括编译器版本"], "notes": ["攻击者对使用原生 ETH 的池子，发起跨函数重入。", "按多方公开复盘，损失约 7000 万美元。", "教训是，源码正确，不等于字节码正确。审计范围要包括编译器版本。"], "section": "CEI与锁"}, {"seg": "5a", "t0": 0.0, "t1": 31.31, "title": "ERC-777 钩子入口", "points": ["2020 年 4 月，ERC-777 代币转账回调持有人钩子", "存款函数返回时用旧值写回余额，抵押记录虚高", "借走约 2500 万美元，据 The Block 报道资金后已归还"], "notes": ["重入的入口，不只是转 ETH。", "2020 年 4 月的 imBTC，是一种 ERC-777 代币。转账时，会回调持有人注册的钩子。", "借贷协议 Lendf.Me 的存款函数，返回时用旧值写回余额，抵押记录因此虚高。", "攻击者借走约 2500 万美元的资产，按事发时估值。据 The Block 报道，资金后来已归还。"], "section": "回调入口"}, {"seg": "5a", "t0": 31.31, "t1": 58.35, "title": "上架流程就是安全边界", "points": ["BNB Chain 分叉项目放开任意代币上架，存款函数没加锁", "自部署代币在转账里回调存款，同一笔资产记两次", "允许任意代币，就等于允许任意回调"], "notes": ["在 BNB Chain 上，很多项目分叉自以太坊协议。", "原协议只接受白名单代币。分叉项目放开成任意代币都能上架，却没给存款函数加锁。", "攻击者上架一个自己部署的代币，在转账函数里回调存款，同一笔资产被记了两次。", "允许任意代币，就等于允许任意回调。上架流程本身，就是安全边界。"], "section": "回调入口"}, {"seg": "5a", "t0": 58.35, "t1": 74.37, "title": "Penpie 案例", "points": ["2024 年 9 月，无许可创建市场，用了恶意代币", "批量领取奖励的函数没有锁", "回调里存入资产，把存款变成了奖励"], "notes": ["2024 年 9 月的 Penpie 也类似，损失约 2700 万美元。", "攻击者无许可创建市场，市场用了恶意代币。", "批量领取奖励的函数没有锁，攻击者在回调里存入资产，把存款变成了奖励。"], "section": "回调入口"}, {"seg": "5a", "t0": 74.37, "t1": 95.82, "title": "审计：列出所有外部调用", "points": ["代币转账、NFT 安全转账、回调、低级 call，一个不漏", "调用之前，相关状态都更新到最终值了吗？", "读写同一状态的入口，共用同一把锁吗？"], "notes": ["所以审计的第一步，是列出所有外部调用。代币转账、NFT 安全转账、回调、低级 call，一个都不漏。", "然后对每一处问两句。", "调用之前，相关状态都更新到最终值了吗？", "读写同一状态的入口，共用同一把锁吗？"], "section": "回调入口"}, {"seg": "5b", "t0": 0.0, "t1": 32.93, "title": "每个角色今天做一件事", "points": ["写合约：第一个交出控制权的位置，哪些状态还没更新", "审计：查编译器锁 bug，查部署链转原生币是否触发 fallback", "用户：看审计范围；无审计新金库只放能承受损失的钱"], "notes": ["最后，每个人今天就能做一件事。", "写合约的人，找到第一个把控制权交出去的位置，问一句：那一刻，哪些状态还没更新？", "审计的人，查一下编译器版本有没有已知的锁 bug，再查部署链上转原生币，会不会触发 fallback。", "普通用户，存款前看协议有没有审计报告，范围是否覆盖你要用的合约。", "没有审计的新金库，只放能承受损失的金额。"], "section": "今天能做什么"}, {"seg": "5b", "t0": 32.93, "t1": 56.97, "title": "把顺序写对，读到的就是 0", "points": ["银行先给钱、后记账，每层嵌套读到同一个旧余额", "前提：收款方能执行代码，交出控制权前状态没更新"], "notes": ["回到开头的问题。只调用一次取款，为什么能取走全部 10 个 ETH？", "因为银行先给钱、后记账。每一层嵌套调用，读到的都是同一个旧余额。", "这个答案的前提，是收款方能执行代码，而状态在交出控制权之前还没更新。", "把顺序写对，第二层读到的就是 0。"], "section": "今天能做什么"}]};
+  var D = {"chapter": "s04", "title": "重入攻击：在你记账之前再取一次钱", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 17.55, "title": "The DAO：两行代码写反", "points": ["2016 年 6 月，被提走约 360 万 ETH", "按事发时价格约 6000 万美元", "合约没有被破解，只是两行代码的顺序写反了"], "notes": ["2016 年 6 月，以太坊上的 The DAO，被提走了约 360 万 ETH。", "按事发时的价格，约 6000 万美元。", "合约没有被破解。", "它只是把两行代码的顺序，写反了。"], "section": "顺序写反了", "k": 17.55}, {"seg": "1", "t0": 17.55, "t1": 30.01, "title": "先猜一道题", "points": ["银行合约金库有 10 个 ETH，你的余额是 1 个", "只调用一次取款函数，最多能取走多少？"], "notes": ["先猜一道题。", "一个银行合约，金库里有 10 个 ETH。你在里面的余额，是 1 个。", "你只调用一次取款函数，最多能取走多少？"], "section": "顺序写反了", "k": 30.01}, {"seg": "1", "t0": 30.01, "t1": 47.77, "title": "答案：全部 10 个", "points": ["前提：银行先转账、后清零，而你是一个合约", "每收到一笔钱，就在收款那一刻再调用一次取款", "账本清零要等所有嵌套调用都返回之后"], "notes": ["答案是，全部 10 个。", "前提有两个：银行先转账、后清零。而你，是一个合约。", "你每收到一笔钱，就在收款的那一刻，再调用一次取款。", "账本清零，要等到所有嵌套调用都返回之后。"], "section": "顺序写反了", "k": 43.81}, {"seg": "1", "t0": 47.77, "t1": 62.26, "title": "这就是重入", "points": ["最古老，也最常复发的合约漏洞", "本集：控制权在哪交出去、重入有哪几种、怎样把顺序写对"], "notes": ["这就是重入。最古老，也最常复发的合约漏洞。", "这一集讲三件事：控制权在哪里交出去，重入有哪几种，怎样把顺序写对。"], "section": "顺序写反了", "k": 62.26}, {"seg": "2", "t0": 0.0, "t1": 18.11, "title": "重入的定义", "points": ["合约更新账本之前，把控制权交给了外部地址", "外部地址趁账本还是旧的，再次调用合约", "严格说：函数还没执行完，就被外部调用再次进入"], "notes": ["先给一句话的定义。", "合约在更新自己的账本之前，把控制权交给了外部地址。", "外部地址趁账本还是旧的，再次调用合约。", "严格来说，重入是一个函数还没执行完，就被外部调用再次进入。"], "section": "交出控制权", "k": 1.55}, {"seg": "2", "t0": 18.11, "t1": 41.93, "title": "先给钱、后改账的柜员", "points": ["柜员先把 100 元现金递给你，然后才改账本", "接钱瞬间同伴说再取 100，账本上还是 100", "一直先给钱后改账，就能取到金库见底"], "notes": ["打个比方。你去银行取 100 元。", "柜员先把现金递给你，然后才去改账本。", "你接过现金的瞬间，同伴在旁边说：他要再取 100 元。", "柜员一查，账本上还是 100，于是又给了一次。", "只要柜员一直先给钱、后改账，你们就能一直取，直到金库见底。"], "section": "交出控制权", "k": 31.91}, {"seg": "2", "t0": 41.93, "t1": 55.39, "title": "不是并发，而是嵌套", "points": ["现实里柜员可以同时接待两个人", "EVM 是单线程的", "第二次取款整个发生在第一次取款的中间"], "notes": ["这个比方有一处不成立。现实里，柜员可以同时接待两个人。", "EVM 是单线程的。重入不是并发，而是嵌套。", "第二次取款，整个发生在第一次取款的中间。"], "section": "交出控制权", "k": 50.98}, {"seg": "2", "t0": 55.39, "t1": 71.17, "title": "重入的两个前提", "points": ["函数中途发起外部调用，被调用方受攻击者控制", "外部调用发生时，状态还没更新到最终值"], "notes": ["所以，重入的前提只有两个。", "第一，合约在函数中途发起外部调用，而被调用的一方，受攻击者控制。", "第二，外部调用发生的时候，合约的状态，还没有更新到最终值。"], "section": "交出控制权", "k": 70.94}, {"seg": "2", "t0": 71.17, "t1": 92.93, "title": "交出控制权的操作", "points": ["用 call 转 ETH，会执行接收合约的 receive 或 fallback", "调用攻击者部署的代币 transfer，代码可以是任意的", "ERC-777 代币转账会触发接收方的钩子"], "notes": ["哪些操作会交出控制权？一共有六类。", "用 call 转 ETH。接收方是合约时，会执行它的 receive，或者 fallback。", "调用代币的 transfer。代币如果是攻击者部署的，里面的代码可以是任意的。", "ERC-777 代币转账，会触发接收方的钩子。"], "section": "交出控制权", "k": 75.47}, {"seg": "2", "t0": 92.93, "t1": 108.79, "title": "回调与用户提供的地址", "points": ["NFT 安全转账和安全铸造会回调接收方", "闪电贷回调，设计上就交出控制权", "调用任何用户提供的地址：路由器、钩子、预言机"], "notes": ["NFT 的安全转账和安全铸造，会回调接收方。", "闪电贷的回调，设计上就是把控制权交给借款人。", "还有，调用任何用户提供的地址，包括路由器、钩子和预言机。"], "section": "交出控制权", "k": 101.98}, {"seg": "2", "t0": 108.79, "t1": 133.8, "title": "换一条链，入口不一样", "points": ["TRON：转 TRX 不执行 fallback，附带 callValue 才会", "Mantle：ETH 是 ERC-20，转它不触发 receive", "Mantle 上转原生币 MNT 才会触发"], "notes": ["再补一个细节。同一份代码，换一条链，回调入口就不一样。", "在 TRON 上，用系统交易转 TRX，不会执行接收合约的 fallback。", "附带 callValue 去调用合约，才会执行。", "在 Mantle 上，ETH 以 ERC-20 的形式存在，转它不触发 receive。转原生币 MNT，才会触发。"], "section": "交出控制权", "k": 114.09}, {"seg": "3", "t0": 0.0, "t1": 23.21, "title": "第一种：单函数重入", "points": ["漏洞版取款：读余额、转账、清零", "银行读到余额 1 个 ETH，用 call 转过去", "攻击合约的 receive 被触发，再调用一次取款"], "notes": ["接下来，按调用栈，一种一种看。", "第一种，单函数重入。", "漏洞版的取款函数，分三步：读余额，转账，清零。", "攻击者调用取款。银行读到余额 1 个 ETH，用 call 把钱转过去。", "攻击合约的 receive 被触发。银行还有钱，它就再调用一次取款。"], "section": "四种重入", "k": 4.3}, {"seg": "3", "t0": 23.21, "t1": 49.05, "title": "一层套一层，最后才清零", "points": ["第二层读到的余额还是 1 个，第一层还没清零", "递归到金库不够才停，再依次返回、依次清零", "gas 和调用深度 1024 限制递归，所以每次取尽量多"], "notes": ["第二层读到的余额，还是 1 个。因为第一层的清零，还没执行。", "一层套一层，直到金库余额不够，递归才停下来。", "然后各层依次返回，依次清零。这时钱已经没了。", "递归有上限。gas 和调用深度 1024，都会限制它。所以攻击者会每次取尽量大的金额，减少层数。"], "section": "四种重入", "k": 34.76}, {"seg": "3", "t0": 49.05, "t1": 57.81, "title": "第二种：跨函数重入", "points": ["攻击者不回到取款函数", "而是进入另一个共享同一份余额的函数，比如转账"], "notes": ["第二种，跨函数重入。", "攻击者不回到取款函数，而是进入另一个共享同一份余额的函数，比如转账。"], "section": "四种重入", "k": 57.81}, {"seg": "3", "t0": 57.81, "t1": 63.11, "title": "先猜：锁住取款够不够", "points": ["取款加了重入锁，转账没加", "攻击者还能利用回调吗？"], "notes": ["取款加了重入锁，转账没加。攻击者还能利用回调吗？"], "section": "四种重入", "k": 62.86}, {"seg": "3", "t0": 63.11, "t1": 77.29, "title": "答案：能", "points": ["锁只拦截进入被锁函数的调用", "回调里把还没清零的余额转给同伙，外层返回后才清零", "同一笔钱，既被提走了，又被转走了"], "notes": ["能。锁只拦截进入被锁函数的调用。", "在回调里，攻击者把还没清零的余额，转给同伙。外层返回之后，才清零。", "同一笔钱，既被提走了，又被转走了。"], "section": "四种重入", "k": 72.16}, {"seg": "3", "t0": 77.29, "t1": 94.67, "title": "Fei Rari 案例", "points": ["2022 年 4 月，跨函数重入的真实版本", "借款函数先用 call 发送 ETH，后写借款记录", "回调里调用没被锁覆盖的退出市场函数，取回抵押品"], "notes": ["2022 年 4 月的 Fei Rari，就是它的真实版本，损失约 8000 万美元。", "借款函数先用 call 发送 ETH，后写借款记录。", "攻击者在回调里，调用了没有被锁覆盖的退出市场函数，取回了全部抵押品。"], "section": "四种重入", "k": 88.34}, {"seg": "3", "t0": 94.67, "t1": 111.25, "title": "第三种：跨合约重入", "points": ["协议由多个共享状态的合约组成，如金库和份额代币", "合约 A 的锁挡不住对合约 B 的调用", "B 读到的是 A 还没更新的状态"], "notes": ["第三种，跨合约重入。", "协议由多个合约组成，比如金库合约和份额代币合约，它们共享状态。", "合约 A 的锁，挡不住对合约 B 的调用。B 此刻读到的，是 A 还没更新的状态。"], "section": "四种重入", "k": 111.25}, {"seg": "3", "t0": 111.25, "t1": 129.97, "title": "第四种：只读重入", "points": ["回调里不改目标合约，而是让第三方协议去读它", "如 AMM 池移除流动性：先转出代币，后更新总量", "回调那一刻，储备已减少，总量还没减少"], "notes": ["第四种，只读重入，最隐蔽。", "攻击者在回调里不修改目标合约，而是让第三方协议去读它。", "比如一个 AMM 池，移除流动性时，先转出代币，后更新总量。", "在回调的那一刻，储备已经减少，总量还没减少。"], "section": "四种重入", "k": 124.8}, {"seg": "3", "t0": 129.97, "t1": 149.43, "title": "读到中间状态的第三方", "points": ["借贷协议读到被扭曲的价格，再按它放贷或清算", "池子自己的状态最终是对的", "view 函数通常不加锁，重入锁挡不住"], "notes": ["这时借贷协议来读池子的价格函数，读到一个被扭曲的价格，再按它放贷或清算。", "池子自己的状态，最终是对的。出错的，是在中间时刻读数据的第三方。", "池子的 view 函数通常不加锁，所以重入锁挡不住。"], "section": "四种重入", "k": 149.43}, {"seg": "3", "t0": 149.43, "t1": 161.68, "title": "dForce 约 360 万", "points": ["2023 年 2 月，只读重入的真实案例", "用 Curve 池在回调期间返回的虚拟价格给抵押品定价"], "notes": ["2023 年 2 月的 dForce，就是这样，损失约 360 万美元。", "它用 Curve 池在回调期间返回的虚拟价格，给抵押品定价。"], "section": "四种重入", "k": 161.68}, {"seg": "4", "t0": 0.0, "t1": 25.61, "title": "首选：CEI 模式", "points": ["检查、修改状态、外部交互，按这个顺序写", "只改一处：把清零挪到转账之前", "重入进来读到余额 0，require 直接回滚"], "notes": ["怎么防？首选，是 CEI 模式。", "CEI 是三个词：检查，修改状态，外部交互。函数按这个顺序写。", "取款函数只改一处：把清零，挪到转账之前。", "这样重入进来时，读到的余额是 0，require 直接回滚。", "交出控制权放在最后，此时账本已经一致。"], "section": "CEI与锁", "k": 25.61}, {"seg": "4", "t0": 25.61, "t1": 52.07, "title": "第二道防线：重入锁", "points": ["执行期间再进入任何加锁函数都会回滚", "只保护加锁函数，不防只读重入，跨合约要共享同一把锁", "0.8.24 起可用瞬态存储做锁，目标链须支持 EIP-1153"], "notes": ["第二道防线，是重入锁。", "执行期间，再次进入任何一个加锁的函数，都会回滚。", "但锁有边界。它只保护加了锁的函数，不防只读重入，跨合约还要共享同一把锁。", "0.8.24 起，可以用瞬态存储做锁，gas 更低。", "但目标链必须支持 EIP-1153，部署前要确认。"], "section": "CEI与锁", "k": 52.07}, {"seg": "4", "t0": 52.07, "t1": 68.57, "title": "拉取式支付与 CEI 局限", "points": ["合约只记账，由收款人自己来取", "代价是用户要多走一步", "复杂函数里很难做到所有交互都在最后"], "notes": ["还有一种思路，叫拉取式支付。合约只记账，由收款人自己来取。", "合约不主动推送，代价是用户要多走一步。", "CEI 也有局限。复杂函数里，很难做到所有交互都在最后。"], "section": "CEI与锁", "k": 62.87}, {"seg": "4", "t0": 68.57, "t1": 96.71, "title": "纵深防御四条", "points": ["CEI 当默认写法；修改共享状态的入口加同一把锁", "view 不给中间状态的关键价格，或提供锁状态查询", "不变量测试：合约余额不少于用户余额之和"], "notes": ["所以要做纵深防御，分四条。", "一，把 CEI 当作默认写法。", "二，所有修改共享状态的外部入口，加同一把锁。", "三，不在 view 函数里给出中间状态的关键价格。必须给出，就提供锁状态查询。", "四，用不变量测试守住一件事：任何调用序列之后，合约余额都不少于用户余额之和。"], "section": "CEI与锁", "k": 80.12}, {"seg": "4", "t0": 96.71, "t1": 108.75, "title": "修复要用代码验证", "points": ["同一个攻击测试，漏洞版要能提走资金", "修复版上要回滚", "只跑通修复版，无法证明测试覆盖了漏洞"], "notes": ["修复还要用代码验证。同一个攻击测试，在漏洞版上要能提走资金，在修复版上要回滚。", "只跑通修复版，无法证明测试真的覆盖了漏洞。"], "section": "CEI与锁", "k": 105.01}, {"seg": "4", "t0": 108.75, "t1": 123.17, "title": "锁写对了，也不一定生效", "points": ["2023 年 7 月，Curve 一些池子源码里写了重入锁", "Vyper 编译器三个版本生成的锁不正确", "不同函数用了不同的锁槽"], "notes": ["最后，锁写对了，也不一定生效。", "2023 年 7 月，Curve 的一些池子，源码里写了重入锁。", "但 Vyper 编译器的三个版本，生成的锁不正确，不同函数用了不同的锁槽。"], "section": "CEI与锁", "k": 123.17}, {"seg": "4", "t0": 123.17, "t1": 140.52, "title": "源码对不等于字节码对", "points": ["攻击者对原生 ETH 池子发起跨函数重入", "按多方公开复盘，损失约 7000 万美元", "审计范围要包括编译器版本"], "notes": ["攻击者对使用原生 ETH 的池子，发起跨函数重入。", "按多方公开复盘，损失约 7000 万美元。", "教训是，源码正确，不等于字节码正确。审计范围要包括编译器版本。"], "section": "CEI与锁", "k": 132.47}, {"seg": "5a", "t0": 0.0, "t1": 31.31, "title": "ERC-777 钩子入口", "points": ["2020 年 4 月，ERC-777 代币转账回调持有人钩子", "存款函数返回时用旧值写回余额，抵押记录虚高", "借走约 2500 万美元，据 The Block 报道资金后已归还"], "notes": ["重入的入口，不只是转 ETH。", "2020 年 4 月的 imBTC，是一种 ERC-777 代币。转账时，会回调持有人注册的钩子。", "借贷协议 Lendf.Me 的存款函数，返回时用旧值写回余额，抵押记录因此虚高。", "攻击者借走约 2500 万美元的资产，按事发时估值。据 The Block 报道，资金后来已归还。"], "section": "回调入口", "k": 31.31}, {"seg": "5a", "t0": 31.31, "t1": 58.35, "title": "上架流程就是安全边界", "points": ["BNB Chain 分叉项目放开任意代币上架，存款函数没加锁", "自部署代币在转账里回调存款，同一笔资产记两次", "允许任意代币，就等于允许任意回调"], "notes": ["在 BNB Chain 上，很多项目分叉自以太坊协议。", "原协议只接受白名单代币。分叉项目放开成任意代币都能上架，却没给存款函数加锁。", "攻击者上架一个自己部署的代币，在转账函数里回调存款，同一笔资产被记了两次。", "允许任意代币，就等于允许任意回调。上架流程本身，就是安全边界。"], "section": "回调入口", "k": 51.61}, {"seg": "5a", "t0": 58.35, "t1": 74.37, "title": "Penpie 案例", "points": ["2024 年 9 月，无许可创建市场，用了恶意代币", "批量领取奖励的函数没有锁", "回调里存入资产，把存款变成了奖励"], "notes": ["2024 年 9 月的 Penpie 也类似，损失约 2700 万美元。", "攻击者无许可创建市场，市场用了恶意代币。", "批量领取奖励的函数没有锁，攻击者在回调里存入资产，把存款变成了奖励。"], "section": "回调入口", "k": 67.9}, {"seg": "5a", "t0": 74.37, "t1": 95.82, "title": "审计：列出所有外部调用", "points": ["代币转账、NFT 安全转账、回调、低级 call，一个不漏", "调用之前，相关状态都更新到最终值了吗？", "读写同一状态的入口，共用同一把锁吗？"], "notes": ["所以审计的第一步，是列出所有外部调用。代币转账、NFT 安全转账、回调、低级 call，一个都不漏。", "然后对每一处问两句。", "调用之前，相关状态都更新到最终值了吗？", "读写同一状态的入口，共用同一把锁吗？"], "section": "回调入口", "k": 89.17}, {"seg": "5b", "t0": 0.0, "t1": 32.93, "title": "每个角色今天做一件事", "points": ["写合约：第一个交出控制权的位置，哪些状态还没更新", "审计：查编译器锁 bug，查部署链转原生币是否触发 fallback", "用户：看审计范围；无审计新金库只放能承受损失的钱"], "notes": ["最后，每个人今天就能做一件事。", "写合约的人，找到第一个把控制权交出去的位置，问一句：那一刻，哪些状态还没更新？", "审计的人，查一下编译器版本有没有已知的锁 bug，再查部署链上转原生币，会不会触发 fallback。", "普通用户，存款前看协议有没有审计报告，范围是否覆盖你要用的合约。", "没有审计的新金库，只放能承受损失的金额。"], "section": "今天能做什么", "k": 13.05}, {"seg": "5b", "t0": 32.93, "t1": 56.97, "title": "把顺序写对，读到的就是 0", "points": ["银行先给钱、后记账，每层嵌套读到同一个旧余额", "前提：收款方能执行代码，交出控制权前状态没更新"], "notes": ["回到开头的问题。只调用一次取款，为什么能取走全部 10 个 ETH？", "因为银行先给钱、后记账。每一层嵌套调用，读到的都是同一个旧余额。", "这个答案的前提，是收款方能执行代码，而状态在交出控制权之前还没更新。", "把顺序写对，第二层读到的就是 0。"], "section": "今天能做什么", "k": 55.23}]};
   var S = D.slides, N = S.length, KEY = 'deck-' + D.chapter;
   var $ = function (id) { return document.getElementById(id); };
-  var screen = $('screen'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
+  var screen = $('screen'), still = $('still'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
   var store = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
                 set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
   try { var pt = parent !== window && parent.document.documentElement.getAttribute('data-theme'); if (pt) document.documentElement.setAttribute('data-theme', pt); } catch (e) {}
@@ -141,32 +144,54 @@ button { font: inherit; color: inherit; }
     var g = groups[groups.length - 1];
     if (!g || g.seg !== s.seg) { g = { seg: s.seg, el: document.createElement('div') }; g.el.className = 'grp'; groups.push(g); prog.appendChild(g.el); g.n = 0; }
     var b = document.createElement('button'); b.title = (i + 1) + ' · ' + s.title; b.setAttribute('aria-label', '第 ' + (i + 1) + ' 页：' + s.title);
-    b.onclick = function () { go(i, 'seek'); }; g.el.appendChild(b); g.n++; s.dot = b;
+    b.onclick = function () { show(i); }; g.el.appendChild(b); g.n++; s.dot = b;
   });
   groups.forEach(function (g) { g.el.style.setProperty('--n', g.n); });
 
+  // all stills of the chapter are one sprite: 6 columns, slide i at (i % 6, i / 6)
+  var COLS = 6, ROWS = Math.ceil(N / COLS), sheetReady = false, sheet = new Image();
+  sheet.onload = function () { sheetReady = true; if (!screen.classList.contains('live')) $('wait').hidden = true; };
+  sheet.src = 'stills.webp';
+  still.style.backgroundImage = 'url(stills.webp)';
+  still.style.backgroundSize = (COLS * 100) + '% ' + (ROWS * 100) + '%';
+  function tile(i) {
+    var c = i % COLS, r = Math.floor(i / COLS);
+    still.style.backgroundPosition = (COLS > 1 ? c / (COLS - 1) * 100 : 0) + '% ' + (ROWS > 1 ? r / (ROWS - 1) * 100 : 0) + '%';
+  }
+
+  // ---------- live animation (only when asked) ----------
   function scale() { var k = screen.clientWidth / 1920; for (var s in frames) frames[s].style.transform = 'scale(' + k + ')'; }
   if (window.ResizeObserver) new ResizeObserver(scale).observe(screen); else addEventListener('resize', scale);
-
   function frame(seg) {
     if (frames[seg]) return frames[seg];
     var f = document.createElement('iframe'); f.src = 's' + seg + '.html'; f.title = '第 ' + seg + ' 节动画'; f.tabIndex = -1;
     f.setAttribute('aria-hidden', 'true'); screen.appendChild(f); frames[seg] = f; scale(); return f;
   }
+  function live(seg) {
+    for (var k in frames) frames[k].classList.toggle('on', k === seg);
+    screen.classList.add('live'); $('wait').hidden = true;
+  }
   function send(seg, msg) {
     msg.deck = 'cmd';
-    if (ready[seg]) frames[seg].contentWindow.postMessage(msg, '*'); else pending[seg] = msg;
+    if (ready[seg]) { frames[seg].contentWindow.postMessage(msg, '*'); live(seg); } else pending[seg] = msg;
   }
   addEventListener('message', function (e) {
     var m = e.data || {};
     if (!m.deck || !frames[m.seg] || e.source !== frames[m.seg].contentWindow) return;
     if (m.deck === 'ready') {
       ready[m.seg] = true;
-      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; send(m.seg, p); }
-      if (cur >= 0 && S[cur].seg === m.seg) $('wait').hidden = true;
-    } else if (m.deck === 'done' && cur >= 0 && S[cur].seg === m.seg) { playing = false; paint(); }
+      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; if (playing && S[cur].seg === m.seg) send(m.seg, p); }
+    } else if (m.deck === 'done' && playing && S[cur].seg === m.seg) { playing = false; paint(); }
   });
+  function process() {
+    var s = S[cur];
+    playing = true; frame(s.seg);
+    if (!ready[s.seg]) { $('wait').textContent = '载入动画…'; $('wait').hidden = false; }
+    send(s.seg, { play: [s.t0, s.k], rate: +$('speed').value });
+    paint();
+  }
 
+  // ---------- slides ----------
   function paint() {
     var s = S[cur];
     $('sec').textContent = s.section;
@@ -175,27 +200,21 @@ button { font: inherit; color: inherit; }
     $('lines').innerHTML = ''; s.notes.forEach(function (p) { var li = document.createElement('li'); li.textContent = p; $('lines').appendChild(li); });
     $('count').textContent = (cur + 1) + ' / ' + N;
     $('prev').disabled = cur === 0;
-    $('next').textContent = playing ? '跳到本页结尾 ›' : (cur === N - 1 ? '回到正文 ›' : '下一页 ›');
+    $('next').textContent = cur === N - 1 ? '回到正文 ›' : '下一页 ›';
+    $('replay').textContent = playing ? '⟳ 从头播放' : (screen.classList.contains('live') ? '⟳ 再看一遍' : '▶ 看过程');
     S.forEach(function (x, i) { x.dot.className = i === cur ? 'cur' : (seen[i] ? 'seen' : ''); });
   }
-  function go(i, mode) {
+  function show(i) {
     if (i < 0 || i >= N) return;
-    var s = S[i]; cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
-    var f = frame(s.seg);
-    for (var k in frames) frames[k].classList.toggle('on', k === s.seg);
-    $('wait').hidden = !!ready[s.seg];
-    playing = mode === 'play';
-    send(s.seg, playing ? { play: [s.t0, s.t1], rate: +$('speed').value } : { seek: s.t1 });
-    // warm the next segment while this one is on screen
-    if (i + 1 < N && S[i + 1].seg !== s.seg) frame(S[i + 1].seg);
+    cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
+    playing = false; pending = {};
+    tile(i); still.setAttribute('aria-label', S[i].title);
+    screen.classList.remove('live'); $('wait').textContent = sheetReady ? '载入动画…' : '载入画面…'; $('wait').hidden = sheetReady;
+    for (var k in frames) frames[k].classList.remove('on');
     paint();
   }
-  function next() {
-    if (playing) { go(cur, 'seek'); return; }
-    if (cur === N - 1) { back(); return; }
-    go(cur + 1, 'play');
-  }
-  function prev() { go(cur - 1, 'seek'); }
+  function next() { if (cur === N - 1) { back(); return; } show(cur + 1); }
+  function prev() { show(cur - 1); }
   function back() {
     if (parent !== window) parent.postMessage({ cexNav: D.chapter }, '*');
     else location.href = '../../index.html#' + D.chapter;
@@ -206,18 +225,18 @@ button { font: inherit; color: inherit; }
   }
   if (!document.fullscreenEnabled) $('fs').hidden = true;
 
-  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = function () { go(cur, 'play'); };
+  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = process;
   $('back').onclick = back; $('fs').onclick = fullscreen;
   addEventListener('keydown', function (e) {
     if (e.target.tagName === 'SELECT' || e.metaKey || e.ctrlKey || e.altKey) return;
     var k = e.key;
     if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); next(); }
     else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
-    else if (k === 'r' || k === 'R') go(cur, 'play');
+    else if (k === 'p' || k === 'P' || k === 'r' || k === 'R') process();
     else if (k === 'f' || k === 'F') fullscreen();
     else if (k === 'n' || k === 'N') $('notes').open = !$('notes').open;
-    else if (k === 'Home') go(0, 'seek');
-    else if (k === 'End') go(N - 1, 'seek');
+    else if (k === 'Home') show(0);
+    else if (k === 'End') show(N - 1);
   });
   // tap = next; horizontal swipe = next / previous
   var x0 = null, y0 = null;
@@ -230,7 +249,7 @@ button { font: inherit; color: inherit; }
   });
 
   var start = +store.get(KEY); if (!(start >= 0 && start < N)) start = 0;
-  go(start, start === 0 ? 'play' : 'seek');
+  show(start);
 })();
 </script>
 </body>

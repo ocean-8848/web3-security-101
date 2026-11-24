@@ -42,7 +42,10 @@ button { font: inherit; color: inherit; }
   box-shadow: 0 1px 0 var(--rule), 0 8px 28px rgba(60, 50, 30, .14); cursor: pointer; touch-action: pan-y; user-select: none; }
 .screen iframe { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; border: 0; transform-origin: 0 0; visibility: hidden; pointer-events: none; }
 .screen iframe.on { visibility: visible; }
-.screen .wait { position: absolute; inset: 0; display: grid; place-items: center; color: #8a826f; font-size: 14px; background: #efebe3; }
+.screen .still { position: absolute; inset: 0; background-repeat: no-repeat; background-color: #efebe3; }
+.screen.live .still { visibility: hidden; }
+.screen .wait { position: absolute; left: 12px; bottom: 12px; padding: 4px 12px; border-radius: 999px; color: #fff; font-size: 13px; background: rgba(28, 28, 28, .72); }
+.btn.play { border-color: var(--accent); color: var(--accent); }
 .screen .wait[hidden] { display: none; }
 
 .side { min-height: 0; overflow-y: auto; border-left: 1px solid var(--rule); background: var(--paper); padding: 18px 20px 24px; }
@@ -102,7 +105,7 @@ button { font: inherit; color: inherit; }
     <button class="btn hide-narrow" id="fs" title="全屏（F）">⛶ 全屏</button>
   </header>
   <div class="body">
-    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="wait" id="wait">载入动画…</div></div></div>
+    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="still" id="still" role="img"></div><div class="wait" id="wait" hidden>载入动画…</div></div></div>
     <aside class="side" aria-live="polite">
       <div class="sec" id="sec"></div>
       <h2 id="stitle"></h2>
@@ -112,7 +115,7 @@ button { font: inherit; color: inherit; }
   </div>
   <nav class="ctrl" aria-label="翻页">
     <button class="btn" id="prev" aria-label="上一页（←）">‹ 上一页</button>
-    <button class="btn" id="replay" aria-label="重播本页动画（R）">⟳ 重播</button>
+    <button class="btn play" id="replay" aria-label="看这一页的动画过程（P）">▶ 看过程</button>
     <button class="btn primary" id="next" aria-label="下一页（→ 或空格）">下一页 ›</button>
     <span class="count" id="count"></span>
     <div class="prog" id="prog"></div>
@@ -123,10 +126,10 @@ button { font: inherit; color: inherit; }
 </div>
 <script>
 (function () {
-  var D = {"chapter": "s10", "title": "可升级合约与代理：谁能换实现，谁就拥有全部资金", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 22.27, "title": "一次升级，约 1.9 亿美元", "points": ["2022 年 8 月 1 日，跨链桥 Nomad 被提走约 1.9 亿美元（事发时估值）", "此前一次升级调用初始化函数，把可信的消息根设成全零", "桥先查消息对应的根，再看这个根是否可信"], "notes": ["2022 年 8 月 1 日，跨链桥 Nomad 被提走约 1.9 亿美元，按事发时估值。", "起因，是此前的一次升级。", "这次升级调用了初始化函数，把可信的消息根，设成了全零。", "桥合约收到一条消息，先查它对应的根，再看这个根是否可信。"], "section": "一次初始化"}, {"seg": "1", "t0": 22.27, "t1": 29.71, "title": "先猜一道题", "points": ["一条从没被证明过的消息", "查到的根是什么？它能通过吗？"], "notes": ["先猜一道题。", "一条从没被证明过的消息，查到的根是什么？它能通过吗？"], "section": "一次初始化"}, {"seg": "1", "t0": 29.71, "t1": 49.63, "title": "全零：任何消息都算已证明", "points": ["查到默认值全零，而全零刚被升级标记成可信", "第一笔提款成功后，数百个地址复制交易，只换收款地址", "（Immunefi 复盘、The Block 报道）"], "notes": ["它查到的是默认值，全零。", "而全零，刚刚被这次升级，标记成了可信。", "所以，任何消息都被视为已经证明。", "按 Immunefi 的复盘和 The Block 的报道，第一笔提款成功后，数百个地址复制了这笔交易，只换掉收款地址。"], "section": "一次初始化"}, {"seg": "1", "t0": 49.63, "t1": 62.34, "title": "代码没错，参数错了", "points": ["升级的代码可以没有错", "错的是升级时传进去的参数", "能升级的合约怎么搭起来？谁能换掉它的代码？"], "notes": ["升级的代码，可以没有错。", "错的，是升级时传进去的参数。", "能升级的合约，是怎么搭起来的？谁能换掉它的代码？"], "section": "一次初始化"}, {"seg": "2", "t0": 0.0, "t1": 23.53, "title": "可升级合约 = 两个合约", "points": ["代理保存数据和资金，用户调用都先到它这里", "实现只提供代码", "delegatecall：借实现的代码，读写代理自己的存储"], "notes": ["先给准确的说法。", "一个可升级合约，其实是两个合约。", "代理合约，保存数据和资金。用户的每次调用，都先到它这里。", "实现合约，只提供代码。", "代理用 delegatecall 把调用转给实现：借用实现的代码，读写的却是代理自己的存储。"], "section": "代理与实现"}, {"seg": "2", "t0": 23.53, "t1": 35.07, "title": "谁能换实现，谁就拥有资金", "points": ["升级就是让代理指向新的实现", "数据和资金原地不动，只换代码"], "notes": ["升级，就是让代理指向一个新的实现。", "数据和资金原地不动，只换代码。", "所以，谁能换实现，谁就拥有代理里的全部资金。"], "section": "代理与实现"}, {"seg": "2", "t0": 35.07, "t1": 59.31, "title": "比方：售货机换机芯", "points": ["代理是机身，货和钱都在里面", "实现是维修门后的机芯，升级就是换一块新机芯", "不成立处：没有时间锁时，换实现只要一笔交易"], "notes": ["打个比方。代理是一台售货机的机身，货和钱都在里面。", "实现是维修门后面的机芯，决定按下按钮以后，机器怎么动。", "升级，就是打开维修门，换一块新机芯。", "比喻在这里不成立：真实的机器换机芯要花时间。链上如果没有时间锁，换实现只要一笔交易。"], "section": "代理与实现"}, {"seg": "2", "t0": 59.31, "t1": 76.37, "title": "透明代理", "points": ["三种代理，区别在升级开关放在哪", "升级函数在代理里，由管理员调用", "管理员调用不转发，其他人只转发，函数不混淆"], "notes": ["常见的代理有三种，区别在于，升级的开关放在哪里。", "第一种，透明代理。升级函数在代理里，由管理员调用。", "管理员调用代理时不转发，其他人的调用只转发，两边的函数就不会混淆。"], "section": "代理与实现"}, {"seg": "2", "t0": 76.37, "t1": 88.65, "title": "UUPS", "points": ["代理只做转发，升级函数写在实现里", "新实现忘了带升级函数，就再也不能升级"], "notes": ["第二种，UUPS。代理只做转发，升级函数写在实现合约里。", "风险是，新实现如果忘了带上升级函数，这个合约就再也不能升级。"], "section": "代理与实现"}, {"seg": "2", "t0": 88.65, "t1": 110.16, "title": "信标代理", "points": ["很多代理共用一个信标，信标存实现地址", "适合大量相同合约，改一次信标所有代理一起换", "三种都依赖 delegatecall，都有存储冲突风险"], "notes": ["第三种，信标代理。很多代理共用一个信标，信标里存着实现的地址。", "它适合大量相同的合约，比如每个用户一个金库。改一次信标，所有代理一起换。", "三种模式都依赖 delegatecall，所以都有同一个风险：存储冲突。"], "section": "代理与实现"}, {"seg": "3", "t0": 0.0, "t1": 23.61, "title": "冲突一：代理与实现撞槽位", "points": ["存储是一排编号格子，叫槽位；代码只认编号", "朴素代理把实现地址放在 0 号槽位", "实现合约的第一个变量管理员，也在 0 号"], "notes": ["代理的存储，是一排编了号的格子，叫槽位。", "代码不认变量名，只认格子的编号。", "第一种冲突：代理自己的变量，和实现的变量，撞进同一个格子。", "一个朴素的代理，把实现地址放在 0 号槽位。", "实现合约的第一个变量是管理员，也在 0 号槽位。"], "section": "存储冲突"}, {"seg": "3", "t0": 23.61, "t1": 42.83, "title": "修复：EIP-1967 固定槽位", "points": ["写管理员，就是改写实现地址", "用哈希算出的固定槽位存实现和管理员地址", "远离普通变量；算法减 1，派生位置碰不到它"], "notes": ["于是，写管理员，就是改写实现地址。", "修复是 EIP-1967。它用一个哈希算出的固定槽位，存放实现地址和管理员地址。", "这个位置远离普通变量。算法里还减去 1，让映射和数组的派生位置，碰不到它。"], "section": "存储冲突"}, {"seg": "3", "t0": 42.83, "t1": 60.07, "title": "先猜一道题", "points": ["冲突二：升级前后变量顺序变了", "旧版 0 号是管理员，1 号是存款总额", "新版最前面插入手续费变量，读管理员读到什么？"], "notes": ["第二种冲突：升级前后，变量的顺序变了。", "先猜一道题。", "旧版本里，0 号槽位是管理员，1 号是存款总额。", "新版本在最前面，插入了一个手续费变量。升级以后读管理员，读到的是什么？"], "section": "存储冲突"}, {"seg": "3", "t0": 60.07, "t1": 77.85, "title": "答案：截断的存款总额", "points": ["旧存款总额截掉一部分，被解释成地址", "新代码把管理员挪到 1 号，1 号里还是旧数据", "每格错开一位，映射基址变了，余额像是消失了"], "notes": ["读到的是旧的存款总额，截掉一部分，被解释成一个地址。", "因为新代码把管理员挪到了 1 号，而 1 号里还是旧数据。", "后面每一格都错开一位。映射的基址变了，所有余额看上去都消失了。"], "section": "存储冲突"}, {"seg": "3", "t0": 77.85, "t1": 99.43, "title": "存储布局四条规则", "points": ["只在末尾追加；不删除、不重排、不改类型", "父合约预留空槽位，或用 ERC-7201 命名空间存储", "用 OpenZeppelin 升级插件或 forge inspect 比对，不靠肉眼"], "notes": ["规则有四条。", "只在末尾追加变量。", "不删除，不重新排序，不改类型。", "父合约预留一段空槽位，或者用 ERC-7201 的命名空间存储。", "用工具比对新旧布局，比如 OpenZeppelin 的升级插件，或者 forge inspect。不要靠肉眼核对。"], "section": "存储冲突"}, {"seg": "3", "t0": 99.43, "t1": 132.74, "title": "函数选择器撞车", "points": ["选择器是签名哈希前 4 字节，不同名字可能相同", "代理有同选择器的函数时，调用被代理截下", "编译器只查合约内部；部署前用工具比对，透明代理可绕开"], "notes": ["还有一种撞车，不在存储里，而在函数选择器上。", "选择器是函数签名哈希的前 4 个字节。两个名字完全不同的函数，可能算出同一个选择器。", "代理自己有这个函数时，调用会被代理截下，不会转给实现。", "编译器只检查同一个合约内部的冲突。代理和实现之间，要在部署前用工具比对。", "透明代理靠管理员不转发、其他人只转发，绕开了这个问题。"], "section": "存储冲突"}, {"seg": "4", "t0": 0.0, "t1": 18.67, "title": "初始化函数代替构造函数", "points": ["构造函数只在实现自己的存储里运行，写不进代理", "部署后再调用一次初始化函数", "这一次调用，就是风险所在"], "notes": ["普通合约用构造函数设置主人。代理合约不行。", "构造函数只在实现合约自己的存储里运行，写不进代理。", "所以可升级合约用一个初始化函数代替，部署以后再调用一次。", "这一次调用，就是风险所在。"], "section": "初始化缺失"}, {"seg": "4", "t0": 18.67, "t1": 39.97, "title": "抢先初始化与重复初始化", "points": ["部署和初始化分两笔交易：别人可抢先成为主人，要同一笔完成", "可重复调用：任何人都能重置主人", "修复：只能调用一次的修饰器"], "notes": ["第一种情况：部署代理和初始化，分成了两笔交易。", "中间有空隙，别人可以抢先初始化，成为主人。修复是在同一笔交易里完成。", "第二种：初始化函数可以重复调用，任何人都能重置主人。修复是加上只能调用一次的修饰器。"], "section": "初始化缺失"}, {"seg": "4", "t0": 39.97, "t1": 55.31, "title": "先猜一道题", "points": ["代理初始化了，实现合约本身没有", "代理的初始化写在代理存储里，实现的存储还是空的", "别人能直接调用实现的初始化函数吗？"], "notes": ["第三种：代理初始化了，实现合约本身没有。", "代理的初始化，写在代理的存储里。实现合约自己的存储，还是空的。", "先猜一道题。别人能直接调用实现合约的初始化函数吗？"], "section": "初始化缺失"}, {"seg": "4", "t0": 55.31, "t1": 81.63, "title": "能：成为实现的主人", "points": ["实现里有 delegatecall 或自毁路径，所有代理都可能失效", "2021 年 9 月，OpenZeppelin 公告其 UUPS 部分版本有此问题并发布修复", "修复：在实现的构造函数里禁用初始化"], "notes": ["能。他会成为实现合约的主人。", "如果实现合约里有 delegatecall 或者自毁的路径，所有指向它的代理，都可能失效。", "2021 年 9 月，OpenZeppelin 发布安全公告：它的 UUPS 实现，有几个版本存在这个问题，随后发布了修复版本。", "修复是在实现合约的构造函数里，禁用初始化。这样谁都不能再初始化它。"], "section": "初始化缺失"}, {"seg": "4", "t0": 81.63, "t1": 102.03, "title": "Nomad：默认值撞上合法值", "points": ["问题出在升级时的初始化参数", "表里记录每个根的确认时间，升级把全零标记成已确认", "没被证明的消息查到的根，默认也是全零"], "notes": ["回到开头的 Nomad。它的问题，出在升级时的初始化参数。", "合约用一张表，记录每个根什么时候被确认。升级把全零这个根，标记成了已确认。", "而没被证明过的消息，查到的根，默认也是全零。", "默认值和合法值，撞在了一起。"], "section": "初始化缺失"}, {"seg": "4", "t0": 102.03, "t1": 119.54, "title": "Nomad 的三条教训", "points": ["初始化参数和代码一样需要审计", "零值不能带业务含义，默认值要和合法值区分", "升级后跑回归测试：未授权的消息必须被拒绝"], "notes": ["教训有三条。初始化参数，和代码一样需要审计。", "零值不能带有业务含义，默认值必须和合法值区分开。", "升级以后要跑回归测试，覆盖这一条：未授权的消息必须被拒绝。"], "section": "初始化缺失"}, {"seg": "5", "t0": 0.0, "t1": 27.37, "title": "升级权限按最高等级保护", "points": ["透明代理在管理员槽位，UUPS 在实现的授权函数，信标在拥有者手里", "无论在哪，都要经过多签和时间锁", "时间锁让升级先排队、再公开，留出复核时间"], "notes": ["谁能换实现，谁就拥有全部资金。", "所以升级权限，要按最高等级来保护。", "透明代理的权限，在代理的管理员槽位。UUPS 在实现合约的授权函数里。信标在信标的拥有者手里。", "无论在哪，都应该经过多签和时间锁。", "时间锁让升级先排队、再公开，给社区留出复核的时间。"], "section": "谁能换实现"}, {"seg": "5", "t0": 27.37, "t1": 44.35, "title": "Compound 第 62 号提案", "points": ["2021 年 9 月升级奖励逻辑，部分用户可超额领取 COMP", "最坏情况约 28 万枚，约 8000 万美元（The Block）"], "notes": ["但时间锁有另一面。", "2021 年 9 月，Compound 第 62 号提案升级了奖励逻辑，里面有错误，部分用户可以超额领取 COMP。", "按 The Block 报道，最坏情况约 28 万枚，约 8000 万美元。"], "section": "谁能换实现"}, {"seg": "5", "t0": 44.35, "t1": 62.37, "title": "暂停要快，升级要慢", "points": ["没有紧急开关，修复要走约 7 天治理流程", "时间锁挡住恶意升级，也挡住紧急修复", "暂停权和升级权要分开设计"], "notes": ["协议没有能停止分发的紧急开关。任何修复，都要走约 7 天的治理流程。", "时间锁挡住了恶意升级，也挡住了紧急修复。", "所以暂停权和升级权要分开设计：暂停可以快，升级必须慢。"], "section": "谁能换实现"}, {"seg": "5", "t0": 62.37, "t1": 86.69, "title": "链本身也能被升级", "points": ["L2BEAT：Mantle 的 14 人中 6 人多签可无延迟升级 L1 桥和门户合约", "L2 上协议的安全上限，就是这条 L2 的升级权限", "合约写得再好，资产也可能在 L1 那端被转走"], "notes": ["再往下一层，链本身也可能被升级。", "比如 Mantle。按 L2BEAT 的页面，一个 14 人里 6 人签名的多签，无需延迟就能升级 L1 上的桥和门户合约。", "部署在 L2 上的协议，安全上限就是这条 L2 的升级权限。", "合约写得再好，资产也可能在 L1 那一端被转走。"], "section": "谁能换实现"}, {"seg": "5", "t0": 86.69, "t1": 116.3, "title": "一次安全的升级", "points": ["只追加变量、工具比对布局；主网分叉里跑全部回归测试", "审计新实现，也审计升级交易和初始化参数", "时间锁排队公开，执行后立刻验证，并留好回滚方案"], "notes": ["一次安全的升级，按这个顺序走。", "写新实现，只追加变量。用工具比对存储布局。", "在主网分叉环境里执行升级，跑全部回归测试。", "审计新实现，也审计升级交易本身，包括初始化参数。", "通过时间锁排队，公开升级内容。执行以后，立刻跑部署后验证。", "最后，留好回滚方案：新实现有问题时，能不能升级回旧实现？"], "section": "谁能换实现"}, {"seg": "6", "t0": 0.0, "t1": 20.05, "title": "写合约与审计", "points": ["构造函数里禁用初始化，部署和初始化放进同一笔交易", "新旧存储布局交给工具比对", "解码升级交易的初始化参数，看有没有零值"], "notes": ["最后，每个人今天就能做一件事。", "写合约的人，在实现合约的构造函数里禁用初始化，把部署和初始化放进同一笔交易。", "审计的人，把新旧存储布局交给工具比对，再解码升级交易的初始化参数，看有没有零值。"], "section": "今天能做什么"}, {"seg": "6", "t0": 20.05, "t1": 36.87, "title": "普通用户", "points": ["存款前查：能不能升级、由谁升级、有没有时间锁", "能无延迟升级，等于把资金交给升级权限持有人", "同一协议在不同链上，升级权限要分别核对"], "notes": ["普通用户，存款前查一查：这个协议能不能升级，由谁升级，有没有时间锁。", "能无延迟升级的协议，等于你把资金交给了升级权限的持有人。", "同一个协议在不同的链上，升级权限要分别核对。"], "section": "今天能做什么"}, {"seg": "6", "t0": 36.87, "t1": 62.99, "title": "谁能换规则，谁就拥有钱", "points": ["升级换掉的不只是代码，初始化参数把全零变成了可信", "零值没有业务含义，这一步就拦得住", "代理存着钱，实现给出规则"], "notes": ["回到开头。升级的代码没有错，为什么钱还是被提走了？", "因为升级换掉的不只是代码。初始化参数写进了存储，把全零变成了可信。", "这在默认值和合法值无法区分时成立。零值没有业务含义，这一步就拦得住。", "代理存着钱，实现给出规则。谁能换规则，谁就拥有这笔钱。"], "section": "今天能做什么"}]};
+  var D = {"chapter": "s10", "title": "可升级合约与代理：谁能换实现，谁就拥有全部资金", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 22.27, "title": "一次升级，约 1.9 亿美元", "points": ["2022 年 8 月 1 日，跨链桥 Nomad 被提走约 1.9 亿美元（事发时估值）", "此前一次升级调用初始化函数，把可信的消息根设成全零", "桥先查消息对应的根，再看这个根是否可信"], "notes": ["2022 年 8 月 1 日，跨链桥 Nomad 被提走约 1.9 亿美元，按事发时估值。", "起因，是此前的一次升级。", "这次升级调用了初始化函数，把可信的消息根，设成了全零。", "桥合约收到一条消息，先查它对应的根，再看这个根是否可信。"], "section": "一次初始化", "k": 17.05}, {"seg": "1", "t0": 22.27, "t1": 29.71, "title": "先猜一道题", "points": ["一条从没被证明过的消息", "查到的根是什么？它能通过吗？"], "notes": ["先猜一道题。", "一条从没被证明过的消息，查到的根是什么？它能通过吗？"], "section": "一次初始化", "k": 29.71}, {"seg": "1", "t0": 29.71, "t1": 49.63, "title": "全零：任何消息都算已证明", "points": ["查到默认值全零，而全零刚被升级标记成可信", "第一笔提款成功后，数百个地址复制交易，只换收款地址", "（Immunefi 复盘、The Block 报道）"], "notes": ["它查到的是默认值，全零。", "而全零，刚刚被这次升级，标记成了可信。", "所以，任何消息都被视为已经证明。", "按 Immunefi 的复盘和 The Block 的报道，第一笔提款成功后，数百个地址复制了这笔交易，只换掉收款地址。"], "section": "一次初始化", "k": 49.63}, {"seg": "1", "t0": 49.63, "t1": 62.34, "title": "代码没错，参数错了", "points": ["升级的代码可以没有错", "错的是升级时传进去的参数", "能升级的合约怎么搭起来？谁能换掉它的代码？"], "notes": ["升级的代码，可以没有错。", "错的，是升级时传进去的参数。", "能升级的合约，是怎么搭起来的？谁能换掉它的代码？"], "section": "一次初始化", "k": 56.18}, {"seg": "2", "t0": 0.0, "t1": 23.53, "title": "可升级合约 = 两个合约", "points": ["代理保存数据和资金，用户调用都先到它这里", "实现只提供代码", "delegatecall：借实现的代码，读写代理自己的存储"], "notes": ["先给准确的说法。", "一个可升级合约，其实是两个合约。", "代理合约，保存数据和资金。用户的每次调用，都先到它这里。", "实现合约，只提供代码。", "代理用 delegatecall 把调用转给实现：借用实现的代码，读写的却是代理自己的存储。"], "section": "代理与实现", "k": 23.53}, {"seg": "2", "t0": 23.53, "t1": 35.07, "title": "谁能换实现，谁就拥有资金", "points": ["升级就是让代理指向新的实现", "数据和资金原地不动，只换代码"], "notes": ["升级，就是让代理指向一个新的实现。", "数据和资金原地不动，只换代码。", "所以，谁能换实现，谁就拥有代理里的全部资金。"], "section": "代理与实现", "k": 35.07}, {"seg": "2", "t0": 35.07, "t1": 59.31, "title": "比方：售货机换机芯", "points": ["代理是机身，货和钱都在里面", "实现是维修门后的机芯，升级就是换一块新机芯", "不成立处：没有时间锁时，换实现只要一笔交易"], "notes": ["打个比方。代理是一台售货机的机身，货和钱都在里面。", "实现是维修门后面的机芯，决定按下按钮以后，机器怎么动。", "升级，就是打开维修门，换一块新机芯。", "比喻在这里不成立：真实的机器换机芯要花时间。链上如果没有时间锁，换实现只要一笔交易。"], "section": "代理与实现", "k": 46.62}, {"seg": "2", "t0": 59.31, "t1": 76.37, "title": "透明代理", "points": ["三种代理，区别在升级开关放在哪", "升级函数在代理里，由管理员调用", "管理员调用不转发，其他人只转发，函数不混淆"], "notes": ["常见的代理有三种，区别在于，升级的开关放在哪里。", "第一种，透明代理。升级函数在代理里，由管理员调用。", "管理员调用代理时不转发，其他人的调用只转发，两边的函数就不会混淆。"], "section": "代理与实现", "k": 64.61}, {"seg": "2", "t0": 76.37, "t1": 88.65, "title": "UUPS", "points": ["代理只做转发，升级函数写在实现里", "新实现忘了带升级函数，就再也不能升级"], "notes": ["第二种，UUPS。代理只做转发，升级函数写在实现合约里。", "风险是，新实现如果忘了带上升级函数，这个合约就再也不能升级。"], "section": "代理与实现", "k": 88.65}, {"seg": "2", "t0": 88.65, "t1": 110.16, "title": "信标代理", "points": ["很多代理共用一个信标，信标存实现地址", "适合大量相同合约，改一次信标所有代理一起换", "三种都依赖 delegatecall，都有存储冲突风险"], "notes": ["第三种，信标代理。很多代理共用一个信标，信标里存着实现的地址。", "它适合大量相同的合约，比如每个用户一个金库。改一次信标，所有代理一起换。", "三种模式都依赖 delegatecall，所以都有同一个风险：存储冲突。"], "section": "代理与实现", "k": 109.7}, {"seg": "3", "t0": 0.0, "t1": 23.61, "title": "冲突一：代理与实现撞槽位", "points": ["存储是一排编号格子，叫槽位；代码只认编号", "朴素代理把实现地址放在 0 号槽位", "实现合约的第一个变量管理员，也在 0 号"], "notes": ["代理的存储，是一排编了号的格子，叫槽位。", "代码不认变量名，只认格子的编号。", "第一种冲突：代理自己的变量，和实现的变量，撞进同一个格子。", "一个朴素的代理，把实现地址放在 0 号槽位。", "实现合约的第一个变量是管理员，也在 0 号槽位。"], "section": "存储冲突", "k": 23.61}, {"seg": "3", "t0": 23.61, "t1": 42.83, "title": "修复：EIP-1967 固定槽位", "points": ["写管理员，就是改写实现地址", "用哈希算出的固定槽位存实现和管理员地址", "远离普通变量；算法减 1，派生位置碰不到它"], "notes": ["于是，写管理员，就是改写实现地址。", "修复是 EIP-1967。它用一个哈希算出的固定槽位，存放实现地址和管理员地址。", "这个位置远离普通变量。算法里还减去 1，让映射和数组的派生位置，碰不到它。"], "section": "存储冲突", "k": 42.83}, {"seg": "3", "t0": 42.83, "t1": 60.07, "title": "先猜一道题", "points": ["冲突二：升级前后变量顺序变了", "旧版 0 号是管理员，1 号是存款总额", "新版最前面插入手续费变量，读管理员读到什么？"], "notes": ["第二种冲突：升级前后，变量的顺序变了。", "先猜一道题。", "旧版本里，0 号槽位是管理员，1 号是存款总额。", "新版本在最前面，插入了一个手续费变量。升级以后读管理员，读到的是什么？"], "section": "存储冲突", "k": 60.07}, {"seg": "3", "t0": 60.07, "t1": 77.85, "title": "答案：截断的存款总额", "points": ["旧存款总额截掉一部分，被解释成地址", "新代码把管理员挪到 1 号，1 号里还是旧数据", "每格错开一位，映射基址变了，余额像是消失了"], "notes": ["读到的是旧的存款总额，截掉一部分，被解释成一个地址。", "因为新代码把管理员挪到了 1 号，而 1 号里还是旧数据。", "后面每一格都错开一位。映射的基址变了，所有余额看上去都消失了。"], "section": "存储冲突", "k": 77.85}, {"seg": "3", "t0": 77.85, "t1": 99.43, "title": "存储布局四条规则", "points": ["只在末尾追加；不删除、不重排、不改类型", "父合约预留空槽位，或用 ERC-7201 命名空间存储", "用 OpenZeppelin 升级插件或 forge inspect 比对，不靠肉眼"], "notes": ["规则有四条。", "只在末尾追加变量。", "不删除，不重新排序，不改类型。", "父合约预留一段空槽位，或者用 ERC-7201 的命名空间存储。", "用工具比对新旧布局，比如 OpenZeppelin 的升级插件，或者 forge inspect。不要靠肉眼核对。"], "section": "存储冲突", "k": 90.9}, {"seg": "3", "t0": 99.43, "t1": 132.74, "title": "函数选择器撞车", "points": ["选择器是签名哈希前 4 字节，不同名字可能相同", "代理有同选择器的函数时，调用被代理截下", "编译器只查合约内部；部署前用工具比对，透明代理可绕开"], "notes": ["还有一种撞车，不在存储里，而在函数选择器上。", "选择器是函数签名哈希的前 4 个字节。两个名字完全不同的函数，可能算出同一个选择器。", "代理自己有这个函数时，调用会被代理截下，不会转给实现。", "编译器只检查同一个合约内部的冲突。代理和实现之间，要在部署前用工具比对。", "透明代理靠管理员不转发、其他人只转发，绕开了这个问题。"], "section": "存储冲突", "k": 132.74}, {"seg": "4", "t0": 0.0, "t1": 18.67, "title": "初始化函数代替构造函数", "points": ["构造函数只在实现自己的存储里运行，写不进代理", "部署后再调用一次初始化函数", "这一次调用，就是风险所在"], "notes": ["普通合约用构造函数设置主人。代理合约不行。", "构造函数只在实现合约自己的存储里运行，写不进代理。", "所以可升级合约用一个初始化函数代替，部署以后再调用一次。", "这一次调用，就是风险所在。"], "section": "初始化缺失", "k": 1.3}, {"seg": "4", "t0": 18.67, "t1": 39.97, "title": "抢先初始化与重复初始化", "points": ["部署和初始化分两笔交易：别人可抢先成为主人，要同一笔完成", "可重复调用：任何人都能重置主人", "修复：只能调用一次的修饰器"], "notes": ["第一种情况：部署代理和初始化，分成了两笔交易。", "中间有空隙，别人可以抢先初始化，成为主人。修复是在同一笔交易里完成。", "第二种：初始化函数可以重复调用，任何人都能重置主人。修复是加上只能调用一次的修饰器。"], "section": "初始化缺失", "k": 39.97}, {"seg": "4", "t0": 39.97, "t1": 55.31, "title": "先猜一道题", "points": ["代理初始化了，实现合约本身没有", "代理的初始化写在代理存储里，实现的存储还是空的", "别人能直接调用实现的初始化函数吗？"], "notes": ["第三种：代理初始化了，实现合约本身没有。", "代理的初始化，写在代理的存储里。实现合约自己的存储，还是空的。", "先猜一道题。别人能直接调用实现合约的初始化函数吗？"], "section": "初始化缺失", "k": 50.02}, {"seg": "4", "t0": 55.31, "t1": 81.63, "title": "能：成为实现的主人", "points": ["实现里有 delegatecall 或自毁路径，所有代理都可能失效", "2021 年 9 月，OpenZeppelin 公告其 UUPS 部分版本有此问题并发布修复", "修复：在实现的构造函数里禁用初始化"], "notes": ["能。他会成为实现合约的主人。", "如果实现合约里有 delegatecall 或者自毁的路径，所有指向它的代理，都可能失效。", "2021 年 9 月，OpenZeppelin 发布安全公告：它的 UUPS 实现，有几个版本存在这个问题，随后发布了修复版本。", "修复是在实现合约的构造函数里，禁用初始化。这样谁都不能再初始化它。"], "section": "初始化缺失", "k": 81.63}, {"seg": "4", "t0": 81.63, "t1": 102.03, "title": "Nomad：默认值撞上合法值", "points": ["问题出在升级时的初始化参数", "表里记录每个根的确认时间，升级把全零标记成已确认", "没被证明的消息查到的根，默认也是全零"], "notes": ["回到开头的 Nomad。它的问题，出在升级时的初始化参数。", "合约用一张表，记录每个根什么时候被确认。升级把全零这个根，标记成了已确认。", "而没被证明过的消息，查到的根，默认也是全零。", "默认值和合法值，撞在了一起。"], "section": "初始化缺失", "k": 99.43}, {"seg": "4", "t0": 102.03, "t1": 119.54, "title": "Nomad 的三条教训", "points": ["初始化参数和代码一样需要审计", "零值不能带业务含义，默认值要和合法值区分", "升级后跑回归测试：未授权的消息必须被拒绝"], "notes": ["教训有三条。初始化参数，和代码一样需要审计。", "零值不能带有业务含义，默认值必须和合法值区分开。", "升级以后要跑回归测试，覆盖这一条：未授权的消息必须被拒绝。"], "section": "初始化缺失", "k": 117.08}, {"seg": "5", "t0": 0.0, "t1": 27.37, "title": "升级权限按最高等级保护", "points": ["透明代理在管理员槽位，UUPS 在实现的授权函数，信标在拥有者手里", "无论在哪，都要经过多签和时间锁", "时间锁让升级先排队、再公开，留出复核时间"], "notes": ["谁能换实现，谁就拥有全部资金。", "所以升级权限，要按最高等级来保护。", "透明代理的权限，在代理的管理员槽位。UUPS 在实现合约的授权函数里。信标在信标的拥有者手里。", "无论在哪，都应该经过多签和时间锁。", "时间锁让升级先排队、再公开，给社区留出复核的时间。"], "section": "谁能换实现", "k": 17.8}, {"seg": "5", "t0": 27.37, "t1": 44.35, "title": "Compound 第 62 号提案", "points": ["2021 年 9 月升级奖励逻辑，部分用户可超额领取 COMP", "最坏情况约 28 万枚，约 8000 万美元（The Block）"], "notes": ["但时间锁有另一面。", "2021 年 9 月，Compound 第 62 号提案升级了奖励逻辑，里面有错误，部分用户可以超额领取 COMP。", "按 The Block 报道，最坏情况约 28 万枚，约 8000 万美元。"], "section": "谁能换实现", "k": 44.35}, {"seg": "5", "t0": 44.35, "t1": 62.37, "title": "暂停要快，升级要慢", "points": ["没有紧急开关，修复要走约 7 天治理流程", "时间锁挡住恶意升级，也挡住紧急修复", "暂停权和升级权要分开设计"], "notes": ["协议没有能停止分发的紧急开关。任何修复，都要走约 7 天的治理流程。", "时间锁挡住了恶意升级，也挡住了紧急修复。", "所以暂停权和升级权要分开设计：暂停可以快，升级必须慢。"], "section": "谁能换实现", "k": 62.37}, {"seg": "5", "t0": 62.37, "t1": 86.69, "title": "链本身也能被升级", "points": ["L2BEAT：Mantle 的 14 人中 6 人多签可无延迟升级 L1 桥和门户合约", "L2 上协议的安全上限，就是这条 L2 的升级权限", "合约写得再好，资产也可能在 L1 那端被转走"], "notes": ["再往下一层，链本身也可能被升级。", "比如 Mantle。按 L2BEAT 的页面，一个 14 人里 6 人签名的多签，无需延迟就能升级 L1 上的桥和门户合约。", "部署在 L2 上的协议，安全上限就是这条 L2 的升级权限。", "合约写得再好，资产也可能在 L1 那一端被转走。"], "section": "谁能换实现", "k": 86.69}, {"seg": "5", "t0": 86.69, "t1": 116.3, "title": "一次安全的升级", "points": ["只追加变量、工具比对布局；主网分叉里跑全部回归测试", "审计新实现，也审计升级交易和初始化参数", "时间锁排队公开，执行后立刻验证，并留好回滚方案"], "notes": ["一次安全的升级，按这个顺序走。", "写新实现，只追加变量。用工具比对存储布局。", "在主网分叉环境里执行升级，跑全部回归测试。", "审计新实现，也审计升级交易本身，包括初始化参数。", "通过时间锁排队，公开升级内容。执行以后，立刻跑部署后验证。", "最后，留好回滚方案：新实现有问题时，能不能升级回旧实现？"], "section": "谁能换实现", "k": 98.24}, {"seg": "6", "t0": 0.0, "t1": 20.05, "title": "写合约与审计", "points": ["构造函数里禁用初始化，部署和初始化放进同一笔交易", "新旧存储布局交给工具比对", "解码升级交易的初始化参数，看有没有零值"], "notes": ["最后，每个人今天就能做一件事。", "写合约的人，在实现合约的构造函数里禁用初始化，把部署和初始化放进同一笔交易。", "审计的人，把新旧存储布局交给工具比对，再解码升级交易的初始化参数，看有没有零值。"], "section": "今天能做什么", "k": 16.3}, {"seg": "6", "t0": 20.05, "t1": 36.87, "title": "普通用户", "points": ["存款前查：能不能升级、由谁升级、有没有时间锁", "能无延迟升级，等于把资金交给升级权限持有人", "同一协议在不同链上，升级权限要分别核对"], "notes": ["普通用户，存款前查一查：这个协议能不能升级，由谁升级，有没有时间锁。", "能无延迟升级的协议，等于你把资金交给了升级权限的持有人。", "同一个协议在不同的链上，升级权限要分别核对。"], "section": "今天能做什么", "k": 36.87}, {"seg": "6", "t0": 36.87, "t1": 62.99, "title": "谁能换规则，谁就拥有钱", "points": ["升级换掉的不只是代码，初始化参数把全零变成了可信", "零值没有业务含义，这一步就拦得住", "代理存着钱，实现给出规则"], "notes": ["回到开头。升级的代码没有错，为什么钱还是被提走了？", "因为升级换掉的不只是代码。初始化参数写进了存储，把全零变成了可信。", "这在默认值和合法值无法区分时成立。零值没有业务含义，这一步就拦得住。", "代理存着钱，实现给出规则。谁能换规则，谁就拥有这笔钱。"], "section": "今天能做什么", "k": 56.67}]};
   var S = D.slides, N = S.length, KEY = 'deck-' + D.chapter;
   var $ = function (id) { return document.getElementById(id); };
-  var screen = $('screen'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
+  var screen = $('screen'), still = $('still'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
   var store = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
                 set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
   try { var pt = parent !== window && parent.document.documentElement.getAttribute('data-theme'); if (pt) document.documentElement.setAttribute('data-theme', pt); } catch (e) {}
@@ -141,32 +144,54 @@ button { font: inherit; color: inherit; }
     var g = groups[groups.length - 1];
     if (!g || g.seg !== s.seg) { g = { seg: s.seg, el: document.createElement('div') }; g.el.className = 'grp'; groups.push(g); prog.appendChild(g.el); g.n = 0; }
     var b = document.createElement('button'); b.title = (i + 1) + ' · ' + s.title; b.setAttribute('aria-label', '第 ' + (i + 1) + ' 页：' + s.title);
-    b.onclick = function () { go(i, 'seek'); }; g.el.appendChild(b); g.n++; s.dot = b;
+    b.onclick = function () { show(i); }; g.el.appendChild(b); g.n++; s.dot = b;
   });
   groups.forEach(function (g) { g.el.style.setProperty('--n', g.n); });
 
+  // all stills of the chapter are one sprite: 6 columns, slide i at (i % 6, i / 6)
+  var COLS = 6, ROWS = Math.ceil(N / COLS), sheetReady = false, sheet = new Image();
+  sheet.onload = function () { sheetReady = true; if (!screen.classList.contains('live')) $('wait').hidden = true; };
+  sheet.src = 'stills.webp';
+  still.style.backgroundImage = 'url(stills.webp)';
+  still.style.backgroundSize = (COLS * 100) + '% ' + (ROWS * 100) + '%';
+  function tile(i) {
+    var c = i % COLS, r = Math.floor(i / COLS);
+    still.style.backgroundPosition = (COLS > 1 ? c / (COLS - 1) * 100 : 0) + '% ' + (ROWS > 1 ? r / (ROWS - 1) * 100 : 0) + '%';
+  }
+
+  // ---------- live animation (only when asked) ----------
   function scale() { var k = screen.clientWidth / 1920; for (var s in frames) frames[s].style.transform = 'scale(' + k + ')'; }
   if (window.ResizeObserver) new ResizeObserver(scale).observe(screen); else addEventListener('resize', scale);
-
   function frame(seg) {
     if (frames[seg]) return frames[seg];
     var f = document.createElement('iframe'); f.src = 's' + seg + '.html'; f.title = '第 ' + seg + ' 节动画'; f.tabIndex = -1;
     f.setAttribute('aria-hidden', 'true'); screen.appendChild(f); frames[seg] = f; scale(); return f;
   }
+  function live(seg) {
+    for (var k in frames) frames[k].classList.toggle('on', k === seg);
+    screen.classList.add('live'); $('wait').hidden = true;
+  }
   function send(seg, msg) {
     msg.deck = 'cmd';
-    if (ready[seg]) frames[seg].contentWindow.postMessage(msg, '*'); else pending[seg] = msg;
+    if (ready[seg]) { frames[seg].contentWindow.postMessage(msg, '*'); live(seg); } else pending[seg] = msg;
   }
   addEventListener('message', function (e) {
     var m = e.data || {};
     if (!m.deck || !frames[m.seg] || e.source !== frames[m.seg].contentWindow) return;
     if (m.deck === 'ready') {
       ready[m.seg] = true;
-      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; send(m.seg, p); }
-      if (cur >= 0 && S[cur].seg === m.seg) $('wait').hidden = true;
-    } else if (m.deck === 'done' && cur >= 0 && S[cur].seg === m.seg) { playing = false; paint(); }
+      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; if (playing && S[cur].seg === m.seg) send(m.seg, p); }
+    } else if (m.deck === 'done' && playing && S[cur].seg === m.seg) { playing = false; paint(); }
   });
+  function process() {
+    var s = S[cur];
+    playing = true; frame(s.seg);
+    if (!ready[s.seg]) { $('wait').textContent = '载入动画…'; $('wait').hidden = false; }
+    send(s.seg, { play: [s.t0, s.k], rate: +$('speed').value });
+    paint();
+  }
 
+  // ---------- slides ----------
   function paint() {
     var s = S[cur];
     $('sec').textContent = s.section;
@@ -175,27 +200,21 @@ button { font: inherit; color: inherit; }
     $('lines').innerHTML = ''; s.notes.forEach(function (p) { var li = document.createElement('li'); li.textContent = p; $('lines').appendChild(li); });
     $('count').textContent = (cur + 1) + ' / ' + N;
     $('prev').disabled = cur === 0;
-    $('next').textContent = playing ? '跳到本页结尾 ›' : (cur === N - 1 ? '回到正文 ›' : '下一页 ›');
+    $('next').textContent = cur === N - 1 ? '回到正文 ›' : '下一页 ›';
+    $('replay').textContent = playing ? '⟳ 从头播放' : (screen.classList.contains('live') ? '⟳ 再看一遍' : '▶ 看过程');
     S.forEach(function (x, i) { x.dot.className = i === cur ? 'cur' : (seen[i] ? 'seen' : ''); });
   }
-  function go(i, mode) {
+  function show(i) {
     if (i < 0 || i >= N) return;
-    var s = S[i]; cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
-    var f = frame(s.seg);
-    for (var k in frames) frames[k].classList.toggle('on', k === s.seg);
-    $('wait').hidden = !!ready[s.seg];
-    playing = mode === 'play';
-    send(s.seg, playing ? { play: [s.t0, s.t1], rate: +$('speed').value } : { seek: s.t1 });
-    // warm the next segment while this one is on screen
-    if (i + 1 < N && S[i + 1].seg !== s.seg) frame(S[i + 1].seg);
+    cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
+    playing = false; pending = {};
+    tile(i); still.setAttribute('aria-label', S[i].title);
+    screen.classList.remove('live'); $('wait').textContent = sheetReady ? '载入动画…' : '载入画面…'; $('wait').hidden = sheetReady;
+    for (var k in frames) frames[k].classList.remove('on');
     paint();
   }
-  function next() {
-    if (playing) { go(cur, 'seek'); return; }
-    if (cur === N - 1) { back(); return; }
-    go(cur + 1, 'play');
-  }
-  function prev() { go(cur - 1, 'seek'); }
+  function next() { if (cur === N - 1) { back(); return; } show(cur + 1); }
+  function prev() { show(cur - 1); }
   function back() {
     if (parent !== window) parent.postMessage({ cexNav: D.chapter }, '*');
     else location.href = '../../index.html#' + D.chapter;
@@ -206,18 +225,18 @@ button { font: inherit; color: inherit; }
   }
   if (!document.fullscreenEnabled) $('fs').hidden = true;
 
-  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = function () { go(cur, 'play'); };
+  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = process;
   $('back').onclick = back; $('fs').onclick = fullscreen;
   addEventListener('keydown', function (e) {
     if (e.target.tagName === 'SELECT' || e.metaKey || e.ctrlKey || e.altKey) return;
     var k = e.key;
     if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); next(); }
     else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
-    else if (k === 'r' || k === 'R') go(cur, 'play');
+    else if (k === 'p' || k === 'P' || k === 'r' || k === 'R') process();
     else if (k === 'f' || k === 'F') fullscreen();
     else if (k === 'n' || k === 'N') $('notes').open = !$('notes').open;
-    else if (k === 'Home') go(0, 'seek');
-    else if (k === 'End') go(N - 1, 'seek');
+    else if (k === 'Home') show(0);
+    else if (k === 'End') show(N - 1);
   });
   // tap = next; horizontal swipe = next / previous
   var x0 = null, y0 = null;
@@ -230,7 +249,7 @@ button { font: inherit; color: inherit; }
   });
 
   var start = +store.get(KEY); if (!(start >= 0 && start < N)) start = 0;
-  go(start, start === 0 ? 'play' : 'seek');
+  show(start);
 })();
 </script>
 </body>

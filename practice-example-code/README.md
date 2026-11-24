@@ -51,8 +51,20 @@ cd ../minilend && forge test  # 接着上一条命令，已在 foundry 目录里
 | [foundry/test/ERC4626Rounding.t.sol](foundry/test/ERC4626Rounding.t.sol) | [06](../Web3-Security/06-arithmetic-precision.md)、[B41](../Web3-Security/bootcamp/B41-case-erc4626.md) | 取整错误导致免费取款；集成方少扣份额造成资不抵债；修复版账本有足额份额支撑 |
 | [minilend/test/MiniLendPoC.t.sol](minilend/test/MiniLendPoC.t.sol) | [B25 实战](../Web3-Security/bootcamp/B25-capstone-minilend.md) | 8 个预埋漏洞的 PoC；同一场景在修复版失败 |
 | [minilend/test/MiniLendInvariant.t.sol](minilend/test/MiniLendInvariant.t.sol) | [B25 实战](../Web3-Security/bootcamp/B25-capstone-minilend.md) | 修复版的账实相符、份额总和、资金流、取整和 LTV 不变量 |
+| [foundry/test/FormalAndFuzzVault.t.sol](foundry/test/FormalAndFuzzVault.t.sol) | [B48 形式化验证](../Web3-Security/bootcamp/B48-formal-verification.md)、[06 算术与精度](../Web3-Security/06-arithmetic-precision.md) | 兼容 Foundry Fuzz、Halmos `check_*` 符号执行与 Echidna（`echidna.yaml`）属性模糊测试的金库偿付不变量 |
 
-新增演示合约：`foundry/src/EIP7702Demo.sol`、`ToyPermit2.sol`、`CrossChainMessaging.sol`、`ERC4626Rounding.sol`。
+新增演示合约：`foundry/src/EIP7702Demo.sol`、`ToyPermit2.sol`、`CrossChainMessaging.sol`、`ERC4626Rounding.sol`，以及形式化/模糊测试配置 `foundry/echidna.yaml`。
+
+## 非 EVM、ZK 与多语言靶场（`non-evm/`）
+
+为补齐非 EVM 与编译器层的动手实操，`non-evm/` 提供 4 套最小化漏洞与修复对照靶场：
+
+| 目录 | 语言 / 框架 | 配套章节 | 演示内容 |
+|---|---|---|---|
+| [non-evm/solana-vault/](non-evm/solana-vault/README.md) | Rust / Anchor | [C04 Solana](../Web3-Security/chains/C04-solana.md)、[B50](../Web3-Security/bootcamp/B50-solana-audit.md) | 缺失 Signer/PDA 校验、账户关闭复活（Revival）、任意 CPI 权限透传 |
+| [non-evm/sui-move-lending/](non-evm/sui-move-lending/README.md) | Sui Move | [C05 Move](../Web3-Security/chains/C05-move-sui-aptos.md)、[B51](../Web3-Security/bootcamp/B51-move-audit.md) | 热土豆跨池还款绕过、`AdminCap` 权限缺失、`<<` 位左移静默截断溢出 |
+| [non-evm/zk-circom-underconstrained/](non-evm/zk-circom-underconstrained/README.md) | Circom / Node | [14 ZK](../Web3-Security/14-zk-proof-systems.md)、[B69](../Web3-Security/bootcamp/B69-zk-bridge-practice.md) | `<--` 无约束电路被伪造见证攻破 vs `<==` + 范围位约束修复（附无依赖 Node 演示脚本） |
+| [non-evm/vyper-reentrancy/](non-evm/vyper-reentrancy/README.md) | Vyper | [32 编译器与连接层](../Web3-Security/32-dapp-connector-compiler-hardware.md)、[04 重入](../Web3-Security/04-reentrancy.md) | Vyper 0.2.15–0.3.0 `@nonreentrant` 跨函数槽位失效历史机制与 CEI + 升级修复 |
 
 > 💡 注意：Foundry 的一个测试函数在单个交易上下文内运行。EIP-7702 测试把委托放在 `setUp` 中，再用 `vm.roll` 和 `vm.warp` 表示后续区块。这模拟了委托跨交易持续，不是真实网络上的两笔交易。
 

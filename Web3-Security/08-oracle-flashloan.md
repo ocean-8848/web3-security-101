@@ -14,7 +14,7 @@
 
 ## 开场：价格是新的，也是错的
 
-2026 年 2 月 15 日，Moonwell 在 Base 上执行治理提案 MIP-X43 后，cbETH 的美元价格只用了 cbETH/ETH 汇率。合约把约 2,200 美元的 cbETH 报成约 1.12 美元。清算机器人清算了 1,096.317 枚 cbETH，协议留下约 178 万美元坏账（[The Block](https://www.theblock.co/post/390302/defi-lending-protocol-moonwell-hit-with-1-8-million-bad-debt-after-oracle-misconfiguration)）。
+2026 年 2 月 15 日，Moonwell 在 Base 上执行治理提案 MIP-X48 后，cbETH 的美元价格只用了 cbETH/ETH 汇率。合约把约 2,200 美元的 cbETH 报成约 1.12 美元。清算机器人清算了 1,096.317 枚 cbETH，协议留下约 178 万美元坏账（[The Block](https://www.theblock.co/post/390302/defi-lending-protocol-moonwell-hit-with-1-8-million-bad-debt-after-oracle-misconfiguration)）。
 
 <details class="predict"><summary>🤔 先猜再看：这个价格大于 0，并且刚刚更新。只检查正值和时效，能拦住这次错误吗？</summary>
 

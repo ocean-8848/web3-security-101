@@ -42,7 +42,10 @@ button { font: inherit; color: inherit; }
   box-shadow: 0 1px 0 var(--rule), 0 8px 28px rgba(60, 50, 30, .14); cursor: pointer; touch-action: pan-y; user-select: none; }
 .screen iframe { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; border: 0; transform-origin: 0 0; visibility: hidden; pointer-events: none; }
 .screen iframe.on { visibility: visible; }
-.screen .wait { position: absolute; inset: 0; display: grid; place-items: center; color: #8a826f; font-size: 14px; background: #efebe3; }
+.screen .still { position: absolute; inset: 0; background-repeat: no-repeat; background-color: #efebe3; }
+.screen.live .still { visibility: hidden; }
+.screen .wait { position: absolute; left: 12px; bottom: 12px; padding: 4px 12px; border-radius: 999px; color: #fff; font-size: 13px; background: rgba(28, 28, 28, .72); }
+.btn.play { border-color: var(--accent); color: var(--accent); }
 .screen .wait[hidden] { display: none; }
 
 .side { min-height: 0; overflow-y: auto; border-left: 1px solid var(--rule); background: var(--paper); padding: 18px 20px 24px; }
@@ -102,7 +105,7 @@ button { font: inherit; color: inherit; }
     <button class="btn hide-narrow" id="fs" title="全屏（F）">⛶ 全屏</button>
   </header>
   <div class="body">
-    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="wait" id="wait">载入动画…</div></div></div>
+    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="still" id="still" role="img"></div><div class="wait" id="wait" hidden>载入动画…</div></div></div>
     <aside class="side" aria-live="polite">
       <div class="sec" id="sec"></div>
       <h2 id="stitle"></h2>
@@ -112,7 +115,7 @@ button { font: inherit; color: inherit; }
   </div>
   <nav class="ctrl" aria-label="翻页">
     <button class="btn" id="prev" aria-label="上一页（←）">‹ 上一页</button>
-    <button class="btn" id="replay" aria-label="重播本页动画（R）">⟳ 重播</button>
+    <button class="btn play" id="replay" aria-label="看这一页的动画过程（P）">▶ 看过程</button>
     <button class="btn primary" id="next" aria-label="下一页（→ 或空格）">下一页 ›</button>
     <span class="count" id="count"></span>
     <div class="prog" id="prog"></div>
@@ -123,10 +126,10 @@ button { font: inherit; color: inherit; }
 </div>
 <script>
 (function () {
-  var D = {"chapter": "s01", "title": "合约安全全景：为什么代码就是金库", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 18.67, "title": "Bybit 损失约 15 亿", "points": ["2025 年 2 月，Bybit 多签签名人签了一笔看似正常的交易", "Safe 钱包网页前端已被篡改", "这笔交易替换了多签的实现合约"], "notes": ["2025 年 2 月，Bybit 的多签签名人，签了一笔看起来很正常的交易。", "可他们用的 Safe 钱包网页前端，已经被人篡改了。", "签下去的这笔交易，替换了多签的实现合约。", "约 15 亿美元，就这样被转走。"], "section": "一笔日常签名"}, {"seg": "1", "t0": 18.67, "t1": 27.51, "title": "先猜一道题", "points": ["Safe 多签合约的代码，有没有被利用的漏洞？", "如果没有，钱又是从哪里漏出去的？"], "notes": ["先请你猜一猜。Safe 多签合约的代码，有没有被利用的漏洞？", "如果没有，钱又是从哪里漏出去的？"], "section": "一笔日常签名"}, {"seg": "1", "t0": 27.51, "t1": 46.86, "title": "本集要回答三个问题", "points": ["合约安全和传统安全，到底哪里不一样", "攻击会从哪些地方进来", "怎么站在攻击者的角度给系统建模"], "notes": ["这一集是整个系列的入口。我们要回答三个问题。", "合约安全和传统安全，到底哪里不一样？", "攻击会从哪些地方进来？", "怎么站在攻击者的角度，给一个系统建模？", "开头那个问题的答案，留到最后揭晓。"], "section": "一笔日常签名"}, {"seg": "2", "t0": 0.0, "t1": 23.71, "title": "智能合约是什么", "points": ["部署在区块链上、按代码自动执行的程序，可持有和转出资产", "公开的、不可撤回的、直接控制资金的代码", "任何人都能用任意参数、任意顺序调用它"], "notes": ["先给一个准确的定义。", "智能合约，是部署在区块链上、按代码自动执行的程序。它可以持有资产，也可以转出资产。", "压成一句话就是：一段公开的、不可撤回的、直接控制资金的代码。", "任何人，都可以用任意参数、任意顺序调用它。"], "section": "代码就是金库"}, {"seg": "2", "t0": 23.71, "t1": 44.43, "title": "广场中央的自动售货机", "points": ["机器里的真金白银，就是合约余额", "电路图贴在外壳上：字节码一定公开，源码通常也公开", "全世界的人可以全天候来投币、按按钮、拍打机器"], "notes": ["打个比方。它像一台放在广场中央的自动售货机。", "机器里装着真金白银，这就是合约余额。", "电路图贴在外壳上，谁都能看。合约的字节码一定公开，源码通常也公开。", "全世界的人，可以全天候来投币、按按钮、拍打机器。"], "section": "代码就是金库"}, {"seg": "2", "t0": 44.43, "t1": 58.05, "title": "装好就不能打开维修", "points": ["留了维修门（升级代理），这把钥匙本身就成了攻击目标", "吐错了钱，没有客服能帮你追回", "交易是不可逆的"], "notes": ["机器装好以后，就不能打开维修。", "如果留了维修门，也就是升级代理，这把钥匙本身就成了攻击目标。", "机器吐错了钱，没有客服能帮你追回。交易是不可逆的。"], "section": "代码就是金库"}, {"seg": "2", "t0": 58.05, "t1": 78.23, "title": "比方不成立的地方", "points": ["真实的售货机一次只服务一个人", "合约在一笔交易里可被同一个人反复调用、嵌套调用", "还能和几十台别的售货机拼在一起用：可组合性"], "notes": ["但这个比方有个地方不成立。真实的售货机，一次只服务一个人。", "合约在一笔交易里，可以被同一个人反复调用、嵌套调用。", "它还能和几十台别的售货机，拼在一起用。这叫可组合性。很多漏洞，正是从这里来的。"], "section": "代码就是金库"}, {"seg": "2", "t0": 78.23, "t1": 98.17, "title": "区别一：谁能调用", "points": ["Web2 要先鉴权，交易所要先过 KYC", "合约面前，任何地址、任何合约都能来", "public 函数就是对全世界开放的 API"], "notes": ["拿它和 Web2 后端、中心化交易所比一比，最关键的区别有三个。", "第一，谁能调用。Web2 要先鉴权，交易所要先过 KYC。", "合约面前，任何地址、任何合约都能来。public 函数，就是对全世界开放的 API。"], "section": "代码就是金库"}, {"seg": "2", "t0": 98.17, "t1": 112.21, "title": "区别二：出错能否回滚", "points": ["Web2 可以改数据库，交易所可以改内部账本", "合约交易不可逆，只能靠升级或社会共识", "没有升级权限，就修不了"], "notes": ["第二，出错能不能回滚。Web2 可以改数据库，交易所可以改内部账本。", "合约的交易不可逆，只能靠升级，或者社会共识。没有升级权限，就修不了。"], "section": "代码就是金库"}, {"seg": "2", "t0": 112.21, "t1": 139.62, "title": "区别三：攻击成本", "points": ["在别处要绕过防火墙或攻破内部系统；在合约这里只需一笔 gas", "闪电贷能在一笔交易里借到上亿美元本金", "能升级是修复能力也是攻击面；交易所冷钱包也可能是多签合约"], "notes": ["第三，攻击成本。在别处，要绕过防火墙，或者攻破内部系统。", "在合约这里，只需要一笔交易的 gas。闪电贷还能在一笔交易里，借到上亿美元的本金。", "能升级，是修复能力，也是攻击面。升级密钥，可能被盗。", "交易所也躲不开合约安全。它的冷钱包，可能就是一个多签合约，比如开头的 Safe。"], "section": "代码就是金库"}, {"seg": "3", "t0": 0.0, "t1": 24.65, "title": "跟着一笔交易走", "points": ["账户先经过钱包和前端的签名界面", "交易进入内存池公开排队，构建者或排序器决定先后", "到达目标合约，执行业务逻辑"], "notes": ["知道了合约是什么，我们跟着一笔交易，看攻击从哪里进来。", "用户或者攻击者的账户，先经过钱包和前端的签名界面。", "交易进入内存池，在那里公开排队。", "区块构建者或者排序器，决定它和别的交易谁先谁后。", "然后它到达目标合约，执行业务逻辑。"], "section": "攻击面地图"}, {"seg": "3", "t0": 24.65, "t1": 40.37, "title": "外部合约、升级与跨链", "points": ["目标合约调用代币、DEX、预言机等外部合约", "背后连着代理和实现，也就是升级权限", "有的交易还要经过跨链桥去到另一条链"], "notes": ["目标合约会去调用外部合约，比如代币、DEX、预言机。它背后还连着代理和实现，也就是升级权限。", "有的交易，还要经过跨链桥，去到另一条链上的合约。"], "section": "攻击面地图"}, {"seg": "3", "t0": 40.37, "t1": 55.05, "title": "五个信任边界", "points": ["签名界面、内存池、外部合约、升级权限、跨链桥", "数据和控制权在这里跨过去", "漏洞也最集中"], "notes": ["这条路上，有五个地方最危险：签名界面、内存池、外部合约、升级权限、跨链桥。", "它们叫信任边界。数据和控制权在这里跨过去，漏洞也最集中。"], "section": "攻击面地图"}, {"seg": "3", "t0": 55.05, "t1": 79.77, "title": "回调、顺序与图的局限", "points": ["外部合约可在函数执行一半时调回你的合约：重入", "内存池和构建者决定顺序，顺序本身也可被利用", "图里没画共识和节点；链被攻破，合约写得再对也没用"], "notes": ["注意一个往回走的箭头。外部合约可以在你的函数执行到一半时，调回你的合约。重入就发生在这里。", "内存池和构建者决定交易的顺序。顺序本身，也可以被利用。", "这张图也有局限。它没画链本身的共识和节点。", "链被攻破，或者节点数据有误，合约写得再对也没用。"], "section": "攻击面地图"}, {"seg": "3", "t0": 79.77, "t1": 98.67, "title": "六大类：控制流与权限", "points": ["控制流：外部调用让攻击者插队执行，比如重入", "权限：缺少修饰器、合约未初始化、私钥泄露"], "notes": ["沿着这张图，可以把漏洞归成六大类。", "第一类，控制流。外部调用让攻击者插队执行，比如重入。", "第二类，权限。不该调用的人调用了，比如缺少修饰器、合约未初始化、私钥泄露。"], "section": "攻击面地图"}, {"seg": "3", "t0": 98.67, "t1": 112.95, "title": "数学与数据可信度", "points": ["数学：溢出、精度损失、舍入方向", "数据可信度：现货价格预言机、签名重放"], "notes": ["第三类，数学。数字算错了，比如溢出、精度损失、舍入方向。", "第四类，数据可信度。合约相信了可以被操纵的数据，比如现货价格预言机、签名重放。"], "section": "攻击面地图"}, {"seg": "3", "t0": 112.95, "t1": 128.51, "title": "经济设计与系统运营", "points": ["经济设计：代码按规格执行，但规格本身可被套利", "系统与运营：跨链验证、多签私钥、前端篡改、社会工程"], "notes": ["第五类，经济设计。代码按规格执行，但规格本身可以被套利。", "第六类，系统与运营。代码之外的环节失守，比如跨链验证、多签私钥、前端篡改、社会工程。"], "section": "攻击面地图"}, {"seg": "3", "t0": 128.51, "t1": 157.62, "title": "真实事故往往几类叠加", "points": ["2023 年 Euler：业务逻辑缺陷加闪电贷放大", "第六类拆两块：链与读链方式；人、设备和流程", "社工常是入口；AI 是攻防两边的放大器"], "notes": ["真实事故往往是几类叠加。2023 年的 Euler，就是业务逻辑缺陷，加上闪电贷放大。", "第六类，又可以拆成两块。一块是链本身，和你读链的方式。另一块是人、设备和流程。", "社工常常是入口，私钥或者前端是落点。AI 不是独立的攻击面，而是攻防两边的放大器。"], "section": "攻击面地图"}, {"seg": "4", "t0": 0.0, "t1": 25.79, "title": "早期：代码漏洞为主", "points": ["数字来自公开报道和安全公司年度统计，事发时美元估值，均为约数", "2016 年 The DAO 因重入损失约 6000 万美元", "编译器和库成熟后，重入、溢出这类漏洞少了"], "notes": ["六大类里，钱到底丢在哪儿？我们看损失的变化。", "先说口径。下面的数字来自公开报道和安全公司的年度统计，按事发时的美元估值，都是约数。", "2016 年，The DAO 因为重入，损失约 6000 万美元。", "那几年多是重入、溢出这类代码漏洞。编译器和库成熟以后，这类漏洞少了。"], "section": "损失往哪走"}, {"seg": "4", "t0": 25.79, "t1": 48.69, "title": "大额损失转向运营", "points": ["2022 年 Ronin 跨链桥约 6.2 亿美元：验证者私钥", "2024 年 DMM Bitcoin 约 3.05 亿美元：假招聘入口", "2025 年 Bybit 约 15 亿美元：前端和签名界面"], "notes": ["2022 年，Ronin 跨链桥损失约 6.2 亿美元，原因是验证者私钥。", "2024 年，DMM Bitcoin 损失约 3.05 亿美元。入口是假招聘，落点是供应商的终端。", "2025 年，就是开头的 Bybit，约 15 亿美元，出在前端和签名界面。"], "section": "损失往哪走"}, {"seg": "4", "t0": 48.69, "t1": 60.33, "title": "Binance 热钱包事件", "points": ["2026 年 10 月，项目方口径约 63.4 亿美元", "按这个口径，超过此前任何单起事故的 4 倍"], "notes": ["2026 年 10 月，Binance 热钱包损失约 63.4 亿美元。这是项目方的口径。", "按这个口径，它超过此前任何单起事故的 4 倍。"], "section": "损失往哪走"}, {"seg": "4", "t0": 60.33, "t1": 90.46, "title": "趋势与仍在的数学漏洞", "points": ["最大损失从代码漏洞转向跨链桥和运营安全", "私钥、多签、前端、社工、内部人：审计覆盖不到", "Balancer V2 舍入方向出错，约 9480 万美元（项目方）"], "notes": ["趋势很清楚。最大的损失，从代码漏洞，转向了跨链桥和运营安全。", "私钥、多签、前端、社工、内部人。代码审计，覆盖不到这些环节。", "但数学类漏洞并没有消失。2025 年的 Balancer V2，在舍入方向上出了错。", "项目方口径约 9480 万美元，早期报道约 1.28 亿。成熟的协议，也会在这里出错。"], "section": "损失往哪走"}, {"seg": "5", "t0": 0.0, "t1": 18.97, "title": "威胁建模", "points": ["写代码之前，列出攻击者能控制的输入、路径和想要的结果", "核心问题：攻击者能控制什么？"], "notes": ["入口这么多，怎么系统地去想？办法是威胁建模。", "威胁建模，就是在写代码之前，列出攻击者能控制的输入、能触发的路径、想得到的结果。", "核心只有一个问题：攻击者能控制什么？"], "section": "攻击者能做什么"}, {"seg": "5", "t0": 18.97, "t1": 36.49, "title": "默认攻击者能做到", "points": ["用任意参数调用任意公开函数", "部署自己的合约，让你的合约调用它（恶意代币、回调）", "在一笔交易里借到巨额资金"], "notes": ["对任何合约，都先默认攻击者能做到这些事。", "用任意参数，调用任意一个公开函数。", "部署自己的合约，让你的合约去调用它，比如恶意代币、恶意回调。", "在一笔交易里，借到巨额资金。"], "section": "攻击者能做什么"}, {"seg": "5", "t0": 36.49, "t1": 54.89, "title": "攻击者还能做到", "points": ["在内存池未确认交易前后插入自己的交易", "绕过函数直接转入代币；读取包括 private 在内的全部存储", "在另一条链或合约上重放你签过的消息"], "notes": ["看到内存池里还没确认的交易，在它前后插入自己的交易。", "不经过你的函数，直接往你的合约里转入代币。", "读取你合约的全部存储，包括标成 private 的变量。", "在另一条链或另一个合约上，重放你签过的消息。"], "section": "攻击者能做什么"}, {"seg": "5", "t0": 54.89, "t1": 60.35, "title": "先猜：private 变量", "points": ["管理员密码存在 private 变量里", "攻击者读得到吗？"], "notes": ["举个例子。管理员密码存在 private 变量里，攻击者读得到吗？"], "section": "攻击者能做什么"}, {"seg": "5", "t0": 60.35, "t1": 67.05, "title": "答案：读得到", "points": ["private 只限制别的合约调用这个变量", "不隐藏链上数据"], "notes": ["读得到。private 只限制别的合约来调用这个变量，不隐藏链上数据。"], "section": "攻击者能做什么"}, {"seg": "5", "t0": 67.05, "t1": 84.73, "title": "攻击者通常做不到", "points": ["伪造别人的签名，除非私钥泄露或验签写错", "修改已确认的区块，除非链的共识被攻破", "冒充调用者，除非代码用错了身份判断方式"], "notes": ["反过来，攻击者通常做不到三件事。", "伪造别人的签名，除非私钥泄露，或者验签写错了。", "修改已经确认的区块，除非链的共识被攻破。", "让合约以为调用者是别人，除非你的代码用错了身份判断的方式。"], "section": "攻击者能做什么"}, {"seg": "5", "t0": 84.73, "t1": 110.63, "title": "建模六步：资产与不变量", "points": ["一、列出合约持有的资产，比如用户 USDT、协议手续费", "二、列出每个改变资产的函数，标上谁能调用", "三、写出不变量：如 USDT 余额不少于所有存款之和"], "notes": ["有了这张能力清单，建模分六步。", "第一，列出合约持有的资产，比如用户存进来的 USDT、协议手续费。", "第二，列出每个会改变资产的函数，标上谁能调用。", "第三，写出不变量，也就是任何操作之后，都必须成立的式子。", "比如，合约里的 USDT 余额，不少于所有用户存款之和。"], "section": "攻击者能做什么"}, {"seg": "5", "t0": 110.63, "t1": 135.09, "title": "建模六步：逐项追问", "points": ["四、攻击者控制哪些输入？外部调用前状态更新了没有？", "五、价格、余额、签名从哪来？能否一笔交易内被操纵？", "六、私钥在谁手里？被盗最多损失多少？有没有时间锁？"], "notes": ["第四，对每个函数问：攻击者控制哪些输入？有哪些外部调用？调用之前，状态更新了没有？", "第五，对每个外部数据问：价格、余额、签名从哪里来？一笔交易里能不能被操纵？", "第六，对每个特权角色问：私钥在谁手里？被盗了最多损失多少？有没有时间锁？"], "section": "攻击者能做什么"}, {"seg": "5", "t0": 135.09, "t1": 152.92, "title": "不变量是安全工作的锚点", "points": ["所有测试，最后都在验证不变量", "局限：威胁建模靠人的想象力", "经济攻击要把整个协议和外部市场放在一起建模"], "notes": ["不变量是整个安全工作的锚点。所有测试，最后都在验证它。", "这个方法也有局限。威胁建模靠人的想象力。", "经济攻击常常超出单个合约，要把整个协议和外部市场放在一起建模。"], "section": "攻击者能做什么"}, {"seg": "6", "t0": 0.0, "t1": 31.89, "title": "每个角色今天做一件事", "points": ["写合约：写下一条不变量，找出可能打破它的函数", "审计：别只照清单打勾；运营：最大资产的私钥在谁手里", "普通用户：签名时看到的屏幕也可能被篡改"], "notes": ["最后，按角色，每个人今天都能做一件事。", "写合约的人，给你的合约写下一条不变量，再找出每一个可能打破它的函数。", "做审计的人，别只照清单打勾。问一问，这个问题是不是几类叠加。", "管钱包和运营的人，问自己：最大的一笔资产，私钥在谁手里？被盗了最多损失多少？", "普通用户，记住开头那一幕。签名时看到的屏幕，也可能被篡改。"], "section": "今天做一件事"}, {"seg": "6", "t0": 31.89, "t1": 49.23, "title": "答案：不是合约代码漏洞", "points": ["公开分析没有指向合约代码的漏洞", "合约忠实执行了签名人签下的交易", "属于第六类：失守的是前端和签名界面"], "notes": ["回到开头的问题。Safe 合约的代码，有没有被利用的漏洞？", "公开分析没有指向合约代码的漏洞。合约忠实地，执行了签名人签下的交易。", "它属于第六类，系统与运营。失守的，是前端和签名界面。"], "section": "今天做一件事"}, {"seg": "6", "t0": 49.23, "t1": 60.47, "title": "代码写对了，钱照样可能丢", "points": ["这个答案依据的是公开分析", "这也是这个系列不只讲合约代码的原因"], "notes": ["这个答案依据的，是公开分析。它说明一件事：代码写对了，钱照样可能丢。", "这也是为什么，这个系列不只讲合约代码。"], "section": "今天做一件事"}]};
+  var D = {"chapter": "s01", "title": "合约安全全景：为什么代码就是金库", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 18.67, "title": "Bybit 损失约 15 亿", "points": ["2025 年 2 月，Bybit 多签签名人签了一笔看似正常的交易", "Safe 钱包网页前端已被篡改", "这笔交易替换了多签的实现合约"], "notes": ["2025 年 2 月，Bybit 的多签签名人，签了一笔看起来很正常的交易。", "可他们用的 Safe 钱包网页前端，已经被人篡改了。", "签下去的这笔交易，替换了多签的实现合约。", "约 15 亿美元，就这样被转走。"], "section": "一笔日常签名", "k": 7.3}, {"seg": "1", "t0": 18.67, "t1": 27.51, "title": "先猜一道题", "points": ["Safe 多签合约的代码，有没有被利用的漏洞？", "如果没有，钱又是从哪里漏出去的？"], "notes": ["先请你猜一猜。Safe 多签合约的代码，有没有被利用的漏洞？", "如果没有，钱又是从哪里漏出去的？"], "section": "一笔日常签名", "k": 27.51}, {"seg": "1", "t0": 27.51, "t1": 46.86, "title": "本集要回答三个问题", "points": ["合约安全和传统安全，到底哪里不一样", "攻击会从哪些地方进来", "怎么站在攻击者的角度给系统建模"], "notes": ["这一集是整个系列的入口。我们要回答三个问题。", "合约安全和传统安全，到底哪里不一样？", "攻击会从哪些地方进来？", "怎么站在攻击者的角度，给一个系统建模？", "开头那个问题的答案，留到最后揭晓。"], "section": "一笔日常签名", "k": 43.56}, {"seg": "2", "t0": 0.0, "t1": 23.71, "title": "智能合约是什么", "points": ["部署在区块链上、按代码自动执行的程序，可持有和转出资产", "公开的、不可撤回的、直接控制资金的代码", "任何人都能用任意参数、任意顺序调用它"], "notes": ["先给一个准确的定义。", "智能合约，是部署在区块链上、按代码自动执行的程序。它可以持有资产，也可以转出资产。", "压成一句话就是：一段公开的、不可撤回的、直接控制资金的代码。", "任何人，都可以用任意参数、任意顺序调用它。"], "section": "代码就是金库", "k": 1.55}, {"seg": "2", "t0": 23.71, "t1": 44.43, "title": "广场中央的自动售货机", "points": ["机器里的真金白银，就是合约余额", "电路图贴在外壳上：字节码一定公开，源码通常也公开", "全世界的人可以全天候来投币、按按钮、拍打机器"], "notes": ["打个比方。它像一台放在广场中央的自动售货机。", "机器里装着真金白银，这就是合约余额。", "电路图贴在外壳上，谁都能看。合约的字节码一定公开，源码通常也公开。", "全世界的人，可以全天候来投币、按按钮、拍打机器。"], "section": "代码就是金库", "k": 44.43}, {"seg": "2", "t0": 44.43, "t1": 58.05, "title": "装好就不能打开维修", "points": ["留了维修门（升级代理），这把钥匙本身就成了攻击目标", "吐错了钱，没有客服能帮你追回", "交易是不可逆的"], "notes": ["机器装好以后，就不能打开维修。", "如果留了维修门，也就是升级代理，这把钥匙本身就成了攻击目标。", "机器吐错了钱，没有客服能帮你追回。交易是不可逆的。"], "section": "代码就是金库", "k": 58.05}, {"seg": "2", "t0": 58.05, "t1": 78.23, "title": "比方不成立的地方", "points": ["真实的售货机一次只服务一个人", "合约在一笔交易里可被同一个人反复调用、嵌套调用", "还能和几十台别的售货机拼在一起用：可组合性"], "notes": ["但这个比方有个地方不成立。真实的售货机，一次只服务一个人。", "合约在一笔交易里，可以被同一个人反复调用、嵌套调用。", "它还能和几十台别的售货机，拼在一起用。这叫可组合性。很多漏洞，正是从这里来的。"], "section": "代码就是金库", "k": 69.6}, {"seg": "2", "t0": 78.23, "t1": 98.17, "title": "区别一：谁能调用", "points": ["Web2 要先鉴权，交易所要先过 KYC", "合约面前，任何地址、任何合约都能来", "public 函数就是对全世界开放的 API"], "notes": ["拿它和 Web2 后端、中心化交易所比一比，最关键的区别有三个。", "第一，谁能调用。Web2 要先鉴权，交易所要先过 KYC。", "合约面前，任何地址、任何合约都能来。public 函数，就是对全世界开放的 API。"], "section": "代码就是金库", "k": 98.17}, {"seg": "2", "t0": 98.17, "t1": 112.21, "title": "区别二：出错能否回滚", "points": ["Web2 可以改数据库，交易所可以改内部账本", "合约交易不可逆，只能靠升级或社会共识", "没有升级权限，就修不了"], "notes": ["第二，出错能不能回滚。Web2 可以改数据库，交易所可以改内部账本。", "合约的交易不可逆，只能靠升级，或者社会共识。没有升级权限，就修不了。"], "section": "代码就是金库", "k": 112.21}, {"seg": "2", "t0": 112.21, "t1": 139.62, "title": "区别三：攻击成本", "points": ["在别处要绕过防火墙或攻破内部系统；在合约这里只需一笔 gas", "闪电贷能在一笔交易里借到上亿美元本金", "能升级是修复能力也是攻击面；交易所冷钱包也可能是多签合约"], "notes": ["第三，攻击成本。在别处，要绕过防火墙，或者攻破内部系统。", "在合约这里，只需要一笔交易的 gas。闪电贷还能在一笔交易里，借到上亿美元的本金。", "能升级，是修复能力，也是攻击面。升级密钥，可能被盗。", "交易所也躲不开合约安全。它的冷钱包，可能就是一个多签合约，比如开头的 Safe。"], "section": "代码就是金库", "k": 124.51}, {"seg": "3", "t0": 0.0, "t1": 24.65, "title": "跟着一笔交易走", "points": ["账户先经过钱包和前端的签名界面", "交易进入内存池公开排队，构建者或排序器决定先后", "到达目标合约，执行业务逻辑"], "notes": ["知道了合约是什么，我们跟着一笔交易，看攻击从哪里进来。", "用户或者攻击者的账户，先经过钱包和前端的签名界面。", "交易进入内存池，在那里公开排队。", "区块构建者或者排序器，决定它和别的交易谁先谁后。", "然后它到达目标合约，执行业务逻辑。"], "section": "攻击面地图", "k": 20.3}, {"seg": "3", "t0": 24.65, "t1": 40.37, "title": "外部合约、升级与跨链", "points": ["目标合约调用代币、DEX、预言机等外部合约", "背后连着代理和实现，也就是升级权限", "有的交易还要经过跨链桥去到另一条链"], "notes": ["目标合约会去调用外部合约，比如代币、DEX、预言机。它背后还连着代理和实现，也就是升级权限。", "有的交易，还要经过跨链桥，去到另一条链上的合约。"], "section": "攻击面地图", "k": 40.37}, {"seg": "3", "t0": 40.37, "t1": 55.05, "title": "五个信任边界", "points": ["签名界面、内存池、外部合约、升级权限、跨链桥", "数据和控制权在这里跨过去", "漏洞也最集中"], "notes": ["这条路上，有五个地方最危险：签名界面、内存池、外部合约、升级权限、跨链桥。", "它们叫信任边界。数据和控制权在这里跨过去，漏洞也最集中。"], "section": "攻击面地图", "k": 55.05}, {"seg": "3", "t0": 55.05, "t1": 79.77, "title": "回调、顺序与图的局限", "points": ["外部合约可在函数执行一半时调回你的合约：重入", "内存池和构建者决定顺序，顺序本身也可被利用", "图里没画共识和节点；链被攻破，合约写得再对也没用"], "notes": ["注意一个往回走的箭头。外部合约可以在你的函数执行到一半时，调回你的合约。重入就发生在这里。", "内存池和构建者决定交易的顺序。顺序本身，也可以被利用。", "这张图也有局限。它没画链本身的共识和节点。", "链被攻破，或者节点数据有误，合约写得再对也没用。"], "section": "攻击面地图", "k": 79.77}, {"seg": "3", "t0": 79.77, "t1": 98.67, "title": "六大类：控制流与权限", "points": ["控制流：外部调用让攻击者插队执行，比如重入", "权限：缺少修饰器、合约未初始化、私钥泄露"], "notes": ["沿着这张图，可以把漏洞归成六大类。", "第一类，控制流。外部调用让攻击者插队执行，比如重入。", "第二类，权限。不该调用的人调用了，比如缺少修饰器、合约未初始化、私钥泄露。"], "section": "攻击面地图", "k": 98.67}, {"seg": "3", "t0": 98.67, "t1": 112.95, "title": "数学与数据可信度", "points": ["数学：溢出、精度损失、舍入方向", "数据可信度：现货价格预言机、签名重放"], "notes": ["第三类，数学。数字算错了，比如溢出、精度损失、舍入方向。", "第四类，数据可信度。合约相信了可以被操纵的数据，比如现货价格预言机、签名重放。"], "section": "攻击面地图", "k": 112.95}, {"seg": "3", "t0": 112.95, "t1": 128.51, "title": "经济设计与系统运营", "points": ["经济设计：代码按规格执行，但规格本身可被套利", "系统与运营：跨链验证、多签私钥、前端篡改、社会工程"], "notes": ["第五类，经济设计。代码按规格执行，但规格本身可以被套利。", "第六类，系统与运营。代码之外的环节失守，比如跨链验证、多签私钥、前端篡改、社会工程。"], "section": "攻击面地图", "k": 128.51}, {"seg": "3", "t0": 128.51, "t1": 157.62, "title": "真实事故往往几类叠加", "points": ["2023 年 Euler：业务逻辑缺陷加闪电贷放大", "第六类拆两块：链与读链方式；人、设备和流程", "社工常是入口；AI 是攻防两边的放大器"], "notes": ["真实事故往往是几类叠加。2023 年的 Euler，就是业务逻辑缺陷，加上闪电贷放大。", "第六类，又可以拆成两块。一块是链本身，和你读链的方式。另一块是人、设备和流程。", "社工常常是入口，私钥或者前端是落点。AI 不是独立的攻击面，而是攻防两边的放大器。"], "section": "攻击面地图", "k": 137.56}, {"seg": "4", "t0": 0.0, "t1": 25.79, "title": "早期：代码漏洞为主", "points": ["数字来自公开报道和安全公司年度统计，事发时美元估值，均为约数", "2016 年 The DAO 因重入损失约 6000 万美元", "编译器和库成熟后，重入、溢出这类漏洞少了"], "notes": ["六大类里，钱到底丢在哪儿？我们看损失的变化。", "先说口径。下面的数字来自公开报道和安全公司的年度统计，按事发时的美元估值，都是约数。", "2016 年，The DAO 因为重入，损失约 6000 万美元。", "那几年多是重入、溢出这类代码漏洞。编译器和库成熟以后，这类漏洞少了。"], "section": "损失往哪走", "k": 11.3}, {"seg": "4", "t0": 25.79, "t1": 48.69, "title": "大额损失转向运营", "points": ["2022 年 Ronin 跨链桥约 6.2 亿美元：验证者私钥", "2024 年 DMM Bitcoin 约 3.05 亿美元：假招聘入口", "2025 年 Bybit 约 15 亿美元：前端和签名界面"], "notes": ["2022 年，Ronin 跨链桥损失约 6.2 亿美元，原因是验证者私钥。", "2024 年，DMM Bitcoin 损失约 3.05 亿美元。入口是假招聘，落点是供应商的终端。", "2025 年，就是开头的 Bybit，约 15 亿美元，出在前端和签名界面。"], "section": "损失往哪走", "k": 42.09}, {"seg": "4", "t0": 48.69, "t1": 60.33, "title": "Binance 热钱包事件", "points": ["2026 年 10 月，项目方口径约 63.4 亿美元", "按这个口径，超过此前任何单起事故的 4 倍"], "notes": ["2026 年 10 月，Binance 热钱包损失约 63.4 亿美元。这是项目方的口径。", "按这个口径，它超过此前任何单起事故的 4 倍。"], "section": "损失往哪走", "k": 54.99}, {"seg": "4", "t0": 60.33, "t1": 90.46, "title": "趋势与仍在的数学漏洞", "points": ["最大损失从代码漏洞转向跨链桥和运营安全", "私钥、多签、前端、社工、内部人：审计覆盖不到", "Balancer V2 舍入方向出错，约 9480 万美元（项目方）"], "notes": ["趋势很清楚。最大的损失，从代码漏洞，转向了跨链桥和运营安全。", "私钥、多签、前端、社工、内部人。代码审计，覆盖不到这些环节。", "但数学类漏洞并没有消失。2025 年的 Balancer V2，在舍入方向上出了错。", "项目方口径约 9480 万美元，早期报道约 1.28 亿。成熟的协议，也会在这里出错。"], "section": "损失往哪走", "k": 66.88}, {"seg": "5", "t0": 0.0, "t1": 18.97, "title": "威胁建模", "points": ["写代码之前，列出攻击者能控制的输入、路径和想要的结果", "核心问题：攻击者能控制什么？"], "notes": ["入口这么多，怎么系统地去想？办法是威胁建模。", "威胁建模，就是在写代码之前，列出攻击者能控制的输入、能触发的路径、想得到的结果。", "核心只有一个问题：攻击者能控制什么？"], "section": "攻击者能做什么", "k": 0.8}, {"seg": "5", "t0": 18.97, "t1": 36.49, "title": "默认攻击者能做到", "points": ["用任意参数调用任意公开函数", "部署自己的合约，让你的合约调用它（恶意代币、回调）", "在一笔交易里借到巨额资金"], "notes": ["对任何合约，都先默认攻击者能做到这些事。", "用任意参数，调用任意一个公开函数。", "部署自己的合约，让你的合约去调用它，比如恶意代币、恶意回调。", "在一笔交易里，借到巨额资金。"], "section": "攻击者能做什么", "k": 36.49}, {"seg": "5", "t0": 36.49, "t1": 54.89, "title": "攻击者还能做到", "points": ["在内存池未确认交易前后插入自己的交易", "绕过函数直接转入代币；读取包括 private 在内的全部存储", "在另一条链或合约上重放你签过的消息"], "notes": ["看到内存池里还没确认的交易，在它前后插入自己的交易。", "不经过你的函数，直接往你的合约里转入代币。", "读取你合约的全部存储，包括标成 private 的变量。", "在另一条链或另一个合约上，重放你签过的消息。"], "section": "攻击者能做什么", "k": 54.89}, {"seg": "5", "t0": 54.89, "t1": 60.35, "title": "先猜：private 变量", "points": ["管理员密码存在 private 变量里", "攻击者读得到吗？"], "notes": ["举个例子。管理员密码存在 private 变量里，攻击者读得到吗？"], "section": "攻击者能做什么", "k": 60.35}, {"seg": "5", "t0": 60.35, "t1": 67.05, "title": "答案：读得到", "points": ["private 只限制别的合约调用这个变量", "不隐藏链上数据"], "notes": ["读得到。private 只限制别的合约来调用这个变量，不隐藏链上数据。"], "section": "攻击者能做什么", "k": 67.05}, {"seg": "5", "t0": 67.05, "t1": 84.73, "title": "攻击者通常做不到", "points": ["伪造别人的签名，除非私钥泄露或验签写错", "修改已确认的区块，除非链的共识被攻破", "冒充调用者，除非代码用错了身份判断方式"], "notes": ["反过来，攻击者通常做不到三件事。", "伪造别人的签名，除非私钥泄露，或者验签写错了。", "修改已经确认的区块，除非链的共识被攻破。", "让合约以为调用者是别人，除非你的代码用错了身份判断的方式。"], "section": "攻击者能做什么", "k": 79.35}, {"seg": "5", "t0": 84.73, "t1": 110.63, "title": "建模六步：资产与不变量", "points": ["一、列出合约持有的资产，比如用户 USDT、协议手续费", "二、列出每个改变资产的函数，标上谁能调用", "三、写出不变量：如 USDT 余额不少于所有存款之和"], "notes": ["有了这张能力清单，建模分六步。", "第一，列出合约持有的资产，比如用户存进来的 USDT、协议手续费。", "第二，列出每个会改变资产的函数，标上谁能调用。", "第三，写出不变量，也就是任何操作之后，都必须成立的式子。", "比如，合约里的 USDT 余额，不少于所有用户存款之和。"], "section": "攻击者能做什么", "k": 90.03}, {"seg": "5", "t0": 110.63, "t1": 135.09, "title": "建模六步：逐项追问", "points": ["四、攻击者控制哪些输入？外部调用前状态更新了没有？", "五、价格、余额、签名从哪来？能否一笔交易内被操纵？", "六、私钥在谁手里？被盗最多损失多少？有没有时间锁？"], "notes": ["第四，对每个函数问：攻击者控制哪些输入？有哪些外部调用？调用之前，状态更新了没有？", "第五，对每个外部数据问：价格、余额、签名从哪里来？一笔交易里能不能被操纵？", "第六，对每个特权角色问：私钥在谁手里？被盗了最多损失多少？有没有时间锁？"], "section": "攻击者能做什么", "k": 127.43}, {"seg": "5", "t0": 135.09, "t1": 152.92, "title": "不变量是安全工作的锚点", "points": ["所有测试，最后都在验证不变量", "局限：威胁建模靠人的想象力", "经济攻击要把整个协议和外部市场放在一起建模"], "notes": ["不变量是整个安全工作的锚点。所有测试，最后都在验证它。", "这个方法也有局限。威胁建模靠人的想象力。", "经济攻击常常超出单个合约，要把整个协议和外部市场放在一起建模。"], "section": "攻击者能做什么", "k": 152.92}, {"seg": "6", "t0": 0.0, "t1": 31.89, "title": "每个角色今天做一件事", "points": ["写合约：写下一条不变量，找出可能打破它的函数", "审计：别只照清单打勾；运营：最大资产的私钥在谁手里", "普通用户：签名时看到的屏幕也可能被篡改"], "notes": ["最后，按角色，每个人今天都能做一件事。", "写合约的人，给你的合约写下一条不变量，再找出每一个可能打破它的函数。", "做审计的人，别只照清单打勾。问一问，这个问题是不是几类叠加。", "管钱包和运营的人，问自己：最大的一笔资产，私钥在谁手里？被盗了最多损失多少？", "普通用户，记住开头那一幕。签名时看到的屏幕，也可能被篡改。"], "section": "今天做一件事", "k": 26.05}, {"seg": "6", "t0": 31.89, "t1": 49.23, "title": "答案：不是合约代码漏洞", "points": ["公开分析没有指向合约代码的漏洞", "合约忠实执行了签名人签下的交易", "属于第六类：失守的是前端和签名界面"], "notes": ["回到开头的问题。Safe 合约的代码，有没有被利用的漏洞？", "公开分析没有指向合约代码的漏洞。合约忠实地，执行了签名人签下的交易。", "它属于第六类，系统与运营。失守的，是前端和签名界面。"], "section": "今天做一件事", "k": 49.23}, {"seg": "6", "t0": 49.23, "t1": 60.47, "title": "代码写对了，钱照样可能丢", "points": ["这个答案依据的是公开分析", "这也是这个系列不只讲合约代码的原因"], "notes": ["这个答案依据的，是公开分析。它说明一件事：代码写对了，钱照样可能丢。", "这也是为什么，这个系列不只讲合约代码。"], "section": "今天做一件事", "k": 57.03}]};
   var S = D.slides, N = S.length, KEY = 'deck-' + D.chapter;
   var $ = function (id) { return document.getElementById(id); };
-  var screen = $('screen'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
+  var screen = $('screen'), still = $('still'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
   var store = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
                 set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
   try { var pt = parent !== window && parent.document.documentElement.getAttribute('data-theme'); if (pt) document.documentElement.setAttribute('data-theme', pt); } catch (e) {}
@@ -141,32 +144,54 @@ button { font: inherit; color: inherit; }
     var g = groups[groups.length - 1];
     if (!g || g.seg !== s.seg) { g = { seg: s.seg, el: document.createElement('div') }; g.el.className = 'grp'; groups.push(g); prog.appendChild(g.el); g.n = 0; }
     var b = document.createElement('button'); b.title = (i + 1) + ' · ' + s.title; b.setAttribute('aria-label', '第 ' + (i + 1) + ' 页：' + s.title);
-    b.onclick = function () { go(i, 'seek'); }; g.el.appendChild(b); g.n++; s.dot = b;
+    b.onclick = function () { show(i); }; g.el.appendChild(b); g.n++; s.dot = b;
   });
   groups.forEach(function (g) { g.el.style.setProperty('--n', g.n); });
 
+  // all stills of the chapter are one sprite: 6 columns, slide i at (i % 6, i / 6)
+  var COLS = 6, ROWS = Math.ceil(N / COLS), sheetReady = false, sheet = new Image();
+  sheet.onload = function () { sheetReady = true; if (!screen.classList.contains('live')) $('wait').hidden = true; };
+  sheet.src = 'stills.webp';
+  still.style.backgroundImage = 'url(stills.webp)';
+  still.style.backgroundSize = (COLS * 100) + '% ' + (ROWS * 100) + '%';
+  function tile(i) {
+    var c = i % COLS, r = Math.floor(i / COLS);
+    still.style.backgroundPosition = (COLS > 1 ? c / (COLS - 1) * 100 : 0) + '% ' + (ROWS > 1 ? r / (ROWS - 1) * 100 : 0) + '%';
+  }
+
+  // ---------- live animation (only when asked) ----------
   function scale() { var k = screen.clientWidth / 1920; for (var s in frames) frames[s].style.transform = 'scale(' + k + ')'; }
   if (window.ResizeObserver) new ResizeObserver(scale).observe(screen); else addEventListener('resize', scale);
-
   function frame(seg) {
     if (frames[seg]) return frames[seg];
     var f = document.createElement('iframe'); f.src = 's' + seg + '.html'; f.title = '第 ' + seg + ' 节动画'; f.tabIndex = -1;
     f.setAttribute('aria-hidden', 'true'); screen.appendChild(f); frames[seg] = f; scale(); return f;
   }
+  function live(seg) {
+    for (var k in frames) frames[k].classList.toggle('on', k === seg);
+    screen.classList.add('live'); $('wait').hidden = true;
+  }
   function send(seg, msg) {
     msg.deck = 'cmd';
-    if (ready[seg]) frames[seg].contentWindow.postMessage(msg, '*'); else pending[seg] = msg;
+    if (ready[seg]) { frames[seg].contentWindow.postMessage(msg, '*'); live(seg); } else pending[seg] = msg;
   }
   addEventListener('message', function (e) {
     var m = e.data || {};
     if (!m.deck || !frames[m.seg] || e.source !== frames[m.seg].contentWindow) return;
     if (m.deck === 'ready') {
       ready[m.seg] = true;
-      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; send(m.seg, p); }
-      if (cur >= 0 && S[cur].seg === m.seg) $('wait').hidden = true;
-    } else if (m.deck === 'done' && cur >= 0 && S[cur].seg === m.seg) { playing = false; paint(); }
+      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; if (playing && S[cur].seg === m.seg) send(m.seg, p); }
+    } else if (m.deck === 'done' && playing && S[cur].seg === m.seg) { playing = false; paint(); }
   });
+  function process() {
+    var s = S[cur];
+    playing = true; frame(s.seg);
+    if (!ready[s.seg]) { $('wait').textContent = '载入动画…'; $('wait').hidden = false; }
+    send(s.seg, { play: [s.t0, s.k], rate: +$('speed').value });
+    paint();
+  }
 
+  // ---------- slides ----------
   function paint() {
     var s = S[cur];
     $('sec').textContent = s.section;
@@ -175,27 +200,21 @@ button { font: inherit; color: inherit; }
     $('lines').innerHTML = ''; s.notes.forEach(function (p) { var li = document.createElement('li'); li.textContent = p; $('lines').appendChild(li); });
     $('count').textContent = (cur + 1) + ' / ' + N;
     $('prev').disabled = cur === 0;
-    $('next').textContent = playing ? '跳到本页结尾 ›' : (cur === N - 1 ? '回到正文 ›' : '下一页 ›');
+    $('next').textContent = cur === N - 1 ? '回到正文 ›' : '下一页 ›';
+    $('replay').textContent = playing ? '⟳ 从头播放' : (screen.classList.contains('live') ? '⟳ 再看一遍' : '▶ 看过程');
     S.forEach(function (x, i) { x.dot.className = i === cur ? 'cur' : (seen[i] ? 'seen' : ''); });
   }
-  function go(i, mode) {
+  function show(i) {
     if (i < 0 || i >= N) return;
-    var s = S[i]; cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
-    var f = frame(s.seg);
-    for (var k in frames) frames[k].classList.toggle('on', k === s.seg);
-    $('wait').hidden = !!ready[s.seg];
-    playing = mode === 'play';
-    send(s.seg, playing ? { play: [s.t0, s.t1], rate: +$('speed').value } : { seek: s.t1 });
-    // warm the next segment while this one is on screen
-    if (i + 1 < N && S[i + 1].seg !== s.seg) frame(S[i + 1].seg);
+    cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
+    playing = false; pending = {};
+    tile(i); still.setAttribute('aria-label', S[i].title);
+    screen.classList.remove('live'); $('wait').textContent = sheetReady ? '载入动画…' : '载入画面…'; $('wait').hidden = sheetReady;
+    for (var k in frames) frames[k].classList.remove('on');
     paint();
   }
-  function next() {
-    if (playing) { go(cur, 'seek'); return; }
-    if (cur === N - 1) { back(); return; }
-    go(cur + 1, 'play');
-  }
-  function prev() { go(cur - 1, 'seek'); }
+  function next() { if (cur === N - 1) { back(); return; } show(cur + 1); }
+  function prev() { show(cur - 1); }
   function back() {
     if (parent !== window) parent.postMessage({ cexNav: D.chapter }, '*');
     else location.href = '../../index.html#' + D.chapter;
@@ -206,18 +225,18 @@ button { font: inherit; color: inherit; }
   }
   if (!document.fullscreenEnabled) $('fs').hidden = true;
 
-  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = function () { go(cur, 'play'); };
+  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = process;
   $('back').onclick = back; $('fs').onclick = fullscreen;
   addEventListener('keydown', function (e) {
     if (e.target.tagName === 'SELECT' || e.metaKey || e.ctrlKey || e.altKey) return;
     var k = e.key;
     if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); next(); }
     else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
-    else if (k === 'r' || k === 'R') go(cur, 'play');
+    else if (k === 'p' || k === 'P' || k === 'r' || k === 'R') process();
     else if (k === 'f' || k === 'F') fullscreen();
     else if (k === 'n' || k === 'N') $('notes').open = !$('notes').open;
-    else if (k === 'Home') go(0, 'seek');
-    else if (k === 'End') go(N - 1, 'seek');
+    else if (k === 'Home') show(0);
+    else if (k === 'End') show(N - 1);
   });
   // tap = next; horizontal swipe = next / previous
   var x0 = null, y0 = null;
@@ -230,7 +249,7 @@ button { font: inherit; color: inherit; }
   });
 
   var start = +store.get(KEY); if (!(start >= 0 && start < N)) start = 0;
-  go(start, start === 0 ? 'play' : 'seek');
+  show(start);
 })();
 </script>
 </body>

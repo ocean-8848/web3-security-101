@@ -6,9 +6,9 @@
 > 视角：以交易所 / 项目方安全团队为主；每章另有一节"用户侧防护"。
 > 姊妹篇：[《CEX 交易所学习手册》](../CEX/README.md) ｜ [《Web3 合约与项目学习手册》](../Contract/README.md) ｜ 事故详解：[《Web3 行业安全资损 101》](../web3-loss-101/index.html)
 
-> 💡 注意：本手册由《合约安全学习手册》升级而来，全书已重新编号。原 01–13 章现在是 01、03–12、27、28 章。旧链接会自动跳转到新章节。全部 28 章已完成。
+> 💡 注意：本手册由《合约安全学习手册》升级而来，全书已重新编号。原 01–13 章现在是 01、03–12、27、28 章。旧链接会自动跳转到新章节。主线 01–33 章与链专题 C00–C08 均已完成。
 
-> 🆕 **新增「Web3 安全架构与运营」**（X00–X48，5 组）：教你把防御建成体系并持续运营，覆盖通用底座、交易所、公链与项目方、钱包 / 托管 / 支付 / 做市 / AI Agent 等场景；配套 5 份模板（T08–T12）、3 个交互实验和训练营 L3 赛道（靶场 MiniEx）。见第 2 节「安全架构与运营」，或直接从 [X01 安全体系怎么搭](arch/X01-security-program-controls.md) 开始。
+> 🆕 **新增「Web3 安全架构与运营」**（X00–X48，4 组）：教你把防御建成体系并持续运营，覆盖通用底座、交易所、公链与项目方、钱包 / 托管 / 支付 / 做市 / AI Agent / NFT / 预测市场 / 再质押 / DAO / 隐私等场景；配套 5 份模板（T08–T12）、3 个交互实验和训练营 L3 赛道（靶场 MiniEx）。见第 2 节「安全架构与运营」，或直接从 [X01 安全体系怎么搭](arch/X01-security-program-controls.md) 开始。
 
 > 🧭 不知道从哪里开始？打开[学习路径导航](interactive/learning-paths.html)，回答 4 个问题，得到适合你的路径。
 
@@ -50,6 +50,8 @@ flowchart TD
     subgraph P5["第五篇 · 链与基础设施"]
         S16["16 共识层与链级安全"]
         S17["17 节点、RPC 与验证者"]
+        S30["30 企业级与许可链安全"]
+        S31["31 模块化、DA、MEV 与中间件"]
     end
     subgraph P6["第六篇 · 钱包、用户与运营"]
         S18["18 钱包与密钥"]
@@ -60,13 +62,16 @@ flowchart TD
         S23["23 托管与交易所运营"]
         S24["24 数据与隐私"]
         S25["25 资金追踪与处置"]
+        S32["32 连接层、编译器与硬件底层"]
     end
     subgraph P7["第七篇 · AI 与前沿"]
         S26["26 AI × Web3 安全"]
+        S33["33 FHE、zkML、DePIN、RWA 与 Memecoin"]
     end
     subgraph P8["第八篇 · 工程与复盘"]
         S27["27 审计、测试与流程"]
         S28["28 事故案例库"]
+        S29["29 2026 签名路径与签名架构"]
     end
     P1 --> P2 --> P3 --> P4
     P1 --> P5 --> P6 --> P7
@@ -147,6 +152,7 @@ flowchart TD
 | 16 | [共识层与链级安全](16-consensus-chain-security.md) | 链停摆、终局性丢失、客户端多样性、L2 排序器；PoW 小链 51% 案例；确认与停摆策略；女巫、51% 与双花、自私挖矿、长程攻击与弱主观性、贿赂、活性停摆；按"攻击者控制了什么"分类 | — |
 | 17 | [节点、RPC 与验证者基础设施](17-node-rpc-infrastructure.md) | RPC 数据可信度、BGP 劫持、日蚀攻击与 P2P 层、节点加固；罚没与防罚没、远程签名、MEV relay 漏洞与集中度 | — |
 | 30 | [企业级与许可链安全](30-enterprise-blockchain-security.md) | 许可链威胁模型；Hyperledger Fabric；联盟治理与密钥管理；Corda 公证人与 Denial of State；Quorum/Besu 隐私与准入；软件退役 | — |
+| 31 | [模块化栈、数据可用性、现代 MEV 与去中心化中间件](31-modular-da-mev-middleware.md) | DA 数据扣留与 EIP-4844 Blob；DAS 与 DAC；OFA/MEV-Share、ePBS/FOCIL、预确认与跨链 MEV；ENS/IPFS 网关与 Subgraph 索引投毒 | [RPC 多源仲裁实验](interactive/rpc-quorum-lab.html) |
 
 ### 第六篇 · 钱包、用户与运营
 
@@ -160,12 +166,14 @@ flowchart TD
 | 23 | [托管、充提与合规安全](23-custody-exchange-ops.md) | 托管攻击面、六类假充值、签名服务独立校验、热钱包被盗案例；制裁筛查、Travel Rule / 欧盟 TFR、AML 监控；Tornado Cash 案件与交易所 AML 执法 | [地址投毒比对](interactive/address-poisoning-lab.html) |
 | 24 | [数据与隐私](24-data-privacy.md) | KYC 与客服数据泄露、第三方风险、链上去匿名化、数据访问控制 | — |
 | 25 | [资金追踪、冻结与事后处置](25-fund-tracing-response.md) | 被盗资金流向、五条追回路径、前 6 小时、安全港；链上监控与威胁情报 | [事故浏览器](interactive/incident-explorer.html) |
+| 32 | [dApp 连接层、编译器工具链与硬件钱包底层安全](32-dapp-connector-compiler-hardware.md) | WalletConnect v2 与 EIP-6963、浏览器扩展劫持、Blinks/Frames；Vyper/solc `--via-ir` 编译器漏洞；硬件侧信道/故障注入与 ERC-7730 清晰签名 | [钓鱼签名识别](interactive/phishing-signature-lab.html) |
 
 ### 第七篇 · AI 与前沿
 
 | # | 章节 | 你会学到 | 交互实验 |
 |---|---|---|---|
 | 26 | [AI × Web3 安全](26-ai-web3-security.md) | 智能体钱包的提示注入与记忆注入、MCP 工具投毒、深度伪造、AI 找漏洞与 AI 审计的能力边界 | [钓鱼签名识别](interactive/phishing-signature-lab.html) |
+| 33 | [前沿赛道安全：FHE、可验证计算、DePIN、RWA 标准与 Memecoin 发射](33-frontier-fhe-depin-rwa-memecoin.md) | FHE/fhEVM 密文 ACL 与 KMS；协处理器与 zkML/opML；DePIN 物理证明与女巫；ERC-3643 合规代币冲突；Memecoin 联合曲线与 LP 迁移抢注 | [上币尽调评分卡](interactive/listing-scorecard.html) |
 
 ### 第八篇 · 工程与复盘
 
@@ -189,68 +197,63 @@ flowchart TD
 | X04 | [软件交付与供应链安全](arch/X04-delivery-supply-chain.md) | CI/CD 加固、制品签名与来源证明、依赖治理、合约与前端发布门禁 | [T04](templates/T04-go-live-gate.md) |
 | X05 | [检测与响应工程](arch/X05-detection-response-engineering.md) | 日志源、SIEM、检测工程方法、链上加链下规则、SOAR 边界、值班 | [T09](templates/T09-incident-runbook-oncall.md) |
 | X06 | [韧性与验证](arch/X06-resilience-validation.md) | 灾备与暂停开关、红蓝对抗、三份桌面推演剧本、安全度量与复盘 | [T10](templates/T10-tabletop-script-scorecard.md) |
+| X07 | [威胁情报与链上情报运营](arch/X07-threat-intel-ops.md) | 采集、研判、共享与落地 | — |
+| X08 | [人员安全](arch/X08-people-security.md) | 意识、背景核查、内部威胁与离职 | — |
+| X09 | [安全团队建设](arch/X09-security-team-management.md) | 组织、预算、招聘、汇报与职业路径 | — |
 
 **B 组 · 交易所**（从总览到六个保护域，再到各域的工程验收与运营恢复）
 
 | # | 章节 | 你会学到 | 配套 |
 |---|---|---|---|
-| X07 | [交易所安全架构总览](arch/X07-cex-architecture-overview.md) | 系统分区、信任边界与数据流、六个保护域、成熟度模型 | [T12](templates/T12-security-architecture-review.md) |
-| X08 | [客户身份、账户与访问](arch/X08-cex-identity-account-access.md) | 认证与账户找回、账户接管对策、API Key 管理、机构权限与客服工具 | [风控规则调参](interactive/risk-rule-tuning-lab.html) |
-| X09 | [资产与市场准入](arch/X09-cex-asset-listing-market-access.md) | 上币全周期、信息保护与内幕检测、分级准入与持续监控、下架 | [A05](assessment/A05-listing-due-diligence.md) |
-| X10 | [交易、结算与信用](arch/X10-cex-trading-settlement-credit.md) | 价格保护、账务一致与对账、抵押授信与强平、市场操纵检测、参数变更控制 | [风控规则调参](interactive/risk-rule-tuning-lab.html) |
-| X11 | [钱包、财资与支付渠道](arch/X11-cex-wallet-treasury-payment.md) | 钱包分层、签名服务架构、资金调拨、链上权限监控、法币渠道隔离 | [签名请求独立校验](interactive/signing-policy-lab.html) |
-| X12 | [交易所生产环境与数据](arch/X12-cex-production-data.md) | 核心系统分区、数据分级、可信日志与证据、备份恢复、第三方与数据泄露应对 | [T12](templates/T12-security-architecture-review.md) |
-| X13 | [反欺诈、合规与安全运营](arch/X13-cex-fraud-compliance-secops.md) | 欺诈监测、合规落点、处置权限矩阵、调查取证、分阶段恢复 | [T09](templates/T09-incident-runbook-oncall.md) |
-| X14 | [客户身份与访问·工程验收](arch/X14-cex-identity-verification.md) | 撤权、越权与找回流程怎么证明有效 | — |
-| X15 | [客户身份与访问·运营与恢复](arch/X15-cex-identity-recovery-ops.md) | 接管事件、批量重置与账户恢复 | — |
-| X16 | [资产与市场准入·工程验收](arch/X16-cex-listing-verification.md) | 准入开关、参数核对与下架演练 | — |
-| X17 | [资产与市场准入·运营与恢复](arch/X17-cex-listing-recovery-ops.md) | 异常资产处置、分叉迁移与复牌 | — |
-| X18 | [交易、结算与信用·工程验收](arch/X18-cex-trading-verification.md) | 回放撤单与异常价格，核订单、成交、分录与估值 | — |
-| X19 | [交易、结算与信用·运营与恢复](arch/X19-cex-trading-recovery-ops.md) | 过载保撮合、切主验停写、复市与恢复授信 | — |
-| X20 | [钱包、财资与支付·工程验收](arch/X20-cex-treasury-verification.md) | 越权签名、假回执、拒签与额度占用 | — |
-| X21 | [钱包、财资与支付·运营与恢复](arch/X21-cex-treasury-recovery-ops.md) | 复付、迁移、轮换与渠道恢复 | — |
-| X22 | [生产环境与数据·工程验收](arch/X22-cex-production-verification.md) | 权限、证据与备份怎么证明可信 | — |
-| X23 | [生产环境与数据·运营与恢复](arch/X23-cex-production-recovery-ops.md) | 证据保全、数据恢复与可用性演练 | — |
-| X24 | [反欺诈、合规与安全运营·工程验收](arch/X24-cex-fraud-verification.md) | 规则回放、处置授权与限制落地 | — |
-| X25 | [反欺诈、合规与安全运营·运营与恢复](arch/X25-cex-fraud-recovery-ops.md) | 调查取证、执行复核与解除限制 | — |
-| X26 | [域间交接](arch/X26-cex-ledger-wallet-handoff.md) | 原单、预留、批准、实收、实付与未决状态 | — |
-| X27 | [储备与偿付能力](arch/X27-cex-reserves-solvency.md) | 负债、储备、对账与证明 | — |
+| X10 | [交易所安全架构总览](arch/X10-cex-architecture-overview.md) | 系统分区、信任边界与数据流、六个保护域、成熟度模型 | [T12](templates/T12-security-architecture-review.md) |
+| X11 | [客户身份、账户与访问](arch/X11-cex-identity-account-access.md) | 认证与账户找回、账户接管对策、API Key 管理、机构权限与客服工具 | [风控规则调参](interactive/risk-rule-tuning-lab.html) |
+| X12 | [资产与市场准入](arch/X12-cex-asset-listing-market-access.md) | 上币全周期、信息保护与内幕检测、分级准入与持续监控、下架 | [A05](assessment/A05-listing-due-diligence.md) |
+| X13 | [交易、结算与信用](arch/X13-cex-trading-settlement-credit.md) | 价格保护、账务一致与对账、抵押授信与强平、市场操纵检测、参数变更控制 | [风控规则调参](interactive/risk-rule-tuning-lab.html) |
+| X14 | [钱包、财资与支付渠道](arch/X14-cex-wallet-treasury-payment.md) | 钱包分层、签名服务架构、资金调拨、链上权限监控、法币渠道隔离 | [签名请求独立校验](interactive/signing-policy-lab.html) |
+| X15 | [交易所生产环境与数据](arch/X15-cex-production-data.md) | 核心系统分区、数据分级、可信日志与证据、备份恢复、第三方与数据泄露应对 | [T12](templates/T12-security-architecture-review.md) |
+| X16 | [反欺诈、合规与安全运营](arch/X16-cex-fraud-compliance-secops.md) | 欺诈监测、合规落点、处置权限矩阵、调查取证、分阶段恢复 | [T09](templates/T09-incident-runbook-oncall.md) |
+| X17 | [客户身份与访问·工程验收](arch/X17-cex-identity-verification.md) | 撤权、越权与找回流程怎么证明有效 | — |
+| X18 | [客户身份与访问·运营与恢复](arch/X18-cex-identity-recovery-ops.md) | 接管事件、批量重置与账户恢复 | — |
+| X19 | [资产与市场准入·工程验收](arch/X19-cex-listing-verification.md) | 准入开关、参数核对与下架演练 | — |
+| X20 | [资产与市场准入·运营与恢复](arch/X20-cex-listing-recovery-ops.md) | 异常资产处置、分叉迁移与复牌 | — |
+| X21 | [交易、结算与信用·工程验收](arch/X21-cex-trading-verification.md) | 回放撤单与异常价格，核订单、成交、分录与估值 | — |
+| X22 | [交易、结算与信用·运营与恢复](arch/X22-cex-trading-recovery-ops.md) | 过载保撮合、切主验停写、复市与恢复授信 | — |
+| X23 | [钱包、财资与支付·工程验收](arch/X23-cex-treasury-verification.md) | 越权签名、假回执、拒签与额度占用 | — |
+| X24 | [钱包、财资与支付·运营与恢复](arch/X24-cex-treasury-recovery-ops.md) | 复付、迁移、轮换与渠道恢复 | — |
+| X25 | [生产环境与数据·工程验收](arch/X25-cex-production-verification.md) | 权限、证据与备份怎么证明可信 | — |
+| X26 | [生产环境与数据·运营与恢复](arch/X26-cex-production-recovery-ops.md) | 证据保全、数据恢复与可用性演练 | — |
+| X27 | [反欺诈、合规与安全运营·工程验收](arch/X27-cex-fraud-verification.md) | 规则回放、处置授权与限制落地 | — |
+| X28 | [反欺诈、合规与安全运营·运营与恢复](arch/X28-cex-fraud-recovery-ops.md) | 调查取证、执行复核与解除限制 | — |
+| X29 | [域间交接](arch/X29-cex-ledger-wallet-handoff.md) | 原单、预留、批准、实收、实付与未决状态 | — |
+| X30 | [储备与偿付能力](arch/X30-cex-reserves-solvency.md) | 负债、储备、对账与证明 | — |
 
 **C 组 · 公链与项目方**
 
 | # | 章节 | 你会学到 | 配套 |
 |---|---|---|---|
-| X28 | [公链基金会与客户端团队](arch/X28-chain-foundation-client-ops.md) | 漏洞披露与协调、客户端发布、链级紧急响应、治理权限、生态通知 | [T09](templates/T09-incident-runbook-oncall.md) |
-| X29 | [L2、跨链桥与预言机运营方](arch/X29-l2-bridge-oracle-ops.md) | 升级密钥与安全委员会、排序器、桥限额与暂停、预言机偏离与停更 | [T12](templates/T12-security-architecture-review.md) |
-| X30 | [DeFi 项目方安全运营](arch/X30-defi-project-ops.md) | 上线就绪、多签与时间锁运营、暂停守护者、监控、金库与参数变更 | [T04](templates/T04-go-live-gate.md)、[多签签前复核](interactive/multisig-review-lab.html) |
-| X31 | [稳定币与 RWA 发行方](arch/X31-stablecoin-rwa-issuer-ops.md) | 铸销控制、储备与对账、赎回与脱锚预案、冻结权限、RWA 链下链上绑定 | [T11](templates/T11-vendor-custodian-assessment.md) |
-| X32 | [质押、节点与验证者运营](arch/X32-staking-validator-ops.md) | 验证者密钥分层、防罚没与故障转移、监控、Pectra 之后的运营变化 | [T09](templates/T09-incident-runbook-oncall.md) |
-| X33 | [漏洞披露、赏金与安全社区协作](arch/X33-disclosure-bounty-ops.md) | 披露政策与 security.txt、赏金计划、分诊 SLA、SEAL 协调、公告与复盘 | [A07](assessment/A07-external-audit-bounty.md) |
+| X31 | [公链基金会与客户端团队](arch/X31-chain-foundation-client-ops.md) | 漏洞披露与协调、客户端发布、链级紧急响应、治理权限、生态通知 | [T09](templates/T09-incident-runbook-oncall.md) |
+| X32 | [L2、跨链桥与预言机运营方](arch/X32-l2-bridge-oracle-ops.md) | 升级密钥与安全委员会、排序器、桥限额与暂停、预言机偏离与停更 | [T12](templates/T12-security-architecture-review.md) |
+| X33 | [DeFi 项目方安全运营](arch/X33-defi-project-ops.md) | 上线就绪、多签与时间锁运营、暂停守护者、监控、金库与参数变更 | [T04](templates/T04-go-live-gate.md)、[多签签前复核](interactive/multisig-review-lab.html) |
+| X34 | [稳定币与 RWA 发行方](arch/X34-stablecoin-rwa-issuer-ops.md) | 铸销控制、储备与对账、赎回与脱锚预案、冻结权限、RWA 链下链上绑定 | [T11](templates/T11-vendor-custodian-assessment.md) |
+| X35 | [质押、节点与验证者运营](arch/X35-staking-validator-ops.md) | 验证者密钥分层、防罚没与故障转移、监控、Pectra 之后的运营变化 | [T09](templates/T09-incident-runbook-oncall.md) |
+| X36 | [漏洞披露、赏金与安全社区协作](arch/X36-disclosure-bounty-ops.md) | 披露政策与 security.txt、赏金计划、分诊 SLA、SEAL 协调、公告与复盘 | [A07](assessment/A07-external-audit-bounty.md) |
 
 **D 组 · 其他应用场景**
 
 | # | 章节 | 你会学到 | 配套 |
 |---|---|---|---|
-| X34 | [钱包厂商安全](arch/X34-wallet-vendor-security.md) | 钱包产品威胁模型、签名界面护栏、发布路径与商店风险、MPC 服务运营 | [T12](templates/T12-security-architecture-review.md) |
-| X35 | [托管机构安全](arch/X35-custodian-security.md) | 客户资产隔离、密钥仪式、独立审计与保险、机构客户评估托管商 | [T11](templates/T11-vendor-custodian-assessment.md) |
-| X36 | [支付、OTC 与法币出入金安全](arch/X36-payment-otc-fiat-security.md) | 付款验证与 BEC、OTC 放行、卡入金风险、渠道隔离与对账 | [T11](templates/T11-vendor-custodian-assessment.md) |
-| X37 | [做市与量化团队安全](arch/X37-market-maker-security.md) | API Key 台账、交易系统与资金划转控制、内部人风险、与交易所的安全协作 | [T08](templates/T08-control-matrix-risk-register.md) |
-| X38 | [AI Agent 平台安全](arch/X38-agent-platform-security.md) | 权限与预算、策略引擎运营、工具调用审计、Session Key 与暂停撤销 | [T12](templates/T12-security-architecture-review.md) |
-
-**E 组 · 场景与能力补缺**
-
-| # | 章节 | 你会学到 | 配套 |
-|---|---|---|---|
-| X39 | [NFT、GameFi 与元宇宙项目](arch/X39-nft-gamefi-ops.md) | 铸造、市场、游戏经济与运营安全 | — |
-| X40 | [预测市场与链上衍生品协议](arch/X40-prediction-derivatives-ops.md) | 结算、预言机、争议与运营安全 | — |
-| X41 | [再质押、流动性质押与 AVS](arch/X41-restaking-lst-ops.md) | 罚没、委托与运营安全 | — |
-| X42 | [DAO 与治理运营](arch/X42-dao-governance-ops.md) | 提案、投票、金库与应急权限 | — |
-| X43 | [隐私协议与混币器](arch/X43-privacy-protocol-ops.md) | 合规、检测与运营安全 | — |
-| X44 | [移动端与客户端 App 安全工程](arch/X44-mobile-client-security.md) | 加固、发布与运行时防护 | — |
-| X45 | [TEE、HSM 与密钥仪式](arch/X45-tee-hsm-key-ceremony.md) | 从选型到落地与审计 | — |
-| X46 | [威胁情报与链上情报运营](arch/X46-threat-intel-ops.md) | 采集、研判、共享与落地 | — |
-| X47 | [人员安全](arch/X47-people-security.md) | 意识、背景核查、内部威胁与离职 | — |
-| X48 | [安全团队建设](arch/X48-security-team-management.md) | 组织、预算、招聘、汇报与职业路径 | — |
+| X37 | [钱包厂商安全](arch/X37-wallet-vendor-security.md) | 钱包产品威胁模型、签名界面护栏、发布路径与商店风险、MPC 服务运营 | [T12](templates/T12-security-architecture-review.md) |
+| X38 | [托管机构安全](arch/X38-custodian-security.md) | 客户资产隔离、密钥仪式、独立审计与保险、机构客户评估托管商 | [T11](templates/T11-vendor-custodian-assessment.md) |
+| X39 | [移动端与客户端 App 安全工程](arch/X39-mobile-client-security.md) | 加固、发布与运行时防护 | — |
+| X40 | [TEE、HSM 与密钥仪式](arch/X40-tee-hsm-key-ceremony.md) | 从选型到落地与审计 | — |
+| X41 | [支付、OTC 与法币出入金安全](arch/X41-payment-otc-fiat-security.md) | 付款验证与 BEC、OTC 放行、卡入金风险、渠道隔离与对账 | [T11](templates/T11-vendor-custodian-assessment.md) |
+| X42 | [做市与量化团队安全](arch/X42-market-maker-security.md) | API Key 台账、交易系统与资金划转控制、内部人风险、与交易所的安全协作 | [T08](templates/T08-control-matrix-risk-register.md) |
+| X43 | [AI Agent 平台安全](arch/X43-agent-platform-security.md) | 权限与预算、策略引擎运营、工具调用审计、Session Key 与暂停撤销 | [T12](templates/T12-security-architecture-review.md) |
+| X44 | [NFT、GameFi 与元宇宙项目](arch/X44-nft-gamefi-ops.md) | 铸造、市场、游戏经济与运营安全 | — |
+| X45 | [预测市场与链上衍生品协议](arch/X45-prediction-derivatives-ops.md) | 结算、预言机、争议与运营安全 | — |
+| X46 | [再质押、流动性质押与 AVS](arch/X46-restaking-lst-ops.md) | 罚没、委托与运营安全 | — |
+| X47 | [DAO 与治理运营](arch/X47-dao-governance-ops.md) | 提案、投票、金库与应急权限 | — |
+| X48 | [隐私协议与混币器](arch/X48-privacy-protocol-ops.md) | 合规、检测与运营安全 | — |
 
 覆盖度地图见 [X00 覆盖度地图](arch/X00-coverage-map.md)：领域 × 层次 × 角色的对照与自查方法。
 
@@ -264,6 +267,11 @@ flowchart TD
 | C01 | [BNB Chain](chains/C01-bnb-chain.md) | 出块 0.45 秒与区块计时、BSC-USD 18 位精度、分叉项目、Uranium / PancakeBunny / Venus / Qubit / Token Hub 深潜；链下风险（官方账号、发射平台） | [链迁移检查](interactive/chain-porting-lab.html) |
 | C02 | [TRON](chains/C02-tron.md) | TVM 8 项差异、USDT 返回 false、能量与 80 ms 时限、TRX 转账绕过 fallback、账户权限诈骗、地址投毒；链下风险与 T3 冻结 | [链迁移检查](interactive/chain-porting-lab.html) |
 | C03 | [Mantle](chains/C03-mantle.md) | L2 信任假设（L2BEAT）、MNT 原生币与 ERC-20 形式的 ETH、op-geth 审计、mETH 追回 cmETH；L2 运营方风险 | [链迁移检查](interactive/chain-porting-lab.html) |
+| C04 | [Solana](chains/C04-solana.md) | 代码与状态分离、Signer/Owner/Discriminator 校验、规范 PDA、任意 CPI 权限透传、账户复活与 Token-2022 扩展 | [链迁移检查](interactive/chain-porting-lab.html) |
+| C05 | [Move（Sui / Aptos）](chains/C05-move-sui-aptos.md) | 线性资源与四项能力、Sui 对象模型与 PTB、热土豆闪电贷绑定、`<<` 左移静默截断溢出与 Cetus 教训 | [链迁移检查](interactive/chain-porting-lab.html) |
+| C06 | [TON 与 Telegram Mini App](chains/C06-ton-tma.md) | Actor 异步消息模型、`bounced` 弹回状态撕裂、Jetton 假通知、Send Mode 误用、TonConnect 与 TMA `initData` 验签 | [链迁移检查](interactive/chain-porting-lab.html) |
+| C07 | [Bitcoin](chains/C07-bitcoin.md) | UTXO 与 PSBT 手续费/找零钓鱼、Taproot/MuSig2 Nonce 风险、Ordinals/Runes 索引分歧与误花、闪电网络与 BitVM/Babylon | [链迁移检查](interactive/chain-porting-lab.html) |
+| C08 | [主流 Rollup 差异](chains/C08-rollups-op-arb-zkevm.md) | OP Stack / Arbitrum 欺诈证明与逃生舱、zkSync/Starknet 非等效差异（`CREATE2`/`2300 gas`/AA）、重试票据与地址别名 | [链迁移检查](interactive/chain-porting-lab.html) |
 
 全部交互实验入口：[interactive/index.html](interactive/index.html)（浏览器直接打开，无需服务器）。
 全部示例合约：[practice-example-code/](../practice-example-code/README.md)（Solidity ^0.8.20，已通过编译）。
@@ -305,7 +313,7 @@ flowchart TD
 | 审计 / 安全研究 | 01 → 02 → 03 → 04–14 全部 → 27 → 28 → C00–C03；动手主线走[审计训练营](bootcamp/B00-roadmap.md) | 漏洞模式识别；跨生态的复盘能力 |
 | 交易所 / 钱包 / 产品 | 01 → 07 → 09 → 12 → 15 → 18–25 → 28 → C02 → C03 | 集成风险、签名界面、托管运营、用户诈骗、事后处置 |
 | 安全评估负责人 | 01 → 04–12 通读 → 18 → 20 → 21 → A01 → A02 → 按对象选 A03 / A04 / A05 → A06 → A07 → A08 → A09 → 25 | 方法论、评级、门禁、尽调、应急 |
-| 安全工程师（架构与运营） | 01 → X01 → X02 → X03–X06（通用底座）→ 按所在机构选 X07–X27（交易所）/ X28–X33（公链与项目方）/ X34–X38（其他）→ 训练营 L3（B70–B77）→ T08–T12 | 建体系、写规则、做演练、能交付安全架构评估 |
+| 安全工程师（架构与运营） | 01 → X01 → X02 → X03–X09（通用底座）→ 按所在机构选 X10–X30（交易所）/ X31–X36（公链与项目方）/ X37–X48（其他）→ 训练营 L3（B70–B77）→ T08–T12 | 建体系、写规则、做演练、能交付安全架构评估 |
 
 ## 4. 怎么用交互实验和示例合约
 

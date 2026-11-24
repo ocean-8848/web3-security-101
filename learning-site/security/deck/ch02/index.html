@@ -42,7 +42,10 @@ button { font: inherit; color: inherit; }
   box-shadow: 0 1px 0 var(--rule), 0 8px 28px rgba(60, 50, 30, .14); cursor: pointer; touch-action: pan-y; user-select: none; }
 .screen iframe { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; border: 0; transform-origin: 0 0; visibility: hidden; pointer-events: none; }
 .screen iframe.on { visibility: visible; }
-.screen .wait { position: absolute; inset: 0; display: grid; place-items: center; color: #8a826f; font-size: 14px; background: #efebe3; }
+.screen .still { position: absolute; inset: 0; background-repeat: no-repeat; background-color: #efebe3; }
+.screen.live .still { visibility: hidden; }
+.screen .wait { position: absolute; left: 12px; bottom: 12px; padding: 4px 12px; border-radius: 999px; color: #fff; font-size: 13px; background: rgba(28, 28, 28, .72); }
+.btn.play { border-color: var(--accent); color: var(--accent); }
 .screen .wait[hidden] { display: none; }
 
 .side { min-height: 0; overflow-y: auto; border-left: 1px solid var(--rule); background: var(--paper); padding: 18px 20px 24px; }
@@ -102,7 +105,7 @@ button { font: inherit; color: inherit; }
     <button class="btn hide-narrow" id="fs" title="全屏（F）">⛶ 全屏</button>
   </header>
   <div class="body">
-    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="wait" id="wait">载入动画…</div></div></div>
+    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="still" id="still" role="img"></div><div class="wait" id="wait" hidden>载入动画…</div></div></div>
     <aside class="side" aria-live="polite">
       <div class="sec" id="sec"></div>
       <h2 id="stitle"></h2>
@@ -112,7 +115,7 @@ button { font: inherit; color: inherit; }
   </div>
   <nav class="ctrl" aria-label="翻页">
     <button class="btn" id="prev" aria-label="上一页（←）">‹ 上一页</button>
-    <button class="btn" id="replay" aria-label="重播本页动画（R）">⟳ 重播</button>
+    <button class="btn play" id="replay" aria-label="看这一页的动画过程（P）">▶ 看过程</button>
     <button class="btn primary" id="next" aria-label="下一页（→ 或空格）">下一页 ›</button>
     <span class="count" id="count"></span>
     <div class="prog" id="prog"></div>
@@ -123,10 +126,10 @@ button { font: inherit; color: inherit; }
 </div>
 <script>
 (function () {
-  var D = {"chapter": "s02", "title": "私钥从哪里来：256 位的私钥，为什么只值 32 位", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 17.73, "title": "Wintermute 被盗", "points": ["2022 年 9 月，损失约 1.6 亿美元", "金库地址由靶号工具 Profanity 生成", "靶号地址：首尾字符符合指定模式，比如开头一串 0"], "notes": ["2022 年 9 月，Wintermute 的金库被盗，约 1.6 亿美元。", "这个金库的地址，是用一个叫 Profanity 的靶号工具生成的。", "靶号地址，就是首尾字符符合指定模式的地址。比如开头是一串 0。"], "section": "种子只有32位"}, {"seg": "1", "t0": 17.73, "t1": 45.87, "title": "256 位私钥，32 位种子", "points": ["私钥有 256 位，按理说没人猜得出", "工具的随机数只用了 32 位种子，约 43 亿种可能", "示例计算：每秒试 10 亿个，最多约 4.3 秒；一张 GPU 几分钟就够"], "notes": ["私钥有 256 位，按理说，没人猜得出来。", "可这个工具的随机数，只用了一个 32 位的种子。", "32 位种子，只有约 43 亿种可能。", "做个示例计算。如果每秒试 10 亿个种子，全部试完，最多约 4.3 秒。", "真实攻击还要从种子算出地址，会慢一些。但一张 GPU，几分钟就够。"], "section": "种子只有32位"}, {"seg": "1", "t0": 45.87, "t1": 58.72, "title": "先猜一道题", "points": ["一把 256 位的私钥，为什么只值 32 位？", "这一集讲私钥从哪里来，又怎么被算出来"], "notes": ["那么问题来了。一把 256 位的私钥，为什么只值 32 位？", "这一集，我们讲私钥从哪里来，又是怎么被算出来的。"], "section": "种子只有32位"}, {"seg": "2", "t0": 0.0, "t1": 20.45, "title": "被攻破的是实现", "points": ["密码学算法几乎从不被破解", "随机数不够随机、nonce 能被算出、门限签名省掉一步证明", "私钥的安全上限由生成和使用过程决定"], "notes": ["这一集的核心，是一句话。密码学算法几乎从不被破解，被攻破的，是实现。", "随机数不够随机，nonce 能被算出，门限签名的库省掉一步证明。", "私钥的安全上限，由它的生成和使用过程决定。"], "section": "各管什么"}, {"seg": "2", "t0": 20.45, "t1": 34.25, "title": "熵：随机性的度量", "points": ["熵的单位是位", "256 位熵，攻击者要试约 2 的 256 次方次", "只有 32 位熵，约 43 亿次就够了"], "notes": ["先给准确的定义。熵，是随机性的度量，单位是位。", "256 位熵，攻击者要试大约 2 的 256 次方次。只有 32 位熵，约 43 亿次就够了。"], "section": "各管什么"}, {"seg": "2", "t0": 34.25, "t1": 62.01, "title": "用生日设密码的保险柜", "points": ["77 位数字密码，但总用生日加固定数字，小偷只要试几万个", "比方不成立处：小偷必须站在保险柜前", "链上公钥和地址全公开，可离线、并行、无限次地试且无告警"], "notes": ["打个比方。保险柜的密码有 77 位数字，理论上没人猜得出。", "但如果设密码的人，总用自己的生日加一串固定数字，小偷只要试几万个生日。", "这个比方有一处不成立。小偷试生日，必须站在保险柜前面。", "链上的公钥和地址全部公开。攻击者可以离线、并行、无限次地试，不会触发任何告警。"], "section": "各管什么"}, {"seg": "2", "t0": 62.01, "t1": 78.91, "title": "签名算法保护什么", "points": ["ECDSA 和 EdDSA：没有私钥的人无法伪造签名", "不管私钥和 nonce 的质量", "也不管用户看没看懂签的内容"], "notes": ["再看几种原语，各自保护什么，不保护什么。", "ECDSA 和 EdDSA 用来签名。它们保证，没有私钥的人无法伪造签名。", "但它们不管私钥和 nonce 的质量，也不管用户看没看懂签的内容。"], "section": "各管什么"}, {"seg": "2", "t0": 78.91, "t1": 99.01, "title": "哈希、助记词与派生", "points": ["哈希保证数据没被改动，不保证数据本身是对的", "助记词能抄写恢复，但不管生成时熵够不够", "分层派生：一份备份恢复全部，一个种子泄露也全部泄露"], "notes": ["哈希保证数据没被改动，但不保证数据本身是对的。", "助记词让人能抄写和恢复钱包，但不管生成它时熵够不够。", "分层派生，从一个种子派生出一组地址。一份备份恢复全部，一个种子泄露，也全部泄露。"], "section": "各管什么"}, {"seg": "2", "t0": 99.01, "t1": 113.53, "title": "从随机数到签名", "points": ["随机数源 → 助记词 → 种子 → 私钥和地址", "签名时：私钥、消息加一个 nonce 一起算出签名"], "notes": ["整条链路是这样的。随机数源，到助记词，到种子，再派生出私钥和地址。", "签名时，私钥、消息，再加一个 nonce，一起算出签名。"], "section": "各管什么"}, {"seg": "2", "t0": 113.53, "t1": 134.1, "title": "两处需要随机性", "points": ["生成私钥时的熵，签名时的 nonce", "任何一处出错，私钥都能被算出来", "算法正确，用户也可能签下攻击者的交易"], "notes": ["这条链路上，有两处需要随机性。生成私钥时的熵，签名时的 nonce。任何一处出错，私钥都能被算出来。", "图上没画的，是签名的内容。算法完全正确，用户也可能签下攻击者的交易。所以签之前，要看清签的是什么。"], "section": "各管什么"}, {"seg": "3", "t0": 0.0, "t1": 41.59, "title": "熵不足的四步攻击", "points": ["小状态伪随机数生成器，如 32 位种子的 mt19937", "GPU 枚举约 43 亿种子，算出地址，与链上余额地址比对", "私钥必须来自 CSPRNG，满 256 位熵"], "notes": ["先看第一处，熵不足。攻击路径有四步。", "第一，生成器用了状态很小的伪随机数生成器，比如只用 32 位种子初始化的 mt19937。", "第二，种子只有约 43 亿种，私钥也就只有约 43 亿种。", "第三，攻击者在 GPU 上枚举全部种子，算出对应的地址。", "第四，和链上有余额的地址比对。命中，就转走资产。", "看起来随机，不等于安全。私钥必须来自 CSPRNG，也就是密码学安全随机数生成器，满 256 位熵。"], "section": "熵不够"}, {"seg": "3", "t0": 41.59, "t1": 57.93, "title": "案例一：Profanity", "points": ["1.60 及以前的版本只用 32 位种子", "2022 年 9 月 15 日 1inch 公开披露", "5 天后 Wintermute 被盗，同期还有多个受害者"], "notes": ["三个案例，走的都是这条路。", "第一个是 Profanity。1.60 及以前的版本只用 32 位种子。", "2022 年 9 月 15 日，1inch 公开披露。5 天后，Wintermute 被盗。同期还有多个受害者。"], "section": "熵不够"}, {"seg": "3", "t0": 57.93, "t1": 87.15, "title": "案例二：Trust 钱包", "points": ["Wallet Core 的 WASM 版本用 mt19937，熵降到 32 位", "影响 2022 年 11 月 14 日至 23 日新建的扩展钱包", "部分弱钱包被盗，约 17 万美元，Trust Wallet 承诺补偿"], "notes": ["第二个，Trust Wallet 浏览器扩展。Wallet Core 的 WASM 版本生成助记词，用的是 mt19937，熵从 256 位降到 32 位。", "受影响的，是 2022 年 11 月 14 日到 23 日新建的扩展钱包。Ledger 的安全团队报告后，几天内就修复了。", "但部分弱钱包后来还是被盗，损失约 17 万美元，Trust Wallet 承诺补偿。"], "section": "熵不够"}, {"seg": "3", "t0": 87.15, "t1": 103.65, "title": "案例三：Milk Sad", "points": ["Libbitcoin Explorer 用 32 位时间值生成种子", "2023 年 7 月 12 日集中盗取，至少约 90 万美元", "厂商认为文档早有警告"], "notes": ["第三个，Libbitcoin Explorer 的 Milk Sad 漏洞。它生成种子的命令，用的是一个 32 位的时间值。", "2023 年 7 月 12 日发生集中盗取，损失至少约 90 万美元。", "厂商认为，文档早有警告。"], "section": "熵不够"}, {"seg": "3", "t0": 103.65, "t1": 124.76, "title": "熵不足的三条教训", "points": ["在 WASM 或 JS 里替换随机源，要单独审计", "警告挡不住误用，生成密钥的接口必须默认安全", "修好代码修不好弱私钥，用户必须迁移到新地址"], "notes": ["教训有三条。在 WASM 或 JS 里替换随机源，要单独审计。", "文档里的警告挡不住误用，生成密钥的接口必须默认安全。", "最容易漏掉的一条是，修好代码，修不好已经生成的弱私钥。用户必须迁移到新地址。"], "section": "熵不够"}, {"seg": "4", "t0": 0.0, "t1": 17.83, "title": "先猜：k 重复用两次", "points": ["ECDSA 每次签名都需要一次性的数 k（nonce）", "第一种出错：两次签名用了同一个 k", "攻击者还需要别的东西吗？"], "notes": ["第二处随机性，在签名里。", "ECDSA 每次签名，都需要一个一次性的数，叫 k，也就是 nonce。", "k 出错有三种情况。第一种，两次签名用了同一个 k。", "攻击者还需要别的东西吗？"], "section": "nonce泄密"}, {"seg": "4", "t0": 17.83, "t1": 36.33, "title": "答案：不需要", "points": ["签名和消息哈希都公开，直接解方程得到私钥", "nonce 像每次都换的遮布，盖在私钥上", "同一块布用两次，一对比布就被消掉"], "notes": ["不需要。两个签名和两个消息哈希都是公开的，直接解方程，就得到私钥。", "打个比方。nonce 像一块每次都换的遮布，盖在私钥上面。", "同一块布用了两次，两次结果一对比，布就被消掉，私钥就显出来了。"], "section": "nonce泄密"}, {"seg": "4", "t0": 36.33, "t1": 59.15, "title": "k 有偏置或可被算出", "points": ["k 有偏置，收集足够多签名，用格方法恢复私钥", "最糟：k 由公开数据算出，单个签名就能反推私钥"], "notes": ["比方的局限是，真实过程是解方程。而且下面两种情况，一次对比无法解决。", "第二种，k 有偏置，比如高几位总是 0。收集足够多签名，用格方法就能恢复私钥。", "第三种最糟。k 可以由公开数据算出，那么单个签名就能反推私钥。"], "section": "nonce泄密"}, {"seg": "4", "t0": 59.15, "t1": 75.67, "title": "标准解法：确定性派生", "points": ["RFC 6979 用私钥和消息确定性地派生 k", "EdDSA 要求 nonce 由私钥的秘密部分派生", "风险来自偏离标准的实现"], "notes": ["标准早有解法，叫 RFC 6979。它用私钥和消息，确定性地派生 k，可以消除前两种风险。", "EdDSA 标准也要求，nonce 由私钥的秘密部分派生。风险来自偏离标准的实现。"], "section": "nonce泄密"}, {"seg": "4", "t0": 75.67, "t1": 93.39, "title": "重复与偏置的真实案例", "points": ["2013 年 8 月 Android 随机数缺陷，多款比特币钱包受影响", "2019 年研究用格方法恢复数百个比特币私钥", "以及数十个以太坊私钥"], "notes": ["三个案例。2013 年 8 月，Android 的随机数缺陷，让不同签名用了相同的 nonce，多款比特币钱包受影响。", "2019 年，一项研究用格方法，恢复出数百个比特币私钥，和数十个以太坊私钥。"], "section": "nonce泄密"}, {"seg": "4", "t0": 93.39, "t1": 119.55, "title": "SecondFi 事件", "points": ["2026 年 6 月，用公开交易数据派生 nonce，漏掉秘密部分", "374 个钱包被盗，约 1600 万 ADA、约 240 万美元（官方）", "硬件钱包签名走另一条路径，不受影响"], "notes": ["2026 年 6 月，Cardano 钱包 SecondFi 的 Android 版，用公开交易数据派生 nonce，漏掉了秘密部分。", "nonce 人人可算，单个签名就能反推私钥。", "374 个钱包被盗，约 1600 万 ADA，约 240 万美元。这是官方口径，SlowMist 的估计更高。", "硬件钱包签名走另一条路径，不受影响。"], "section": "nonce泄密"}, {"seg": "4", "t0": 119.55, "t1": 130.22, "title": "nonce 的教训", "points": ["nonce 必须确定性派生，并包含私钥的秘密材料", "封装层要做已知答案测试，不能只信任底层库"], "notes": ["教训是，nonce 必须确定性派生，并包含私钥的秘密材料。封装层要做已知答案测试，不能只信任底层库。"], "section": "nonce泄密"}, {"seg": "5", "t0": 0.0, "t1": 25.97, "title": "门限签名：TSS / MPC", "points": ["多方各持一份密钥分片，合作产生签名", "安全性依赖协议里每一步零知识证明", "像各拿一块拼图合作盖章，出示证明但不亮出拼图"], "notes": ["第三类风险，在门限签名里，也叫 TSS 或 MPC。", "准确地说，它是多方各持一份密钥分片，合作产生签名。安全性依赖协议里的每一步零知识证明。", "打个比方。几个人各拿一块拼图，合作盖章。每一步都要出示证明，证明自己守规矩，但不亮出自己那块。"], "section": "门限与量子"}, {"seg": "5", "t0": 25.97, "t1": 39.13, "title": "风险在省掉一步证明", "points": ["分片不是拼图，风险不在有人偷拼图", "省掉证明后，恶意参与方能在多次签名中逐步提取分片"], "notes": ["比方不准的地方是，分片不是拼图，风险也不在有人偷拼图。", "而在省掉一步证明后，恶意参与方能在多次签名中，逐步提取别人的分片。"], "section": "门限与量子"}, {"seg": "5", "t0": 39.13, "t1": 58.93, "title": "BitForge", "points": ["2023 年 8 月 Fireblocks 披露", "GG18、GG20 实现缺少参数证明，可提取完整私钥", "Lindell17 实现约 200 次签名请求即可，影响 15 家以上服务商"], "notes": ["2023 年 8 月，Fireblocks 披露 BitForge。GG18 和 GG20 的实现缺少参数证明，恶意参与方可以提取完整私钥。", "Lindell17 的实现偏离论文，约 200 次签名请求就能提取私钥。影响 15 家以上钱包服务商。"], "section": "门限与量子"}, {"seg": "5", "t0": 58.93, "t1": 89.11, "title": "TSSHOCK 与教训", "points": ["Verichains 披露三类攻击，如证明重复次数从 128 降到 1", "影响 tss-lib、Multichain 等多个库，未报告实际资金损失", "MPC 库不能按论文简化，选供应商要审计报告"], "notes": ["Verichains 的 TSSHOCK 披露了三类攻击。比如证明的重复次数从 128 降到 1，可以直接猜中。", "受影响的有 BNB 的 tss-lib、Multichain、THORChain、Axelar 等多个开源库。两项披露都没有报告实际资金损失。", "教训是，MPC 库不能按论文简化。选供应商时，要问它是否修复了这两类漏洞，并要审计报告。"], "section": "门限与量子"}, {"seg": "5", "t0": 89.11, "t1": 107.63, "title": "后量子威胁", "points": ["足够大的量子计算机可从公钥算出 ECDSA、EdDSA 私钥", "哈希函数受影响较小", "P2PKH 公钥在首次签名后才暴露，未签名地址更安全"], "notes": ["最后看后量子。足够大的量子计算机，可以从公钥算出 ECDSA 和 EdDSA 私钥。哈希函数受影响较小。", "比特币 P2PKH 这类地址，公钥在第一次签名后才暴露。所以从未签过名的地址更安全。"], "section": "门限与量子"}, {"seg": "5", "t0": 107.63, "t1": 133.46, "title": "迁移周期以年计", "points": ["截至 2026 年 11 月 NIST 已发布标准，BIP-360 仍是草案", "以太坊基金会目标约 2029 年，是规划不是承诺", "现在：盘点资产、避免地址复用、跟踪迁移计划"], "notes": ["截至 2026 年 11 月，NIST 已发布后量子标准。比特币的 BIP-360 仍是草案。", "以太坊基金会的目标，是约 2029 年完成核心基础设施。这是规划，不是承诺。", "迁移周期以年计。现在能做的，是盘点资产，避免地址重复使用，跟踪各链的迁移计划。"], "section": "门限与量子"}, {"seg": "6", "t0": 0.0, "t1": 24.37, "title": "防御：生成层与签名层", "points": ["生成层：CSPRNG 或硬件随机源，满 256 位熵", "不在 WASM 和浏览器 JS 里自己替换随机源", "签名层：标准 EdDSA 或 RFC 6979，测试验证封装层"], "notes": ["防御按层来。", "生成层，用 CSPRNG 或硬件随机源，满 256 位熵。不在 WASM 和浏览器 JS 里自己替换随机源。", "签名层，用标准 EdDSA 或 RFC 6979。再用已知答案测试和差分测试，验证封装层。"], "section": "怎么守"}, {"seg": "6", "t0": 24.37, "t1": 40.71, "title": "监控、工具与迁移", "points": ["监控层：扫描自家地址签名，检测重复的 r 值", "靶号工具不生成管理员或金库地址；MPC 库逐项审计", "生成缺陷修复后，强制用户迁移到新地址"], "notes": ["监控层，扫描自家地址的签名，检测重复的 r 值。", "靶号工具，不用来生成管理员或金库地址。MPC 库，逐项审计证明，及时升级。", "生成缺陷修复后，强制用户迁移到新地址。"], "section": "怎么守"}, {"seg": "6", "t0": 40.71, "t1": 67.11, "title": "每个角色今天做一件事", "points": ["钱包开发者：确认没有时间戳种子、Math.random、mt19937", "审计团队：查金库和管理员地址是否靶号工具生成", "普通用户：只用主流钱包生成助记词，有公告立刻迁移"], "notes": ["按角色，今天就能做一件事。", "钱包开发者，搜一遍密钥生成代码，确认没有时间戳种子、Math.random 和 mt19937。", "审计和安全团队，查一遍金库和管理员地址，是不是靶号工具生成的。", "普通用户，只用主流钱包生成助记词。厂商一公告随机数缺陷，立刻把资产转到新钱包生成的新地址。"], "section": "怎么守"}, {"seg": "6", "t0": 67.11, "t1": 90.13, "title": "私钥只有种子那么强", "points": ["私钥强度取决于生成它的熵：只有 32 位熵就只有 32 位", "256 位强度的三个条件：熵满 256 位、nonce 不可预测", "以及实现不偏离标准"], "notes": ["回到开头的问题。一把 256 位的私钥，为什么只值 32 位？", "因为私钥的强度，取决于生成它的熵。熵只有 32 位，位数再多，也只有 32 位。", "256 位的强度要成立，有三个条件。熵满 256 位，nonce 不可预测，实现不偏离标准。"], "section": "怎么守"}]};
+  var D = {"chapter": "s02", "title": "私钥从哪里来：256 位的私钥，为什么只值 32 位", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 17.73, "title": "Wintermute 被盗", "points": ["2022 年 9 月，损失约 1.6 亿美元", "金库地址由靶号工具 Profanity 生成", "靶号地址：首尾字符符合指定模式，比如开头一串 0"], "notes": ["2022 年 9 月，Wintermute 的金库被盗，约 1.6 亿美元。", "这个金库的地址，是用一个叫 Profanity 的靶号工具生成的。", "靶号地址，就是首尾字符符合指定模式的地址。比如开头是一串 0。"], "section": "种子只有32位", "k": 6.8}, {"seg": "1", "t0": 17.73, "t1": 45.87, "title": "256 位私钥，32 位种子", "points": ["私钥有 256 位，按理说没人猜得出", "工具的随机数只用了 32 位种子，约 43 亿种可能", "示例计算：每秒试 10 亿个，最多约 4.3 秒；一张 GPU 几分钟就够"], "notes": ["私钥有 256 位，按理说，没人猜得出来。", "可这个工具的随机数，只用了一个 32 位的种子。", "32 位种子，只有约 43 亿种可能。", "做个示例计算。如果每秒试 10 亿个种子，全部试完，最多约 4.3 秒。", "真实攻击还要从种子算出地址，会慢一些。但一张 GPU，几分钟就够。"], "section": "种子只有32位", "k": 43.28}, {"seg": "1", "t0": 45.87, "t1": 58.72, "title": "先猜一道题", "points": ["一把 256 位的私钥，为什么只值 32 位？", "这一集讲私钥从哪里来，又怎么被算出来"], "notes": ["那么问题来了。一把 256 位的私钥，为什么只值 32 位？", "这一集，我们讲私钥从哪里来，又是怎么被算出来的。"], "section": "种子只有32位", "k": 58.72}, {"seg": "2", "t0": 0.0, "t1": 20.45, "title": "被攻破的是实现", "points": ["密码学算法几乎从不被破解", "随机数不够随机、nonce 能被算出、门限签名省掉一步证明", "私钥的安全上限由生成和使用过程决定"], "notes": ["这一集的核心，是一句话。密码学算法几乎从不被破解，被攻破的，是实现。", "随机数不够随机，nonce 能被算出，门限签名的库省掉一步证明。", "私钥的安全上限，由它的生成和使用过程决定。"], "section": "各管什么", "k": 16.05}, {"seg": "2", "t0": 20.45, "t1": 34.25, "title": "熵：随机性的度量", "points": ["熵的单位是位", "256 位熵，攻击者要试约 2 的 256 次方次", "只有 32 位熵，约 43 亿次就够了"], "notes": ["先给准确的定义。熵，是随机性的度量，单位是位。", "256 位熵，攻击者要试大约 2 的 256 次方次。只有 32 位熵，约 43 亿次就够了。"], "section": "各管什么", "k": 34}, {"seg": "2", "t0": 34.25, "t1": 62.01, "title": "用生日设密码的保险柜", "points": ["77 位数字密码，但总用生日加固定数字，小偷只要试几万个", "比方不成立处：小偷必须站在保险柜前", "链上公钥和地址全公开，可离线、并行、无限次地试且无告警"], "notes": ["打个比方。保险柜的密码有 77 位数字，理论上没人猜得出。", "但如果设密码的人，总用自己的生日加一串固定数字，小偷只要试几万个生日。", "这个比方有一处不成立。小偷试生日，必须站在保险柜前面。", "链上的公钥和地址全部公开。攻击者可以离线、并行、无限次地试，不会触发任何告警。"], "section": "各管什么", "k": 53.3}, {"seg": "2", "t0": 62.01, "t1": 78.91, "title": "签名算法保护什么", "points": ["ECDSA 和 EdDSA：没有私钥的人无法伪造签名", "不管私钥和 nonce 的质量", "也不管用户看没看懂签的内容"], "notes": ["再看几种原语，各自保护什么，不保护什么。", "ECDSA 和 EdDSA 用来签名。它们保证，没有私钥的人无法伪造签名。", "但它们不管私钥和 nonce 的质量，也不管用户看没看懂签的内容。"], "section": "各管什么", "k": 78.91}, {"seg": "2", "t0": 78.91, "t1": 99.01, "title": "哈希、助记词与派生", "points": ["哈希保证数据没被改动，不保证数据本身是对的", "助记词能抄写恢复，但不管生成时熵够不够", "分层派生：一份备份恢复全部，一个种子泄露也全部泄露"], "notes": ["哈希保证数据没被改动，但不保证数据本身是对的。", "助记词让人能抄写和恢复钱包，但不管生成它时熵够不够。", "分层派生，从一个种子派生出一组地址。一份备份恢复全部，一个种子泄露，也全部泄露。"], "section": "各管什么", "k": 99.01}, {"seg": "2", "t0": 99.01, "t1": 113.53, "title": "从随机数到签名", "points": ["随机数源 → 助记词 → 种子 → 私钥和地址", "签名时：私钥、消息加一个 nonce 一起算出签名"], "notes": ["整条链路是这样的。随机数源，到助记词，到种子，再派生出私钥和地址。", "签名时，私钥、消息，再加一个 nonce，一起算出签名。"], "section": "各管什么", "k": 107.81}, {"seg": "2", "t0": 113.53, "t1": 134.1, "title": "两处需要随机性", "points": ["生成私钥时的熵，签名时的 nonce", "任何一处出错，私钥都能被算出来", "算法正确，用户也可能签下攻击者的交易"], "notes": ["这条链路上，有两处需要随机性。生成私钥时的熵，签名时的 nonce。任何一处出错，私钥都能被算出来。", "图上没画的，是签名的内容。算法完全正确，用户也可能签下攻击者的交易。所以签之前，要看清签的是什么。"], "section": "各管什么", "k": 134.1}, {"seg": "3", "t0": 0.0, "t1": 41.59, "title": "熵不足的四步攻击", "points": ["小状态伪随机数生成器，如 32 位种子的 mt19937", "GPU 枚举约 43 亿种子，算出地址，与链上余额地址比对", "私钥必须来自 CSPRNG，满 256 位熵"], "notes": ["先看第一处，熵不足。攻击路径有四步。", "第一，生成器用了状态很小的伪随机数生成器，比如只用 32 位种子初始化的 mt19937。", "第二，种子只有约 43 亿种，私钥也就只有约 43 亿种。", "第三，攻击者在 GPU 上枚举全部种子，算出对应的地址。", "第四，和链上有余额的地址比对。命中，就转走资产。", "看起来随机，不等于安全。私钥必须来自 CSPRNG，也就是密码学安全随机数生成器，满 256 位熵。"], "section": "熵不够", "k": 31.55}, {"seg": "3", "t0": 41.59, "t1": 57.93, "title": "案例一：Profanity", "points": ["1.60 及以前的版本只用 32 位种子", "2022 年 9 月 15 日 1inch 公开披露", "5 天后 Wintermute 被盗，同期还有多个受害者"], "notes": ["三个案例，走的都是这条路。", "第一个是 Profanity。1.60 及以前的版本只用 32 位种子。", "2022 年 9 月 15 日，1inch 公开披露。5 天后，Wintermute 被盗。同期还有多个受害者。"], "section": "熵不够", "k": 57.93}, {"seg": "3", "t0": 57.93, "t1": 87.15, "title": "案例二：Trust 钱包", "points": ["Wallet Core 的 WASM 版本用 mt19937，熵降到 32 位", "影响 2022 年 11 月 14 日至 23 日新建的扩展钱包", "部分弱钱包被盗，约 17 万美元，Trust Wallet 承诺补偿"], "notes": ["第二个，Trust Wallet 浏览器扩展。Wallet Core 的 WASM 版本生成助记词，用的是 mt19937，熵从 256 位降到 32 位。", "受影响的，是 2022 年 11 月 14 日到 23 日新建的扩展钱包。Ledger 的安全团队报告后，几天内就修复了。", "但部分弱钱包后来还是被盗，损失约 17 万美元，Trust Wallet 承诺补偿。"], "section": "熵不够", "k": 79.73}, {"seg": "3", "t0": 87.15, "t1": 103.65, "title": "案例三：Milk Sad", "points": ["Libbitcoin Explorer 用 32 位时间值生成种子", "2023 年 7 月 12 日集中盗取，至少约 90 万美元", "厂商认为文档早有警告"], "notes": ["第三个，Libbitcoin Explorer 的 Milk Sad 漏洞。它生成种子的命令，用的是一个 32 位的时间值。", "2023 年 7 月 12 日发生集中盗取，损失至少约 90 万美元。", "厂商认为，文档早有警告。"], "section": "熵不够", "k": 101.2}, {"seg": "3", "t0": 103.65, "t1": 124.76, "title": "熵不足的三条教训", "points": ["在 WASM 或 JS 里替换随机源，要单独审计", "警告挡不住误用，生成密钥的接口必须默认安全", "修好代码修不好弱私钥，用户必须迁移到新地址"], "notes": ["教训有三条。在 WASM 或 JS 里替换随机源，要单独审计。", "文档里的警告挡不住误用，生成密钥的接口必须默认安全。", "最容易漏掉的一条是，修好代码，修不好已经生成的弱私钥。用户必须迁移到新地址。"], "section": "熵不够", "k": 115.7}, {"seg": "4", "t0": 0.0, "t1": 17.83, "title": "先猜：k 重复用两次", "points": ["ECDSA 每次签名都需要一次性的数 k（nonce）", "第一种出错：两次签名用了同一个 k", "攻击者还需要别的东西吗？"], "notes": ["第二处随机性，在签名里。", "ECDSA 每次签名，都需要一个一次性的数，叫 k，也就是 nonce。", "k 出错有三种情况。第一种，两次签名用了同一个 k。", "攻击者还需要别的东西吗？"], "section": "nonce泄密", "k": 17.83}, {"seg": "4", "t0": 17.83, "t1": 36.33, "title": "答案：不需要", "points": ["签名和消息哈希都公开，直接解方程得到私钥", "nonce 像每次都换的遮布，盖在私钥上", "同一块布用两次，一对比布就被消掉"], "notes": ["不需要。两个签名和两个消息哈希都是公开的，直接解方程，就得到私钥。", "打个比方。nonce 像一块每次都换的遮布，盖在私钥上面。", "同一块布用了两次，两次结果一对比，布就被消掉，私钥就显出来了。"], "section": "nonce泄密", "k": 24.38}, {"seg": "4", "t0": 36.33, "t1": 59.15, "title": "k 有偏置或可被算出", "points": ["k 有偏置，收集足够多签名，用格方法恢复私钥", "最糟：k 由公开数据算出，单个签名就能反推私钥"], "notes": ["比方的局限是，真实过程是解方程。而且下面两种情况，一次对比无法解决。", "第二种，k 有偏置，比如高几位总是 0。收集足够多签名，用格方法就能恢复私钥。", "第三种最糟。k 可以由公开数据算出，那么单个签名就能反推私钥。"], "section": "nonce泄密", "k": 52.38}, {"seg": "4", "t0": 59.15, "t1": 75.67, "title": "标准解法：确定性派生", "points": ["RFC 6979 用私钥和消息确定性地派生 k", "EdDSA 要求 nonce 由私钥的秘密部分派生", "风险来自偏离标准的实现"], "notes": ["标准早有解法，叫 RFC 6979。它用私钥和消息，确定性地派生 k，可以消除前两种风险。", "EdDSA 标准也要求，nonce 由私钥的秘密部分派生。风险来自偏离标准的实现。"], "section": "nonce泄密", "k": 75.67}, {"seg": "4", "t0": 75.67, "t1": 93.39, "title": "重复与偏置的真实案例", "points": ["2013 年 8 月 Android 随机数缺陷，多款比特币钱包受影响", "2019 年研究用格方法恢复数百个比特币私钥", "以及数十个以太坊私钥"], "notes": ["三个案例。2013 年 8 月，Android 的随机数缺陷，让不同签名用了相同的 nonce，多款比特币钱包受影响。", "2019 年，一项研究用格方法，恢复出数百个比特币私钥，和数十个以太坊私钥。"], "section": "nonce泄密", "k": 93.39}, {"seg": "4", "t0": 93.39, "t1": 119.55, "title": "SecondFi 事件", "points": ["2026 年 6 月，用公开交易数据派生 nonce，漏掉秘密部分", "374 个钱包被盗，约 1600 万 ADA、约 240 万美元（官方）", "硬件钱包签名走另一条路径，不受影响"], "notes": ["2026 年 6 月，Cardano 钱包 SecondFi 的 Android 版，用公开交易数据派生 nonce，漏掉了秘密部分。", "nonce 人人可算，单个签名就能反推私钥。", "374 个钱包被盗，约 1600 万 ADA，约 240 万美元。这是官方口径，SlowMist 的估计更高。", "硬件钱包签名走另一条路径，不受影响。"], "section": "nonce泄密", "k": 106.69}, {"seg": "4", "t0": 119.55, "t1": 130.22, "title": "nonce 的教训", "points": ["nonce 必须确定性派生，并包含私钥的秘密材料", "封装层要做已知答案测试，不能只信任底层库"], "notes": ["教训是，nonce 必须确定性派生，并包含私钥的秘密材料。封装层要做已知答案测试，不能只信任底层库。"], "section": "nonce泄密", "k": 130.22}, {"seg": "5", "t0": 0.0, "t1": 25.97, "title": "门限签名：TSS / MPC", "points": ["多方各持一份密钥分片，合作产生签名", "安全性依赖协议里每一步零知识证明", "像各拿一块拼图合作盖章，出示证明但不亮出拼图"], "notes": ["第三类风险，在门限签名里，也叫 TSS 或 MPC。", "准确地说，它是多方各持一份密钥分片，合作产生签名。安全性依赖协议里的每一步零知识证明。", "打个比方。几个人各拿一块拼图，合作盖章。每一步都要出示证明，证明自己守规矩，但不亮出自己那块。"], "section": "门限与量子", "k": 16.8}, {"seg": "5", "t0": 25.97, "t1": 39.13, "title": "风险在省掉一步证明", "points": ["分片不是拼图，风险不在有人偷拼图", "省掉证明后，恶意参与方能在多次签名中逐步提取分片"], "notes": ["比方不准的地方是，分片不是拼图，风险也不在有人偷拼图。", "而在省掉一步证明后，恶意参与方能在多次签名中，逐步提取别人的分片。"], "section": "门限与量子", "k": 32.27}, {"seg": "5", "t0": 39.13, "t1": 58.93, "title": "BitForge", "points": ["2023 年 8 月 Fireblocks 披露", "GG18、GG20 实现缺少参数证明，可提取完整私钥", "Lindell17 实现约 200 次签名请求即可，影响 15 家以上服务商"], "notes": ["2023 年 8 月，Fireblocks 披露 BitForge。GG18 和 GG20 的实现缺少参数证明，恶意参与方可以提取完整私钥。", "Lindell17 的实现偏离论文，约 200 次签名请求就能提取私钥。影响 15 家以上钱包服务商。"], "section": "门限与量子", "k": 46.93}, {"seg": "5", "t0": 58.93, "t1": 89.11, "title": "TSSHOCK 与教训", "points": ["Verichains 披露三类攻击，如证明重复次数从 128 降到 1", "影响 tss-lib、Multichain 等多个库，未报告实际资金损失", "MPC 库不能按论文简化，选供应商要审计报告"], "notes": ["Verichains 的 TSSHOCK 披露了三类攻击。比如证明的重复次数从 128 降到 1，可以直接猜中。", "受影响的有 BNB 的 tss-lib、Multichain、THORChain、Axelar 等多个开源库。两项披露都没有报告实际资金损失。", "教训是，MPC 库不能按论文简化。选供应商时，要问它是否修复了这两类漏洞，并要审计报告。"], "section": "门限与量子", "k": 68.48}, {"seg": "5", "t0": 89.11, "t1": 107.63, "title": "后量子威胁", "points": ["足够大的量子计算机可从公钥算出 ECDSA、EdDSA 私钥", "哈希函数受影响较小", "P2PKH 公钥在首次签名后才暴露，未签名地址更安全"], "notes": ["最后看后量子。足够大的量子计算机，可以从公钥算出 ECDSA 和 EdDSA 私钥。哈希函数受影响较小。", "比特币 P2PKH 这类地址，公钥在第一次签名后才暴露。所以从未签过名的地址更安全。"], "section": "门限与量子", "k": 107.63}, {"seg": "5", "t0": 107.63, "t1": 133.46, "title": "迁移周期以年计", "points": ["截至 2026 年 11 月 NIST 已发布标准，BIP-360 仍是草案", "以太坊基金会目标约 2029 年，是规划不是承诺", "现在：盘点资产、避免地址复用、跟踪迁移计划"], "notes": ["截至 2026 年 11 月，NIST 已发布后量子标准。比特币的 BIP-360 仍是草案。", "以太坊基金会的目标，是约 2029 年完成核心基础设施。这是规划，不是承诺。", "迁移周期以年计。现在能做的，是盘点资产，避免地址重复使用，跟踪各链的迁移计划。"], "section": "门限与量子", "k": 123.93}, {"seg": "6", "t0": 0.0, "t1": 24.37, "title": "防御：生成层与签名层", "points": ["生成层：CSPRNG 或硬件随机源，满 256 位熵", "不在 WASM 和浏览器 JS 里自己替换随机源", "签名层：标准 EdDSA 或 RFC 6979，测试验证封装层"], "notes": ["防御按层来。", "生成层，用 CSPRNG 或硬件随机源，满 256 位熵。不在 WASM 和浏览器 JS 里自己替换随机源。", "签名层，用标准 EdDSA 或 RFC 6979。再用已知答案测试和差分测试，验证封装层。"], "section": "怎么守", "k": 14.55}, {"seg": "6", "t0": 24.37, "t1": 40.71, "title": "监控、工具与迁移", "points": ["监控层：扫描自家地址签名，检测重复的 r 值", "靶号工具不生成管理员或金库地址；MPC 库逐项审计", "生成缺陷修复后，强制用户迁移到新地址"], "notes": ["监控层，扫描自家地址的签名，检测重复的 r 值。", "靶号工具，不用来生成管理员或金库地址。MPC 库，逐项审计证明，及时升级。", "生成缺陷修复后，强制用户迁移到新地址。"], "section": "怎么守", "k": 36.42}, {"seg": "6", "t0": 40.71, "t1": 67.11, "title": "每个角色今天做一件事", "points": ["钱包开发者：确认没有时间戳种子、Math.random、mt19937", "审计团队：查金库和管理员地址是否靶号工具生成", "普通用户：只用主流钱包生成助记词，有公告立刻迁移"], "notes": ["按角色，今天就能做一件事。", "钱包开发者，搜一遍密钥生成代码，确认没有时间戳种子、Math.random 和 mt19937。", "审计和安全团队，查一遍金库和管理员地址，是不是靶号工具生成的。", "普通用户，只用主流钱包生成助记词。厂商一公告随机数缺陷，立刻把资产转到新钱包生成的新地址。"], "section": "怎么守", "k": 52.26}, {"seg": "6", "t0": 67.11, "t1": 90.13, "title": "私钥只有种子那么强", "points": ["私钥强度取决于生成它的熵：只有 32 位熵就只有 32 位", "256 位强度的三个条件：熵满 256 位、nonce 不可预测", "以及实现不偏离标准"], "notes": ["回到开头的问题。一把 256 位的私钥，为什么只值 32 位？", "因为私钥的强度，取决于生成它的熵。熵只有 32 位，位数再多，也只有 32 位。", "256 位的强度要成立，有三个条件。熵满 256 位，nonce 不可预测，实现不偏离标准。"], "section": "怎么守", "k": 87.91}]};
   var S = D.slides, N = S.length, KEY = 'deck-' + D.chapter;
   var $ = function (id) { return document.getElementById(id); };
-  var screen = $('screen'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
+  var screen = $('screen'), still = $('still'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
   var store = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
                 set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
   try { var pt = parent !== window && parent.document.documentElement.getAttribute('data-theme'); if (pt) document.documentElement.setAttribute('data-theme', pt); } catch (e) {}
@@ -141,32 +144,54 @@ button { font: inherit; color: inherit; }
     var g = groups[groups.length - 1];
     if (!g || g.seg !== s.seg) { g = { seg: s.seg, el: document.createElement('div') }; g.el.className = 'grp'; groups.push(g); prog.appendChild(g.el); g.n = 0; }
     var b = document.createElement('button'); b.title = (i + 1) + ' · ' + s.title; b.setAttribute('aria-label', '第 ' + (i + 1) + ' 页：' + s.title);
-    b.onclick = function () { go(i, 'seek'); }; g.el.appendChild(b); g.n++; s.dot = b;
+    b.onclick = function () { show(i); }; g.el.appendChild(b); g.n++; s.dot = b;
   });
   groups.forEach(function (g) { g.el.style.setProperty('--n', g.n); });
 
+  // all stills of the chapter are one sprite: 6 columns, slide i at (i % 6, i / 6)
+  var COLS = 6, ROWS = Math.ceil(N / COLS), sheetReady = false, sheet = new Image();
+  sheet.onload = function () { sheetReady = true; if (!screen.classList.contains('live')) $('wait').hidden = true; };
+  sheet.src = 'stills.webp';
+  still.style.backgroundImage = 'url(stills.webp)';
+  still.style.backgroundSize = (COLS * 100) + '% ' + (ROWS * 100) + '%';
+  function tile(i) {
+    var c = i % COLS, r = Math.floor(i / COLS);
+    still.style.backgroundPosition = (COLS > 1 ? c / (COLS - 1) * 100 : 0) + '% ' + (ROWS > 1 ? r / (ROWS - 1) * 100 : 0) + '%';
+  }
+
+  // ---------- live animation (only when asked) ----------
   function scale() { var k = screen.clientWidth / 1920; for (var s in frames) frames[s].style.transform = 'scale(' + k + ')'; }
   if (window.ResizeObserver) new ResizeObserver(scale).observe(screen); else addEventListener('resize', scale);
-
   function frame(seg) {
     if (frames[seg]) return frames[seg];
     var f = document.createElement('iframe'); f.src = 's' + seg + '.html'; f.title = '第 ' + seg + ' 节动画'; f.tabIndex = -1;
     f.setAttribute('aria-hidden', 'true'); screen.appendChild(f); frames[seg] = f; scale(); return f;
   }
+  function live(seg) {
+    for (var k in frames) frames[k].classList.toggle('on', k === seg);
+    screen.classList.add('live'); $('wait').hidden = true;
+  }
   function send(seg, msg) {
     msg.deck = 'cmd';
-    if (ready[seg]) frames[seg].contentWindow.postMessage(msg, '*'); else pending[seg] = msg;
+    if (ready[seg]) { frames[seg].contentWindow.postMessage(msg, '*'); live(seg); } else pending[seg] = msg;
   }
   addEventListener('message', function (e) {
     var m = e.data || {};
     if (!m.deck || !frames[m.seg] || e.source !== frames[m.seg].contentWindow) return;
     if (m.deck === 'ready') {
       ready[m.seg] = true;
-      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; send(m.seg, p); }
-      if (cur >= 0 && S[cur].seg === m.seg) $('wait').hidden = true;
-    } else if (m.deck === 'done' && cur >= 0 && S[cur].seg === m.seg) { playing = false; paint(); }
+      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; if (playing && S[cur].seg === m.seg) send(m.seg, p); }
+    } else if (m.deck === 'done' && playing && S[cur].seg === m.seg) { playing = false; paint(); }
   });
+  function process() {
+    var s = S[cur];
+    playing = true; frame(s.seg);
+    if (!ready[s.seg]) { $('wait').textContent = '载入动画…'; $('wait').hidden = false; }
+    send(s.seg, { play: [s.t0, s.k], rate: +$('speed').value });
+    paint();
+  }
 
+  // ---------- slides ----------
   function paint() {
     var s = S[cur];
     $('sec').textContent = s.section;
@@ -175,27 +200,21 @@ button { font: inherit; color: inherit; }
     $('lines').innerHTML = ''; s.notes.forEach(function (p) { var li = document.createElement('li'); li.textContent = p; $('lines').appendChild(li); });
     $('count').textContent = (cur + 1) + ' / ' + N;
     $('prev').disabled = cur === 0;
-    $('next').textContent = playing ? '跳到本页结尾 ›' : (cur === N - 1 ? '回到正文 ›' : '下一页 ›');
+    $('next').textContent = cur === N - 1 ? '回到正文 ›' : '下一页 ›';
+    $('replay').textContent = playing ? '⟳ 从头播放' : (screen.classList.contains('live') ? '⟳ 再看一遍' : '▶ 看过程');
     S.forEach(function (x, i) { x.dot.className = i === cur ? 'cur' : (seen[i] ? 'seen' : ''); });
   }
-  function go(i, mode) {
+  function show(i) {
     if (i < 0 || i >= N) return;
-    var s = S[i]; cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
-    var f = frame(s.seg);
-    for (var k in frames) frames[k].classList.toggle('on', k === s.seg);
-    $('wait').hidden = !!ready[s.seg];
-    playing = mode === 'play';
-    send(s.seg, playing ? { play: [s.t0, s.t1], rate: +$('speed').value } : { seek: s.t1 });
-    // warm the next segment while this one is on screen
-    if (i + 1 < N && S[i + 1].seg !== s.seg) frame(S[i + 1].seg);
+    cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
+    playing = false; pending = {};
+    tile(i); still.setAttribute('aria-label', S[i].title);
+    screen.classList.remove('live'); $('wait').textContent = sheetReady ? '载入动画…' : '载入画面…'; $('wait').hidden = sheetReady;
+    for (var k in frames) frames[k].classList.remove('on');
     paint();
   }
-  function next() {
-    if (playing) { go(cur, 'seek'); return; }
-    if (cur === N - 1) { back(); return; }
-    go(cur + 1, 'play');
-  }
-  function prev() { go(cur - 1, 'seek'); }
+  function next() { if (cur === N - 1) { back(); return; } show(cur + 1); }
+  function prev() { show(cur - 1); }
   function back() {
     if (parent !== window) parent.postMessage({ cexNav: D.chapter }, '*');
     else location.href = '../../index.html#' + D.chapter;
@@ -206,18 +225,18 @@ button { font: inherit; color: inherit; }
   }
   if (!document.fullscreenEnabled) $('fs').hidden = true;
 
-  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = function () { go(cur, 'play'); };
+  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = process;
   $('back').onclick = back; $('fs').onclick = fullscreen;
   addEventListener('keydown', function (e) {
     if (e.target.tagName === 'SELECT' || e.metaKey || e.ctrlKey || e.altKey) return;
     var k = e.key;
     if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); next(); }
     else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
-    else if (k === 'r' || k === 'R') go(cur, 'play');
+    else if (k === 'p' || k === 'P' || k === 'r' || k === 'R') process();
     else if (k === 'f' || k === 'F') fullscreen();
     else if (k === 'n' || k === 'N') $('notes').open = !$('notes').open;
-    else if (k === 'Home') go(0, 'seek');
-    else if (k === 'End') go(N - 1, 'seek');
+    else if (k === 'Home') show(0);
+    else if (k === 'End') show(N - 1);
   });
   // tap = next; horizontal swipe = next / previous
   var x0 = null, y0 = null;
@@ -230,7 +249,7 @@ button { font: inherit; color: inherit; }
   });
 
   var start = +store.get(KEY); if (!(start >= 0 && start < N)) start = 0;
-  go(start, start === 0 ? 'play' : 'seek');
+  show(start);
 })();
 </script>
 </body>

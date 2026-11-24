@@ -42,7 +42,10 @@ button { font: inherit; color: inherit; }
   box-shadow: 0 1px 0 var(--rule), 0 8px 28px rgba(60, 50, 30, .14); cursor: pointer; touch-action: pan-y; user-select: none; }
 .screen iframe { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; border: 0; transform-origin: 0 0; visibility: hidden; pointer-events: none; }
 .screen iframe.on { visibility: visible; }
-.screen .wait { position: absolute; inset: 0; display: grid; place-items: center; color: #8a826f; font-size: 14px; background: #efebe3; }
+.screen .still { position: absolute; inset: 0; background-repeat: no-repeat; background-color: #efebe3; }
+.screen.live .still { visibility: hidden; }
+.screen .wait { position: absolute; left: 12px; bottom: 12px; padding: 4px 12px; border-radius: 999px; color: #fff; font-size: 13px; background: rgba(28, 28, 28, .72); }
+.btn.play { border-color: var(--accent); color: var(--accent); }
 .screen .wait[hidden] { display: none; }
 
 .side { min-height: 0; overflow-y: auto; border-left: 1px solid var(--rule); background: var(--paper); padding: 18px 20px 24px; }
@@ -102,7 +105,7 @@ button { font: inherit; color: inherit; }
     <button class="btn hide-narrow" id="fs" title="全屏（F）">⛶ 全屏</button>
   </header>
   <div class="body">
-    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="wait" id="wait">载入动画…</div></div></div>
+    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="still" id="still" role="img"></div><div class="wait" id="wait" hidden>载入动画…</div></div></div>
     <aside class="side" aria-live="polite">
       <div class="sec" id="sec"></div>
       <h2 id="stitle"></h2>
@@ -112,7 +115,7 @@ button { font: inherit; color: inherit; }
   </div>
   <nav class="ctrl" aria-label="翻页">
     <button class="btn" id="prev" aria-label="上一页（←）">‹ 上一页</button>
-    <button class="btn" id="replay" aria-label="重播本页动画（R）">⟳ 重播</button>
+    <button class="btn play" id="replay" aria-label="看这一页的动画过程（P）">▶ 看过程</button>
     <button class="btn primary" id="next" aria-label="下一页（→ 或空格）">下一页 ›</button>
     <span class="count" id="count"></span>
     <div class="prog" id="prog"></div>
@@ -123,10 +126,10 @@ button { font: inherit; color: inherit; }
 </div>
 <script>
 (function () {
-  var D = {"chapter": "s17", "title": "节点、RPC 与验证者基础设施：你读到的是谁的链", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 11.99, "title": "一条不存在的跨链消息", "points": ["2026 年 4 月，KelpDAO 的 LayerZero 验证者放行一条消息", "这条消息，在源链上根本不存在"], "notes": ["2026 年 4 月，LayerZero 给 KelpDAO 确认跨链消息的验证者，放行了一条消息。", "这条消息，在源链上根本不存在。"], "section": "只对你说谎"}, {"seg": "1", "t0": 11.99, "t1": 27.35, "title": "被替换的 RPC 节点", "points": ["验证者读链，靠的是两个 RPC 节点", "攻击者控制了这两个节点，替换了节点程序", "只对验证者返回伪造数据，对别的 IP 返回真实数据"], "notes": ["验证者读链，靠的是两个 RPC 节点。", "攻击者控制了这两个节点，替换了节点程序。", "被替换的节点，只对验证者返回伪造数据。", "对别的 IP 来的查询，它返回真实数据。"], "section": "只对你说谎"}, {"seg": "1", "t0": 27.35, "t1": 40.65, "title": "DDoS 逼出自动切换", "points": ["用 DDoS 打掉没被攻破的外部 RPC", "系统自动切换，切到了被污染的节点上", "LayerZero 的声明写，损失约 2.9 亿美元"], "notes": ["攻击者再用 DDoS，打掉没被攻破的外部 RPC。", "系统自动切换，切到了被污染的节点上。", "LayerZero 的声明写，损失约 2.9 亿美元。"], "section": "只对你说谎"}, {"seg": "1", "t0": 40.65, "t1": 50.66, "title": "先猜一道题", "points": ["监控系统也查询了这两个节点，结果一切正常", "它能发现这次攻击吗？", "先记住这个问题"], "notes": ["先猜一道题。", "监控系统也查询了这两个节点，结果一切正常。", "它能发现这次攻击吗？", "先记住这个问题。"], "section": "只对你说谎"}, {"seg": "2", "t0": 0.0, "t1": 20.65, "title": "你从来没有直接读过链", "points": ["读的是某个节点、RPC 服务、索引器告诉它的链", "数据从 P2P 网络进入节点，经过 RPC，再到索引器和你的系统", "每一层，都可能给出错误的数据"], "notes": ["先给准确的说法。", "你的系统，从来没有直接读过链。", "它读的是某个节点、某个 RPC 服务、某个索引器，告诉它的链。", "数据从 P2P 网络进入节点，经过 RPC，再到索引器和你的系统。", "每一层，都可能给出错误的数据。"], "section": "你读的是谁的链"}, {"seg": "2", "t0": 20.65, "t1": 43.11, "title": "第一层：节点客户端", "points": ["2020 年 11 月，Infura 的旧版 Geth 停在少数派分叉上", "依赖它的 MetaMask 等服务受到影响", "Binance、Bithumb 等交易所暂停 ETH 和 ERC-20 提币"], "notes": ["第一层是节点客户端。", "2020 年 11 月，Infura 的节点运行旧版 Geth。", "它遇到一个上游已经修复的共识 bug，停在一条少数派分叉上。", "依赖它的 MetaMask 等服务，受到影响。", "Binance、Bithumb 等交易所，暂停了 ETH 和 ERC-20 提币。"], "section": "你读的是谁的链"}, {"seg": "2", "t0": 43.11, "t1": 53.15, "title": "第二、三层：RPC 与索引器", "points": ["RPC 服务会宕机、限流、返回过期数据", "索引器会延迟，也会解释错"], "notes": ["第二层是 RPC 服务，它会宕机、限流、返回过期数据。", "第三层是索引器，它会延迟，也会解释错。"], "section": "你读的是谁的链"}, {"seg": "2", "t0": 53.15, "t1": 83.61, "title": "第四层：网络路由", "points": ["BGP 劫持：用错误的路由宣告，把流量引到自己的服务器", "2018 年 MyEtherWallet DNS 被指向钓鱼站，约 15 万美元", "2022 年 KLAYswap 约 190 万、Celer 约 24 万美元"], "notes": ["第四层是网络路由。", "BGP 劫持，是用错误的路由宣告，把别人的流量引到自己的服务器。", "2018 年，MyEtherWallet 的 DNS 被这样指向钓鱼站，损失约 15 万美元。", "2022 年，KLAYswap 的 SDK 下载域名被劫持，下发恶意脚本，损失约 190 万美元。", "同年，Celer cBridge 提供合约地址的子域被劫持，损失约 24 万美元。"], "section": "你读的是谁的链"}, {"seg": "2", "t0": 83.61, "t1": 94.11, "title": "比喻：隔着窗看车流", "points": ["你隔着一扇窗看车流，决定什么时候过马路", "这扇窗可能是一块屏幕，可能延迟，也可能有人在播录像"], "notes": ["打个比方。", "你隔着一扇窗看车流，决定什么时候过马路。", "这扇窗可能是一块屏幕，屏幕可能延迟，也可能有人在播录像。"], "section": "你读的是谁的链"}, {"seg": "2", "t0": 94.11, "t1": 105.08, "title": "很多系统只有一扇窗", "points": ["不成立处：真实的马路，你可以换一扇窗再看一眼", "很多系统只接了一个 RPC，从来没有第二扇窗"], "notes": ["比喻不成立的地方是，真实的马路，你可以换一扇窗再看一眼。", "很多系统只接了一个 RPC，从来没有第二扇窗。"], "section": "你读的是谁的链"}, {"seg": "3", "t0": 0.0, "t1": 21.29, "title": "日蚀攻击", "points": ["另一种情况：节点自己看到的网络被人操纵", "攻击者占满受害节点的全部对等连接", "节点只看到攻击者给的区块和交易"], "notes": ["前面是你问节点，节点答错。", "另一种情况，是节点自己看到的网络，被人操纵。", "节点之间直接交换区块和交易，这叫 P2P 网络。", "日蚀攻击，是攻击者占满受害节点的全部对等连接。", "节点只看到攻击者给的区块和交易。"], "section": "节点被蒙住眼"}, {"seg": "3", "t0": 21.29, "t1": 34.19, "title": "关键一步在节点重启", "points": ["重启时，节点会从地址表里挑选对等节点", "地址表已被攻击者填满，连上的就全是攻击者"], "notes": ["最关键的一步，在节点重启。", "重启时，节点会从地址表里挑选对等节点。", "地址表如果已经被攻击者填满，它连上的就全是攻击者。"], "section": "节点被蒙住眼"}, {"seg": "3", "t0": 34.19, "t1": 51.33, "title": "两台主机就够", "points": ["2018 年论文：两台主机、各一个 IP，就能日蚀一个以太坊节点", "Geth 1.8.0 随后限制了同一网段的节点数", "比特币加了锚点连接，重启时优先恢复上次的出站连接"], "notes": ["2018 年的一篇论文显示，两台主机、各一个 IP，就能日蚀一个以太坊节点。", "Geth 1.8.0 随后限制了同一网段的节点数。", "比特币加了锚点连接，重启时优先恢复上次的出站连接。"], "section": "节点被蒙住眼"}, {"seg": "3", "t0": 51.33, "t1": 65.11, "title": "被日蚀的节点看起来正常", "points": ["有连接，也有新块，只是落后，或者在错误的分支上", "对等节点数只说明有连接，不说明来自独立的运营方"], "notes": ["被日蚀的节点，同步状态看起来正常。", "它有连接，也有新块，只是落后，或者在错误的分支上。", "对等节点数只说明有连接，不说明连接来自独立的运营方。"], "section": "节点被蒙住眼"}, {"seg": "3", "t0": 65.11, "t1": 77.93, "title": "DoS 是数据污染的前置", "points": ["节点崩溃，也可能是攻击的第一步", "切换逻辑把流量转到不可信的备用节点", "开头的事件正是这样"], "notes": ["节点崩溃，也可能是攻击的第一步。", "切换逻辑如果把流量转到不可信的备用节点，DoS 就成了数据污染的前置步骤。", "开头的事件正是这样。"], "section": "节点被蒙住眼"}, {"seg": "3", "t0": 77.93, "t1": 93.31, "title": "暴露的 JSON-RPC", "points": ["2018 年，一个团伙扫描暴露 JSON-RPC 的以太坊节点", "盗走约 3.8 万个 ETH", "Geth 默认只监听本机，接口是运营者自己打开的"], "notes": ["另一类事故，来自节点自己的配置。", "2018 年，一个团伙扫描暴露 JSON-RPC 的以太坊节点，盗走约 3.8 万个 ETH。", "Geth 默认只监听本机，接口是运营者自己打开的。"], "section": "节点被蒙住眼"}, {"seg": "3", "t0": 93.31, "t1": 106.68, "title": "接口只对内开放", "points": ["RPC 接口只绑内网或本机，对外必须经过认证网关", "Engine API 只对共识客户端开放，并用 JWT 认证"], "notes": ["RPC 接口只绑内网或本机，对外必须经过认证网关。", "给执行客户端下指令的 Engine API，只对共识客户端开放，并用 JWT 认证。"], "section": "节点被蒙住眼"}, {"seg": "4", "t0": 0.0, "t1": 18.35, "title": "罚没与双签", "points": ["罚没：PoS 验证者违规，被扣除部分质押并强制退出", "最常见的原因是双签", "同一把密钥，对同一个位置，签了两个不同的消息"], "notes": ["验证者这一端，风险出在签名上。", "罚没，是 PoS 验证者违反协议，被扣除部分质押并强制退出。", "最常见的原因是双签。", "同一把密钥，对同一个位置，签了两个不同的消息。"], "section": "签名之前"}, {"seg": "4", "t0": 18.35, "t1": 33.01, "title": "凌晨的故障切换", "points": ["主机 A 失去响应，运维在备用机 B 上启动同一把密钥", "其实 A 没有停，两台机器对同一个 slot 各签一票", "网络检测到双签，验证者被罚没"], "notes": ["凌晨，运维看到主机 A 失去响应，就在备用机 B 上启动同一把密钥。", "其实 A 没有停，两台机器对同一个 slot 各签一票。", "网络检测到双签，验证者被罚没。"], "section": "签名之前"}, {"seg": "4", "t0": 33.01, "t1": 55.27, "title": "罚没多发生在切换迁移时", "points": ["2021 年 2 月，一家服务商重启出错，75 个验证者被罚没约 18 ETH", "2023 年 10 月、2025 年 9 月，Lido 和 SSV 上也各有一批"], "notes": ["公开的罚没事件，几乎都发生在故障切换或迁移时。", "2021 年 2 月，一家质押服务商重启出错，75 个验证者被罚没，约 18 ETH。", "2023 年 10 月和 2025 年 9 月，Lido 和 SSV 网络上，也各有一批验证者被罚没。"], "section": "签名之前"}, {"seg": "4", "t0": 55.27, "t1": 66.59, "title": "防线在流程", "points": ["迁移前导出防罚没数据，确认旧实例已经停止", "再等待至少 2 个 epoch", "开启分身检测，作为最后一道防线"], "notes": ["防线在流程，迁移前导出防罚没数据，确认旧实例已经停止。", "再等待至少 2 个 epoch，并开启分身检测，作为最后一道防线。"], "section": "签名之前"}, {"seg": "4", "t0": 66.59, "t1": 82.53, "title": "看不见就签名", "points": ["relay 托管构建者组装的完整区块，只给提议者区块头", "提议者签名区块头，相信 relay 会发布完整区块并付款"], "notes": ["签名的另一个风险，是看不见就签。", "在 MEV-Boost 里，relay 托管构建者组装的完整区块，只给提议者区块头。", "提议者签名区块头，相信 relay 会发布完整区块并付款。"], "section": "签名之前"}, {"seg": "4", "t0": 82.53, "t1": 101.83, "title": "签一个无效区块头", "points": ["2023 年 4 月，一个恶意提议者签了一个无效的区块头", "旧代码照样返回区块体，他拆开三明治机器人的交易包，获利约 2000 万美元", "修复后，relay 先广播区块，再交给提议者"], "notes": ["2023 年 4 月，一个恶意提议者，签了一个无效的区块头。", "旧代码照样返回区块体，他拆开三明治机器人的交易包，获利约 2000 万美元。", "修复后，relay 先广播区块，再把区块交给提议者。"], "section": "签名之前"}, {"seg": "4", "t0": 101.83, "t1": 117.28, "title": "relay 是可信中间人", "points": ["验证者要评估自己用的 relay 和它的运营方", "2026 年 11 月单日快照：前两大构建者约占 74% 的区块"], "notes": ["relay 是可信中间人，验证者要评估自己用的 relay 和它的运营方。", "这个市场也很集中，2026 年 11 月的一个单日快照里，前两大构建者约占 74% 的区块。"], "section": "签名之前"}, {"seg": "5", "t0": 0.0, "t1": 15.31, "title": "按来源区别对待", "points": ["被替换的节点：你从别的 IP 去查，它就给你真数据", "防线不是多看几次同一个节点", "而是比对不同运营方的数据源"], "notes": ["回到开头的节点。", "它的关键，是按来源区别对待。", "你从别的 IP 去查，它就给你真数据。", "所以防线不是多看几次同一个节点，而是比对不同运营方的数据源。"], "section": "多源不降级"}, {"seg": "5", "t0": 15.31, "t1": 30.53, "title": "第一条：多源校验", "points": ["充值扫描和跨链放行，至少用两个独立来源", "比如自建节点加一家第三方 RPC", "独立按运营方算，同一家服务商的两个节点只算一个"], "notes": ["第一条，多源校验。", "充值扫描和跨链放行，至少用两个独立来源，比如自建节点加一家第三方 RPC。", "独立要按运营方算，同一家服务商的两个节点，只算一个。"], "section": "多源不降级"}, {"seg": "5", "t0": 30.53, "t1": 45.41, "title": "第二条：不降级", "points": ["节点超时后，法定数不自动下降", "达不到法定数就暂停，人工确认", "开头的事件：干净的 RPC 被打掉，系统自动切换，这就是降级"], "notes": ["第二条，不降级。", "节点超时后，法定数不自动下降。", "达不到法定数就暂停，人工确认。", "开头的事件里，干净的 RPC 被打掉，系统自动切到剩下的节点，这就是降级。"], "section": "多源不降级"}, {"seg": "5", "t0": 45.41, "t1": 49.63, "title": "第三条：冲突就暂停", "points": ["结果冲突就暂停入账，不挑一个先用"], "notes": ["第三条，结果冲突就暂停入账，不挑一个先用。"], "section": "多源不降级"}, {"seg": "5", "t0": 49.63, "t1": 68.37, "title": "第四条：节点本身也要比对", "points": ["链头和不同网络、不同运营方的来源持续比对", "对等连接也要来自不同网络", "选少数派客户端或双客户端比对，硬分叉前完成升级"], "notes": ["第四条，节点本身也要比对。", "链头要和不同网络、不同运营方的来源持续比对，对等连接也要来自不同网络。", "自建节点可以选少数派客户端，或者两种客户端互相比对，硬分叉前完成升级。"], "section": "多源不降级"}, {"seg": "5", "t0": 68.37, "t1": 80.86, "title": "有效范围与局限", "points": ["对被替换、被日蚀、停在错误分叉上的节点都有效", "局限：所有来源接在同一个上游，数量再多也没用"], "notes": ["这几条，对被替换的节点、被日蚀的节点、停在错误分叉上的节点，都有效。", "局限是，如果所有来源都接在同一个上游，数量再多也没用。"], "section": "多源不降级"}, {"seg": "6", "t0": 0.0, "t1": 11.75, "title": "按角色各做一件事", "points": ["交易所和跨链桥：列出每个资金决策读取的数据源", "去掉重复的运营方，看剩下几个"], "notes": ["按角色，各做一件事。", "交易所和跨链桥，列出每个资金决策读取的数据源，去掉重复的运营方，看剩下几个。"], "section": "今天做一件事"}, {"seg": "6", "t0": 11.75, "t1": 32.55, "title": "运维、验证者、用户", "points": ["节点运维：RPC 和 Engine API 不暴露在公网", "验证者：故障切换改人工确认，原实例停止后才启动备用", "普通用户：余额异常时换 RPC 或浏览器确认，只加官方列出的 RPC"], "notes": ["节点运维，确认 RPC 和 Engine API 没有暴露在公网。", "验证者团队，把故障切换改成人工确认，原实例停止之后，才启动备用。", "普通用户，余额显示异常时，换一个 RPC 或区块浏览器交叉确认。", "自定义 RPC，只添加官方文档列出的地址。"], "section": "今天做一件事"}, {"seg": "6", "t0": 32.55, "t1": 46.25, "title": "答案：监控发现不了", "points": ["监控查询的是同一个节点，看到的是真实数据", "要拿验证者实际收到的结果，和不同运营方的数据源比对"], "notes": ["回到开头的问题。", "监控查询的是同一个节点，看到的是真实数据，它无法发现这次攻击。", "要发现它，需要拿验证者实际收到的结果，和不同运营方的数据源比对。"], "section": "今天做一件事"}, {"seg": "6", "t0": 46.25, "t1": 55.49, "title": "先问几家独立的节点", "points": ["这只在来源真正独立时成立", "你读到的链，只是某个节点告诉你的链", "先问几家独立的节点，再签名，再入账"], "notes": ["这只在来源真正独立时成立。", "你读到的链，只是某个节点告诉你的链，先问几家独立的节点，再签名，再入账。"], "section": "今天做一件事"}]};
+  var D = {"chapter": "s17", "title": "节点、RPC 与验证者基础设施：你读到的是谁的链", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 11.99, "title": "一条不存在的跨链消息", "points": ["2026 年 4 月，KelpDAO 的 LayerZero 验证者放行一条消息", "这条消息，在源链上根本不存在"], "notes": ["2026 年 4 月，LayerZero 给 KelpDAO 确认跨链消息的验证者，放行了一条消息。", "这条消息，在源链上根本不存在。"], "section": "只对你说谎", "k": 10.3}, {"seg": "1", "t0": 11.99, "t1": 27.35, "title": "被替换的 RPC 节点", "points": ["验证者读链，靠的是两个 RPC 节点", "攻击者控制了这两个节点，替换了节点程序", "只对验证者返回伪造数据，对别的 IP 返回真实数据"], "notes": ["验证者读链，靠的是两个 RPC 节点。", "攻击者控制了这两个节点，替换了节点程序。", "被替换的节点，只对验证者返回伪造数据。", "对别的 IP 来的查询，它返回真实数据。"], "section": "只对你说谎", "k": 18.29}, {"seg": "1", "t0": 27.35, "t1": 40.65, "title": "DDoS 逼出自动切换", "points": ["用 DDoS 打掉没被攻破的外部 RPC", "系统自动切换，切到了被污染的节点上", "LayerZero 的声明写，损失约 2.9 亿美元"], "notes": ["攻击者再用 DDoS，打掉没被攻破的外部 RPC。", "系统自动切换，切到了被污染的节点上。", "LayerZero 的声明写，损失约 2.9 亿美元。"], "section": "只对你说谎", "k": 29.9}, {"seg": "1", "t0": 40.65, "t1": 50.66, "title": "先猜一道题", "points": ["监控系统也查询了这两个节点，结果一切正常", "它能发现这次攻击吗？", "先记住这个问题"], "notes": ["先猜一道题。", "监控系统也查询了这两个节点，结果一切正常。", "它能发现这次攻击吗？", "先记住这个问题。"], "section": "只对你说谎", "k": 48.2}, {"seg": "2", "t0": 0.0, "t1": 20.65, "title": "你从来没有直接读过链", "points": ["读的是某个节点、RPC 服务、索引器告诉它的链", "数据从 P2P 网络进入节点，经过 RPC，再到索引器和你的系统", "每一层，都可能给出错误的数据"], "notes": ["先给准确的说法。", "你的系统，从来没有直接读过链。", "它读的是某个节点、某个 RPC 服务、某个索引器，告诉它的链。", "数据从 P2P 网络进入节点，经过 RPC，再到索引器和你的系统。", "每一层，都可能给出错误的数据。"], "section": "你读的是谁的链", "k": 13.55}, {"seg": "2", "t0": 20.65, "t1": 43.11, "title": "第一层：节点客户端", "points": ["2020 年 11 月，Infura 的旧版 Geth 停在少数派分叉上", "依赖它的 MetaMask 等服务受到影响", "Binance、Bithumb 等交易所暂停 ETH 和 ERC-20 提币"], "notes": ["第一层是节点客户端。", "2020 年 11 月，Infura 的节点运行旧版 Geth。", "它遇到一个上游已经修复的共识 bug，停在一条少数派分叉上。", "依赖它的 MetaMask 等服务，受到影响。", "Binance、Bithumb 等交易所，暂停了 ETH 和 ERC-20 提币。"], "section": "你读的是谁的链", "k": 34.2}, {"seg": "2", "t0": 43.11, "t1": 53.15, "title": "第二、三层：RPC 与索引器", "points": ["RPC 服务会宕机、限流、返回过期数据", "索引器会延迟，也会解释错"], "notes": ["第二层是 RPC 服务，它会宕机、限流、返回过期数据。", "第三层是索引器，它会延迟，也会解释错。"], "section": "你读的是谁的链", "k": 53.15}, {"seg": "2", "t0": 53.15, "t1": 83.61, "title": "第四层：网络路由", "points": ["BGP 劫持：用错误的路由宣告，把流量引到自己的服务器", "2018 年 MyEtherWallet DNS 被指向钓鱼站，约 15 万美元", "2022 年 KLAYswap 约 190 万、Celer 约 24 万美元"], "notes": ["第四层是网络路由。", "BGP 劫持，是用错误的路由宣告，把别人的流量引到自己的服务器。", "2018 年，MyEtherWallet 的 DNS 被这样指向钓鱼站，损失约 15 万美元。", "2022 年，KLAYswap 的 SDK 下载域名被劫持，下发恶意脚本，损失约 190 万美元。", "同年，Celer cBridge 提供合约地址的子域被劫持，损失约 24 万美元。"], "section": "你读的是谁的链", "k": 74.45}, {"seg": "2", "t0": 83.61, "t1": 94.11, "title": "比喻：隔着窗看车流", "points": ["你隔着一扇窗看车流，决定什么时候过马路", "这扇窗可能是一块屏幕，可能延迟，也可能有人在播录像"], "notes": ["打个比方。", "你隔着一扇窗看车流，决定什么时候过马路。", "这扇窗可能是一块屏幕，屏幕可能延迟，也可能有人在播录像。"], "section": "你读的是谁的链", "k": 94.11}, {"seg": "2", "t0": 94.11, "t1": 105.08, "title": "很多系统只有一扇窗", "points": ["不成立处：真实的马路，你可以换一扇窗再看一眼", "很多系统只接了一个 RPC，从来没有第二扇窗"], "notes": ["比喻不成立的地方是，真实的马路，你可以换一扇窗再看一眼。", "很多系统只接了一个 RPC，从来没有第二扇窗。"], "section": "你读的是谁的链", "k": 105.08}, {"seg": "3", "t0": 0.0, "t1": 21.29, "title": "日蚀攻击", "points": ["另一种情况：节点自己看到的网络被人操纵", "攻击者占满受害节点的全部对等连接", "节点只看到攻击者给的区块和交易"], "notes": ["前面是你问节点，节点答错。", "另一种情况，是节点自己看到的网络，被人操纵。", "节点之间直接交换区块和交易，这叫 P2P 网络。", "日蚀攻击，是攻击者占满受害节点的全部对等连接。", "节点只看到攻击者给的区块和交易。"], "section": "节点被蒙住眼", "k": 21.29}, {"seg": "3", "t0": 21.29, "t1": 34.19, "title": "关键一步在节点重启", "points": ["重启时，节点会从地址表里挑选对等节点", "地址表已被攻击者填满，连上的就全是攻击者"], "notes": ["最关键的一步，在节点重启。", "重启时，节点会从地址表里挑选对等节点。", "地址表如果已经被攻击者填满，它连上的就全是攻击者。"], "section": "节点被蒙住眼", "k": 24.59}, {"seg": "3", "t0": 34.19, "t1": 51.33, "title": "两台主机就够", "points": ["2018 年论文：两台主机、各一个 IP，就能日蚀一个以太坊节点", "Geth 1.8.0 随后限制了同一网段的节点数", "比特币加了锚点连接，重启时优先恢复上次的出站连接"], "notes": ["2018 年的一篇论文显示，两台主机、各一个 IP，就能日蚀一个以太坊节点。", "Geth 1.8.0 随后限制了同一网段的节点数。", "比特币加了锚点连接，重启时优先恢复上次的出站连接。"], "section": "节点被蒙住眼", "k": 41.49}, {"seg": "3", "t0": 51.33, "t1": 65.11, "title": "被日蚀的节点看起来正常", "points": ["有连接，也有新块，只是落后，或者在错误的分支上", "对等节点数只说明有连接，不说明来自独立的运营方"], "notes": ["被日蚀的节点，同步状态看起来正常。", "它有连接，也有新块，只是落后，或者在错误的分支上。", "对等节点数只说明有连接，不说明连接来自独立的运营方。"], "section": "节点被蒙住眼", "k": 65.11}, {"seg": "3", "t0": 65.11, "t1": 77.93, "title": "DoS 是数据污染的前置", "points": ["节点崩溃，也可能是攻击的第一步", "切换逻辑把流量转到不可信的备用节点", "开头的事件正是这样"], "notes": ["节点崩溃，也可能是攻击的第一步。", "切换逻辑如果把流量转到不可信的备用节点，DoS 就成了数据污染的前置步骤。", "开头的事件正是这样。"], "section": "节点被蒙住眼", "k": 77.93}, {"seg": "3", "t0": 77.93, "t1": 93.31, "title": "暴露的 JSON-RPC", "points": ["2018 年，一个团伙扫描暴露 JSON-RPC 的以太坊节点", "盗走约 3.8 万个 ETH", "Geth 默认只监听本机，接口是运营者自己打开的"], "notes": ["另一类事故，来自节点自己的配置。", "2018 年，一个团伙扫描暴露 JSON-RPC 的以太坊节点，盗走约 3.8 万个 ETH。", "Geth 默认只监听本机，接口是运营者自己打开的。"], "section": "节点被蒙住眼", "k": 93.31}, {"seg": "3", "t0": 93.31, "t1": 106.68, "title": "接口只对内开放", "points": ["RPC 接口只绑内网或本机，对外必须经过认证网关", "Engine API 只对共识客户端开放，并用 JWT 认证"], "notes": ["RPC 接口只绑内网或本机，对外必须经过认证网关。", "给执行客户端下指令的 Engine API，只对共识客户端开放，并用 JWT 认证。"], "section": "节点被蒙住眼", "k": 104.61}, {"seg": "4", "t0": 0.0, "t1": 18.35, "title": "罚没与双签", "points": ["罚没：PoS 验证者违规，被扣除部分质押并强制退出", "最常见的原因是双签", "同一把密钥，对同一个位置，签了两个不同的消息"], "notes": ["验证者这一端，风险出在签名上。", "罚没，是 PoS 验证者违反协议，被扣除部分质押并强制退出。", "最常见的原因是双签。", "同一把密钥，对同一个位置，签了两个不同的消息。"], "section": "签名之前", "k": 8.3}, {"seg": "4", "t0": 18.35, "t1": 33.01, "title": "凌晨的故障切换", "points": ["主机 A 失去响应，运维在备用机 B 上启动同一把密钥", "其实 A 没有停，两台机器对同一个 slot 各签一票", "网络检测到双签，验证者被罚没"], "notes": ["凌晨，运维看到主机 A 失去响应，就在备用机 B 上启动同一把密钥。", "其实 A 没有停，两台机器对同一个 slot 各签一票。", "网络检测到双签，验证者被罚没。"], "section": "签名之前", "k": 32.15}, {"seg": "4", "t0": 33.01, "t1": 55.27, "title": "罚没多发生在切换迁移时", "points": ["2021 年 2 月，一家服务商重启出错，75 个验证者被罚没约 18 ETH", "2023 年 10 月、2025 年 9 月，Lido 和 SSV 上也各有一批"], "notes": ["公开的罚没事件，几乎都发生在故障切换或迁移时。", "2021 年 2 月，一家质押服务商重启出错，75 个验证者被罚没，约 18 ETH。", "2023 年 10 月和 2025 年 9 月，Lido 和 SSV 网络上，也各有一批验证者被罚没。"], "section": "签名之前", "k": 47.81}, {"seg": "4", "t0": 55.27, "t1": 66.59, "title": "防线在流程", "points": ["迁移前导出防罚没数据，确认旧实例已经停止", "再等待至少 2 个 epoch", "开启分身检测，作为最后一道防线"], "notes": ["防线在流程，迁移前导出防罚没数据，确认旧实例已经停止。", "再等待至少 2 个 epoch，并开启分身检测，作为最后一道防线。"], "section": "签名之前", "k": 66.59}, {"seg": "4", "t0": 66.59, "t1": 82.53, "title": "看不见就签名", "points": ["relay 托管构建者组装的完整区块，只给提议者区块头", "提议者签名区块头，相信 relay 会发布完整区块并付款"], "notes": ["签名的另一个风险，是看不见就签。", "在 MEV-Boost 里，relay 托管构建者组装的完整区块，只给提议者区块头。", "提议者签名区块头，相信 relay 会发布完整区块并付款。"], "section": "签名之前", "k": 79.14}, {"seg": "4", "t0": 82.53, "t1": 101.83, "title": "签一个无效区块头", "points": ["2023 年 4 月，一个恶意提议者签了一个无效的区块头", "旧代码照样返回区块体，他拆开三明治机器人的交易包，获利约 2000 万美元", "修复后，relay 先广播区块，再交给提议者"], "notes": ["2023 年 4 月，一个恶意提议者，签了一个无效的区块头。", "旧代码照样返回区块体，他拆开三明治机器人的交易包，获利约 2000 万美元。", "修复后，relay 先广播区块，再把区块交给提议者。"], "section": "签名之前", "k": 97.33}, {"seg": "4", "t0": 101.83, "t1": 117.28, "title": "relay 是可信中间人", "points": ["验证者要评估自己用的 relay 和它的运营方", "2026 年 11 月单日快照：前两大构建者约占 74% 的区块"], "notes": ["relay 是可信中间人，验证者要评估自己用的 relay 和它的运营方。", "这个市场也很集中，2026 年 11 月的一个单日快照里，前两大构建者约占 74% 的区块。"], "section": "签名之前", "k": 107.63}, {"seg": "5", "t0": 0.0, "t1": 15.31, "title": "按来源区别对待", "points": ["被替换的节点：你从别的 IP 去查，它就给你真数据", "防线不是多看几次同一个节点", "而是比对不同运营方的数据源"], "notes": ["回到开头的节点。", "它的关键，是按来源区别对待。", "你从别的 IP 去查，它就给你真数据。", "所以防线不是多看几次同一个节点，而是比对不同运营方的数据源。"], "section": "多源不降级", "k": 15.31}, {"seg": "5", "t0": 15.31, "t1": 30.53, "title": "第一条：多源校验", "points": ["充值扫描和跨链放行，至少用两个独立来源", "比如自建节点加一家第三方 RPC", "独立按运营方算，同一家服务商的两个节点只算一个"], "notes": ["第一条，多源校验。", "充值扫描和跨链放行，至少用两个独立来源，比如自建节点加一家第三方 RPC。", "独立要按运营方算，同一家服务商的两个节点，只算一个。"], "section": "多源不降级", "k": 30.53}, {"seg": "5", "t0": 30.53, "t1": 45.41, "title": "第二条：不降级", "points": ["节点超时后，法定数不自动下降", "达不到法定数就暂停，人工确认", "开头的事件：干净的 RPC 被打掉，系统自动切换，这就是降级"], "notes": ["第二条，不降级。", "节点超时后，法定数不自动下降。", "达不到法定数就暂停，人工确认。", "开头的事件里，干净的 RPC 被打掉，系统自动切到剩下的节点，这就是降级。"], "section": "多源不降级", "k": 37.58}, {"seg": "5", "t0": 45.41, "t1": 49.63, "title": "第三条：冲突就暂停", "points": ["结果冲突就暂停入账，不挑一个先用"], "notes": ["第三条，结果冲突就暂停入账，不挑一个先用。"], "section": "多源不降级", "k": 49.63}, {"seg": "5", "t0": 49.63, "t1": 68.37, "title": "第四条：节点本身也要比对", "points": ["链头和不同网络、不同运营方的来源持续比对", "对等连接也要来自不同网络", "选少数派客户端或双客户端比对，硬分叉前完成升级"], "notes": ["第四条，节点本身也要比对。", "链头要和不同网络、不同运营方的来源持续比对，对等连接也要来自不同网络。", "自建节点可以选少数派客户端，或者两种客户端互相比对，硬分叉前完成升级。"], "section": "多源不降级", "k": 66.18}, {"seg": "5", "t0": 68.37, "t1": 80.86, "title": "有效范围与局限", "points": ["对被替换、被日蚀、停在错误分叉上的节点都有效", "局限：所有来源接在同一个上游，数量再多也没用"], "notes": ["这几条，对被替换的节点、被日蚀的节点、停在错误分叉上的节点，都有效。", "局限是，如果所有来源都接在同一个上游，数量再多也没用。"], "section": "多源不降级", "k": 78.17}, {"seg": "6", "t0": 0.0, "t1": 11.75, "title": "按角色各做一件事", "points": ["交易所和跨链桥：列出每个资金决策读取的数据源", "去掉重复的运营方，看剩下几个"], "notes": ["按角色，各做一件事。", "交易所和跨链桥，列出每个资金决策读取的数据源，去掉重复的运营方，看剩下几个。"], "section": "今天做一件事", "k": 11.75}, {"seg": "6", "t0": 11.75, "t1": 32.55, "title": "运维、验证者、用户", "points": ["节点运维：RPC 和 Engine API 不暴露在公网", "验证者：故障切换改人工确认，原实例停止后才启动备用", "普通用户：余额异常时换 RPC 或浏览器确认，只加官方列出的 RPC"], "notes": ["节点运维，确认 RPC 和 Engine API 没有暴露在公网。", "验证者团队，把故障切换改成人工确认，原实例停止之后，才启动备用。", "普通用户，余额显示异常时，换一个 RPC 或区块浏览器交叉确认。", "自定义 RPC，只添加官方文档列出的地址。"], "section": "今天做一件事", "k": 30.3}, {"seg": "6", "t0": 32.55, "t1": 46.25, "title": "答案：监控发现不了", "points": ["监控查询的是同一个节点，看到的是真实数据", "要拿验证者实际收到的结果，和不同运营方的数据源比对"], "notes": ["回到开头的问题。", "监控查询的是同一个节点，看到的是真实数据，它无法发现这次攻击。", "要发现它，需要拿验证者实际收到的结果，和不同运营方的数据源比对。"], "section": "今天做一件事", "k": 46.25}, {"seg": "6", "t0": 46.25, "t1": 55.49, "title": "先问几家独立的节点", "points": ["这只在来源真正独立时成立", "你读到的链，只是某个节点告诉你的链", "先问几家独立的节点，再签名，再入账"], "notes": ["这只在来源真正独立时成立。", "你读到的链，只是某个节点告诉你的链，先问几家独立的节点，再签名，再入账。"], "section": "今天做一件事", "k": 55.49}]};
   var S = D.slides, N = S.length, KEY = 'deck-' + D.chapter;
   var $ = function (id) { return document.getElementById(id); };
-  var screen = $('screen'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
+  var screen = $('screen'), still = $('still'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
   var store = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
                 set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
   try { var pt = parent !== window && parent.document.documentElement.getAttribute('data-theme'); if (pt) document.documentElement.setAttribute('data-theme', pt); } catch (e) {}
@@ -141,32 +144,54 @@ button { font: inherit; color: inherit; }
     var g = groups[groups.length - 1];
     if (!g || g.seg !== s.seg) { g = { seg: s.seg, el: document.createElement('div') }; g.el.className = 'grp'; groups.push(g); prog.appendChild(g.el); g.n = 0; }
     var b = document.createElement('button'); b.title = (i + 1) + ' · ' + s.title; b.setAttribute('aria-label', '第 ' + (i + 1) + ' 页：' + s.title);
-    b.onclick = function () { go(i, 'seek'); }; g.el.appendChild(b); g.n++; s.dot = b;
+    b.onclick = function () { show(i); }; g.el.appendChild(b); g.n++; s.dot = b;
   });
   groups.forEach(function (g) { g.el.style.setProperty('--n', g.n); });
 
+  // all stills of the chapter are one sprite: 6 columns, slide i at (i % 6, i / 6)
+  var COLS = 6, ROWS = Math.ceil(N / COLS), sheetReady = false, sheet = new Image();
+  sheet.onload = function () { sheetReady = true; if (!screen.classList.contains('live')) $('wait').hidden = true; };
+  sheet.src = 'stills.webp';
+  still.style.backgroundImage = 'url(stills.webp)';
+  still.style.backgroundSize = (COLS * 100) + '% ' + (ROWS * 100) + '%';
+  function tile(i) {
+    var c = i % COLS, r = Math.floor(i / COLS);
+    still.style.backgroundPosition = (COLS > 1 ? c / (COLS - 1) * 100 : 0) + '% ' + (ROWS > 1 ? r / (ROWS - 1) * 100 : 0) + '%';
+  }
+
+  // ---------- live animation (only when asked) ----------
   function scale() { var k = screen.clientWidth / 1920; for (var s in frames) frames[s].style.transform = 'scale(' + k + ')'; }
   if (window.ResizeObserver) new ResizeObserver(scale).observe(screen); else addEventListener('resize', scale);
-
   function frame(seg) {
     if (frames[seg]) return frames[seg];
     var f = document.createElement('iframe'); f.src = 's' + seg + '.html'; f.title = '第 ' + seg + ' 节动画'; f.tabIndex = -1;
     f.setAttribute('aria-hidden', 'true'); screen.appendChild(f); frames[seg] = f; scale(); return f;
   }
+  function live(seg) {
+    for (var k in frames) frames[k].classList.toggle('on', k === seg);
+    screen.classList.add('live'); $('wait').hidden = true;
+  }
   function send(seg, msg) {
     msg.deck = 'cmd';
-    if (ready[seg]) frames[seg].contentWindow.postMessage(msg, '*'); else pending[seg] = msg;
+    if (ready[seg]) { frames[seg].contentWindow.postMessage(msg, '*'); live(seg); } else pending[seg] = msg;
   }
   addEventListener('message', function (e) {
     var m = e.data || {};
     if (!m.deck || !frames[m.seg] || e.source !== frames[m.seg].contentWindow) return;
     if (m.deck === 'ready') {
       ready[m.seg] = true;
-      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; send(m.seg, p); }
-      if (cur >= 0 && S[cur].seg === m.seg) $('wait').hidden = true;
-    } else if (m.deck === 'done' && cur >= 0 && S[cur].seg === m.seg) { playing = false; paint(); }
+      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; if (playing && S[cur].seg === m.seg) send(m.seg, p); }
+    } else if (m.deck === 'done' && playing && S[cur].seg === m.seg) { playing = false; paint(); }
   });
+  function process() {
+    var s = S[cur];
+    playing = true; frame(s.seg);
+    if (!ready[s.seg]) { $('wait').textContent = '载入动画…'; $('wait').hidden = false; }
+    send(s.seg, { play: [s.t0, s.k], rate: +$('speed').value });
+    paint();
+  }
 
+  // ---------- slides ----------
   function paint() {
     var s = S[cur];
     $('sec').textContent = s.section;
@@ -175,27 +200,21 @@ button { font: inherit; color: inherit; }
     $('lines').innerHTML = ''; s.notes.forEach(function (p) { var li = document.createElement('li'); li.textContent = p; $('lines').appendChild(li); });
     $('count').textContent = (cur + 1) + ' / ' + N;
     $('prev').disabled = cur === 0;
-    $('next').textContent = playing ? '跳到本页结尾 ›' : (cur === N - 1 ? '回到正文 ›' : '下一页 ›');
+    $('next').textContent = cur === N - 1 ? '回到正文 ›' : '下一页 ›';
+    $('replay').textContent = playing ? '⟳ 从头播放' : (screen.classList.contains('live') ? '⟳ 再看一遍' : '▶ 看过程');
     S.forEach(function (x, i) { x.dot.className = i === cur ? 'cur' : (seen[i] ? 'seen' : ''); });
   }
-  function go(i, mode) {
+  function show(i) {
     if (i < 0 || i >= N) return;
-    var s = S[i]; cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
-    var f = frame(s.seg);
-    for (var k in frames) frames[k].classList.toggle('on', k === s.seg);
-    $('wait').hidden = !!ready[s.seg];
-    playing = mode === 'play';
-    send(s.seg, playing ? { play: [s.t0, s.t1], rate: +$('speed').value } : { seek: s.t1 });
-    // warm the next segment while this one is on screen
-    if (i + 1 < N && S[i + 1].seg !== s.seg) frame(S[i + 1].seg);
+    cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
+    playing = false; pending = {};
+    tile(i); still.setAttribute('aria-label', S[i].title);
+    screen.classList.remove('live'); $('wait').textContent = sheetReady ? '载入动画…' : '载入画面…'; $('wait').hidden = sheetReady;
+    for (var k in frames) frames[k].classList.remove('on');
     paint();
   }
-  function next() {
-    if (playing) { go(cur, 'seek'); return; }
-    if (cur === N - 1) { back(); return; }
-    go(cur + 1, 'play');
-  }
-  function prev() { go(cur - 1, 'seek'); }
+  function next() { if (cur === N - 1) { back(); return; } show(cur + 1); }
+  function prev() { show(cur - 1); }
   function back() {
     if (parent !== window) parent.postMessage({ cexNav: D.chapter }, '*');
     else location.href = '../../index.html#' + D.chapter;
@@ -206,18 +225,18 @@ button { font: inherit; color: inherit; }
   }
   if (!document.fullscreenEnabled) $('fs').hidden = true;
 
-  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = function () { go(cur, 'play'); };
+  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = process;
   $('back').onclick = back; $('fs').onclick = fullscreen;
   addEventListener('keydown', function (e) {
     if (e.target.tagName === 'SELECT' || e.metaKey || e.ctrlKey || e.altKey) return;
     var k = e.key;
     if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); next(); }
     else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
-    else if (k === 'r' || k === 'R') go(cur, 'play');
+    else if (k === 'p' || k === 'P' || k === 'r' || k === 'R') process();
     else if (k === 'f' || k === 'F') fullscreen();
     else if (k === 'n' || k === 'N') $('notes').open = !$('notes').open;
-    else if (k === 'Home') go(0, 'seek');
-    else if (k === 'End') go(N - 1, 'seek');
+    else if (k === 'Home') show(0);
+    else if (k === 'End') show(N - 1);
   });
   // tap = next; horizontal swipe = next / previous
   var x0 = null, y0 = null;
@@ -230,7 +249,7 @@ button { font: inherit; color: inherit; }
   });
 
   var start = +store.get(KEY); if (!(start >= 0 && start < N)) start = 0;
-  go(start, start === 0 ? 'play' : 'seek');
+  show(start);
 })();
 </script>
 </body>

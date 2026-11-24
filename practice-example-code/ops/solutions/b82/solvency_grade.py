@@ -7,7 +7,7 @@
   python3 practice-example-code/ops/solutions/b82/solvency_grade.py --no-netting --only-breach
   python3 practice-example-code/ops/solutions/b82/solvency_grade.py --adjust USD@2026-03-10:2026-03-12=480000 --only-breach
 
-口径（本手册示例，对应 X27 3.4 与 6.2，不是行业标准）：
+口径（本手册示例，对应 X30 3.4 与 6.2，不是行业标准）：
   覆盖率 = 储备合计 / 负债合计（按币数，--basis usd 改按美元）
   分级：>= 100% 绿；95%–100% 黄；< 95% 红
   升级：同一资产连续 2 天及以上不是绿，黄升为红（按日快照，用"连续天数"近似"超过 24 小时未解释"）

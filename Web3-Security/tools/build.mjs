@@ -30,29 +30,70 @@ const NAV = [
   ['p2', '第二篇 · 合约代码层', ['04', '05', '06', '07']],
   ['p3', '第三篇 · DeFi 与协议层', ['08', '09', '10', '11', '12']],
   ['p4', '第四篇 · 非 EVM 与新范式', ['13', '14', '15']],
-  ['p5', '第五篇 · 链与基础设施', ['16', '17', '30']],
-  ['p6', '第六篇 · 钱包、用户与运营', ['18', '19', '20', '21', '22', '23', '24', '25']],
-  ['p7', '第七篇 · AI 与前沿', ['26']],
+  ['p5', '第五篇 · 链与基础设施', ['16', '17', '30', '31']],
+  ['p6', '第六篇 · 钱包、用户与运营', ['18', '19', '20', '21', '22', '23', '24', '25', '32']],
+  ['p7', '第七篇 · AI 与前沿', ['26', '33']],
   ['p8', '第八篇 · 工程与复盘', ['27', '28', '29']],
-  ['chain', '链专题 · ETH / BNB / TRON / Mantle', 'chains'],
+  ['chain', '链专题 · 主流公链与 Rollup', 'chains'],
   ['asm', '评估篇 · 交易所 / DeFi / 上币尽调', 'assessment'],
   ['tpl', '评估模板', 'templates'],
   ['code', '示例合约', ['practice-example-code/README.md']],
-  ['xa', '架构 A · 通用底座', ['arch/X00-coverage-map.md', 'arch/X01-security-program-controls.md', 'arch/X02-standards-compliance-map.md', 'arch/X03-production-infra-security.md', 'arch/X04-delivery-supply-chain.md', 'arch/X05-detection-response-engineering.md', 'arch/X06-resilience-validation.md']],
-  ['xb', '架构 B · 交易所', ['arch/X07-cex-architecture-overview.md', 'arch/X08-cex-identity-account-access.md', 'arch/X09-cex-asset-listing-market-access.md', 'arch/X10-cex-trading-settlement-credit.md', 'arch/X11-cex-wallet-treasury-payment.md', 'arch/X12-cex-production-data.md', 'arch/X13-cex-fraud-compliance-secops.md', 'arch/X14-cex-identity-verification.md', 'arch/X15-cex-identity-recovery-ops.md', 'arch/X16-cex-listing-verification.md', 'arch/X17-cex-listing-recovery-ops.md', 'arch/X18-cex-trading-verification.md', 'arch/X19-cex-trading-recovery-ops.md', 'arch/X20-cex-treasury-verification.md', 'arch/X21-cex-treasury-recovery-ops.md', 'arch/X22-cex-production-verification.md', 'arch/X23-cex-production-recovery-ops.md', 'arch/X24-cex-fraud-verification.md', 'arch/X25-cex-fraud-recovery-ops.md', 'arch/X26-cex-ledger-wallet-handoff.md', 'arch/X27-cex-reserves-solvency.md']],
-  ['xc', '架构 C · 公链与项目方', ['arch/X28-chain-foundation-client-ops.md', 'arch/X29-l2-bridge-oracle-ops.md', 'arch/X30-defi-project-ops.md', 'arch/X31-stablecoin-rwa-issuer-ops.md', 'arch/X32-staking-validator-ops.md', 'arch/X33-disclosure-bounty-ops.md']],
-  ['xd', '架构 D · 其他应用场景', ['arch/X34-wallet-vendor-security.md', 'arch/X35-custodian-security.md', 'arch/X36-payment-otc-fiat-security.md', 'arch/X37-market-maker-security.md', 'arch/X38-agent-platform-security.md']],
-  ['xe', '架构 E · 场景与能力补缺', ['arch/X39-nft-gamefi-ops.md', 'arch/X40-prediction-derivatives-ops.md', 'arch/X41-restaking-lst-ops.md', 'arch/X42-dao-governance-ops.md', 'arch/X43-privacy-protocol-ops.md', 'arch/X44-mobile-client-security.md', 'arch/X45-tee-hsm-key-ceremony.md', 'arch/X46-threat-intel-ops.md', 'arch/X47-people-security.md', 'arch/X48-security-team-management.md']],
+  ['xa', 'A · 通用底座', ['arch/X00-coverage-map.md', 'arch/X01-security-program-controls.md', 'arch/X02-standards-compliance-map.md', 'arch/X03-production-infra-security.md', 'arch/X04-delivery-supply-chain.md', 'arch/X05-detection-response-engineering.md', 'arch/X06-resilience-validation.md', 'arch/X07-threat-intel-ops.md', 'arch/X08-people-security.md', 'arch/X09-security-team-management.md']],
+  ['xb', 'B · 交易所', ['arch/X10-cex-architecture-overview.md', 'arch/X11-cex-identity-account-access.md', 'arch/X12-cex-asset-listing-market-access.md', 'arch/X13-cex-trading-settlement-credit.md', 'arch/X14-cex-wallet-treasury-payment.md', 'arch/X15-cex-production-data.md', 'arch/X16-cex-fraud-compliance-secops.md', 'arch/X17-cex-identity-verification.md', 'arch/X18-cex-identity-recovery-ops.md', 'arch/X19-cex-listing-verification.md', 'arch/X20-cex-listing-recovery-ops.md', 'arch/X21-cex-trading-verification.md', 'arch/X22-cex-trading-recovery-ops.md', 'arch/X23-cex-treasury-verification.md', 'arch/X24-cex-treasury-recovery-ops.md', 'arch/X25-cex-production-verification.md', 'arch/X26-cex-production-recovery-ops.md', 'arch/X27-cex-fraud-verification.md', 'arch/X28-cex-fraud-recovery-ops.md', 'arch/X29-cex-ledger-wallet-handoff.md', 'arch/X30-cex-reserves-solvency.md']],
+  ['xc', 'C · 公链与项目方', ['arch/X31-chain-foundation-client-ops.md', 'arch/X32-l2-bridge-oracle-ops.md', 'arch/X33-defi-project-ops.md', 'arch/X34-stablecoin-rwa-issuer-ops.md', 'arch/X35-staking-validator-ops.md', 'arch/X36-disclosure-bounty-ops.md']],
+  ['xd', 'D · 其他应用场景', ['arch/X37-wallet-vendor-security.md', 'arch/X38-custodian-security.md', 'arch/X39-mobile-client-security.md', 'arch/X40-tee-hsm-key-ceremony.md', 'arch/X41-payment-otc-fiat-security.md', 'arch/X42-market-maker-security.md', 'arch/X43-agent-platform-security.md', 'arch/X44-nft-gamefi-ops.md', 'arch/X45-prediction-derivatives-ops.md', 'arch/X46-restaking-lst-ops.md', 'arch/X47-dao-governance-ops.md', 'arch/X48-privacy-protocol-ops.md']],
 ];
 // Old 合约安全学习手册 anchors -> new ids (old links keep working).
 // Old anchors -> current ids (c..: 合约手册; r..: 第九篇, folded 2026-11-10; b..: bootcamp before sequential renumbering 2026-11-11). Targets must never be alias keys.
-const ALIASES = { c01: 's01', c02: 's03', c03: 's04', c04: 's05', c05: 's06', c06: 's07', c07: 's08', c08: 's09', c09: 's10', c10: 's11', c11: 's12', c12: 's27', c13: 's28', r00: 'w00', r01: 'w00', r02: 'w03', r03: 'w06', r04: 'w14', r05: 'w10', r06: 'w17', r07: 'w18', r08: 'w20', r09: 'w17', r10: 'w36', r11: 'w10', r12: 'w46', r13: 'w49', r14: 'w22', r15: 'w23', r16: 'w55', r17: 'w28', r18: 'w32', r19: 'w36', r20: 'w37', r21: 'w39', r22: 'w40', r23: 'w41', r24: 'w42', r25: 'w25', r26: 'w56', r27: 'w57', r28: 'w75', r29: 'w52', r30: 'w53', r31: 'w54', b00: 'w00', b70: 'w01', b00b: 'w02', b24: 'w03', b01: 'w04', b02: 'w05', b03: 'w06', b71: 'w07', b04: 'w08', b05x: 'w09', b25: 'w10', b72: 'w11', b03b: 'w12', b07: 'w13', b06: 'w14', b08: 'w15', b73: 'w16', b26: 'w17', b27: 'w18', b09: 'w19', b28: 'w20', b10: 'w21', b30: 'w22', b31: 'w23', b25b: 'w24', b32: 'w25', b32b: 'w25', b74: 'w27', b05: 'w28', b20: 'w29', b21: 'w30', b23: 'w31', b33: 'w32', b11: 'w33', b12: 'w34', b75: 'w35', b34: 'w36', b35: 'w37', b19: 'w38', b36: 'w39', b37: 'w40', b38: 'w41', b39: 'w42', b17: 'w43', b18: 'w44', b76: 'w45', b13: 'w46', b13b: 'w46', b22: 'w48', b40: 'w49', b14: 'w50', b77: 'w51', b42: 'w52', b43: 'w53', b44: 'w54', b15: 'w55', b16: 'w56', b41: 'w57', b78: 'w58', b46: 'w59', b47: 'w60', b47b: 'w60', b50: 'w62', b50b: 'w63', b79: 'w64', b48: 'w65', b48b: 'w65', b49: 'w67', b49b: 'w67', b51: 'w69', b51b: 'w70', b52: 'w71', b52b: 'w72', b53: 'w73', b53b: 'w74', b45: 'w75', b05b: 'w09', b29: 'w17', s16b: 's16', s17b: 's17', s23b: 's23', s29b: 's29', s30b: 's30', k00b: 'k00', w26: 'w25', w47: 'w46', w61: 'w60', w66: 'w65', w68: 'w67' };
+const ALIASES = { c01: 's01', c02: 's03', c03: 's04', c04: 's05', c05: 's06', c06: 's07', c07: 's08', c08: 's09', c09: 's10', c10: 's11', c11: 's12', c12: 's27', c13: 's28', r00: 'w00', r01: 'w00', r02: 'w03', r03: 'w06', r04: 'w14', r05: 'w10', r06: 'w17', r07: 'w18', r08: 'w20', r09: 'w17', r10: 'w36', r11: 'w10', r12: 'w46', r13: 'w49', r14: 'w22', r15: 'w23', r16: 'w55', r17: 'w28', r18: 'w32', r19: 'w36', r20: 'w37', r21: 'w39', r22: 'w40', r23: 'w41', r24: 'w42', r25: 'w25', r26: 'w56', r27: 'w57', r28: 'w75', r29: 'w52', r30: 'w53', r31: 'w54', b00: 'w00', b70: 'w01', b00b: 'w02', b24: 'w03', b01: 'w04', b02: 'w05', b03: 'w06', b71: 'w07', b04: 'w08', b05x: 'w09', b25: 'w10', b72: 'w11', b03b: 'w12', b07: 'w13', b06: 'w14', b08: 'w15', b73: 'w16', b26: 'w17', b27: 'w18', b09: 'w19', b28: 'w20', b10: 'w21', b30: 'w22', b31: 'w23', b25b: 'w24', b32: 'w25', b32b: 'w25', b74: 'w27', b05: 'w28', b20: 'w29', b21: 'w30', b23: 'w31', b33: 'w32', b11: 'w33', b12: 'w34', b75: 'w35', b34: 'w36', b35: 'w37', b19: 'w38', b36: 'w39', b37: 'w40', b38: 'w41', b39: 'w42', b17: 'w43', b18: 'w44', b76: 'w45', b13: 'w46', b13b: 'w46', b22: 'w48', b40: 'w49', b14: 'w50', b77: 'w51', b42: 'w52', b43: 'w53', b44: 'w54', b15: 'w55', b16: 'w56', b41: 'w57', b78: 'w58', b46: 'w59', b47: 'w60', b47b: 'w60', b50: 'w62', b50b: 'w63', b79: 'w64', b48: 'w65', b48b: 'w65', b49: 'w67', b49b: 'w67', b51: 'w69', b51b: 'w70', b52: 'w71', b52b: 'w72', b53: 'w73', b53b: 'w74', b45: 'w75', b05b: 'w09', b29: 'w17', s16b: 's16', s17b: 's17', s23b: 's23', s29b: 's29', s30b: 's30', k00b: 'k00', w26: 'w25', w47: 'w46', w61: 'w60', w66: 'w65', w68: 'w67' , x07: 'y10', x08: 'y11', x09: 'y12', x10: 'y13', x11: 'y14', x12: 'y15', x13: 'y16', x14: 'y17', x15: 'y18', x16: 'y19', x17: 'y20', x18: 'y21', x19: 'y22', x20: 'y23', x21: 'y24', x22: 'y25', x23: 'y26', x24: 'y27', x25: 'y28', x26: 'y29', x27: 'y30', x28: 'y31', x29: 'y32', x30: 'y33', x31: 'y34', x32: 'y35', x33: 'y36', x34: 'y37', x35: 'y38', x36: 'y41', x37: 'y42', x38: 'y43', x39: 'y44', x40: 'y45', x41: 'y46', x42: 'y47', x43: 'y48', x44: 'y39', x45: 'y40', x46: 'y07', x47: 'y08', x48: 'y09' };
 // Bootcamp ids are stable per file slug, so display numbers (B00, B01...) can be renumbered without moving progress. New chapters: add slug -> new unused id.
 const BOOT_IDS = { 'trading-replay-practice': 'w84', 'resumption-recovery-practice': 'w85', 'wallet-channel-recon-practice': 'w86', 'reserves-solvency-practice': 'w87', 'fraud-rules-casework-practice': 'w88', 'offchain-l3-guide': 'w76', 'control-matrix-practice': 'w77', 'withdrawal-risk-rules-practice': 'w78', 'detection-engineering-practice': 'w79', 'signing-policy-practice': 'w80', 'release-gate-practice': 'w81', 'tabletop-postmortem-practice': 'w82', 'security-architecture-capstone': 'w83', 'account-access-security': 'w63', 'incident-response-practice': 'w70', 'privacy-compliance-practice': 'w72', 'zk-bridge-practice': 'w74', 'roadmap': 'w00', 'stage0-guide': 'w01', 'study-method': 'w02', 'blockchain-basics': 'w03', 'setup': 'w04', 'first-contract': 'w05', 'foundry-basics': 'w06', 'stage1-guide': 'w07', 'tokens-and-vault': 'w08', 'reading-code-mindset': 'w09', 'ctf-practice': 'w10', 'stage2-guide': 'w11', 'foundry-advanced': 'w12', 'audit-1-notebox': 'w13', 'writing-findings': 'w14', 'audit-2-luckypot': 'w15', 'stage3-guide': 'w16', 'defi-basics': 'w17', 'dex-amm': 'w18', 'audit-3-miniswap': 'w19', 'lending-cdp': 'w20', 'audit-4-flashdesk': 'w21', 'economics-governance': 'w22', 'complex-protocols': 'w23', 'defi-ctf': 'w24', 'capstone-minilend': 'w25', 'stage4-guide': 'w27', 'what-is-audit': 'w28', 'bug-patterns': 'w29', 'why-audits-miss': 'w30', 'think-aloud': 'w31', 'automation-tools': 'w32', 'audit-5-echobridge': 'w33', 'audit-6-guardvault': 'w34', 'stage5-guide': 'w35', 'case-method': 'w36', 'case-uniswap-v2': 'w37', 'clamm-v4': 'w38', 'case-aave-v3': 'w39', 'case-lido': 'w40', 'case-safe': 'w41', 'case-erc4626': 'w42', 'perps': 'w43', 'audit-7-perplite': 'w44', 'stage6-guide': 'w45', 'yul-opcodes': 'w46', 'calldata-memory': 'w48', 'gas': 'w49', 'formal-verification': 'w50', 'stage7-guide': 'w51', 'solana-audit': 'w52', 'move-audit': 'w53', 'ai-assisted-audit': 'w54', 'contests-and-habits': 'w55', 'expert': 'w56', 'interview': 'w57', 'offchain-l1-guide': 'w58', 'wallet-key-practice': 'w59', 'signing-phishing-practice': 'w60', 'social-engineering-practice': 'w62', 'offchain-l2-guide': 'w64', 'frontend-supply-chain-practice': 'w65', 'node-rpc-practice': 'w67', 'custody-ops-ir-practice': 'w69', 'tracing-privacy-practice': 'w71', 'crypto-zk-bridge-practice': 'w73', 'glossary-resources': 'w75' };
 const OLD_FILES = {
   '02-evm-solidity-basics.md': 's03', '03-reentrancy.md': 's04', '04-access-control.md': 's05', '05-arithmetic-precision.md': 's06',
   '06-external-calls-tokens.md': 's07', '07-oracle-flashloan.md': 's08', '08-mev-signatures.md': 's09', '09-upgradeable-proxy.md': 's10',
   '10-defi-economic-security.md': 's11', '11-cross-chain-bridges.md': 's12', '12-audit-testing-workflow.md': 's27', '13-incident-casebook.md': 's28',
+  'arch/X07-cex-architecture-overview.md': 'y10',
+  'arch/X08-cex-identity-account-access.md': 'y11',
+  'arch/X09-cex-asset-listing-market-access.md': 'y12',
+  'arch/X10-cex-trading-settlement-credit.md': 'y13',
+  'arch/X11-cex-wallet-treasury-payment.md': 'y14',
+  'arch/X12-cex-production-data.md': 'y15',
+  'arch/X13-cex-fraud-compliance-secops.md': 'y16',
+  'arch/X14-cex-identity-verification.md': 'y17',
+  'arch/X15-cex-identity-recovery-ops.md': 'y18',
+  'arch/X16-cex-listing-verification.md': 'y19',
+  'arch/X17-cex-listing-recovery-ops.md': 'y20',
+  'arch/X18-cex-trading-verification.md': 'y21',
+  'arch/X19-cex-trading-recovery-ops.md': 'y22',
+  'arch/X20-cex-treasury-verification.md': 'y23',
+  'arch/X21-cex-treasury-recovery-ops.md': 'y24',
+  'arch/X22-cex-production-verification.md': 'y25',
+  'arch/X23-cex-production-recovery-ops.md': 'y26',
+  'arch/X24-cex-fraud-verification.md': 'y27',
+  'arch/X25-cex-fraud-recovery-ops.md': 'y28',
+  'arch/X26-cex-ledger-wallet-handoff.md': 'y29',
+  'arch/X27-cex-reserves-solvency.md': 'y30',
+  'arch/X28-chain-foundation-client-ops.md': 'y31',
+  'arch/X29-l2-bridge-oracle-ops.md': 'y32',
+  'arch/X30-defi-project-ops.md': 'y33',
+  'arch/X31-stablecoin-rwa-issuer-ops.md': 'y34',
+  'arch/X32-staking-validator-ops.md': 'y35',
+  'arch/X33-disclosure-bounty-ops.md': 'y36',
+  'arch/X34-wallet-vendor-security.md': 'y37',
+  'arch/X35-custodian-security.md': 'y38',
+  'arch/X36-payment-otc-fiat-security.md': 'y41',
+  'arch/X37-market-maker-security.md': 'y42',
+  'arch/X38-agent-platform-security.md': 'y43',
+  'arch/X39-nft-gamefi-ops.md': 'y44',
+  'arch/X40-prediction-derivatives-ops.md': 'y45',
+  'arch/X41-restaking-lst-ops.md': 'y46',
+  'arch/X42-dao-governance-ops.md': 'y47',
+  'arch/X43-privacy-protocol-ops.md': 'y48',
+  'arch/X44-mobile-client-security.md': 'y39',
+  'arch/X45-tee-hsm-key-ceremony.md': 'y40',
+  'arch/X46-threat-intel-ops.md': 'y07',
+  'arch/X47-people-security.md': 'y08',
+  'arch/X48-security-team-management.md': 'y09',
 };
 const LABS = [
   ['storage-proxy-lab', '存储布局与 delegatecall'], ['reentrancy-lab', '重入攻击单步模拟器'], ['vault-inflation-lab', '金库通胀攻击'],
@@ -73,7 +114,7 @@ const idOf = file => {
   if ((m = file.match(/^(\d\d[a-z]?)-/))) return 's' + m[1];
   if ((m = file.match(/^audit\/R(\d\d)-/))) return 'r' + m[1];
   if ((m = file.match(/^bootcamp\/B\d\d-(.+)\.md$/))) { if (!BOOT_IDS[m[1]]) throw new Error('add ' + m[1] + ' to BOOT_IDS'); return BOOT_IDS[m[1]]; }
-  if ((m = file.match(/^arch\/X(\d\d)-/))) return 'x' + m[1];
+  if ((m = file.match(/^arch\/X(\d\d)-/))) return (+m[1] <= 6 ? 'x' : 'y') + m[1];
   if ((m = file.match(/^chains\/C(\d\d[a-z]?)-/))) return 'k' + m[1];
   if ((m = file.match(/^assessment\/A(\d\d)-/))) return 'a' + m[1];
   if ((m = file.match(/^templates\/T(\d\d)-/))) return 't' + m[1];

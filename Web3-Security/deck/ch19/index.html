@@ -42,7 +42,10 @@ button { font: inherit; color: inherit; }
   box-shadow: 0 1px 0 var(--rule), 0 8px 28px rgba(60, 50, 30, .14); cursor: pointer; touch-action: pan-y; user-select: none; }
 .screen iframe { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; border: 0; transform-origin: 0 0; visibility: hidden; pointer-events: none; }
 .screen iframe.on { visibility: visible; }
-.screen .wait { position: absolute; inset: 0; display: grid; place-items: center; color: #8a826f; font-size: 14px; background: #efebe3; }
+.screen .still { position: absolute; inset: 0; background-repeat: no-repeat; background-color: #efebe3; }
+.screen.live .still { visibility: hidden; }
+.screen .wait { position: absolute; left: 12px; bottom: 12px; padding: 4px 12px; border-radius: 999px; color: #fff; font-size: 13px; background: rgba(28, 28, 28, .72); }
+.btn.play { border-color: var(--accent); color: var(--accent); }
 .screen .wait[hidden] { display: none; }
 
 .side { min-height: 0; overflow-y: auto; border-left: 1px solid var(--rule); background: var(--paper); padding: 18px 20px 24px; }
@@ -102,7 +105,7 @@ button { font: inherit; color: inherit; }
     <button class="btn hide-narrow" id="fs" title="全屏（F）">⛶ 全屏</button>
   </header>
   <div class="body">
-    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="wait" id="wait">载入动画…</div></div></div>
+    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="still" id="still" role="img"></div><div class="wait" id="wait" hidden>载入动画…</div></div></div>
     <aside class="side" aria-live="polite">
       <div class="sec" id="sec"></div>
       <h2 id="stitle"></h2>
@@ -112,7 +115,7 @@ button { font: inherit; color: inherit; }
   </div>
   <nav class="ctrl" aria-label="翻页">
     <button class="btn" id="prev" aria-label="上一页（←）">‹ 上一页</button>
-    <button class="btn" id="replay" aria-label="重播本页动画（R）">⟳ 重播</button>
+    <button class="btn play" id="replay" aria-label="看这一页的动画过程（P）">▶ 看过程</button>
     <button class="btn primary" id="next" aria-label="下一页（→ 或空格）">下一页 ›</button>
     <span class="count" id="count"></span>
     <div class="prog" id="prog"></div>
@@ -123,10 +126,10 @@ button { font: inherit; color: inherit; }
 </div>
 <script>
 (function () {
-  var D = {"chapter": "s19", "title": "用户侧诈骗：不偷钥匙，骗你签名", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 13.49, "title": "先转 50 USDT 测试", "points": ["2025 年 12 月，一名用户要转出一大笔 USDT", "他很谨慎，先转 50 USDT 测试收款地址", "测试到账，地址没错"], "notes": ["2025 年 12 月，一名用户要转出一大笔 USDT。", "他很谨慎，先转 50 USDT，测试收款地址。", "测试到账，地址没错。"], "section": "测试之后"}, {"seg": "1", "t0": 13.49, "t1": 27.83, "title": "约 5000 万美元转错了", "points": ["几分钟后，记录里多出一笔 0.005 USDT 的转账", "约 26 分钟后，他从记录里复制地址转出约 5000 万美元", "这一笔，到了攻击者的地址"], "notes": ["几分钟后，他的交易记录里，多出一笔 0.005 USDT 的转账。", "约 26 分钟后，他从记录里复制地址，转出约 5000 万美元。", "这一笔，到了攻击者的地址。"], "section": "测试之后"}, {"seg": "1", "t0": 27.83, "t1": 38.17, "title": "每一步都是自己点的", "points": ["私钥没被偷，钱包也没被攻破", "每一步，都是他自己点的确认", "这类骗局不偷钥匙，它骗你自己动手"], "notes": ["私钥没被偷，钱包也没被攻破。", "每一步，都是他自己点的确认。", "这类骗局不偷钥匙，它骗你自己动手。"], "section": "测试之后"}, {"seg": "1", "t0": 38.17, "t1": 48.04, "title": "先猜一道题", "points": ["测试转账已经到账", "从记录里复制同一个地址，转大额，安全吗？", "先记住这个问题"], "notes": ["先猜一道题。", "测试转账已经到账，从记录里复制同一个地址，转大额，安全吗？", "先记住这个问题。"], "section": "测试之后"}, {"seg": "2", "t0": 0.0, "t1": 11.81, "title": "钓鱼签名", "points": ["诱导你签下一个授权，把资产控制权交给攻击者", "你签的是真名，私钥也一直在你手里"], "notes": ["先给准确的说法。", "钓鱼签名，是诱导你签下一个授权，把资产的控制权交给攻击者。", "你签的是真名，私钥也一直在你手里。"], "section": "五类签名"}, {"seg": "2", "t0": 11.81, "t1": 28.85, "title": "比喻：快递签收单", "points": ["签收单背面印着：同意把房门钥匙交给持单人", "不成立处：签收单可以翻过来看", "钱包里的签名请求，常常只显示一串十六进制数据"], "notes": ["打个比方，骗子拿来一张快递签收单，请你签个字。", "签收单背面印着，同意把房门钥匙交给持单人。", "比喻在这里不成立，签收单可以翻过来看。", "钱包里的签名请求，常常只显示一串十六进制数据。"], "section": "五类签名"}, {"seg": "2", "t0": 28.85, "t1": 39.51, "title": "第一类：approve", "points": ["最容易被滥用的签名，有五类", "允许对方转走你某个代币，最多到一个额度", "它要上链，要花 Gas"], "notes": ["最容易被滥用的签名，有五类。", "第一类，approve，允许对方转走你某个代币，最多到一个额度。", "它要上链，要花 Gas。"], "section": "五类签名"}, {"seg": "2", "t0": 39.51, "t1": 60.15, "title": "第二至四类授权", "points": ["permit：效果同 approve，只是链下签名，由别人提交上链", "setApprovalForAll：能转走一个 NFT 系列的全部 NFT", "Permit2 批量授权：一次签名，交出多种代币"], "notes": ["第二类，permit，效果和 approve 一样，但只是一个链下签名。", "签好的消息，由别人提交上链。", "第三类，setApprovalForAll，对方能转走你在一个 NFT 系列里的全部 NFT。", "第四类，Permit2 批量授权，一次签名，交出多种代币。"], "section": "五类签名"}, {"seg": "2", "t0": 60.15, "t1": 70.11, "title": "第五类：7702 委托", "points": ["你的地址去执行一份委托合约的代码", "那份代码，可以直接转走全部资产"], "notes": ["第五类，EIP-7702 委托，你的地址去执行一份委托合约的代码。", "那份代码，可以直接转走全部资产。"], "section": "五类签名"}, {"seg": "2", "t0": 70.11, "t1": 78.95, "title": "链下签名最危险", "points": ["不花 Gas，钱包里也没有交易记录", "你以为只是登录，其实签下一张支票"], "notes": ["最危险的是链下签名，不花 Gas，钱包里也没有交易记录。", "你以为只是登录，其实签下一张支票。"], "section": "五类签名"}, {"seg": "2", "t0": 78.95, "t1": 105.01, "title": "不上链也能转走资产", "points": ["2024 年 9 月，一个 permit 签名被转走约 3243 万美元", "同年 8 月，一个签名把金库 owner 改成攻击者", "约 20 分钟后，攻击者铸出约 5547 万美元的 DAI"], "notes": ["2024 年 9 月，有人签了一个 permit，被转走约 3243 万美元的 spWETH。", "同年 8 月，另一名用户的签名，把金库合约的 owner 改成攻击者。", "约 20 分钟后，攻击者铸出约 5547 万美元的 DAI。", "这一例不是 permit，是改 owner。", "链下签名不上链，也能转移资产。"], "section": "五类签名"}, {"seg": "2", "t0": 105.01, "t1": 124.44, "title": "7702 委托钓鱼", "points": ["2025 年 8 月两起，分别约 154 万和 100 万美元", "也有研究者认为根因仍是私钥泄露，委托只让转账更快", "大额地址的签名，要在可信设备上逐字段解码"], "notes": ["2025 年 8 月，又有两起 7702 委托钓鱼，分别约 154 万和 100 万美元。", "也有研究者认为，这两起的根因仍是私钥泄露，委托只是让转账更快。", "大额地址的签名，要在可信设备上逐字段解码。"], "section": "五类签名"}, {"seg": "3", "t0": 0.0, "t1": 11.81, "title": "Drainer 即服务", "points": ["很多钓鱼网站出自同一类工具", "开发者维护钓鱼套件、合约和后台，当作产品出租"], "notes": ["这些钓鱼网站，很多出自同一类工具。", "它叫 Drainer 即服务。", "开发者维护钓鱼套件、合约和后台，把它当作产品出租。"], "section": "钓鱼套件"}, {"seg": "3", "t0": 11.81, "t1": 35.87, "title": "引流与自动分账", "points": ["分发者引流：仿冒网站、买广告、盗社交账号", "链接投到被盗的 X、Discord、搜索广告、假空投和私信", "受害者一签名自动分账，公开分析：开发者约 20%"], "notes": ["分发者负责引流，搭仿冒网站，买广告，盗社交账号。", "链接投到被盗的 X 和 Discord 账号、搜索广告、假空投和私信里。", "受害者一签名，转走的资产自动分账。", "公开分析显示，开发者抽成约 20%，分发者拿约 80%。", "各家套件的比例不同，也会变。"], "section": "钓鱼套件"}, {"seg": "3", "t0": 35.87, "t1": 47.11, "title": "先要最值钱的授权", "points": ["套件先读余额，按价值排序，先请求最值钱的授权", "同一个钓鱼站，对不同的人弹出的签名请求不一样"], "notes": ["套件会先读你钱包里的余额，按价值排序，先请求最值钱的那个授权。", "所以同一个钓鱼站，对不同的人，弹出的签名请求不一样。"], "section": "钓鱼套件"}, {"seg": "3", "t0": 47.11, "t1": 66.09, "title": "宣布关停，仍在运行", "points": ["Inferno 2023 年 11 月宣布关停，此前约 7000 万美元", "2025 年 5 月 Check Point 发现它仍在运行", "半年盗走约 900 万美元以上，受害者 3 万多名"], "notes": ["Inferno Drainer 在 2023 年 11 月宣布关停，此前约 7000 万美元。", "2025 年 5 月，Check Point 发现它仍在运行，半年内盗走约 900 万美元以上。", "这次它在 Discord 冒充 Collab.Land 引流，受害者有 3 万多名。"], "section": "钓鱼套件"}, {"seg": "3", "t0": 66.09, "t1": 86.91, "title": "关停不等于消失", "points": ["Pink Drainer 2024 年 5 月宣布退休，约 8500 万美元", "Angel Drainer 约 2500 万美元，2024 年 7 月停止服务", "套件代码和分发网络，会换个名字回来"], "notes": ["Pink Drainer 在 2024 年 5 月宣布退休，约 2.1 万名受害者，约 8500 万美元。", "Angel Drainer 到 2024 年 2 月，约 2500 万美元，同年 7 月停止服务。", "关停不等于消失，套件代码和分发网络，会换个名字回来。"], "section": "钓鱼套件"}, {"seg": "3", "t0": 86.91, "t1": 113.66, "title": "钓鱼损失的变化", "points": ["2024 年钓鱼损失约 4.94 亿美元，大案里 permit 类占 56.7%", "2025 年降到约 8385 万美元，下降约 83%，转向小额高频", "只算 EVM 链上 Drainer 钓鱼，不含私钥泄露和交易所被盗"], "notes": ["整体看，2024 年的钓鱼损失约 4.94 亿美元。", "其中百万美元以上的大案里，permit 类占损失的 56.7%。", "2025 年降到约 8385 万美元，下降约 83%。", "报告说，攻击转向小额和高频。", "这个统计只算 EVM 链上的 Drainer 钓鱼，不含私钥泄露和交易所被盗。"], "section": "钓鱼套件"}, {"seg": "4", "t0": 0.0, "t1": 19.45, "title": "地址投毒", "points": ["攻击者监控链上转账，看到你的测试转账", "生成首尾和收款地址相同、中间不同的地址", "首尾 8 个十六进制字符，平均只要试约 43 亿次"], "notes": ["回到开头那笔转账。", "这叫地址投毒。", "攻击者监控链上的转账，看到你的测试转账。", "他生成一个首尾和收款地址相同、中间不同的地址。", "首尾加起来 8 个十六进制字符，平均只要试约 43 亿次。"], "section": "投毒与假币"}, {"seg": "4", "t0": 19.45, "t1": 37.45, "title": "往你的记录里塞一笔", "points": ["塞一笔 0 额或粉尘转账，不需要你的任何授权", "转 0 个代币，或用同名假代币，都能留下一条", "钱包只显示前后几位，两个地址看起来一样"], "notes": ["然后，他往你的记录里塞一笔 0 额或者粉尘转账。", "这一步不需要你的任何授权。", "转 0 个代币，或者用他自己部署的同名假代币，都能在你的记录里留下一条。", "钱包只显示地址的前后几位，两个地址看起来一样。"], "section": "投毒与假币"}, {"seg": "4", "t0": 37.45, "t1": 58.35, "title": "测试防不住投毒", "points": ["投毒常在测试之后几分钟内出现", "2024 年 5 月，有人转出 1155 枚 WBTC，约 6800 万美元", "经过链上喊话谈判，约一周内退回绝大部分资金"], "notes": ["所以测试转账防不住投毒，投毒常在测试之后几分钟内出现。", "2024 年 5 月，另一名受害者复制投毒地址，转出 1155 枚 WBTC，约 6800 万美元。", "经过链上喊话谈判，攻击者在约一周内退回绝大部分资金。"], "section": "投毒与假币"}, {"seg": "4", "t0": 58.35, "t1": 77.55, "title": "骗你买错", "points": ["卷款：团队撤走流动性，或者集中卖掉手里的币", "貔貅盘：只允许买，不允许卖，或者卖出税 100%", "隐藏增发：owner 能无限铸币"], "notes": ["骗你转错是一种，骗你买错是另一种。", "卷款，是团队撤走流动性，或者把手里的币集中卖掉。", "貔貅盘，是合约只允许买，不允许卖，或者卖出税 100%。", "隐藏增发，是 owner 能无限铸币。"], "section": "投毒与假币"}, {"seg": "4", "t0": 77.55, "t1": 100.29, "title": "SQUID 与 LIBRA", "points": ["2021 年 11 月 SQUID 限制卖出、撤走流动性，约 338 万美元", "2025 年 2 月 LIBRA，阿根廷总统发推推广后暴涨再崩盘", "Nansen 统计亏损钱包合计约 2.51 亿美元，尚无定论"], "notes": ["2021 年 11 月的 SQUID 代币，限制持币者卖出，开发者撤走流动性，约 338 万美元。", "2025 年 2 月的 LIBRA 代币，阿根廷总统发推推广后暴涨，随后崩盘。", "Nansen 统计，亏损的钱包合计亏约 2.51 亿美元，案件结果尚无定论。"], "section": "投毒与假币"}, {"seg": "4", "t0": 100.29, "t1": 114.86, "title": "涨幅不是安全信号", "points": ["CertiK：一个地址 3 个月部署 979 个貔貅盘，约每 30 分钟一个", "名人推广和涨幅，都不是安全信号"], "notes": ["CertiK 追踪到一个地址，在 2023 年 8 到 10 月部署 979 个貔貅盘代币，约每 30 分钟一个。", "名人推广和涨幅，都不是安全信号。"], "section": "投毒与假币"}, {"seg": "5", "t0": 0.0, "t1": 16.35, "title": "每个动作都能拦截", "points": ["攻击者控制不了你的私钥，也控制不了合约逻辑", "每一步都要你一个动作：点击、签名、复制、粘贴", "每一个动作，都是一个可以拦截的点"], "notes": ["这些骗局有一个共同点。", "攻击者控制不了你的私钥，也控制不了链上合约的逻辑。", "每一步都要你的一个动作，点击、签名、复制、粘贴。", "每一个动作，都是一个可以拦截的点。"], "section": "拦在每一步"}, {"seg": "5", "t0": 16.35, "t1": 29.65, "title": "钱包：把签名解码", "points": ["授权给谁，额度多少，期限到哪天，委托哪个合约", "无法解码，就明确显示无法解析"], "notes": ["钱包这一层，先把签名请求解码成看得懂的字段。", "授权给谁，额度多少，期限到哪天，委托哪个合约。", "无法解码，就明确显示无法解析。"], "section": "拦在每一步"}, {"seg": "5", "t0": 29.65, "t1": 43.69, "title": "高危签名默认强警告", "points": ["无限授权、批量授权、7702 委托，默认强警告", "7702 只指向钱包审计过的实现合约", "拒绝网站发起的委托请求"], "notes": ["无限授权、批量授权、7702 委托，默认强警告。", "7702 委托，只允许指向钱包自己审计过的实现合约，拒绝网站发起的委托请求。"], "section": "拦在每一步"}, {"seg": "5", "t0": 43.69, "t1": 57.07, "title": "模拟、拦截、精确额度", "points": ["交易模拟：签名之前，显示签完以后余额怎么变", "新注册的域名、仿冒的域名，直接拦下", "DApp 只请求精确额度的授权，用完就停"], "notes": ["交易模拟，在签名之前，显示签完以后余额怎么变。", "新注册的域名、仿冒的域名，直接拦下。", "DApp 只请求精确额度的授权，用完就停。"], "section": "拦在每一步"}, {"seg": "5", "t0": 57.07, "t1": 76.11, "title": "交易所：白名单与比对", "points": ["提币地址用白名单，新地址有冷却期", "新地址和历史地址首尾相同、中间不同，就强提示", "折叠零额转账和陌生代币，假 USDT 不入账"], "notes": ["交易所这一层，提币地址用白名单，新地址有冷却期。", "新地址和历史地址首尾相同、中间不同，就强提示。", "交易记录默认折叠零额转账和陌生代币。", "充值只认白名单里的代币合约，假 USDT 不入账。"], "section": "拦在每一步"}, {"seg": "5", "t0": 76.11, "t1": 92.1, "title": "上币检查与风控名单", "points": ["上币前检查卖出限制、持仓集中度和增发权限", "Drainer 收款地址和投毒地址进风控名单", "提示官方从不要求签名领取"], "notes": ["上币前，检查卖出限制、持仓集中度和增发权限。", "已知的 Drainer 收款地址和投毒地址，进风控名单。", "提币页和空投活动页，提示官方从不要求签名领取。"], "section": "拦在每一步"}, {"seg": "6", "t0": 0.0, "t1": 18.35, "title": "签名前看三样", "points": ["官方从不要求你签名领取空投，或签名验证钱包", "授权给谁，授权多少，到什么时候", "看不懂就不签，不花 Gas 不等于没有风险"], "notes": ["如果你是普通用户，先记住几条。", "官方从不要求你签名领取空投，或者签名验证钱包。", "签名前看三样，授权给谁，授权多少，到什么时候。", "看不懂就不签，不花 Gas，不等于没有风险。"], "section": "签名之前"}, {"seg": "6", "t0": 18.35, "t1": 33.09, "title": "分开钱包，定期撤销", "points": ["大额资产和日常交互，用不同的钱包", "每月撤销不用的授权，买新币前先确认能卖出去", "签下钓鱼签名，立刻撤销授权，剩余资产转到新地址"], "notes": ["大额资产和日常交互，用不同的钱包。", "每个月撤销不用的授权，买新币前，先确认它能卖出去。", "已经签下钓鱼签名，就立刻撤销授权，把剩余资产转到新地址。"], "section": "签名之前"}, {"seg": "6", "t0": 33.09, "t1": 45.37, "title": "钱包产品与交易所", "points": ["钱包产品：签名请求能不能解码成可读字段", "交易所：提币时有没有比对首尾相同的历史地址"], "notes": ["如果你做钱包产品，今天就查一件事，签名请求能不能解码成可读字段。", "如果你在交易所，查一查提币时有没有比对首尾相同的历史地址。"], "section": "签名之前"}, {"seg": "6", "t0": 45.37, "t1": 71.11, "title": "答案：并不安全", "points": ["测试只证明那一刻的地址是对的", "地址从地址簿或安全渠道取，核对完整地址", "私钥完好，资产也可能没了，确认前先看清在签什么"], "notes": ["回到开头的问题。", "测试转账已经到账，从记录里复制地址，并不安全。", "测试只证明那一刻的地址是对的，证明不了你之后复制的是同一个。", "地址要从地址簿，或者收款方的安全渠道取，再核对完整地址，不只看首尾。", "私钥完好无损，资产也可能没了，每次确认之前，先看清你在签什么。"], "section": "签名之前"}]};
+  var D = {"chapter": "s19", "title": "用户侧诈骗：不偷钥匙，骗你签名", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 13.49, "title": "先转 50 USDT 测试", "points": ["2025 年 12 月，一名用户要转出一大笔 USDT", "他很谨慎，先转 50 USDT 测试收款地址", "测试到账，地址没错"], "notes": ["2025 年 12 月，一名用户要转出一大笔 USDT。", "他很谨慎，先转 50 USDT，测试收款地址。", "测试到账，地址没错。"], "section": "测试之后", "k": 13.49}, {"seg": "1", "t0": 13.49, "t1": 27.83, "title": "约 5000 万美元转错了", "points": ["几分钟后，记录里多出一笔 0.005 USDT 的转账", "约 26 分钟后，他从记录里复制地址转出约 5000 万美元", "这一笔，到了攻击者的地址"], "notes": ["几分钟后，他的交易记录里，多出一笔 0.005 USDT 的转账。", "约 26 分钟后，他从记录里复制地址，转出约 5000 万美元。", "这一笔，到了攻击者的地址。"], "section": "测试之后", "k": 27.83}, {"seg": "1", "t0": 27.83, "t1": 38.17, "title": "每一步都是自己点的", "points": ["私钥没被偷，钱包也没被攻破", "每一步，都是他自己点的确认", "这类骗局不偷钥匙，它骗你自己动手"], "notes": ["私钥没被偷，钱包也没被攻破。", "每一步，都是他自己点的确认。", "这类骗局不偷钥匙，它骗你自己动手。"], "section": "测试之后", "k": 34.38}, {"seg": "1", "t0": 38.17, "t1": 48.04, "title": "先猜一道题", "points": ["测试转账已经到账", "从记录里复制同一个地址，转大额，安全吗？", "先记住这个问题"], "notes": ["先猜一道题。", "测试转账已经到账，从记录里复制同一个地址，转大额，安全吗？", "先记住这个问题。"], "section": "测试之后", "k": 48.04}, {"seg": "2", "t0": 0.0, "t1": 11.81, "title": "钓鱼签名", "points": ["诱导你签下一个授权，把资产控制权交给攻击者", "你签的是真名，私钥也一直在你手里"], "notes": ["先给准确的说法。", "钓鱼签名，是诱导你签下一个授权，把资产的控制权交给攻击者。", "你签的是真名，私钥也一直在你手里。"], "section": "五类签名", "k": 11.81}, {"seg": "2", "t0": 11.81, "t1": 28.85, "title": "比喻：快递签收单", "points": ["签收单背面印着：同意把房门钥匙交给持单人", "不成立处：签收单可以翻过来看", "钱包里的签名请求，常常只显示一串十六进制数据"], "notes": ["打个比方，骗子拿来一张快递签收单，请你签个字。", "签收单背面印着，同意把房门钥匙交给持单人。", "比喻在这里不成立，签收单可以翻过来看。", "钱包里的签名请求，常常只显示一串十六进制数据。"], "section": "五类签名", "k": 28.85}, {"seg": "2", "t0": 28.85, "t1": 39.51, "title": "第一类：approve", "points": ["最容易被滥用的签名，有五类", "允许对方转走你某个代币，最多到一个额度", "它要上链，要花 Gas"], "notes": ["最容易被滥用的签名，有五类。", "第一类，approve，允许对方转走你某个代币，最多到一个额度。", "它要上链，要花 Gas。"], "section": "五类签名", "k": 39.51}, {"seg": "2", "t0": 39.51, "t1": 60.15, "title": "第二至四类授权", "points": ["permit：效果同 approve，只是链下签名，由别人提交上链", "setApprovalForAll：能转走一个 NFT 系列的全部 NFT", "Permit2 批量授权：一次签名，交出多种代币"], "notes": ["第二类，permit，效果和 approve 一样，但只是一个链下签名。", "签好的消息，由别人提交上链。", "第三类，setApprovalForAll，对方能转走你在一个 NFT 系列里的全部 NFT。", "第四类，Permit2 批量授权，一次签名，交出多种代币。"], "section": "五类签名", "k": 60.15}, {"seg": "2", "t0": 60.15, "t1": 70.11, "title": "第五类：7702 委托", "points": ["你的地址去执行一份委托合约的代码", "那份代码，可以直接转走全部资产"], "notes": ["第五类，EIP-7702 委托，你的地址去执行一份委托合约的代码。", "那份代码，可以直接转走全部资产。"], "section": "五类签名", "k": 70.11}, {"seg": "2", "t0": 70.11, "t1": 78.95, "title": "链下签名最危险", "points": ["不花 Gas，钱包里也没有交易记录", "你以为只是登录，其实签下一张支票"], "notes": ["最危险的是链下签名，不花 Gas，钱包里也没有交易记录。", "你以为只是登录，其实签下一张支票。"], "section": "五类签名", "k": 75.66}, {"seg": "2", "t0": 78.95, "t1": 105.01, "title": "不上链也能转走资产", "points": ["2024 年 9 月，一个 permit 签名被转走约 3243 万美元", "同年 8 月，一个签名把金库 owner 改成攻击者", "约 20 分钟后，攻击者铸出约 5547 万美元的 DAI"], "notes": ["2024 年 9 月，有人签了一个 permit，被转走约 3243 万美元的 spWETH。", "同年 8 月，另一名用户的签名，把金库合约的 owner 改成攻击者。", "约 20 分钟后，攻击者铸出约 5547 万美元的 DAI。", "这一例不是 permit，是改 owner。", "链下签名不上链，也能转移资产。"], "section": "五类签名", "k": 105.01}, {"seg": "2", "t0": 105.01, "t1": 124.44, "title": "7702 委托钓鱼", "points": ["2025 年 8 月两起，分别约 154 万和 100 万美元", "也有研究者认为根因仍是私钥泄露，委托只让转账更快", "大额地址的签名，要在可信设备上逐字段解码"], "notes": ["2025 年 8 月，又有两起 7702 委托钓鱼，分别约 154 万和 100 万美元。", "也有研究者认为，这两起的根因仍是私钥泄露，委托只是让转账更快。", "大额地址的签名，要在可信设备上逐字段解码。"], "section": "五类签名", "k": 124.44}, {"seg": "3", "t0": 0.0, "t1": 11.81, "title": "Drainer 即服务", "points": ["很多钓鱼网站出自同一类工具", "开发者维护钓鱼套件、合约和后台，当作产品出租"], "notes": ["这些钓鱼网站，很多出自同一类工具。", "它叫 Drainer 即服务。", "开发者维护钓鱼套件、合约和后台，把它当作产品出租。"], "section": "钓鱼套件", "k": 1.3}, {"seg": "3", "t0": 11.81, "t1": 35.87, "title": "引流与自动分账", "points": ["分发者引流：仿冒网站、买广告、盗社交账号", "链接投到被盗的 X、Discord、搜索广告、假空投和私信", "受害者一签名自动分账，公开分析：开发者约 20%"], "notes": ["分发者负责引流，搭仿冒网站，买广告，盗社交账号。", "链接投到被盗的 X 和 Discord 账号、搜索广告、假空投和私信里。", "受害者一签名，转走的资产自动分账。", "公开分析显示，开发者抽成约 20%，分发者拿约 80%。", "各家套件的比例不同，也会变。"], "section": "钓鱼套件", "k": 35.87}, {"seg": "3", "t0": 35.87, "t1": 47.11, "title": "先要最值钱的授权", "points": ["套件先读余额，按价值排序，先请求最值钱的授权", "同一个钓鱼站，对不同的人弹出的签名请求不一样"], "notes": ["套件会先读你钱包里的余额，按价值排序，先请求最值钱的那个授权。", "所以同一个钓鱼站，对不同的人，弹出的签名请求不一样。"], "section": "钓鱼套件", "k": 47.11}, {"seg": "3", "t0": 47.11, "t1": 66.09, "title": "宣布关停，仍在运行", "points": ["Inferno 2023 年 11 月宣布关停，此前约 7000 万美元", "2025 年 5 月 Check Point 发现它仍在运行", "半年盗走约 900 万美元以上，受害者 3 万多名"], "notes": ["Inferno Drainer 在 2023 年 11 月宣布关停，此前约 7000 万美元。", "2025 年 5 月，Check Point 发现它仍在运行，半年内盗走约 900 万美元以上。", "这次它在 Discord 冒充 Collab.Land 引流，受害者有 3 万多名。"], "section": "钓鱼套件", "k": 66.09}, {"seg": "3", "t0": 66.09, "t1": 86.91, "title": "关停不等于消失", "points": ["Pink Drainer 2024 年 5 月宣布退休，约 8500 万美元", "Angel Drainer 约 2500 万美元，2024 年 7 月停止服务", "套件代码和分发网络，会换个名字回来"], "notes": ["Pink Drainer 在 2024 年 5 月宣布退休，约 2.1 万名受害者，约 8500 万美元。", "Angel Drainer 到 2024 年 2 月，约 2500 万美元，同年 7 月停止服务。", "关停不等于消失，套件代码和分发网络，会换个名字回来。"], "section": "钓鱼套件", "k": 82.39}, {"seg": "3", "t0": 86.91, "t1": 113.66, "title": "钓鱼损失的变化", "points": ["2024 年钓鱼损失约 4.94 亿美元，大案里 permit 类占 56.7%", "2025 年降到约 8385 万美元，下降约 83%，转向小额高频", "只算 EVM 链上 Drainer 钓鱼，不含私钥泄露和交易所被盗"], "notes": ["整体看，2024 年的钓鱼损失约 4.94 亿美元。", "其中百万美元以上的大案里，permit 类占损失的 56.7%。", "2025 年降到约 8385 万美元，下降约 83%。", "报告说，攻击转向小额和高频。", "这个统计只算 EVM 链上的 Drainer 钓鱼，不含私钥泄露和交易所被盗。"], "section": "钓鱼套件", "k": 111.46}, {"seg": "4", "t0": 0.0, "t1": 19.45, "title": "地址投毒", "points": ["攻击者监控链上转账，看到你的测试转账", "生成首尾和收款地址相同、中间不同的地址", "首尾 8 个十六进制字符，平均只要试约 43 亿次"], "notes": ["回到开头那笔转账。", "这叫地址投毒。", "攻击者监控链上的转账，看到你的测试转账。", "他生成一个首尾和收款地址相同、中间不同的地址。", "首尾加起来 8 个十六进制字符，平均只要试约 43 亿次。"], "section": "投毒与假币", "k": 19.3}, {"seg": "4", "t0": 19.45, "t1": 37.45, "title": "往你的记录里塞一笔", "points": ["塞一笔 0 额或粉尘转账，不需要你的任何授权", "转 0 个代币，或用同名假代币，都能留下一条", "钱包只显示前后几位，两个地址看起来一样"], "notes": ["然后，他往你的记录里塞一笔 0 额或者粉尘转账。", "这一步不需要你的任何授权。", "转 0 个代币，或者用他自己部署的同名假代币，都能在你的记录里留下一条。", "钱包只显示地址的前后几位，两个地址看起来一样。"], "section": "投毒与假币", "k": 37.45}, {"seg": "4", "t0": 37.45, "t1": 58.35, "title": "测试防不住投毒", "points": ["投毒常在测试之后几分钟内出现", "2024 年 5 月，有人转出 1155 枚 WBTC，约 6800 万美元", "经过链上喊话谈判，约一周内退回绝大部分资金"], "notes": ["所以测试转账防不住投毒，投毒常在测试之后几分钟内出现。", "2024 年 5 月，另一名受害者复制投毒地址，转出 1155 枚 WBTC，约 6800 万美元。", "经过链上喊话谈判，攻击者在约一周内退回绝大部分资金。"], "section": "投毒与假币", "k": 58.35}, {"seg": "4", "t0": 58.35, "t1": 77.55, "title": "骗你买错", "points": ["卷款：团队撤走流动性，或者集中卖掉手里的币", "貔貅盘：只允许买，不允许卖，或者卖出税 100%", "隐藏增发：owner 能无限铸币"], "notes": ["骗你转错是一种，骗你买错是另一种。", "卷款，是团队撤走流动性，或者把手里的币集中卖掉。", "貔貅盘，是合约只允许买，不允许卖，或者卖出税 100%。", "隐藏增发，是 owner 能无限铸币。"], "section": "投毒与假币", "k": 67.9}, {"seg": "4", "t0": 77.55, "t1": 100.29, "title": "SQUID 与 LIBRA", "points": ["2021 年 11 月 SQUID 限制卖出、撤走流动性，约 338 万美元", "2025 年 2 月 LIBRA，阿根廷总统发推推广后暴涨再崩盘", "Nansen 统计亏损钱包合计约 2.51 亿美元，尚无定论"], "notes": ["2021 年 11 月的 SQUID 代币，限制持币者卖出，开发者撤走流动性，约 338 万美元。", "2025 年 2 月的 LIBRA 代币，阿根廷总统发推推广后暴涨，随后崩盘。", "Nansen 统计，亏损的钱包合计亏约 2.51 亿美元，案件结果尚无定论。"], "section": "投毒与假币", "k": 100.29}, {"seg": "4", "t0": 100.29, "t1": 114.86, "title": "涨幅不是安全信号", "points": ["CertiK：一个地址 3 个月部署 979 个貔貅盘，约每 30 分钟一个", "名人推广和涨幅，都不是安全信号"], "notes": ["CertiK 追踪到一个地址，在 2023 年 8 到 10 月部署 979 个貔貅盘代币，约每 30 分钟一个。", "名人推广和涨幅，都不是安全信号。"], "section": "投毒与假币", "k": 114.86}, {"seg": "5", "t0": 0.0, "t1": 16.35, "title": "每个动作都能拦截", "points": ["攻击者控制不了你的私钥，也控制不了合约逻辑", "每一步都要你一个动作：点击、签名、复制、粘贴", "每一个动作，都是一个可以拦截的点"], "notes": ["这些骗局有一个共同点。", "攻击者控制不了你的私钥，也控制不了链上合约的逻辑。", "每一步都要你的一个动作，点击、签名、复制、粘贴。", "每一个动作，都是一个可以拦截的点。"], "section": "拦在每一步", "k": 13.8}, {"seg": "5", "t0": 16.35, "t1": 29.65, "title": "钱包：把签名解码", "points": ["授权给谁，额度多少，期限到哪天，委托哪个合约", "无法解码，就明确显示无法解析"], "notes": ["钱包这一层，先把签名请求解码成看得懂的字段。", "授权给谁，额度多少，期限到哪天，委托哪个合约。", "无法解码，就明确显示无法解析。"], "section": "拦在每一步", "k": 28.65}, {"seg": "5", "t0": 29.65, "t1": 43.69, "title": "高危签名默认强警告", "points": ["无限授权、批量授权、7702 委托，默认强警告", "7702 只指向钱包审计过的实现合约", "拒绝网站发起的委托请求"], "notes": ["无限授权、批量授权、7702 委托，默认强警告。", "7702 委托，只允许指向钱包自己审计过的实现合约，拒绝网站发起的委托请求。"], "section": "拦在每一步", "k": 43.69}, {"seg": "5", "t0": 43.69, "t1": 57.07, "title": "模拟、拦截、精确额度", "points": ["交易模拟：签名之前，显示签完以后余额怎么变", "新注册的域名、仿冒的域名，直接拦下", "DApp 只请求精确额度的授权，用完就停"], "notes": ["交易模拟，在签名之前，显示签完以后余额怎么变。", "新注册的域名、仿冒的域名，直接拦下。", "DApp 只请求精确额度的授权，用完就停。"], "section": "拦在每一步", "k": 57.07}, {"seg": "5", "t0": 57.07, "t1": 76.11, "title": "交易所：白名单与比对", "points": ["提币地址用白名单，新地址有冷却期", "新地址和历史地址首尾相同、中间不同，就强提示", "折叠零额转账和陌生代币，假 USDT 不入账"], "notes": ["交易所这一层，提币地址用白名单，新地址有冷却期。", "新地址和历史地址首尾相同、中间不同，就强提示。", "交易记录默认折叠零额转账和陌生代币。", "充值只认白名单里的代币合约，假 USDT 不入账。"], "section": "拦在每一步", "k": 66.37}, {"seg": "5", "t0": 76.11, "t1": 92.1, "title": "上币检查与风控名单", "points": ["上币前检查卖出限制、持仓集中度和增发权限", "Drainer 收款地址和投毒地址进风控名单", "提示官方从不要求签名领取"], "notes": ["上币前，检查卖出限制、持仓集中度和增发权限。", "已知的 Drainer 收款地址和投毒地址，进风控名单。", "提币页和空投活动页，提示官方从不要求签名领取。"], "section": "拦在每一步", "k": 86.16}, {"seg": "6", "t0": 0.0, "t1": 18.35, "title": "签名前看三样", "points": ["官方从不要求你签名领取空投，或签名验证钱包", "授权给谁，授权多少，到什么时候", "看不懂就不签，不花 Gas 不等于没有风险"], "notes": ["如果你是普通用户，先记住几条。", "官方从不要求你签名领取空投，或者签名验证钱包。", "签名前看三样，授权给谁，授权多少，到什么时候。", "看不懂就不签，不花 Gas，不等于没有风险。"], "section": "签名之前", "k": 18.35}, {"seg": "6", "t0": 18.35, "t1": 33.09, "title": "分开钱包，定期撤销", "points": ["大额资产和日常交互，用不同的钱包", "每月撤销不用的授权，买新币前先确认能卖出去", "签下钓鱼签名，立刻撤销授权，剩余资产转到新地址"], "notes": ["大额资产和日常交互，用不同的钱包。", "每个月撤销不用的授权，买新币前，先确认它能卖出去。", "已经签下钓鱼签名，就立刻撤销授权，把剩余资产转到新地址。"], "section": "签名之前", "k": 33.09}, {"seg": "6", "t0": 33.09, "t1": 45.37, "title": "钱包产品与交易所", "points": ["钱包产品：签名请求能不能解码成可读字段", "交易所：提币时有没有比对首尾相同的历史地址"], "notes": ["如果你做钱包产品，今天就查一件事，签名请求能不能解码成可读字段。", "如果你在交易所，查一查提币时有没有比对首尾相同的历史地址。"], "section": "签名之前", "k": 45.37}, {"seg": "6", "t0": 45.37, "t1": 71.11, "title": "答案：并不安全", "points": ["测试只证明那一刻的地址是对的", "地址从地址簿或安全渠道取，核对完整地址", "私钥完好，资产也可能没了，确认前先看清在签什么"], "notes": ["回到开头的问题。", "测试转账已经到账，从记录里复制地址，并不安全。", "测试只证明那一刻的地址是对的，证明不了你之后复制的是同一个。", "地址要从地址簿，或者收款方的安全渠道取，再核对完整地址，不只看首尾。", "私钥完好无损，资产也可能没了，每次确认之前，先看清你在签什么。"], "section": "签名之前", "k": 71.11}]};
   var S = D.slides, N = S.length, KEY = 'deck-' + D.chapter;
   var $ = function (id) { return document.getElementById(id); };
-  var screen = $('screen'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
+  var screen = $('screen'), still = $('still'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
   var store = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
                 set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
   try { var pt = parent !== window && parent.document.documentElement.getAttribute('data-theme'); if (pt) document.documentElement.setAttribute('data-theme', pt); } catch (e) {}
@@ -141,32 +144,54 @@ button { font: inherit; color: inherit; }
     var g = groups[groups.length - 1];
     if (!g || g.seg !== s.seg) { g = { seg: s.seg, el: document.createElement('div') }; g.el.className = 'grp'; groups.push(g); prog.appendChild(g.el); g.n = 0; }
     var b = document.createElement('button'); b.title = (i + 1) + ' · ' + s.title; b.setAttribute('aria-label', '第 ' + (i + 1) + ' 页：' + s.title);
-    b.onclick = function () { go(i, 'seek'); }; g.el.appendChild(b); g.n++; s.dot = b;
+    b.onclick = function () { show(i); }; g.el.appendChild(b); g.n++; s.dot = b;
   });
   groups.forEach(function (g) { g.el.style.setProperty('--n', g.n); });
 
+  // all stills of the chapter are one sprite: 6 columns, slide i at (i % 6, i / 6)
+  var COLS = 6, ROWS = Math.ceil(N / COLS), sheetReady = false, sheet = new Image();
+  sheet.onload = function () { sheetReady = true; if (!screen.classList.contains('live')) $('wait').hidden = true; };
+  sheet.src = 'stills.webp';
+  still.style.backgroundImage = 'url(stills.webp)';
+  still.style.backgroundSize = (COLS * 100) + '% ' + (ROWS * 100) + '%';
+  function tile(i) {
+    var c = i % COLS, r = Math.floor(i / COLS);
+    still.style.backgroundPosition = (COLS > 1 ? c / (COLS - 1) * 100 : 0) + '% ' + (ROWS > 1 ? r / (ROWS - 1) * 100 : 0) + '%';
+  }
+
+  // ---------- live animation (only when asked) ----------
   function scale() { var k = screen.clientWidth / 1920; for (var s in frames) frames[s].style.transform = 'scale(' + k + ')'; }
   if (window.ResizeObserver) new ResizeObserver(scale).observe(screen); else addEventListener('resize', scale);
-
   function frame(seg) {
     if (frames[seg]) return frames[seg];
     var f = document.createElement('iframe'); f.src = 's' + seg + '.html'; f.title = '第 ' + seg + ' 节动画'; f.tabIndex = -1;
     f.setAttribute('aria-hidden', 'true'); screen.appendChild(f); frames[seg] = f; scale(); return f;
   }
+  function live(seg) {
+    for (var k in frames) frames[k].classList.toggle('on', k === seg);
+    screen.classList.add('live'); $('wait').hidden = true;
+  }
   function send(seg, msg) {
     msg.deck = 'cmd';
-    if (ready[seg]) frames[seg].contentWindow.postMessage(msg, '*'); else pending[seg] = msg;
+    if (ready[seg]) { frames[seg].contentWindow.postMessage(msg, '*'); live(seg); } else pending[seg] = msg;
   }
   addEventListener('message', function (e) {
     var m = e.data || {};
     if (!m.deck || !frames[m.seg] || e.source !== frames[m.seg].contentWindow) return;
     if (m.deck === 'ready') {
       ready[m.seg] = true;
-      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; send(m.seg, p); }
-      if (cur >= 0 && S[cur].seg === m.seg) $('wait').hidden = true;
-    } else if (m.deck === 'done' && cur >= 0 && S[cur].seg === m.seg) { playing = false; paint(); }
+      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; if (playing && S[cur].seg === m.seg) send(m.seg, p); }
+    } else if (m.deck === 'done' && playing && S[cur].seg === m.seg) { playing = false; paint(); }
   });
+  function process() {
+    var s = S[cur];
+    playing = true; frame(s.seg);
+    if (!ready[s.seg]) { $('wait').textContent = '载入动画…'; $('wait').hidden = false; }
+    send(s.seg, { play: [s.t0, s.k], rate: +$('speed').value });
+    paint();
+  }
 
+  // ---------- slides ----------
   function paint() {
     var s = S[cur];
     $('sec').textContent = s.section;
@@ -175,27 +200,21 @@ button { font: inherit; color: inherit; }
     $('lines').innerHTML = ''; s.notes.forEach(function (p) { var li = document.createElement('li'); li.textContent = p; $('lines').appendChild(li); });
     $('count').textContent = (cur + 1) + ' / ' + N;
     $('prev').disabled = cur === 0;
-    $('next').textContent = playing ? '跳到本页结尾 ›' : (cur === N - 1 ? '回到正文 ›' : '下一页 ›');
+    $('next').textContent = cur === N - 1 ? '回到正文 ›' : '下一页 ›';
+    $('replay').textContent = playing ? '⟳ 从头播放' : (screen.classList.contains('live') ? '⟳ 再看一遍' : '▶ 看过程');
     S.forEach(function (x, i) { x.dot.className = i === cur ? 'cur' : (seen[i] ? 'seen' : ''); });
   }
-  function go(i, mode) {
+  function show(i) {
     if (i < 0 || i >= N) return;
-    var s = S[i]; cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
-    var f = frame(s.seg);
-    for (var k in frames) frames[k].classList.toggle('on', k === s.seg);
-    $('wait').hidden = !!ready[s.seg];
-    playing = mode === 'play';
-    send(s.seg, playing ? { play: [s.t0, s.t1], rate: +$('speed').value } : { seek: s.t1 });
-    // warm the next segment while this one is on screen
-    if (i + 1 < N && S[i + 1].seg !== s.seg) frame(S[i + 1].seg);
+    cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
+    playing = false; pending = {};
+    tile(i); still.setAttribute('aria-label', S[i].title);
+    screen.classList.remove('live'); $('wait').textContent = sheetReady ? '载入动画…' : '载入画面…'; $('wait').hidden = sheetReady;
+    for (var k in frames) frames[k].classList.remove('on');
     paint();
   }
-  function next() {
-    if (playing) { go(cur, 'seek'); return; }
-    if (cur === N - 1) { back(); return; }
-    go(cur + 1, 'play');
-  }
-  function prev() { go(cur - 1, 'seek'); }
+  function next() { if (cur === N - 1) { back(); return; } show(cur + 1); }
+  function prev() { show(cur - 1); }
   function back() {
     if (parent !== window) parent.postMessage({ cexNav: D.chapter }, '*');
     else location.href = '../../index.html#' + D.chapter;
@@ -206,18 +225,18 @@ button { font: inherit; color: inherit; }
   }
   if (!document.fullscreenEnabled) $('fs').hidden = true;
 
-  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = function () { go(cur, 'play'); };
+  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = process;
   $('back').onclick = back; $('fs').onclick = fullscreen;
   addEventListener('keydown', function (e) {
     if (e.target.tagName === 'SELECT' || e.metaKey || e.ctrlKey || e.altKey) return;
     var k = e.key;
     if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); next(); }
     else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
-    else if (k === 'r' || k === 'R') go(cur, 'play');
+    else if (k === 'p' || k === 'P' || k === 'r' || k === 'R') process();
     else if (k === 'f' || k === 'F') fullscreen();
     else if (k === 'n' || k === 'N') $('notes').open = !$('notes').open;
-    else if (k === 'Home') go(0, 'seek');
-    else if (k === 'End') go(N - 1, 'seek');
+    else if (k === 'Home') show(0);
+    else if (k === 'End') show(N - 1);
   });
   // tap = next; horizontal swipe = next / previous
   var x0 = null, y0 = null;
@@ -230,7 +249,7 @@ button { font: inherit; color: inherit; }
   });
 
   var start = +store.get(KEY); if (!(start >= 0 && start < N)) start = 0;
-  go(start, start === 0 ? 'play' : 'seek');
+  show(start);
 })();
 </script>
 </body>

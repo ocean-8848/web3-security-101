@@ -8,7 +8,7 @@
 > 前置知识：完成链下赛道 L1 或 L2 中至少一篇练习；会用 Python 3（≥ 3.9，只用标准库）和 SQL 的 `SELECT ... JOIN`；读过 [B72](B72-withdrawal-risk-rules-practice.md) 和 [B73](B73-detection-engineering-practice.md) 更好（会用 `logread.py` 与 `replay.py`）。
 > 预计用时：约 2–3 小时。
 > 交互实验：[签名请求独立校验](../interactive/signing-policy-lab.html)
-> 关联章节：[X11 钱包、财资与支付渠道](../arch/X11-cex-wallet-treasury-payment.md)｜[X35 托管机构安全](../arch/X35-custodian-security.md)｜[29 2026 签名路径专题](../29-signing-path-2026.md)｜[B64 热钱包水位、提现风控与多签复核](B64-custody-ops-ir-practice.md)｜[T12 安全架构评审](../templates/T12-security-architecture-review.md)
+> 关联章节：[X14 钱包、财资与支付渠道](../arch/X14-cex-wallet-treasury-payment.md)｜[X38 托管机构安全](../arch/X38-custodian-security.md)｜[29 2026 签名路径专题](../29-signing-path-2026.md)｜[B64 热钱包水位、提现风控与多签复核](B64-custody-ops-ir-practice.md)｜[T12 安全架构评审](../templates/T12-security-architecture-review.md)
 > 最后核对：2026-11-23（Python 3.12.3；下文命令在本机从 `web3-security-handbook/` 根目录逐条运行，输出来自真实运行）
 
 > ⚠️ 警告：法律与道德边界。本章的数据全部由脚本合成，地址、金额、审批单都是虚构的，不对应任何真实系统。本章只写"检查规则"，不写任何绕过真实签名服务的步骤。不要把本章的参考实现直接接到真实的签名服务上。真实的策略引擎要经过你所在组织的变更评审和回放测试。
@@ -27,7 +27,7 @@
 
 ## 1. 本章怎么练
 
-原理不在这里重讲。签名服务的防御层见 [29 章 §4](../29-signing-path-2026.md)；调拨审批流程见 [X11 §6.2](../arch/X11-cex-wallet-treasury-payment.md)；托管机构的角色分离见 [X35](../arch/X35-custodian-security.md)。策略引擎（Policy Engine）：签名服务里决定"这笔请求该不该签"的一段代码。MPC 或多签只管谁持有密钥，不管该不该签（[X11 §3.2](../arch/X11-cex-wallet-treasury-payment.md)）。本章沿着一条签名请求的路径，做两件事。
+原理不在这里重讲。签名服务的防御层见 [29 章 §4](../29-signing-path-2026.md)；调拨审批流程见 [X14 §6.2](../arch/X14-cex-wallet-treasury-payment.md)；托管机构的角色分离见 [X38](../arch/X38-custodian-security.md)。策略引擎（Policy Engine）：签名服务里决定"这笔请求该不该签"的一段代码。MPC 或多签只管谁持有密钥，不管该不该签（[X14 §3.2](../arch/X14-cex-wallet-treasury-payment.md)）。本章沿着一条签名请求的路径，做两件事。
 
 ```mermaid
 flowchart LR
@@ -46,7 +46,7 @@ flowchart LR
 读图要点：
 - 实线是请求的正常路径。虚线是引擎的独立比对：引擎不信请求自己带的字段，只信审批单、提币单和链上结果。
 - 引擎在签名前运行（拒绝或放行），链上结果用于事后对账，两者都要有。
-- 局限：如果审批系统和签名服务被同一个攻击者控制，这个比对不再有意义。这时靠限额、熔断和三方对账兜底（[X11 §3.3](../arch/X11-cex-wallet-treasury-payment.md)）。
+- 局限：如果审批系统和签名服务被同一个攻击者控制，这个比对不再有意义。这时靠限额、熔断和三方对账兜底（[X14 §3.3](../arch/X14-cex-wallet-treasury-payment.md)）。
 
 第 1 步先看数据。第 2 步写引擎，覆盖场景 S6。第 3 步模拟冷 → 温 → 热的调拨审批，演示三种绕过。
 
@@ -380,7 +380,7 @@ python3 my_b74/policy.py
 - SR000890 的审批单 `AP-W000889` 是 25,000 美元的提币，只有 `ST033` 一个人批准。按"≥ 20,000 美元需 2 名真人"的规则，缺第二个人。这笔提币是 S1-03 的账户接管提币（[B72](B72-withdrawal-risk-rules-practice.md) 处理的场景）：风控规则漏掉了它，审批流程也只有一个人。引擎把它升级人工，是对的。
 - S6-03 同时被 3 项检查拦下（地址、摘要、链上结果）。S6-02 被 7 项拦下。多重独立检查，让单项检查写错时不至于失守。
 
-> 💡 注意：把引擎在这份数据上回放的目的，是同时测"漏放率"和"误拒率"（[X11 §3.2](../arch/X11-cex-wallet-treasury-payment.md) 的策略回放测试）。零误拒比零漏放更难：误拒会让正常提现卡住，运营最后会去关掉规则。
+> 💡 注意：把引擎在这份数据上回放的目的，是同时测"漏放率"和"误拒率"（[X14 §3.2](../arch/X14-cex-wallet-treasury-payment.md) 的策略回放测试）。零误拒比零漏放更难：误拒会让正常提现卡住，运营最后会去关掉规则。
 
 ### 3.6 与 SQL 规则比较
 
@@ -401,7 +401,7 @@ r09 召回 3/3，但有 2 条误报：两条紧急调拨补签。它只有"拒�
 
 ## 4. 第 3 步：冷 → 温 → 热的调拨审批
 
-调拨是低频、大额、最"信任流程"的动作（[X11 开场](../arch/X11-cex-wallet-treasury-payment.md)）。本步先从数据里读出调拨流程的真实数字，再写一个小模拟器，演示三种绕过。
+调拨是低频、大额、最"信任流程"的动作（[X14 开场](../arch/X14-cex-wallet-treasury-payment.md)）。本步先从数据里读出调拨流程的真实数字，再写一个小模拟器，演示三种绕过。
 
 ### 4.1 从数据读出策略数字
 
@@ -446,7 +446,7 @@ day         usd
 | 温 → 热 | ≥ 2，去掉发起人 | 0 到 120 分钟（数据：21–90 分钟） | 500,000 美元 | 1,000,000 美元（数据最大 923,000.02） |
 | 提币 | 金额 ≥ 20,000 美元需 ≥ 2 | 0 到 30 分钟（数据：0–9.5 分钟） | — | — |
 
-> 💡 注意：时间窗有两个方向。上限（审批会过期）防止旧审批单被拿来用。下限（冷 → 温的延迟期）给监控与风控留出"后悔期"（[X11 §6.2](../arch/X11-cex-wallet-treasury-payment.md)）。紧急通道不能绕过时间窗，只能缩短它，并且要有补签与事后复核。
+> 💡 注意：时间窗有两个方向。上限（审批会过期）防止旧审批单被拿来用。下限（冷 → 温的延迟期）给监控与风控留出"后悔期"（[X14 §6.2](../arch/X14-cex-wallet-treasury-payment.md)）。紧急通道不能绕过时间窗，只能缩短它，并且要有补签与事后复核。
 
 ```mermaid
 stateDiagram-v2
@@ -635,8 +635,8 @@ python3 practice-example-code/ops/solutions/b74/policy_engine.py --json
 | **SGP-2** | 比对对象独立保存：签名服务不能写审批单，审批系统不能调用签名服务 | 第 3 步 思考 | SIG-4 | | |
 | **SGP-3** | 审批单有有效期，且只能使用一次；重试按幂等处理 | 第 2 步 检查 5–6 | SIG-2 | | |
 | **SGP-4** | 签名摘要由审批单字段重算，不信任请求自带的摘要 | 第 2 步 检查 7 | SIG-3 | | |
-| **SGP-5** | 调拨有双人控制（去掉发起人）、延迟期和限额；紧急通道更严 | 第 3 步 | X11 §6.2、SIG-16 | | |
-| **SGP-6** | 策略变更前有回放测试：漏放率与误拒率都有数字 | 第 2 步 3.5 | X11 §3.2 | | |
+| **SGP-5** | 调拨有双人控制（去掉发起人）、延迟期和限额；紧急通道更严 | 第 3 步 | X14 §6.2、SIG-16 | | |
+| **SGP-6** | 策略变更前有回放测试：漏放率与误拒率都有数字 | 第 2 步 3.5 | X14 §3.2 | | |
 
 定级用 [A02](../assessment/A02-risk-rating-reporting.md) 复核。把这些检查项写进你的控制矩阵时，用 [T08](../templates/T08-control-matrix-risk-register.md)。
 
@@ -667,6 +667,6 @@ python3 practice-example-code/ops/solutions/b74/policy_engine.py --json
 
 1. 冷 → 温 的 3 张审批单（`AP-T0043`、`AP-T0044`、`AP-T0045`）各有 3 个审批人，第 3 个是 `ST041`。用 `logread.py --sql "SELECT staff_id, role, privilege FROM staff WHERE staff_id IN ('ST031','ST041')"` 查一查它的岗位和特权，再说：本章的引擎为什么没有因此拒绝这 3 张审批单？这是引擎的缺陷，还是策略的缺陷？
 2. 调拨审批单（`AP-T...`）里没有"链"字段。本章对调拨请求只能靠摘要间接绑定链。如果攻击者把一笔以太坊上的 USDT 调拨，改成了另一条链上同名代币的调拨，你的引擎会怎样？审批单应该增加什么字段？
-3. 引擎把"紧急补签"升级人工，而不是直接放行。如果紧急通道每周被用 2 次，3 个月后会发生什么？你会怎样设计紧急通道，让它"更严，不是更松"（[X11 §6.2](../arch/X11-cex-wallet-treasury-payment.md) 常见坑 2）？
+3. 引擎把"紧急补签"升级人工，而不是直接放行。如果紧急通道每周被用 2 次，3 个月后会发生什么？你会怎样设计紧急通道，让它"更严，不是更松"（[X14 §6.2](../arch/X14-cex-wallet-treasury-payment.md) 常见坑 2）？
 
 - 下一篇：[B75 发布门禁实战：审流水线、查供应链、做发布清单](B75-release-gate-practice.md)。本章保护的是签名服务"收到什么请求"；B75 保护的是签名服务"运行什么代码"。S7 的开发终端失陷和 S8 的 CI 被污染，都是从这一侧绕过审批单，让签名服务本身变成攻击者的。

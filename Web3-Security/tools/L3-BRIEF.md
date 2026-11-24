@@ -2,7 +2,7 @@
 
 ## 1. 目标
 
-在 `Web3 安全训练营` 里新增一条赛道 **链下 L3 运筹帷幄：架构与运营**，把 X01–X24 的方法变成能在笔记本上**亲手跑通**的练习。读者走完后能：为一家机构建控制矩阵、写并调风控规则、写检测规则并回放验证、做签名策略独立校验、审发布流水线、主持桌面推演、写事故复盘、交付一份带 90 天路线图的安全架构评估。
+在 `Web3 安全训练营` 里新增一条赛道 **链下 L3 运筹帷幄：架构与运营**，把 X01–X27 的方法变成能在笔记本上**亲手跑通**的练习。读者走完后能：为一家机构建控制矩阵、写并调风控规则、写检测规则并回放验证、做签名策略独立校验、审发布流水线、主持桌面推演、写事故复盘、交付一份带 90 天路线图的安全架构评估。
 
 ## 2. 共用靶场：MiniEx（模拟交易所）
 
@@ -66,13 +66,13 @@ practice-example-code/ops/
 
 | 章 | slug | 标题 | 配套 X 章 | 用到的场景 |
 |---|---|---|---|---|
-| B70 | offchain-l3-guide | 链下 L3 导读：从懂攻击到建体系 | X01、X07 | — |
-| B71 | control-matrix-practice | 控制矩阵实战：给 MiniEx 建资产清单、威胁模型与控制矩阵 | X01、X02、X07 | — |
-| B72 | withdrawal-risk-rules-practice | 提币与账户风控规则实战：写规则、回放、调阈值 | X08、X10、X11、X13 | S1 S2 S3 S4 S9 |
+| B70 | offchain-l3-guide | 链下 L3 导读：从懂攻击到建体系 | X01、X10 | — |
+| B71 | control-matrix-practice | 控制矩阵实战：给 MiniEx 建资产清单、威胁模型与控制矩阵 | X01、X02、X10 | — |
+| B72 | withdrawal-risk-rules-practice | 提币与账户风控规则实战：写规则、回放、调阈值 | X11、X13、X14、X16 | S1 S2 S3 S4 S9 |
 | B73 | detection-engineering-practice | 检测工程实战：把日志变成告警，并证明它有效 | X05、X03 | S5 S6 S7 S9 |
-| B74 | signing-policy-practice | 签名服务独立校验与调拨审批实战 | X11、X21 | S6 |
+| B74 | signing-policy-practice | 签名服务独立校验与调拨审批实战 | X14、X24 | S6 |
 | B75 | release-gate-practice | 发布门禁实战：审流水线、查供应链、做发布清单 | X04 | S8 |
-| B76 | tabletop-postmortem-practice | 桌面推演与事故复盘实战 | X06、X13 | S1 S6 S7 |
+| B76 | tabletop-postmortem-practice | 桌面推演与事故复盘实战 | X06、X16 | S1 S6 S7 |
 | B77 | security-architecture-capstone | 毕业项目：为 MiniEx 交付安全架构评估与 90 天路线图 | 全部 | 全部 |
 | B78 | glossary-resources | 术语表与资源索引（原 B70，顺延） | — | — |
 

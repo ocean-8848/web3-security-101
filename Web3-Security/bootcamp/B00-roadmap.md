@@ -51,7 +51,7 @@
 - **路线 A（零基础）**：按阶段 0 → 1 → 2 → 3 的顺序走。每个阶段先读导读，按导读的章节顺序学。
 - **路线 B（Web2 开发或安全工程师）**：阶段 0 快速过 → 主线 [03](../03-evm-solidity-basics.md)–[09](../09-mev-signatures.md) → 阶段 1 → 阶段 2 → 阶段 3。
 - **路线 C（有 Solidity 经验，准备求职）**：主线 [04](../04-reentrancy.md)–[09](../09-mev-signatures.md) 快速复习 → [B09](B09-reading-code-mindset.md) → 阶段 2 → 阶段 3 → 阶段 4 → 阶段 5 → 阶段 7 的 [B53](B53-contests-and-habits.md)、[B54](B54-expert.md)、[B55](B55-interview.md)。阶段 6 按岗位需要补。
-- **路线 D（链下与运营安全）**：[B03](B03-blockchain-basics.md) → [B04](B04-setup.md)（只装 Foundry 和 Node.js）→ L1 → L2 → L3（要把防御建成体系并持续运营时，配合手册 [X01–X48](../arch/X01-security-program-controls.md)）。需要看懂合约风险时，再补 [B08](B08-tokens-and-vault.md)、[B09](B09-reading-code-mindset.md)、[B14](B14-writing-findings.md)。
+- **路线 D（链下与运营安全）**：[B03](B03-blockchain-basics.md) → [B04](B04-setup.md)（只装 Foundry 和 Node.js）→ L1 → L2 → L3（要把防御建成体系并持续运营时，配合手册 [X01–X09](../arch/X01-security-program-controls.md)）。需要看懂合约风险时，再补 [B08](B08-tokens-and-vault.md)、[B09](B09-reading-code-mindset.md)、[B14](B14-writing-findings.md)。
 
 > 💡 注意：路线 B 和路线 C 是快速通道。跳过的章节不是不重要。如果某个靶场卡住，回到被跳过的章节补课。
 

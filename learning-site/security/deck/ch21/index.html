@@ -42,7 +42,10 @@ button { font: inherit; color: inherit; }
   box-shadow: 0 1px 0 var(--rule), 0 8px 28px rgba(60, 50, 30, .14); cursor: pointer; touch-action: pan-y; user-select: none; }
 .screen iframe { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; border: 0; transform-origin: 0 0; visibility: hidden; pointer-events: none; }
 .screen iframe.on { visibility: visible; }
-.screen .wait { position: absolute; inset: 0; display: grid; place-items: center; color: #8a826f; font-size: 14px; background: #efebe3; }
+.screen .still { position: absolute; inset: 0; background-repeat: no-repeat; background-color: #efebe3; }
+.screen.live .still { visibility: hidden; }
+.screen .wait { position: absolute; left: 12px; bottom: 12px; padding: 4px 12px; border-radius: 999px; color: #fff; font-size: 13px; background: rgba(28, 28, 28, .72); }
+.btn.play { border-color: var(--accent); color: var(--accent); }
 .screen .wait[hidden] { display: none; }
 
 .side { min-height: 0; overflow-y: auto; border-left: 1px solid var(--rule); background: var(--paper); padding: 18px 20px 24px; }
@@ -102,7 +105,7 @@ button { font: inherit; color: inherit; }
     <button class="btn hide-narrow" id="fs" title="全屏（F）">⛶ 全屏</button>
   </header>
   <div class="body">
-    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="wait" id="wait">载入动画…</div></div></div>
+    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="still" id="still" role="img"></div><div class="wait" id="wait" hidden>载入动画…</div></div></div>
     <aside class="side" aria-live="polite">
       <div class="sec" id="sec"></div>
       <h2 id="stitle"></h2>
@@ -112,7 +115,7 @@ button { font: inherit; color: inherit; }
   </div>
   <nav class="ctrl" aria-label="翻页">
     <button class="btn" id="prev" aria-label="上一页（←）">‹ 上一页</button>
-    <button class="btn" id="replay" aria-label="重播本页动画（R）">⟳ 重播</button>
+    <button class="btn play" id="replay" aria-label="看这一页的动画过程（P）">▶ 看过程</button>
     <button class="btn primary" id="next" aria-label="下一页（→ 或空格）">下一页 ›</button>
     <span class="count" id="count"></span>
     <div class="prog" id="prog"></div>
@@ -123,10 +126,10 @@ button { font: inherit; color: inherit; }
 </div>
 <script>
 (function () {
-  var D = {"chapter": "s21", "title": "社会工程与内部人：攻击者先攻破人", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 12.31, "title": "一次正常的面试邀约", "points": ["2026 年 9 月，一名 Binance 工程师接到面试邀约", "来自正规招聘平台，视频面试，看上去一切正常"], "notes": ["2026 年 9 月，一名 Binance 工程师接到面试邀约。", "邀约来自正规的招聘平台，他也参加了视频面试，看上去一切正常。"], "section": "一份面试作业"}, {"seg": "1", "t0": 12.31, "t1": 25.67, "title": "一份代码作业", "points": ["面试结束前，对方给了他一份作业", "一个代码仓库，他下载到了工作电脑上", "没有输入密码，也没有点任何钓鱼链接"], "notes": ["面试结束前，对方给了他一份作业。", "一个代码仓库，要他下载下来完成。", "他把仓库下载到了工作电脑上。", "他没有输入密码，也没有点任何钓鱼链接。"], "section": "一份面试作业"}, {"seg": "1", "t0": 25.67, "t1": 38.57, "title": "从一台电脑到部署令牌", "points": ["10 月，攻击者从他的电脑出发，控制了更多同事的电脑", "最后，他们找到了部署令牌", "受影响的资产约 63.4 亿美元"], "notes": ["到了 10 月，攻击者从工程师的电脑出发，控制了更多同事的电脑。", "最后，他们找到了部署令牌。", "这次事件里，受影响的资产约 63.4 亿美元。"], "section": "一份面试作业"}, {"seg": "1", "t0": 38.57, "t1": 49.32, "title": "先猜一道题", "points": ["没有密码，没有链接", "这份作业，是靠什么进入他电脑的？", "先记住这个问题"], "notes": ["先猜一道题。", "没有密码，没有链接，这份作业，是靠什么进入他电脑的？", "先记住这个问题。"], "section": "一份面试作业"}, {"seg": "2", "t0": 0.0, "t1": 15.25, "title": "社会工程与内部人风险", "points": ["社会工程：靠欺骗或利用信任，让人自己动手", "内部人风险：有合法权限的人，有意或无意造成损失"], "notes": ["先给准确的说法。", "社会工程，就是靠欺骗或利用信任，让人自己动手，做攻击者需要的事。", "内部人风险，是有合法权限的人，有意或无意地造成损失。"], "section": "先攻破人"}, {"seg": "2", "t0": 15.25, "t1": 30.71, "title": "最贵的漏洞在员工电脑上", "points": ["攻击者不破解多签合约", "他让一个签名人，在自己电脑上打开一个文件", "之后电脑上显示的一切，都可能是假的"], "notes": ["最贵的漏洞，常常不在合约里，而在员工的电脑上。", "攻击者不去破解多签合约，他让一个签名人，在自己电脑上打开一个文件。", "之后，这台电脑上显示的一切，都可能是假的。"], "section": "先攻破人"}, {"seg": "2", "t0": 30.71, "t1": 47.05, "title": "比喻：三个掌钥人", "points": ["金库有三道门，三个人各管一把钥匙", "窃贼给掌钥人各寄一封老同事的来信", "读过信的人，会记错自己开的是哪道门"], "notes": ["打个比方，金库有三道门，三个人各管一把钥匙。", "窃贼不撬门，他给三个掌钥人，各寄了一封老同事的来信。", "信纸上涂了药，读过信的人，第二天会记错自己开的是哪道门。"], "section": "先攻破人"}, {"seg": "2", "t0": 47.05, "t1": 60.69, "title": "不必同时骗三个人", "points": ["不成立处：真实的攻击者，不需要同时骗三个人", "签名人电脑都运行同一个前端", "攻破几台，再配合篡改前端，就可能凑够门槛"], "notes": ["比喻在这里不成立，真实的攻击者，不需要同时骗三个人。", "签名人的电脑都运行同一个前端，攻破其中几台，再配合篡改前端，就可能凑够门槛。"], "section": "先攻破人"}, {"seg": "2", "t0": 60.69, "t1": 79.57, "title": "身份、任务、会议", "points": ["假身份：冒充招聘者、前同事、合作方或记者", "任务：测试题、代码作业、一份复盘 PDF", "会议：假会议软件，或者远程控制请求"], "notes": ["攻击者能控制的，通常是这五样东西。", "一个假身份，冒充招聘者、前同事、合作方或者记者。", "一个任务，比如测试题、代码作业、一份复盘 PDF。", "一个会议，比如假会议软件，或者远程控制请求。"], "section": "先攻破人"}, {"seg": "2", "t0": 79.57, "t1": 98.82, "title": "一笔钱，一个身份", "points": ["一笔钱：收买客服或外包人员", "被雇用的身份：冒名应聘远程岗位", "朝鲜相关组织最活跃，但手法被各类团伙复用"], "notes": ["一笔钱，用来收买客服或外包人员。", "还有一个被雇用的身份，冒名应聘远程岗位。", "公开通报显示，朝鲜相关组织在这类攻击中最活跃。", "但手法本身被各类犯罪团伙复用，防御不该只盯着一个组织。"], "section": "先攻破人"}, {"seg": "3", "t0": 0.0, "t1": 27.37, "title": "假招聘与假面试", "points": ["在 LinkedIn 或 Telegram 上说有高薪岗位，先做测试", "发来 GitHub 项目或 Python 脚本，员工在工作电脑上运行", "后门回连，偷走会话 cookie、SSH 密钥和钱包"], "notes": ["先看最常见的一种，假招聘和假面试。", "假招聘者在 LinkedIn 或 Telegram 上找到你，说有个高薪岗位，先做个测试。", "然后发来一个 GitHub 项目，或者一个 Python 脚本。", "关键在下一步，员工在工作电脑上，运行了外部代码。", "后门回连，偷走浏览器的会话 cookie、SSH 密钥和钱包。"], "section": "测试题与文件"}, {"seg": "3", "t0": 27.37, "t1": 42.51, "title": "偷的是会话，不是密码", "points": ["会话 cookie 是登录之后的凭证", "拿到它，就能绕过多因素认证", "硬件密钥只保护登录这一步，通常也挡不住"], "notes": ["注意，偷的是会话 cookie，不是密码。", "会话 cookie 是登录之后的凭证，拿到它，就能绕过多因素认证。", "就算账号用了硬件密钥，通常也挡不住，硬件密钥只保护登录这一步。"], "section": "测试题与文件"}, {"seg": "3", "t0": 42.51, "t1": 69.93, "title": "供应商员工也是攻击面", "points": ["2024 年 3 月，Ginco 的一名员工运行了一个测试脚本", "5 月，攻击者篡改了 DMM Bitcoin 的一笔交易", "BTC 约 3.05 亿美元，联合归因于 TraderTraitor"], "notes": ["2024 年 3 月，钱包软件供应商 Ginco 的一名员工，就这样运行了一个测试脚本。", "5 月，攻击者用偷来的会话，进入 Ginco 的系统，篡改了 DMM Bitcoin 的一笔交易。", "被盗的 BTC 约 3.05 亿美元。", "FBI 和日本警察厅等机构，联合归因于朝鲜的 TraderTraitor。", "供应商的员工，也是你的攻击面。"], "section": "测试题与文件"}, {"seg": "3", "t0": 69.93, "t1": 87.95, "title": "规模化的假面试", "points": ["多国机构联合告警：至少 3 万台设备被感染", "2025 年 12 月到 2026 年 7 月", "打开项目时，配置文件就可能自动执行代码"], "notes": ["这类假面试已经成了规模化的活动。", "多国机构联合告警，从 2025 年 12 月到 2026 年 7 月，至少 3 万台设备被感染。", "而且不一定要你手动运行，打开项目时，配置文件就可能自动执行代码。"], "section": "测试题与文件"}, {"seg": "3", "t0": 87.95, "t1": 103.97, "title": "伪装成复盘 PDF", "points": ["2024 年，Radiant Capital 开发者收到一个 zip", "发件人在 Telegram 上冒充前承包商", "里面是 macOS 后门，3 名开发者的设备被感染"], "notes": ["文件也能做同样的事。", "2024 年，Radiant Capital 的开发者，在 Telegram 上收到一个 zip，发件人冒充前承包商。", "里面是伪装成复盘 PDF 的 macOS 后门，3 名开发者的设备被感染。"], "section": "测试题与文件"}, {"seg": "3", "t0": 103.97, "t1": 119.72, "title": "模拟结果也是假的", "points": ["恶意软件改写了多签前端的显示", "用了硬件钱包和交易模拟，界面上的模拟结果也是假的", "多签所有权被转走，损失约 5000 万美元"], "notes": ["恶意软件改写了多签前端的显示。", "签名人用了硬件钱包，也做了交易模拟，但界面上的模拟结果，也是假的。", "多签所有权被转走，损失约 5000 万美元。"], "section": "测试题与文件"}, {"seg": "4", "t0": 0.0, "t1": 14.69, "title": "第二种：一个会议", "points": ["冒充媒体或投资机构，邀请你参加访谈或路演", "要你下载专用会议软件，或在会议里申请远程控制"], "notes": ["第二种手法，是一个会议。", "攻击者冒充媒体或投资机构，邀请你参加访谈或路演。", "然后要你下载一个专用会议软件，或者在会议里申请远程控制。"], "section": "会议与身份"}, {"seg": "4", "t0": 14.69, "t1": 37.31, "title": "名叫 Zoom 的参会者", "points": ["Trail of Bits 公开：攻击者把显示名改成 Zoom", "弹窗写着 Zoom 请求控制屏幕，像系统提示", "点了同意，对方就能打开钱包或密码管理器"], "notes": ["2025 年 4 月，Trail of Bits 公开了一种做法。", "攻击者在 Zoom 通话里，把自己的显示名改成 Zoom。", "弹窗写着 Zoom 请求控制你的屏幕，看起来像系统提示。", "但这里的 Zoom，只是一个参会者的名字。", "点了同意，对方就能控制电脑，打开钱包或密码管理器。"], "section": "会议与身份"}, {"seg": "4", "t0": 37.31, "t1": 45.51, "title": "假职位与假会议软件", "points": ["2025 年 2 月，有人发布假的 Web3 职位", "引导安装 GrassCall 会议软件，里面是窃密木马"], "notes": ["同年 2 月，还有人发布假的 Web3 职位。", "引导求职者安装 GrassCall 会议软件，里面是窃密木马。"], "section": "会议与身份"}, {"seg": "4", "t0": 45.51, "t1": 71.17, "title": "第三种：冒名受雇", "points": ["用盗用或伪造的身份，应聘远程开发岗位", "2025 年 6 月，美国检方起诉 4 名朝鲜人", "一人改了雇主合约源码，转走约 74 万美元"], "notes": ["第三种手法，是把人直接送进公司。", "攻击者用盗用或伪造的身份，应聘远程开发岗位。", "美国检方在 2025 年 6 月，起诉了 4 名朝鲜人。", "他们冒名受雇于区块链公司，其中一人修改了雇主两个智能合约的源码。", "把约 74 万美元转到自己的地址，全案约 91.5 万美元。"], "section": "会议与身份"}, {"seg": "4", "t0": 71.17, "t1": 88.37, "title": "第四种：一笔钱", "points": ["2025 年 5 月，攻击者收买 Coinbase 海外外包客服", "导出约 7 万名用户的数据，再冒充 Coinbase 行骗", "Coinbase 估算，成本约 1.8 亿到 4 亿美元"], "notes": ["最后一种，是一笔钱。", "2025 年 5 月，攻击者用现金，收买了 Coinbase 的海外外包客服。", "导出约 7 万名用户的数据，再冒充 Coinbase 行骗。", "Coinbase 估算，成本约 1.8 亿到 4 亿美元。"], "section": "会议与身份"}, {"seg": "4", "t0": 88.37, "t1": 104.94, "title": "被利用的员工", "points": ["2025 年 7 月，CoinDCX 员工被兼职吸引，装了恶意软件", "运营钱包被盗走约 4400 万美元", "当地警方称，这名员工并不知情"], "notes": ["同年 7 月，CoinDCX 的一名员工被兼职工作吸引，在公司电脑上装了恶意软件。", "运营钱包被盗走约 4400 万美元，当地警方称，这名员工并不知情，只是被利用了。"], "section": "会议与身份"}, {"seg": "5", "t0": 0.0, "t1": 28.97, "title": "第一条：设备分离", "points": ["一个人被骗，也不够造成损失", "签名设备只签名和解码，不收邮件、不打开外部文件", "办公电脑不存生产凭证；外部项目放进隔离环境"], "notes": ["防御不能指望员工永远不被骗，要让一个人被骗，也不够造成损失。", "第一条，设备分离。", "签名专用设备，只用来签名和独立解码，不收邮件，不上 Telegram，不打开外部文件。", "日常办公电脑，用来沟通和写文档，不存生产凭证和私钥。", "开发电脑要运行外部项目，就放进隔离的虚拟机，或者一次性环境。"], "section": "设备与流程"}, {"seg": "5", "t0": 28.97, "t1": 47.53, "title": "第二条：流程控制", "points": ["双人原则：资金、发布、权限变更至少两人独立确认", "带外确认：用预先登记的电话或当面", "不用发起请求的那个渠道"], "notes": ["第二条，流程控制。", "资金操作、合约发布、权限变更，至少两人独立确认，这叫双人原则。", "大额交易和权限变更，用预先登记的电话或当面确认，这叫带外确认。", "要点是，不用发起请求的那个渠道。"], "section": "设备与流程"}, {"seg": "5", "t0": 47.53, "t1": 60.05, "title": "职责分离与短期会话", "points": ["发起人、审批人、执行人、审计人，不能是同一个人", "关键系统用硬件密钥，会话短期有效，异地登录告警"], "notes": ["发起人、审批人、执行人、审计人，不能是同一个人，这叫职责分离。", "关键系统用硬件密钥，会话短期有效，异地登录要告警。"], "section": "设备与流程"}, {"seg": "5", "t0": 60.05, "t1": 85.15, "title": "第三条：管好人员进出", "points": ["招聘：本人出镜，核验证件、履历和设备所在地", "离职当天回收全部权限，包括 npm、域名、社交账号", "漏掉一个边缘权限，就是一扇没锁的门"], "notes": ["第三条，管好人员的进出。", "招聘时，视频面试本人出镜，核验证件和履历，远程岗位核验设备所在地。", "离职当天，回收全部权限。", "不只是代码仓库和云，还有 npm、域名注册商、官方社交账号、多签签名人身份。", "漏掉一个边缘权限，前员工的账号，就是一扇没锁的门。"], "section": "设备与流程"}, {"seg": "5", "t0": 85.15, "t1": 106.64, "title": "第四条：内部人早期信号", "points": ["访问无关数据，大量导出，借口紧急绕过审批", "坚持独自处理某类操作，拒绝休假或轮岗", "匿名报告渠道：报告可疑接触，不受惩罚"], "notes": ["第四条，留意内部人风险的早期信号。", "访问和岗位无关的数据，短时间大量导出，借口紧急，要求绕过审批。", "还有坚持独自处理某类操作，拒绝休假或轮岗。", "最后，要有匿名报告渠道，员工报告可疑接触，不受惩罚。"], "section": "设备与流程"}, {"seg": "6", "t0": 0.0, "t1": 25.45, "title": "普通用户也会遇到", "points": ["让你下载项目、运行脚本、装会议软件，先停下来", "存钱包的电脑不运行陌生项目；拒绝远程控制", "客服主动说账户有风险，挂断，从官方 App 联系"], "notes": ["普通用户也会遇到同样的手法。", "招聘者让你下载项目、运行脚本、安装会议软件，先停下来。", "不在存放钱包的电脑上，运行陌生项目，打开陌生文件。", "会议里，拒绝任何远程控制请求。", "客服主动联系你，说账户有风险，要你转移资产，一律挂断，再从官方 App 里联系客服。"], "section": "回到作业"}, {"seg": "6", "t0": 25.45, "t1": 40.59, "title": "今天就能做的事", "points": ["签名人：把聊天软件从签名设备上删掉", "开发者：陌生项目一律先在隔离环境里打开", "团队负责人：查离职清单有没有覆盖边缘权限"], "notes": ["如果你是签名人，今天就把聊天软件，从签名设备上删掉。", "如果你是开发者，陌生项目一律先在隔离环境里打开。", "如果你负责团队，查一遍离职清单，看它有没有覆盖边缘权限。"], "section": "回到作业"}, {"seg": "6", "t0": 40.59, "t1": 57.65, "title": "答案：一个安装脚本", "points": ["安装步骤运行混淆命令，把 pyenv 组件换成恶意版本", "当时的终端防护没有发现", "在工作电脑上运行外部代码，这一步就够了"], "notes": ["回到开头的题。", "作业仓库靠的是安装脚本，安装步骤运行了混淆的命令，把合法的 pyenv 组件换成了恶意版本。", "当时的终端防护没有发现，在工作电脑上运行外部代码，这一步就够了。"], "section": "回到作业"}, {"seg": "6", "t0": 57.65, "t1": 72.95, "title": "清理完成，威胁未结束", "points": ["6 月另一名工程师下载过被篡改的 Homebrew，已被清理", "报告称，攻击者由此了解了工程师的角色和同事", "一次清理完成，不代表威胁结束"], "notes": ["而在 6 月，另一名工程师下载过被篡改的 Homebrew，Binance 当时就发现并清理了这台设备。", "但报告称，攻击者由此了解了工程师的角色和同事。", "一次清理完成，不代表威胁结束。"], "section": "回到作业"}, {"seg": "6", "t0": 72.95, "t1": 78.93, "title": "被攻破一人，也转不走钱", "points": ["攻击者先攻破人", "防线要设计成：一个人被攻破，也转不走钱"], "notes": ["攻击者先攻破人，防线就要设计成，一个人被攻破，也转不走钱。"], "section": "回到作业"}]};
+  var D = {"chapter": "s21", "title": "社会工程与内部人：攻击者先攻破人", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 12.31, "title": "一次正常的面试邀约", "points": ["2026 年 9 月，一名 Binance 工程师接到面试邀约", "来自正规招聘平台，视频面试，看上去一切正常"], "notes": ["2026 年 9 月，一名 Binance 工程师接到面试邀约。", "邀约来自正规的招聘平台，他也参加了视频面试，看上去一切正常。"], "section": "一份面试作业", "k": 9.8}, {"seg": "1", "t0": 12.31, "t1": 25.67, "title": "一份代码作业", "points": ["面试结束前，对方给了他一份作业", "一个代码仓库，他下载到了工作电脑上", "没有输入密码，也没有点任何钓鱼链接"], "notes": ["面试结束前，对方给了他一份作业。", "一个代码仓库，要他下载下来完成。", "他把仓库下载到了工作电脑上。", "他没有输入密码，也没有点任何钓鱼链接。"], "section": "一份面试作业", "k": 19.11}, {"seg": "1", "t0": 25.67, "t1": 38.57, "title": "从一台电脑到部署令牌", "points": ["10 月，攻击者从他的电脑出发，控制了更多同事的电脑", "最后，他们找到了部署令牌", "受影响的资产约 63.4 亿美元"], "notes": ["到了 10 月，攻击者从工程师的电脑出发，控制了更多同事的电脑。", "最后，他们找到了部署令牌。", "这次事件里，受影响的资产约 63.4 亿美元。"], "section": "一份面试作业", "k": 36.97}, {"seg": "1", "t0": 38.57, "t1": 49.32, "title": "先猜一道题", "points": ["没有密码，没有链接", "这份作业，是靠什么进入他电脑的？", "先记住这个问题"], "notes": ["先猜一道题。", "没有密码，没有链接，这份作业，是靠什么进入他电脑的？", "先记住这个问题。"], "section": "一份面试作业", "k": 47.12}, {"seg": "2", "t0": 0.0, "t1": 15.25, "title": "社会工程与内部人风险", "points": ["社会工程：靠欺骗或利用信任，让人自己动手", "内部人风险：有合法权限的人，有意或无意造成损失"], "notes": ["先给准确的说法。", "社会工程，就是靠欺骗或利用信任，让人自己动手，做攻击者需要的事。", "内部人风险，是有合法权限的人，有意或无意地造成损失。"], "section": "先攻破人", "k": 15.25}, {"seg": "2", "t0": 15.25, "t1": 30.71, "title": "最贵的漏洞在员工电脑上", "points": ["攻击者不破解多签合约", "他让一个签名人，在自己电脑上打开一个文件", "之后电脑上显示的一切，都可能是假的"], "notes": ["最贵的漏洞，常常不在合约里，而在员工的电脑上。", "攻击者不去破解多签合约，他让一个签名人，在自己电脑上打开一个文件。", "之后，这台电脑上显示的一切，都可能是假的。"], "section": "先攻破人", "k": 30.71}, {"seg": "2", "t0": 30.71, "t1": 47.05, "title": "比喻：三个掌钥人", "points": ["金库有三道门，三个人各管一把钥匙", "窃贼给掌钥人各寄一封老同事的来信", "读过信的人，会记错自己开的是哪道门"], "notes": ["打个比方，金库有三道门，三个人各管一把钥匙。", "窃贼不撬门，他给三个掌钥人，各寄了一封老同事的来信。", "信纸上涂了药，读过信的人，第二天会记错自己开的是哪道门。"], "section": "先攻破人", "k": 47.05}, {"seg": "2", "t0": 47.05, "t1": 60.69, "title": "不必同时骗三个人", "points": ["不成立处：真实的攻击者，不需要同时骗三个人", "签名人电脑都运行同一个前端", "攻破几台，再配合篡改前端，就可能凑够门槛"], "notes": ["比喻在这里不成立，真实的攻击者，不需要同时骗三个人。", "签名人的电脑都运行同一个前端，攻破其中几台，再配合篡改前端，就可能凑够门槛。"], "section": "先攻破人", "k": 58.35}, {"seg": "2", "t0": 60.69, "t1": 79.57, "title": "身份、任务、会议", "points": ["假身份：冒充招聘者、前同事、合作方或记者", "任务：测试题、代码作业、一份复盘 PDF", "会议：假会议软件，或者远程控制请求"], "notes": ["攻击者能控制的，通常是这五样东西。", "一个假身份，冒充招聘者、前同事、合作方或者记者。", "一个任务，比如测试题、代码作业、一份复盘 PDF。", "一个会议，比如假会议软件，或者远程控制请求。"], "section": "先攻破人", "k": 79.57}, {"seg": "2", "t0": 79.57, "t1": 98.82, "title": "一笔钱，一个身份", "points": ["一笔钱：收买客服或外包人员", "被雇用的身份：冒名应聘远程岗位", "朝鲜相关组织最活跃，但手法被各类团伙复用"], "notes": ["一笔钱，用来收买客服或外包人员。", "还有一个被雇用的身份，冒名应聘远程岗位。", "公开通报显示，朝鲜相关组织在这类攻击中最活跃。", "但手法本身被各类犯罪团伙复用，防御不该只盯着一个组织。"], "section": "先攻破人", "k": 98.82}, {"seg": "3", "t0": 0.0, "t1": 27.37, "title": "假招聘与假面试", "points": ["在 LinkedIn 或 Telegram 上说有高薪岗位，先做测试", "发来 GitHub 项目或 Python 脚本，员工在工作电脑上运行", "后门回连，偷走会话 cookie、SSH 密钥和钱包"], "notes": ["先看最常见的一种，假招聘和假面试。", "假招聘者在 LinkedIn 或 Telegram 上找到你，说有个高薪岗位，先做个测试。", "然后发来一个 GitHub 项目，或者一个 Python 脚本。", "关键在下一步，员工在工作电脑上，运行了外部代码。", "后门回连，偷走浏览器的会话 cookie、SSH 密钥和钱包。"], "section": "测试题与文件", "k": 1.55}, {"seg": "3", "t0": 27.37, "t1": 42.51, "title": "偷的是会话，不是密码", "points": ["会话 cookie 是登录之后的凭证", "拿到它，就能绕过多因素认证", "硬件密钥只保护登录这一步，通常也挡不住"], "notes": ["注意，偷的是会话 cookie，不是密码。", "会话 cookie 是登录之后的凭证，拿到它，就能绕过多因素认证。", "就算账号用了硬件密钥，通常也挡不住，硬件密钥只保护登录这一步。"], "section": "测试题与文件", "k": 28.17}, {"seg": "3", "t0": 42.51, "t1": 69.93, "title": "供应商员工也是攻击面", "points": ["2024 年 3 月，Ginco 的一名员工运行了一个测试脚本", "5 月，攻击者篡改了 DMM Bitcoin 的一笔交易", "BTC 约 3.05 亿美元，联合归因于 TraderTraitor"], "notes": ["2024 年 3 月，钱包软件供应商 Ginco 的一名员工，就这样运行了一个测试脚本。", "5 月，攻击者用偷来的会话，进入 Ginco 的系统，篡改了 DMM Bitcoin 的一笔交易。", "被盗的 BTC 约 3.05 亿美元。", "FBI 和日本警察厅等机构，联合归因于朝鲜的 TraderTraitor。", "供应商的员工，也是你的攻击面。"], "section": "测试题与文件", "k": 67.06}, {"seg": "3", "t0": 69.93, "t1": 87.95, "title": "规模化的假面试", "points": ["多国机构联合告警：至少 3 万台设备被感染", "2025 年 12 月到 2026 年 7 月", "打开项目时，配置文件就可能自动执行代码"], "notes": ["这类假面试已经成了规模化的活动。", "多国机构联合告警，从 2025 年 12 月到 2026 年 7 月，至少 3 万台设备被感染。", "而且不一定要你手动运行，打开项目时，配置文件就可能自动执行代码。"], "section": "测试题与文件", "k": 87.95}, {"seg": "3", "t0": 87.95, "t1": 103.97, "title": "伪装成复盘 PDF", "points": ["2024 年，Radiant Capital 开发者收到一个 zip", "发件人在 Telegram 上冒充前承包商", "里面是 macOS 后门，3 名开发者的设备被感染"], "notes": ["文件也能做同样的事。", "2024 年，Radiant Capital 的开发者，在 Telegram 上收到一个 zip，发件人冒充前承包商。", "里面是伪装成复盘 PDF 的 macOS 后门，3 名开发者的设备被感染。"], "section": "测试题与文件", "k": 103.97}, {"seg": "3", "t0": 103.97, "t1": 119.72, "title": "模拟结果也是假的", "points": ["恶意软件改写了多签前端的显示", "用了硬件钱包和交易模拟，界面上的模拟结果也是假的", "多签所有权被转走，损失约 5000 万美元"], "notes": ["恶意软件改写了多签前端的显示。", "签名人用了硬件钱包，也做了交易模拟，但界面上的模拟结果，也是假的。", "多签所有权被转走，损失约 5000 万美元。"], "section": "测试题与文件", "k": 113.77}, {"seg": "4", "t0": 0.0, "t1": 14.69, "title": "第二种：一个会议", "points": ["冒充媒体或投资机构，邀请你参加访谈或路演", "要你下载专用会议软件，或在会议里申请远程控制"], "notes": ["第二种手法，是一个会议。", "攻击者冒充媒体或投资机构，邀请你参加访谈或路演。", "然后要你下载一个专用会议软件，或者在会议里申请远程控制。"], "section": "会议与身份", "k": 1.3}, {"seg": "4", "t0": 14.69, "t1": 37.31, "title": "名叫 Zoom 的参会者", "points": ["Trail of Bits 公开：攻击者把显示名改成 Zoom", "弹窗写着 Zoom 请求控制屏幕，像系统提示", "点了同意，对方就能打开钱包或密码管理器"], "notes": ["2025 年 4 月，Trail of Bits 公开了一种做法。", "攻击者在 Zoom 通话里，把自己的显示名改成 Zoom。", "弹窗写着 Zoom 请求控制你的屏幕，看起来像系统提示。", "但这里的 Zoom，只是一个参会者的名字。", "点了同意，对方就能控制电脑，打开钱包或密码管理器。"], "section": "会议与身份", "k": 33.99}, {"seg": "4", "t0": 37.31, "t1": 45.51, "title": "假职位与假会议软件", "points": ["2025 年 2 月，有人发布假的 Web3 职位", "引导安装 GrassCall 会议软件，里面是窃密木马"], "notes": ["同年 2 月，还有人发布假的 Web3 职位。", "引导求职者安装 GrassCall 会议软件，里面是窃密木马。"], "section": "会议与身份", "k": 45.51}, {"seg": "4", "t0": 45.51, "t1": 71.17, "title": "第三种：冒名受雇", "points": ["用盗用或伪造的身份，应聘远程开发岗位", "2025 年 6 月，美国检方起诉 4 名朝鲜人", "一人改了雇主合约源码，转走约 74 万美元"], "notes": ["第三种手法，是把人直接送进公司。", "攻击者用盗用或伪造的身份，应聘远程开发岗位。", "美国检方在 2025 年 6 月，起诉了 4 名朝鲜人。", "他们冒名受雇于区块链公司，其中一人修改了雇主两个智能合约的源码。", "把约 74 万美元转到自己的地址，全案约 91.5 万美元。"], "section": "会议与身份", "k": 71.17}, {"seg": "4", "t0": 71.17, "t1": 88.37, "title": "第四种：一笔钱", "points": ["2025 年 5 月，攻击者收买 Coinbase 海外外包客服", "导出约 7 万名用户的数据，再冒充 Coinbase 行骗", "Coinbase 估算，成本约 1.8 亿到 4 亿美元"], "notes": ["最后一种，是一笔钱。", "2025 年 5 月，攻击者用现金，收买了 Coinbase 的海外外包客服。", "导出约 7 万名用户的数据，再冒充 Coinbase 行骗。", "Coinbase 估算，成本约 1.8 亿到 4 亿美元。"], "section": "会议与身份", "k": 88.37}, {"seg": "4", "t0": 88.37, "t1": 104.94, "title": "被利用的员工", "points": ["2025 年 7 月，CoinDCX 员工被兼职吸引，装了恶意软件", "运营钱包被盗走约 4400 万美元", "当地警方称，这名员工并不知情"], "notes": ["同年 7 月，CoinDCX 的一名员工被兼职工作吸引，在公司电脑上装了恶意软件。", "运营钱包被盗走约 4400 万美元，当地警方称，这名员工并不知情，只是被利用了。"], "section": "会议与身份", "k": 104.94}, {"seg": "5", "t0": 0.0, "t1": 28.97, "title": "第一条：设备分离", "points": ["一个人被骗，也不够造成损失", "签名设备只签名和解码，不收邮件、不打开外部文件", "办公电脑不存生产凭证；外部项目放进隔离环境"], "notes": ["防御不能指望员工永远不被骗，要让一个人被骗，也不够造成损失。", "第一条，设备分离。", "签名专用设备，只用来签名和独立解码，不收邮件，不上 Telegram，不打开外部文件。", "日常办公电脑，用来沟通和写文档，不存生产凭证和私钥。", "开发电脑要运行外部项目，就放进隔离的虚拟机，或者一次性环境。"], "section": "设备与流程", "k": 15.8}, {"seg": "5", "t0": 28.97, "t1": 47.53, "title": "第二条：流程控制", "points": ["双人原则：资金、发布、权限变更至少两人独立确认", "带外确认：用预先登记的电话或当面", "不用发起请求的那个渠道"], "notes": ["第二条，流程控制。", "资金操作、合约发布、权限变更，至少两人独立确认，这叫双人原则。", "大额交易和权限变更，用预先登记的电话或当面确认，这叫带外确认。", "要点是，不用发起请求的那个渠道。"], "section": "设备与流程", "k": 46.77}, {"seg": "5", "t0": 47.53, "t1": 60.05, "title": "职责分离与短期会话", "points": ["发起人、审批人、执行人、审计人，不能是同一个人", "关键系统用硬件密钥，会话短期有效，异地登录告警"], "notes": ["发起人、审批人、执行人、审计人，不能是同一个人，这叫职责分离。", "关键系统用硬件密钥，会话短期有效，异地登录要告警。"], "section": "设备与流程", "k": 60.05}, {"seg": "5", "t0": 60.05, "t1": 85.15, "title": "第三条：管好人员进出", "points": ["招聘：本人出镜，核验证件、履历和设备所在地", "离职当天回收全部权限，包括 npm、域名、社交账号", "漏掉一个边缘权限，就是一扇没锁的门"], "notes": ["第三条，管好人员的进出。", "招聘时，视频面试本人出镜，核验证件和履历，远程岗位核验设备所在地。", "离职当天，回收全部权限。", "不只是代码仓库和云，还有 npm、域名注册商、官方社交账号、多签签名人身份。", "漏掉一个边缘权限，前员工的账号，就是一扇没锁的门。"], "section": "设备与流程", "k": 73.35}, {"seg": "5", "t0": 85.15, "t1": 106.64, "title": "第四条：内部人早期信号", "points": ["访问无关数据，大量导出，借口紧急绕过审批", "坚持独自处理某类操作，拒绝休假或轮岗", "匿名报告渠道：报告可疑接触，不受惩罚"], "notes": ["第四条，留意内部人风险的早期信号。", "访问和岗位无关的数据，短时间大量导出，借口紧急，要求绕过审批。", "还有坚持独自处理某类操作，拒绝休假或轮岗。", "最后，要有匿名报告渠道，员工报告可疑接触，不受惩罚。"], "section": "设备与流程", "k": 95.2}, {"seg": "6", "t0": 0.0, "t1": 25.45, "title": "普通用户也会遇到", "points": ["让你下载项目、运行脚本、装会议软件，先停下来", "存钱包的电脑不运行陌生项目；拒绝远程控制", "客服主动说账户有风险，挂断，从官方 App 联系"], "notes": ["普通用户也会遇到同样的手法。", "招聘者让你下载项目、运行脚本、安装会议软件，先停下来。", "不在存放钱包的电脑上，运行陌生项目，打开陌生文件。", "会议里，拒绝任何远程控制请求。", "客服主动联系你，说账户有风险，要你转移资产，一律挂断，再从官方 App 里联系客服。"], "section": "回到作业", "k": 1.3}, {"seg": "6", "t0": 25.45, "t1": 40.59, "title": "今天就能做的事", "points": ["签名人：把聊天软件从签名设备上删掉", "开发者：陌生项目一律先在隔离环境里打开", "团队负责人：查离职清单有没有覆盖边缘权限"], "notes": ["如果你是签名人，今天就把聊天软件，从签名设备上删掉。", "如果你是开发者，陌生项目一律先在隔离环境里打开。", "如果你负责团队，查一遍离职清单，看它有没有覆盖边缘权限。"], "section": "回到作业", "k": 40.59}, {"seg": "6", "t0": 40.59, "t1": 57.65, "title": "答案：一个安装脚本", "points": ["安装步骤运行混淆命令，把 pyenv 组件换成恶意版本", "当时的终端防护没有发现", "在工作电脑上运行外部代码，这一步就够了"], "notes": ["回到开头的题。", "作业仓库靠的是安装脚本，安装步骤运行了混淆的命令，把合法的 pyenv 组件换成了恶意版本。", "当时的终端防护没有发现，在工作电脑上运行外部代码，这一步就够了。"], "section": "回到作业", "k": 57.65}, {"seg": "6", "t0": 57.65, "t1": 72.95, "title": "清理完成，威胁未结束", "points": ["6 月另一名工程师下载过被篡改的 Homebrew，已被清理", "报告称，攻击者由此了解了工程师的角色和同事", "一次清理完成，不代表威胁结束"], "notes": ["而在 6 月，另一名工程师下载过被篡改的 Homebrew，Binance 当时就发现并清理了这台设备。", "但报告称，攻击者由此了解了工程师的角色和同事。", "一次清理完成，不代表威胁结束。"], "section": "回到作业", "k": 72.95}, {"seg": "6", "t0": 72.95, "t1": 78.93, "title": "被攻破一人，也转不走钱", "points": ["攻击者先攻破人", "防线要设计成：一个人被攻破，也转不走钱"], "notes": ["攻击者先攻破人，防线就要设计成，一个人被攻破，也转不走钱。"], "section": "回到作业", "k": 78.93}]};
   var S = D.slides, N = S.length, KEY = 'deck-' + D.chapter;
   var $ = function (id) { return document.getElementById(id); };
-  var screen = $('screen'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
+  var screen = $('screen'), still = $('still'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
   var store = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
                 set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
   try { var pt = parent !== window && parent.document.documentElement.getAttribute('data-theme'); if (pt) document.documentElement.setAttribute('data-theme', pt); } catch (e) {}
@@ -141,32 +144,54 @@ button { font: inherit; color: inherit; }
     var g = groups[groups.length - 1];
     if (!g || g.seg !== s.seg) { g = { seg: s.seg, el: document.createElement('div') }; g.el.className = 'grp'; groups.push(g); prog.appendChild(g.el); g.n = 0; }
     var b = document.createElement('button'); b.title = (i + 1) + ' · ' + s.title; b.setAttribute('aria-label', '第 ' + (i + 1) + ' 页：' + s.title);
-    b.onclick = function () { go(i, 'seek'); }; g.el.appendChild(b); g.n++; s.dot = b;
+    b.onclick = function () { show(i); }; g.el.appendChild(b); g.n++; s.dot = b;
   });
   groups.forEach(function (g) { g.el.style.setProperty('--n', g.n); });
 
+  // all stills of the chapter are one sprite: 6 columns, slide i at (i % 6, i / 6)
+  var COLS = 6, ROWS = Math.ceil(N / COLS), sheetReady = false, sheet = new Image();
+  sheet.onload = function () { sheetReady = true; if (!screen.classList.contains('live')) $('wait').hidden = true; };
+  sheet.src = 'stills.webp';
+  still.style.backgroundImage = 'url(stills.webp)';
+  still.style.backgroundSize = (COLS * 100) + '% ' + (ROWS * 100) + '%';
+  function tile(i) {
+    var c = i % COLS, r = Math.floor(i / COLS);
+    still.style.backgroundPosition = (COLS > 1 ? c / (COLS - 1) * 100 : 0) + '% ' + (ROWS > 1 ? r / (ROWS - 1) * 100 : 0) + '%';
+  }
+
+  // ---------- live animation (only when asked) ----------
   function scale() { var k = screen.clientWidth / 1920; for (var s in frames) frames[s].style.transform = 'scale(' + k + ')'; }
   if (window.ResizeObserver) new ResizeObserver(scale).observe(screen); else addEventListener('resize', scale);
-
   function frame(seg) {
     if (frames[seg]) return frames[seg];
     var f = document.createElement('iframe'); f.src = 's' + seg + '.html'; f.title = '第 ' + seg + ' 节动画'; f.tabIndex = -1;
     f.setAttribute('aria-hidden', 'true'); screen.appendChild(f); frames[seg] = f; scale(); return f;
   }
+  function live(seg) {
+    for (var k in frames) frames[k].classList.toggle('on', k === seg);
+    screen.classList.add('live'); $('wait').hidden = true;
+  }
   function send(seg, msg) {
     msg.deck = 'cmd';
-    if (ready[seg]) frames[seg].contentWindow.postMessage(msg, '*'); else pending[seg] = msg;
+    if (ready[seg]) { frames[seg].contentWindow.postMessage(msg, '*'); live(seg); } else pending[seg] = msg;
   }
   addEventListener('message', function (e) {
     var m = e.data || {};
     if (!m.deck || !frames[m.seg] || e.source !== frames[m.seg].contentWindow) return;
     if (m.deck === 'ready') {
       ready[m.seg] = true;
-      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; send(m.seg, p); }
-      if (cur >= 0 && S[cur].seg === m.seg) $('wait').hidden = true;
-    } else if (m.deck === 'done' && cur >= 0 && S[cur].seg === m.seg) { playing = false; paint(); }
+      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; if (playing && S[cur].seg === m.seg) send(m.seg, p); }
+    } else if (m.deck === 'done' && playing && S[cur].seg === m.seg) { playing = false; paint(); }
   });
+  function process() {
+    var s = S[cur];
+    playing = true; frame(s.seg);
+    if (!ready[s.seg]) { $('wait').textContent = '载入动画…'; $('wait').hidden = false; }
+    send(s.seg, { play: [s.t0, s.k], rate: +$('speed').value });
+    paint();
+  }
 
+  // ---------- slides ----------
   function paint() {
     var s = S[cur];
     $('sec').textContent = s.section;
@@ -175,27 +200,21 @@ button { font: inherit; color: inherit; }
     $('lines').innerHTML = ''; s.notes.forEach(function (p) { var li = document.createElement('li'); li.textContent = p; $('lines').appendChild(li); });
     $('count').textContent = (cur + 1) + ' / ' + N;
     $('prev').disabled = cur === 0;
-    $('next').textContent = playing ? '跳到本页结尾 ›' : (cur === N - 1 ? '回到正文 ›' : '下一页 ›');
+    $('next').textContent = cur === N - 1 ? '回到正文 ›' : '下一页 ›';
+    $('replay').textContent = playing ? '⟳ 从头播放' : (screen.classList.contains('live') ? '⟳ 再看一遍' : '▶ 看过程');
     S.forEach(function (x, i) { x.dot.className = i === cur ? 'cur' : (seen[i] ? 'seen' : ''); });
   }
-  function go(i, mode) {
+  function show(i) {
     if (i < 0 || i >= N) return;
-    var s = S[i]; cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
-    var f = frame(s.seg);
-    for (var k in frames) frames[k].classList.toggle('on', k === s.seg);
-    $('wait').hidden = !!ready[s.seg];
-    playing = mode === 'play';
-    send(s.seg, playing ? { play: [s.t0, s.t1], rate: +$('speed').value } : { seek: s.t1 });
-    // warm the next segment while this one is on screen
-    if (i + 1 < N && S[i + 1].seg !== s.seg) frame(S[i + 1].seg);
+    cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
+    playing = false; pending = {};
+    tile(i); still.setAttribute('aria-label', S[i].title);
+    screen.classList.remove('live'); $('wait').textContent = sheetReady ? '载入动画…' : '载入画面…'; $('wait').hidden = sheetReady;
+    for (var k in frames) frames[k].classList.remove('on');
     paint();
   }
-  function next() {
-    if (playing) { go(cur, 'seek'); return; }
-    if (cur === N - 1) { back(); return; }
-    go(cur + 1, 'play');
-  }
-  function prev() { go(cur - 1, 'seek'); }
+  function next() { if (cur === N - 1) { back(); return; } show(cur + 1); }
+  function prev() { show(cur - 1); }
   function back() {
     if (parent !== window) parent.postMessage({ cexNav: D.chapter }, '*');
     else location.href = '../../index.html#' + D.chapter;
@@ -206,18 +225,18 @@ button { font: inherit; color: inherit; }
   }
   if (!document.fullscreenEnabled) $('fs').hidden = true;
 
-  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = function () { go(cur, 'play'); };
+  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = process;
   $('back').onclick = back; $('fs').onclick = fullscreen;
   addEventListener('keydown', function (e) {
     if (e.target.tagName === 'SELECT' || e.metaKey || e.ctrlKey || e.altKey) return;
     var k = e.key;
     if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); next(); }
     else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
-    else if (k === 'r' || k === 'R') go(cur, 'play');
+    else if (k === 'p' || k === 'P' || k === 'r' || k === 'R') process();
     else if (k === 'f' || k === 'F') fullscreen();
     else if (k === 'n' || k === 'N') $('notes').open = !$('notes').open;
-    else if (k === 'Home') go(0, 'seek');
-    else if (k === 'End') go(N - 1, 'seek');
+    else if (k === 'Home') show(0);
+    else if (k === 'End') show(N - 1);
   });
   // tap = next; horizontal swipe = next / previous
   var x0 = null, y0 = null;
@@ -230,7 +249,7 @@ button { font: inherit; color: inherit; }
   });
 
   var start = +store.get(KEY); if (!(start >= 0 && start < N)) start = 0;
-  go(start, start === 0 ? 'play' : 'seek');
+  show(start);
 })();
 </script>
 </body>

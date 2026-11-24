@@ -1,7 +1,7 @@
 # T12 新系统 / 新业务安全架构评审单
 
 > 用途：新系统、新业务、新链、新渠道上线前，由安全架构评审人与业务负责人共同填写。覆盖信任边界、数据流、控制映射、上线门禁和遗留风险签字。
-> 配套：[X07 交易所安全架构总览](../arch/X07-cex-architecture-overview.md)（信任边界、数据流、六个保护域、成熟度）、[X01 安全体系怎么搭](../arch/X01-security-program-controls.md)（控制矩阵）、[X11 钱包、财资与支付渠道](../arch/X11-cex-wallet-treasury-payment.md)、[X05 检测与响应工程](../arch/X05-detection-response-engineering.md)、[X06 韧性与验证](../arch/X06-resilience-validation.md)、[T04 上线门禁清单](T04-go-live-gate.md)（合约类上线）、[T02 威胁模型](T02-threat-model.md)
+> 配套：[X10 交易所安全架构总览](../arch/X10-cex-architecture-overview.md)（信任边界、数据流、六个保护域、成熟度）、[X01 安全体系怎么搭](../arch/X01-security-program-controls.md)（控制矩阵）、[X14 钱包、财资与支付渠道](../arch/X14-cex-wallet-treasury-payment.md)、[X05 检测与响应工程](../arch/X05-detection-response-engineering.md)、[X06 韧性与验证](../arch/X06-resilience-validation.md)、[T04 上线门禁清单](T04-go-live-gate.md)（合约类上线）、[T02 威胁模型](T02-threat-model.md)
 > 说明：示例行标"示例"，使用时删除。
 
 ## 使用方法

@@ -42,7 +42,10 @@ button { font: inherit; color: inherit; }
   box-shadow: 0 1px 0 var(--rule), 0 8px 28px rgba(60, 50, 30, .14); cursor: pointer; touch-action: pan-y; user-select: none; }
 .screen iframe { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; border: 0; transform-origin: 0 0; visibility: hidden; pointer-events: none; }
 .screen iframe.on { visibility: visible; }
-.screen .wait { position: absolute; inset: 0; display: grid; place-items: center; color: #8a826f; font-size: 14px; background: #efebe3; }
+.screen .still { position: absolute; inset: 0; background-repeat: no-repeat; background-color: #efebe3; }
+.screen.live .still { visibility: hidden; }
+.screen .wait { position: absolute; left: 12px; bottom: 12px; padding: 4px 12px; border-radius: 999px; color: #fff; font-size: 13px; background: rgba(28, 28, 28, .72); }
+.btn.play { border-color: var(--accent); color: var(--accent); }
 .screen .wait[hidden] { display: none; }
 
 .side { min-height: 0; overflow-y: auto; border-left: 1px solid var(--rule); background: var(--paper); padding: 18px 20px 24px; }
@@ -102,7 +105,7 @@ button { font: inherit; color: inherit; }
     <button class="btn hide-narrow" id="fs" title="全屏（F）">⛶ 全屏</button>
   </header>
   <div class="body">
-    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="wait" id="wait">载入动画…</div></div></div>
+    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="still" id="still" role="img"></div><div class="wait" id="wait" hidden>载入动画…</div></div></div>
     <aside class="side" aria-live="polite">
       <div class="sec" id="sec"></div>
       <h2 id="stitle"></h2>
@@ -112,7 +115,7 @@ button { font: inherit; color: inherit; }
   </div>
   <nav class="ctrl" aria-label="翻页">
     <button class="btn" id="prev" aria-label="上一页（←）">‹ 上一页</button>
-    <button class="btn" id="replay" aria-label="重播本页动画（R）">⟳ 重播</button>
+    <button class="btn play" id="replay" aria-label="看这一页的动画过程（P）">▶ 看过程</button>
     <button class="btn primary" id="next" aria-label="下一页（→ 或空格）">下一页 ›</button>
     <span class="count" id="count"></span>
     <div class="prog" id="prog"></div>
@@ -123,10 +126,10 @@ button { font: inherit; color: inherit; }
 </div>
 <script>
 (function () {
-  var D = {"chapter": "s09", "title": "MEV 与签名安全：顺序可以被买，签名可以被重放", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 20.19, "title": "滑点 5%：最少 19000", "points": ["用 10 个 ETH 换 USDC，现价 1 ETH = 2000 USDC（示例）", "滑点设成 5%，最少拿到 19000 USDC", "少于这个数，交易就回滚"], "notes": ["你在一个去中心化交易所，用 10 个 ETH 换 USDC。", "池子现价，1 个 ETH 换 2000 USDC。这是示例。", "你把滑点设成 5%。", "意思是，最少拿到 19000 USDC。少于这个数，交易就回滚。"], "section": "宽松的滑点"}, {"seg": "1", "t0": 20.19, "t1": 31.33, "title": "交易被夹在中间", "points": ["交易先进入公开的内存池排队", "有人在打包之前读到了它", "把你的交易夹在自己的两笔交易中间"], "notes": ["交易发出去，先进入公开的内存池，排队等着打包。", "有人在打包之前，读到了它。", "他把你的交易，夹在自己的两笔交易中间。"], "section": "宽松的滑点"}, {"seg": "1", "t0": 31.33, "t1": 36.45, "title": "先猜一道题", "points": ["你最少收到多少？", "他能让你收到更少吗？"], "notes": ["先猜一道题。", "你最少收到多少？他能让你收到更少吗？"], "section": "宽松的滑点"}, {"seg": "1", "t0": 36.45, "t1": 58.59, "title": "按最差价格成交", "points": ["最少 19000，他不能让你更少，否则回滚、他也赚不到", "他把价格推到刚好够 19000 的位置", "滑点设 5%，就可能真的付 5%"], "notes": ["你最少收到 19000。他不能让你更少。", "低于这个数，你的交易回滚，他也赚不到钱。", "所以，他会把价格推到刚好够 19000 的位置。", "你的交易没有失败。它只是按你允许的最差价格，成交了。", "滑点设 5%，就可能真的付 5%。"], "section": "宽松的滑点"}, {"seg": "1", "t0": 58.59, "t1": 69.48, "title": "顺序与签名", "points": ["交易在打包前是公开的，顺序由别人决定", "签名用过之后仍然存在，能否再用取决于你签了什么"], "notes": ["交易在打包之前是公开的，顺序由别人决定。", "签名在用过之后仍然存在。能不能再用，取决于你签了什么。"], "section": "宽松的滑点"}, {"seg": "2", "t0": 0.0, "t1": 33.21, "title": "MEV：排序权可以被购买", "points": ["最大可提取价值：靠安排、插入或排除交易拿到的额外收益", "搜索者捆绑交易交给构建者，构建者把区块卖给提议者", "这叫提议者与构建者分离"], "notes": ["先说一个词：MEV，最大可提取价值。", "它指的是，区块生产者或者搜索者，通过安排交易顺序、插入或排除交易，拿到的额外收益。", "搜索者，是专门寻找这类机会，把交易捆成一组提交的人或程序。", "搜索者把捆绑包交给区块构建者，构建者再把整个区块，卖给提议者。", "这叫提议者与构建者分离。结果是，排序权可以被购买。"], "section": "被买走的顺序"}, {"seg": "2", "t0": 33.21, "t1": 47.23, "title": "形态一：抢跑", "points": ["攻击者排在你前面", "机器人复制你的谜题答案，出更高小费先成交"], "notes": ["MEV 有三种形态。", "第一种，抢跑：攻击者排在你前面。", "比如一道谜题，第一个提交答案的人领奖。机器人复制你的答案，出更高的小费，先成交。"], "section": "被买走的顺序"}, {"seg": "2", "t0": 47.23, "t1": 66.59, "title": "形态二三：三明治与尾随", "points": ["三明治：攻击者先买、你再买、攻击者最后卖，利用你的滑点容忍度", "尾随：排在你后面，吃掉留下的套利或清算机会", "尾随通常没有直接的受害者"], "notes": ["第二种，三明治：攻击者先买，你再买，攻击者最后卖。", "他利用的，是你设定的滑点容忍度。", "第三种，尾随：攻击者排在你后面，吃掉你的交易留下的套利或清算机会。", "尾随通常没有直接的受害者。"], "section": "被买走的顺序"}, {"seg": "2", "t0": 66.59, "t1": 78.35, "title": "三明治：捆成一包", "points": ["你的交易进入公开内存池", "搜索者捆成一包：自己买入、你的交易、自己卖出", "构建者按这个顺序打包"], "notes": ["回到三明治，拆开看。", "你的交易进入公开内存池。", "搜索者发现它，捆成一包：自己买入，你的交易，自己卖出。", "构建者按这个顺序打包。"], "section": "被买走的顺序"}, {"seg": "2", "t0": 78.35, "t1": 95.31, "title": "最小输出决定被夹多狠", "points": ["搜索者先买推高价格，你刚好按最小输出成交", "搜索者再卖回去，赚走中间的利润", "滑点设得越宽，被夹得越狠"], "notes": ["搜索者先买，把价格推高。", "你按更坏的价格成交，刚好满足最小输出。", "搜索者再卖回去，赚走中间的利润。", "他最多能赚多少，由你的最小输出决定。滑点设得越宽，被夹得越狠。"], "section": "被买走的顺序"}, {"seg": "2", "t0": 95.31, "t1": 119.36, "title": "比方：喊出最高出价", "points": ["举牌前大声说出自己的最高出价", "旁人抢先低价买下，再加价转卖给你", "不成立处：链上你看不到谁插了队，只看到成交价偏低"], "notes": ["打个比方。你在拍卖会上举牌之前，大声说出了自己的最高出价。", "旁边的人抢先用低一点的价格买下，再加价转卖给你。", "比喻在这里不成立：拍卖会上，你能看到谁插了队。", "链上的三明治，和你的交易在同一个区块里。普通用户往往只看到，成交价比预期低。"], "section": "被买走的顺序"}, {"seg": "3", "t0": 0.0, "t1": 29.13, "title": "用户、前端、合约三层", "points": ["用户：滑点合理，大额走私有交易通道（如 Flashbots Protect）", "前端：默认滑点保守，按池子深度计算", "合约：交换函数都接受最小输出和截止时间"], "notes": ["怎么防？分四层。", "用户这一层，把滑点设得合理。大额交易，走私有交易通道，比如 Flashbots Protect 一类的服务。", "交易不进公开内存池，搜索者在打包之前，就看不到它。", "前端这一层，默认滑点要保守，按池子的深度来计算。", "合约这一层，所有交换函数，都要接受最小输出和截止时间两个参数。"], "section": "防夹与排序"}, {"seg": "3", "t0": 29.13, "t1": 53.45, "title": "合约里的常见错误", "points": ["在合约内部用现货价算最小输出，同一区块就能被推高", "把最小输出写成 0，等于接受任何价格", "金库、自动复投、清算合约常犯这个错误"], "notes": ["常见的错误，是在合约内部，用现货价算出最小输出。", "那个现货价，在同一个区块里就能被推高。按它算出的保护，等于没有保护。", "更糟的写法，是把最小输出直接写成 0。", "这等于告诉所有人：我接受任何价格。金库、自动复投合约、清算合约，常犯这个错误。"], "section": "防夹与排序"}, {"seg": "3", "t0": 53.45, "t1": 72.97, "title": "协议设计：提交揭示与批量拍卖", "points": ["提交揭示：先交答案哈希，下一阶段再公开", "承诺必须绑定发送者地址，否则机器人复制即可揭示", "批量拍卖：同一批订单按统一价格清算"], "notes": ["协议设计这一层，有两种做法。", "一是提交揭示：先提交答案的哈希，下一阶段再公开答案。", "这个承诺，必须绑定发送者的地址。不然，机器人复制你的承诺，也能完成揭示。", "二是批量拍卖：同一批订单，按统一价格清算。"], "section": "防夹与排序"}, {"seg": "3", "t0": 72.97, "t1": 91.39, "title": "BNB Chain：三明治依然存在", "points": ["验证者轮流出块，2026 年 1 月出块间隔缩短到 0.45 秒", "抢跑窗口更短", "仍有公开内存池和构建者市场"], "notes": ["顺序由谁决定，每条链也不一样。", "BNB Chain，验证者轮流出块。2026 年 1 月，出块间隔缩短到 0.45 秒。", "抢跑的窗口更短，但它有公开内存池和构建者市场，三明治依然存在。"], "section": "防夹与排序"}, {"seg": "3", "t0": 91.39, "t1": 103.41, "title": "TRON：不能出价插队", "points": ["27 个超级代表轮流出块", "按官方文档，没有优先费", "但出块的人仍然可以决定顺序"], "notes": ["TRON，27 个超级代表轮流出块。", "按 TRON 官方文档，它没有优先费，不能靠出更高的价格插队。", "但出块的人，仍然可以决定顺序。"], "section": "防夹与排序"}, {"seg": "3", "t0": 103.41, "t1": 121.14, "title": "Mantle：排序权集中", "points": ["只有一个中心化排序器", "L2BEAT：运营者可以抢跑用户交易，提取 MEV", "没有公开内存池，不等于没有 MEV"], "notes": ["Mantle，只有一个中心化排序器。", "L2BEAT 列出的风险是：运营者可以抢跑用户交易，提取 MEV。", "没有公开内存池，不等于没有 MEV。", "它只是把排序权，从市场集中到一个运营者手里。"], "section": "防夹与排序"}, {"seg": "4", "t0": 0.0, "t1": 21.03, "title": "一份签名能用几次", "points": ["很多操作在链下签名，再交给合约验证", "permit、元交易、订单簿挂单、桥验证者签名、空投凭证"], "notes": ["再看另一半：签名。", "很多操作不在链上发起，而是在链下签名，再交给合约验证。", "免 gas 授权 permit、元交易、订单簿挂单、跨链桥验证者签名、空投领取凭证，都是这样。", "问题是，一份签名，能被用几次？"], "section": "签名五字段"}, {"seg": "4", "t0": 21.03, "t1": 42.07, "title": "比方：没写细节的支票", "points": ["没写日期、收款银行、支票编号", "拿到的人可以复印很多份，去每家银行各兑一次", "不完全成立处：银行会记下兑过的支票，合约不会，除非代码让它记"], "notes": ["打个比方。你签了一张支付 100 元的支票。", "没写日期，没写收款银行，没写支票编号。", "拿到它的人，可以复印很多份，去每一家银行各兑一次。", "比喻在这里不完全成立：银行会自己记下兑过的支票。合约不会，除非代码让它记。"], "section": "签名五字段"}, {"seg": "4", "t0": 42.07, "t1": 57.93, "title": "五个字段：nonce 与链 ID", "points": ["缺 nonce：同一份签名可在同一合约反复提交", "缺链 ID：签名在分叉链和多链部署上同样有效"], "notes": ["一份安全的签名，要绑定五个字段。", "第一，nonce，一次性编号。缺了它，同一份签名可以在同一个合约反复提交。", "第二，链 ID。缺了它，签名在分叉链和多链部署上同样有效。"], "section": "签名五字段"}, {"seg": "4", "t0": 57.93, "t1": 81.87, "title": "合约地址、截止时间、意图", "points": ["缺合约地址：同一代码部署两次，两个合约都有效", "缺截止时间：签名永久有效", "缺类型哈希：给 A 函数签的数据被拿去调用 B 函数"], "notes": ["第三，合约地址。缺了它，同一份代码部署两次，签名在两个合约都有效。", "第四，截止时间。缺了它，签名永久有效。你改主意以后，它照样能被使用。", "第五，函数意图，也就是类型哈希。缺了它，给 A 函数签的数据，会被拿去调用 B 函数。"], "section": "签名五字段"}, {"seg": "4", "t0": 81.87, "t1": 97.59, "title": "先猜一道题", "points": ["领取凭证绑定了 nonce，没绑定链 ID", "同一合约同一地址，部署在以太坊和 BNB Chain", "以太坊用过之后，还能在 BNB Chain 领取吗？"], "notes": ["先猜一道题。", "一张领取凭证，绑定了 nonce，没有绑定链 ID。", "同一份合约，用相同的地址，部署在以太坊和 BNB Chain。", "凭证在以太坊用过之后，还能在 BNB Chain 领取吗？"], "section": "签名五字段"}, {"seg": "4", "t0": 97.59, "t1": 128.32, "title": "能：用 EIP-712 解决", "points": ["两条链 nonce 各自计数，摘要也完全相同", "EIP-712：名称、版本、链 ID、合约地址合成域分隔符，结构合成类型哈希", "后四个字段一次解决；nonce 合约自己维护，每用一次加一"], "notes": ["能。两条链上的 nonce 各自计数，BNB Chain 上还是 0。", "摘要里没有链 ID，两条链算出的摘要完全相同。", "解决办法是 EIP-712。", "它把名称、版本、链 ID、合约地址，合成一个域分隔符。", "再把消息的结构，合成类型哈希。", "用对 EIP-712，后四个字段一次解决。nonce 还要合约自己维护，每用一次，加一。"], "section": "签名五字段"}, {"seg": "5", "t0": 0.0, "t1": 17.97, "title": "陷阱一：ecrecover 返回零地址", "points": ["无效签名不报错，返回零地址", "管理员地址没初始化默认是零，任何无效签名都能通过"], "notes": ["字段齐了，验签的代码，还有三个经典陷阱。", "第一，ecrecover 遇到无效签名，不会报错，而是返回零地址。", "如果管理员地址没有初始化，它默认就是零。任何一个无效签名，都能通过。"], "section": "签名的陷阱"}, {"seg": "5", "t0": 17.97, "t1": 38.79, "title": "陷阱二：签名可塑性", "points": ["同一条消息存在两份都有效的签名", "拿签名本身标记已使用，翻转一个数值就成新签名", "用 nonce 或消息哈希做标记，用 OpenZeppelin ECDSA 一类库"], "notes": ["第二，签名可塑性：同一条消息，存在两份都有效的签名。", "如果合约拿签名本身，标记已使用，翻转签名里的一个数值，就成了一份新签名。", "修复是，用 nonce 或消息哈希做标记，再用拒绝这种翻转的库，比如 OpenZeppelin 的 ECDSA。"], "section": "签名的陷阱"}, {"seg": "5", "t0": 38.79, "t1": 61.61, "title": "陷阱三：编码碰撞", "points": ["紧凑编码：ab 加 c 和 a 加 bc 结果相同", "签多个动态类型时，用标准编码", "合约钱包没有私钥，要用 ERC-1271 校验"], "notes": ["第三，编码碰撞。紧凑编码会把相邻的动态数据，直接拼在一起。", "ab 加 c，和 a 加 bc，结果完全相同。签多个动态类型时，用标准编码。", "还有一点。合约钱包没有私钥，要用 ERC-1271 的接口校验，不能只靠 ecrecover。"], "section": "签名的陷阱"}, {"seg": "5", "t0": 61.61, "t1": 82.73, "title": "permit：抢跑型拒绝服务", "points": ["别人从内存池复制你交易里的 permit 签名，抢先单独提交", "你的交易因 nonce 已用而回滚", "修复：try catch 包住 permit，失败后检查授权额度是否已足够"], "notes": ["再看 permit 的两面。", "一面是抢跑型的拒绝服务。你提交的交易里，带着 permit 签名。", "别人从内存池复制这份签名，抢先单独提交。你的交易因为 nonce 已用，回滚。", "修复是，把 permit 包在 try catch 里。失败后，检查授权额度是否已经足够。"], "section": "签名的陷阱"}, {"seg": "5", "t0": 82.73, "t1": 109.75, "title": "签名人也可能签错", "points": ["permit 链下签、不花 gas，钱包常只显示十六进制，签下后对方随时可执行", "2025 年 2 月，Bybit 冷钱包多签被盗", "攻击者篡改 Safe Wallet 前端，只对 Bybit 多签地址生效（Sygnia、Verichains）"], "notes": ["另一面是钓鱼。permit 在链下签，不花 gas，钱包常常只显示一串十六进制。", "签下之后，对方可以随时拿去执行。", "签名再安全，签名人也可能签错东西。", "2025 年 2 月，交易所 Bybit 的冷钱包多签被盗。", "按 Sygnia、Verichains 等公开分析，攻击者篡改了 Safe Wallet 的前端，只对 Bybit 的多签地址生效。"], "section": "签名的陷阱"}, {"seg": "5", "t0": 109.75, "t1": 131.67, "title": "签名是真的，内容是假的", "points": ["签名人看到普通转账，实际签下 delegatecall，把实现换成恶意合约", "多签只校验签名对不对、数量够不够", "按事发时估值，损失约 15 亿美元"], "notes": ["签名人看到的，是一笔普通转账。", "实际签下的，是一次 delegatecall，把钱包的实现，换成恶意合约。", "多签合约只校验签名对不对、数量够不够。签名是真的，内容不是签名人以为的内容。", "按事发时估值，损失约 15 亿美元。"], "section": "签名的陷阱"}, {"seg": "5", "t0": 131.67, "t1": 167.46, "title": "多签防不了同一个假界面", "points": ["2024 年 7 月 WazirX 同样中招，按公开分析损失约 2.3 亿美元", "硬件钱包逐字段核对，用独立工具解码交易数据", "delegatecall 和修改实现地址：白名单或额外审批"], "notes": ["多签防的是一把私钥被盗，防不了所有签名人，看到同一个假界面。", "2024 年 7 月，印度交易所 WazirX 的多签冷钱包，也是这样。", "界面上是日常交易，硬件钱包签下的，却是升级多签的恶意数据。按公开分析，损失约 2.3 亿美元。", "防御有三条。用硬件钱包逐个字段核对。用独立工具解码交易数据。", "对 delegatecall 和修改实现地址的操作，设白名单或额外审批。"], "section": "签名的陷阱"}, {"seg": "6", "t0": 0.0, "t1": 27.85, "title": "写合约与审计", "points": ["交换函数的最小输出和截止时间由调用者传入", "签名用 EIP-712，带上 nonce 和截止时间", "同一份签名提交两次：修复前重放成功，修复后被拦下"], "notes": ["最后，每个人今天就能做一件事。", "写合约的人，检查每个交换函数：最小输出和截止时间，是不是由调用者传进来。", "所有签名，用 EIP-712，带上 nonce 和截止时间。", "审计的人，拿同一份签名提交第二次。第二次也成功，就是漏洞。", "修复要两个结果：修复前，重放成功；修复后，被拦下。"], "section": "今天能做什么"}, {"seg": "6", "t0": 27.85, "t1": 43.97, "title": "普通用户", "points": ["大额兑换设合理滑点，可走私有交易通道", "签名前看清链 ID、合约地址、数额和期限", "钱包只显示哈希或提示盲签，就不签"], "notes": ["普通用户，大额兑换设合理的滑点，不用自动的高滑点，可以走私有交易通道。", "签名前看清链 ID、合约地址、数额和期限。钱包只显示哈希，或者提示盲签，就不签。"], "section": "今天能做什么"}, {"seg": "6", "t0": 43.97, "t1": 70.55, "title": "滑点是公开的最差报价", "points": ["交易打包前是公开的（走公开内存池时）", "顺序可以被买，签名可以被重放", "签之前看清内容，发之前想好谁会先看到它"], "notes": ["回到开头。滑点设 5%，为什么可能真的付 5%？", "因为交易在打包之前是公开的，滑点就是你公开的最差报价。", "这在交易走公开内存池时成立。走私有通道，搜索者在打包前看不到它。", "顺序可以被买，签名可以被重放。", "签之前看清内容，发之前想好，谁会先看到它。"], "section": "今天能做什么"}]};
+  var D = {"chapter": "s09", "title": "MEV 与签名安全：顺序可以被买，签名可以被重放", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 20.19, "title": "滑点 5%：最少 19000", "points": ["用 10 个 ETH 换 USDC，现价 1 ETH = 2000 USDC（示例）", "滑点设成 5%，最少拿到 19000 USDC", "少于这个数，交易就回滚"], "notes": ["你在一个去中心化交易所，用 10 个 ETH 换 USDC。", "池子现价，1 个 ETH 换 2000 USDC。这是示例。", "你把滑点设成 5%。", "意思是，最少拿到 19000 USDC。少于这个数，交易就回滚。"], "section": "宽松的滑点", "k": 16.3}, {"seg": "1", "t0": 20.19, "t1": 31.33, "title": "交易被夹在中间", "points": ["交易先进入公开的内存池排队", "有人在打包之前读到了它", "把你的交易夹在自己的两笔交易中间"], "notes": ["交易发出去，先进入公开的内存池，排队等着打包。", "有人在打包之前，读到了它。", "他把你的交易，夹在自己的两笔交易中间。"], "section": "宽松的滑点", "k": 20.99}, {"seg": "1", "t0": 31.33, "t1": 36.45, "title": "先猜一道题", "points": ["你最少收到多少？", "他能让你收到更少吗？"], "notes": ["先猜一道题。", "你最少收到多少？他能让你收到更少吗？"], "section": "宽松的滑点", "k": 36.45}, {"seg": "1", "t0": 36.45, "t1": 58.59, "title": "按最差价格成交", "points": ["最少 19000，他不能让你更少，否则回滚、他也赚不到", "他把价格推到刚好够 19000 的位置", "滑点设 5%，就可能真的付 5%"], "notes": ["你最少收到 19000。他不能让你更少。", "低于这个数，你的交易回滚，他也赚不到钱。", "所以，他会把价格推到刚好够 19000 的位置。", "你的交易没有失败。它只是按你允许的最差价格，成交了。", "滑点设 5%，就可能真的付 5%。"], "section": "宽松的滑点", "k": 49.75}, {"seg": "1", "t0": 58.59, "t1": 69.48, "title": "顺序与签名", "points": ["交易在打包前是公开的，顺序由别人决定", "签名用过之后仍然存在，能否再用取决于你签了什么"], "notes": ["交易在打包之前是公开的，顺序由别人决定。", "签名在用过之后仍然存在。能不能再用，取决于你签了什么。"], "section": "宽松的滑点", "k": 67.39}, {"seg": "2", "t0": 0.0, "t1": 33.21, "title": "MEV：排序权可以被购买", "points": ["最大可提取价值：靠安排、插入或排除交易拿到的额外收益", "搜索者捆绑交易交给构建者，构建者把区块卖给提议者", "这叫提议者与构建者分离"], "notes": ["先说一个词：MEV，最大可提取价值。", "它指的是，区块生产者或者搜索者，通过安排交易顺序、插入或排除交易，拿到的额外收益。", "搜索者，是专门寻找这类机会，把交易捆成一组提交的人或程序。", "搜索者把捆绑包交给区块构建者，构建者再把整个区块，卖给提议者。", "这叫提议者与构建者分离。结果是，排序权可以被购买。"], "section": "被买走的顺序", "k": 31.8}, {"seg": "2", "t0": 33.21, "t1": 47.23, "title": "形态一：抢跑", "points": ["攻击者排在你前面", "机器人复制你的谜题答案，出更高小费先成交"], "notes": ["MEV 有三种形态。", "第一种，抢跑：攻击者排在你前面。", "比如一道谜题，第一个提交答案的人领奖。机器人复制你的答案，出更高的小费，先成交。"], "section": "被买走的顺序", "k": 47.23}, {"seg": "2", "t0": 47.23, "t1": 66.59, "title": "形态二三：三明治与尾随", "points": ["三明治：攻击者先买、你再买、攻击者最后卖，利用你的滑点容忍度", "尾随：排在你后面，吃掉留下的套利或清算机会", "尾随通常没有直接的受害者"], "notes": ["第二种，三明治：攻击者先买，你再买，攻击者最后卖。", "他利用的，是你设定的滑点容忍度。", "第三种，尾随：攻击者排在你后面，吃掉你的交易留下的套利或清算机会。", "尾随通常没有直接的受害者。"], "section": "被买走的顺序", "k": 66.59}, {"seg": "2", "t0": 66.59, "t1": 78.35, "title": "三明治：捆成一包", "points": ["你的交易进入公开内存池", "搜索者捆成一包：自己买入、你的交易、自己卖出", "构建者按这个顺序打包"], "notes": ["回到三明治，拆开看。", "你的交易进入公开内存池。", "搜索者发现它，捆成一包：自己买入，你的交易，自己卖出。", "构建者按这个顺序打包。"], "section": "被买走的顺序", "k": 78.35}, {"seg": "2", "t0": 78.35, "t1": 95.31, "title": "最小输出决定被夹多狠", "points": ["搜索者先买推高价格，你刚好按最小输出成交", "搜索者再卖回去，赚走中间的利润", "滑点设得越宽，被夹得越狠"], "notes": ["搜索者先买，把价格推高。", "你按更坏的价格成交，刚好满足最小输出。", "搜索者再卖回去，赚走中间的利润。", "他最多能赚多少，由你的最小输出决定。滑点设得越宽，被夹得越狠。"], "section": "被买走的顺序", "k": 85.4}, {"seg": "2", "t0": 95.31, "t1": 119.36, "title": "比方：喊出最高出价", "points": ["举牌前大声说出自己的最高出价", "旁人抢先低价买下，再加价转卖给你", "不成立处：链上你看不到谁插了队，只看到成交价偏低"], "notes": ["打个比方。你在拍卖会上举牌之前，大声说出了自己的最高出价。", "旁边的人抢先用低一点的价格买下，再加价转卖给你。", "比喻在这里不成立：拍卖会上，你能看到谁插了队。", "链上的三明治，和你的交易在同一个区块里。普通用户往往只看到，成交价比预期低。"], "section": "被买走的顺序", "k": 119.36}, {"seg": "3", "t0": 0.0, "t1": 29.13, "title": "用户、前端、合约三层", "points": ["用户：滑点合理，大额走私有交易通道（如 Flashbots Protect）", "前端：默认滑点保守，按池子深度计算", "合约：交换函数都接受最小输出和截止时间"], "notes": ["怎么防？分四层。", "用户这一层，把滑点设得合理。大额交易，走私有交易通道，比如 Flashbots Protect 一类的服务。", "交易不进公开内存池，搜索者在打包之前，就看不到它。", "前端这一层，默认滑点要保守，按池子的深度来计算。", "合约这一层，所有交换函数，都要接受最小输出和截止时间两个参数。"], "section": "防夹与排序", "k": 29.13}, {"seg": "3", "t0": 29.13, "t1": 53.45, "title": "合约里的常见错误", "points": ["在合约内部用现货价算最小输出，同一区块就能被推高", "把最小输出写成 0，等于接受任何价格", "金库、自动复投、清算合约常犯这个错误"], "notes": ["常见的错误，是在合约内部，用现货价算出最小输出。", "那个现货价，在同一个区块里就能被推高。按它算出的保护，等于没有保护。", "更糟的写法，是把最小输出直接写成 0。", "这等于告诉所有人：我接受任何价格。金库、自动复投合约、清算合约，常犯这个错误。"], "section": "防夹与排序", "k": 53.45}, {"seg": "3", "t0": 53.45, "t1": 72.97, "title": "协议设计：提交揭示与批量拍卖", "points": ["提交揭示：先交答案哈希，下一阶段再公开", "承诺必须绑定发送者地址，否则机器人复制即可揭示", "批量拍卖：同一批订单按统一价格清算"], "notes": ["协议设计这一层，有两种做法。", "一是提交揭示：先提交答案的哈希，下一阶段再公开答案。", "这个承诺，必须绑定发送者的地址。不然，机器人复制你的承诺，也能完成揭示。", "二是批量拍卖：同一批订单，按统一价格清算。"], "section": "防夹与排序", "k": 66.75}, {"seg": "3", "t0": 72.97, "t1": 91.39, "title": "BNB Chain：三明治依然存在", "points": ["验证者轮流出块，2026 年 1 月出块间隔缩短到 0.45 秒", "抢跑窗口更短", "仍有公开内存池和构建者市场"], "notes": ["顺序由谁决定，每条链也不一样。", "BNB Chain，验证者轮流出块。2026 年 1 月，出块间隔缩短到 0.45 秒。", "抢跑的窗口更短，但它有公开内存池和构建者市场，三明治依然存在。"], "section": "防夹与排序", "k": 91.39}, {"seg": "3", "t0": 91.39, "t1": 103.41, "title": "TRON：不能出价插队", "points": ["27 个超级代表轮流出块", "按官方文档，没有优先费", "但出块的人仍然可以决定顺序"], "notes": ["TRON，27 个超级代表轮流出块。", "按 TRON 官方文档，它没有优先费，不能靠出更高的价格插队。", "但出块的人，仍然可以决定顺序。"], "section": "防夹与排序", "k": 100.94}, {"seg": "3", "t0": 103.41, "t1": 121.14, "title": "Mantle：排序权集中", "points": ["只有一个中心化排序器", "L2BEAT：运营者可以抢跑用户交易，提取 MEV", "没有公开内存池，不等于没有 MEV"], "notes": ["Mantle，只有一个中心化排序器。", "L2BEAT 列出的风险是：运营者可以抢跑用户交易，提取 MEV。", "没有公开内存池，不等于没有 MEV。", "它只是把排序权，从市场集中到一个运营者手里。"], "section": "防夹与排序", "k": 121.14}, {"seg": "4", "t0": 0.0, "t1": 21.03, "title": "一份签名能用几次", "points": ["很多操作在链下签名，再交给合约验证", "permit、元交易、订单簿挂单、桥验证者签名、空投凭证"], "notes": ["再看另一半：签名。", "很多操作不在链上发起，而是在链下签名，再交给合约验证。", "免 gas 授权 permit、元交易、订单簿挂单、跨链桥验证者签名、空投领取凭证，都是这样。", "问题是，一份签名，能被用几次？"], "section": "签名五字段", "k": 17.8}, {"seg": "4", "t0": 21.03, "t1": 42.07, "title": "比方：没写细节的支票", "points": ["没写日期、收款银行、支票编号", "拿到的人可以复印很多份，去每家银行各兑一次", "不完全成立处：银行会记下兑过的支票，合约不会，除非代码让它记"], "notes": ["打个比方。你签了一张支付 100 元的支票。", "没写日期，没写收款银行，没写支票编号。", "拿到它的人，可以复印很多份，去每一家银行各兑一次。", "比喻在这里不完全成立：银行会自己记下兑过的支票。合约不会，除非代码让它记。"], "section": "签名五字段", "k": 42.07}, {"seg": "4", "t0": 42.07, "t1": 57.93, "title": "五个字段：nonce 与链 ID", "points": ["缺 nonce：同一份签名可在同一合约反复提交", "缺链 ID：签名在分叉链和多链部署上同样有效"], "notes": ["一份安全的签名，要绑定五个字段。", "第一，nonce，一次性编号。缺了它，同一份签名可以在同一个合约反复提交。", "第二，链 ID。缺了它，签名在分叉链和多链部署上同样有效。"], "section": "签名五字段", "k": 55.37}, {"seg": "4", "t0": 57.93, "t1": 81.87, "title": "合约地址、截止时间、意图", "points": ["缺合约地址：同一代码部署两次，两个合约都有效", "缺截止时间：签名永久有效", "缺类型哈希：给 A 函数签的数据被拿去调用 B 函数"], "notes": ["第三，合约地址。缺了它，同一份代码部署两次，签名在两个合约都有效。", "第四，截止时间。缺了它，签名永久有效。你改主意以后，它照样能被使用。", "第五，函数意图，也就是类型哈希。缺了它，给 A 函数签的数据，会被拿去调用 B 函数。"], "section": "签名五字段", "k": 81.87}, {"seg": "4", "t0": 81.87, "t1": 97.59, "title": "先猜一道题", "points": ["领取凭证绑定了 nonce，没绑定链 ID", "同一合约同一地址，部署在以太坊和 BNB Chain", "以太坊用过之后，还能在 BNB Chain 领取吗？"], "notes": ["先猜一道题。", "一张领取凭证，绑定了 nonce，没有绑定链 ID。", "同一份合约，用相同的地址，部署在以太坊和 BNB Chain。", "凭证在以太坊用过之后，还能在 BNB Chain 领取吗？"], "section": "签名五字段", "k": 97.59}, {"seg": "4", "t0": 97.59, "t1": 128.32, "title": "能：用 EIP-712 解决", "points": ["两条链 nonce 各自计数，摘要也完全相同", "EIP-712：名称、版本、链 ID、合约地址合成域分隔符，结构合成类型哈希", "后四个字段一次解决；nonce 合约自己维护，每用一次加一"], "notes": ["能。两条链上的 nonce 各自计数，BNB Chain 上还是 0。", "摘要里没有链 ID，两条链算出的摘要完全相同。", "解决办法是 EIP-712。", "它把名称、版本、链 ID、合约地址，合成一个域分隔符。", "再把消息的结构，合成类型哈希。", "用对 EIP-712，后四个字段一次解决。nonce 还要合约自己维护，每用一次，加一。"], "section": "签名五字段", "k": 119.64}, {"seg": "5", "t0": 0.0, "t1": 17.97, "title": "陷阱一：ecrecover 返回零地址", "points": ["无效签名不报错，返回零地址", "管理员地址没初始化默认是零，任何无效签名都能通过"], "notes": ["字段齐了，验签的代码，还有三个经典陷阱。", "第一，ecrecover 遇到无效签名，不会报错，而是返回零地址。", "如果管理员地址没有初始化，它默认就是零。任何一个无效签名，都能通过。"], "section": "签名的陷阱", "k": 5.8}, {"seg": "5", "t0": 17.97, "t1": 38.79, "title": "陷阱二：签名可塑性", "points": ["同一条消息存在两份都有效的签名", "拿签名本身标记已使用，翻转一个数值就成新签名", "用 nonce 或消息哈希做标记，用 OpenZeppelin ECDSA 一类库"], "notes": ["第二，签名可塑性：同一条消息，存在两份都有效的签名。", "如果合约拿签名本身，标记已使用，翻转签名里的一个数值，就成了一份新签名。", "修复是，用 nonce 或消息哈希做标记，再用拒绝这种翻转的库，比如 OpenZeppelin 的 ECDSA。"], "section": "签名的陷阱", "k": 38.79}, {"seg": "5", "t0": 38.79, "t1": 61.61, "title": "陷阱三：编码碰撞", "points": ["紧凑编码：ab 加 c 和 a 加 bc 结果相同", "签多个动态类型时，用标准编码", "合约钱包没有私钥，要用 ERC-1271 校验"], "notes": ["第三，编码碰撞。紧凑编码会把相邻的动态数据，直接拼在一起。", "ab 加 c，和 a 加 bc，结果完全相同。签多个动态类型时，用标准编码。", "还有一点。合约钱包没有私钥，要用 ERC-1271 的接口校验，不能只靠 ecrecover。"], "section": "签名的陷阱", "k": 61.61}, {"seg": "5", "t0": 61.61, "t1": 82.73, "title": "permit：抢跑型拒绝服务", "points": ["别人从内存池复制你交易里的 permit 签名，抢先单独提交", "你的交易因 nonce 已用而回滚", "修复：try catch 包住 permit，失败后检查授权额度是否已足够"], "notes": ["再看 permit 的两面。", "一面是抢跑型的拒绝服务。你提交的交易里，带着 permit 签名。", "别人从内存池复制这份签名，抢先单独提交。你的交易因为 nonce 已用，回滚。", "修复是，把 permit 包在 try catch 里。失败后，检查授权额度是否已经足够。"], "section": "签名的陷阱", "k": 82.73}, {"seg": "5", "t0": 82.73, "t1": 109.75, "title": "签名人也可能签错", "points": ["permit 链下签、不花 gas，钱包常只显示十六进制，签下后对方随时可执行", "2025 年 2 月，Bybit 冷钱包多签被盗", "攻击者篡改 Safe Wallet 前端，只对 Bybit 多签地址生效（Sygnia、Verichains）"], "notes": ["另一面是钓鱼。permit 在链下签，不花 gas，钱包常常只显示一串十六进制。", "签下之后，对方可以随时拿去执行。", "签名再安全，签名人也可能签错东西。", "2025 年 2 月，交易所 Bybit 的冷钱包多签被盗。", "按 Sygnia、Verichains 等公开分析，攻击者篡改了 Safe Wallet 的前端，只对 Bybit 的多签地址生效。"], "section": "签名的陷阱", "k": 101.53}, {"seg": "5", "t0": 109.75, "t1": 131.67, "title": "签名是真的，内容是假的", "points": ["签名人看到普通转账，实际签下 delegatecall，把实现换成恶意合约", "多签只校验签名对不对、数量够不够", "按事发时估值，损失约 15 亿美元"], "notes": ["签名人看到的，是一笔普通转账。", "实际签下的，是一次 delegatecall，把钱包的实现，换成恶意合约。", "多签合约只校验签名对不对、数量够不够。签名是真的，内容不是签名人以为的内容。", "按事发时估值，损失约 15 亿美元。"], "section": "签名的陷阱", "k": 118.55}, {"seg": "5", "t0": 131.67, "t1": 167.46, "title": "多签防不了同一个假界面", "points": ["2024 年 7 月 WazirX 同样中招，按公开分析损失约 2.3 亿美元", "硬件钱包逐字段核对，用独立工具解码交易数据", "delegatecall 和修改实现地址：白名单或额外审批"], "notes": ["多签防的是一把私钥被盗，防不了所有签名人，看到同一个假界面。", "2024 年 7 月，印度交易所 WazirX 的多签冷钱包，也是这样。", "界面上是日常交易，硬件钱包签下的，却是升级多签的恶意数据。按公开分析，损失约 2.3 亿美元。", "防御有三条。用硬件钱包逐个字段核对。用独立工具解码交易数据。", "对 delegatecall 和修改实现地址的操作，设白名单或额外审批。"], "section": "签名的陷阱", "k": 167.46}, {"seg": "6", "t0": 0.0, "t1": 27.85, "title": "写合约与审计", "points": ["交换函数的最小输出和截止时间由调用者传入", "签名用 EIP-712，带上 nonce 和截止时间", "同一份签名提交两次：修复前重放成功，修复后被拦下"], "notes": ["最后，每个人今天就能做一件事。", "写合约的人，检查每个交换函数：最小输出和截止时间，是不是由调用者传进来。", "所有签名，用 EIP-712，带上 nonce 和截止时间。", "审计的人，拿同一份签名提交第二次。第二次也成功，就是漏洞。", "修复要两个结果：修复前，重放成功；修复后，被拦下。"], "section": "今天能做什么", "k": 27.85}, {"seg": "6", "t0": 27.85, "t1": 43.97, "title": "普通用户", "points": ["大额兑换设合理滑点，可走私有交易通道", "签名前看清链 ID、合约地址、数额和期限", "钱包只显示哈希或提示盲签，就不签"], "notes": ["普通用户，大额兑换设合理的滑点，不用自动的高滑点，可以走私有交易通道。", "签名前看清链 ID、合约地址、数额和期限。钱包只显示哈希，或者提示盲签，就不签。"], "section": "今天能做什么", "k": 43.97}, {"seg": "6", "t0": 43.97, "t1": 70.55, "title": "滑点是公开的最差报价", "points": ["交易打包前是公开的（走公开内存池时）", "顺序可以被买，签名可以被重放", "签之前看清内容，发之前想好谁会先看到它"], "notes": ["回到开头。滑点设 5%，为什么可能真的付 5%？", "因为交易在打包之前是公开的，滑点就是你公开的最差报价。", "这在交易走公开内存池时成立。走私有通道，搜索者在打包前看不到它。", "顺序可以被买，签名可以被重放。", "签之前看清内容，发之前想好，谁会先看到它。"], "section": "今天能做什么", "k": 70.55}]};
   var S = D.slides, N = S.length, KEY = 'deck-' + D.chapter;
   var $ = function (id) { return document.getElementById(id); };
-  var screen = $('screen'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
+  var screen = $('screen'), still = $('still'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
   var store = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
                 set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
   try { var pt = parent !== window && parent.document.documentElement.getAttribute('data-theme'); if (pt) document.documentElement.setAttribute('data-theme', pt); } catch (e) {}
@@ -141,32 +144,54 @@ button { font: inherit; color: inherit; }
     var g = groups[groups.length - 1];
     if (!g || g.seg !== s.seg) { g = { seg: s.seg, el: document.createElement('div') }; g.el.className = 'grp'; groups.push(g); prog.appendChild(g.el); g.n = 0; }
     var b = document.createElement('button'); b.title = (i + 1) + ' · ' + s.title; b.setAttribute('aria-label', '第 ' + (i + 1) + ' 页：' + s.title);
-    b.onclick = function () { go(i, 'seek'); }; g.el.appendChild(b); g.n++; s.dot = b;
+    b.onclick = function () { show(i); }; g.el.appendChild(b); g.n++; s.dot = b;
   });
   groups.forEach(function (g) { g.el.style.setProperty('--n', g.n); });
 
+  // all stills of the chapter are one sprite: 6 columns, slide i at (i % 6, i / 6)
+  var COLS = 6, ROWS = Math.ceil(N / COLS), sheetReady = false, sheet = new Image();
+  sheet.onload = function () { sheetReady = true; if (!screen.classList.contains('live')) $('wait').hidden = true; };
+  sheet.src = 'stills.webp';
+  still.style.backgroundImage = 'url(stills.webp)';
+  still.style.backgroundSize = (COLS * 100) + '% ' + (ROWS * 100) + '%';
+  function tile(i) {
+    var c = i % COLS, r = Math.floor(i / COLS);
+    still.style.backgroundPosition = (COLS > 1 ? c / (COLS - 1) * 100 : 0) + '% ' + (ROWS > 1 ? r / (ROWS - 1) * 100 : 0) + '%';
+  }
+
+  // ---------- live animation (only when asked) ----------
   function scale() { var k = screen.clientWidth / 1920; for (var s in frames) frames[s].style.transform = 'scale(' + k + ')'; }
   if (window.ResizeObserver) new ResizeObserver(scale).observe(screen); else addEventListener('resize', scale);
-
   function frame(seg) {
     if (frames[seg]) return frames[seg];
     var f = document.createElement('iframe'); f.src = 's' + seg + '.html'; f.title = '第 ' + seg + ' 节动画'; f.tabIndex = -1;
     f.setAttribute('aria-hidden', 'true'); screen.appendChild(f); frames[seg] = f; scale(); return f;
   }
+  function live(seg) {
+    for (var k in frames) frames[k].classList.toggle('on', k === seg);
+    screen.classList.add('live'); $('wait').hidden = true;
+  }
   function send(seg, msg) {
     msg.deck = 'cmd';
-    if (ready[seg]) frames[seg].contentWindow.postMessage(msg, '*'); else pending[seg] = msg;
+    if (ready[seg]) { frames[seg].contentWindow.postMessage(msg, '*'); live(seg); } else pending[seg] = msg;
   }
   addEventListener('message', function (e) {
     var m = e.data || {};
     if (!m.deck || !frames[m.seg] || e.source !== frames[m.seg].contentWindow) return;
     if (m.deck === 'ready') {
       ready[m.seg] = true;
-      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; send(m.seg, p); }
-      if (cur >= 0 && S[cur].seg === m.seg) $('wait').hidden = true;
-    } else if (m.deck === 'done' && cur >= 0 && S[cur].seg === m.seg) { playing = false; paint(); }
+      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; if (playing && S[cur].seg === m.seg) send(m.seg, p); }
+    } else if (m.deck === 'done' && playing && S[cur].seg === m.seg) { playing = false; paint(); }
   });
+  function process() {
+    var s = S[cur];
+    playing = true; frame(s.seg);
+    if (!ready[s.seg]) { $('wait').textContent = '载入动画…'; $('wait').hidden = false; }
+    send(s.seg, { play: [s.t0, s.k], rate: +$('speed').value });
+    paint();
+  }
 
+  // ---------- slides ----------
   function paint() {
     var s = S[cur];
     $('sec').textContent = s.section;
@@ -175,27 +200,21 @@ button { font: inherit; color: inherit; }
     $('lines').innerHTML = ''; s.notes.forEach(function (p) { var li = document.createElement('li'); li.textContent = p; $('lines').appendChild(li); });
     $('count').textContent = (cur + 1) + ' / ' + N;
     $('prev').disabled = cur === 0;
-    $('next').textContent = playing ? '跳到本页结尾 ›' : (cur === N - 1 ? '回到正文 ›' : '下一页 ›');
+    $('next').textContent = cur === N - 1 ? '回到正文 ›' : '下一页 ›';
+    $('replay').textContent = playing ? '⟳ 从头播放' : (screen.classList.contains('live') ? '⟳ 再看一遍' : '▶ 看过程');
     S.forEach(function (x, i) { x.dot.className = i === cur ? 'cur' : (seen[i] ? 'seen' : ''); });
   }
-  function go(i, mode) {
+  function show(i) {
     if (i < 0 || i >= N) return;
-    var s = S[i]; cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
-    var f = frame(s.seg);
-    for (var k in frames) frames[k].classList.toggle('on', k === s.seg);
-    $('wait').hidden = !!ready[s.seg];
-    playing = mode === 'play';
-    send(s.seg, playing ? { play: [s.t0, s.t1], rate: +$('speed').value } : { seek: s.t1 });
-    // warm the next segment while this one is on screen
-    if (i + 1 < N && S[i + 1].seg !== s.seg) frame(S[i + 1].seg);
+    cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
+    playing = false; pending = {};
+    tile(i); still.setAttribute('aria-label', S[i].title);
+    screen.classList.remove('live'); $('wait').textContent = sheetReady ? '载入动画…' : '载入画面…'; $('wait').hidden = sheetReady;
+    for (var k in frames) frames[k].classList.remove('on');
     paint();
   }
-  function next() {
-    if (playing) { go(cur, 'seek'); return; }
-    if (cur === N - 1) { back(); return; }
-    go(cur + 1, 'play');
-  }
-  function prev() { go(cur - 1, 'seek'); }
+  function next() { if (cur === N - 1) { back(); return; } show(cur + 1); }
+  function prev() { show(cur - 1); }
   function back() {
     if (parent !== window) parent.postMessage({ cexNav: D.chapter }, '*');
     else location.href = '../../index.html#' + D.chapter;
@@ -206,18 +225,18 @@ button { font: inherit; color: inherit; }
   }
   if (!document.fullscreenEnabled) $('fs').hidden = true;
 
-  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = function () { go(cur, 'play'); };
+  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = process;
   $('back').onclick = back; $('fs').onclick = fullscreen;
   addEventListener('keydown', function (e) {
     if (e.target.tagName === 'SELECT' || e.metaKey || e.ctrlKey || e.altKey) return;
     var k = e.key;
     if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); next(); }
     else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
-    else if (k === 'r' || k === 'R') go(cur, 'play');
+    else if (k === 'p' || k === 'P' || k === 'r' || k === 'R') process();
     else if (k === 'f' || k === 'F') fullscreen();
     else if (k === 'n' || k === 'N') $('notes').open = !$('notes').open;
-    else if (k === 'Home') go(0, 'seek');
-    else if (k === 'End') go(N - 1, 'seek');
+    else if (k === 'Home') show(0);
+    else if (k === 'End') show(N - 1);
   });
   // tap = next; horizontal swipe = next / previous
   var x0 = null, y0 = null;
@@ -230,7 +249,7 @@ button { font: inherit; color: inherit; }
   });
 
   var start = +store.get(KEY); if (!(start >= 0 && start < N)) start = 0;
-  go(start, start === 0 ? 'play' : 'seek');
+  show(start);
 })();
 </script>
 </body>

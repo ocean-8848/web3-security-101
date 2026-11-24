@@ -177,17 +177,17 @@ python3 $OPS/lib/replay.py --dir $OPS/answers/reference_rules               # �
 
 | 规则文件 | 对应 X 章 | 目标 | 命中 | TP | 误报 | 召回 | 备注 |
 |---|---|---|---:|---:|---:|---:|---|
-| r01_credential_stuffing | X08 规则 1 | S1 | 12 | 11 | 1 | 2/3 | 误报是办公室 NAT；`min_users=40` 去掉；S1-03 低慢撞库本规则抓不到 |
-| r02_recovery_withdraw_naive | X08 规则 2 | S1 | 11 | 2 | 9 | 2/3 | 朴素版，误报多；S1-01 没有找回动作 |
-| r02b_recovery_withdraw_tuned | X08 规则 2 调优 | S1 | 2 | 2 | 0 | 2/3 | 加“新地址”条件后误报归零 |
-| r03_change_then_add_address | X08 规则 3 | S1 | 3 | 3 | 0 | 3/3 | 加“24 小时内向该地址提币 ≥ 1000”后 |
-| r04_api_key_new_ip_withdraw | X08 规则 4/7 | S2 | 2 | 2 | 0 | 2/2 | 开权限 / 建 Key 后 60 分钟内新 IP 提币类调用 |
-| r05_funnel_fast_in_out | X13 规则示例 1 | S3 | 3 | 3 | 0 | 3/3 | `min_in_usd=20000`（手册示例）只召回 1/3，需调到 8000 并加来源数 |
-| r06_wash_trading | X10 市场监测 | S4-01、S4-02 | 8 | 6 | 2 | 2/2 | 误报是做市商；`exclude_mm=1` 归零 |
-| r07_mark_deviation | X10 标记价 | S4-03 | 1 | 1 | 0 | 1/1 | 连续 3 点 + 来源 ≥ 3；`--param min_rows=1` 多 1 个误报（ETH 单点尖峰），再加 `--param min_sources=1` 共多 2 个（含 XYZ 单来源故障） |
-| r08_support_bulk_no_ticket | X08 规则 6 | S5 | 3 | 3 | 0 | 2/2 | 无工单 + 小时内 ≥ 40 个账户或有导出 |
-| r09_signing_without_approval | X11 / X05 | S6 | 5 | 3 | 2 | 3/3 | 2 个误报是紧急调拨补签（approvals.status = approved_post_hoc），需结合应急流程判断 |
-| r10_chain_tx_without_request | X11 三方对账 / X05 | S6-01、S6-02 | 2 | 2 | 0 | 2/2 | 只能抓到“无提币申请”的出金，抓不到 S6-03 |
+| r01_credential_stuffing | X11 规则 1 | S1 | 12 | 11 | 1 | 2/3 | 误报是办公室 NAT；`min_users=40` 去掉；S1-03 低慢撞库本规则抓不到 |
+| r02_recovery_withdraw_naive | X11 规则 2 | S1 | 11 | 2 | 9 | 2/3 | 朴素版，误报多；S1-01 没有找回动作 |
+| r02b_recovery_withdraw_tuned | X11 规则 2 调优 | S1 | 2 | 2 | 0 | 2/3 | 加“新地址”条件后误报归零 |
+| r03_change_then_add_address | X11 规则 3 | S1 | 3 | 3 | 0 | 3/3 | 加“24 小时内向该地址提币 ≥ 1000”后 |
+| r04_api_key_new_ip_withdraw | X11 规则 4/7 | S2 | 2 | 2 | 0 | 2/2 | 开权限 / 建 Key 后 60 分钟内新 IP 提币类调用 |
+| r05_funnel_fast_in_out | X16 规则示例 1 | S3 | 3 | 3 | 0 | 3/3 | `min_in_usd=20000`（手册示例）只召回 1/3，需调到 8000 并加来源数 |
+| r06_wash_trading | X13 市场监测 | S4-01、S4-02 | 8 | 6 | 2 | 2/2 | 误报是做市商；`exclude_mm=1` 归零 |
+| r07_mark_deviation | X13 标记价 | S4-03 | 1 | 1 | 0 | 1/1 | 连续 3 点 + 来源 ≥ 3；`--param min_rows=1` 多 1 个误报（ETH 单点尖峰），再加 `--param min_sources=1` 共多 2 个（含 XYZ 单来源故障） |
+| r08_support_bulk_no_ticket | X11 规则 6 | S5 | 3 | 3 | 0 | 2/2 | 无工单 + 小时内 ≥ 40 个账户或有导出 |
+| r09_signing_without_approval | X14 / X05 | S6 | 5 | 3 | 2 | 3/3 | 2 个误报是紧急调拨补签（approvals.status = approved_post_hoc），需结合应急流程判断 |
+| r10_chain_tx_without_request | X14 三方对账 / X05 | S6-01、S6-02 | 2 | 2 | 0 | 2/2 | 只能抓到“无提币申请”的出金，抓不到 S6-03 |
 | r11_dev_chain_to_signing | X05 链式关联 | S7 | 2 | 2 | 0 | 2/2 | 端点 -> 云 -> K8s 三步关联 |
 | r12_ci_pinning | X04 | S8-02 | 1 | 1 | 0 | 1/1 | 只看 release.yml；去掉 workflow 限制会多出文档站的 56 条误报（28 次运行） |
 | r13_ci_dependency_integrity | X04 | S8-01 | 1 | 1 | 0 | 1/1 | 实验仓库无 lockfile 要排除 |

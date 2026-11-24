@@ -1,0 +1,8 @@
+# Echidna 属性模糊测试配置（配套 B48 形式化验证与 Foundry 靶场）
+# 用法（需已安装 echidna，从 practice-example-code/foundry/ 出发）：
+#   echidna test/FormalAndFuzzVault.t.sol --contract EchidnaVaultProperties --config echidna.yaml
+testMode: property
+testLimit: 50000
+seqLen: 20
+shrinkLimit: 5000
+cryticArgs: ["--foundry-compile-all"]

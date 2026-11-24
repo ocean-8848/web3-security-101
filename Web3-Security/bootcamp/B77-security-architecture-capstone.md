@@ -5,7 +5,7 @@
 > 2. 按 X01 的 P0 / P1 / P2 判据排出 90 天路线图，写明人力、依赖和度量目标，并让脚本检查它没有漏掉任何未完成的 P0 控制。
 > 3. 写出一页管理层摘要：红线项、基线指标、需要管理层决定的事项。
 >
-> 前置知识：做完 [B71](B71-control-matrix-practice.md)–[B76](B76-tabletop-postmortem-practice.md)；读过 [X01 安全体系怎么搭](../arch/X01-security-program-controls.md) 与 [X07 交易所安全架构总览](../arch/X07-cex-architecture-overview.md)；会运行 `python3` 和写简单 SQL。不需要 Foundry。
+> 前置知识：做完 [B71](B71-control-matrix-practice.md)–[B76](B76-tabletop-postmortem-practice.md)；读过 [X01 安全体系怎么搭](../arch/X01-security-program-controls.md) 与 [X10 交易所安全架构总览](../arch/X10-cex-architecture-overview.md)；会运行 `python3` 和写简单 SQL。不需要 Foundry。
 > 预计用时：约 8–10 小时（可拆成 3 个半天）。
 > 关联章节：[B70 L3 导读](B70-offchain-l3-guide.md)｜[X01](../arch/X01-security-program-controls.md)｜[X06 韧性与验证](../arch/X06-resilience-validation.md)｜模板 [T08 控制矩阵与风险登记表](../templates/T08-control-matrix-risk-register.md)｜[T12 安全架构评审单](../templates/T12-security-architecture-review.md)｜[A02 定级与报告](../assessment/A02-risk-rating-reporting.md)
 > 参考实现：`practice-example-code/ops/solutions/b77/`（`evidence.py`、`check_capstone.py` 与 4 份参考 CSV）
@@ -204,7 +204,7 @@ flowchart LR
 
 <details class="predict"><summary>🤔 先猜再看：为什么 B5 边界上挂的发现最严重，但它的入口（账务）不在互联网上？</summary>
 
-攻击者不需要从 B5 进入。S6 的三次事件里，攻击者先拿到了"能向签名服务发请求"的位置，再伪造请求。B5 是最后一道独立检查。它的校验缺失，会让前面所有被攻破的区域都变成"资金转出"。这就是 X07 里"最后两关要独立判断"的意思。
+攻击者不需要从 B5 进入。S6 的三次事件里，攻击者先拿到了"能向签名服务发请求"的位置，再伪造请求。B5 是最后一道独立检查。它的校验缺失，会让前面所有被攻破的区域都变成"资金转出"。这就是 X10 里"最后两关要独立判断"的意思。
 
 </details>
 
@@ -891,14 +891,14 @@ rm -rf b77-lab-bad
 
 ### 19.1 回到手册，选一个场景深入
 
-X01–X48 是 L3 的原理底稿。毕业项目只用到了其中一部分。按你的方向选一个：
+X01–X09 是 L3 的原理底稿。毕业项目只用到了其中一部分。按你的方向选一个：
 
 | 你想做 | 读 | 为什么 |
 |---|---|---|
-| 把检测做深 | [X05 检测与响应工程](../arch/X05-detection-response-engineering.md)、[X13 欺诈、合规与安全运营](../arch/X13-cex-fraud-compliance-secops.md) | F-19 说明单条规则有盲区。X05 讲怎样用覆盖矩阵和红队注入证明规则有效 |
-| 把资金链路做深 | [X11 钱包、财资与支付渠道](../arch/X11-cex-wallet-treasury-payment.md)、[X35 托管商安全](../arch/X35-custodian-security.md) | 本章最严重的 3 条发现都在这里 |
+| 把检测做深 | [X05 检测与响应工程](../arch/X05-detection-response-engineering.md)、[X16 欺诈、合规与安全运营](../arch/X16-cex-fraud-compliance-secops.md) | F-19 说明单条规则有盲区。X05 讲怎样用覆盖矩阵和红队注入证明规则有效 |
+| 把资金链路做深 | [X14 钱包、财资与支付渠道](../arch/X14-cex-wallet-treasury-payment.md)、[X38 托管商安全](../arch/X38-custodian-security.md) | 本章最严重的 3 条发现都在这里 |
 | 把韧性做深 | [X06 韧性与验证](../arch/X06-resilience-validation.md) | R10 与 R13 只是起点。X06 讲 RTO、暂停开关分级、月度安全报告 |
-| 评估别人的系统 | [X34 钱包厂商安全](../arch/X34-wallet-vendor-security.md)、[X30 DeFi 项目运营](../arch/X30-defi-project-ops.md)、[X29 L2 与桥运营](../arch/X29-l2-bridge-oracle-ops.md) | 把本章的方法用在另一类机构上。模板 [T11](../templates/T11-vendor-custodian-assessment.md) 是评估单 |
+| 评估别人的系统 | [X37 钱包厂商安全](../arch/X37-wallet-vendor-security.md)、[X33 DeFi 项目运营](../arch/X33-defi-project-ops.md)、[X32 L2 与桥运营](../arch/X32-l2-bridge-oracle-ops.md) | 把本章的方法用在另一类机构上。模板 [T11](../templates/T11-vendor-custodian-assessment.md) 是评估单 |
 | 做标准对照 | [X02 标准与合规映射](../arch/X02-standards-compliance-map.md) | 路线图完成后，做一次对照标准的差距分析 |
 
 ### 19.2 面试与作品集

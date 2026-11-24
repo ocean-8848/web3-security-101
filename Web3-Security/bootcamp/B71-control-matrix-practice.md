@@ -5,10 +5,10 @@
 > 2. 画出 MiniEx 的信任边界，写出每个 L1 资产的威胁，并把威胁落到控制矩阵里。
 > 3. 用脚本算出 10 个保护域的覆盖率与缺口排序，并在勘察里找出全部 3 条员工权限治理发现（G1–G3）。
 >
-> 前置知识：读过 [B70 链下 L3 导读](B70-offchain-l3-guide.md)，读过 [X01 安全体系怎么搭](../arch/X01-security-program-controls.md) 与 [X07 交易所安全架构总览](../arch/X07-cex-architecture-overview.md) 更好；会运行 `python3` 和写简单 SQL。不需要 Foundry。
+> 前置知识：读过 [B70 链下 L3 导读](B70-offchain-l3-guide.md)，读过 [X01 安全体系怎么搭](../arch/X01-security-program-controls.md) 与 [X10 交易所安全架构总览](../arch/X10-cex-architecture-overview.md) 更好；会运行 `python3` 和写简单 SQL。不需要 Foundry。
 > 预计用时：约 2–2.5 小时。
 > 交互实验：[控制矩阵覆盖率](../interactive/control-matrix-lab.html)
-> 关联章节：[X01 安全体系怎么搭](../arch/X01-security-program-controls.md)｜[X02 标准与合规映射](../arch/X02-standards-compliance-map.md)｜[X07 交易所安全架构总览](../arch/X07-cex-architecture-overview.md)｜[T08 控制矩阵与风险登记表](../templates/T08-control-matrix-risk-register.md)｜[靶场 API](../../practice-example-code/ops/API.md)
+> 关联章节：[X01 安全体系怎么搭](../arch/X01-security-program-controls.md)｜[X02 标准与合规映射](../arch/X02-standards-compliance-map.md)｜[X10 交易所安全架构总览](../arch/X10-cex-architecture-overview.md)｜[T08 控制矩阵与风险登记表](../templates/T08-control-matrix-risk-register.md)｜[靶场 API](../../practice-example-code/ops/API.md)
 > 最后核对：2026-11-23（python3、MiniEx 靶场默认种子 20260301 在本机运行过；下文命令输出来自真实运行）
 
 > ⚠️ 警告：法律与道德边界。MiniEx 是虚构的交易所。所有数据由脚本合成，不含真实用户、真实地址或真实密钥。本章只在你自己的机器上读这些数据。不要用本章的方法去"勘察"不属于你的真实系统。真实机构的资产清单与控制验证，只在你所在组织的授权范围内进行。
@@ -25,7 +25,7 @@ MiniEx 的安全负责人刚到岗。老板说："给我一张控制矩阵，下
 
 ## 1. 本章怎么练
 
-原理不在这里重讲。资产分级、信任边界、控制矩阵的方法见 [X01 §2、§4](../arch/X01-security-program-controls.md)；MiniEx 对应的九个系统分区与六个保护域见 [X07 §2、§5](../arch/X07-cex-architecture-overview.md)。本章把这些方法在一份真实的合成数据上走一遍。
+原理不在这里重讲。资产分级、信任边界、控制矩阵的方法见 [X01 §2、§4](../arch/X01-security-program-controls.md)；MiniEx 对应的九个系统分区与六个保护域见 [X10 §2、§5](../arch/X10-cex-architecture-overview.md)。本章把这些方法在一份真实的合成数据上走一遍。
 
 ```mermaid
 flowchart LR
@@ -369,7 +369,7 @@ flowchart LR
 读图要点：
 - 实线是业务与指令方向，虚线是攻击者的入口。金色节点是最后两关：签名服务和钱包。
 - 前面所有区域被攻破，B5 与 B6 这两道边界仍要独立判断。它们由账务单、审批单和签名服务的校验守住。
-- 开发终端在办公网，但它有一条路通向云控制面（B3）。这就是 X07 里"办公与研发有虚线通向生产"的具体样子。
+- 开发终端在办公网，但它有一条路通向云控制面（B3）。这就是 X10 里"办公与研发有虚线通向生产"的具体样子。
 - 局限：图只画资金安全相关的部分。真实系统还有第三方 KYC 服务、支付渠道和监控系统。
 
 每条边界，写出"穿过它的数据、能穿过的人、数据里哪里看得见"：
@@ -656,16 +656,16 @@ cat $OPS/data/controls_matrix_template.csv
 
 ```text
 domain,related_chapters,control_id,control,priority,verification_method,owner,status,evidence_ref
-身份与账户,X08,,,,,,,
-提币与风控,X08/X10/X13,,,,,,,
-交易与清算,X10,,,,,,,
-钱包与资金,X11,,,,,,,
-签名服务,X11,,,,,,,
+身份与账户,X11,,,,,,,
+提币与风控,X11/X13/X16,,,,,,,
+交易与清算,X13,,,,,,,
+钱包与资金,X14,,,,,,,
+签名服务,X14,,,,,,,
 云与生产环境,X03,,,,,,,
 开发与发布,X04,,,,,,,
 检测与响应,X05,,,,,,,
-数据与合规,X12/X13,,,,,,,
-内部人与权限,X01/X08,,,,,,,
+数据与合规,X15/X16,,,,,,,
+内部人与权限,X01/X11,,,,,,,
 ```
 
 要填的列：
@@ -685,18 +685,18 @@ domain,related_chapters,control_id,control,priority,verification_method,owner,st
 ```bash
 cat > b71-lab/my_matrix.csv <<'EOF'
 domain,related_chapters,control_id,control,priority,verification_method,owner,status,evidence_ref
-身份与账户,X08,C-01,[预防] 提币、改绑与加地址要求 MFA,P0,统计成功登录里没有 MFA 的账户数，目标 0,账户安全,partial,Q10
-身份与账户,X08,C-02,[检测] 撞库与低慢撞库告警,P1,用 replay.py 回放 S1，召回 3/3,风控,missing,B72
-提币与风控,X08/X10/X13,C-03,[预防] 提币审批：2 万美元及以上 2 人复核，其余由风控自动审批,P0,统计 2 万美元及以上且审批人数不足 2 的提币笔数，目标 0 笔,风控,partial,Q11
-提币与风控,X08/X10/X13,C-04,[预防] 新提币地址 24 小时冷却,P0,统计 24 小时内用新地址提币 ≥ 1000 美元的笔数，目标 0,风控,missing,Q12
-提币与风控,X08/X10/X13,C-05,[预防] 带提币权限的 API Key 必须绑定 IP 白名单,P0,查 api_keys，无白名单的提币 Key 目标 0 个,账户安全,partial,Q13
-交易与清算,X10,C-06,[预防] 账务双分录借贷平衡自检,P0,按 txn_id 与 asset 汇总借贷差，目标 0 组不平,账务,implemented,Q14
-交易与清算,X10,C-07,[检测] 对敲与标记价偏离监测,P1,用 replay.py 回放 S4，召回 3/3,市场监察,missing,B72
-钱包与资金,X11,C-08,[预防] 冷温热分层与调拨审批,P0,查 chain_txs 的调拨笔数与 approvals 的审批单是否一一对应,财资,partial,Q3
-钱包与资金,X11,C-09,[检测] 链上出金与提币申请逐笔对账,P0,统计无提币申请的链上出金，目标 0 笔,财资,missing,Q15
-签名服务,X11,C-10,[预防] 签名请求必须带审批单并独立校验地址与金额,P0,统计无审批单的签名请求，目标 0 条,钱包安全,partial,Q16
-签名服务,X11,C-11,[预防] 签名命名空间 exec 必须有变更单,P0,统计 exec 事件中缺 change_id 的条数，目标 0 条,平台,partial,Q17
-签名服务,X11,C-12,[恢复] 签名服务暂停开关与应急 runbook,P1,桌面推演中在目标时间内完成暂停,安全运营,missing,B76
+身份与账户,X11,C-01,[预防] 提币、改绑与加地址要求 MFA,P0,统计成功登录里没有 MFA 的账户数，目标 0,账户安全,partial,Q10
+身份与账户,X11,C-02,[检测] 撞库与低慢撞库告警,P1,用 replay.py 回放 S1，召回 3/3,风控,missing,B72
+提币与风控,X11/X13/X16,C-03,[预防] 提币审批：2 万美元及以上 2 人复核，其余由风控自动审批,P0,统计 2 万美元及以上且审批人数不足 2 的提币笔数，目标 0 笔,风控,partial,Q11
+提币与风控,X11/X13/X16,C-04,[预防] 新提币地址 24 小时冷却,P0,统计 24 小时内用新地址提币 ≥ 1000 美元的笔数，目标 0,风控,missing,Q12
+提币与风控,X11/X13/X16,C-05,[预防] 带提币权限的 API Key 必须绑定 IP 白名单,P0,查 api_keys，无白名单的提币 Key 目标 0 个,账户安全,partial,Q13
+交易与清算,X13,C-06,[预防] 账务双分录借贷平衡自检,P0,按 txn_id 与 asset 汇总借贷差，目标 0 组不平,账务,implemented,Q14
+交易与清算,X13,C-07,[检测] 对敲与标记价偏离监测,P1,用 replay.py 回放 S4，召回 3/3,市场监察,missing,B72
+钱包与资金,X14,C-08,[预防] 冷温热分层与调拨审批,P0,查 chain_txs 的调拨笔数与 approvals 的审批单是否一一对应,财资,partial,Q3
+钱包与资金,X14,C-09,[检测] 链上出金与提币申请逐笔对账,P0,统计无提币申请的链上出金，目标 0 笔,财资,missing,Q15
+签名服务,X14,C-10,[预防] 签名请求必须带审批单并独立校验地址与金额,P0,统计无审批单的签名请求，目标 0 条,钱包安全,partial,Q16
+签名服务,X14,C-11,[预防] 签名命名空间 exec 必须有变更单,P0,统计 exec 事件中缺 change_id 的条数，目标 0 条,平台,partial,Q17
+签名服务,X14,C-12,[恢复] 签名服务暂停开关与应急 runbook,P1,桌面推演中在目标时间内完成暂停,安全运营,missing,B76
 云与生产环境,X03,C-13,[预防] 特权到期在 K8s 网关侧失效而不只是目录字段,P0,统计特权到期之后仍 exec 成功的记录，目标 0 条,平台,missing,Q23
 云与生产环境,X03,C-14,[检测] 云凭证被外部来源使用时告警,P1,用 replay.py 回放 S7，召回 2/2,安全运营,missing,B73
 云与生产环境,X03,C-15,[证据保全] 云与 K8s 审计日志集中保存,P1,两周内两张审计表都有每日事件,平台,implemented,Q1
@@ -705,11 +705,11 @@ domain,related_chapters,control_id,control,priority,verification_method,owner,st
 开发与发布,X04,C-18,[预防] 依赖安装校验 lockfile 哈希,P1,统计 integrity 与 lock_integrity 不符的安装，目标 0 次,发布,partial,Q20
 检测与响应,X05,C-19,[检测] 日志告警规则并有回放验证,P0,每条规则在 replay.py 回放中召回目标场景,安全运营,missing,B73
 检测与响应,X05,C-20,[恢复] 事故 runbook、值班与桌面推演,P1,每季度一次推演并留评分表,安全运营,missing,B76
-数据与合规,X12/X13,C-21,[预防] KYC 访问必须有工单,P0,统计无工单的 support_access 占比，目标 0%,合规,partial,Q21
-数据与合规,X12/X13,C-22,[检测] KYC 批量查看与导出告警,P0,用 replay.py 回放 S5，召回 2/2,安全运营,missing,B73
-内部人与权限,X01/X08,C-23,[预防] 离职联动回收全部特权,P0,统计已离职员工仍有效的特权数，目标 0 个,人力与平台,missing,Q22
-内部人与权限,X01/X08,C-24,[预防] 特权授予必须有审批人,P0,统计 approver_id 为空的特权数，目标 0 个,平台,partial,Q24
-内部人与权限,X01/X08,C-25,[治理] 每季度特权复核,P1,复核记录覆盖离职、到期与无审批三类,安全,missing,Q22-Q24
+数据与合规,X15/X16,C-21,[预防] KYC 访问必须有工单,P0,统计无工单的 support_access 占比，目标 0%,合规,partial,Q21
+数据与合规,X15/X16,C-22,[检测] KYC 批量查看与导出告警,P0,用 replay.py 回放 S5，召回 2/2,安全运营,missing,B73
+内部人与权限,X01/X11,C-23,[预防] 离职联动回收全部特权,P0,统计已离职员工仍有效的特权数，目标 0 个,人力与平台,missing,Q22
+内部人与权限,X01/X11,C-24,[预防] 特权授予必须有审批人,P0,统计 approver_id 为空的特权数，目标 0 个,平台,partial,Q24
+内部人与权限,X01/X11,C-25,[治理] 每季度特权复核,P1,复核记录覆盖离职、到期与无审批三类,安全,missing,Q22-Q24
 EOF
 wc -l b71-lab/my_matrix.csv
 ```
@@ -891,11 +891,11 @@ diff b71-lab/my_matrix.csv practice-example-code/ops/solutions/b71/matrix.refere
 | 检查项 | 内容 | 本章练习 | 对应 | 结论 | 证据 |
 |---|---|---|---|---|---|
 | **ARC-1** | 资产清单覆盖密钥、资金、用户数据、代码、基础设施，每项有分级和负责人 | 第 1 步 | X01 §2.1、T08 §1 | | |
-| **ARC-2** | 信任边界图标出每条边界穿过的数据和人 | 第 2 步 | X01 §2.3、X07 §2.3 | | |
+| **ARC-2** | 信任边界图标出每条边界穿过的数据和人 | 第 2 步 | X01 §2.3、X10 §2.3 | | |
 | **ARC-3** | 每个 L1 资产有威胁，每条威胁有对应的控制行 | 第 3 步 | X01 §4.1、T02 | | |
 | **ARC-4** | 矩阵每行有类型、优先级、负责人、验证方法、证据 | 第 6 步 | X01 §4.2、T08 §2 | | |
 | **ARC-5** | 每个域至少有一条预防和一条检测控制（有效或计划） | 第 7 步 | T08 §2.1 | | |
-| **ARC-6** | 员工权限复核覆盖离职、到期、无审批三类 | 第 5 步 | X01 §4.4、X08 | | |
+| **ARC-6** | 员工权限复核覆盖离职、到期、无审批三类 | 第 5 步 | X01 §4.4、X11 | | |
 
 定级用 [A02](../assessment/A02-risk-rating-reporting.md) 复核。发现按 [T03](../templates/T03-finding-report.md) 记录。
 

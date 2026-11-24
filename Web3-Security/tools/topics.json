@@ -6,14 +6,16 @@
         "s04",
         "s07",
         "k00",
-        "w25"
+        "w25",
+        "s32"
       ],
       "labs": [
         "lab-reentrancy-lab"
       ],
       "code": [
         "Reentrancy.t.sol",
-        "MiniLendPoC.t.sol"
+        "MiniLendPoC.t.sol",
+        "non-evm/vyper-reentrancy"
       ],
       "cases": [
         {
@@ -69,7 +71,8 @@
       ],
       "code": [
         "VaultInflation.t.sol",
-        "ERC4626Rounding.t.sol"
+        "ERC4626Rounding.t.sol",
+        "FormalAndFuzzVault.t.sol"
       ],
       "cases": [
         {
@@ -131,7 +134,9 @@
         "s09",
         "s02",
         "s19",
-        "w60"
+        "w60",
+        "s31",
+        "k07"
       ],
       "labs": [
         "lab-signature-replay-lab",
@@ -237,7 +242,11 @@
         "s14",
         "w52",
         "w53",
-        "w74"
+        "w74",
+        "k04",
+        "k05",
+        "k06",
+        "k07"
       ],
       "labs": [
         "lab-zk-constraint-lab",
@@ -251,6 +260,11 @@
       ],
       "audit": [
         "a04"
+      ],
+      "code": [
+        "non-evm/solana-vault",
+        "non-evm/sui-move-lending",
+        "non-evm/zk-circom-underconstrained"
       ]
     },
     {
@@ -497,7 +511,8 @@
       "chapters": [
         "a05",
         "a10",
-        "s11"
+        "s11",
+        "s33"
       ],
       "labs": [
         "lab-listing-scorecard"
@@ -593,7 +608,9 @@
       "code": [
         "practice-example-code/range/yul",
         "practice-example-code/range/fv",
-        "practice-example-code/range/abi"
+        "practice-example-code/range/abi",
+        "FormalAndFuzzVault.t.sol",
+        "foundry/echidna.yaml"
       ],
       "audit": [
         "a04"
@@ -641,8 +658,8 @@
       "chapters": [
         "x01",
         "x02",
-        "x07",
-        "x12",
+        "y10",
+        "y15",
         "w77"
       ],
       "labs": [
@@ -664,7 +681,7 @@
       "chapters": [
         "x05",
         "x06",
-        "x13",
+        "y16",
         "w79",
         "w82"
       ],
@@ -685,11 +702,11 @@
     {
       "title": "账户与提币风控",
       "chapters": [
-        "x08",
-        "x10",
-        "x11",
-        "x13",
-        "x36",
+        "y11",
+        "y13",
+        "y14",
+        "y16",
+        "y41",
         "w78"
       ],
       "labs": [
@@ -708,8 +725,8 @@
     {
       "title": "签名服务与资金调拨",
       "chapters": [
-        "x11",
-        "x35",
+        "y14",
+        "y38",
         "s29",
         "w80"
       ],
@@ -731,9 +748,10 @@
       "title": "软件交付与供应链运营",
       "chapters": [
         "x04",
-        "x34",
+        "y37",
         "s20",
-        "w81"
+        "w81",
+        "s32"
       ],
       "labs": [],
       "cases": [
@@ -743,17 +761,20 @@
       ],
       "audit": [
         "t04"
+      ],
+      "code": [
+        "non-evm/vyper-reentrancy"
       ]
     },
     {
       "title": "公链与项目方安全运营",
       "chapters": [
-        "x28",
-        "x29",
-        "x30",
-        "x31",
-        "x32",
-        "x33"
+        "y31",
+        "y32",
+        "y33",
+        "y34",
+        "y35",
+        "y36"
       ],
       "labs": [
         "lab-multisig-review-lab"
@@ -772,10 +793,10 @@
     {
       "title": "托管、做市与 Agent 平台运营",
       "chapters": [
-        "x35",
-        "x37",
-        "x38",
-        "x36"
+        "y38",
+        "y42",
+        "y43",
+        "y41"
       ],
       "labs": [],
       "cases": [],
@@ -786,10 +807,10 @@
     {
       "title": "交易所身份与准入：验收与恢复",
       "chapters": [
-        "x14",
-        "x15",
-        "x16",
-        "x17"
+        "y17",
+        "y18",
+        "y19",
+        "y20"
       ],
       "labs": [],
       "cases": [],
@@ -798,10 +819,10 @@
     {
       "title": "交易与账务：验收、复市与对账",
       "chapters": [
-        "x18",
-        "x19",
-        "x26",
-        "x27"
+        "y21",
+        "y22",
+        "y29",
+        "y30"
       ],
       "labs": [],
       "cases": [],
@@ -810,8 +831,8 @@
     {
       "title": "钱包与财资：验收与复付",
       "chapters": [
-        "x20",
-        "x21"
+        "y23",
+        "y24"
       ],
       "labs": [],
       "cases": [],
@@ -820,10 +841,10 @@
     {
       "title": "生产数据与反欺诈：验收与恢复",
       "chapters": [
-        "x22",
-        "x23",
-        "x24",
-        "x25"
+        "y25",
+        "y26",
+        "y27",
+        "y28"
       ],
       "labs": [],
       "cases": [],
@@ -832,9 +853,9 @@
     {
       "title": "NFT、预测市场与再质押运营",
       "chapters": [
-        "x39",
-        "x40",
-        "x41"
+        "y44",
+        "y45",
+        "y46"
       ],
       "labs": [],
       "cases": [],
@@ -843,9 +864,9 @@
     {
       "title": "DAO、隐私协议与威胁情报",
       "chapters": [
-        "x42",
-        "x43",
-        "x46"
+        "y47",
+        "y48",
+        "y07"
       ],
       "labs": [],
       "cases": [],
@@ -854,14 +875,94 @@
     {
       "title": "移动端、密钥仪式与团队建设",
       "chapters": [
-        "x44",
-        "x45",
-        "x47",
-        "x48"
+        "y39",
+        "y40",
+        "y08",
+        "y09"
       ],
       "labs": [],
       "cases": [],
       "audit": []
+    },
+    {
+      "title": "模块化、DA、现代 MEV 与中间件",
+      "chapters": [
+        "s31",
+        "k08",
+        "k03",
+        "s16",
+        "s17",
+        "y32"
+      ],
+      "labs": [
+        "lab-rpc-quorum-lab",
+        "lab-confirmation-depth-lab",
+        "lab-chain-porting-lab"
+      ],
+      "cases": [
+        {
+          "id": "s28"
+        }
+      ],
+      "audit": [
+        "a11",
+        "t12"
+      ]
+    },
+    {
+      "title": "dApp 连接层、编译器与硬件底层",
+      "chapters": [
+        "s32",
+        "s18",
+        "s19",
+        "s20",
+        "k06",
+        "y37",
+        "y40"
+      ],
+      "labs": [
+        "lab-phishing-signature-lab",
+        "lab-wallet-scheme-lab"
+      ],
+      "code": [
+        "non-evm/vyper-reentrancy"
+      ],
+      "cases": [
+        {
+          "id": "s28"
+        }
+      ],
+      "audit": [
+        "a06",
+        "t04"
+      ]
+    },
+    {
+      "title": "前沿赛道：FHE、zkML、DePIN、RWA 与 Memecoin",
+      "chapters": [
+        "s33",
+        "s14",
+        "s26",
+        "y34",
+        "y43",
+        "y48"
+      ],
+      "labs": [
+        "lab-listing-scorecard",
+        "lab-zk-constraint-lab"
+      ],
+      "code": [
+        "non-evm/zk-circom-underconstrained"
+      ],
+      "cases": [
+        {
+          "id": "s28"
+        }
+      ],
+      "audit": [
+        "a05",
+        "t05"
+      ]
     }
   ]
 }

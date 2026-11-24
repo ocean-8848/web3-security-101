@@ -42,7 +42,10 @@ button { font: inherit; color: inherit; }
   box-shadow: 0 1px 0 var(--rule), 0 8px 28px rgba(60, 50, 30, .14); cursor: pointer; touch-action: pan-y; user-select: none; }
 .screen iframe { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; border: 0; transform-origin: 0 0; visibility: hidden; pointer-events: none; }
 .screen iframe.on { visibility: visible; }
-.screen .wait { position: absolute; inset: 0; display: grid; place-items: center; color: #8a826f; font-size: 14px; background: #efebe3; }
+.screen .still { position: absolute; inset: 0; background-repeat: no-repeat; background-color: #efebe3; }
+.screen.live .still { visibility: hidden; }
+.screen .wait { position: absolute; left: 12px; bottom: 12px; padding: 4px 12px; border-radius: 999px; color: #fff; font-size: 13px; background: rgba(28, 28, 28, .72); }
+.btn.play { border-color: var(--accent); color: var(--accent); }
 .screen .wait[hidden] { display: none; }
 
 .side { min-height: 0; overflow-y: auto; border-left: 1px solid var(--rule); background: var(--paper); padding: 18px 20px 24px; }
@@ -102,7 +105,7 @@ button { font: inherit; color: inherit; }
     <button class="btn hide-narrow" id="fs" title="全屏（F）">⛶ 全屏</button>
   </header>
   <div class="body">
-    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="wait" id="wait">载入动画…</div></div></div>
+    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="still" id="still" role="img"></div><div class="wait" id="wait" hidden>载入动画…</div></div></div>
     <aside class="side" aria-live="polite">
       <div class="sec" id="sec"></div>
       <h2 id="stitle"></h2>
@@ -112,7 +115,7 @@ button { font: inherit; color: inherit; }
   </div>
   <nav class="ctrl" aria-label="翻页">
     <button class="btn" id="prev" aria-label="上一页（←）">‹ 上一页</button>
-    <button class="btn" id="replay" aria-label="重播本页动画（R）">⟳ 重播</button>
+    <button class="btn play" id="replay" aria-label="看这一页的动画过程（P）">▶ 看过程</button>
     <button class="btn primary" id="next" aria-label="下一页（→ 或空格）">下一页 ›</button>
     <span class="count" id="count"></span>
     <div class="prog" id="prog"></div>
@@ -123,10 +126,10 @@ button { font: inherit; color: inherit; }
 </div>
 <script>
 (function () {
-  var D = {"chapter": "s08", "title": "预言机与闪电贷：一笔交易就能改写的价格", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 20.29, "title": "把汇率当成美元价格", "points": ["2026 年 2 月 15 日，Base 链上的 Moonwell 执行了一份治理提案", "cbETH 的美元价格只用了 cbETH 对 ETH 的汇率"], "notes": ["2026 年 2 月 15 日，Base 链上的借贷协议 Moonwell，执行了一份治理提案。", "提案生效后，cbETH 的美元价格，只用了 cbETH 对 ETH 的汇率。", "它把一个汇率，当成了美元价格。"], "section": "新鲜的错价"}, {"seg": "1", "t0": 20.29, "t1": 39.51, "title": "约 2200 美元只值约 1.12", "points": ["一枚约 2200 美元的 cbETH，合约眼里只值约 1.12 美元", "清算机器人清算了约 1096 枚 cbETH", "协议留下约 178 万美元坏账（The Block）"], "notes": ["一枚约 2200 美元的 cbETH，在合约眼里，只值约 1.12 美元。", "清算机器人立刻动手，清算了约 1096 枚 cbETH。", "按 The Block 的报道，协议留下约 178 万美元坏账。"], "section": "新鲜的错价"}, {"seg": "1", "t0": 39.51, "t1": 47.89, "title": "先猜一道题", "points": ["这个价格大于 0，而且刚刚更新过", "只检查正值和时效，能拦住它吗？"], "notes": ["先猜一道题。", "这个价格大于 0，而且刚刚更新过。", "只检查正值和时效，能拦住它吗？"], "section": "新鲜的错价"}, {"seg": "1", "t0": 47.89, "t1": 64.74, "title": "不能：价格新，但错", "points": ["两项检查都会通过", "价格可能被推高、可能停住、也可能配错", "错的时候，哪一行代码来拦住它"], "notes": ["不能。两项检查，都会通过。", "价格是新的，也是错的。", "合约读到的价格，可能被推高，可能停住，也可能配错。", "问题是，错的时候，哪一行代码来拦住它。"], "section": "新鲜的错价"}, {"seg": "2", "t0": 0.0, "t1": 10.45, "title": "预言机", "points": ["把链外或别的合约里的数据交给合约使用的机制", "交出的通常是价格"], "notes": ["先说两个词。", "预言机，是把链外或别的合约里的数据，交给合约使用的机制。", "它交出的，通常是价格。"], "section": "借来的本金"}, {"seg": "2", "t0": 10.45, "t1": 33.55, "title": "闪电贷：本金不再是门槛", "points": ["借款、使用、还款在同一笔交易里完成", "不归还就整笔回滚，出借方无风险、不需要抵押", "任何人都能借到闪电贷池的全部流动性"], "notes": ["闪电贷，是借款、使用、还款，都在同一笔交易里完成的贷款。", "交易结束时没有归还，整笔交易回滚，就像什么都没发生。", "所以出借方没有风险，也不需要抵押。", "这意味着，本金不再是门槛。", "任何人都能在一笔交易里，借到闪电贷池的全部流动性。"], "section": "借来的本金"}, {"seg": "2", "t0": 33.55, "t1": 53.69, "title": "比方：按菜市场价估值的当铺", "points": ["借来 1 亿，在菜市场用离谱高价买下全部黄金", "拿 1 克黄金去当铺", "当铺按刚才成交价估值 100 万，借给你 75 万"], "notes": ["打个比方。一家当铺，按隔壁菜市场的最新成交价，给黄金估价。", "你从朋友那里，借来 1 亿。", "在菜市场用离谱的高价，买下全部黄金。", "再拿 1 克黄金去当铺。", "当铺按刚才的成交价，估值 100 万，借给你 75 万。"], "section": "借来的本金"}, {"seg": "2", "t0": 53.69, "t1": 74.95, "title": "当铺只剩 1 克普通黄金", "points": ["卖回黄金、还掉 1 亿，赚 75 万减去损耗", "不成立处：现实中这几步要好几天", "链上发生在同一笔交易里，没有人来得及反应"], "notes": ["你把黄金卖回菜市场，把 1 亿还给朋友。", "你赚到 75 万，减去买卖的损耗。", "当铺手里，只剩 1 克普通价格的黄金。", "比喻在这里不成立：现实中，这几步要好几天。", "链上，它们发生在同一个区块的同一笔交易里。没有人来得及反应。"], "section": "借来的本金"}, {"seg": "2", "t0": 74.95, "t1": 93.63, "title": "一笔交易里能改变什么", "points": ["把任何 AMM 池子的现货价推到想要的位置，只要付得起滑点", "直接往合约转入资产，改变余额读数", "把这些操作和对目标协议的调用任意组合"], "notes": ["那么，一笔交易里，攻击者能改变什么？", "他能把任何 AMM 池子的现货价，推到想要的位置，只要付得起滑点。", "他能直接往合约里转入资产，改变余额读数。", "他能把这些操作，和对目标协议的调用，任意组合。"], "section": "借来的本金"}, {"seg": "2", "t0": 93.63, "t1": 123.1, "title": "可变读数 = 攻击者输入", "points": ["可变：储备比例、按储备算的 LP 价格、余额、读余额的份额价格", "TWAP 当前区块难撼动；链下聚合价一笔交易改不动", "但它们会过时，也会撞上上下限"], "notes": ["于是有一条规则：一笔交易内可变的读数，都是攻击者的输入参数。", "池子的储备比例，可变。按储备算出的 LP 代币价格，可变。", "合约的余额，可变。读余额算出的金库份额价格，可以被捐赠改变。", "时间加权平均价，当前区块很难撼动。链下聚合的价格，一笔交易改不动。", "但它们会过时，也会撞上上下限。"], "section": "借来的本金"}, {"seg": "3", "t0": 0.0, "t1": 13.41, "title": "用 AMM 现货价定价", "points": ["最常见的错误", "恒定乘积池：两种资产数量相乘保持不变", "现货价就是两边储备的比值"], "notes": ["最常见的错误，是用 AMM 的现货价定价。", "恒定乘积池里，两种资产的数量相乘，保持不变。", "现货价，就是两边储备的比值。"], "section": "推高现货价"}, {"seg": "3", "t0": 13.41, "t1": 28.65, "title": "再猜一道题", "points": ["示例，忽略手续费：1000 ETH 和 200 万 USDC，现货价 2000", "有人用 400 万 USDC 买入 ETH", "现货价会变成多少？"], "notes": ["再猜一道题。这是示例，忽略手续费。", "池子里有 1000 个 ETH，和 200 万 USDC。现货价是 2000。", "有人用 400 万 USDC，买入 ETH。", "现货价会变成多少？"], "section": "推高现货价"}, {"seg": "3", "t0": 28.65, "t1": 53.91, "title": "约 18000：一笔交换涨 9 倍", "points": ["USDC 储备 600 万，ETH 只剩约 333 个", "借贷合约读取储备，用比值当价格", "抵押品价值 = 数量 × 价格，最多借出 75%（示例）"], "notes": ["大约 18000。USDC 储备变成 600 万，ETH 只剩约 333 个。", "价格涨到原来的 9 倍。只用了一笔交换。", "现在看一个借贷合约。", "它读取池子的储备，用两边的比值当价格。", "抵押品价值，等于数量乘这个价格。最多借出价值的百分之 75。这也是示例。"], "section": "推高现货价"}, {"seg": "3", "t0": 53.91, "t1": 76.27, "title": "一笔交易里的五个动作", "points": ["闪电贷买入推高现货价，存入少量代币做抵押", "协议按虚高价格借出大笔资金", "卖回代币，归还闪电贷和手续费"], "notes": ["把这几步串起来，是一笔交易里的五个动作。", "第一，借出闪电贷，在池子里买入代币，把现货价推高。", "第二，存入少量代币，作为抵押。", "第三，协议读取储备，按虚高的价格，借出大笔资金。", "第四，卖回代币。", "第五，归还闪电贷和手续费。"], "section": "推高现货价"}, {"seg": "3", "t0": 76.27, "t1": 94.85, "title": "协议留下坏账", "points": ["抵押品真实价值远低于借款", "利润 = 借出金额 − 滑点、手续费和闪电贷费用", "池子越浅越便宜，长尾和低流动性代币风险最高"], "notes": ["交易结束，抵押品的真实价值，远低于借款。协议留下坏账。", "利润，是借出的金额，减去两次交换的滑点、手续费，和闪电贷费用。", "池子越浅，推高价格越便宜。长尾资产和低流动性代币，风险最高。"], "section": "推高现货价"}, {"seg": "3", "t0": 94.85, "t1": 136.06, "title": "三起事件，同一根因", "points": ["2020 年 2 月 bZx 两次合计约 95 万；2021 年 5 月 PancakeBunny 约 4500 万", "2021 年 10 月 Cream 用金库份额价格估值，被捐赠抬高，约 1.3 亿", "价格来自一笔交易就能改写的数据"], "notes": ["这类事件，在公开报道里反复出现。", "2020 年 2 月的 bZx，是最早被广泛报道的闪电贷价格操纵之一，两次合计约 95 万美元。", "2021 年 5 月，BNB Chain 上的 PancakeBunny，按池子储备计算 LP 代币价值，损失约 4500 万美元。", "2021 年 10 月，Cream Finance 用金库份额价格，给抵押品估值。", "攻击者向金库捐赠，抬高份额价格。损失约 1.3 亿美元。", "三起事件，根因一样：价格来自一笔交易就能改写的数据。"], "section": "推高现货价"}, {"seg": "4", "t0": 0.0, "t1": 19.39, "title": "第一类：TWAP", "points": ["把一段时间的价格按时间加权求平均", "一笔交易推高的价格，在平均里几乎不起作用"], "notes": ["换掉现货价，有三类选择。", "第一类，AMM 的时间加权平均价，简称 TWAP。", "它把一段时间里的价格，按时间加权求平均。", "一笔交易推高的价格，在平均里只占一小段，几乎不起作用。"], "section": "三类价格源"}, {"seg": "4", "t0": 19.39, "t1": 33.49, "title": "TWAP 的代价", "points": ["窗口越长，价格越滞后", "低流动性池子仍可被连续多个区块操纵", "PoS 下同一提议者连续出块时，操纵更便宜"], "notes": ["代价是，窗口越长，价格越滞后。", "而低流动性的池子，仍然可以被连续多个区块持续操纵。", "在 PoS 下，同一个提议者连续出块时，这种操纵会更便宜。"], "section": "三类价格源"}, {"seg": "4", "t0": 33.49, "t1": 58.11, "title": "Inverse Finance：多区块操纵", "points": ["2022 年 4 月，没用闪电贷，自有资金持续推高浅池 INV 价格", "垃圾交易抑制套利，TWAP 输出虚高价格；借走约 1560 万美元", "TWAP 挡得住一笔交易，挡不住有资本的多区块操纵"], "notes": ["2022 年 4 月的 Inverse Finance，就是这样。", "攻击者没有用闪电贷。他投入自有资金，持续推高浅池里的 INV 价格。", "同时用垃圾交易抑制套利，让 TWAP 输出虚高的价格。", "按公开报道，借走约 1560 万美元。", "TWAP 挡得住一笔交易，挡不住有资本的多区块操纵。"], "section": "三类价格源"}, {"seg": "4", "t0": 58.11, "t1": 83.21, "title": "第二类：链下聚合预言机", "points": ["比如 Chainlink，链下聚合再写上链，一笔交易改不动", "按心跳和偏离阈值更新；心跳是不变时也必须更新的最长间隔", "风险换方向：过时、撞上下限、节点和喂价方失效"], "notes": ["第二类，链下聚合预言机，比如 Chainlink。", "价格在链下聚合，再写上链。一笔交易改不动它。", "它按心跳和偏离阈值更新。", "心跳，是价格不变时，也必须更新的最长间隔。", "它的风险换了方向：价格可能过时，可能撞上上下限，节点和喂价方也可能失效。"], "section": "三类价格源"}, {"seg": "4", "t0": 83.21, "t1": 106.73, "title": "第三类：多源组合", "points": ["几个源互相比较，偏离超阈值就暂停", "更稳但复杂，意见不一时听谁的要提前想好", "LP 代币用外部价格和不变量反推公平储备再定价"], "notes": ["第三类，多源组合。几个价格源互相比较，偏离超过阈值就暂停。", "它更稳，但实现复杂。几个源意见不一时听谁的，要提前想好。", "顺带一句，LP 代币也不能按储备乘现货价来定价。", "要用外部预言机的价格和不变量，反推出公平储备，再算 LP 的价值。"], "section": "三类价格源"}, {"seg": "4", "t0": 106.73, "t1": 117.36, "title": "没有完美的预言机", "points": ["价格错了，会怎样？", "价格停了，会怎样？"], "notes": ["没有完美的预言机。", "工程上要回答两个问题。", "价格错了，会怎样？价格停了，会怎样？"], "section": "三类价格源"}, {"seg": "5", "t0": 0.0, "t1": 23.69, "title": "读取时的四项检查", "points": ["价格大于 0", "时效不超过该喂价的心跳；价格落在合理区间", "从喂价读取小数位数，不要写死 8"], "notes": ["选了链下预言机，读取时还要做四项检查。", "一，价格大于 0。", "二，时效：现在的时间减去更新时间，不超过这个喂价的心跳。", "三，上下限：价格落在合理的区间里。", "四，精度：从喂价读取小数位数，不要写死 8。"], "section": "安全读价"}, {"seg": "5", "t0": 23.69, "t1": 40.89, "title": "LUNA 喂价停在下限", "points": ["2022 年 5 月 LUNA 崩盘", "公开报道称 Chainlink 的 LUNA 喂价设了 0.10 美元最低价", "市场价远低于它，喂价停在下限附近"], "notes": ["为什么要查上下限？看一个案例。", "2022 年 5 月，LUNA 崩盘。", "公开报道称，Chainlink 的 LUNA 喂价，设了一个最低价：0.10 美元。", "市场价跌到远低于 0.10 美元，喂价停在下限附近。"], "section": "安全读价"}, {"seg": "5", "t0": 40.89, "t1": 56.59, "title": "抵押品被高估约 10 倍", "points": ["示例：市场价 0.01 美元，喂价仍约 0.10", "价格是正的，时间戳也可能是新的", "前两项检查全部通过"], "notes": ["假设市场价是 0.01 美元。这是示例。", "喂价仍然返回约 0.10 美元。抵押品被高估约 10 倍。", "价格是正的，时间戳也可能是新的。前两项检查，全部通过。"], "section": "安全读价"}, {"seg": "5", "t0": 56.59, "t1": 71.09, "title": "Venus 损失约 1100 万美元", "points": ["BNB Chain 上的 Venus 仍按约 0.1 美元给 LUNA 估值", "有人低价买入 LUNA 存进去，借出别的资产", "按公开报道，损失约 1100 万美元"], "notes": ["BNB Chain 上的 Venus，仍按约 0.1 美元给 LUNA 抵押品估值。", "有人在市场上低价买入 LUNA，存进去，借出别的资产。", "按公开报道，协议损失约 1100 万美元。"], "section": "安全读价"}, {"seg": "5", "t0": 71.09, "t1": 89.89, "title": "读取陷阱：时间戳与心跳", "points": ["latestAnswer 不含时间戳，改用 latestRoundData", "每个喂价心跳不同", "不要给所有资产用同一个延迟上限"], "notes": ["还有四个读取陷阱。", "第一，不要用 latestAnswer 判断价格新不新鲜。", "Chainlink 的 API 文档写明，它不含时间戳。改用 latestRoundData。", "第二，每个喂价的心跳不同。不要给所有资产，用同一个延迟上限。"], "section": "安全读价"}, {"seg": "5", "t0": 89.89, "t1": 115.15, "title": "降级路径与拉取式预言机", "points": ["try catch 包住读取，切备用源或暂停，别让清算全部回滚", "拉取式：用户提交签名价格，可以挑对自己有利的更新", "按 Pyth 文档，合约要自己检查时间戳和置信区间"], "notes": ["第三，喂价失效时，要有降级路径。", "用 try catch 包住读取，切到备用价格源，或者暂停。不要让清算全部回滚。", "第四，拉取式预言机，由用户在交易里提交签名价格。", "提交者可以挑一个对自己有利的更新。", "按 Pyth 文档，合约要自己检查价格的时间戳和置信区间。"], "section": "安全读价"}, {"seg": "5", "t0": 115.15, "t1": 134.67, "title": "L2：排序器宕机", "points": ["喂价交易上不了链，价格停在宕机前", "恢复后清算机器人和普通用户同时涌入", "能通过 L1 强制提交交易的少数人占了先机"], "notes": ["在 L2 上，要多查一项：排序器是否在线。", "排序器宕机时，喂价交易上不了链，价格停在宕机前。", "恢复后的第一批区块里，清算机器人和普通用户同时涌入。", "能通过 L1 强制提交交易的少数人，占了先机。"], "section": "安全读价"}, {"seg": "5", "t0": 134.67, "t1": 159.84, "title": "排序器状态 + 宽限期", "points": ["L2BEAT 截至 2026 年 11 月：Mantle 从 L1 强制提交最长等 12 小时", "读取 Chainlink 的排序器在线状态喂价", "恢复后设宽限期（示例 1 小时），期内暂停清算和新借款"], "notes": ["按 L2BEAT 截至 2026 年 11 月的页面，Mantle 排序器宕机时，从 L1 强制提交，最长要等 12 小时。", "做法是读取 Chainlink 提供的排序器在线状态喂价。", "恢复后设一段宽限期，比如 1 小时，这是示例。", "宽限期内，暂停清算和新借款。"], "section": "安全读价"}, {"seg": "6", "t0": 0.0, "t1": 15.17, "title": "写合约的人", "points": ["列出所有价格来源，标出一笔交易内可变的", "用储备、余额、份额价格定价的地方全部换掉"], "notes": ["最后，每个人今天就能做一件事。", "写合约的人，列出所有价格来源，标出哪些在一笔交易内可变。", "用储备、余额、份额价格来定价的地方，全部换掉。"], "section": "今天能做什么"}, {"seg": "6", "t0": 15.17, "t1": 44.45, "title": "审计与普通用户", "points": ["审计：逐个查正值、时效、上下限、精度，L2 加排序器状态", "再看低流动性抵押品的供应上限和抵押率", "用户：依赖单一 DEX 现货价风险更高；极端行情先降杠杆"], "notes": ["审计的人，逐个检查预言机读取：正值、时效、上下限、精度。L2 上，加上排序器状态。", "再看低流动性抵押品，有没有供应上限，和更低的抵押率。", "普通用户，先看协议用什么价格源。依赖单一 DEX 现货价的，风险更高。", "用低流动性代币做抵押，保持更高的健康度。极端行情里，先降杠杆，不要等清算。"], "section": "今天能做什么"}, {"seg": "6", "t0": 44.45, "t1": 76.15, "title": "先确认窗外是真的", "points": ["正值和时效只证明价格存在而且是新的，不证明它对", "要靠合理上下限，或和第二个价格源比较", "预言机配置变更要和代码一样测试，上线前用真实喂价核对"], "notes": ["回到开头。一个大于 0、刚刚更新的价格，为什么还会错？", "因为正值和时效，只证明价格存在，而且是新的。不证明它对。", "要拦住它，需要合理的上下限，或者和第二个价格源比较。", "预言机配置的变更，要和合约代码一样测试。上线前，用真实喂价核对美元价格。", "价格是合约看世界的窗口。先确认，窗外是真的，再按它放贷。"], "section": "今天能做什么"}]};
+  var D = {"chapter": "s08", "title": "预言机与闪电贷：一笔交易就能改写的价格", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 20.29, "title": "把汇率当成美元价格", "points": ["2026 年 2 月 15 日，Base 链上的 Moonwell 执行了一份治理提案", "cbETH 的美元价格只用了 cbETH 对 ETH 的汇率"], "notes": ["2026 年 2 月 15 日，Base 链上的借贷协议 Moonwell，执行了一份治理提案。", "提案生效后，cbETH 的美元价格，只用了 cbETH 对 ETH 的汇率。", "它把一个汇率，当成了美元价格。"], "section": "新鲜的错价", "k": 20.29}, {"seg": "1", "t0": 20.29, "t1": 39.51, "title": "约 2200 美元只值约 1.12", "points": ["一枚约 2200 美元的 cbETH，合约眼里只值约 1.12 美元", "清算机器人清算了约 1096 枚 cbETH", "协议留下约 178 万美元坏账（The Block）"], "notes": ["一枚约 2200 美元的 cbETH，在合约眼里，只值约 1.12 美元。", "清算机器人立刻动手，清算了约 1096 枚 cbETH。", "按 The Block 的报道，协议留下约 178 万美元坏账。"], "section": "新鲜的错价", "k": 39.51}, {"seg": "1", "t0": 39.51, "t1": 47.89, "title": "先猜一道题", "points": ["这个价格大于 0，而且刚刚更新过", "只检查正值和时效，能拦住它吗？"], "notes": ["先猜一道题。", "这个价格大于 0，而且刚刚更新过。", "只检查正值和时效，能拦住它吗？"], "section": "新鲜的错价", "k": 42.56}, {"seg": "1", "t0": 47.89, "t1": 64.74, "title": "不能：价格新，但错", "points": ["两项检查都会通过", "价格可能被推高、可能停住、也可能配错", "错的时候，哪一行代码来拦住它"], "notes": ["不能。两项检查，都会通过。", "价格是新的，也是错的。", "合约读到的价格，可能被推高，可能停住，也可能配错。", "问题是，错的时候，哪一行代码来拦住它。"], "section": "新鲜的错价", "k": 59.69}, {"seg": "2", "t0": 0.0, "t1": 10.45, "title": "预言机", "points": ["把链外或别的合约里的数据交给合约使用的机制", "交出的通常是价格"], "notes": ["先说两个词。", "预言机，是把链外或别的合约里的数据，交给合约使用的机制。", "它交出的，通常是价格。"], "section": "借来的本金", "k": 8.05}, {"seg": "2", "t0": 10.45, "t1": 33.55, "title": "闪电贷：本金不再是门槛", "points": ["借款、使用、还款在同一笔交易里完成", "不归还就整笔回滚，出借方无风险、不需要抵押", "任何人都能借到闪电贷池的全部流动性"], "notes": ["闪电贷，是借款、使用、还款，都在同一笔交易里完成的贷款。", "交易结束时没有归还，整笔交易回滚，就像什么都没发生。", "所以出借方没有风险，也不需要抵押。", "这意味着，本金不再是门槛。", "任何人都能在一笔交易里，借到闪电贷池的全部流动性。"], "section": "借来的本金", "k": 33.55}, {"seg": "2", "t0": 33.55, "t1": 53.69, "title": "比方：按菜市场价估值的当铺", "points": ["借来 1 亿，在菜市场用离谱高价买下全部黄金", "拿 1 克黄金去当铺", "当铺按刚才成交价估值 100 万，借给你 75 万"], "notes": ["打个比方。一家当铺，按隔壁菜市场的最新成交价，给黄金估价。", "你从朋友那里，借来 1 亿。", "在菜市场用离谱的高价，买下全部黄金。", "再拿 1 克黄金去当铺。", "当铺按刚才的成交价，估值 100 万，借给你 75 万。"], "section": "借来的本金", "k": 53.69}, {"seg": "2", "t0": 53.69, "t1": 74.95, "title": "当铺只剩 1 克普通黄金", "points": ["卖回黄金、还掉 1 亿，赚 75 万减去损耗", "不成立处：现实中这几步要好几天", "链上发生在同一笔交易里，没有人来得及反应"], "notes": ["你把黄金卖回菜市场，把 1 亿还给朋友。", "你赚到 75 万，减去买卖的损耗。", "当铺手里，只剩 1 克普通价格的黄金。", "比喻在这里不成立：现实中，这几步要好几天。", "链上，它们发生在同一个区块的同一笔交易里。没有人来得及反应。"], "section": "借来的本金", "k": 64.24}, {"seg": "2", "t0": 74.95, "t1": 93.63, "title": "一笔交易里能改变什么", "points": ["把任何 AMM 池子的现货价推到想要的位置，只要付得起滑点", "直接往合约转入资产，改变余额读数", "把这些操作和对目标协议的调用任意组合"], "notes": ["那么，一笔交易里，攻击者能改变什么？", "他能把任何 AMM 池子的现货价，推到想要的位置，只要付得起滑点。", "他能直接往合约里转入资产，改变余额读数。", "他能把这些操作，和对目标协议的调用，任意组合。"], "section": "借来的本金", "k": 93.63}, {"seg": "2", "t0": 93.63, "t1": 123.1, "title": "可变读数 = 攻击者输入", "points": ["可变：储备比例、按储备算的 LP 价格、余额、读余额的份额价格", "TWAP 当前区块难撼动；链下聚合价一笔交易改不动", "但它们会过时，也会撞上上下限"], "notes": ["于是有一条规则：一笔交易内可变的读数，都是攻击者的输入参数。", "池子的储备比例，可变。按储备算出的 LP 代币价格，可变。", "合约的余额，可变。读余额算出的金库份额价格，可以被捐赠改变。", "时间加权平均价，当前区块很难撼动。链下聚合的价格，一笔交易改不动。", "但它们会过时，也会撞上上下限。"], "section": "借来的本金", "k": 123.1}, {"seg": "3", "t0": 0.0, "t1": 13.41, "title": "用 AMM 现货价定价", "points": ["最常见的错误", "恒定乘积池：两种资产数量相乘保持不变", "现货价就是两边储备的比值"], "notes": ["最常见的错误，是用 AMM 的现货价定价。", "恒定乘积池里，两种资产的数量相乘，保持不变。", "现货价，就是两边储备的比值。"], "section": "推高现货价", "k": 13.41}, {"seg": "3", "t0": 13.41, "t1": 28.65, "title": "再猜一道题", "points": ["示例，忽略手续费：1000 ETH 和 200 万 USDC，现货价 2000", "有人用 400 万 USDC 买入 ETH", "现货价会变成多少？"], "notes": ["再猜一道题。这是示例，忽略手续费。", "池子里有 1000 个 ETH，和 200 万 USDC。现货价是 2000。", "有人用 400 万 USDC，买入 ETH。", "现货价会变成多少？"], "section": "推高现货价", "k": 26.21}, {"seg": "3", "t0": 28.65, "t1": 53.91, "title": "约 18000：一笔交换涨 9 倍", "points": ["USDC 储备 600 万，ETH 只剩约 333 个", "借贷合约读取储备，用比值当价格", "抵押品价值 = 数量 × 价格，最多借出 75%（示例）"], "notes": ["大约 18000。USDC 储备变成 600 万，ETH 只剩约 333 个。", "价格涨到原来的 9 倍。只用了一笔交换。", "现在看一个借贷合约。", "它读取池子的储备，用两边的比值当价格。", "抵押品价值，等于数量乘这个价格。最多借出价值的百分之 75。这也是示例。"], "section": "推高现货价", "k": 53.91}, {"seg": "3", "t0": 53.91, "t1": 76.27, "title": "一笔交易里的五个动作", "points": ["闪电贷买入推高现货价，存入少量代币做抵押", "协议按虚高价格借出大笔资金", "卖回代币，归还闪电贷和手续费"], "notes": ["把这几步串起来，是一笔交易里的五个动作。", "第一，借出闪电贷，在池子里买入代币，把现货价推高。", "第二，存入少量代币，作为抵押。", "第三，协议读取储备，按虚高的价格，借出大笔资金。", "第四，卖回代币。", "第五，归还闪电贷和手续费。"], "section": "推高现货价", "k": 76.27}, {"seg": "3", "t0": 76.27, "t1": 94.85, "title": "协议留下坏账", "points": ["抵押品真实价值远低于借款", "利润 = 借出金额 − 滑点、手续费和闪电贷费用", "池子越浅越便宜，长尾和低流动性代币风险最高"], "notes": ["交易结束，抵押品的真实价值，远低于借款。协议留下坏账。", "利润，是借出的金额，减去两次交换的滑点、手续费，和闪电贷费用。", "池子越浅，推高价格越便宜。长尾资产和低流动性代币，风险最高。"], "section": "推高现货价", "k": 94.85}, {"seg": "3", "t0": 94.85, "t1": 136.06, "title": "三起事件，同一根因", "points": ["2020 年 2 月 bZx 两次合计约 95 万；2021 年 5 月 PancakeBunny 约 4500 万", "2021 年 10 月 Cream 用金库份额价格估值，被捐赠抬高，约 1.3 亿", "价格来自一笔交易就能改写的数据"], "notes": ["这类事件，在公开报道里反复出现。", "2020 年 2 月的 bZx，是最早被广泛报道的闪电贷价格操纵之一，两次合计约 95 万美元。", "2021 年 5 月，BNB Chain 上的 PancakeBunny，按池子储备计算 LP 代币价值，损失约 4500 万美元。", "2021 年 10 月，Cream Finance 用金库份额价格，给抵押品估值。", "攻击者向金库捐赠，抬高份额价格。损失约 1.3 亿美元。", "三起事件，根因一样：价格来自一笔交易就能改写的数据。"], "section": "推高现货价", "k": 129.65}, {"seg": "4", "t0": 0.0, "t1": 19.39, "title": "第一类：TWAP", "points": ["把一段时间的价格按时间加权求平均", "一笔交易推高的价格，在平均里几乎不起作用"], "notes": ["换掉现货价，有三类选择。", "第一类，AMM 的时间加权平均价，简称 TWAP。", "它把一段时间里的价格，按时间加权求平均。", "一笔交易推高的价格，在平均里只占一小段，几乎不起作用。"], "section": "三类价格源", "k": 19.39}, {"seg": "4", "t0": 19.39, "t1": 33.49, "title": "TWAP 的代价", "points": ["窗口越长，价格越滞后", "低流动性池子仍可被连续多个区块操纵", "PoS 下同一提议者连续出块时，操纵更便宜"], "notes": ["代价是，窗口越长，价格越滞后。", "而低流动性的池子，仍然可以被连续多个区块持续操纵。", "在 PoS 下，同一个提议者连续出块时，这种操纵会更便宜。"], "section": "三类价格源", "k": 33.49}, {"seg": "4", "t0": 33.49, "t1": 58.11, "title": "Inverse Finance：多区块操纵", "points": ["2022 年 4 月，没用闪电贷，自有资金持续推高浅池 INV 价格", "垃圾交易抑制套利，TWAP 输出虚高价格；借走约 1560 万美元", "TWAP 挡得住一笔交易，挡不住有资本的多区块操纵"], "notes": ["2022 年 4 月的 Inverse Finance，就是这样。", "攻击者没有用闪电贷。他投入自有资金，持续推高浅池里的 INV 价格。", "同时用垃圾交易抑制套利，让 TWAP 输出虚高的价格。", "按公开报道，借走约 1560 万美元。", "TWAP 挡得住一笔交易，挡不住有资本的多区块操纵。"], "section": "三类价格源", "k": 58.11}, {"seg": "4", "t0": 58.11, "t1": 83.21, "title": "第二类：链下聚合预言机", "points": ["比如 Chainlink，链下聚合再写上链，一笔交易改不动", "按心跳和偏离阈值更新；心跳是不变时也必须更新的最长间隔", "风险换方向：过时、撞上下限、节点和喂价方失效"], "notes": ["第二类，链下聚合预言机，比如 Chainlink。", "价格在链下聚合，再写上链。一笔交易改不动它。", "它按心跳和偏离阈值更新。", "心跳，是价格不变时，也必须更新的最长间隔。", "它的风险换了方向：价格可能过时，可能撞上上下限，节点和喂价方也可能失效。"], "section": "三类价格源", "k": 70.41}, {"seg": "4", "t0": 83.21, "t1": 106.73, "title": "第三类：多源组合", "points": ["几个源互相比较，偏离超阈值就暂停", "更稳但复杂，意见不一时听谁的要提前想好", "LP 代币用外部价格和不变量反推公平储备再定价"], "notes": ["第三类，多源组合。几个价格源互相比较，偏离超过阈值就暂停。", "它更稳，但实现复杂。几个源意见不一时听谁的，要提前想好。", "顺带一句，LP 代币也不能按储备乘现货价来定价。", "要用外部预言机的价格和不变量，反推出公平储备，再算 LP 的价值。"], "section": "三类价格源", "k": 106.26}, {"seg": "4", "t0": 106.73, "t1": 117.36, "title": "没有完美的预言机", "points": ["价格错了，会怎样？", "价格停了，会怎样？"], "notes": ["没有完美的预言机。", "工程上要回答两个问题。", "价格错了，会怎样？价格停了，会怎样？"], "section": "三类价格源", "k": 109.03}, {"seg": "5", "t0": 0.0, "t1": 23.69, "title": "读取时的四项检查", "points": ["价格大于 0", "时效不超过该喂价的心跳；价格落在合理区间", "从喂价读取小数位数，不要写死 8"], "notes": ["选了链下预言机，读取时还要做四项检查。", "一，价格大于 0。", "二，时效：现在的时间减去更新时间，不超过这个喂价的心跳。", "三，上下限：价格落在合理的区间里。", "四，精度：从喂价读取小数位数，不要写死 8。"], "section": "安全读价", "k": 23.69}, {"seg": "5", "t0": 23.69, "t1": 40.89, "title": "LUNA 喂价停在下限", "points": ["2022 年 5 月 LUNA 崩盘", "公开报道称 Chainlink 的 LUNA 喂价设了 0.10 美元最低价", "市场价远低于它，喂价停在下限附近"], "notes": ["为什么要查上下限？看一个案例。", "2022 年 5 月，LUNA 崩盘。", "公开报道称，Chainlink 的 LUNA 喂价，设了一个最低价：0.10 美元。", "市场价跌到远低于 0.10 美元，喂价停在下限附近。"], "section": "安全读价", "k": 40.89}, {"seg": "5", "t0": 40.89, "t1": 56.59, "title": "抵押品被高估约 10 倍", "points": ["示例：市场价 0.01 美元，喂价仍约 0.10", "价格是正的，时间戳也可能是新的", "前两项检查全部通过"], "notes": ["假设市场价是 0.01 美元。这是示例。", "喂价仍然返回约 0.10 美元。抵押品被高估约 10 倍。", "价格是正的，时间戳也可能是新的。前两项检查，全部通过。"], "section": "安全读价", "k": 56.59}, {"seg": "5", "t0": 56.59, "t1": 71.09, "title": "Venus 损失约 1100 万美元", "points": ["BNB Chain 上的 Venus 仍按约 0.1 美元给 LUNA 估值", "有人低价买入 LUNA 存进去，借出别的资产", "按公开报道，损失约 1100 万美元"], "notes": ["BNB Chain 上的 Venus，仍按约 0.1 美元给 LUNA 抵押品估值。", "有人在市场上低价买入 LUNA，存进去，借出别的资产。", "按公开报道，协议损失约 1100 万美元。"], "section": "安全读价", "k": 71.09}, {"seg": "5", "t0": 71.09, "t1": 89.89, "title": "读取陷阱：时间戳与心跳", "points": ["latestAnswer 不含时间戳，改用 latestRoundData", "每个喂价心跳不同", "不要给所有资产用同一个延迟上限"], "notes": ["还有四个读取陷阱。", "第一，不要用 latestAnswer 判断价格新不新鲜。", "Chainlink 的 API 文档写明，它不含时间戳。改用 latestRoundData。", "第二，每个喂价的心跳不同。不要给所有资产，用同一个延迟上限。"], "section": "安全读价", "k": 89.89}, {"seg": "5", "t0": 89.89, "t1": 115.15, "title": "降级路径与拉取式预言机", "points": ["try catch 包住读取，切备用源或暂停，别让清算全部回滚", "拉取式：用户提交签名价格，可以挑对自己有利的更新", "按 Pyth 文档，合约要自己检查时间戳和置信区间"], "notes": ["第三，喂价失效时，要有降级路径。", "用 try catch 包住读取，切到备用价格源，或者暂停。不要让清算全部回滚。", "第四，拉取式预言机，由用户在交易里提交签名价格。", "提交者可以挑一个对自己有利的更新。", "按 Pyth 文档，合约要自己检查价格的时间戳和置信区间。"], "section": "安全读价", "k": 100.44}, {"seg": "5", "t0": 115.15, "t1": 134.67, "title": "L2：排序器宕机", "points": ["喂价交易上不了链，价格停在宕机前", "恢复后清算机器人和普通用户同时涌入", "能通过 L1 强制提交交易的少数人占了先机"], "notes": ["在 L2 上，要多查一项：排序器是否在线。", "排序器宕机时，喂价交易上不了链，价格停在宕机前。", "恢复后的第一批区块里，清算机器人和普通用户同时涌入。", "能通过 L1 强制提交交易的少数人，占了先机。"], "section": "安全读价", "k": 134.67}, {"seg": "5", "t0": 134.67, "t1": 159.84, "title": "排序器状态 + 宽限期", "points": ["L2BEAT 截至 2026 年 11 月：Mantle 从 L1 强制提交最长等 12 小时", "读取 Chainlink 的排序器在线状态喂价", "恢复后设宽限期（示例 1 小时），期内暂停清算和新借款"], "notes": ["按 L2BEAT 截至 2026 年 11 月的页面，Mantle 排序器宕机时，从 L1 强制提交，最长要等 12 小时。", "做法是读取 Chainlink 提供的排序器在线状态喂价。", "恢复后设一段宽限期，比如 1 小时，这是示例。", "宽限期内，暂停清算和新借款。"], "section": "安全读价", "k": 159.84}, {"seg": "6", "t0": 0.0, "t1": 15.17, "title": "写合约的人", "points": ["列出所有价格来源，标出一笔交易内可变的", "用储备、余额、份额价格定价的地方全部换掉"], "notes": ["最后，每个人今天就能做一件事。", "写合约的人，列出所有价格来源，标出哪些在一笔交易内可变。", "用储备、余额、份额价格来定价的地方，全部换掉。"], "section": "今天能做什么", "k": 0.8}, {"seg": "6", "t0": 15.17, "t1": 44.45, "title": "审计与普通用户", "points": ["审计：逐个查正值、时效、上下限、精度，L2 加排序器状态", "再看低流动性抵押品的供应上限和抵押率", "用户：依赖单一 DEX 现货价风险更高；极端行情先降杠杆"], "notes": ["审计的人，逐个检查预言机读取：正值、时效、上下限、精度。L2 上，加上排序器状态。", "再看低流动性抵押品，有没有供应上限，和更低的抵押率。", "普通用户，先看协议用什么价格源。依赖单一 DEX 现货价的，风险更高。", "用低流动性代币做抵押，保持更高的健康度。极端行情里，先降杠杆，不要等清算。"], "section": "今天能做什么", "k": 43.72}, {"seg": "6", "t0": 44.45, "t1": 76.15, "title": "先确认窗外是真的", "points": ["正值和时效只证明价格存在而且是新的，不证明它对", "要靠合理上下限，或和第二个价格源比较", "预言机配置变更要和代码一样测试，上线前用真实喂价核对"], "notes": ["回到开头。一个大于 0、刚刚更新的价格，为什么还会错？", "因为正值和时效，只证明价格存在，而且是新的。不证明它对。", "要拦住它，需要合理的上下限，或者和第二个价格源比较。", "预言机配置的变更，要和合约代码一样测试。上线前，用真实喂价核对美元价格。", "价格是合约看世界的窗口。先确认，窗外是真的，再按它放贷。"], "section": "今天能做什么", "k": 76.15}]};
   var S = D.slides, N = S.length, KEY = 'deck-' + D.chapter;
   var $ = function (id) { return document.getElementById(id); };
-  var screen = $('screen'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
+  var screen = $('screen'), still = $('still'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
   var store = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
                 set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
   try { var pt = parent !== window && parent.document.documentElement.getAttribute('data-theme'); if (pt) document.documentElement.setAttribute('data-theme', pt); } catch (e) {}
@@ -141,32 +144,54 @@ button { font: inherit; color: inherit; }
     var g = groups[groups.length - 1];
     if (!g || g.seg !== s.seg) { g = { seg: s.seg, el: document.createElement('div') }; g.el.className = 'grp'; groups.push(g); prog.appendChild(g.el); g.n = 0; }
     var b = document.createElement('button'); b.title = (i + 1) + ' · ' + s.title; b.setAttribute('aria-label', '第 ' + (i + 1) + ' 页：' + s.title);
-    b.onclick = function () { go(i, 'seek'); }; g.el.appendChild(b); g.n++; s.dot = b;
+    b.onclick = function () { show(i); }; g.el.appendChild(b); g.n++; s.dot = b;
   });
   groups.forEach(function (g) { g.el.style.setProperty('--n', g.n); });
 
+  // all stills of the chapter are one sprite: 6 columns, slide i at (i % 6, i / 6)
+  var COLS = 6, ROWS = Math.ceil(N / COLS), sheetReady = false, sheet = new Image();
+  sheet.onload = function () { sheetReady = true; if (!screen.classList.contains('live')) $('wait').hidden = true; };
+  sheet.src = 'stills.webp';
+  still.style.backgroundImage = 'url(stills.webp)';
+  still.style.backgroundSize = (COLS * 100) + '% ' + (ROWS * 100) + '%';
+  function tile(i) {
+    var c = i % COLS, r = Math.floor(i / COLS);
+    still.style.backgroundPosition = (COLS > 1 ? c / (COLS - 1) * 100 : 0) + '% ' + (ROWS > 1 ? r / (ROWS - 1) * 100 : 0) + '%';
+  }
+
+  // ---------- live animation (only when asked) ----------
   function scale() { var k = screen.clientWidth / 1920; for (var s in frames) frames[s].style.transform = 'scale(' + k + ')'; }
   if (window.ResizeObserver) new ResizeObserver(scale).observe(screen); else addEventListener('resize', scale);
-
   function frame(seg) {
     if (frames[seg]) return frames[seg];
     var f = document.createElement('iframe'); f.src = 's' + seg + '.html'; f.title = '第 ' + seg + ' 节动画'; f.tabIndex = -1;
     f.setAttribute('aria-hidden', 'true'); screen.appendChild(f); frames[seg] = f; scale(); return f;
   }
+  function live(seg) {
+    for (var k in frames) frames[k].classList.toggle('on', k === seg);
+    screen.classList.add('live'); $('wait').hidden = true;
+  }
   function send(seg, msg) {
     msg.deck = 'cmd';
-    if (ready[seg]) frames[seg].contentWindow.postMessage(msg, '*'); else pending[seg] = msg;
+    if (ready[seg]) { frames[seg].contentWindow.postMessage(msg, '*'); live(seg); } else pending[seg] = msg;
   }
   addEventListener('message', function (e) {
     var m = e.data || {};
     if (!m.deck || !frames[m.seg] || e.source !== frames[m.seg].contentWindow) return;
     if (m.deck === 'ready') {
       ready[m.seg] = true;
-      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; send(m.seg, p); }
-      if (cur >= 0 && S[cur].seg === m.seg) $('wait').hidden = true;
-    } else if (m.deck === 'done' && cur >= 0 && S[cur].seg === m.seg) { playing = false; paint(); }
+      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; if (playing && S[cur].seg === m.seg) send(m.seg, p); }
+    } else if (m.deck === 'done' && playing && S[cur].seg === m.seg) { playing = false; paint(); }
   });
+  function process() {
+    var s = S[cur];
+    playing = true; frame(s.seg);
+    if (!ready[s.seg]) { $('wait').textContent = '载入动画…'; $('wait').hidden = false; }
+    send(s.seg, { play: [s.t0, s.k], rate: +$('speed').value });
+    paint();
+  }
 
+  // ---------- slides ----------
   function paint() {
     var s = S[cur];
     $('sec').textContent = s.section;
@@ -175,27 +200,21 @@ button { font: inherit; color: inherit; }
     $('lines').innerHTML = ''; s.notes.forEach(function (p) { var li = document.createElement('li'); li.textContent = p; $('lines').appendChild(li); });
     $('count').textContent = (cur + 1) + ' / ' + N;
     $('prev').disabled = cur === 0;
-    $('next').textContent = playing ? '跳到本页结尾 ›' : (cur === N - 1 ? '回到正文 ›' : '下一页 ›');
+    $('next').textContent = cur === N - 1 ? '回到正文 ›' : '下一页 ›';
+    $('replay').textContent = playing ? '⟳ 从头播放' : (screen.classList.contains('live') ? '⟳ 再看一遍' : '▶ 看过程');
     S.forEach(function (x, i) { x.dot.className = i === cur ? 'cur' : (seen[i] ? 'seen' : ''); });
   }
-  function go(i, mode) {
+  function show(i) {
     if (i < 0 || i >= N) return;
-    var s = S[i]; cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
-    var f = frame(s.seg);
-    for (var k in frames) frames[k].classList.toggle('on', k === s.seg);
-    $('wait').hidden = !!ready[s.seg];
-    playing = mode === 'play';
-    send(s.seg, playing ? { play: [s.t0, s.t1], rate: +$('speed').value } : { seek: s.t1 });
-    // warm the next segment while this one is on screen
-    if (i + 1 < N && S[i + 1].seg !== s.seg) frame(S[i + 1].seg);
+    cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
+    playing = false; pending = {};
+    tile(i); still.setAttribute('aria-label', S[i].title);
+    screen.classList.remove('live'); $('wait').textContent = sheetReady ? '载入动画…' : '载入画面…'; $('wait').hidden = sheetReady;
+    for (var k in frames) frames[k].classList.remove('on');
     paint();
   }
-  function next() {
-    if (playing) { go(cur, 'seek'); return; }
-    if (cur === N - 1) { back(); return; }
-    go(cur + 1, 'play');
-  }
-  function prev() { go(cur - 1, 'seek'); }
+  function next() { if (cur === N - 1) { back(); return; } show(cur + 1); }
+  function prev() { show(cur - 1); }
   function back() {
     if (parent !== window) parent.postMessage({ cexNav: D.chapter }, '*');
     else location.href = '../../index.html#' + D.chapter;
@@ -206,18 +225,18 @@ button { font: inherit; color: inherit; }
   }
   if (!document.fullscreenEnabled) $('fs').hidden = true;
 
-  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = function () { go(cur, 'play'); };
+  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = process;
   $('back').onclick = back; $('fs').onclick = fullscreen;
   addEventListener('keydown', function (e) {
     if (e.target.tagName === 'SELECT' || e.metaKey || e.ctrlKey || e.altKey) return;
     var k = e.key;
     if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); next(); }
     else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
-    else if (k === 'r' || k === 'R') go(cur, 'play');
+    else if (k === 'p' || k === 'P' || k === 'r' || k === 'R') process();
     else if (k === 'f' || k === 'F') fullscreen();
     else if (k === 'n' || k === 'N') $('notes').open = !$('notes').open;
-    else if (k === 'Home') go(0, 'seek');
-    else if (k === 'End') go(N - 1, 'seek');
+    else if (k === 'Home') show(0);
+    else if (k === 'End') show(N - 1);
   });
   // tap = next; horizontal swipe = next / previous
   var x0 = null, y0 = null;
@@ -230,7 +249,7 @@ button { font: inherit; color: inherit; }
   });
 
   var start = +store.get(KEY); if (!(start >= 0 && start < N)) start = 0;
-  go(start, start === 0 ? 'play' : 'seek');
+  show(start);
 })();
 </script>
 </body>

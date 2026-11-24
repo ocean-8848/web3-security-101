@@ -42,7 +42,10 @@ button { font: inherit; color: inherit; }
   box-shadow: 0 1px 0 var(--rule), 0 8px 28px rgba(60, 50, 30, .14); cursor: pointer; touch-action: pan-y; user-select: none; }
 .screen iframe { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; border: 0; transform-origin: 0 0; visibility: hidden; pointer-events: none; }
 .screen iframe.on { visibility: visible; }
-.screen .wait { position: absolute; inset: 0; display: grid; place-items: center; color: #8a826f; font-size: 14px; background: #efebe3; }
+.screen .still { position: absolute; inset: 0; background-repeat: no-repeat; background-color: #efebe3; }
+.screen.live .still { visibility: hidden; }
+.screen .wait { position: absolute; left: 12px; bottom: 12px; padding: 4px 12px; border-radius: 999px; color: #fff; font-size: 13px; background: rgba(28, 28, 28, .72); }
+.btn.play { border-color: var(--accent); color: var(--accent); }
 .screen .wait[hidden] { display: none; }
 
 .side { min-height: 0; overflow-y: auto; border-left: 1px solid var(--rule); background: var(--paper); padding: 18px 20px 24px; }
@@ -102,7 +105,7 @@ button { font: inherit; color: inherit; }
     <button class="btn hide-narrow" id="fs" title="全屏（F）">⛶ 全屏</button>
   </header>
   <div class="body">
-    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="wait" id="wait">载入动画…</div></div></div>
+    <div class="stagewrap"><div class="screen" id="screen" role="img" aria-live="polite"><div class="still" id="still" role="img"></div><div class="wait" id="wait" hidden>载入动画…</div></div></div>
     <aside class="side" aria-live="polite">
       <div class="sec" id="sec"></div>
       <h2 id="stitle"></h2>
@@ -112,7 +115,7 @@ button { font: inherit; color: inherit; }
   </div>
   <nav class="ctrl" aria-label="翻页">
     <button class="btn" id="prev" aria-label="上一页（←）">‹ 上一页</button>
-    <button class="btn" id="replay" aria-label="重播本页动画（R）">⟳ 重播</button>
+    <button class="btn play" id="replay" aria-label="看这一页的动画过程（P）">▶ 看过程</button>
     <button class="btn primary" id="next" aria-label="下一页（→ 或空格）">下一页 ›</button>
     <span class="count" id="count"></span>
     <div class="prog" id="prog"></div>
@@ -123,10 +126,10 @@ button { font: inherit; color: inherit; }
 </div>
 <script>
 (function () {
-  var D = {"chapter": "s22", "title": "人身与账号安全：从链上走到线下", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 18.81, "title": "SEC 官方账号发了假消息", "points": ["2024 年 1 月，SEC 官方 X 账号称比特币 ETF 获批", "消息是假的，但出自监管机构的官方账号，很多人信了", "BTC 价格短时间里大幅波动"], "notes": ["2024 年 1 月，美国 SEC 的官方 X 账号，发了一条消息。", "比特币 ETF 获批了。", "这条消息是假的。", "可它是从监管机构的官方账号发出来的，很多人信了。", "BTC 的价格，短时间里大幅波动。"], "section": "一张 SIM 卡"}, {"seg": "1", "t0": 18.81, "t1": 35.45, "title": "一张 SIM 卡接管手机号", "points": ["攻击者没有破解 SEC 的任何系统", "让一张新的 SIM 卡接管了一个手机号", "靠这个号码拿到了官方账号的控制权"], "notes": ["攻击者没有破解 SEC 的任何系统。", "他们只是让一张新的 SIM 卡，接管了一个手机号。", "靠这个号码，就拿到了官方账号的控制权。", "一张小小的卡，就让整个市场跟着晃了一下。"], "section": "一张 SIM 卡"}, {"seg": "1", "t0": 35.45, "t1": 47.4, "title": "先猜一道题", "points": ["SEC 是监管机构，当时这个账号开了多因素认证吗？", "先记住这个问题，从链上一路走到线下"], "notes": ["先猜一道题。", "SEC 是监管机构，当时这个账号，开了多因素认证吗？", "先记住这个问题，我们从链上，一路走到线下。"], "section": "一张 SIM 卡"}, {"seg": "2", "t0": 0.0, "t1": 18.25, "title": "扳手攻击", "points": ["用暴力或威胁，逼持币人交出私钥或者转账", "名字来自一幅漫画：买算力破解不了，买把扳手就够了", "密码学挡不住扳手"], "notes": ["先给准确的说法。", "扳手攻击，就是用暴力或威胁，逼持币的人交出私钥，或者转账。", "这个名字来自一幅漫画。", "花大价钱买算力，破解不了加密，买一把便宜的扳手，就够了。", "密码学挡不住扳手。"], "section": "挡不住扳手"}, {"seg": "2", "t0": 18.25, "t1": 40.17, "title": "锁越好，劫匪越等你回家", "points": ["最便宜的办法，是找到你本人", "银行级的锁，门牌号和资产却印在网上的海报上", "劫匪不会去撬锁，而是等你回家"], "notes": ["攻击者知道你是谁，住在哪，有多少资产，最便宜的办法，就是找到你本人。", "打个比方，你给家门装了一把银行级的锁。", "可你的门牌号、作息时间、保险柜里有多少钱，都印在一张贴在网上的海报上。", "锁越好，劫匪越不会去撬锁，而是等你回家。"], "section": "挡不住扳手"}, {"seg": "2", "t0": 40.17, "t1": 58.17, "title": "攻击第一步：关联", "points": ["劫匪要先知道你有钱", "地址一旦和身份连上，余额对全世界公开", "把链上地址连到一个真实的人、真实的住址"], "notes": ["比喻在这里不成立，劫匪要先知道你有钱。", "而链上资产的特点是，地址一旦和身份连上，余额对全世界公开。", "所以攻击的第一步，是关联。", "把一个链上地址，连到一个真实的人，一个真实的住址。"], "section": "挡不住扳手"}, {"seg": "2", "t0": 58.17, "t1": 78.47, "title": "三类线索", "points": ["公开信息：社交媒体、采访、会议照片", "数据泄露：KYC 资料、电商订单、客服工单", "链上数据：余额和交易历史，拼起来筛出目标"], "notes": ["线索有三类。", "公开信息，比如社交媒体、采访、会议照片。", "数据泄露，比如 KYC 资料、电商订单、客服工单。", "还有链上数据，地址的余额和交易历史。", "三类线索拼在一起，就能筛出余额高、住址已知的目标。"], "section": "挡不住扳手"}, {"seg": "2", "t0": 78.47, "t1": 90.08, "title": "两条路：找上门、攻账号", "points": ["一条找上门，一条攻账号", "数据泄露直接交出了住址", "保护数据，也是在保护人身安全"], "notes": ["接下来有两条路，一条找上门，一条攻账号。", "数据泄露直接交出了住址，所以保护数据，也是在保护人身安全。"], "section": "挡不住扳手"}, {"seg": "3", "t0": 0.0, "t1": 24.81, "title": "SIM 卡劫持", "points": ["让运营商把受害者号码转到攻击者的 SIM 卡上", "手法：伪造证件，或者贿赂、欺骗客服", "点忘记密码，短信验证码发到他的新卡上"], "notes": ["先看账号这条路，SIM 卡劫持。", "攻击者让运营商，把受害者的手机号，转到自己的 SIM 卡上。", "常见的手法，是出示伪造证件，或者贿赂、欺骗客服。", "号码到手，他在交易所、邮箱、社交账号上，点忘记密码。", "短信验证码，发到了他的新卡上。"], "section": "号码被转走"}, {"seg": "3", "t0": 24.81, "t1": 45.13, "title": "恢复流程里最弱的一环", "points": ["账号允许短信验证码作为唯一的恢复方式", "开了验证器 App，忘记密码仍可用短信，就被绕过", "第二因素有多强，取决于恢复流程最弱的一环"], "notes": ["这一步能成功，是因为账号允许短信验证码，作为唯一的恢复方式。", "再想一种情况，账号开了验证器 App，但忘记密码时，仍然可以用短信。", "只要短信能单独完成恢复，验证器就被绕过了。", "第二因素有多强，取决于恢复流程里最弱的一环。"], "section": "号码被转走"}, {"seg": "3", "t0": 45.13, "t1": 63.69, "title": "劫持社交账号不止换卡", "points": ["弱密码被暴力破解，团队交接时多因素认证被关掉", "冒充平台官方，发版权侵权、账号违规的钓鱼邮件", "官方账号发出的链接，粉丝几乎没有理由怀疑"], "notes": ["社交账号被劫持，入口不止换卡。", "还有弱密码被暴力破解，团队交接时，多因素认证被关掉。", "冒充平台官方，发版权侵权、账号违规的钓鱼邮件。", "官方账号发出的链接，粉丝几乎没有理由怀疑。"], "section": "号码被转走"}, {"seg": "3", "t0": 63.69, "t1": 77.17, "title": "Vitalik 的账号被盗", "points": ["2023 年 9 月，账号发出假的纪念 NFT 链接", "粉丝签名后钱包被清空，约 69.1 万美元（ZachXBT）"], "notes": ["2023 年 9 月，Vitalik Buterin 的 X 账号被盗，发出了假的纪念 NFT 链接。", "粉丝签名后，钱包被清空，ZachXBT 统计，约 69.1 万美元。"], "section": "号码被转走"}, {"seg": "3", "t0": 77.17, "t1": 89.69, "title": "Mandiant 账号冒充 Phantom", "points": ["2024 年 1 月，安全公司 Mandiant 的 X 账号被改名", "Mandiant 自查：很可能被暴力破解", "交接期间，多因素认证没有起到保护"], "notes": ["2024 年 1 月，安全公司 Mandiant 的 X 账号，被改名冒充 Phantom 钱包。", "Mandiant 自查认为，很可能是被暴力破解，交接期间，多因素认证没有起到保护。"], "section": "号码被转走"}, {"seg": "3", "t0": 89.69, "t1": 99.25, "title": "冒充 X 官方发侵权通知", "points": ["有人冒充 X 官方发版权侵权通知", "接管 15 个加密类账号，推广假代币", "约 50 万美元"], "notes": ["后来，有人冒充 X 官方，发版权侵权通知。", "接管了 15 个加密类账号，推广假代币，约 50 万美元。"], "section": "号码被转走"}, {"seg": "3", "t0": 99.25, "t1": 121.84, "title": "员工手机号是特权凭证", "points": ["美国联邦起诉书称，团伙对一名员工做了 SIM 卡劫持", "转走的加密资产超过 4 亿美元", "媒体援引消息源：受害公司是 FTX，在它申请破产当天"], "notes": ["交易所的员工也一样。", "美国联邦起诉书称，一个团伙对一名员工，做了 SIM 卡劫持。", "转走的加密资产，超过 4 亿美元。", "媒体援引消息源，确认受害公司是 FTX，时间是它申请破产的当天。", "员工的手机号，就是交易所的特权凭证。"], "section": "号码被转走"}, {"seg": "4", "t0": 0.0, "t1": 9.91, "title": "另一条路：找上门", "points": ["这部分涉及人身伤害", "只讲公开报道的事实，不讲受害人的个人细节"], "notes": ["再看另一条路，找上门。", "这部分涉及人身伤害，我们只讲公开报道的事实，不讲受害人的个人细节。"], "section": "找上门来"}, {"seg": "4", "t0": 9.91, "t1": 40.75, "title": "实体攻击逐年增多", "points": ["Jameson Lopp 在 GitHub 维护针对持币人的实体攻击清单", "2023 年 74 起，2024 年 106 起，2025 年 170 起", "2026 年截至 10 月底 147 起，法国 52 起；口径不同，不能直接比较"], "notes": ["研究者 Jameson Lopp，在 GitHub 上维护一份公开清单。", "专门记录针对持币人的实体攻击。", "按这份清单，2023 年 74 起，2024 年 106 起，2025 年 170 起。", "2026 年截至 10 月底，已有 147 起，其中法国 52 起。", "各机构的统计口径不同，数字不能直接比较。", "Lopp 本人认为，真实数量被低估了。"], "section": "找上门来"}, {"seg": "4", "t0": 40.75, "t1": 59.65, "title": "Ledger 联合创始人被劫持", "points": ["2025 年 1 月，和伴侣在家中被劫持", "绑匪向 Ledger 方面索要赎金，法国宪兵特种部队救出两人", "涉嫌主谋 2026 年 5 月被摩洛哥法院判处 25 年"], "notes": ["2025 年 1 月，Ledger 的一位联合创始人，和伴侣在家中被劫持。", "绑匪向 Ledger 方面索要加密货币赎金，法国宪兵特种部队救出了两人。", "涉嫌主谋 6 月在摩洛哥落网，2026 年 5 月被当地法院判处 25 年。"], "section": "找上门来"}, {"seg": "4", "t0": 59.65, "t1": 88.83, "title": "法国接连发生绑架", "points": ["5 月初，一名加密企业家的父亲在巴黎被绑，警方解救", "5 月 13 日，Paymium CEO 的女儿和外孙遭遇绑架未遂", "检方起诉 25 人；内政部长宣布安全简报等措施"], "notes": ["同年 5 月初，一名加密企业家的父亲，在巴黎街头被绑走。", "警方突袭解救，没有支付赎金。", "5 月 13 日，交易所 Paymium 的 CEO，女儿和外孙在巴黎街头，遭遇绑架未遂。", "检方之后起诉了 25 人，认为和 5 月初的绑架有关联。", "法国内政部长会见业界，宣布了安全简报、紧急呼叫优先响应、住宅安防检查等措施。"], "section": "找上门来"}, {"seg": "4", "t0": 88.83, "t1": 98.87, "title": "目标还有家属", "points": ["目标不只是持币人本人，还有家属", "部分团伙把执行环节外包给临时招募的人"], "notes": ["这几起案件里，目标不只是持币人本人，还有家属。", "公开报道还显示，部分团伙把执行环节，外包给临时招募的人。"], "section": "找上门来"}, {"seg": "4", "t0": 98.87, "t1": 120.84, "title": "施暴者也可能是熟人", "points": ["纽约检方指控两名加密投资者，把一名男子诱到住宅", "囚禁 17 天，逼他交出比特币密码；被告不认罪，尚无判决", "施暴者也可能是熟人，或者同一个圈子里的人"], "notes": ["同在 2025 年 5 月，纽约检方指控两名加密投资者，把一名男子诱到曼哈顿的一处住宅。", "囚禁 17 天，逼他交出比特币密码。", "两名被告不认罪，公开报道里，还没有查到判决。", "施暴者，也可能是熟人，或者同一个圈子里的人。"], "section": "找上门来"}, {"seg": "5", "t0": 0.0, "t1": 32.55, "title": "降低暴露", "points": ["不公开谈持仓，不晒资产截图", "公开收款地址和个人大额地址分开；硬件钱包用代收地址收货", "照片不拍住址、车牌、路线；去数据经纪网站申请删除"], "notes": ["防御分两头，一头降低暴露，一头降低胁迫的收益。", "降低暴露，先管住嘴，不公开谈持仓，不晒资产截图。", "链上身份和真实身份分开，公开收款地址和个人大额地址，不用同一个。", "硬件钱包这类订单，用代收地址或者公司地址收货。", "照片里不要拍到住址、车牌和日常路线。", "定期搜一搜自己的姓名和住址，去数据经纪网站申请删除。"], "section": "拉开距离"}, {"seg": "5", "t0": 32.55, "t1": 50.87, "title": "降低胁迫的收益", "points": ["让本人确实转不出去", "大额资产放进多签或时间锁，转出要异地另一人或另一台设备", "随身设备只放少量资产；和家人约定胁迫暗号"], "notes": ["降低胁迫的收益，靠的是让本人确实转不出去。", "大额资产放进多签或者时间锁，转出要异地的另一个人，或者另一台设备。", "随身的设备，只放少量资产。", "和家人约定胁迫暗号，还有紧急联系的流程。"], "section": "拉开距离"}, {"seg": "5", "t0": 50.87, "t1": 63.63, "title": "人身安全第一，资产第二", "points": ["多签和时间锁降低的是立即转出的可能", "不能保证人身安全，劫匪的反应难以预测"], "notes": ["要说清楚，多签和时间锁，降低的是立即转出的可能，不能保证人身安全。", "劫匪对转不出的反应，难以预测，人身安全第一，资产第二。"], "section": "拉开距离"}, {"seg": "5", "t0": 63.63, "t1": 84.19, "title": "账号：硬件安全密钥", "points": ["邮箱、交易所、社交账号、域名注册商都用硬件安全密钥", "不用短信做多因素认证，也不用它恢复密码", "申请号码转移锁；关键账号用不公开的专用邮箱"], "notes": ["账号这边，邮箱、交易所、社交账号、域名注册商，都用硬件安全密钥，做多因素认证。", "不用短信做多因素认证，也不用它恢复密码。", "向运营商申请号码转移锁，或者 SIM 更换 PIN。", "关键账号，用不公开的专用邮箱注册。"], "section": "拉开距离"}, {"seg": "5", "t0": 84.19, "t1": 110.62, "title": "项目方多做几件事", "points": ["列出关键人员；签名人名单不公开，必要时只公开机构", "账号交接不关多因素认证，发帖权限和恢复权限分开", "备好被盗预案：备用公告渠道、平台联系人、辟谣声明"], "notes": ["项目方还要多做几件事。", "列出关键人员，创始人、多签签名人、运维负责人、官方账号管理员。", "签名人名单不公开，必要时只公开机构。", "官方账号交接时，不关闭多因素认证，发帖权限和恢复权限分开。", "再备好被盗预案，备用公告渠道、平台联系人、写好的辟谣声明。"], "section": "拉开距离"}, {"seg": "6", "t0": 0.0, "t1": 28.63, "title": "普通用户从这几件事做起", "points": ["交易所和邮箱用硬件密钥或验证器，关掉短信验证；申请号码转移锁", "项目方突发限时空投、紧急迁移，先去别的官方渠道核实", "线下见面选公共场所；遭遇胁迫，人身安全第一，事后报警"], "notes": ["普通用户，可以从这几件事做起。", "交易所和邮箱，用硬件密钥或验证器 App，关掉短信验证。", "向运营商申请号码转移锁。", "关注的项目方账号，突然发限时空投、紧急迁移，先去别的官方渠道核实。", "和陌生网友线下见面，选公共场所，让别人知道你的行程。", "遭遇胁迫时，人身安全第一，事后立即报警。"], "section": "回到那张卡"}, {"seg": "6", "t0": 28.63, "t1": 47.21, "title": "今天就查一遍", "points": ["多签签名人：手机号能不能单独重置哪个账号", "官方账号管理员：多因素认证换成硬件密钥", "团队负责人：列关键人员名单，配号码锁和硬件密钥"], "notes": ["如果你是多签签名人，今天就查一遍，你的手机号能不能单独重置哪个账号。", "如果你管理官方账号，今天就把它的多因素认证，换成硬件密钥。", "如果你负责团队，列一份关键人员名单，给每个人配上号码锁和硬件密钥。"], "section": "回到那张卡"}, {"seg": "6", "t0": 47.21, "t1": 65.29, "title": "答案：没有开", "points": ["SEC 承认，此前曾请 X 关闭这个账号的多因素认证", "攻击者对绑定手机号做 SIM 卡劫持，再用重置码登录", "负责换卡的人，2025 年被判 14 个月"], "notes": ["回到开头的题。", "答案是没有，SEC 承认，此前曾请 X 关闭这个账号的多因素认证。", "攻击者对绑定的手机号做了 SIM 卡劫持，再用重置码登录。", "负责换卡的人，2025 年被判 14 个月。"], "section": "回到那张卡"}, {"seg": "6", "t0": 65.29, "t1": 78.61, "title": "一张卡不够拿走一切", "points": ["只要一条短信就能单独完成恢复，监管机构的账号也会失守", "防线要让一张卡、一次胁迫，都不够拿走一切"], "notes": ["监管机构的账号也会失守，只要一条短信，就能单独完成恢复。", "攻击从链上走到线下，防线就要让一张卡、一次胁迫，都不够拿走一切。"], "section": "回到那张卡"}]};
+  var D = {"chapter": "s22", "title": "人身与账号安全：从链上走到线下", "segs": 6, "slides": [{"seg": "1", "t0": 0.0, "t1": 18.81, "title": "SEC 官方账号发了假消息", "points": ["2024 年 1 月，SEC 官方 X 账号称比特币 ETF 获批", "消息是假的，但出自监管机构的官方账号，很多人信了", "BTC 价格短时间里大幅波动"], "notes": ["2024 年 1 月，美国 SEC 的官方 X 账号，发了一条消息。", "比特币 ETF 获批了。", "这条消息是假的。", "可它是从监管机构的官方账号发出来的，很多人信了。", "BTC 的价格，短时间里大幅波动。"], "section": "一张 SIM 卡", "k": 18.81}, {"seg": "1", "t0": 18.81, "t1": 35.45, "title": "一张 SIM 卡接管手机号", "points": ["攻击者没有破解 SEC 的任何系统", "让一张新的 SIM 卡接管了一个手机号", "靠这个号码拿到了官方账号的控制权"], "notes": ["攻击者没有破解 SEC 的任何系统。", "他们只是让一张新的 SIM 卡，接管了一个手机号。", "靠这个号码，就拿到了官方账号的控制权。", "一张小小的卡，就让整个市场跟着晃了一下。"], "section": "一张 SIM 卡", "k": 35.45}, {"seg": "1", "t0": 35.45, "t1": 47.4, "title": "先猜一道题", "points": ["SEC 是监管机构，当时这个账号开了多因素认证吗？", "先记住这个问题，从链上一路走到线下"], "notes": ["先猜一道题。", "SEC 是监管机构，当时这个账号，开了多因素认证吗？", "先记住这个问题，我们从链上，一路走到线下。"], "section": "一张 SIM 卡", "k": 44.25}, {"seg": "2", "t0": 0.0, "t1": 18.25, "title": "扳手攻击", "points": ["用暴力或威胁，逼持币人交出私钥或者转账", "名字来自一幅漫画：买算力破解不了，买把扳手就够了", "密码学挡不住扳手"], "notes": ["先给准确的说法。", "扳手攻击，就是用暴力或威胁，逼持币的人交出私钥，或者转账。", "这个名字来自一幅漫画。", "花大价钱买算力，破解不了加密，买一把便宜的扳手，就够了。", "密码学挡不住扳手。"], "section": "挡不住扳手", "k": 18.25}, {"seg": "2", "t0": 18.25, "t1": 40.17, "title": "锁越好，劫匪越等你回家", "points": ["最便宜的办法，是找到你本人", "银行级的锁，门牌号和资产却印在网上的海报上", "劫匪不会去撬锁，而是等你回家"], "notes": ["攻击者知道你是谁，住在哪，有多少资产，最便宜的办法，就是找到你本人。", "打个比方，你给家门装了一把银行级的锁。", "可你的门牌号、作息时间、保险柜里有多少钱，都印在一张贴在网上的海报上。", "锁越好，劫匪越不会去撬锁，而是等你回家。"], "section": "挡不住扳手", "k": 40.17}, {"seg": "2", "t0": 40.17, "t1": 58.17, "title": "攻击第一步：关联", "points": ["劫匪要先知道你有钱", "地址一旦和身份连上，余额对全世界公开", "把链上地址连到一个真实的人、真实的住址"], "notes": ["比喻在这里不成立，劫匪要先知道你有钱。", "而链上资产的特点是，地址一旦和身份连上，余额对全世界公开。", "所以攻击的第一步，是关联。", "把一个链上地址，连到一个真实的人，一个真实的住址。"], "section": "挡不住扳手", "k": 41.97}, {"seg": "2", "t0": 58.17, "t1": 78.47, "title": "三类线索", "points": ["公开信息：社交媒体、采访、会议照片", "数据泄露：KYC 资料、电商订单、客服工单", "链上数据：余额和交易历史，拼起来筛出目标"], "notes": ["线索有三类。", "公开信息，比如社交媒体、采访、会议照片。", "数据泄露，比如 KYC 资料、电商订单、客服工单。", "还有链上数据，地址的余额和交易历史。", "三类线索拼在一起，就能筛出余额高、住址已知的目标。"], "section": "挡不住扳手", "k": 78.47}, {"seg": "2", "t0": 78.47, "t1": 90.08, "title": "两条路：找上门、攻账号", "points": ["一条找上门，一条攻账号", "数据泄露直接交出了住址", "保护数据，也是在保护人身安全"], "notes": ["接下来有两条路，一条找上门，一条攻账号。", "数据泄露直接交出了住址，所以保护数据，也是在保护人身安全。"], "section": "挡不住扳手", "k": 83.27}, {"seg": "3", "t0": 0.0, "t1": 24.81, "title": "SIM 卡劫持", "points": ["让运营商把受害者号码转到攻击者的 SIM 卡上", "手法：伪造证件，或者贿赂、欺骗客服", "点忘记密码，短信验证码发到他的新卡上"], "notes": ["先看账号这条路，SIM 卡劫持。", "攻击者让运营商，把受害者的手机号，转到自己的 SIM 卡上。", "常见的手法，是出示伪造证件，或者贿赂、欺骗客服。", "号码到手，他在交易所、邮箱、社交账号上，点忘记密码。", "短信验证码，发到了他的新卡上。"], "section": "号码被转走", "k": 15.55}, {"seg": "3", "t0": 24.81, "t1": 45.13, "title": "恢复流程里最弱的一环", "points": ["账号允许短信验证码作为唯一的恢复方式", "开了验证器 App，忘记密码仍可用短信，就被绕过", "第二因素有多强，取决于恢复流程最弱的一环"], "notes": ["这一步能成功，是因为账号允许短信验证码，作为唯一的恢复方式。", "再想一种情况，账号开了验证器 App，但忘记密码时，仍然可以用短信。", "只要短信能单独完成恢复，验证器就被绕过了。", "第二因素有多强，取决于恢复流程里最弱的一环。"], "section": "号码被转走", "k": 36.36}, {"seg": "3", "t0": 45.13, "t1": 63.69, "title": "劫持社交账号不止换卡", "points": ["弱密码被暴力破解，团队交接时多因素认证被关掉", "冒充平台官方，发版权侵权、账号违规的钓鱼邮件", "官方账号发出的链接，粉丝几乎没有理由怀疑"], "notes": ["社交账号被劫持，入口不止换卡。", "还有弱密码被暴力破解，团队交接时，多因素认证被关掉。", "冒充平台官方，发版权侵权、账号违规的钓鱼邮件。", "官方账号发出的链接，粉丝几乎没有理由怀疑。"], "section": "号码被转走", "k": 63.69}, {"seg": "3", "t0": 63.69, "t1": 77.17, "title": "Vitalik 的账号被盗", "points": ["2023 年 9 月，账号发出假的纪念 NFT 链接", "粉丝签名后钱包被清空，约 69.1 万美元（ZachXBT）"], "notes": ["2023 年 9 月，Vitalik Buterin 的 X 账号被盗，发出了假的纪念 NFT 链接。", "粉丝签名后，钱包被清空，ZachXBT 统计，约 69.1 万美元。"], "section": "号码被转走", "k": 70.99}, {"seg": "3", "t0": 77.17, "t1": 89.69, "title": "Mandiant 账号冒充 Phantom", "points": ["2024 年 1 月，安全公司 Mandiant 的 X 账号被改名", "Mandiant 自查：很可能被暴力破解", "交接期间，多因素认证没有起到保护"], "notes": ["2024 年 1 月，安全公司 Mandiant 的 X 账号，被改名冒充 Phantom 钱包。", "Mandiant 自查认为，很可能是被暴力破解，交接期间，多因素认证没有起到保护。"], "section": "号码被转走", "k": 89.69}, {"seg": "3", "t0": 89.69, "t1": 99.25, "title": "冒充 X 官方发侵权通知", "points": ["有人冒充 X 官方发版权侵权通知", "接管 15 个加密类账号，推广假代币", "约 50 万美元"], "notes": ["后来，有人冒充 X 官方，发版权侵权通知。", "接管了 15 个加密类账号，推广假代币，约 50 万美元。"], "section": "号码被转走", "k": 94.24}, {"seg": "3", "t0": 99.25, "t1": 121.84, "title": "员工手机号是特权凭证", "points": ["美国联邦起诉书称，团伙对一名员工做了 SIM 卡劫持", "转走的加密资产超过 4 亿美元", "媒体援引消息源：受害公司是 FTX，在它申请破产当天"], "notes": ["交易所的员工也一样。", "美国联邦起诉书称，一个团伙对一名员工，做了 SIM 卡劫持。", "转走的加密资产，超过 4 亿美元。", "媒体援引消息源，确认受害公司是 FTX，时间是它申请破产的当天。", "员工的手机号，就是交易所的特权凭证。"], "section": "号码被转走", "k": 117.3}, {"seg": "4", "t0": 0.0, "t1": 9.91, "title": "另一条路：找上门", "points": ["这部分涉及人身伤害", "只讲公开报道的事实，不讲受害人的个人细节"], "notes": ["再看另一条路，找上门。", "这部分涉及人身伤害，我们只讲公开报道的事实，不讲受害人的个人细节。"], "section": "找上门来", "k": 7.55}, {"seg": "4", "t0": 9.91, "t1": 40.75, "title": "实体攻击逐年增多", "points": ["Jameson Lopp 在 GitHub 维护针对持币人的实体攻击清单", "2023 年 74 起，2024 年 106 起，2025 年 170 起", "2026 年截至 10 月底 147 起，法国 52 起；口径不同，不能直接比较"], "notes": ["研究者 Jameson Lopp，在 GitHub 上维护一份公开清单。", "专门记录针对持币人的实体攻击。", "按这份清单，2023 年 74 起，2024 年 106 起，2025 年 170 起。", "2026 年截至 10 月底，已有 147 起，其中法国 52 起。", "各机构的统计口径不同，数字不能直接比较。", "Lopp 本人认为，真实数量被低估了。"], "section": "找上门来", "k": 40.75}, {"seg": "4", "t0": 40.75, "t1": 59.65, "title": "Ledger 联合创始人被劫持", "points": ["2025 年 1 月，和伴侣在家中被劫持", "绑匪向 Ledger 方面索要赎金，法国宪兵特种部队救出两人", "涉嫌主谋 2026 年 5 月被摩洛哥法院判处 25 年"], "notes": ["2025 年 1 月，Ledger 的一位联合创始人，和伴侣在家中被劫持。", "绑匪向 Ledger 方面索要加密货币赎金，法国宪兵特种部队救出了两人。", "涉嫌主谋 6 月在摩洛哥落网，2026 年 5 月被当地法院判处 25 年。"], "section": "找上门来", "k": 59.65}, {"seg": "4", "t0": 59.65, "t1": 88.83, "title": "法国接连发生绑架", "points": ["5 月初，一名加密企业家的父亲在巴黎被绑，警方解救", "5 月 13 日，Paymium CEO 的女儿和外孙遭遇绑架未遂", "检方起诉 25 人；内政部长宣布安全简报等措施"], "notes": ["同年 5 月初，一名加密企业家的父亲，在巴黎街头被绑走。", "警方突袭解救，没有支付赎金。", "5 月 13 日，交易所 Paymium 的 CEO，女儿和外孙在巴黎街头，遭遇绑架未遂。", "检方之后起诉了 25 人，认为和 5 月初的绑架有关联。", "法国内政部长会见业界，宣布了安全简报、紧急呼叫优先响应、住宅安防检查等措施。"], "section": "找上门来", "k": 88.83}, {"seg": "4", "t0": 88.83, "t1": 98.87, "title": "目标还有家属", "points": ["目标不只是持币人本人，还有家属", "部分团伙把执行环节外包给临时招募的人"], "notes": ["这几起案件里，目标不只是持币人本人，还有家属。", "公开报道还显示，部分团伙把执行环节，外包给临时招募的人。"], "section": "找上门来", "k": 98.87}, {"seg": "4", "t0": 98.87, "t1": 120.84, "title": "施暴者也可能是熟人", "points": ["纽约检方指控两名加密投资者，把一名男子诱到住宅", "囚禁 17 天，逼他交出比特币密码；被告不认罪，尚无判决", "施暴者也可能是熟人，或者同一个圈子里的人"], "notes": ["同在 2025 年 5 月，纽约检方指控两名加密投资者，把一名男子诱到曼哈顿的一处住宅。", "囚禁 17 天，逼他交出比特币密码。", "两名被告不认罪，公开报道里，还没有查到判决。", "施暴者，也可能是熟人，或者同一个圈子里的人。"], "section": "找上门来", "k": 115.17}, {"seg": "5", "t0": 0.0, "t1": 32.55, "title": "降低暴露", "points": ["不公开谈持仓，不晒资产截图", "公开收款地址和个人大额地址分开；硬件钱包用代收地址收货", "照片不拍住址、车牌、路线；去数据经纪网站申请删除"], "notes": ["防御分两头，一头降低暴露，一头降低胁迫的收益。", "降低暴露，先管住嘴，不公开谈持仓，不晒资产截图。", "链上身份和真实身份分开，公开收款地址和个人大额地址，不用同一个。", "硬件钱包这类订单，用代收地址或者公司地址收货。", "照片里不要拍到住址、车牌和日常路线。", "定期搜一搜自己的姓名和住址，去数据经纪网站申请删除。"], "section": "拉开距离", "k": 32.55}, {"seg": "5", "t0": 32.55, "t1": 50.87, "title": "降低胁迫的收益", "points": ["让本人确实转不出去", "大额资产放进多签或时间锁，转出要异地另一人或另一台设备", "随身设备只放少量资产；和家人约定胁迫暗号"], "notes": ["降低胁迫的收益，靠的是让本人确实转不出去。", "大额资产放进多签或者时间锁，转出要异地的另一个人，或者另一台设备。", "随身的设备，只放少量资产。", "和家人约定胁迫暗号，还有紧急联系的流程。"], "section": "拉开距离", "k": 44.1}, {"seg": "5", "t0": 50.87, "t1": 63.63, "title": "人身安全第一，资产第二", "points": ["多签和时间锁降低的是立即转出的可能", "不能保证人身安全，劫匪的反应难以预测"], "notes": ["要说清楚，多签和时间锁，降低的是立即转出的可能，不能保证人身安全。", "劫匪对转不出的反应，难以预测，人身安全第一，资产第二。"], "section": "拉开距离", "k": 56.67}, {"seg": "5", "t0": 63.63, "t1": 84.19, "title": "账号：硬件安全密钥", "points": ["邮箱、交易所、社交账号、域名注册商都用硬件安全密钥", "不用短信做多因素认证，也不用它恢复密码", "申请号码转移锁；关键账号用不公开的专用邮箱"], "notes": ["账号这边，邮箱、交易所、社交账号、域名注册商，都用硬件安全密钥，做多因素认证。", "不用短信做多因素认证，也不用它恢复密码。", "向运营商申请号码转移锁，或者 SIM 更换 PIN。", "关键账号，用不公开的专用邮箱注册。"], "section": "拉开距离", "k": 72.68}, {"seg": "5", "t0": 84.19, "t1": 110.62, "title": "项目方多做几件事", "points": ["列出关键人员；签名人名单不公开，必要时只公开机构", "账号交接不关多因素认证，发帖权限和恢复权限分开", "备好被盗预案：备用公告渠道、平台联系人、辟谣声明"], "notes": ["项目方还要多做几件事。", "列出关键人员，创始人、多签签名人、运维负责人、官方账号管理员。", "签名人名单不公开，必要时只公开机构。", "官方账号交接时，不关闭多因素认证，发帖权限和恢复权限分开。", "再备好被盗预案，备用公告渠道、平台联系人、写好的辟谣声明。"], "section": "拉开距离", "k": 97.74}, {"seg": "6", "t0": 0.0, "t1": 28.63, "title": "普通用户从这几件事做起", "points": ["交易所和邮箱用硬件密钥或验证器，关掉短信验证；申请号码转移锁", "项目方突发限时空投、紧急迁移，先去别的官方渠道核实", "线下见面选公共场所；遭遇胁迫，人身安全第一，事后报警"], "notes": ["普通用户，可以从这几件事做起。", "交易所和邮箱，用硬件密钥或验证器 App，关掉短信验证。", "向运营商申请号码转移锁。", "关注的项目方账号，突然发限时空投、紧急迁移，先去别的官方渠道核实。", "和陌生网友线下见面，选公共场所，让别人知道你的行程。", "遭遇胁迫时，人身安全第一，事后立即报警。"], "section": "回到那张卡", "k": 1.3}, {"seg": "6", "t0": 28.63, "t1": 47.21, "title": "今天就查一遍", "points": ["多签签名人：手机号能不能单独重置哪个账号", "官方账号管理员：多因素认证换成硬件密钥", "团队负责人：列关键人员名单，配号码锁和硬件密钥"], "notes": ["如果你是多签签名人，今天就查一遍，你的手机号能不能单独重置哪个账号。", "如果你管理官方账号，今天就把它的多因素认证，换成硬件密钥。", "如果你负责团队，列一份关键人员名单，给每个人配上号码锁和硬件密钥。"], "section": "回到那张卡", "k": 47.21}, {"seg": "6", "t0": 47.21, "t1": 65.29, "title": "答案：没有开", "points": ["SEC 承认，此前曾请 X 关闭这个账号的多因素认证", "攻击者对绑定手机号做 SIM 卡劫持，再用重置码登录", "负责换卡的人，2025 年被判 14 个月"], "notes": ["回到开头的题。", "答案是没有，SEC 承认，此前曾请 X 关闭这个账号的多因素认证。", "攻击者对绑定的手机号做了 SIM 卡劫持，再用重置码登录。", "负责换卡的人，2025 年被判 14 个月。"], "section": "回到那张卡", "k": 63.76}, {"seg": "6", "t0": 65.29, "t1": 78.61, "title": "一张卡不够拿走一切", "points": ["只要一条短信就能单独完成恢复，监管机构的账号也会失守", "防线要让一张卡、一次胁迫，都不够拿走一切"], "notes": ["监管机构的账号也会失守，只要一条短信，就能单独完成恢复。", "攻击从链上走到线下，防线就要让一张卡、一次胁迫，都不够拿走一切。"], "section": "回到那张卡", "k": 78.61}]};
   var S = D.slides, N = S.length, KEY = 'deck-' + D.chapter;
   var $ = function (id) { return document.getElementById(id); };
-  var screen = $('screen'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
+  var screen = $('screen'), still = $('still'), frames = {}, ready = {}, pending = {}, cur = -1, playing = false, seen = {};
   var store = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
                 set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
   try { var pt = parent !== window && parent.document.documentElement.getAttribute('data-theme'); if (pt) document.documentElement.setAttribute('data-theme', pt); } catch (e) {}
@@ -141,32 +144,54 @@ button { font: inherit; color: inherit; }
     var g = groups[groups.length - 1];
     if (!g || g.seg !== s.seg) { g = { seg: s.seg, el: document.createElement('div') }; g.el.className = 'grp'; groups.push(g); prog.appendChild(g.el); g.n = 0; }
     var b = document.createElement('button'); b.title = (i + 1) + ' · ' + s.title; b.setAttribute('aria-label', '第 ' + (i + 1) + ' 页：' + s.title);
-    b.onclick = function () { go(i, 'seek'); }; g.el.appendChild(b); g.n++; s.dot = b;
+    b.onclick = function () { show(i); }; g.el.appendChild(b); g.n++; s.dot = b;
   });
   groups.forEach(function (g) { g.el.style.setProperty('--n', g.n); });
 
+  // all stills of the chapter are one sprite: 6 columns, slide i at (i % 6, i / 6)
+  var COLS = 6, ROWS = Math.ceil(N / COLS), sheetReady = false, sheet = new Image();
+  sheet.onload = function () { sheetReady = true; if (!screen.classList.contains('live')) $('wait').hidden = true; };
+  sheet.src = 'stills.webp';
+  still.style.backgroundImage = 'url(stills.webp)';
+  still.style.backgroundSize = (COLS * 100) + '% ' + (ROWS * 100) + '%';
+  function tile(i) {
+    var c = i % COLS, r = Math.floor(i / COLS);
+    still.style.backgroundPosition = (COLS > 1 ? c / (COLS - 1) * 100 : 0) + '% ' + (ROWS > 1 ? r / (ROWS - 1) * 100 : 0) + '%';
+  }
+
+  // ---------- live animation (only when asked) ----------
   function scale() { var k = screen.clientWidth / 1920; for (var s in frames) frames[s].style.transform = 'scale(' + k + ')'; }
   if (window.ResizeObserver) new ResizeObserver(scale).observe(screen); else addEventListener('resize', scale);
-
   function frame(seg) {
     if (frames[seg]) return frames[seg];
     var f = document.createElement('iframe'); f.src = 's' + seg + '.html'; f.title = '第 ' + seg + ' 节动画'; f.tabIndex = -1;
     f.setAttribute('aria-hidden', 'true'); screen.appendChild(f); frames[seg] = f; scale(); return f;
   }
+  function live(seg) {
+    for (var k in frames) frames[k].classList.toggle('on', k === seg);
+    screen.classList.add('live'); $('wait').hidden = true;
+  }
   function send(seg, msg) {
     msg.deck = 'cmd';
-    if (ready[seg]) frames[seg].contentWindow.postMessage(msg, '*'); else pending[seg] = msg;
+    if (ready[seg]) { frames[seg].contentWindow.postMessage(msg, '*'); live(seg); } else pending[seg] = msg;
   }
   addEventListener('message', function (e) {
     var m = e.data || {};
     if (!m.deck || !frames[m.seg] || e.source !== frames[m.seg].contentWindow) return;
     if (m.deck === 'ready') {
       ready[m.seg] = true;
-      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; send(m.seg, p); }
-      if (cur >= 0 && S[cur].seg === m.seg) $('wait').hidden = true;
-    } else if (m.deck === 'done' && cur >= 0 && S[cur].seg === m.seg) { playing = false; paint(); }
+      if (pending[m.seg]) { var p = pending[m.seg]; delete pending[m.seg]; if (playing && S[cur].seg === m.seg) send(m.seg, p); }
+    } else if (m.deck === 'done' && playing && S[cur].seg === m.seg) { playing = false; paint(); }
   });
+  function process() {
+    var s = S[cur];
+    playing = true; frame(s.seg);
+    if (!ready[s.seg]) { $('wait').textContent = '载入动画…'; $('wait').hidden = false; }
+    send(s.seg, { play: [s.t0, s.k], rate: +$('speed').value });
+    paint();
+  }
 
+  // ---------- slides ----------
   function paint() {
     var s = S[cur];
     $('sec').textContent = s.section;
@@ -175,27 +200,21 @@ button { font: inherit; color: inherit; }
     $('lines').innerHTML = ''; s.notes.forEach(function (p) { var li = document.createElement('li'); li.textContent = p; $('lines').appendChild(li); });
     $('count').textContent = (cur + 1) + ' / ' + N;
     $('prev').disabled = cur === 0;
-    $('next').textContent = playing ? '跳到本页结尾 ›' : (cur === N - 1 ? '回到正文 ›' : '下一页 ›');
+    $('next').textContent = cur === N - 1 ? '回到正文 ›' : '下一页 ›';
+    $('replay').textContent = playing ? '⟳ 从头播放' : (screen.classList.contains('live') ? '⟳ 再看一遍' : '▶ 看过程');
     S.forEach(function (x, i) { x.dot.className = i === cur ? 'cur' : (seen[i] ? 'seen' : ''); });
   }
-  function go(i, mode) {
+  function show(i) {
     if (i < 0 || i >= N) return;
-    var s = S[i]; cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
-    var f = frame(s.seg);
-    for (var k in frames) frames[k].classList.toggle('on', k === s.seg);
-    $('wait').hidden = !!ready[s.seg];
-    playing = mode === 'play';
-    send(s.seg, playing ? { play: [s.t0, s.t1], rate: +$('speed').value } : { seek: s.t1 });
-    // warm the next segment while this one is on screen
-    if (i + 1 < N && S[i + 1].seg !== s.seg) frame(S[i + 1].seg);
+    cur = i; seen[i] = 1; store.set(KEY, i); store.set(KEY + '-seen', JSON.stringify(seen));
+    playing = false; pending = {};
+    tile(i); still.setAttribute('aria-label', S[i].title);
+    screen.classList.remove('live'); $('wait').textContent = sheetReady ? '载入动画…' : '载入画面…'; $('wait').hidden = sheetReady;
+    for (var k in frames) frames[k].classList.remove('on');
     paint();
   }
-  function next() {
-    if (playing) { go(cur, 'seek'); return; }
-    if (cur === N - 1) { back(); return; }
-    go(cur + 1, 'play');
-  }
-  function prev() { go(cur - 1, 'seek'); }
+  function next() { if (cur === N - 1) { back(); return; } show(cur + 1); }
+  function prev() { show(cur - 1); }
   function back() {
     if (parent !== window) parent.postMessage({ cexNav: D.chapter }, '*');
     else location.href = '../../index.html#' + D.chapter;
@@ -206,18 +225,18 @@ button { font: inherit; color: inherit; }
   }
   if (!document.fullscreenEnabled) $('fs').hidden = true;
 
-  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = function () { go(cur, 'play'); };
+  $('next').onclick = next; $('prev').onclick = prev; $('replay').onclick = process;
   $('back').onclick = back; $('fs').onclick = fullscreen;
   addEventListener('keydown', function (e) {
     if (e.target.tagName === 'SELECT' || e.metaKey || e.ctrlKey || e.altKey) return;
     var k = e.key;
     if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); next(); }
     else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
-    else if (k === 'r' || k === 'R') go(cur, 'play');
+    else if (k === 'p' || k === 'P' || k === 'r' || k === 'R') process();
     else if (k === 'f' || k === 'F') fullscreen();
     else if (k === 'n' || k === 'N') $('notes').open = !$('notes').open;
-    else if (k === 'Home') go(0, 'seek');
-    else if (k === 'End') go(N - 1, 'seek');
+    else if (k === 'Home') show(0);
+    else if (k === 'End') show(N - 1);
   });
   // tap = next; horizontal swipe = next / previous
   var x0 = null, y0 = null;
@@ -230,7 +249,7 @@ button { font: inherit; color: inherit; }
   });
 
   var start = +store.get(KEY); if (!(start >= 0 && start < N)) start = 0;
-  go(start, start === 0 ? 'play' : 'seek');
+  show(start);
 })();
 </script>
 </body>

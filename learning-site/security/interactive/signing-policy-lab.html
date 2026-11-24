@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>签名请求独立校验</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); }
+  dl.f { margin: 0; display: grid; grid-template-columns: 96px 1fr; gap: 4px 10px; font-size: 13px; }
+  dl.f dt { color: var(--text-2); }
+  dl.f dd { margin: 0; font-family: var(--mono); word-break: break-all; }
+  fieldset { border: 1px solid var(--border); border-radius: 8px; margin: 12px 0 0; padding: 8px 12px; }
+  legend { font-size: 13px; color: var(--text-2); padding: 0 6px; }
+  .opt { display: flex; gap: 8px; align-items: flex-start; margin: 4px 0; color: var(--text); font-size: 14px; cursor: pointer; }
+  .opt input { margin-top: 5px; accent-color: var(--accent); }
+  .ok { color: var(--buy); font-weight: 650; } .bad { color: var(--sell); font-weight: 650; }
+  tr.diff td { background: var(--sell-soft); }
+  .big { font-size: 22px; font-weight: 650; font-family: var(--mono); }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="back" href="index.html">← 返回实验目录</a>
+    <h1>签名请求独立校验</h1>
+  </header>
+  <p class="lead">业务系统发来签名请求时，签名侧的策略引擎不能只信请求本身，要拿它去和独立保存的“审批单”逐字段比对。你来当这个策略引擎：8 个场景，判断放行、拒绝还是升级人工，并选出理由。配套章节：<a href="../arch/X14-cex-wallet-treasury-payment.md">X14 钱包与资金</a>、<a href="../arch/X38-custodian-security.md">X38 托管机构</a>、<a href="../29-signing-path-2026.md">29 签名路径</a>。</p>
+
+  <div class="callout info small">
+    <strong>怎么玩：</strong>
+    1. 阅读左边的审批单和右边的签名请求（所有字段都显示，不做标注）。<br>
+    2. 选“放行 / 拒绝 / 升级人工”，再选一条最贴切的理由，点“提交判断”。<br>
+    3. 揭晓后看字段对比表，红色行是不一致的字段。<br>
+    <strong>计分：</strong>每题决策 2 分、理由 1 分，共 24 分。来源不在白名单的题，“拒绝”也得决策分的一半（1 分），因为现实里两种处置都常见，但必须有人跟进。<br>
+    <strong>观察什么：</strong>哪些不一致肉眼不容易发现？为什么“请求看起来很正常”不构成放行理由？<br>
+    <strong>思考：</strong>如果审批单和签名请求来自同一个被攻陷的系统，这个比对还有意义吗？<br>
+    <strong>数据为示例，机制用于演示。</strong>地址、金额、编号均为虚构，不对应任何真实地址或用户。
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <span class="small muted" id="prog"></span>
+    <div class="grid cols-2" style="margin-top:8px">
+      <div><h3 style="margin-top:0">审批单（独立保存）</h3><dl class="f" id="appr"></dl></div>
+      <div><h3 style="margin-top:0">签名请求（来自业务系统）</h3><dl class="f" id="req"></dl></div>
+    </div>
+    <form id="form">
+      <fieldset><legend>你的决策</legend>
+        <label class="opt"><input type="radio" name="d" value="allow">放行</label>
+        <label class="opt"><input type="radio" name="d" value="deny">拒绝</label>
+        <label class="opt"><input type="radio" name="d" value="esc">升级人工</label>
+      </fieldset>
+      <fieldset><legend>理由</legend><div id="reasons"></div></fieldset>
+      <div class="btn-row"><button type="submit" class="primary" id="submit">提交判断</button></div>
+    </form>
+    <div id="result" aria-live="polite"></div>
+    <div class="btn-row"><button id="next" hidden>下一题</button></div>
+  </div>
+
+  <div id="final"></div>
+
+  <footer class="note">场景、地址、金额、审批单编号均为示例。真实策略引擎还需检查签名人数、限额累计、时间窗、链 ID、代币合约白名单，并把每次检查结果写入不可篡改日志。</footer>
+</div>
+<script>
+const WL = ['payout-svc（出款服务）', 'treasury-bot（财务机器人）'];
+const base = {id:'AP-1042', to:'0x71C0…A3f9', amt:'120,000', tok:'USDC', chain:'1', call:'transfer（普通转账）', exp:'2026-11-23 18:00', src:WL[0], used:'未使用'};
+function S(t, over, d, reasons, why, alt){ return {t, req: Object.assign({}, base, over.req||{}), ap: Object.assign({}, base, over.ap||{}), d, reasons, why, alt}; }
+const R4 = (a, b, c, d) => [a, b, c, d];
+const SC = [
+ S('场景 1：日常出款', {}, 'allow', ['审批单与请求逐字段一致，来源在白名单，未过期未使用', '金额不大，直接放行即可', '请求来自内部服务，不需要校验', '审批单存在就够了，不用比对字段'], 0),
+ S('场景 2：目标地址不同', {req:{to:'0x71C0…B7e2'}}, 'deny', ['目标地址与审批单不一致，可能被替换', '地址格式正确，应放行', '金额一致说明没问题', '升级人工后由对方说明即可放行'], 1),
+ S('场景 3：金额偏大', {req:{amt:'1,200,000'}}, 'deny', ['金额与审批单不一致（相差 10 倍）', '金额没超过热钱包余额', '审批人可能漏填，补一下就行', '只要地址对就放行'], 2),
+ S('场景 4：调用方式异常', {req:{call:'multicall（含 delegatecall 到 0x9aB2…）'}}, 'deny', ['calldata 含审批单未授权的 delegatecall，可借此改写合约状态', '多合一调用更省 gas，属于优化', '目标地址和金额都对，应放行', '只是内部实现细节'], 3),
+ S('场景 5：审批单已过期', {req:{}, ap:{exp:'2026-11-22 18:00'}}, 'deny', ['审批单已过期，请求须重新审批', '过期一天问题不大', '金额与地址一致，应放行', '让业务方补个说明即可放行'], 4),
+ S('场景 6：审批单重复使用', {req:{}, ap:{used:'已使用（2026-11-23 09:12）'}}, 'deny', ['审批单已被消耗，同一单不能再签（防重放 / 重复出款）', '字段一致，应放行', '同一用户多次出款很正常', '次数不影响，看金额即可'], 5),
+ S('场景 7：来源未登记', {req:{src:'ops-tool-7（未登记的新服务）'}, ap:{src:'ops-tool-7（未登记的新服务）'}}, 'esc', ['字段全部一致，但来源不在白名单：不能放行，也不宜静默丢弃，需人工核实是否漏登记或伪造', '字段一致就放行', '来源名字像内部工具，应放行', '来源不重要，只看地址和金额'], 6, 'deny'),
+ S('场景 8：一切正常（大额但完整）', {req:{amt:'980,000', tok:'USDT'}, ap:{amt:'980,000', tok:'USDT', id:'AP-1077', exp:'2026-11-24 09:00', src:WL[1]}, }, 'allow', ['各字段一致、来源登记、审批单有效；大额本身不是拒绝理由，大额的签名人数 / 限额由另一条规则覆盖', '金额超过 50 万，一律升级人工', '大额必须拒绝', '看不懂 USDT，升级人工'], 7),
+];
+// 场景 8 的请求来源需与审批单一致
+SC[7].req.src = WL[1]; SC[7].req.id = 'AP-1077'; SC[7].req.exp = '2026-11-24 09:00';
+const FIELDS = [['id','审批单号'],['to','目标地址'],['amt','金额'],['tok','代币'],['chain','链 ID'],['call','调用方式'],['exp','有效期至'],['src','请求来源'],['used','使用状态']];
+// 打乱每题理由顺序（固定种子，答案始终是第 0 项原序）
+function seeded(seed){ return () => (seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296; }
+const rr = seeded(42);
+SC.forEach(s => { s.order = s.reasons.map((_, i) => i).sort(() => rr() - 0.5); });
+const DL = {allow: '放行', deny: '拒绝', esc: '升级人工'};
+const $ = id => document.getElementById(id);
+let i = 0, score = 0, answered = false, log = [];
+
+function show(){
+  const s = SC[i]; answered = false;
+  $('prog').textContent = s.t + '（' + (i + 1) + ' / ' + SC.length + '）';
+  const dl = o => FIELDS.map(f => '<dt>' + f[1] + '</dt><dd>' + o[f[0]] + '</dd>').join('');
+  $('appr').innerHTML = dl(s.ap); $('req').innerHTML = dl(s.req);
+  $('reasons').innerHTML = s.order.map(k => '<label class="opt"><input type="radio" name="r" value="' + k + '">' + s.reasons[k] + '</label>').join('');
+  document.querySelectorAll('input[name=d]').forEach(x => x.checked = false);
+  $('result').innerHTML = ''; $('next').hidden = true; $('submit').disabled = false;
+}
+$('form').addEventListener('submit', e => {
+  e.preventDefault();
+  if (answered) return;
+  const d = document.querySelector('input[name=d]:checked'), r = document.querySelector('input[name=r]:checked');
+  if (!d || !r) { $('result').innerHTML = '<div class="callout warn small">请先选择决策和理由。</div>'; return; }
+  const s = SC[i]; answered = true; $('submit').disabled = true;
+  let pts = d.value === s.d ? 2 : (s.alt === d.value ? 1 : 0);
+  const rOK = +r.value === 0; if (rOK) pts += 1;
+  score += pts; log.push(pts);
+  const rows = FIELDS.map(f => {
+    const same = s.ap[f[0]] === s.req[f[0]];
+    return '<tr class="' + (same ? '' : 'diff') + '"><td>' + f[1] + '</td><td class="mono">' + s.ap[f[0]] + '</td><td class="mono">' + s.req[f[0]] + '</td><td class="' + (same ? 'ok' : 'bad') + '">' + (same ? '一致' : '不一致') + '</td></tr>';
+  }).join('');
+  const srcBad = !WL.includes(s.req.src) ? '<tr class="diff"><td>来源白名单</td><td class="mono">' + WL.join(' / ') + '</td><td class="mono">' + s.req.src + '</td><td class="bad">不在名单</td></tr>' : '';
+  $('result').innerHTML = '<div class="callout ' + (pts === 3 ? 'info' : 'warn') + '"><strong>本题 ' + pts + ' / 3 分。</strong>推荐决策：' + DL[s.d] +
+    (s.alt ? '（“' + DL[s.alt] + '”可接受，得半分）' : '') + '。你选的是“' + DL[d.value] + '”，理由' + (rOK ? '正确' : '不贴切') + '。<br>正确理由：' + s.reasons[0] + '</div>' +
+    '<h3>策略引擎应检查的字段对比（审批单 vs 请求）</h3><div class="table-wrap"><table><thead><tr><th>字段</th><th>审批单</th><th>请求</th><th>结果</th></tr></thead><tbody>' + rows + srcBad + '</tbody></table></div>' +
+    '<p class="small muted">“使用状态”和“有效期”只存在于审批单一侧：引擎要查自己的台账与当前时间，而不是信请求里的说法。</p>';
+  $('next').hidden = false; $('next').textContent = i === SC.length - 1 ? '查看总分' : '下一题'; $('next').focus();
+});
+$('next').onclick = () => {
+  if (i < SC.length - 1) { i++; show(); return; }
+  $('form').hidden = true; $('next').hidden = true; $('result').innerHTML = ''; $('prog').textContent = '全部完成';
+  $('appr').innerHTML = ''; $('req').innerHTML = '';
+  const tip = score >= 21 ? '你对“独立校验 + 台账”的理解很扎实。' : score >= 14 ? '大方向对。重点复习：哪些检查必须依赖独立台账，而不是请求自身。' : '建议重读 X14 和 29 章，再来一次。';
+  $('final').innerHTML = '<div class="card"><h2 style="margin-top:0">总分</h2><div class="big">' + score + ' / 24</div><p>' + tip + '</p><div class="btn-row"><button class="primary" id="again">再来一次</button></div></div>';
+  $('again').onclick = () => { i = 0; score = 0; log = []; $('final').innerHTML = ''; $('form').hidden = false; show(); };
+};
+show();
+</script>
+</body>
+</html>
