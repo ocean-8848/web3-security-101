@@ -1,0 +1,968 @@
+{
+  "topics": [
+    {
+      "title": "重入",
+      "chapters": [
+        "s04",
+        "s07",
+        "k00",
+        "w25",
+        "s32"
+      ],
+      "labs": [
+        "lab-reentrancy-lab"
+      ],
+      "code": [
+        "Reentrancy.t.sol",
+        "MiniLendPoC.t.sol",
+        "non-evm/vyper-reentrancy"
+      ],
+      "cases": [
+        {
+          "id": "s28"
+        }
+      ],
+      "audit": [
+        "a04",
+        "t03"
+      ]
+    },
+    {
+      "title": "访问控制与初始化",
+      "chapters": [
+        "s05",
+        "s10",
+        "w39"
+      ],
+      "labs": [
+        "lab-storage-proxy-lab"
+      ],
+      "code": [
+        "AccessControl.t.sol",
+        "ProxyStorage.t.sol"
+      ],
+      "cases": [
+        {
+          "name": "Nomad",
+          "url": "https://claude.ai/artifact/1a5Nx6xTVLuJdCB8Esf2xj#c-nomad"
+        },
+        {
+          "name": "Ronin",
+          "url": "https://claude.ai/artifact/1a5Nx6xTVLuJdCB8Esf2xj#c-ronin"
+        }
+      ],
+      "audit": [
+        "a03",
+        "a04",
+        "t03"
+      ]
+    },
+    {
+      "title": "算术、精度与金库",
+      "chapters": [
+        "s06",
+        "w42",
+        "w37"
+      ],
+      "labs": [
+        "lab-vault-inflation-lab",
+        "lab-audit-overflow",
+        "lab-audit-rounding"
+      ],
+      "code": [
+        "VaultInflation.t.sol",
+        "ERC4626Rounding.t.sol",
+        "FormalAndFuzzVault.t.sol"
+      ],
+      "cases": [
+        {
+          "name": "Euler",
+          "url": "https://claude.ai/artifact/1a5Nx6xTVLuJdCB8Esf2xj#c-euler"
+        }
+      ],
+      "audit": [
+        "a04"
+      ]
+    },
+    {
+      "title": "外部调用与代币兼容",
+      "chapters": [
+        "s07",
+        "k02",
+        "w40"
+      ],
+      "labs": [
+        "lab-chain-porting-lab",
+        "lab-audit-approve",
+        "lab-audit-steth"
+      ],
+      "code": [
+        "SafeTokenOps.t.sol",
+        "RouterCallback.t.sol"
+      ],
+      "audit": [
+        "a04",
+        "a05"
+      ]
+    },
+    {
+      "title": "预言机与闪电贷",
+      "chapters": [
+        "s08",
+        "s11",
+        "w18",
+        "w20",
+        "k01"
+      ],
+      "labs": [
+        "lab-oracle-manipulation-lab",
+        "lab-audit-amm",
+        "lab-audit-lending"
+      ],
+      "code": [
+        "SpotOracle.t.sol",
+        "MiniLendPoC.t.sol"
+      ],
+      "audit": [
+        "a04",
+        "t03"
+      ]
+    },
+    {
+      "title": "MEV 与签名",
+      "chapters": [
+        "s09",
+        "s02",
+        "s19",
+        "w60",
+        "s31",
+        "k07"
+      ],
+      "labs": [
+        "lab-signature-replay-lab",
+        "lab-audit-frontrun",
+        "lab-phishing-signature-lab"
+      ],
+      "code": [
+        "SignatureReplay.t.sol",
+        "Permit2Style.t.sol"
+      ],
+      "cases": [
+        {
+          "name": "Bybit",
+          "url": "https://claude.ai/artifact/1a5Nx6xTVLuJdCB8Esf2xj#c-bybit"
+        }
+      ],
+      "audit": [
+        "a03",
+        "t03"
+      ]
+    },
+    {
+      "title": "可升级代理",
+      "chapters": [
+        "s10",
+        "s03",
+        "w46"
+      ],
+      "labs": [
+        "lab-storage-proxy-lab",
+        "lab-audit-abi",
+        "lab-audit-evm"
+      ],
+      "code": [
+        "ProxyStorage.t.sol"
+      ],
+      "cases": [
+        {
+          "name": "Nomad",
+          "url": "https://claude.ai/artifact/1a5Nx6xTVLuJdCB8Esf2xj#c-nomad"
+        }
+      ],
+      "audit": [
+        "a04",
+        "t04"
+      ]
+    },
+    {
+      "title": "经济设计与治理",
+      "chapters": [
+        "s11",
+        "w22",
+        "w17",
+        "w23"
+      ],
+      "labs": [
+        "lab-audit-spiral",
+        "lab-audit-governance",
+        "lab-audit-fuzz"
+      ],
+      "audit": [
+        "a04",
+        "a05"
+      ]
+    },
+    {
+      "title": "跨链验证",
+      "chapters": [
+        "s12",
+        "s17",
+        "w52",
+        "w74"
+      ],
+      "labs": [
+        "lab-audit-merkle",
+        "lab-rpc-quorum-lab"
+      ],
+      "code": [
+        "CrossChain.t.sol"
+      ],
+      "cases": [
+        {
+          "name": "Poly Network",
+          "url": "https://claude.ai/artifact/1a5Nx6xTVLuJdCB8Esf2xj#c-poly"
+        },
+        {
+          "name": "Wormhole",
+          "url": "https://claude.ai/artifact/1a5Nx6xTVLuJdCB8Esf2xj#c-wormhole"
+        },
+        {
+          "name": "Ronin",
+          "url": "https://claude.ai/artifact/1a5Nx6xTVLuJdCB8Esf2xj#c-ronin"
+        }
+      ],
+      "audit": [
+        "a04"
+      ]
+    },
+    {
+      "title": "非 EVM 与 ZK",
+      "chapters": [
+        "s13",
+        "s14",
+        "w52",
+        "w53",
+        "w74",
+        "k04",
+        "k05",
+        "k06",
+        "k07"
+      ],
+      "labs": [
+        "lab-zk-constraint-lab",
+        "lab-chain-porting-lab"
+      ],
+      "cases": [
+        {
+          "name": "Wormhole",
+          "url": "https://claude.ai/artifact/1a5Nx6xTVLuJdCB8Esf2xj#c-wormhole"
+        }
+      ],
+      "audit": [
+        "a04"
+      ],
+      "code": [
+        "non-evm/solana-vault",
+        "non-evm/sui-move-lending",
+        "non-evm/zk-circom-underconstrained"
+      ]
+    },
+    {
+      "title": "账户抽象与 EIP-7702",
+      "chapters": [
+        "s15",
+        "s19",
+        "s29",
+        "w70"
+      ],
+      "labs": [
+        "lab-phishing-signature-lab",
+        "lab-incident-response-sim"
+      ],
+      "code": [
+        "EIP7702.t.sol",
+        "Permit2Style.t.sol"
+      ],
+      "cases": [
+        {
+          "name": "Binance",
+          "url": "https://claude.ai/artifact/1a5Nx6xTVLuJdCB8Esf2xj#c-binance"
+        }
+      ],
+      "audit": [
+        "a03",
+        "t04"
+      ]
+    },
+    {
+      "title": "签名路径与托管",
+      "chapters": [
+        "s18",
+        "s23",
+        "s29",
+        "s20",
+        "w41",
+        "w59",
+        "w69",
+        "w70"
+      ],
+      "labs": [
+        "lab-wallet-scheme-lab",
+        "lab-multisig-review-lab",
+        "lab-incident-response-sim",
+        "lab-audit-safetx"
+      ],
+      "cases": [
+        {
+          "name": "Binance",
+          "url": "https://claude.ai/artifact/1a5Nx6xTVLuJdCB8Esf2xj#c-binance"
+        },
+        {
+          "name": "Bitget",
+          "url": "https://claude.ai/artifact/1a5Nx6xTVLuJdCB8Esf2xj#c-bitget"
+        },
+        {
+          "name": "Bybit",
+          "url": "https://claude.ai/artifact/1a5Nx6xTVLuJdCB8Esf2xj#c-bybit"
+        },
+        {
+          "name": "WazirX",
+          "url": "https://claude.ai/artifact/1a5Nx6xTVLuJdCB8Esf2xj#c-wazirx"
+        },
+        {
+          "name": "Coincheck",
+          "url": "https://claude.ai/artifact/1a5Nx6xTVLuJdCB8Esf2xj#c-coincheck"
+        }
+      ],
+      "audit": [
+        "a03",
+        "a06",
+        "t04",
+        "t06"
+      ]
+    },
+    {
+      "title": "社工、内部人与人身安全",
+      "chapters": [
+        "s21",
+        "s22",
+        "s24",
+        "w62",
+        "w63"
+      ],
+      "labs": [
+        "lab-social-engineering-lab",
+        "lab-personal-risk-lab",
+        "lab-deanonymization-lab"
+      ],
+      "cases": [
+        {
+          "name": "DMM Bitcoin",
+          "url": "https://claude.ai/artifact/1a5Nx6xTVLuJdCB8Esf2xj#c-dmm"
+        },
+        {
+          "name": "Binance",
+          "url": "https://claude.ai/artifact/1a5Nx6xTVLuJdCB8Esf2xj#c-binance"
+        }
+      ],
+      "audit": [
+        "a06",
+        "t06",
+        "t07"
+      ]
+    },
+    {
+      "title": "共识、节点与确认策略",
+      "chapters": [
+        "s16",
+        "s17",
+        "k00",
+        "w03",
+        "w67"
+      ],
+      "labs": [
+        "lab-confirmation-depth-lab",
+        "lab-rpc-quorum-lab",
+        "lab-audit-hashchain",
+        "lab-audit-fee1559"
+      ],
+      "audit": [
+        "a03"
+      ]
+    },
+    {
+      "title": "用户侧防护",
+      "chapters": [
+        "s19",
+        "s22",
+        "w59",
+        "w60",
+        "w65"
+      ],
+      "labs": [
+        "lab-phishing-signature-lab",
+        "lab-address-poisoning-lab",
+        "lab-personal-risk-lab"
+      ]
+    },
+    {
+      "title": "事后追踪与应急",
+      "chapters": [
+        "s25",
+        "a08",
+        "a09",
+        "s28",
+        "w70",
+        "w71",
+        "s23"
+      ],
+      "labs": [
+        "lab-incident-explorer",
+        "lab-incident-response-sim",
+        "lab-audit-trace"
+      ],
+      "cases": [
+        {
+          "name": "Binance",
+          "url": "https://claude.ai/artifact/1a5Nx6xTVLuJdCB8Esf2xj#c-binance"
+        },
+        {
+          "name": "Bybit",
+          "url": "https://claude.ai/artifact/1a5Nx6xTVLuJdCB8Esf2xj#c-bybit"
+        }
+      ],
+      "audit": [
+        "t04",
+        "t06"
+      ]
+    },
+    {
+      "title": "审计方法与工程",
+      "chapters": [
+        "s27",
+        "w06",
+        "w12",
+        "w23",
+        "w28",
+        "w09",
+        "w32",
+        "w36",
+        "w25",
+        "a01",
+        "a02",
+        "a07",
+        "w54",
+        "w55"
+      ],
+      "labs": [
+        "lab-severity-calculator",
+        "lab-audit-fuzz",
+        "lab-audit-checklist",
+        "lab-audit-capstone"
+      ],
+      "code": [
+        "MiniLendPoC.t.sol",
+        "MiniLendInvariant.t.sol"
+      ],
+      "audit": [
+        "t01",
+        "t02",
+        "t03"
+      ]
+    },
+    {
+      "title": "协议实例审计",
+      "chapters": [
+        "w37",
+        "w39",
+        "w40",
+        "w41",
+        "w42",
+        "w36"
+      ],
+      "labs": [
+        "lab-audit-v2k",
+        "lab-audit-hfmatrix",
+        "lab-audit-steth",
+        "lab-audit-safetx",
+        "lab-audit-rounding",
+        "lab-audit-codewalk"
+      ],
+      "audit": [
+        "a04",
+        "t03"
+      ]
+    },
+    {
+      "title": "AI 与安全",
+      "chapters": [
+        "s26",
+        "w54"
+      ],
+      "labs": [
+        "lab-phishing-signature-lab"
+      ],
+      "audit": [
+        "a07"
+      ]
+    },
+    {
+      "title": "上币与项目尽调",
+      "chapters": [
+        "a05",
+        "a10",
+        "s11",
+        "s33"
+      ],
+      "labs": [
+        "lab-listing-scorecard"
+      ],
+      "audit": [
+        "t05"
+      ]
+    },
+    {
+      "title": "递进审计靶场",
+      "chapters": [
+        "w13",
+        "w15",
+        "w19",
+        "w21",
+        "w33",
+        "w34",
+        "w44",
+        "w31",
+        "w25"
+      ],
+      "labs": [
+        "lab-severity-drill",
+        "lab-bootcamp-quiz",
+        "lab-audit-capstone"
+      ],
+      "code": [
+        "code/ranges/*"
+      ],
+      "audit": [
+        "w28",
+        "w14",
+        "t03",
+        "a02"
+      ]
+    },
+    {
+      "title": "零基础起步",
+      "chapters": [
+        "w00",
+        "w02",
+        "w04",
+        "w05",
+        "w06",
+        "w08",
+        "w03"
+      ],
+      "labs": [
+        "lab-learning-paths",
+        "lab-bootcamp-quiz",
+        "lab-audit-hashchain"
+      ],
+      "code": [
+        "code/ranges/basics"
+      ],
+      "audit": [
+        "w28"
+      ]
+    },
+    {
+      "title": "永续与高级 AMM",
+      "chapters": [
+        "w43",
+        "w38",
+        "w18",
+        "s11"
+      ],
+      "labs": [
+        "lab-perp-lab",
+        "lab-audit-amm"
+      ],
+      "code": [
+        "code/ranges/perplite",
+        "code/ranges/clamm"
+      ],
+      "audit": [
+        "a04"
+      ]
+    },
+    {
+      "title": "底层与形式化验证",
+      "chapters": [
+        "w46",
+        "w48",
+        "w50",
+        "w23"
+      ],
+      "labs": [
+        "lab-audit-evm",
+        "lab-audit-abi",
+        "lab-audit-fuzz"
+      ],
+      "code": [
+        "code/ranges/yul",
+        "code/ranges/fv",
+        "code/ranges/abi",
+        "FormalAndFuzzVault.t.sol",
+        "foundry-demos/echidna.yaml"
+      ],
+      "audit": [
+        "a04"
+      ]
+    },
+    {
+      "title": "方法与成长",
+      "chapters": [
+        "w55",
+        "w56",
+        "w29",
+        "w30"
+      ],
+      "labs": [
+        "lab-severity-drill",
+        "lab-certification-mock-exam"
+      ],
+      "audit": [
+        "a02",
+        "a07",
+        "t03"
+      ]
+    },
+    {
+      "title": "威胁建模与系统测试",
+      "chapters": [
+        "a01",
+        "a11",
+        "s01",
+        "s30",
+        "s16"
+      ],
+      "labs": [
+        "lab-threat-model-lab",
+        "lab-certification-mock-exam",
+        "lab-confirmation-depth-lab"
+      ],
+      "audit": [
+        "t02",
+        "t04"
+      ]
+    },
+    {
+      "title": "安全体系与控制矩阵",
+      "chapters": [
+        "x01",
+        "x02",
+        "y10",
+        "y15",
+        "w77"
+      ],
+      "labs": [
+        "lab-control-matrix-lab"
+      ],
+      "cases": [
+        {
+          "id": "s28"
+        }
+      ],
+      "audit": [
+        "t08",
+        "t12",
+        "a01"
+      ]
+    },
+    {
+      "title": "检测、响应与演练",
+      "chapters": [
+        "x05",
+        "x06",
+        "y16",
+        "w79",
+        "w82"
+      ],
+      "labs": [
+        "lab-incident-response-sim"
+      ],
+      "cases": [
+        {
+          "id": "s28"
+        }
+      ],
+      "audit": [
+        "t09",
+        "t10",
+        "a09"
+      ]
+    },
+    {
+      "title": "账户与提币风控",
+      "chapters": [
+        "y11",
+        "y13",
+        "y14",
+        "y16",
+        "y41",
+        "w78"
+      ],
+      "labs": [
+        "lab-risk-rule-tuning-lab"
+      ],
+      "cases": [
+        {
+          "id": "s23"
+        }
+      ],
+      "audit": [
+        "t08",
+        "t12"
+      ]
+    },
+    {
+      "title": "签名服务与资金调拨",
+      "chapters": [
+        "y14",
+        "y38",
+        "s29",
+        "w80"
+      ],
+      "labs": [
+        "lab-signing-policy-lab",
+        "lab-multisig-review-lab"
+      ],
+      "cases": [
+        {
+          "id": "s29"
+        }
+      ],
+      "audit": [
+        "t12",
+        "t11"
+      ]
+    },
+    {
+      "title": "软件交付与供应链运营",
+      "chapters": [
+        "x04",
+        "y37",
+        "s20",
+        "w81",
+        "s32"
+      ],
+      "labs": [],
+      "cases": [
+        {
+          "id": "s20"
+        }
+      ],
+      "audit": [
+        "t04"
+      ],
+      "code": [
+        "non-evm/vyper-reentrancy"
+      ]
+    },
+    {
+      "title": "公链与项目方安全运营",
+      "chapters": [
+        "y31",
+        "y32",
+        "y33",
+        "y34",
+        "y35",
+        "y36"
+      ],
+      "labs": [
+        "lab-multisig-review-lab"
+      ],
+      "cases": [
+        {
+          "id": "s28"
+        }
+      ],
+      "audit": [
+        "t09",
+        "t04",
+        "a07"
+      ]
+    },
+    {
+      "title": "托管、做市与 Agent 平台运营",
+      "chapters": [
+        "y38",
+        "y42",
+        "y43",
+        "y41"
+      ],
+      "labs": [],
+      "cases": [],
+      "audit": [
+        "t11"
+      ]
+    },
+    {
+      "title": "交易所身份与准入：验收与恢复",
+      "chapters": [
+        "y17",
+        "y18",
+        "y19",
+        "y20"
+      ],
+      "labs": [],
+      "cases": [],
+      "audit": []
+    },
+    {
+      "title": "交易与账务：验收、复市与对账",
+      "chapters": [
+        "y21",
+        "y22",
+        "y29",
+        "y30"
+      ],
+      "labs": [],
+      "cases": [],
+      "audit": []
+    },
+    {
+      "title": "钱包与财资：验收与复付",
+      "chapters": [
+        "y23",
+        "y24"
+      ],
+      "labs": [],
+      "cases": [],
+      "audit": []
+    },
+    {
+      "title": "生产数据与反欺诈：验收与恢复",
+      "chapters": [
+        "y25",
+        "y26",
+        "y27",
+        "y28"
+      ],
+      "labs": [],
+      "cases": [],
+      "audit": []
+    },
+    {
+      "title": "NFT、预测市场与再质押运营",
+      "chapters": [
+        "y44",
+        "y45",
+        "y46"
+      ],
+      "labs": [],
+      "cases": [],
+      "audit": []
+    },
+    {
+      "title": "DAO、隐私协议与威胁情报",
+      "chapters": [
+        "y47",
+        "y48",
+        "y07"
+      ],
+      "labs": [],
+      "cases": [],
+      "audit": []
+    },
+    {
+      "title": "移动端、密钥仪式与团队建设",
+      "chapters": [
+        "y39",
+        "y40",
+        "y08",
+        "y09"
+      ],
+      "labs": [],
+      "cases": [],
+      "audit": []
+    },
+    {
+      "title": "模块化、DA、现代 MEV 与中间件",
+      "chapters": [
+        "s31",
+        "k08",
+        "k03",
+        "s16",
+        "s17",
+        "y32"
+      ],
+      "labs": [
+        "lab-rpc-quorum-lab",
+        "lab-confirmation-depth-lab",
+        "lab-chain-porting-lab"
+      ],
+      "cases": [
+        {
+          "id": "s28"
+        }
+      ],
+      "audit": [
+        "a11",
+        "t12"
+      ]
+    },
+    {
+      "title": "dApp 连接层、编译器与硬件底层",
+      "chapters": [
+        "s32",
+        "s18",
+        "s19",
+        "s20",
+        "k06",
+        "y37",
+        "y40"
+      ],
+      "labs": [
+        "lab-phishing-signature-lab",
+        "lab-wallet-scheme-lab"
+      ],
+      "code": [
+        "non-evm/vyper-reentrancy"
+      ],
+      "cases": [
+        {
+          "id": "s28"
+        }
+      ],
+      "audit": [
+        "a06",
+        "t04"
+      ]
+    },
+    {
+      "title": "前沿赛道：FHE、zkML、DePIN、RWA 与 Memecoin",
+      "chapters": [
+        "s33",
+        "s14",
+        "s26",
+        "y34",
+        "y43",
+        "y48"
+      ],
+      "labs": [
+        "lab-listing-scorecard",
+        "lab-zk-constraint-lab"
+      ],
+      "code": [
+        "non-evm/zk-circom-underconstrained"
+      ],
+      "cases": [
+        {
+          "id": "s28"
+        }
+      ],
+      "audit": [
+        "a05",
+        "t05"
+      ]
+    }
+  ]
+}

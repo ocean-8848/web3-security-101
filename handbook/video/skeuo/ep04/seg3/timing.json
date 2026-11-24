@@ -1,0 +1,4560 @@
+{
+ "id": "seg3",
+ "title": "四种重入",
+ "pill": 3,
+ "total": 161.78,
+ "lines": [
+  {
+   "id": "seg3-00",
+   "text": "接下来，按调用栈，一种一种看。",
+   "spoken": "接下来，按掉用栈，一种一种看。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-00.wav",
+   "start": 1.6,
+   "dur": 2.8,
+   "speechStart": 1.6,
+   "speechEnd": 4.171
+  },
+  {
+   "id": "seg3-01",
+   "text": "第一种，单函数重入。",
+   "spoken": "第一种，单函数虫入。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-01.wav",
+   "start": 4.62,
+   "dur": 2.16,
+   "speechStart": 4.721,
+   "speechEnd": 6.562
+  },
+  {
+   "id": "seg3-02",
+   "text": "漏洞版的取款函数，分三步：读余额，转账，清零。",
+   "spoken": "漏洞版的取款函数，分三步：读余额，转账，清零。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-02.wav",
+   "start": 7.0,
+   "dur": 5.12,
+   "speechStart": 7.092,
+   "speechEnd": 11.908
+  },
+  {
+   "id": "seg3-03",
+   "text": "攻击者调用取款。银行读到余额 1 个 ETH，用 call 把钱转过去。",
+   "spoken": "攻击者掉用取款。银航读到余额 1 个 ETH，用 call 把钱转过去。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-03.wav",
+   "start": 12.34,
+   "dur": 5.68,
+   "speechStart": 12.34,
+   "speechEnd": 17.774
+  },
+  {
+   "id": "seg3-04",
+   "text": "攻击合约的 receive 被触发。银行还有钱，它就再调用一次取款。",
+   "spoken": "攻击合约的 receive 被触发。银航还有钱，它就再掉用一次取款。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-04.wav",
+   "start": 18.24,
+   "dur": 5.2,
+   "speechStart": 18.335,
+   "speechEnd": 23.243
+  },
+  {
+   "id": "seg3-05",
+   "text": "第二层读到的余额，还是 1 个。因为第一层的清零，还没执行。",
+   "spoken": "第二层读到的余额，还是 1 个。因为第一层的清零，还没执行。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-05.wav",
+   "start": 23.66,
+   "dur": 4.8,
+   "speechStart": 23.752,
+   "speechEnd": 28.239
+  },
+  {
+   "id": "seg3-06",
+   "text": "一层套一层，直到金库余额不够，递归才停下来。",
+   "spoken": "一层套一层，直到金库余额不够，递归才停下来。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-06.wav",
+   "start": 28.68,
+   "dur": 4.72,
+   "speechStart": 28.77,
+   "speechEnd": 33.206
+  },
+  {
+   "id": "seg3-07",
+   "text": "然后各层依次返回，依次清零。这时钱已经没了。",
+   "spoken": "然后各层依次返回，依次清零。这时钱已经没了。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-07.wav",
+   "start": 33.62,
+   "dur": 5.44,
+   "speechStart": 33.62,
+   "speechEnd": 38.817
+  },
+  {
+   "id": "seg3-08",
+   "text": "递归有上限。gas 和调用深度 1024，都会限制它。所以攻击者会每次取尽量大的金额，减少层数。",
+   "spoken": "递归有上限。gas 和掉用深度 1024，都会限制它。所以攻击者会每次取尽量大的金额，减少层数。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-08.wav",
+   "start": 39.28,
+   "dur": 10.0,
+   "speechStart": 39.28,
+   "speechEnd": 49.093
+  },
+  {
+   "id": "seg3-09",
+   "text": "第二种，跨函数重入。",
+   "spoken": "第二种，跨函数虫入。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-09.wav",
+   "start": 49.5,
+   "dur": 2.32,
+   "speechStart": 49.594,
+   "speechEnd": 51.616
+  },
+  {
+   "id": "seg3-10",
+   "text": "攻击者不回到取款函数，而是进入另一个共享同一份余额的函数，比如转账。",
+   "spoken": "攻击者不回到取款函数，而是进入另一个共享同一份余额的函数，比如转账。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-10.wav",
+   "start": 52.04,
+   "dur": 6.0,
+   "speechStart": 52.135,
+   "speechEnd": 57.853
+  },
+  {
+   "id": "seg3-11",
+   "text": "取款加了重入锁，转账没加。攻击者还能利用回调吗？",
+   "spoken": "取款加了虫入锁，转账没加。攻击者还能利用回掉吗？",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-11.wav",
+   "start": 58.26,
+   "dur": 4.8,
+   "speechStart": 58.26,
+   "speechEnd": 62.809
+  },
+  {
+   "id": "seg3-12",
+   "text": "能。锁只拦截进入被锁函数的调用。",
+   "spoken": "能。锁只拦截进入被锁函数的掉用。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-12.wav",
+   "start": 63.56,
+   "dur": 4.0,
+   "speechStart": 63.56,
+   "speechEnd": 67.337
+  },
+  {
+   "id": "seg3-13",
+   "text": "在回调里，攻击者把还没清零的余额，转给同伙。外层返回之后，才清零。",
+   "spoken": "在回掉里，攻击者把还没清零的余额，转给同伙。外层返回之后，才清零。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-13.wav",
+   "start": 67.78,
+   "dur": 6.08,
+   "speechStart": 67.78,
+   "speechEnd": 73.669
+  },
+  {
+   "id": "seg3-14",
+   "text": "同一笔钱，既被提走了，又被转走了。",
+   "spoken": "同一笔钱，既被提走了，又被转走了。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-14.wav",
+   "start": 74.08,
+   "dur": 3.44,
+   "speechStart": 74.08,
+   "speechEnd": 77.359
+  },
+  {
+   "id": "seg3-15",
+   "text": "2022 年 4 月的 Fei Rari，就是它的真实版本，损失约 8000 万美元。",
+   "spoken": "2022 年 4 月的 Fei Rari，就是它的真实版本，损失约 8000 万美元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-15.wav",
+   "start": 77.74,
+   "dur": 5.84,
+   "speechStart": 77.74,
+   "speechEnd": 83.382
+  },
+  {
+   "id": "seg3-16",
+   "text": "借款函数先用 call 发送 ETH，后写借款记录。",
+   "spoken": "借款函数先用 call 发送 ETH，后写借款记录。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-16.wav",
+   "start": 83.8,
+   "dur": 4.32,
+   "speechStart": 83.892,
+   "speechEnd": 87.951
+  },
+  {
+   "id": "seg3-17",
+   "text": "攻击者在回调里，调用了没有被锁覆盖的退出市场函数，取回了全部抵押品。",
+   "spoken": "攻击者在回掉里，掉用了没有被锁覆盖的退出市场函数，取回了全部抵押品。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-17.wav",
+   "start": 88.34,
+   "dur": 6.56,
+   "speechStart": 88.434,
+   "speechEnd": 94.674
+  },
+  {
+   "id": "seg3-18",
+   "text": "第三种，跨合约重入。",
+   "spoken": "第三种，跨合约虫入。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-18.wav",
+   "start": 95.12,
+   "dur": 2.08,
+   "speechStart": 95.12,
+   "speechEnd": 97.016
+  },
+  {
+   "id": "seg3-19",
+   "text": "协议由多个合约组成，比如金库合约和份额代币合约，它们共享状态。",
+   "spoken": "协议由多个合约组成，比如金库合约和份额代币合约，它们共享状态。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-19.wav",
+   "start": 97.42,
+   "dur": 6.96,
+   "speechStart": 97.42,
+   "speechEnd": 104.207
+  },
+  {
+   "id": "seg3-20",
+   "text": "合约 A 的锁，挡不住对合约 B 的调用。B 此刻读到的，是 A 还没更新的状态。",
+   "spoken": "合约 A 的锁，挡不住对合约 B 的掉用。B 此刻读到的，是 A 还没更新的状态。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-20.wav",
+   "start": 104.6,
+   "dur": 6.88,
+   "speechStart": 104.6,
+   "speechEnd": 111.271
+  },
+  {
+   "id": "seg3-21",
+   "text": "第四种，只读重入，最隐蔽。",
+   "spoken": "第四种，只读虫入，最隐蔽。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-21.wav",
+   "start": 111.7,
+   "dur": 2.64,
+   "speechStart": 111.7,
+   "speechEnd": 114.145
+  },
+  {
+   "id": "seg3-22",
+   "text": "攻击者在回调里不修改目标合约，而是让第三方协议去读它。",
+   "spoken": "攻击者在回掉里不修改目标合约，而是让第三方协议去读它。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-22.wav",
+   "start": 114.56,
+   "dur": 5.44,
+   "speechStart": 114.655,
+   "speechEnd": 119.805
+  },
+  {
+   "id": "seg3-23",
+   "text": "比如一个 AMM 池，移除流动性时，先转出代币，后更新总量。",
+   "spoken": "比如一个 AMM 池，移除流动性时，先转出代币，后更新总量。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-23.wav",
+   "start": 120.22,
+   "dur": 5.44,
+   "speechStart": 120.22,
+   "speechEnd": 125.434
+  },
+  {
+   "id": "seg3-24",
+   "text": "在回调的那一刻，储备已经减少，总量还没减少。",
+   "spoken": "在回掉的那一刻，储备已经减少，总量还没减少。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-24.wav",
+   "start": 125.88,
+   "dur": 4.32,
+   "speechStart": 125.88,
+   "speechEnd": 130.031
+  },
+  {
+   "id": "seg3-25",
+   "text": "这时借贷协议来读池子的价格函数，读到一个被扭曲的价格，再按它放贷或清算。",
+   "spoken": "这时借贷协议来读池子的价格函数，读到一个被扭曲的价格，再按它放贷或清算。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-25.wav",
+   "start": 130.42,
+   "dur": 8.16,
+   "speechStart": 130.42,
+   "speechEnd": 138.324
+  },
+  {
+   "id": "seg3-26",
+   "text": "池子自己的状态，最终是对的。出错的，是在中间时刻读数据的第三方。",
+   "spoken": "池子自己的状态，最终是对的。出错的，是在中间时刻读数据的第三方。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-26.wav",
+   "start": 138.8,
+   "dur": 6.16,
+   "speechStart": 138.8,
+   "speechEnd": 144.782
+  },
+  {
+   "id": "seg3-27",
+   "text": "池子的 view 函数通常不加锁，所以重入锁挡不住。",
+   "spoken": "池子的 view 函数通常不加锁，所以虫入锁挡不住。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-27.wav",
+   "start": 145.18,
+   "dur": 4.48,
+   "speechStart": 145.18,
+   "speechEnd": 149.418
+  },
+  {
+   "id": "seg3-28",
+   "text": "2023 年 2 月的 dForce，就是这样，损失约 360 万美元。",
+   "spoken": "2023 年 2 月的 dForce，就是这样，损失约 360 万美元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-28.wav",
+   "start": 149.88,
+   "dur": 5.04,
+   "speechStart": 149.88,
+   "speechEnd": 154.724
+  },
+  {
+   "id": "seg3-29",
+   "text": "它用 Curve 池在回调期间返回的虚拟价格，给抵押品定价。",
+   "spoken": "它用 Curve 池在回掉期间返回的虚拟价格，给抵押品定价。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg3-29.wav",
+   "start": 155.14,
+   "dur": 5.44,
+   "speechStart": 155.14,
+   "speechEnd": 160.346
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "接",
+   "start": 1.6,
+   "end": 1.765
+  },
+  {
+   "line": 0,
+   "text": "下",
+   "start": 1.765,
+   "end": 1.93
+  },
+  {
+   "line": 0,
+   "text": "来",
+   "start": 1.93,
+   "end": 2.095
+  },
+  {
+   "line": 0,
+   "text": "按",
+   "start": 2.531,
+   "end": 2.68
+  },
+  {
+   "line": 0,
+   "text": "调",
+   "start": 2.68,
+   "end": 2.83
+  },
+  {
+   "line": 0,
+   "text": "用",
+   "start": 2.83,
+   "end": 2.979
+  },
+  {
+   "line": 0,
+   "text": "栈",
+   "start": 2.979,
+   "end": 3.128
+  },
+  {
+   "line": 0,
+   "text": "一",
+   "start": 3.476,
+   "end": 3.615
+  },
+  {
+   "line": 0,
+   "text": "种",
+   "start": 3.615,
+   "end": 3.754
+  },
+  {
+   "line": 0,
+   "text": "一",
+   "start": 3.754,
+   "end": 3.893
+  },
+  {
+   "line": 0,
+   "text": "种",
+   "start": 3.893,
+   "end": 4.032
+  },
+  {
+   "line": 0,
+   "text": "看",
+   "start": 4.032,
+   "end": 4.171
+  },
+  {
+   "line": 1,
+   "text": "第",
+   "start": 4.721,
+   "end": 4.867
+  },
+  {
+   "line": 1,
+   "text": "一",
+   "start": 4.867,
+   "end": 5.013
+  },
+  {
+   "line": 1,
+   "text": "种",
+   "start": 5.013,
+   "end": 5.159
+  },
+  {
+   "line": 1,
+   "text": "单",
+   "start": 5.695,
+   "end": 5.869
+  },
+  {
+   "line": 1,
+   "text": "函",
+   "start": 5.869,
+   "end": 6.042
+  },
+  {
+   "line": 1,
+   "text": "数",
+   "start": 6.042,
+   "end": 6.216
+  },
+  {
+   "line": 1,
+   "text": "重",
+   "start": 6.216,
+   "end": 6.389
+  },
+  {
+   "line": 1,
+   "text": "入",
+   "start": 6.389,
+   "end": 6.562
+  },
+  {
+   "line": 2,
+   "text": "漏",
+   "start": 7.092,
+   "end": 7.366
+  },
+  {
+   "line": 2,
+   "text": "洞",
+   "start": 7.366,
+   "end": 7.641
+  },
+  {
+   "line": 2,
+   "text": "版",
+   "start": 7.641,
+   "end": 7.916
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 7.916,
+   "end": 8.191
+  },
+  {
+   "line": 2,
+   "text": "取",
+   "start": 8.191,
+   "end": 8.466
+  },
+  {
+   "line": 2,
+   "text": "款",
+   "start": 8.466,
+   "end": 8.741
+  },
+  {
+   "line": 2,
+   "text": "函",
+   "start": 8.741,
+   "end": 9.016
+  },
+  {
+   "line": 2,
+   "text": "数",
+   "start": 9.016,
+   "end": 9.291
+  },
+  {
+   "line": 2,
+   "text": "分",
+   "start": 9.63,
+   "end": 9.829
+  },
+  {
+   "line": 2,
+   "text": "三",
+   "start": 9.829,
+   "end": 10.027
+  },
+  {
+   "line": 2,
+   "text": "步",
+   "start": 10.027,
+   "end": 10.225
+  },
+  {
+   "line": 2,
+   "text": "读",
+   "start": 10.607,
+   "end": 10.761
+  },
+  {
+   "line": 2,
+   "text": "余",
+   "start": 10.761,
+   "end": 10.915
+  },
+  {
+   "line": 2,
+   "text": "额",
+   "start": 10.915,
+   "end": 11.069
+  },
+  {
+   "line": 2,
+   "text": "转",
+   "start": 11.439,
+   "end": 11.464
+  },
+  {
+   "line": 2,
+   "text": "账",
+   "start": 11.464,
+   "end": 11.489
+  },
+  {
+   "line": 2,
+   "text": "清",
+   "start": 11.373,
+   "end": 11.64
+  },
+  {
+   "line": 2,
+   "text": "零",
+   "start": 11.64,
+   "end": 11.908
+  },
+  {
+   "line": 3,
+   "text": "攻",
+   "start": 12.34,
+   "end": 12.546
+  },
+  {
+   "line": 3,
+   "text": "击",
+   "start": 12.546,
+   "end": 12.753
+  },
+  {
+   "line": 3,
+   "text": "者",
+   "start": 12.753,
+   "end": 12.959
+  },
+  {
+   "line": 3,
+   "text": "调",
+   "start": 12.959,
+   "end": 13.166
+  },
+  {
+   "line": 3,
+   "text": "用",
+   "start": 13.166,
+   "end": 13.372
+  },
+  {
+   "line": 3,
+   "text": "取",
+   "start": 13.372,
+   "end": 13.578
+  },
+  {
+   "line": 3,
+   "text": "款",
+   "start": 13.578,
+   "end": 13.785
+  },
+  {
+   "line": 3,
+   "text": "银",
+   "start": 14.24,
+   "end": 14.437
+  },
+  {
+   "line": 3,
+   "text": "行",
+   "start": 14.437,
+   "end": 14.634
+  },
+  {
+   "line": 3,
+   "text": "读",
+   "start": 14.634,
+   "end": 14.831
+  },
+  {
+   "line": 3,
+   "text": "到",
+   "start": 14.831,
+   "end": 15.028
+  },
+  {
+   "line": 3,
+   "text": "余",
+   "start": 15.028,
+   "end": 15.225
+  },
+  {
+   "line": 3,
+   "text": "额",
+   "start": 15.225,
+   "end": 15.422
+  },
+  {
+   "line": 3,
+   "text": "1",
+   "start": 15.422,
+   "end": 15.648
+  },
+  {
+   "line": 3,
+   "text": "个",
+   "start": 15.648,
+   "end": 15.845
+  },
+  {
+   "line": 3,
+   "text": "ETH",
+   "start": 15.845,
+   "end": 16.094
+  },
+  {
+   "line": 3,
+   "text": "用",
+   "start": 16.496,
+   "end": 16.663
+  },
+  {
+   "line": 3,
+   "text": "call",
+   "start": 16.663,
+   "end": 16.942
+  },
+  {
+   "line": 3,
+   "text": "把",
+   "start": 16.942,
+   "end": 17.109
+  },
+  {
+   "line": 3,
+   "text": "钱",
+   "start": 17.109,
+   "end": 17.275
+  },
+  {
+   "line": 3,
+   "text": "转",
+   "start": 17.275,
+   "end": 17.442
+  },
+  {
+   "line": 3,
+   "text": "过",
+   "start": 17.442,
+   "end": 17.608
+  },
+  {
+   "line": 3,
+   "text": "去",
+   "start": 17.608,
+   "end": 17.774
+  },
+  {
+   "line": 4,
+   "text": "攻",
+   "start": 18.335,
+   "end": 18.503
+  },
+  {
+   "line": 4,
+   "text": "击",
+   "start": 18.503,
+   "end": 18.672
+  },
+  {
+   "line": 4,
+   "text": "合",
+   "start": 18.672,
+   "end": 18.841
+  },
+  {
+   "line": 4,
+   "text": "约",
+   "start": 18.841,
+   "end": 19.009
+  },
+  {
+   "line": 4,
+   "text": "的",
+   "start": 19.009,
+   "end": 19.178
+  },
+  {
+   "line": 4,
+   "text": "receive",
+   "start": 19.178,
+   "end": 19.674
+  },
+  {
+   "line": 4,
+   "text": "被",
+   "start": 19.674,
+   "end": 19.843
+  },
+  {
+   "line": 4,
+   "text": "触",
+   "start": 19.843,
+   "end": 20.011
+  },
+  {
+   "line": 4,
+   "text": "发",
+   "start": 20.011,
+   "end": 20.18
+  },
+  {
+   "line": 4,
+   "text": "银",
+   "start": 20.497,
+   "end": 20.68
+  },
+  {
+   "line": 4,
+   "text": "行",
+   "start": 20.68,
+   "end": 20.863
+  },
+  {
+   "line": 4,
+   "text": "还",
+   "start": 20.863,
+   "end": 21.046
+  },
+  {
+   "line": 4,
+   "text": "有",
+   "start": 21.046,
+   "end": 21.229
+  },
+  {
+   "line": 4,
+   "text": "钱",
+   "start": 21.229,
+   "end": 21.412
+  },
+  {
+   "line": 4,
+   "text": "它",
+   "start": 21.732,
+   "end": 21.9
+  },
+  {
+   "line": 4,
+   "text": "就",
+   "start": 21.9,
+   "end": 22.067
+  },
+  {
+   "line": 4,
+   "text": "再",
+   "start": 22.067,
+   "end": 22.235
+  },
+  {
+   "line": 4,
+   "text": "调",
+   "start": 22.235,
+   "end": 22.403
+  },
+  {
+   "line": 4,
+   "text": "用",
+   "start": 22.403,
+   "end": 22.571
+  },
+  {
+   "line": 4,
+   "text": "一",
+   "start": 22.571,
+   "end": 22.739
+  },
+  {
+   "line": 4,
+   "text": "次",
+   "start": 22.739,
+   "end": 22.907
+  },
+  {
+   "line": 4,
+   "text": "取",
+   "start": 22.907,
+   "end": 23.075
+  },
+  {
+   "line": 4,
+   "text": "款",
+   "start": 23.075,
+   "end": 23.243
+  },
+  {
+   "line": 5,
+   "text": "第",
+   "start": 23.752,
+   "end": 23.909
+  },
+  {
+   "line": 5,
+   "text": "二",
+   "start": 23.909,
+   "end": 24.066
+  },
+  {
+   "line": 5,
+   "text": "层",
+   "start": 24.066,
+   "end": 24.223
+  },
+  {
+   "line": 5,
+   "text": "读",
+   "start": 24.223,
+   "end": 24.38
+  },
+  {
+   "line": 5,
+   "text": "到",
+   "start": 24.38,
+   "end": 24.536
+  },
+  {
+   "line": 5,
+   "text": "的",
+   "start": 24.536,
+   "end": 24.693
+  },
+  {
+   "line": 5,
+   "text": "余",
+   "start": 24.693,
+   "end": 24.85
+  },
+  {
+   "line": 5,
+   "text": "额",
+   "start": 24.85,
+   "end": 25.007
+  },
+  {
+   "line": 5,
+   "text": "还",
+   "start": 25.159,
+   "end": 25.306
+  },
+  {
+   "line": 5,
+   "text": "是",
+   "start": 25.306,
+   "end": 25.452
+  },
+  {
+   "line": 5,
+   "text": "1",
+   "start": 25.452,
+   "end": 25.62
+  },
+  {
+   "line": 5,
+   "text": "个",
+   "start": 25.62,
+   "end": 25.766
+  },
+  {
+   "line": 5,
+   "text": "因",
+   "start": 26.178,
+   "end": 26.337
+  },
+  {
+   "line": 5,
+   "text": "为",
+   "start": 26.337,
+   "end": 26.496
+  },
+  {
+   "line": 5,
+   "text": "第",
+   "start": 26.496,
+   "end": 26.656
+  },
+  {
+   "line": 5,
+   "text": "一",
+   "start": 26.656,
+   "end": 26.815
+  },
+  {
+   "line": 5,
+   "text": "层",
+   "start": 26.815,
+   "end": 26.974
+  },
+  {
+   "line": 5,
+   "text": "的",
+   "start": 26.974,
+   "end": 27.133
+  },
+  {
+   "line": 5,
+   "text": "清",
+   "start": 27.133,
+   "end": 27.292
+  },
+  {
+   "line": 5,
+   "text": "零",
+   "start": 27.292,
+   "end": 27.451
+  },
+  {
+   "line": 5,
+   "text": "还",
+   "start": 27.574,
+   "end": 27.74
+  },
+  {
+   "line": 5,
+   "text": "没",
+   "start": 27.74,
+   "end": 27.907
+  },
+  {
+   "line": 5,
+   "text": "执",
+   "start": 27.907,
+   "end": 28.073
+  },
+  {
+   "line": 5,
+   "text": "行",
+   "start": 28.073,
+   "end": 28.239
+  },
+  {
+   "line": 6,
+   "text": "一",
+   "start": 28.77,
+   "end": 28.963
+  },
+  {
+   "line": 6,
+   "text": "层",
+   "start": 28.963,
+   "end": 29.157
+  },
+  {
+   "line": 6,
+   "text": "套",
+   "start": 29.157,
+   "end": 29.35
+  },
+  {
+   "line": 6,
+   "text": "一",
+   "start": 29.35,
+   "end": 29.543
+  },
+  {
+   "line": 6,
+   "text": "层",
+   "start": 29.543,
+   "end": 29.736
+  },
+  {
+   "line": 6,
+   "text": "直",
+   "start": 30.408,
+   "end": 30.588
+  },
+  {
+   "line": 6,
+   "text": "到",
+   "start": 30.588,
+   "end": 30.768
+  },
+  {
+   "line": 6,
+   "text": "金",
+   "start": 30.768,
+   "end": 30.948
+  },
+  {
+   "line": 6,
+   "text": "库",
+   "start": 30.948,
+   "end": 31.128
+  },
+  {
+   "line": 6,
+   "text": "余",
+   "start": 31.128,
+   "end": 31.308
+  },
+  {
+   "line": 6,
+   "text": "额",
+   "start": 31.308,
+   "end": 31.488
+  },
+  {
+   "line": 6,
+   "text": "不",
+   "start": 31.488,
+   "end": 31.668
+  },
+  {
+   "line": 6,
+   "text": "够",
+   "start": 31.668,
+   "end": 31.849
+  },
+  {
+   "line": 6,
+   "text": "递",
+   "start": 32.217,
+   "end": 32.382
+  },
+  {
+   "line": 6,
+   "text": "归",
+   "start": 32.382,
+   "end": 32.547
+  },
+  {
+   "line": 6,
+   "text": "才",
+   "start": 32.547,
+   "end": 32.712
+  },
+  {
+   "line": 6,
+   "text": "停",
+   "start": 32.712,
+   "end": 32.876
+  },
+  {
+   "line": 6,
+   "text": "下",
+   "start": 32.876,
+   "end": 33.041
+  },
+  {
+   "line": 6,
+   "text": "来",
+   "start": 33.041,
+   "end": 33.206
+  },
+  {
+   "line": 7,
+   "text": "然",
+   "start": 33.62,
+   "end": 33.862
+  },
+  {
+   "line": 7,
+   "text": "后",
+   "start": 33.862,
+   "end": 34.104
+  },
+  {
+   "line": 7,
+   "text": "各",
+   "start": 34.104,
+   "end": 34.346
+  },
+  {
+   "line": 7,
+   "text": "层",
+   "start": 34.346,
+   "end": 34.588
+  },
+  {
+   "line": 7,
+   "text": "依",
+   "start": 34.588,
+   "end": 34.83
+  },
+  {
+   "line": 7,
+   "text": "次",
+   "start": 34.83,
+   "end": 35.072
+  },
+  {
+   "line": 7,
+   "text": "返",
+   "start": 35.072,
+   "end": 35.314
+  },
+  {
+   "line": 7,
+   "text": "回",
+   "start": 35.314,
+   "end": 35.556
+  },
+  {
+   "line": 7,
+   "text": "依",
+   "start": 35.709,
+   "end": 35.885
+  },
+  {
+   "line": 7,
+   "text": "次",
+   "start": 35.885,
+   "end": 36.061
+  },
+  {
+   "line": 7,
+   "text": "清",
+   "start": 36.061,
+   "end": 36.237
+  },
+  {
+   "line": 7,
+   "text": "零",
+   "start": 36.237,
+   "end": 36.413
+  },
+  {
+   "line": 7,
+   "text": "这",
+   "start": 37.166,
+   "end": 37.402
+  },
+  {
+   "line": 7,
+   "text": "时",
+   "start": 37.402,
+   "end": 37.637
+  },
+  {
+   "line": 7,
+   "text": "钱",
+   "start": 37.637,
+   "end": 37.873
+  },
+  {
+   "line": 7,
+   "text": "已",
+   "start": 37.873,
+   "end": 38.109
+  },
+  {
+   "line": 7,
+   "text": "经",
+   "start": 38.109,
+   "end": 38.345
+  },
+  {
+   "line": 7,
+   "text": "没",
+   "start": 38.345,
+   "end": 38.581
+  },
+  {
+   "line": 7,
+   "text": "了",
+   "start": 38.581,
+   "end": 38.817
+  },
+  {
+   "line": 8,
+   "text": "递",
+   "start": 39.28,
+   "end": 39.489
+  },
+  {
+   "line": 8,
+   "text": "归",
+   "start": 39.489,
+   "end": 39.698
+  },
+  {
+   "line": 8,
+   "text": "有",
+   "start": 39.698,
+   "end": 39.908
+  },
+  {
+   "line": 8,
+   "text": "上",
+   "start": 39.908,
+   "end": 40.117
+  },
+  {
+   "line": 8,
+   "text": "限",
+   "start": 40.117,
+   "end": 40.326
+  },
+  {
+   "line": 8,
+   "text": "gas",
+   "start": 41.136,
+   "end": 41.317
+  },
+  {
+   "line": 8,
+   "text": "和",
+   "start": 41.317,
+   "end": 41.461
+  },
+  {
+   "line": 8,
+   "text": "调",
+   "start": 41.461,
+   "end": 41.606
+  },
+  {
+   "line": 8,
+   "text": "用",
+   "start": 41.606,
+   "end": 41.75
+  },
+  {
+   "line": 8,
+   "text": "深",
+   "start": 41.75,
+   "end": 41.894
+  },
+  {
+   "line": 8,
+   "text": "度",
+   "start": 41.894,
+   "end": 42.038
+  },
+  {
+   "line": 8,
+   "text": "1024",
+   "start": 42.038,
+   "end": 42.571
+  },
+  {
+   "line": 8,
+   "text": "都",
+   "start": 42.825,
+   "end": 43.018
+  },
+  {
+   "line": 8,
+   "text": "会",
+   "start": 43.018,
+   "end": 43.211
+  },
+  {
+   "line": 8,
+   "text": "限",
+   "start": 43.211,
+   "end": 43.404
+  },
+  {
+   "line": 8,
+   "text": "制",
+   "start": 43.404,
+   "end": 43.596
+  },
+  {
+   "line": 8,
+   "text": "它",
+   "start": 43.596,
+   "end": 43.789
+  },
+  {
+   "line": 8,
+   "text": "所",
+   "start": 44.052,
+   "end": 44.328
+  },
+  {
+   "line": 8,
+   "text": "以",
+   "start": 44.328,
+   "end": 44.603
+  },
+  {
+   "line": 8,
+   "text": "攻",
+   "start": 44.603,
+   "end": 44.879
+  },
+  {
+   "line": 8,
+   "text": "击",
+   "start": 44.879,
+   "end": 45.155
+  },
+  {
+   "line": 8,
+   "text": "者",
+   "start": 45.155,
+   "end": 45.43
+  },
+  {
+   "line": 8,
+   "text": "会",
+   "start": 45.43,
+   "end": 45.706
+  },
+  {
+   "line": 8,
+   "text": "每",
+   "start": 45.706,
+   "end": 45.982
+  },
+  {
+   "line": 8,
+   "text": "次",
+   "start": 45.982,
+   "end": 46.257
+  },
+  {
+   "line": 8,
+   "text": "取",
+   "start": 46.257,
+   "end": 46.533
+  },
+  {
+   "line": 8,
+   "text": "尽",
+   "start": 46.533,
+   "end": 46.809
+  },
+  {
+   "line": 8,
+   "text": "量",
+   "start": 46.809,
+   "end": 47.085
+  },
+  {
+   "line": 8,
+   "text": "大",
+   "start": 47.085,
+   "end": 47.36
+  },
+  {
+   "line": 8,
+   "text": "的",
+   "start": 47.36,
+   "end": 47.636
+  },
+  {
+   "line": 8,
+   "text": "金",
+   "start": 47.636,
+   "end": 47.912
+  },
+  {
+   "line": 8,
+   "text": "额",
+   "start": 47.912,
+   "end": 48.187
+  },
+  {
+   "line": 8,
+   "text": "减",
+   "start": 48.362,
+   "end": 48.545
+  },
+  {
+   "line": 8,
+   "text": "少",
+   "start": 48.545,
+   "end": 48.727
+  },
+  {
+   "line": 8,
+   "text": "层",
+   "start": 48.727,
+   "end": 48.91
+  },
+  {
+   "line": 8,
+   "text": "数",
+   "start": 48.91,
+   "end": 49.093
+  },
+  {
+   "line": 9,
+   "text": "第",
+   "start": 49.594,
+   "end": 49.763
+  },
+  {
+   "line": 9,
+   "text": "二",
+   "start": 49.763,
+   "end": 49.932
+  },
+  {
+   "line": 9,
+   "text": "种",
+   "start": 49.932,
+   "end": 50.101
+  },
+  {
+   "line": 9,
+   "text": "跨",
+   "start": 50.406,
+   "end": 50.648
+  },
+  {
+   "line": 9,
+   "text": "函",
+   "start": 50.648,
+   "end": 50.89
+  },
+  {
+   "line": 9,
+   "text": "数",
+   "start": 50.89,
+   "end": 51.132
+  },
+  {
+   "line": 9,
+   "text": "重",
+   "start": 51.132,
+   "end": 51.374
+  },
+  {
+   "line": 9,
+   "text": "入",
+   "start": 51.374,
+   "end": 51.616
+  },
+  {
+   "line": 10,
+   "text": "攻",
+   "start": 52.135,
+   "end": 52.301
+  },
+  {
+   "line": 10,
+   "text": "击",
+   "start": 52.301,
+   "end": 52.468
+  },
+  {
+   "line": 10,
+   "text": "者",
+   "start": 52.468,
+   "end": 52.634
+  },
+  {
+   "line": 10,
+   "text": "不",
+   "start": 52.634,
+   "end": 52.8
+  },
+  {
+   "line": 10,
+   "text": "回",
+   "start": 52.8,
+   "end": 52.966
+  },
+  {
+   "line": 10,
+   "text": "到",
+   "start": 52.966,
+   "end": 53.132
+  },
+  {
+   "line": 10,
+   "text": "取",
+   "start": 53.132,
+   "end": 53.298
+  },
+  {
+   "line": 10,
+   "text": "款",
+   "start": 53.298,
+   "end": 53.464
+  },
+  {
+   "line": 10,
+   "text": "函",
+   "start": 53.464,
+   "end": 53.631
+  },
+  {
+   "line": 10,
+   "text": "数",
+   "start": 53.631,
+   "end": 53.797
+  },
+  {
+   "line": 10,
+   "text": "而",
+   "start": 54.092,
+   "end": 54.259
+  },
+  {
+   "line": 10,
+   "text": "是",
+   "start": 54.259,
+   "end": 54.426
+  },
+  {
+   "line": 10,
+   "text": "进",
+   "start": 54.426,
+   "end": 54.594
+  },
+  {
+   "line": 10,
+   "text": "入",
+   "start": 54.594,
+   "end": 54.761
+  },
+  {
+   "line": 10,
+   "text": "另",
+   "start": 54.761,
+   "end": 54.928
+  },
+  {
+   "line": 10,
+   "text": "一",
+   "start": 54.928,
+   "end": 55.095
+  },
+  {
+   "line": 10,
+   "text": "个",
+   "start": 55.095,
+   "end": 55.262
+  },
+  {
+   "line": 10,
+   "text": "共",
+   "start": 55.262,
+   "end": 55.43
+  },
+  {
+   "line": 10,
+   "text": "享",
+   "start": 55.43,
+   "end": 55.597
+  },
+  {
+   "line": 10,
+   "text": "同",
+   "start": 55.597,
+   "end": 55.764
+  },
+  {
+   "line": 10,
+   "text": "一",
+   "start": 55.764,
+   "end": 55.931
+  },
+  {
+   "line": 10,
+   "text": "份",
+   "start": 55.931,
+   "end": 56.099
+  },
+  {
+   "line": 10,
+   "text": "余",
+   "start": 56.099,
+   "end": 56.266
+  },
+  {
+   "line": 10,
+   "text": "额",
+   "start": 56.266,
+   "end": 56.433
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 56.433,
+   "end": 56.6
+  },
+  {
+   "line": 10,
+   "text": "函",
+   "start": 56.6,
+   "end": 56.767
+  },
+  {
+   "line": 10,
+   "text": "数",
+   "start": 56.767,
+   "end": 56.935
+  },
+  {
+   "line": 10,
+   "text": "比",
+   "start": 57.268,
+   "end": 57.415
+  },
+  {
+   "line": 10,
+   "text": "如",
+   "start": 57.415,
+   "end": 57.561
+  },
+  {
+   "line": 10,
+   "text": "转",
+   "start": 57.561,
+   "end": 57.707
+  },
+  {
+   "line": 10,
+   "text": "账",
+   "start": 57.707,
+   "end": 57.853
+  },
+  {
+   "line": 11,
+   "text": "取",
+   "start": 58.26,
+   "end": 58.487
+  },
+  {
+   "line": 11,
+   "text": "款",
+   "start": 58.487,
+   "end": 58.715
+  },
+  {
+   "line": 11,
+   "text": "加",
+   "start": 58.715,
+   "end": 58.942
+  },
+  {
+   "line": 11,
+   "text": "了",
+   "start": 58.942,
+   "end": 59.17
+  },
+  {
+   "line": 11,
+   "text": "重",
+   "start": 59.17,
+   "end": 59.397
+  },
+  {
+   "line": 11,
+   "text": "入",
+   "start": 59.397,
+   "end": 59.625
+  },
+  {
+   "line": 11,
+   "text": "锁",
+   "start": 59.625,
+   "end": 59.852
+  },
+  {
+   "line": 11,
+   "text": "转",
+   "start": 60.063,
+   "end": 60.227
+  },
+  {
+   "line": 11,
+   "text": "账",
+   "start": 60.227,
+   "end": 60.391
+  },
+  {
+   "line": 11,
+   "text": "没",
+   "start": 60.391,
+   "end": 60.555
+  },
+  {
+   "line": 11,
+   "text": "加",
+   "start": 60.555,
+   "end": 60.719
+  },
+  {
+   "line": 11,
+   "text": "攻",
+   "start": 61.164,
+   "end": 61.329
+  },
+  {
+   "line": 11,
+   "text": "击",
+   "start": 61.329,
+   "end": 61.493
+  },
+  {
+   "line": 11,
+   "text": "者",
+   "start": 61.493,
+   "end": 61.658
+  },
+  {
+   "line": 11,
+   "text": "还",
+   "start": 61.658,
+   "end": 61.822
+  },
+  {
+   "line": 11,
+   "text": "能",
+   "start": 61.822,
+   "end": 61.987
+  },
+  {
+   "line": 11,
+   "text": "利",
+   "start": 61.987,
+   "end": 62.151
+  },
+  {
+   "line": 11,
+   "text": "用",
+   "start": 62.151,
+   "end": 62.316
+  },
+  {
+   "line": 11,
+   "text": "回",
+   "start": 62.316,
+   "end": 62.48
+  },
+  {
+   "line": 11,
+   "text": "调",
+   "start": 62.48,
+   "end": 62.645
+  },
+  {
+   "line": 11,
+   "text": "吗",
+   "start": 62.645,
+   "end": 62.809
+  },
+  {
+   "line": 12,
+   "text": "能",
+   "start": 63.56,
+   "end": 63.892
+  },
+  {
+   "line": 12,
+   "text": "锁",
+   "start": 64.727,
+   "end": 64.928
+  },
+  {
+   "line": 12,
+   "text": "只",
+   "start": 64.928,
+   "end": 65.129
+  },
+  {
+   "line": 12,
+   "text": "拦",
+   "start": 65.129,
+   "end": 65.329
+  },
+  {
+   "line": 12,
+   "text": "截",
+   "start": 65.329,
+   "end": 65.53
+  },
+  {
+   "line": 12,
+   "text": "进",
+   "start": 65.53,
+   "end": 65.731
+  },
+  {
+   "line": 12,
+   "text": "入",
+   "start": 65.731,
+   "end": 65.932
+  },
+  {
+   "line": 12,
+   "text": "被",
+   "start": 65.932,
+   "end": 66.132
+  },
+  {
+   "line": 12,
+   "text": "锁",
+   "start": 66.132,
+   "end": 66.333
+  },
+  {
+   "line": 12,
+   "text": "函",
+   "start": 66.333,
+   "end": 66.534
+  },
+  {
+   "line": 12,
+   "text": "数",
+   "start": 66.534,
+   "end": 66.735
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 66.735,
+   "end": 66.935
+  },
+  {
+   "line": 12,
+   "text": "调",
+   "start": 66.935,
+   "end": 67.136
+  },
+  {
+   "line": 12,
+   "text": "用",
+   "start": 67.136,
+   "end": 67.337
+  },
+  {
+   "line": 13,
+   "text": "在",
+   "start": 67.78,
+   "end": 67.954
+  },
+  {
+   "line": 13,
+   "text": "回",
+   "start": 67.954,
+   "end": 68.127
+  },
+  {
+   "line": 13,
+   "text": "调",
+   "start": 68.127,
+   "end": 68.301
+  },
+  {
+   "line": 13,
+   "text": "里",
+   "start": 68.301,
+   "end": 68.475
+  },
+  {
+   "line": 13,
+   "text": "攻",
+   "start": 68.82,
+   "end": 68.992
+  },
+  {
+   "line": 13,
+   "text": "击",
+   "start": 68.992,
+   "end": 69.164
+  },
+  {
+   "line": 13,
+   "text": "者",
+   "start": 69.164,
+   "end": 69.336
+  },
+  {
+   "line": 13,
+   "text": "把",
+   "start": 69.336,
+   "end": 69.508
+  },
+  {
+   "line": 13,
+   "text": "还",
+   "start": 69.508,
+   "end": 69.68
+  },
+  {
+   "line": 13,
+   "text": "没",
+   "start": 69.68,
+   "end": 69.852
+  },
+  {
+   "line": 13,
+   "text": "清",
+   "start": 69.852,
+   "end": 70.024
+  },
+  {
+   "line": 13,
+   "text": "零",
+   "start": 70.024,
+   "end": 70.196
+  },
+  {
+   "line": 13,
+   "text": "的",
+   "start": 70.196,
+   "end": 70.368
+  },
+  {
+   "line": 13,
+   "text": "余",
+   "start": 70.368,
+   "end": 70.54
+  },
+  {
+   "line": 13,
+   "text": "额",
+   "start": 70.54,
+   "end": 70.712
+  },
+  {
+   "line": 13,
+   "text": "转",
+   "start": 70.953,
+   "end": 71.127
+  },
+  {
+   "line": 13,
+   "text": "给",
+   "start": 71.127,
+   "end": 71.301
+  },
+  {
+   "line": 13,
+   "text": "同",
+   "start": 71.301,
+   "end": 71.475
+  },
+  {
+   "line": 13,
+   "text": "伙",
+   "start": 71.475,
+   "end": 71.65
+  },
+  {
+   "line": 13,
+   "text": "外",
+   "start": 72.056,
+   "end": 72.21
+  },
+  {
+   "line": 13,
+   "text": "层",
+   "start": 72.21,
+   "end": 72.364
+  },
+  {
+   "line": 13,
+   "text": "返",
+   "start": 72.364,
+   "end": 72.518
+  },
+  {
+   "line": 13,
+   "text": "回",
+   "start": 72.518,
+   "end": 72.672
+  },
+  {
+   "line": 13,
+   "text": "之",
+   "start": 72.672,
+   "end": 72.826
+  },
+  {
+   "line": 13,
+   "text": "后",
+   "start": 72.826,
+   "end": 72.98
+  },
+  {
+   "line": 13,
+   "text": "才",
+   "start": 73.142,
+   "end": 73.318
+  },
+  {
+   "line": 13,
+   "text": "清",
+   "start": 73.318,
+   "end": 73.493
+  },
+  {
+   "line": 13,
+   "text": "零",
+   "start": 73.493,
+   "end": 73.669
+  },
+  {
+   "line": 14,
+   "text": "同",
+   "start": 74.08,
+   "end": 74.283
+  },
+  {
+   "line": 14,
+   "text": "一",
+   "start": 74.283,
+   "end": 74.487
+  },
+  {
+   "line": 14,
+   "text": "笔",
+   "start": 74.487,
+   "end": 74.69
+  },
+  {
+   "line": 14,
+   "text": "钱",
+   "start": 74.69,
+   "end": 74.893
+  },
+  {
+   "line": 14,
+   "text": "既",
+   "start": 75.162,
+   "end": 75.356
+  },
+  {
+   "line": 14,
+   "text": "被",
+   "start": 75.356,
+   "end": 75.55
+  },
+  {
+   "line": 14,
+   "text": "提",
+   "start": 75.55,
+   "end": 75.744
+  },
+  {
+   "line": 14,
+   "text": "走",
+   "start": 75.744,
+   "end": 75.938
+  },
+  {
+   "line": 14,
+   "text": "了",
+   "start": 75.938,
+   "end": 76.132
+  },
+  {
+   "line": 14,
+   "text": "又",
+   "start": 76.429,
+   "end": 76.615
+  },
+  {
+   "line": 14,
+   "text": "被",
+   "start": 76.615,
+   "end": 76.801
+  },
+  {
+   "line": 14,
+   "text": "转",
+   "start": 76.801,
+   "end": 76.987
+  },
+  {
+   "line": 14,
+   "text": "走",
+   "start": 76.987,
+   "end": 77.173
+  },
+  {
+   "line": 14,
+   "text": "了",
+   "start": 77.173,
+   "end": 77.359
+  },
+  {
+   "line": 15,
+   "text": "2022",
+   "start": 77.74,
+   "end": 78.416
+  },
+  {
+   "line": 15,
+   "text": "年",
+   "start": 78.416,
+   "end": 78.598
+  },
+  {
+   "line": 15,
+   "text": "4",
+   "start": 78.598,
+   "end": 78.808
+  },
+  {
+   "line": 15,
+   "text": "月",
+   "start": 78.808,
+   "end": 78.991
+  },
+  {
+   "line": 15,
+   "text": "的",
+   "start": 78.991,
+   "end": 79.174
+  },
+  {
+   "line": 15,
+   "text": "Fei",
+   "start": 79.174,
+   "end": 79.404
+  },
+  {
+   "line": 15,
+   "text": "Rari",
+   "start": 79.404,
+   "end": 79.711
+  },
+  {
+   "line": 15,
+   "text": "就",
+   "start": 80.138,
+   "end": 80.292
+  },
+  {
+   "line": 15,
+   "text": "是",
+   "start": 80.292,
+   "end": 80.446
+  },
+  {
+   "line": 15,
+   "text": "它",
+   "start": 80.446,
+   "end": 80.6
+  },
+  {
+   "line": 15,
+   "text": "的",
+   "start": 80.6,
+   "end": 80.754
+  },
+  {
+   "line": 15,
+   "text": "真",
+   "start": 80.754,
+   "end": 80.909
+  },
+  {
+   "line": 15,
+   "text": "实",
+   "start": 80.909,
+   "end": 81.063
+  },
+  {
+   "line": 15,
+   "text": "版",
+   "start": 81.063,
+   "end": 81.217
+  },
+  {
+   "line": 15,
+   "text": "本",
+   "start": 81.217,
+   "end": 81.371
+  },
+  {
+   "line": 15,
+   "text": "损",
+   "start": 81.801,
+   "end": 81.964
+  },
+  {
+   "line": 15,
+   "text": "失",
+   "start": 81.964,
+   "end": 82.127
+  },
+  {
+   "line": 15,
+   "text": "约",
+   "start": 82.127,
+   "end": 82.29
+  },
+  {
+   "line": 15,
+   "text": "8000",
+   "start": 82.29,
+   "end": 82.893
+  },
+  {
+   "line": 15,
+   "text": "万",
+   "start": 82.893,
+   "end": 83.056
+  },
+  {
+   "line": 15,
+   "text": "美",
+   "start": 83.056,
+   "end": 83.219
+  },
+  {
+   "line": 15,
+   "text": "元",
+   "start": 83.219,
+   "end": 83.382
+  },
+  {
+   "line": 16,
+   "text": "借",
+   "start": 83.892,
+   "end": 84.128
+  },
+  {
+   "line": 16,
+   "text": "款",
+   "start": 84.128,
+   "end": 84.364
+  },
+  {
+   "line": 16,
+   "text": "函",
+   "start": 84.364,
+   "end": 84.599
+  },
+  {
+   "line": 16,
+   "text": "数",
+   "start": 84.599,
+   "end": 84.835
+  },
+  {
+   "line": 16,
+   "text": "先",
+   "start": 84.835,
+   "end": 85.071
+  },
+  {
+   "line": 16,
+   "text": "用",
+   "start": 85.071,
+   "end": 85.306
+  },
+  {
+   "line": 16,
+   "text": "call",
+   "start": 85.306,
+   "end": 85.702
+  },
+  {
+   "line": 16,
+   "text": "发",
+   "start": 85.702,
+   "end": 85.938
+  },
+  {
+   "line": 16,
+   "text": "送",
+   "start": 85.938,
+   "end": 86.174
+  },
+  {
+   "line": 16,
+   "text": "ETH",
+   "start": 86.174,
+   "end": 86.471
+  },
+  {
+   "line": 16,
+   "text": "后",
+   "start": 86.884,
+   "end": 87.062
+  },
+  {
+   "line": 16,
+   "text": "写",
+   "start": 87.062,
+   "end": 87.239
+  },
+  {
+   "line": 16,
+   "text": "借",
+   "start": 87.239,
+   "end": 87.417
+  },
+  {
+   "line": 16,
+   "text": "款",
+   "start": 87.417,
+   "end": 87.595
+  },
+  {
+   "line": 16,
+   "text": "记",
+   "start": 87.595,
+   "end": 87.773
+  },
+  {
+   "line": 16,
+   "text": "录",
+   "start": 87.773,
+   "end": 87.951
+  },
+  {
+   "line": 17,
+   "text": "攻",
+   "start": 88.434,
+   "end": 88.617
+  },
+  {
+   "line": 17,
+   "text": "击",
+   "start": 88.617,
+   "end": 88.799
+  },
+  {
+   "line": 17,
+   "text": "者",
+   "start": 88.799,
+   "end": 88.982
+  },
+  {
+   "line": 17,
+   "text": "在",
+   "start": 88.982,
+   "end": 89.165
+  },
+  {
+   "line": 17,
+   "text": "回",
+   "start": 89.165,
+   "end": 89.347
+  },
+  {
+   "line": 17,
+   "text": "调",
+   "start": 89.347,
+   "end": 89.53
+  },
+  {
+   "line": 17,
+   "text": "里",
+   "start": 89.53,
+   "end": 89.712
+  },
+  {
+   "line": 17,
+   "text": "调",
+   "start": 89.959,
+   "end": 90.14
+  },
+  {
+   "line": 17,
+   "text": "用",
+   "start": 90.14,
+   "end": 90.321
+  },
+  {
+   "line": 17,
+   "text": "了",
+   "start": 90.321,
+   "end": 90.501
+  },
+  {
+   "line": 17,
+   "text": "没",
+   "start": 90.501,
+   "end": 90.682
+  },
+  {
+   "line": 17,
+   "text": "有",
+   "start": 90.682,
+   "end": 90.863
+  },
+  {
+   "line": 17,
+   "text": "被",
+   "start": 90.863,
+   "end": 91.043
+  },
+  {
+   "line": 17,
+   "text": "锁",
+   "start": 91.043,
+   "end": 91.224
+  },
+  {
+   "line": 17,
+   "text": "覆",
+   "start": 91.224,
+   "end": 91.404
+  },
+  {
+   "line": 17,
+   "text": "盖",
+   "start": 91.404,
+   "end": 91.585
+  },
+  {
+   "line": 17,
+   "text": "的",
+   "start": 91.585,
+   "end": 91.766
+  },
+  {
+   "line": 17,
+   "text": "退",
+   "start": 91.766,
+   "end": 91.946
+  },
+  {
+   "line": 17,
+   "text": "出",
+   "start": 91.946,
+   "end": 92.127
+  },
+  {
+   "line": 17,
+   "text": "市",
+   "start": 92.127,
+   "end": 92.308
+  },
+  {
+   "line": 17,
+   "text": "场",
+   "start": 92.308,
+   "end": 92.488
+  },
+  {
+   "line": 17,
+   "text": "函",
+   "start": 92.488,
+   "end": 92.669
+  },
+  {
+   "line": 17,
+   "text": "数",
+   "start": 92.669,
+   "end": 92.85
+  },
+  {
+   "line": 17,
+   "text": "取",
+   "start": 93.193,
+   "end": 93.378
+  },
+  {
+   "line": 17,
+   "text": "回",
+   "start": 93.378,
+   "end": 93.563
+  },
+  {
+   "line": 17,
+   "text": "了",
+   "start": 93.563,
+   "end": 93.748
+  },
+  {
+   "line": 17,
+   "text": "全",
+   "start": 93.748,
+   "end": 93.934
+  },
+  {
+   "line": 17,
+   "text": "部",
+   "start": 93.934,
+   "end": 94.119
+  },
+  {
+   "line": 17,
+   "text": "抵",
+   "start": 94.119,
+   "end": 94.304
+  },
+  {
+   "line": 17,
+   "text": "押",
+   "start": 94.304,
+   "end": 94.489
+  },
+  {
+   "line": 17,
+   "text": "品",
+   "start": 94.489,
+   "end": 94.674
+  },
+  {
+   "line": 18,
+   "text": "第",
+   "start": 95.12,
+   "end": 95.307
+  },
+  {
+   "line": 18,
+   "text": "三",
+   "start": 95.307,
+   "end": 95.494
+  },
+  {
+   "line": 18,
+   "text": "种",
+   "start": 95.494,
+   "end": 95.681
+  },
+  {
+   "line": 18,
+   "text": "跨",
+   "start": 96.024,
+   "end": 96.222
+  },
+  {
+   "line": 18,
+   "text": "合",
+   "start": 96.222,
+   "end": 96.42
+  },
+  {
+   "line": 18,
+   "text": "约",
+   "start": 96.42,
+   "end": 96.619
+  },
+  {
+   "line": 18,
+   "text": "重",
+   "start": 96.619,
+   "end": 96.817
+  },
+  {
+   "line": 18,
+   "text": "入",
+   "start": 96.817,
+   "end": 97.016
+  },
+  {
+   "line": 19,
+   "text": "协",
+   "start": 97.42,
+   "end": 97.629
+  },
+  {
+   "line": 19,
+   "text": "议",
+   "start": 97.629,
+   "end": 97.838
+  },
+  {
+   "line": 19,
+   "text": "由",
+   "start": 97.838,
+   "end": 98.047
+  },
+  {
+   "line": 19,
+   "text": "多",
+   "start": 98.047,
+   "end": 98.256
+  },
+  {
+   "line": 19,
+   "text": "个",
+   "start": 98.256,
+   "end": 98.465
+  },
+  {
+   "line": 19,
+   "text": "合",
+   "start": 98.465,
+   "end": 98.674
+  },
+  {
+   "line": 19,
+   "text": "约",
+   "start": 98.674,
+   "end": 98.883
+  },
+  {
+   "line": 19,
+   "text": "组",
+   "start": 98.883,
+   "end": 99.092
+  },
+  {
+   "line": 19,
+   "text": "成",
+   "start": 99.092,
+   "end": 99.301
+  },
+  {
+   "line": 19,
+   "text": "比",
+   "start": 99.834,
+   "end": 100.047
+  },
+  {
+   "line": 19,
+   "text": "如",
+   "start": 100.047,
+   "end": 100.259
+  },
+  {
+   "line": 19,
+   "text": "金",
+   "start": 100.259,
+   "end": 100.472
+  },
+  {
+   "line": 19,
+   "text": "库",
+   "start": 100.472,
+   "end": 100.685
+  },
+  {
+   "line": 19,
+   "text": "合",
+   "start": 100.685,
+   "end": 100.897
+  },
+  {
+   "line": 19,
+   "text": "约",
+   "start": 100.897,
+   "end": 101.11
+  },
+  {
+   "line": 19,
+   "text": "和",
+   "start": 101.11,
+   "end": 101.322
+  },
+  {
+   "line": 19,
+   "text": "份",
+   "start": 101.322,
+   "end": 101.535
+  },
+  {
+   "line": 19,
+   "text": "额",
+   "start": 101.535,
+   "end": 101.748
+  },
+  {
+   "line": 19,
+   "text": "代",
+   "start": 101.748,
+   "end": 101.96
+  },
+  {
+   "line": 19,
+   "text": "币",
+   "start": 101.96,
+   "end": 102.173
+  },
+  {
+   "line": 19,
+   "text": "合",
+   "start": 102.173,
+   "end": 102.386
+  },
+  {
+   "line": 19,
+   "text": "约",
+   "start": 102.386,
+   "end": 102.598
+  },
+  {
+   "line": 19,
+   "text": "它",
+   "start": 103.056,
+   "end": 103.248
+  },
+  {
+   "line": 19,
+   "text": "们",
+   "start": 103.248,
+   "end": 103.44
+  },
+  {
+   "line": 19,
+   "text": "共",
+   "start": 103.44,
+   "end": 103.632
+  },
+  {
+   "line": 19,
+   "text": "享",
+   "start": 103.632,
+   "end": 103.823
+  },
+  {
+   "line": 19,
+   "text": "状",
+   "start": 103.823,
+   "end": 104.015
+  },
+  {
+   "line": 19,
+   "text": "态",
+   "start": 104.015,
+   "end": 104.207
+  },
+  {
+   "line": 20,
+   "text": "合",
+   "start": 104.6,
+   "end": 104.839
+  },
+  {
+   "line": 20,
+   "text": "约",
+   "start": 104.839,
+   "end": 105.077
+  },
+  {
+   "line": 20,
+   "text": "A",
+   "start": 105.077,
+   "end": 105.268
+  },
+  {
+   "line": 20,
+   "text": "的",
+   "start": 105.268,
+   "end": 105.506
+  },
+  {
+   "line": 20,
+   "text": "锁",
+   "start": 105.506,
+   "end": 105.745
+  },
+  {
+   "line": 20,
+   "text": "挡",
+   "start": 105.937,
+   "end": 106.125
+  },
+  {
+   "line": 20,
+   "text": "不",
+   "start": 106.125,
+   "end": 106.313
+  },
+  {
+   "line": 20,
+   "text": "住",
+   "start": 106.313,
+   "end": 106.501
+  },
+  {
+   "line": 20,
+   "text": "对",
+   "start": 106.501,
+   "end": 106.69
+  },
+  {
+   "line": 20,
+   "text": "合",
+   "start": 106.69,
+   "end": 106.878
+  },
+  {
+   "line": 20,
+   "text": "约",
+   "start": 106.878,
+   "end": 107.066
+  },
+  {
+   "line": 20,
+   "text": "B",
+   "start": 107.066,
+   "end": 107.216
+  },
+  {
+   "line": 20,
+   "text": "的",
+   "start": 107.216,
+   "end": 107.404
+  },
+  {
+   "line": 20,
+   "text": "调",
+   "start": 107.404,
+   "end": 107.592
+  },
+  {
+   "line": 20,
+   "text": "用",
+   "start": 107.592,
+   "end": 107.781
+  },
+  {
+   "line": 20,
+   "text": "B",
+   "start": 108.261,
+   "end": 108.4
+  },
+  {
+   "line": 20,
+   "text": "此",
+   "start": 108.4,
+   "end": 108.574
+  },
+  {
+   "line": 20,
+   "text": "刻",
+   "start": 108.574,
+   "end": 108.748
+  },
+  {
+   "line": 20,
+   "text": "读",
+   "start": 108.748,
+   "end": 108.922
+  },
+  {
+   "line": 20,
+   "text": "到",
+   "start": 108.922,
+   "end": 109.095
+  },
+  {
+   "line": 20,
+   "text": "的",
+   "start": 109.095,
+   "end": 109.269
+  },
+  {
+   "line": 20,
+   "text": "是",
+   "start": 109.517,
+   "end": 109.716
+  },
+  {
+   "line": 20,
+   "text": "A",
+   "start": 109.716,
+   "end": 109.875
+  },
+  {
+   "line": 20,
+   "text": "还",
+   "start": 109.875,
+   "end": 110.075
+  },
+  {
+   "line": 20,
+   "text": "没",
+   "start": 110.075,
+   "end": 110.274
+  },
+  {
+   "line": 20,
+   "text": "更",
+   "start": 110.274,
+   "end": 110.474
+  },
+  {
+   "line": 20,
+   "text": "新",
+   "start": 110.474,
+   "end": 110.673
+  },
+  {
+   "line": 20,
+   "text": "的",
+   "start": 110.673,
+   "end": 110.872
+  },
+  {
+   "line": 20,
+   "text": "状",
+   "start": 110.872,
+   "end": 111.072
+  },
+  {
+   "line": 20,
+   "text": "态",
+   "start": 111.072,
+   "end": 111.271
+  },
+  {
+   "line": 21,
+   "text": "第",
+   "start": 111.7,
+   "end": 111.883
+  },
+  {
+   "line": 21,
+   "text": "四",
+   "start": 111.883,
+   "end": 112.066
+  },
+  {
+   "line": 21,
+   "text": "种",
+   "start": 112.066,
+   "end": 112.25
+  },
+  {
+   "line": 21,
+   "text": "只",
+   "start": 112.577,
+   "end": 112.788
+  },
+  {
+   "line": 21,
+   "text": "读",
+   "start": 112.788,
+   "end": 112.999
+  },
+  {
+   "line": 21,
+   "text": "重",
+   "start": 112.999,
+   "end": 113.21
+  },
+  {
+   "line": 21,
+   "text": "入",
+   "start": 113.21,
+   "end": 113.421
+  },
+  {
+   "line": 21,
+   "text": "最",
+   "start": 113.615,
+   "end": 113.792
+  },
+  {
+   "line": 21,
+   "text": "隐",
+   "start": 113.792,
+   "end": 113.968
+  },
+  {
+   "line": 21,
+   "text": "蔽",
+   "start": 113.968,
+   "end": 114.145
+  },
+  {
+   "line": 22,
+   "text": "攻",
+   "start": 114.655,
+   "end": 114.845
+  },
+  {
+   "line": 22,
+   "text": "击",
+   "start": 114.845,
+   "end": 115.035
+  },
+  {
+   "line": 22,
+   "text": "者",
+   "start": 115.035,
+   "end": 115.225
+  },
+  {
+   "line": 22,
+   "text": "在",
+   "start": 115.225,
+   "end": 115.416
+  },
+  {
+   "line": 22,
+   "text": "回",
+   "start": 115.416,
+   "end": 115.606
+  },
+  {
+   "line": 22,
+   "text": "调",
+   "start": 115.606,
+   "end": 115.796
+  },
+  {
+   "line": 22,
+   "text": "里",
+   "start": 115.796,
+   "end": 115.986
+  },
+  {
+   "line": 22,
+   "text": "不",
+   "start": 115.986,
+   "end": 116.177
+  },
+  {
+   "line": 22,
+   "text": "修",
+   "start": 116.177,
+   "end": 116.367
+  },
+  {
+   "line": 22,
+   "text": "改",
+   "start": 116.367,
+   "end": 116.557
+  },
+  {
+   "line": 22,
+   "text": "目",
+   "start": 116.557,
+   "end": 116.747
+  },
+  {
+   "line": 22,
+   "text": "标",
+   "start": 116.747,
+   "end": 116.938
+  },
+  {
+   "line": 22,
+   "text": "合",
+   "start": 116.938,
+   "end": 117.128
+  },
+  {
+   "line": 22,
+   "text": "约",
+   "start": 117.128,
+   "end": 117.318
+  },
+  {
+   "line": 22,
+   "text": "而",
+   "start": 117.925,
+   "end": 118.096
+  },
+  {
+   "line": 22,
+   "text": "是",
+   "start": 118.096,
+   "end": 118.267
+  },
+  {
+   "line": 22,
+   "text": "让",
+   "start": 118.267,
+   "end": 118.437
+  },
+  {
+   "line": 22,
+   "text": "第",
+   "start": 118.437,
+   "end": 118.608
+  },
+  {
+   "line": 22,
+   "text": "三",
+   "start": 118.608,
+   "end": 118.779
+  },
+  {
+   "line": 22,
+   "text": "方",
+   "start": 118.779,
+   "end": 118.95
+  },
+  {
+   "line": 22,
+   "text": "协",
+   "start": 118.95,
+   "end": 119.121
+  },
+  {
+   "line": 22,
+   "text": "议",
+   "start": 119.121,
+   "end": 119.292
+  },
+  {
+   "line": 22,
+   "text": "去",
+   "start": 119.292,
+   "end": 119.463
+  },
+  {
+   "line": 22,
+   "text": "读",
+   "start": 119.463,
+   "end": 119.634
+  },
+  {
+   "line": 22,
+   "text": "它",
+   "start": 119.634,
+   "end": 119.805
+  },
+  {
+   "line": 23,
+   "text": "比",
+   "start": 120.22,
+   "end": 120.451
+  },
+  {
+   "line": 23,
+   "text": "如",
+   "start": 120.451,
+   "end": 120.683
+  },
+  {
+   "line": 23,
+   "text": "一",
+   "start": 120.683,
+   "end": 120.914
+  },
+  {
+   "line": 23,
+   "text": "个",
+   "start": 120.914,
+   "end": 121.146
+  },
+  {
+   "line": 23,
+   "text": "AMM",
+   "start": 121.146,
+   "end": 121.437
+  },
+  {
+   "line": 23,
+   "text": "池",
+   "start": 121.437,
+   "end": 121.669
+  },
+  {
+   "line": 23,
+   "text": "移",
+   "start": 122.184,
+   "end": 122.349
+  },
+  {
+   "line": 23,
+   "text": "除",
+   "start": 122.349,
+   "end": 122.514
+  },
+  {
+   "line": 23,
+   "text": "流",
+   "start": 122.514,
+   "end": 122.679
+  },
+  {
+   "line": 23,
+   "text": "动",
+   "start": 122.679,
+   "end": 122.843
+  },
+  {
+   "line": 23,
+   "text": "性",
+   "start": 122.843,
+   "end": 123.008
+  },
+  {
+   "line": 23,
+   "text": "时",
+   "start": 123.008,
+   "end": 123.173
+  },
+  {
+   "line": 23,
+   "text": "先",
+   "start": 123.385,
+   "end": 123.594
+  },
+  {
+   "line": 23,
+   "text": "转",
+   "start": 123.594,
+   "end": 123.804
+  },
+  {
+   "line": 23,
+   "text": "出",
+   "start": 123.804,
+   "end": 124.013
+  },
+  {
+   "line": 23,
+   "text": "代",
+   "start": 124.013,
+   "end": 124.222
+  },
+  {
+   "line": 23,
+   "text": "币",
+   "start": 124.222,
+   "end": 124.431
+  },
+  {
+   "line": 23,
+   "text": "后",
+   "start": 124.654,
+   "end": 124.81
+  },
+  {
+   "line": 23,
+   "text": "更",
+   "start": 124.81,
+   "end": 124.966
+  },
+  {
+   "line": 23,
+   "text": "新",
+   "start": 124.966,
+   "end": 125.122
+  },
+  {
+   "line": 23,
+   "text": "总",
+   "start": 125.122,
+   "end": 125.278
+  },
+  {
+   "line": 23,
+   "text": "量",
+   "start": 125.278,
+   "end": 125.434
+  },
+  {
+   "line": 24,
+   "text": "在",
+   "start": 125.88,
+   "end": 126.047
+  },
+  {
+   "line": 24,
+   "text": "回",
+   "start": 126.047,
+   "end": 126.214
+  },
+  {
+   "line": 24,
+   "text": "调",
+   "start": 126.214,
+   "end": 126.382
+  },
+  {
+   "line": 24,
+   "text": "的",
+   "start": 126.382,
+   "end": 126.549
+  },
+  {
+   "line": 24,
+   "text": "那",
+   "start": 126.549,
+   "end": 126.716
+  },
+  {
+   "line": 24,
+   "text": "一",
+   "start": 126.716,
+   "end": 126.883
+  },
+  {
+   "line": 24,
+   "text": "刻",
+   "start": 126.883,
+   "end": 127.05
+  },
+  {
+   "line": 24,
+   "text": "储",
+   "start": 127.41,
+   "end": 127.613
+  },
+  {
+   "line": 24,
+   "text": "备",
+   "start": 127.613,
+   "end": 127.816
+  },
+  {
+   "line": 24,
+   "text": "已",
+   "start": 127.816,
+   "end": 128.02
+  },
+  {
+   "line": 24,
+   "text": "经",
+   "start": 128.02,
+   "end": 128.223
+  },
+  {
+   "line": 24,
+   "text": "减",
+   "start": 128.223,
+   "end": 128.427
+  },
+  {
+   "line": 24,
+   "text": "少",
+   "start": 128.427,
+   "end": 128.63
+  },
+  {
+   "line": 24,
+   "text": "总",
+   "start": 128.933,
+   "end": 129.116
+  },
+  {
+   "line": 24,
+   "text": "量",
+   "start": 129.116,
+   "end": 129.299
+  },
+  {
+   "line": 24,
+   "text": "还",
+   "start": 129.299,
+   "end": 129.482
+  },
+  {
+   "line": 24,
+   "text": "没",
+   "start": 129.482,
+   "end": 129.665
+  },
+  {
+   "line": 24,
+   "text": "减",
+   "start": 129.665,
+   "end": 129.848
+  },
+  {
+   "line": 24,
+   "text": "少",
+   "start": 129.848,
+   "end": 130.031
+  },
+  {
+   "line": 25,
+   "text": "这",
+   "start": 130.42,
+   "end": 130.652
+  },
+  {
+   "line": 25,
+   "text": "时",
+   "start": 130.652,
+   "end": 130.884
+  },
+  {
+   "line": 25,
+   "text": "借",
+   "start": 130.884,
+   "end": 131.116
+  },
+  {
+   "line": 25,
+   "text": "贷",
+   "start": 131.116,
+   "end": 131.348
+  },
+  {
+   "line": 25,
+   "text": "协",
+   "start": 131.348,
+   "end": 131.58
+  },
+  {
+   "line": 25,
+   "text": "议",
+   "start": 131.58,
+   "end": 131.812
+  },
+  {
+   "line": 25,
+   "text": "来",
+   "start": 131.812,
+   "end": 132.044
+  },
+  {
+   "line": 25,
+   "text": "读",
+   "start": 132.044,
+   "end": 132.276
+  },
+  {
+   "line": 25,
+   "text": "池",
+   "start": 132.276,
+   "end": 132.508
+  },
+  {
+   "line": 25,
+   "text": "子",
+   "start": 132.508,
+   "end": 132.74
+  },
+  {
+   "line": 25,
+   "text": "的",
+   "start": 132.74,
+   "end": 132.972
+  },
+  {
+   "line": 25,
+   "text": "价",
+   "start": 132.972,
+   "end": 133.204
+  },
+  {
+   "line": 25,
+   "text": "格",
+   "start": 133.204,
+   "end": 133.437
+  },
+  {
+   "line": 25,
+   "text": "函",
+   "start": 133.437,
+   "end": 133.669
+  },
+  {
+   "line": 25,
+   "text": "数",
+   "start": 133.669,
+   "end": 133.901
+  },
+  {
+   "line": 25,
+   "text": "读",
+   "start": 134.317,
+   "end": 134.497
+  },
+  {
+   "line": 25,
+   "text": "到",
+   "start": 134.497,
+   "end": 134.677
+  },
+  {
+   "line": 25,
+   "text": "一",
+   "start": 134.677,
+   "end": 134.857
+  },
+  {
+   "line": 25,
+   "text": "个",
+   "start": 134.857,
+   "end": 135.038
+  },
+  {
+   "line": 25,
+   "text": "被",
+   "start": 135.038,
+   "end": 135.218
+  },
+  {
+   "line": 25,
+   "text": "扭",
+   "start": 135.218,
+   "end": 135.398
+  },
+  {
+   "line": 25,
+   "text": "曲",
+   "start": 135.398,
+   "end": 135.578
+  },
+  {
+   "line": 25,
+   "text": "的",
+   "start": 135.578,
+   "end": 135.759
+  },
+  {
+   "line": 25,
+   "text": "价",
+   "start": 135.759,
+   "end": 135.939
+  },
+  {
+   "line": 25,
+   "text": "格",
+   "start": 135.939,
+   "end": 136.119
+  },
+  {
+   "line": 25,
+   "text": "再",
+   "start": 136.555,
+   "end": 136.776
+  },
+  {
+   "line": 25,
+   "text": "按",
+   "start": 136.776,
+   "end": 136.997
+  },
+  {
+   "line": 25,
+   "text": "它",
+   "start": 136.997,
+   "end": 137.218
+  },
+  {
+   "line": 25,
+   "text": "放",
+   "start": 137.218,
+   "end": 137.44
+  },
+  {
+   "line": 25,
+   "text": "贷",
+   "start": 137.44,
+   "end": 137.661
+  },
+  {
+   "line": 25,
+   "text": "或",
+   "start": 137.661,
+   "end": 137.882
+  },
+  {
+   "line": 25,
+   "text": "清",
+   "start": 137.882,
+   "end": 138.103
+  },
+  {
+   "line": 25,
+   "text": "算",
+   "start": 138.103,
+   "end": 138.324
+  },
+  {
+   "line": 26,
+   "text": "池",
+   "start": 138.8,
+   "end": 138.99
+  },
+  {
+   "line": 26,
+   "text": "子",
+   "start": 138.99,
+   "end": 139.18
+  },
+  {
+   "line": 26,
+   "text": "自",
+   "start": 139.18,
+   "end": 139.37
+  },
+  {
+   "line": 26,
+   "text": "己",
+   "start": 139.37,
+   "end": 139.561
+  },
+  {
+   "line": 26,
+   "text": "的",
+   "start": 139.561,
+   "end": 139.751
+  },
+  {
+   "line": 26,
+   "text": "状",
+   "start": 139.751,
+   "end": 139.941
+  },
+  {
+   "line": 26,
+   "text": "态",
+   "start": 139.941,
+   "end": 140.131
+  },
+  {
+   "line": 26,
+   "text": "最",
+   "start": 140.299,
+   "end": 140.452
+  },
+  {
+   "line": 26,
+   "text": "终",
+   "start": 140.452,
+   "end": 140.605
+  },
+  {
+   "line": 26,
+   "text": "是",
+   "start": 140.605,
+   "end": 140.758
+  },
+  {
+   "line": 26,
+   "text": "对",
+   "start": 140.758,
+   "end": 140.911
+  },
+  {
+   "line": 26,
+   "text": "的",
+   "start": 140.911,
+   "end": 141.064
+  },
+  {
+   "line": 26,
+   "text": "出",
+   "start": 141.515,
+   "end": 141.716
+  },
+  {
+   "line": 26,
+   "text": "错",
+   "start": 141.716,
+   "end": 141.917
+  },
+  {
+   "line": 26,
+   "text": "的",
+   "start": 141.917,
+   "end": 142.119
+  },
+  {
+   "line": 26,
+   "text": "是",
+   "start": 142.422,
+   "end": 142.604
+  },
+  {
+   "line": 26,
+   "text": "在",
+   "start": 142.604,
+   "end": 142.785
+  },
+  {
+   "line": 26,
+   "text": "中",
+   "start": 142.785,
+   "end": 142.967
+  },
+  {
+   "line": 26,
+   "text": "间",
+   "start": 142.967,
+   "end": 143.148
+  },
+  {
+   "line": 26,
+   "text": "时",
+   "start": 143.148,
+   "end": 143.33
+  },
+  {
+   "line": 26,
+   "text": "刻",
+   "start": 143.33,
+   "end": 143.511
+  },
+  {
+   "line": 26,
+   "text": "读",
+   "start": 143.511,
+   "end": 143.693
+  },
+  {
+   "line": 26,
+   "text": "数",
+   "start": 143.693,
+   "end": 143.874
+  },
+  {
+   "line": 26,
+   "text": "据",
+   "start": 143.874,
+   "end": 144.056
+  },
+  {
+   "line": 26,
+   "text": "的",
+   "start": 144.056,
+   "end": 144.237
+  },
+  {
+   "line": 26,
+   "text": "第",
+   "start": 144.237,
+   "end": 144.419
+  },
+  {
+   "line": 26,
+   "text": "三",
+   "start": 144.419,
+   "end": 144.6
+  },
+  {
+   "line": 26,
+   "text": "方",
+   "start": 144.6,
+   "end": 144.782
+  },
+  {
+   "line": 27,
+   "text": "池",
+   "start": 145.18,
+   "end": 145.377
+  },
+  {
+   "line": 27,
+   "text": "子",
+   "start": 145.377,
+   "end": 145.574
+  },
+  {
+   "line": 27,
+   "text": "的",
+   "start": 145.574,
+   "end": 145.772
+  },
+  {
+   "line": 27,
+   "text": "view",
+   "start": 145.772,
+   "end": 146.103
+  },
+  {
+   "line": 27,
+   "text": "函",
+   "start": 146.103,
+   "end": 146.3
+  },
+  {
+   "line": 27,
+   "text": "数",
+   "start": 146.3,
+   "end": 146.497
+  },
+  {
+   "line": 27,
+   "text": "通",
+   "start": 146.497,
+   "end": 146.695
+  },
+  {
+   "line": 27,
+   "text": "常",
+   "start": 146.695,
+   "end": 146.892
+  },
+  {
+   "line": 27,
+   "text": "不",
+   "start": 146.892,
+   "end": 147.089
+  },
+  {
+   "line": 27,
+   "text": "加",
+   "start": 147.089,
+   "end": 147.286
+  },
+  {
+   "line": 27,
+   "text": "锁",
+   "start": 147.286,
+   "end": 147.483
+  },
+  {
+   "line": 27,
+   "text": "所",
+   "start": 147.735,
+   "end": 147.945
+  },
+  {
+   "line": 27,
+   "text": "以",
+   "start": 147.945,
+   "end": 148.156
+  },
+  {
+   "line": 27,
+   "text": "重",
+   "start": 148.156,
+   "end": 148.366
+  },
+  {
+   "line": 27,
+   "text": "入",
+   "start": 148.366,
+   "end": 148.576
+  },
+  {
+   "line": 27,
+   "text": "锁",
+   "start": 148.576,
+   "end": 148.787
+  },
+  {
+   "line": 27,
+   "text": "挡",
+   "start": 148.787,
+   "end": 148.997
+  },
+  {
+   "line": 27,
+   "text": "不",
+   "start": 148.997,
+   "end": 149.207
+  },
+  {
+   "line": 27,
+   "text": "住",
+   "start": 149.207,
+   "end": 149.418
+  },
+  {
+   "line": 28,
+   "text": "2023",
+   "start": 149.88,
+   "end": 150.553
+  },
+  {
+   "line": 28,
+   "text": "年",
+   "start": 150.553,
+   "end": 150.735
+  },
+  {
+   "line": 28,
+   "text": "2",
+   "start": 150.735,
+   "end": 150.944
+  },
+  {
+   "line": 28,
+   "text": "月",
+   "start": 150.944,
+   "end": 151.126
+  },
+  {
+   "line": 28,
+   "text": "的",
+   "start": 151.126,
+   "end": 151.308
+  },
+  {
+   "line": 28,
+   "text": "dForce",
+   "start": 151.308,
+   "end": 151.766
+  },
+  {
+   "line": 28,
+   "text": "就",
+   "start": 151.993,
+   "end": 152.116
+  },
+  {
+   "line": 28,
+   "text": "是",
+   "start": 152.116,
+   "end": 152.238
+  },
+  {
+   "line": 28,
+   "text": "这",
+   "start": 152.238,
+   "end": 152.361
+  },
+  {
+   "line": 28,
+   "text": "样",
+   "start": 152.361,
+   "end": 152.484
+  },
+  {
+   "line": 28,
+   "text": "损",
+   "start": 152.837,
+   "end": 153.05
+  },
+  {
+   "line": 28,
+   "text": "失",
+   "start": 153.05,
+   "end": 153.264
+  },
+  {
+   "line": 28,
+   "text": "约",
+   "start": 153.264,
+   "end": 153.477
+  },
+  {
+   "line": 28,
+   "text": "360",
+   "start": 153.477,
+   "end": 154.084
+  },
+  {
+   "line": 28,
+   "text": "万",
+   "start": 154.084,
+   "end": 154.297
+  },
+  {
+   "line": 28,
+   "text": "美",
+   "start": 154.297,
+   "end": 154.511
+  },
+  {
+   "line": 28,
+   "text": "元",
+   "start": 154.511,
+   "end": 154.724
+  },
+  {
+   "line": 29,
+   "text": "它",
+   "start": 155.14,
+   "end": 155.362
+  },
+  {
+   "line": 29,
+   "text": "用",
+   "start": 155.362,
+   "end": 155.584
+  },
+  {
+   "line": 29,
+   "text": "Curve",
+   "start": 155.584,
+   "end": 156.05
+  },
+  {
+   "line": 29,
+   "text": "池",
+   "start": 156.05,
+   "end": 156.272
+  },
+  {
+   "line": 29,
+   "text": "在",
+   "start": 156.272,
+   "end": 156.494
+  },
+  {
+   "line": 29,
+   "text": "回",
+   "start": 156.494,
+   "end": 156.716
+  },
+  {
+   "line": 29,
+   "text": "调",
+   "start": 156.716,
+   "end": 156.937
+  },
+  {
+   "line": 29,
+   "text": "期",
+   "start": 156.937,
+   "end": 157.159
+  },
+  {
+   "line": 29,
+   "text": "间",
+   "start": 157.159,
+   "end": 157.381
+  },
+  {
+   "line": 29,
+   "text": "返",
+   "start": 157.381,
+   "end": 157.603
+  },
+  {
+   "line": 29,
+   "text": "回",
+   "start": 157.603,
+   "end": 157.825
+  },
+  {
+   "line": 29,
+   "text": "的",
+   "start": 157.825,
+   "end": 158.047
+  },
+  {
+   "line": 29,
+   "text": "虚",
+   "start": 158.047,
+   "end": 158.269
+  },
+  {
+   "line": 29,
+   "text": "拟",
+   "start": 158.269,
+   "end": 158.491
+  },
+  {
+   "line": 29,
+   "text": "价",
+   "start": 158.491,
+   "end": 158.713
+  },
+  {
+   "line": 29,
+   "text": "格",
+   "start": 158.713,
+   "end": 158.935
+  },
+  {
+   "line": 29,
+   "text": "给",
+   "start": 159.319,
+   "end": 159.49
+  },
+  {
+   "line": 29,
+   "text": "抵",
+   "start": 159.49,
+   "end": 159.661
+  },
+  {
+   "line": 29,
+   "text": "押",
+   "start": 159.661,
+   "end": 159.833
+  },
+  {
+   "line": 29,
+   "text": "品",
+   "start": 159.833,
+   "end": 160.004
+  },
+  {
+   "line": 29,
+   "text": "定",
+   "start": 160.004,
+   "end": 160.175
+  },
+  {
+   "line": 29,
+   "text": "价",
+   "start": 160.175,
+   "end": 160.346
+  }
+ ],
+ "captions": [
+  {
+   "text": "接下来 按调用栈",
+   "start": 1.55,
+   "end": 3.248,
+   "id": "c0"
+  },
+  {
+   "text": "一种一种看",
+   "start": 3.426,
+   "end": 4.291,
+   "id": "c1"
+  },
+  {
+   "text": "第一种 单函数重入",
+   "start": 4.671,
+   "end": 6.682,
+   "id": "c2"
+  },
+  {
+   "text": "漏洞版的取款函数 分三步 读余额 转账 清零",
+   "start": 7.042,
+   "end": 12.028,
+   "id": "c3"
+  },
+  {
+   "text": "攻击者调用取款",
+   "start": 12.29,
+   "end": 13.905,
+   "id": "c4"
+  },
+  {
+   "text": "银行读到余额 1 个 ETH",
+   "start": 14.19,
+   "end": 16.214,
+   "id": "c5"
+  },
+  {
+   "text": "用 call 把钱转过去",
+   "start": 16.446,
+   "end": 17.894,
+   "id": "c6"
+  },
+  {
+   "text": "攻击合约的 receive 被触发",
+   "start": 18.285,
+   "end": 20.3,
+   "id": "c7"
+  },
+  {
+   "text": "银行还有钱",
+   "start": 20.447,
+   "end": 21.532,
+   "id": "c8"
+  },
+  {
+   "text": "它就再调用一次取款",
+   "start": 21.682,
+   "end": 23.363,
+   "id": "c9"
+  },
+  {
+   "text": "第二层读到的余额",
+   "start": 23.702,
+   "end": 25.089,
+   "id": "c10"
+  },
+  {
+   "text": "还是 1 个",
+   "start": 25.109,
+   "end": 25.886,
+   "id": "c11"
+  },
+  {
+   "text": "因为第一层的清零",
+   "start": 26.128,
+   "end": 27.504,
+   "id": "c12"
+  },
+  {
+   "text": "还没执行",
+   "start": 27.524,
+   "end": 28.359,
+   "id": "c13"
+  },
+  {
+   "text": "一层套一层",
+   "start": 28.72,
+   "end": 29.856,
+   "id": "c14"
+  },
+  {
+   "text": "直到金库余额不够",
+   "start": 30.358,
+   "end": 31.969,
+   "id": "c15"
+  },
+  {
+   "text": "递归才停下来",
+   "start": 32.167,
+   "end": 33.326,
+   "id": "c16"
+  },
+  {
+   "text": "然后各层依次返回",
+   "start": 33.57,
+   "end": 35.639,
+   "id": "c17"
+  },
+  {
+   "text": "依次清零",
+   "start": 35.659,
+   "end": 36.533,
+   "id": "c18"
+  },
+  {
+   "text": "这时钱已经没了",
+   "start": 37.116,
+   "end": 38.937,
+   "id": "c19"
+  },
+  {
+   "text": "递归有上限",
+   "start": 39.23,
+   "end": 40.446,
+   "id": "c20"
+  },
+  {
+   "text": "gas 和调用深度 1024",
+   "start": 41.086,
+   "end": 42.691,
+   "id": "c21"
+  },
+  {
+   "text": "都会限制它",
+   "start": 42.775,
+   "end": 43.909,
+   "id": "c22"
+  },
+  {
+   "text": "所以攻击者会每次取尽量大的金额",
+   "start": 44.002,
+   "end": 48.292,
+   "id": "c23"
+  },
+  {
+   "text": "减少层数",
+   "start": 48.312,
+   "end": 49.213,
+   "id": "c24"
+  },
+  {
+   "text": "第二种 跨函数重入",
+   "start": 49.544,
+   "end": 51.736,
+   "id": "c25"
+  },
+  {
+   "text": "攻击者不回到取款函数",
+   "start": 52.085,
+   "end": 53.917,
+   "id": "c26"
+  },
+  {
+   "text": "而是进入另一个共享同一份余额的函数",
+   "start": 54.042,
+   "end": 57.055,
+   "id": "c27"
+  },
+  {
+   "text": "比如转账",
+   "start": 57.218,
+   "end": 57.973,
+   "id": "c28"
+  },
+  {
+   "text": "取款加了重入锁",
+   "start": 58.21,
+   "end": 59.972,
+   "id": "c29"
+  },
+  {
+   "text": "转账没加",
+   "start": 60.013,
+   "end": 60.839,
+   "id": "c30"
+  },
+  {
+   "text": "攻击者还能利用回调吗",
+   "start": 61.114,
+   "end": 62.929,
+   "id": "c31"
+  },
+  {
+   "text": "能",
+   "start": 63.51,
+   "end": 64.012,
+   "id": "c32"
+  },
+  {
+   "text": "锁只拦截进入被锁函数的调用",
+   "start": 64.677,
+   "end": 67.457,
+   "id": "c33"
+  },
+  {
+   "text": "在回调里",
+   "start": 67.73,
+   "end": 68.595,
+   "id": "c34"
+  },
+  {
+   "text": "攻击者把还没清零的余额",
+   "start": 68.77,
+   "end": 70.832,
+   "id": "c35"
+  },
+  {
+   "text": "转给同伙",
+   "start": 70.903,
+   "end": 71.77,
+   "id": "c36"
+  },
+  {
+   "text": "外层返回之后 才清零",
+   "start": 72.006,
+   "end": 73.789,
+   "id": "c37"
+  },
+  {
+   "text": "同一笔钱",
+   "start": 74.03,
+   "end": 75.013,
+   "id": "c38"
+  },
+  {
+   "text": "既被提走了",
+   "start": 75.112,
+   "end": 76.252,
+   "id": "c39"
+  },
+  {
+   "text": "又被转走了",
+   "start": 76.379,
+   "end": 77.479,
+   "id": "c40"
+  },
+  {
+   "text": "2022 年 4 月的 Fei Rari",
+   "start": 77.69,
+   "end": 79.831,
+   "id": "c41"
+  },
+  {
+   "text": "就是它的真实版本",
+   "start": 80.088,
+   "end": 81.491,
+   "id": "c42"
+  },
+  {
+   "text": "损失约 8000 万美元",
+   "start": 81.751,
+   "end": 83.502,
+   "id": "c43"
+  },
+  {
+   "text": "借款函数先用 call 发送 ETH",
+   "start": 83.842,
+   "end": 86.591,
+   "id": "c44"
+  },
+  {
+   "text": "后写借款记录",
+   "start": 86.834,
+   "end": 88.071,
+   "id": "c45"
+  },
+  {
+   "text": "攻击者在回调里",
+   "start": 88.384,
+   "end": 89.832,
+   "id": "c46"
+  },
+  {
+   "text": "调用了没有被锁覆盖的退出市场函数",
+   "start": 89.909,
+   "end": 92.97,
+   "id": "c47"
+  },
+  {
+   "text": "取回了全部抵押品",
+   "start": 93.143,
+   "end": 94.794,
+   "id": "c48"
+  },
+  {
+   "text": "第三种 跨合约重入",
+   "start": 95.07,
+   "end": 97.136,
+   "id": "c49"
+  },
+  {
+   "text": "协议由多个合约组成",
+   "start": 97.37,
+   "end": 99.421,
+   "id": "c50"
+  },
+  {
+   "text": "比如金库合约和份额代币合约",
+   "start": 99.784,
+   "end": 102.718,
+   "id": "c51"
+  },
+  {
+   "text": "它们共享状态",
+   "start": 103.006,
+   "end": 104.327,
+   "id": "c52"
+  },
+  {
+   "text": "合约 A 的锁",
+   "start": 104.55,
+   "end": 105.865,
+   "id": "c53"
+  },
+  {
+   "text": "挡不住对合约 B 的调用",
+   "start": 105.887,
+   "end": 107.901,
+   "id": "c54"
+  },
+  {
+   "text": "B 此刻读到的",
+   "start": 108.211,
+   "end": 109.389,
+   "id": "c55"
+  },
+  {
+   "text": "是 A 还没更新的状态",
+   "start": 109.467,
+   "end": 111.391,
+   "id": "c56"
+  },
+  {
+   "text": "第四种 只读重入 最隐蔽",
+   "start": 111.65,
+   "end": 114.265,
+   "id": "c57"
+  },
+  {
+   "text": "攻击者在回调里不修改目标合约",
+   "start": 114.605,
+   "end": 117.438,
+   "id": "c58"
+  },
+  {
+   "text": "而是让第三方协议去读它",
+   "start": 117.875,
+   "end": 119.925,
+   "id": "c59"
+  },
+  {
+   "text": "比如一个 AMM 池",
+   "start": 120.17,
+   "end": 121.789,
+   "id": "c60"
+  },
+  {
+   "text": "移除流动性时",
+   "start": 122.134,
+   "end": 123.293,
+   "id": "c61"
+  },
+  {
+   "text": "先转出代币",
+   "start": 123.335,
+   "end": 124.551,
+   "id": "c62"
+  },
+  {
+   "text": "后更新总量",
+   "start": 124.604,
+   "end": 125.554,
+   "id": "c63"
+  },
+  {
+   "text": "在回调的那一刻",
+   "start": 125.83,
+   "end": 127.17,
+   "id": "c64"
+  },
+  {
+   "text": "储备已经减少",
+   "start": 127.36,
+   "end": 128.75,
+   "id": "c65"
+  },
+  {
+   "text": "总量还没减少",
+   "start": 128.883,
+   "end": 130.151,
+   "id": "c66"
+  },
+  {
+   "text": "这时借贷协议来读池子的价格函数",
+   "start": 130.37,
+   "end": 134.021,
+   "id": "c67"
+  },
+  {
+   "text": "读到一个被扭曲的价格",
+   "start": 134.267,
+   "end": 136.239,
+   "id": "c68"
+  },
+  {
+   "text": "再按它放贷或清算",
+   "start": 136.505,
+   "end": 138.444,
+   "id": "c69"
+  },
+  {
+   "text": "池子自己的状态",
+   "start": 138.75,
+   "end": 140.229,
+   "id": "c70"
+  },
+  {
+   "text": "最终是对的",
+   "start": 140.249,
+   "end": 141.184,
+   "id": "c71"
+  },
+  {
+   "text": "出错的 是在中间时刻读数据的第三方",
+   "start": 141.465,
+   "end": 144.902,
+   "id": "c72"
+  },
+  {
+   "text": "池子的 view 函数通常不加锁",
+   "start": 145.13,
+   "end": 147.603,
+   "id": "c73"
+  },
+  {
+   "text": "所以重入锁挡不住",
+   "start": 147.685,
+   "end": 149.538,
+   "id": "c74"
+  },
+  {
+   "text": "2023 年 2 月的 dForce",
+   "start": 149.83,
+   "end": 151.886,
+   "id": "c75"
+  },
+  {
+   "text": "就是这样",
+   "start": 151.943,
+   "end": 152.604,
+   "id": "c76"
+  },
+  {
+   "text": "损失约 360 万美元",
+   "start": 152.787,
+   "end": 154.844,
+   "id": "c77"
+  },
+  {
+   "text": "它用 Curve 池在回调期间返回的虚拟价格",
+   "start": 155.09,
+   "end": 159.055,
+   "id": "c78"
+  },
+  {
+   "text": "给抵押品定价",
+   "start": 159.269,
+   "end": 160.466,
+   "id": "c79"
+  }
+ ]
+}

@@ -1,7 +1,0 @@
-{
- "answers": [
-  "以太坊 ERC-20 USDT：Tether 原生发行，只需信任 Tether（发行方风险）。<br>Mantle 上的 USDT0：信任 Tether、以太坊上锁定原 USDT 的合约，以及验证消息的网络（DVN），三者任何一个出问题都会影响它。<br>BNB Chain 上的 Binance-Peg USDT：信任币安的储备和运营，而币安自己的储备又依赖 Tether，所以是币安 → Tether。<br>按章节的描述，USDT0 的链条最长，要同时承担三类风险。",
-  "WBTC 托管方出事：WBTC 失去真实 BTC 支撑，价格脱锚下跌，协议里的抵押品价值缩水，清算来不及就会产生坏账。这是永久性的偿付能力损失。<br>Circle 证明服务停机一天：CCTP 无法销毁-铸造，新的跨链转账会卡住或变慢，但已经在链上的原生 USDC 仍然有效，价值不受影响。这是暂时的可用性问题，恢复后即可继续。",
-  "用户多付了 Gas：拉取式下由用户在交易中附带签名价格，并支付更新价格的 Gas 和更新费（<code>getUpdateFee</code>）。推送式则由预言机网络或赞助方付。<br>用户有机会挑选一个对自己有利的旧价格提交，所以合约要用 <code>getPriceNoOlderThan(id, 60)</code> 这类检查，只接受 N 秒内的价格，并检查置信区间。<br>在 oracle-manipulation-lab.html 中你应该看到：现货价最容易被一笔闪电贷操纵；TWAP 抗闪电贷，但浅池仍可被有资本的多区块操纵；链下聚合价格（如 Chainlink）操纵成本最高。"
- ]
-}

@@ -1,0 +1,1700 @@
+{
+ "id": "seg1",
+ "title": "一个捐赠函数",
+ "pill": 1,
+ "total": 72.26,
+ "lines": [
+  {
+   "id": "seg1-00",
+   "text": "2023 年 3 月 13 日，借贷协议 Euler Finance，损失约 1.97 亿美元，按事发时估值。",
+   "spoken": "2023 年 3 月 13 日，借贷协议 Euler Finance，损失约 1.97 亿美元，按事发时估值。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep11/audio/lines/seg1-00.wav",
+   "start": 1.6,
+   "dur": 8.4,
+   "speechStart": 1.6,
+   "speechEnd": 9.806
+  },
+  {
+   "id": "seg1-01",
+   "text": "入口，是一个捐赠函数。",
+   "spoken": "入口，是一个捐赠函数。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep11/audio/lines/seg1-01.wav",
+   "start": 10.22,
+   "dur": 2.48,
+   "speechStart": 10.312,
+   "speechEnd": 12.455
+  },
+  {
+   "id": "seg1-02",
+   "text": "它让用户把自己的存款，捐给协议的储备。",
+   "spoken": "它让用户把自己的存款，捐给协议的储备。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep11/audio/lines/seg1-02.wav",
+   "start": 12.92,
+   "dur": 3.84,
+   "speechStart": 12.92,
+   "speechEnd": 16.516
+  },
+  {
+   "id": "seg1-03",
+   "text": "捐出去，账户的抵押品就少了。",
+   "spoken": "捐出去，账户的抵押品就少了。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep11/audio/lines/seg1-03.wav",
+   "start": 16.98,
+   "dur": 3.28,
+   "speechStart": 16.98,
+   "speechEnd": 20.071
+  },
+  {
+   "id": "seg1-04",
+   "text": "但这个函数，不检查账户是否仍然健康。",
+   "spoken": "但这个函数，不检查账户是否仍然健康。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep11/audio/lines/seg1-04.wav",
+   "start": 20.48,
+   "dur": 3.76,
+   "speechStart": 20.48,
+   "speechEnd": 24.064
+  },
+  {
+   "id": "seg1-05",
+   "text": "先猜一道题。",
+   "spoken": "先猜一道题。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep11/audio/lines/seg1-05.wav",
+   "start": 24.46,
+   "dur": 1.04,
+   "speechStart": 24.46,
+   "speechEnd": 25.261
+  },
+  {
+   "id": "seg1-06",
+   "text": "举个例子。一个账户有 100 美元抵押品，借了 90 美元。",
+   "spoken": "举个例子。一个账户有 100 美元抵押品，借了 90 美元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep11/audio/lines/seg1-06.wav",
+   "start": 25.72,
+   "dur": 6.16,
+   "speechStart": 25.72,
+   "speechEnd": 31.67
+  },
+  {
+   "id": "seg1-07",
+   "text": "它捐出 30 美元抵押品，没人检查，也没人偿还。协议的缺口是多少？",
+   "spoken": "它捐出 30 美元抵押品，没人检查，也没人偿还。协议的缺口是多少？",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep11/audio/lines/seg1-07.wav",
+   "start": 32.1,
+   "dur": 8.24,
+   "speechStart": 32.1,
+   "speechEnd": 40.147
+  },
+  {
+   "id": "seg1-08",
+   "text": "缺口是 20 美元。",
+   "spoken": "缺口是 20 美元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep11/audio/lines/seg1-08.wav",
+   "start": 40.84,
+   "dur": 2.64,
+   "speechStart": 40.84,
+   "speechEnd": 43.302
+  },
+  {
+   "id": "seg1-09",
+   "text": "账户只剩 70 美元抵押品，却欠着 90 美元。",
+   "spoken": "账户只剩 70 美元抵押品，却欠着 90 美元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep11/audio/lines/seg1-09.wav",
+   "start": 43.7,
+   "dur": 6.72,
+   "speechStart": 43.799,
+   "speechEnd": 50.259
+  },
+  {
+   "id": "seg1-10",
+   "text": "这 20 美元成了坏账，最后由存款人或保险基金承担。",
+   "spoken": "这 20 美元成了坏账，最后由存款人或保险基金承担。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep11/audio/lines/seg1-10.wav",
+   "start": 50.64,
+   "dur": 7.44,
+   "speechStart": 50.735,
+   "speechEnd": 57.863
+  },
+  {
+   "id": "seg1-11",
+   "text": "每个函数单独看，都没有错。",
+   "spoken": "每个函数单独看，都没有错。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep11/audio/lines/seg1-11.wav",
+   "start": 58.3,
+   "dur": 2.32,
+   "speechStart": 58.3,
+   "speechEnd": 60.368
+  },
+  {
+   "id": "seg1-12",
+   "text": "攻击者也没有利用代码 bug。他只是按规则操作，换了一种设计者没想到的组合。",
+   "spoken": "攻击者也没有利用代码 bug。他只是按规则操作，换了一种设计者没想到的组合。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep11/audio/lines/seg1-12.wav",
+   "start": 60.84,
+   "dur": 7.44,
+   "speechStart": 60.93,
+   "speechEnd": 68.095
+  },
+  {
+   "id": "seg1-13",
+   "text": "规则本身，怎么会让协议亏钱？",
+   "spoken": "规则本身，怎么会让协议亏钱？",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep11/audio/lines/seg1-13.wav",
+   "start": 68.5,
+   "dur": 2.56,
+   "speechStart": 68.597,
+   "speechEnd": 70.897
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "2023",
+   "start": 1.6,
+   "end": 2.37
+  },
+  {
+   "line": 0,
+   "text": "年",
+   "start": 2.37,
+   "end": 2.578
+  },
+  {
+   "line": 0,
+   "text": "3",
+   "start": 2.578,
+   "end": 2.817
+  },
+  {
+   "line": 0,
+   "text": "月",
+   "start": 2.817,
+   "end": 3.025
+  },
+  {
+   "line": 0,
+   "text": "13",
+   "start": 3.025,
+   "end": 3.441
+  },
+  {
+   "line": 0,
+   "text": "日",
+   "start": 3.441,
+   "end": 3.649
+  },
+  {
+   "line": 0,
+   "text": "借",
+   "start": 4.149,
+   "end": 4.373
+  },
+  {
+   "line": 0,
+   "text": "贷",
+   "start": 4.373,
+   "end": 4.598
+  },
+  {
+   "line": 0,
+   "text": "协",
+   "start": 4.598,
+   "end": 4.822
+  },
+  {
+   "line": 0,
+   "text": "议",
+   "start": 4.822,
+   "end": 5.047
+  },
+  {
+   "line": 0,
+   "text": "Euler",
+   "start": 5.047,
+   "end": 5.519
+  },
+  {
+   "line": 0,
+   "text": "Finance",
+   "start": 5.519,
+   "end": 6.179
+  },
+  {
+   "line": 0,
+   "text": "损",
+   "start": 6.454,
+   "end": 6.682
+  },
+  {
+   "line": 0,
+   "text": "失",
+   "start": 6.682,
+   "end": 6.909
+  },
+  {
+   "line": 0,
+   "text": "约",
+   "start": 6.909,
+   "end": 7.137
+  },
+  {
+   "line": 0,
+   "text": "1.97",
+   "start": 7.137,
+   "end": 7.787
+  },
+  {
+   "line": 0,
+   "text": "亿",
+   "start": 7.787,
+   "end": 8.014
+  },
+  {
+   "line": 0,
+   "text": "美",
+   "start": 8.014,
+   "end": 8.242
+  },
+  {
+   "line": 0,
+   "text": "元",
+   "start": 8.242,
+   "end": 8.47
+  },
+  {
+   "line": 0,
+   "text": "按",
+   "start": 8.808,
+   "end": 8.974
+  },
+  {
+   "line": 0,
+   "text": "事",
+   "start": 8.974,
+   "end": 9.141
+  },
+  {
+   "line": 0,
+   "text": "发",
+   "start": 9.141,
+   "end": 9.307
+  },
+  {
+   "line": 0,
+   "text": "时",
+   "start": 9.307,
+   "end": 9.473
+  },
+  {
+   "line": 0,
+   "text": "估",
+   "start": 9.473,
+   "end": 9.639
+  },
+  {
+   "line": 0,
+   "text": "值",
+   "start": 9.639,
+   "end": 9.806
+  },
+  {
+   "line": 1,
+   "text": "入",
+   "start": 10.312,
+   "end": 10.539
+  },
+  {
+   "line": 1,
+   "text": "口",
+   "start": 10.539,
+   "end": 10.767
+  },
+  {
+   "line": 1,
+   "text": "是",
+   "start": 11.135,
+   "end": 11.324
+  },
+  {
+   "line": 1,
+   "text": "一",
+   "start": 11.324,
+   "end": 11.512
+  },
+  {
+   "line": 1,
+   "text": "个",
+   "start": 11.512,
+   "end": 11.701
+  },
+  {
+   "line": 1,
+   "text": "捐",
+   "start": 11.701,
+   "end": 11.889
+  },
+  {
+   "line": 1,
+   "text": "赠",
+   "start": 11.889,
+   "end": 12.078
+  },
+  {
+   "line": 1,
+   "text": "函",
+   "start": 12.078,
+   "end": 12.266
+  },
+  {
+   "line": 1,
+   "text": "数",
+   "start": 12.266,
+   "end": 12.455
+  },
+  {
+   "line": 2,
+   "text": "它",
+   "start": 12.92,
+   "end": 13.123
+  },
+  {
+   "line": 2,
+   "text": "让",
+   "start": 13.123,
+   "end": 13.327
+  },
+  {
+   "line": 2,
+   "text": "用",
+   "start": 13.327,
+   "end": 13.53
+  },
+  {
+   "line": 2,
+   "text": "户",
+   "start": 13.53,
+   "end": 13.733
+  },
+  {
+   "line": 2,
+   "text": "把",
+   "start": 13.733,
+   "end": 13.937
+  },
+  {
+   "line": 2,
+   "text": "自",
+   "start": 13.937,
+   "end": 14.14
+  },
+  {
+   "line": 2,
+   "text": "己",
+   "start": 14.14,
+   "end": 14.343
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 14.343,
+   "end": 14.547
+  },
+  {
+   "line": 2,
+   "text": "存",
+   "start": 14.547,
+   "end": 14.75
+  },
+  {
+   "line": 2,
+   "text": "款",
+   "start": 14.75,
+   "end": 14.954
+  },
+  {
+   "line": 2,
+   "text": "捐",
+   "start": 15.208,
+   "end": 15.395
+  },
+  {
+   "line": 2,
+   "text": "给",
+   "start": 15.395,
+   "end": 15.581
+  },
+  {
+   "line": 2,
+   "text": "协",
+   "start": 15.581,
+   "end": 15.768
+  },
+  {
+   "line": 2,
+   "text": "议",
+   "start": 15.768,
+   "end": 15.955
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 15.955,
+   "end": 16.142
+  },
+  {
+   "line": 2,
+   "text": "储",
+   "start": 16.142,
+   "end": 16.329
+  },
+  {
+   "line": 2,
+   "text": "备",
+   "start": 16.329,
+   "end": 16.516
+  },
+  {
+   "line": 3,
+   "text": "捐",
+   "start": 16.98,
+   "end": 17.259
+  },
+  {
+   "line": 3,
+   "text": "出",
+   "start": 17.259,
+   "end": 17.538
+  },
+  {
+   "line": 3,
+   "text": "去",
+   "start": 17.538,
+   "end": 17.817
+  },
+  {
+   "line": 3,
+   "text": "账",
+   "start": 18.363,
+   "end": 18.553
+  },
+  {
+   "line": 3,
+   "text": "户",
+   "start": 18.553,
+   "end": 18.743
+  },
+  {
+   "line": 3,
+   "text": "的",
+   "start": 18.743,
+   "end": 18.932
+  },
+  {
+   "line": 3,
+   "text": "抵",
+   "start": 18.932,
+   "end": 19.122
+  },
+  {
+   "line": 3,
+   "text": "押",
+   "start": 19.122,
+   "end": 19.312
+  },
+  {
+   "line": 3,
+   "text": "品",
+   "start": 19.312,
+   "end": 19.502
+  },
+  {
+   "line": 3,
+   "text": "就",
+   "start": 19.502,
+   "end": 19.692
+  },
+  {
+   "line": 3,
+   "text": "少",
+   "start": 19.692,
+   "end": 19.881
+  },
+  {
+   "line": 3,
+   "text": "了",
+   "start": 19.881,
+   "end": 20.071
+  },
+  {
+   "line": 4,
+   "text": "但",
+   "start": 20.48,
+   "end": 20.691
+  },
+  {
+   "line": 4,
+   "text": "这",
+   "start": 20.691,
+   "end": 20.902
+  },
+  {
+   "line": 4,
+   "text": "个",
+   "start": 20.902,
+   "end": 21.112
+  },
+  {
+   "line": 4,
+   "text": "函",
+   "start": 21.112,
+   "end": 21.323
+  },
+  {
+   "line": 4,
+   "text": "数",
+   "start": 21.323,
+   "end": 21.534
+  },
+  {
+   "line": 4,
+   "text": "不",
+   "start": 21.908,
+   "end": 22.104
+  },
+  {
+   "line": 4,
+   "text": "检",
+   "start": 22.104,
+   "end": 22.3
+  },
+  {
+   "line": 4,
+   "text": "查",
+   "start": 22.3,
+   "end": 22.496
+  },
+  {
+   "line": 4,
+   "text": "账",
+   "start": 22.496,
+   "end": 22.692
+  },
+  {
+   "line": 4,
+   "text": "户",
+   "start": 22.692,
+   "end": 22.888
+  },
+  {
+   "line": 4,
+   "text": "是",
+   "start": 22.888,
+   "end": 23.084
+  },
+  {
+   "line": 4,
+   "text": "否",
+   "start": 23.084,
+   "end": 23.28
+  },
+  {
+   "line": 4,
+   "text": "仍",
+   "start": 23.28,
+   "end": 23.476
+  },
+  {
+   "line": 4,
+   "text": "然",
+   "start": 23.476,
+   "end": 23.672
+  },
+  {
+   "line": 4,
+   "text": "健",
+   "start": 23.672,
+   "end": 23.868
+  },
+  {
+   "line": 4,
+   "text": "康",
+   "start": 23.868,
+   "end": 24.064
+  },
+  {
+   "line": 5,
+   "text": "先",
+   "start": 24.46,
+   "end": 24.62
+  },
+  {
+   "line": 5,
+   "text": "猜",
+   "start": 24.62,
+   "end": 24.78
+  },
+  {
+   "line": 5,
+   "text": "一",
+   "start": 24.78,
+   "end": 24.941
+  },
+  {
+   "line": 5,
+   "text": "道",
+   "start": 24.941,
+   "end": 25.101
+  },
+  {
+   "line": 5,
+   "text": "题",
+   "start": 25.101,
+   "end": 25.261
+  },
+  {
+   "line": 6,
+   "text": "举",
+   "start": 25.72,
+   "end": 25.855
+  },
+  {
+   "line": 6,
+   "text": "个",
+   "start": 25.855,
+   "end": 25.989
+  },
+  {
+   "line": 6,
+   "text": "例",
+   "start": 25.989,
+   "end": 26.124
+  },
+  {
+   "line": 6,
+   "text": "子",
+   "start": 26.124,
+   "end": 26.258
+  },
+  {
+   "line": 6,
+   "text": "一",
+   "start": 26.933,
+   "end": 27.16
+  },
+  {
+   "line": 6,
+   "text": "个",
+   "start": 27.16,
+   "end": 27.387
+  },
+  {
+   "line": 6,
+   "text": "账",
+   "start": 27.387,
+   "end": 27.614
+  },
+  {
+   "line": 6,
+   "text": "户",
+   "start": 27.614,
+   "end": 27.84
+  },
+  {
+   "line": 6,
+   "text": "有",
+   "start": 27.84,
+   "end": 28.067
+  },
+  {
+   "line": 6,
+   "text": "100",
+   "start": 28.067,
+   "end": 28.713
+  },
+  {
+   "line": 6,
+   "text": "美",
+   "start": 28.713,
+   "end": 28.94
+  },
+  {
+   "line": 6,
+   "text": "元",
+   "start": 28.94,
+   "end": 29.167
+  },
+  {
+   "line": 6,
+   "text": "抵",
+   "start": 29.167,
+   "end": 29.393
+  },
+  {
+   "line": 6,
+   "text": "押",
+   "start": 29.393,
+   "end": 29.62
+  },
+  {
+   "line": 6,
+   "text": "品",
+   "start": 29.62,
+   "end": 29.847
+  },
+  {
+   "line": 6,
+   "text": "借",
+   "start": 30.204,
+   "end": 30.449
+  },
+  {
+   "line": 6,
+   "text": "了",
+   "start": 30.449,
+   "end": 30.693
+  },
+  {
+   "line": 6,
+   "text": "90",
+   "start": 30.693,
+   "end": 31.181
+  },
+  {
+   "line": 6,
+   "text": "美",
+   "start": 31.181,
+   "end": 31.426
+  },
+  {
+   "line": 6,
+   "text": "元",
+   "start": 31.426,
+   "end": 31.67
+  },
+  {
+   "line": 7,
+   "text": "它",
+   "start": 32.1,
+   "end": 32.346
+  },
+  {
+   "line": 7,
+   "text": "捐",
+   "start": 32.346,
+   "end": 32.592
+  },
+  {
+   "line": 7,
+   "text": "出",
+   "start": 32.592,
+   "end": 32.837
+  },
+  {
+   "line": 7,
+   "text": "30",
+   "start": 32.837,
+   "end": 33.329
+  },
+  {
+   "line": 7,
+   "text": "美",
+   "start": 33.329,
+   "end": 33.575
+  },
+  {
+   "line": 7,
+   "text": "元",
+   "start": 33.575,
+   "end": 33.82
+  },
+  {
+   "line": 7,
+   "text": "抵",
+   "start": 33.82,
+   "end": 34.066
+  },
+  {
+   "line": 7,
+   "text": "押",
+   "start": 34.066,
+   "end": 34.312
+  },
+  {
+   "line": 7,
+   "text": "品",
+   "start": 34.312,
+   "end": 34.558
+  },
+  {
+   "line": 7,
+   "text": "没",
+   "start": 34.774,
+   "end": 35.244
+  },
+  {
+   "line": 7,
+   "text": "人",
+   "start": 35.244,
+   "end": 35.713
+  },
+  {
+   "line": 7,
+   "text": "检",
+   "start": 35.713,
+   "end": 36.183
+  },
+  {
+   "line": 7,
+   "text": "查",
+   "start": 36.183,
+   "end": 36.653
+  },
+  {
+   "line": 7,
+   "text": "也",
+   "start": 36.965,
+   "end": 37.194
+  },
+  {
+   "line": 7,
+   "text": "没",
+   "start": 37.194,
+   "end": 37.422
+  },
+  {
+   "line": 7,
+   "text": "人",
+   "start": 37.422,
+   "end": 37.651
+  },
+  {
+   "line": 7,
+   "text": "偿",
+   "start": 37.651,
+   "end": 37.879
+  },
+  {
+   "line": 7,
+   "text": "还",
+   "start": 37.879,
+   "end": 38.108
+  },
+  {
+   "line": 7,
+   "text": "协",
+   "start": 38.528,
+   "end": 38.73
+  },
+  {
+   "line": 7,
+   "text": "议",
+   "start": 38.73,
+   "end": 38.933
+  },
+  {
+   "line": 7,
+   "text": "的",
+   "start": 38.933,
+   "end": 39.135
+  },
+  {
+   "line": 7,
+   "text": "缺",
+   "start": 39.135,
+   "end": 39.337
+  },
+  {
+   "line": 7,
+   "text": "口",
+   "start": 39.337,
+   "end": 39.54
+  },
+  {
+   "line": 7,
+   "text": "是",
+   "start": 39.54,
+   "end": 39.742
+  },
+  {
+   "line": 7,
+   "text": "多",
+   "start": 39.742,
+   "end": 39.945
+  },
+  {
+   "line": 7,
+   "text": "少",
+   "start": 39.945,
+   "end": 40.147
+  },
+  {
+   "line": 8,
+   "text": "缺",
+   "start": 40.84,
+   "end": 41.192
+  },
+  {
+   "line": 8,
+   "text": "口",
+   "start": 41.192,
+   "end": 41.543
+  },
+  {
+   "line": 8,
+   "text": "是",
+   "start": 41.543,
+   "end": 41.895
+  },
+  {
+   "line": 8,
+   "text": "20",
+   "start": 41.895,
+   "end": 42.599
+  },
+  {
+   "line": 8,
+   "text": "美",
+   "start": 42.599,
+   "end": 42.95
+  },
+  {
+   "line": 8,
+   "text": "元",
+   "start": 42.95,
+   "end": 43.302
+  },
+  {
+   "line": 9,
+   "text": "账",
+   "start": 43.799,
+   "end": 44.109
+  },
+  {
+   "line": 9,
+   "text": "户",
+   "start": 44.109,
+   "end": 44.419
+  },
+  {
+   "line": 9,
+   "text": "只",
+   "start": 44.419,
+   "end": 44.729
+  },
+  {
+   "line": 9,
+   "text": "剩",
+   "start": 44.729,
+   "end": 45.04
+  },
+  {
+   "line": 9,
+   "text": "70",
+   "start": 45.04,
+   "end": 45.66
+  },
+  {
+   "line": 9,
+   "text": "美",
+   "start": 45.66,
+   "end": 45.97
+  },
+  {
+   "line": 9,
+   "text": "元",
+   "start": 45.97,
+   "end": 46.28
+  },
+  {
+   "line": 9,
+   "text": "抵",
+   "start": 46.28,
+   "end": 46.59
+  },
+  {
+   "line": 9,
+   "text": "押",
+   "start": 46.59,
+   "end": 46.901
+  },
+  {
+   "line": 9,
+   "text": "品",
+   "start": 46.901,
+   "end": 47.211
+  },
+  {
+   "line": 9,
+   "text": "却",
+   "start": 47.68,
+   "end": 48.048
+  },
+  {
+   "line": 9,
+   "text": "欠",
+   "start": 48.048,
+   "end": 48.416
+  },
+  {
+   "line": 9,
+   "text": "着",
+   "start": 48.416,
+   "end": 48.785
+  },
+  {
+   "line": 9,
+   "text": "90",
+   "start": 48.785,
+   "end": 49.522
+  },
+  {
+   "line": 9,
+   "text": "美",
+   "start": 49.522,
+   "end": 49.89
+  },
+  {
+   "line": 9,
+   "text": "元",
+   "start": 49.89,
+   "end": 50.259
+  },
+  {
+   "line": 10,
+   "text": "这",
+   "start": 50.735,
+   "end": 51.01
+  },
+  {
+   "line": 10,
+   "text": "20",
+   "start": 51.01,
+   "end": 51.561
+  },
+  {
+   "line": 10,
+   "text": "美",
+   "start": 51.561,
+   "end": 51.836
+  },
+  {
+   "line": 10,
+   "text": "元",
+   "start": 51.836,
+   "end": 52.112
+  },
+  {
+   "line": 10,
+   "text": "成",
+   "start": 52.112,
+   "end": 52.387
+  },
+  {
+   "line": 10,
+   "text": "了",
+   "start": 52.387,
+   "end": 52.663
+  },
+  {
+   "line": 10,
+   "text": "坏",
+   "start": 52.663,
+   "end": 52.938
+  },
+  {
+   "line": 10,
+   "text": "账",
+   "start": 52.938,
+   "end": 53.214
+  },
+  {
+   "line": 10,
+   "text": "最",
+   "start": 53.56,
+   "end": 53.891
+  },
+  {
+   "line": 10,
+   "text": "后",
+   "start": 53.891,
+   "end": 54.222
+  },
+  {
+   "line": 10,
+   "text": "由",
+   "start": 54.222,
+   "end": 54.553
+  },
+  {
+   "line": 10,
+   "text": "存",
+   "start": 54.553,
+   "end": 54.884
+  },
+  {
+   "line": 10,
+   "text": "款",
+   "start": 54.884,
+   "end": 55.215
+  },
+  {
+   "line": 10,
+   "text": "人",
+   "start": 55.215,
+   "end": 55.546
+  },
+  {
+   "line": 10,
+   "text": "或",
+   "start": 55.546,
+   "end": 55.877
+  },
+  {
+   "line": 10,
+   "text": "保",
+   "start": 55.877,
+   "end": 56.208
+  },
+  {
+   "line": 10,
+   "text": "险",
+   "start": 56.208,
+   "end": 56.539
+  },
+  {
+   "line": 10,
+   "text": "基",
+   "start": 56.539,
+   "end": 56.87
+  },
+  {
+   "line": 10,
+   "text": "金",
+   "start": 56.87,
+   "end": 57.201
+  },
+  {
+   "line": 10,
+   "text": "承",
+   "start": 57.201,
+   "end": 57.532
+  },
+  {
+   "line": 10,
+   "text": "担",
+   "start": 57.532,
+   "end": 57.863
+  },
+  {
+   "line": 11,
+   "text": "每",
+   "start": 58.3,
+   "end": 58.488
+  },
+  {
+   "line": 11,
+   "text": "个",
+   "start": 58.488,
+   "end": 58.675
+  },
+  {
+   "line": 11,
+   "text": "函",
+   "start": 58.675,
+   "end": 58.863
+  },
+  {
+   "line": 11,
+   "text": "数",
+   "start": 58.863,
+   "end": 59.05
+  },
+  {
+   "line": 11,
+   "text": "单",
+   "start": 59.05,
+   "end": 59.238
+  },
+  {
+   "line": 11,
+   "text": "独",
+   "start": 59.238,
+   "end": 59.426
+  },
+  {
+   "line": 11,
+   "text": "看",
+   "start": 59.426,
+   "end": 59.613
+  },
+  {
+   "line": 11,
+   "text": "都",
+   "start": 59.793,
+   "end": 59.937
+  },
+  {
+   "line": 11,
+   "text": "没",
+   "start": 59.937,
+   "end": 60.08
+  },
+  {
+   "line": 11,
+   "text": "有",
+   "start": 60.08,
+   "end": 60.224
+  },
+  {
+   "line": 11,
+   "text": "错",
+   "start": 60.224,
+   "end": 60.368
+  },
+  {
+   "line": 12,
+   "text": "攻",
+   "start": 60.93,
+   "end": 61.122
+  },
+  {
+   "line": 12,
+   "text": "击",
+   "start": 61.122,
+   "end": 61.313
+  },
+  {
+   "line": 12,
+   "text": "者",
+   "start": 61.313,
+   "end": 61.505
+  },
+  {
+   "line": 12,
+   "text": "也",
+   "start": 61.505,
+   "end": 61.696
+  },
+  {
+   "line": 12,
+   "text": "没",
+   "start": 61.696,
+   "end": 61.888
+  },
+  {
+   "line": 12,
+   "text": "有",
+   "start": 61.888,
+   "end": 62.079
+  },
+  {
+   "line": 12,
+   "text": "利",
+   "start": 62.079,
+   "end": 62.271
+  },
+  {
+   "line": 12,
+   "text": "用",
+   "start": 62.271,
+   "end": 62.462
+  },
+  {
+   "line": 12,
+   "text": "代",
+   "start": 62.462,
+   "end": 62.654
+  },
+  {
+   "line": 12,
+   "text": "码",
+   "start": 62.654,
+   "end": 62.845
+  },
+  {
+   "line": 12,
+   "text": "bug",
+   "start": 62.845,
+   "end": 63.087
+  },
+  {
+   "line": 12,
+   "text": "他",
+   "start": 63.547,
+   "end": 63.772
+  },
+  {
+   "line": 12,
+   "text": "只",
+   "start": 63.772,
+   "end": 63.997
+  },
+  {
+   "line": 12,
+   "text": "是",
+   "start": 63.997,
+   "end": 64.222
+  },
+  {
+   "line": 12,
+   "text": "按",
+   "start": 64.222,
+   "end": 64.446
+  },
+  {
+   "line": 12,
+   "text": "规",
+   "start": 64.446,
+   "end": 64.671
+  },
+  {
+   "line": 12,
+   "text": "则",
+   "start": 64.671,
+   "end": 64.896
+  },
+  {
+   "line": 12,
+   "text": "操",
+   "start": 64.896,
+   "end": 65.121
+  },
+  {
+   "line": 12,
+   "text": "作",
+   "start": 65.121,
+   "end": 65.345
+  },
+  {
+   "line": 12,
+   "text": "换",
+   "start": 65.588,
+   "end": 65.781
+  },
+  {
+   "line": 12,
+   "text": "了",
+   "start": 65.781,
+   "end": 65.973
+  },
+  {
+   "line": 12,
+   "text": "一",
+   "start": 65.973,
+   "end": 66.166
+  },
+  {
+   "line": 12,
+   "text": "种",
+   "start": 66.166,
+   "end": 66.359
+  },
+  {
+   "line": 12,
+   "text": "设",
+   "start": 66.359,
+   "end": 66.552
+  },
+  {
+   "line": 12,
+   "text": "计",
+   "start": 66.552,
+   "end": 66.745
+  },
+  {
+   "line": 12,
+   "text": "者",
+   "start": 66.745,
+   "end": 66.938
+  },
+  {
+   "line": 12,
+   "text": "没",
+   "start": 66.938,
+   "end": 67.131
+  },
+  {
+   "line": 12,
+   "text": "想",
+   "start": 67.131,
+   "end": 67.324
+  },
+  {
+   "line": 12,
+   "text": "到",
+   "start": 67.324,
+   "end": 67.517
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 67.517,
+   "end": 67.71
+  },
+  {
+   "line": 12,
+   "text": "组",
+   "start": 67.71,
+   "end": 67.902
+  },
+  {
+   "line": 12,
+   "text": "合",
+   "start": 67.902,
+   "end": 68.095
+  },
+  {
+   "line": 13,
+   "text": "规",
+   "start": 68.597,
+   "end": 68.801
+  },
+  {
+   "line": 13,
+   "text": "则",
+   "start": 68.801,
+   "end": 69.004
+  },
+  {
+   "line": 13,
+   "text": "本",
+   "start": 69.004,
+   "end": 69.208
+  },
+  {
+   "line": 13,
+   "text": "身",
+   "start": 69.208,
+   "end": 69.412
+  },
+  {
+   "line": 13,
+   "text": "怎",
+   "start": 69.649,
+   "end": 69.805
+  },
+  {
+   "line": 13,
+   "text": "么",
+   "start": 69.805,
+   "end": 69.961
+  },
+  {
+   "line": 13,
+   "text": "会",
+   "start": 69.961,
+   "end": 70.117
+  },
+  {
+   "line": 13,
+   "text": "让",
+   "start": 70.117,
+   "end": 70.273
+  },
+  {
+   "line": 13,
+   "text": "协",
+   "start": 70.273,
+   "end": 70.429
+  },
+  {
+   "line": 13,
+   "text": "议",
+   "start": 70.429,
+   "end": 70.585
+  },
+  {
+   "line": 13,
+   "text": "亏",
+   "start": 70.585,
+   "end": 70.741
+  },
+  {
+   "line": 13,
+   "text": "钱",
+   "start": 70.741,
+   "end": 70.897
+  }
+ ],
+ "captions": [
+  {
+   "text": "2023 年 3 月 13 日",
+   "start": 1.55,
+   "end": 3.769,
+   "id": "c0"
+  },
+  {
+   "text": "借贷协议 Euler Finance",
+   "start": 4.099,
+   "end": 6.299,
+   "id": "c1"
+  },
+  {
+   "text": "损失约 1.97 亿美元",
+   "start": 6.404,
+   "end": 8.59,
+   "id": "c2"
+  },
+  {
+   "text": "按事发时估值",
+   "start": 8.758,
+   "end": 9.926,
+   "id": "c3"
+  },
+  {
+   "text": "入口 是一个捐赠函数",
+   "start": 10.262,
+   "end": 12.575,
+   "id": "c4"
+  },
+  {
+   "text": "它让用户把自己的存款",
+   "start": 12.87,
+   "end": 15.074,
+   "id": "c5"
+  },
+  {
+   "text": "捐给协议的储备",
+   "start": 15.158,
+   "end": 16.636,
+   "id": "c6"
+  },
+  {
+   "text": "捐出去 账户的抵押品就少了",
+   "start": 16.93,
+   "end": 20.191,
+   "id": "c7"
+  },
+  {
+   "text": "但这个函数",
+   "start": 20.43,
+   "end": 21.654,
+   "id": "c8"
+  },
+  {
+   "text": "不检查账户是否仍然健康",
+   "start": 21.858,
+   "end": 24.184,
+   "id": "c9"
+  },
+  {
+   "text": "先猜一道题",
+   "start": 24.41,
+   "end": 25.381,
+   "id": "c10"
+  },
+  {
+   "text": "举个例子",
+   "start": 25.67,
+   "end": 26.378,
+   "id": "c11"
+  },
+  {
+   "text": "一个账户有 100 美元抵押品",
+   "start": 26.883,
+   "end": 29.967,
+   "id": "c12"
+  },
+  {
+   "text": "借了 90 美元",
+   "start": 30.154,
+   "end": 31.79,
+   "id": "c13"
+  },
+  {
+   "text": "它捐出 30 美元抵押品",
+   "start": 32.05,
+   "end": 34.678,
+   "id": "c14"
+  },
+  {
+   "text": "没人检查",
+   "start": 34.724,
+   "end": 36.773,
+   "id": "c15"
+  },
+  {
+   "text": "也没人偿还",
+   "start": 36.915,
+   "end": 38.228,
+   "id": "c16"
+  },
+  {
+   "text": "协议的缺口是多少",
+   "start": 38.478,
+   "end": 40.267,
+   "id": "c17"
+  },
+  {
+   "text": "缺口是 20 美元",
+   "start": 40.79,
+   "end": 43.422,
+   "id": "c18"
+  },
+  {
+   "text": "账户只剩 70 美元抵押品",
+   "start": 43.749,
+   "end": 47.331,
+   "id": "c19"
+  },
+  {
+   "text": "却欠着 90 美元",
+   "start": 47.63,
+   "end": 50.379,
+   "id": "c20"
+  },
+  {
+   "text": "这 20 美元成了坏账",
+   "start": 50.685,
+   "end": 53.334,
+   "id": "c21"
+  },
+  {
+   "text": "最后由存款人或保险基金承担",
+   "start": 53.51,
+   "end": 57.983,
+   "id": "c22"
+  },
+  {
+   "text": "每个函数单独看",
+   "start": 58.25,
+   "end": 59.723,
+   "id": "c23"
+  },
+  {
+   "text": "都没有错",
+   "start": 59.743,
+   "end": 60.488,
+   "id": "c24"
+  },
+  {
+   "text": "攻击者也没有利用代码 bug",
+   "start": 60.88,
+   "end": 63.207,
+   "id": "c25"
+  },
+  {
+   "text": "他只是按规则操作",
+   "start": 63.497,
+   "end": 65.465,
+   "id": "c26"
+  },
+  {
+   "text": "换了一种设计者没想到的组合",
+   "start": 65.538,
+   "end": 68.215,
+   "id": "c27"
+  },
+  {
+   "text": "规则本身",
+   "start": 68.547,
+   "end": 69.532,
+   "id": "c28"
+  },
+  {
+   "text": "怎么会让协议亏钱",
+   "start": 69.599,
+   "end": 71.017,
+   "id": "c29"
+  }
+ ]
+}

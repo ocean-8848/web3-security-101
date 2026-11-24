@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>热钱包应急演练</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .opt { display: block; width: 100%; text-align: left; margin: 8px 0; padding: 10px 12px; line-height: 1.45; }
+  .opt small { display: block; color: var(--text-2); font-size: 12px; margin-top: 2px; }
+  .timer { height: 6px; background: var(--surface-2); border-radius: 3px; overflow: hidden; margin: 8px 0; }
+  .timer i { display: block; height: 100%; background: var(--accent); width: 100%; }
+  .clock { font-family: var(--mono); font-weight: 650; }
+  .bar { height: 10px; background: var(--surface-2); border-radius: 5px; overflow: hidden; display: flex; min-width: 80px; }
+  .bar i { display: block; height: 100%; }
+  .bar .lost { background: var(--sell); }
+  .bar .fro { background: var(--info); }
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .stats .v { font-size: 19px; }
+  .legend { font-size: 12px; color: var(--text-2); }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin: 0 4px 0 10px; vertical-align: -1px; }
+  .chk { padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; }
+  .chk:last-child { border-bottom: 0; }
+  label.prep { display: flex; gap: 8px; align-items: flex-start; color: var(--text); font-size: 13.5px; margin: 6px 0; }
+  label.prep input { margin-top: 4px; }
+  .hide { display: none; }
+  .tx-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; justify-content: space-between; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="back" href="index.html">← 交互实验目录</a>
+    <h1>热钱包应急演练</h1>
+  </header>
+  <p class="lead">这是一次分支决策演练，结构模仿 Binance 2026 年 10 月 29 日热钱包事件。你按时间做决策，模型根据决策计算损失敞口。结束后，本页把你的结果与公开时间线对比。配套章节：<a href="../chapters/23-custody-exchange-ops.md">23 托管与交易所运营</a>、<a href="../chapters/29-signing-path-2026.md">29 2026 专题</a>、<a href="../chapters/25-fund-tracing-response.md">25 资金追踪</a>。</p>
+
+  <div class="callout warn small"><strong>模型声明：</strong>页面中的金额、比率和处置时长都是<strong>本手册的示例数字（模型）</strong>，不是历史数据，也不代表 Binance 的实际余额或实际决策。只有"公开时间线对比"一节使用公开事实，并逐项标出来源。</div>
+
+  <div class="card" id="setup">
+    <h3>事前控制（可选）</h3>
+    <p class="small muted">先不勾选，跑一遍；再勾选，比较差异。</p>
+    <label class="prep"><input type="checkbox" id="pRunbook"><span>已演练 MPC 紧急撤销手册（预批准的撤销路径）</span></label>
+    <label class="prep"><input type="checkbox" id="pPolicy"><span>签名策略默认拒签 EIP-7702 授权（type 4）</span></label>
+    <label class="prep"><input type="checkbox" id="pAlert"><span>自有地址代码变化（<code>0xef0100</code>）实时告警</span></label>
+    <label class="prep"><input type="checkbox" id="pTeach"><span>教学模式：关闭倒计时</span></label>
+    <div class="btn-row"><button class="primary" id="start">开始演练</button></div>
+  </div>
+
+  <div id="game" class="hide">
+    <div class="grid cols-2">
+      <div class="card">
+        <div class="tx-head"><strong id="stepTitle"></strong> <span class="clock" id="clock"></span></div>
+        <div class="timer" id="timerWrap"><i id="timer"></i></div>
+        <p class="small" id="stepText"></p>
+        <div id="opts"></div>
+        <div id="fb"></div>
+      </div>
+      <div class="card">
+        <div class="stats">
+          <div class="stat"><span class="k">已流失（模型）</span><span class="v" id="sLost"></span></div>
+          <div class="stat"><span class="k">已冻结（模型）</span><span class="v" id="sFro"></span></div>
+          <div class="stat"><span class="k">仍暴露（模型）</span><span class="v" id="sExp"></span></div>
+        </div>
+        <p class="legend" style="margin:8px 0 0"><i style="background:var(--sell);margin-left:0"></i>流失<i style="background:var(--info)"></i>冻结 · 单位：百万美元（示例）</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>钱包</th><th class="num">余额</th><th style="min-width:90px">流失比例</th></tr></thead>
+          <tbody id="poolBody"></tbody>
+        </table></div>
+        <div class="small" id="flags" style="margin-top:8px"></div>
+        <h3>事件日志</h3>
+        <div class="log" id="log"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="debrief" class="hide">
+    <h2>复盘</h2>
+    <div class="callout warn"><strong>核心结论：暂停提现不会撤销链上委托。</strong>提现暂停关闭的是链下服务。EIP-7702 委托写在账户的链上代码里，在你发送新的授权之前一直有效。Binance 初步报告也写明：暂停提现和关闭热钱包服务没有自动使已有的链上授权失效。</div>
+    <div class="grid cols-2">
+      <div class="card">
+        <h3>你的结果（模型）</h3>
+        <div class="stats">
+          <div class="stat"><span class="k">最终损失</span><span class="v" id="fLoss"></span></div>
+          <div class="stat"><span class="k">已冻结</span><span class="v" id="fFro"></span></div>
+          <div class="stat"><span class="k">用时（模拟）</span><span class="v" id="fTime"></span></div>
+        </div>
+        <h3>检查项</h3>
+        <div id="checks"></div>
+      </div>
+      <div class="card">
+        <h3>对照路径（同一模型）</h3>
+        <div class="table-wrap"><table><thead><tr><th>路径</th><th class="num">最终损失（示例）</th></tr></thead><tbody id="cmpBody"></tbody></table></div>
+        <p class="small muted">对照路径用相同的模型和事件脚本运行。差值只说明决策的相对影响。</p>
+        <h3>模型假设</h3>
+        <ul class="small" style="padding-left:18px;margin:4px 0">
+          <li>攻击者走未授权路径直接访问签名服务，所以暂停提现只拦住模型中 10% 的流出。</li>
+          <li>7702 授权已经预签。停止签名不能阻止它上链。</li>
+          <li>熔断部署在广播层，能拦住经内部广播的已签交易。</li>
+          <li>委托生效后，每 20 分钟有一笔示例入账被清扫（全链熔断后减半）。</li>
+          <li>没有预案时，撤销流程耗时 230 分钟；有预案时 35 分钟（示例）。</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>公开时间线对比</h2>
+    <div class="card">
+      <p class="small">下表的"公开事实"来自 <a href="../chapters/23-custody-exchange-ops.md">23 章 5.2 节</a>。Binance 的报告是初步报告，时间点随后续调查可能变化。T+ 从第一笔 XRP 转出（20:05 UTC）开始计算。</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>节点</th><th>公开事实（UTC）</th><th>公开 T+</th><th>你的演练</th><th>来源</th></tr></thead>
+        <tbody id="pubBody"></tbody>
+      </table></div>
+      <p class="small muted">公开资料没有给出告警时间，也没有给出提现暂停的具体时间。这两个节点无法比较。</p>
+    </div>
+    <div class="btn-row"><button class="primary" id="again">再演练一次</button></div>
+  </div>
+
+  <footer class="note">本页全部在浏览器本地运行，不连接网络。模型数字为示例。公开事实以来源链接为准，截至 2026-11-09 多方仍在调查中。</footer>
+</div>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const POOLS = [
+    { id: 'eth', name: '以太坊热钱包', bal: 3000, stable: 0.6 },
+    { id: 'btc', name: '比特币热钱包', bal: 800, stable: 0 },
+    { id: 'tron', name: 'TRON 热钱包', bal: 600, stable: 0.9 },
+    { id: 'xrp', name: 'XRP Ledger 热钱包', bal: 300, stable: 0 },
+    { id: 'sol', name: 'Solana 热钱包', bal: 150, stable: 0 },
+    { id: 'l2', name: '其他 EVM / L2', bal: 150, stable: 0.4 }
+  ];
+  const EVENTS = [
+    { t: 0, p: 'xrp', f: 0.7, via: 'sign', txt: 'XRP 热钱包大额流出（告警来源）' },
+    { t: 7, p: 'sol', f: 0.7, via: 'sign', txt: 'Solana 热钱包流出' },
+    { t: 9, p: 'l2', f: 0.5, via: 'sign', txt: 'L2 热钱包流出' },
+    { t: 15, p: 'btc', f: 0.85, via: 'sign', txt: '比特币热钱包大额流出' },
+    { t: 15, kind: 'delegate' },
+    { t: 17, p: 'tron', f: 0.8, via: 'sign', txt: 'TRON 热钱包流出' },
+    { t: 18, kind: 'sweep' },
+    { t: 40, p: 'tron', f: 0.5, via: 'sign', txt: 'TRON 热钱包再次流出' },
+    { t: 60, p: 'btc', f: 0.5, via: 'sign', txt: '比特币热钱包再次流出' },
+    { t: 90, p: 'eth', f: 0.5, via: 'sign', txt: '以太坊热钱包再次流出' },
+    { t: 120, p: 'sol', f: 0.5, via: 'sign', txt: 'Solana 热钱包再次流出' },
+    { t: 180, p: 'l2', f: 0.6, via: 'backlog', txt: '第二波：已签未广播的交易在 L2 上落地' },
+    { t: 200, p: 'tron', f: 0.3, via: 'backlog', txt: '第二波：已签未广播的交易在 TRON 上落地' }
+  ];
+  const END = 300;
+  const newState = prep => ({
+    t: -1, prep, pools: POOLS.map(p => ({ ...p, stolen: 0, frozen: 0 })), log: [], asked: {},
+    signStopped: false, wdPaused: false, hotDown: false, delegation: false, delegationEver: false, revokeAt: null, revokedAt: null, revokeFailed: false,
+    breaker: 'none', issuer: null, issuerAt: null, comms: null, evidence: null, recover: null, delayedByWait: 0, penalty: 0, picks: {}, firstStopAt: null, firstPauseAt: null, detect: null
+  });
+  const pool = (s, id) => s.pools.find(p => p.id === id);
+  const breakerFor = (s, id) => s.breaker === 'all' || (s.breaker === 'partial' && (id === 'xrp' || id === 'eth'));
+  const fmtT = m => 'T+' + m + ' 分钟';
+  function lg(s, x) { s.log.push(fmtT(Math.max(0, s.t)) + '  ' + x); }
+  function drain(s, id, f, txt, cls) {
+    const p = pool(s, id), n = p.bal * f;
+    p.bal -= n; p.stolen += n;
+    lg(s, '⛔ ' + txt + '（模型：' + Math.round(n) + 'M）');
+  }
+  function eventAt(s, e) {
+    if (e.kind === 'delegate') {
+      if (s.prep.policy) { lg(s, '🛡️ 策略拒签：攻击者的 7702 授权未能生成'); return; }
+      s.delegation = true; s.delegationEver = true;
+      lg(s, '🔻 以太坊热钱包代码变为 0xef0100…：EIP-7702 委托上链');
+      return;
+    }
+    if (e.kind === 'sweep') {
+      if (s.delegation) { drain(s, 'eth', 0.9, '委托合约清空以太坊热钱包'); return; }
+      if (!s.signStopped && !breakerFor(s, 'eth')) { drain(s, 'eth', s.wdPaused ? 0.54 : 0.6, '以太坊热钱包经签名服务流出'); return; }
+      lg(s, '✅ 以太坊热钱包流出被拦住'); return;
+    }
+    const pre = e.via === 'backlog' ? breakerFor(s, e.p) : (s.signStopped || breakerFor(s, e.p));
+    if (pre) { lg(s, '✅ 拦住：' + e.txt + (e.via === 'backlog' ? '（熔断）' : '')); return; }
+    drain(s, e.p, s.wdPaused && e.via === 'sign' ? e.f * 0.9 : e.f, e.txt);
+  }
+  function advance(s, to) {
+    for (let m = s.t + 1; m <= to; m++) {
+      s.t = m;
+      EVENTS.filter(e => e.t === m).forEach(e => eventAt(s, e));
+      if (s.delegation && m % 20 === 0) { const n = s.breaker === 'all' ? 15 : 30; pool(s, 'eth').stolen += n; lg(s, '⛔ 委托合约清扫新到账资金（模型：' + n + 'M）'); }
+      if (s.revokeAt === m) { s.delegation = false; s.revokedAt = m; s.revokeAt = null; lg(s, '🟢 委托已清零：新授权指向零地址'); }
+    }
+  }
+
+  const T = (id, title, text, opts, enter) => ({ id, title, text, opts, enter });
+  const STEPS = {
+    detect: T('detect', '① 检测', () => '告警：5 个 XRP 热钱包在几分钟内向同一地址大额转出。对账系统没有对应的提现订单。你先做什么？', [
+      { id: 'p0', label: '宣布 P0，拉起应急室', d: 4, g: 'good', fn: s => (s.detect = 'p0', '这是正确的默认动作：大额流出且账本没有对应记录，就按事故处理。') },
+      { id: 'verify', label: '先让链上团队核实 15 分钟', d: 15, g: 'mid', fn: s => (s.detect = 'verify', '核实有价值，但应该与响应并行。这 15 分钟里，其他链继续流出。') },
+      { id: 'ignore', label: '判断为内部调拨，继续观察', d: 30, g: 'bad', fn: s => (s.detect = 'ignore', '账本里没有对应订单，这不是调拨。你损失了最宝贵的 30 分钟。') }
+    ]),
+    contain: T('contain', '② 第一项遏制', () => '下一步只能先做一件事。', [
+      { id: 'stop', label: '停止全部签名路径', sub: '关闭签名服务入口，阻止新的签名', d: 4, g: 'good', fn: s => (s.signStopped = true, s.firstStopAt = s.t, '你切断了攻击者继续产生新签名的路径。提现也随之停止：没有签名就没有转出。反过来不成立。') },
+      { id: 'pause', label: '暂停用户提现', sub: '关闭提现接口', d: 4, g: 'mid', fn: s => (s.wdPaused = true, s.firstPauseAt = s.t, '提现接口已关闭。但攻击者走的是未授权路径，直接访问签名服务。流出继续。') },
+      { id: 'revoke', label: '撤销 EIP-7702 委托', d: 8, g: 'bad', fn: s => s.delegationEver ? (s.revokeFailed = true, '委托已经存在，但签名路径还开着。攻击者可以再签一次，把你的撤销覆盖掉。') : '现在没有可以撤销的委托。你用掉了 8 分钟。' }
+    ]),
+    contain2: T('contain2', '②-2 流出仍在继续', s => (s.wdPaused ? '提现已暂停，但日志显示签名服务仍在产生新签名，流出没有停。' : '链上流出没有停。') + '你接下来做什么？', [
+      { id: 'stop', label: '停止全部签名路径', d: 4, g: 'good', fn: s => (s.signStopped = true, s.firstStopAt = s.t, '现在才切断。前面耽误的时间已经反映在流失数字里。') },
+      { id: 'hot', label: '继续关闭：停掉热钱包服务', d: 6, g: 'bad', fn: s => (s.hotDown = true, '热钱包服务是链下组件。攻击者仍能访问签名服务，这不解决问题。') }
+    ]),
+    delegation: T('delegation', '③ 以太坊热钱包代码变化', s => (s.prep.alert ? '告警触发：' : '资金被清扫后你才发现：') + '以太坊热钱包代码变为 <code>0xef0100…</code>，账户执行攻击者合约的代码。这是 MPC 钱包，没有一把可以立刻发交易的单独私钥。你怎么做？', [
+      { id: 'revoke', label: '运行撤销流程（发送指向零地址的新授权）', sub: '需要一条窄的 break-glass 签名路径', d: 3, g: 'good', fn: s => {
+          if (!s.signStopped) { s.revokeFailed = true; return '撤销需要签名，而签名路径还在攻击者手里。攻击者重新设置了委托。先切断路径，再撤销。'; }
+          const dur = s.prep.runbook ? 35 : 230; s.revokeAt = s.t + dur;
+          return (s.prep.runbook ? '手册预批准了撤销路径，预计 35 分钟（模型）完成。' : '没有预案，需要临时开发流程，模型中耗时 230 分钟。这段时间委托继续有效。') + ' 注意：停止签名之后，还要留一条窄的应急路径来发撤销。';
+        } },
+      { id: 'pauseHot', label: '再暂停一层提现，并关闭热钱包服务', d: 5, g: 'bad', fn: s => (s.wdPaused = true, s.hotDown = true, '<strong>委托没有变化。</strong>暂停提现和关闭链下服务，都不能改变账户的链上代码。清扫继续。') },
+      { id: 'watch', label: '先等调查结果', d: 10, g: 'bad', fn: () => '委托不会过期。等待只会让清扫继续。' }
+    ], s => s.prep.alert ? 16 : 28),
+    delegation2: T('delegation2', '③-2 委托仍然有效', () => '链上查询确认：委托地址没有变化，新到账的资金仍被清扫。', [
+      { id: 'revoke', label: '先确认签名路径已切断，再运行撤销流程', d: 6, g: 'good', fn: s => { s.signStopped = true; if (s.firstStopAt === null) s.firstStopAt = s.t; const dur = s.prep.runbook ? 35 : 230; s.revokeAt = s.t + dur; return '现在顺序对了：先切断，再撤销。委托在 ' + dur + ' 分钟（模型）后清零。'; } },
+      { id: 'accept', label: '继续观察，不撤销', d: 10, g: 'bad', fn: () => '委托继续有效。任何转入这个地址的资金都会被清扫。' }
+    ]),
+    breaker: T('breaker', '④ 分链熔断', () => '公开案例中，事故涉及多条链。你如何部署熔断？', [
+      { id: 'all', label: '全部链熔断（含归集和补充）', d: 5, g: 'good', fn: s => (s.breaker = 'all', '所有链的广播和内部归集都停了。已签未广播的交易无法经内部广播落地。外部转账仍能到达被委托的地址，所以熔断不能代替撤销委托。') },
+      { id: 'partial', label: '只熔断已发现异常的链（XRP、以太坊）', d: 3, g: 'mid', fn: s => (s.breaker = 'partial', '只封锁已看到的链。攻击者下一步会转向其他链。') },
+      { id: 'none', label: '不熔断，保持业务连续', d: 1, g: 'bad', fn: s => (s.breaker = 'none', '其他链的出口仍然开放。') }
+    ]),
+    issuer: T('issuer', '⑤ 发行方冻结', () => '被盗资产中有 USDT、USDC。攻击者通常先把稳定币换掉。你如何发起冻结？', [
+      { id: 'par', label: '立即向多家发行方并行发送地址清单', d: 3, g: 'good', fn: s => (s.issuer = 'par', s.issuerAt = s.t, '并行通知。清单要包含交易哈希和接收地址，后续持续更新。') },
+      { id: 'single', label: '先联系最大的一家，等回复再联系其他家', d: 5, g: 'mid', fn: s => (s.issuer = 'single', s.issuerAt = s.t, '排队通知。攻击者不会等你。') },
+      { id: 'late', label: '等完整调查结论后统一发送', d: 20, g: 'bad', fn: s => (s.issuer = 'late', s.issuerAt = s.t + 60, '等到调查结束，稳定币已被换成无法冻结的资产。') }
+    ]),
+    comms: T('comms', '⑥ 对外沟通', () => '媒体和用户开始询问。你发布什么？', [
+      { id: 'fact', label: '发布事实：提现已暂停，正在调查，金额待核实，下次更新时间', d: 2, g: 'good', fn: s => (s.comms = 'fact', '只说已确认的事实，并给出下次更新时间。早期链上估值通常偏低。') },
+      { id: 'over', label: '立即发布精确金额，并宣布事件已完全控制', d: 2, g: 'bad', fn: s => (s.comms = 'over', '金额还在变化，委托也可能仍然有效。过早的结论要反复更正。') },
+      { id: 'silent', label: '调查完成前不发布任何信息', d: 0, g: 'bad', fn: s => (s.comms = 'silent', '沉默会让谣言和仿冒公告占据信息空间，用户也不知道暂停提现的原因。') }
+    ]),
+    evidence: T('evidence', '⑦ 证据保全与根除', () => '团队想尽快重建受影响系统。', [
+      { id: 'pres', label: '先做磁盘和内存镜像、保存访问日志，再吊销令牌、隔离终端', d: 10, g: 'good', fn: s => (s.evidence = 'pres', '先保全，后清理。部署令牌和相关凭证随后吊销。') },
+      { id: 'wipe', label: '立刻重建系统，尽快恢复', d: 3, g: 'bad', fn: s => (s.evidence = 'wipe', '重建覆盖了入侵痕迹。你无法确定攻击者的持久化是否清除。') },
+      { id: 'chain', label: '链上数据已足够，不做主机取证', d: 2, g: 'bad', fn: s => (s.evidence = 'chain', '链上数据说明了结果，不能说明入侵路径。') }
+    ]),
+    recover: T('recover', '⑧ 恢复', s => '准备恢复提现。' + (s.delegation ? '<strong>注意：委托当前仍然有效。</strong>' : ''), [
+      { id: 'phased', label: '确认委托清零、更换凭证后，按链分批恢复', d: 0, g: 'good', fn: s => (s.recover = 'phased', '分批恢复，每批之后对账。') },
+      { id: 'full', label: '全部链一次性恢复', d: 0, g: 'bad', fn: s => { s.recover = 'full'; if (s.delegation) { s.penalty += 100; return '<strong>委托还在。</strong>恢复后转入这个地址的资金继续被清扫（模型额外损失 100M）。'; } if (s.evidence !== 'pres') { s.penalty += 50; return '入侵路径没有查清，攻击者可能仍有访问权（模型额外损失 50M）。'; } return '全量恢复没有留下观察窗口。'; } },
+      { id: 'closed', label: '继续关闭，直到完整报告发布', d: 0, g: 'mid', fn: s => (s.recover = 'closed', '安全，但用户无法取回资产。分批恢复更合适。') }
+    ])
+  };
+  function nextStep(s) {
+    if (!s.asked.detect) return 'detect';
+    if (!s.asked.contain) return 'contain';
+    if (!s.signStopped && !s.asked.contain2) return 'contain2';
+    if (!s.prep.policy && !s.asked.delegation) return 'delegation';
+    if (!s.prep.policy && s.delegationEver && s.delegation && s.revokeAt === null && !s.asked.delegation2) return 'delegation2';
+    for (const x of ['breaker', 'issuer', 'comms', 'evidence', 'recover']) if (!s.asked[x]) return x;
+    return null;
+  }
+  function apply(s, step, opt) {
+    s.asked[step.id] = true; s.picks[step.id] = opt.id;
+    advance(s, s.t + opt.d);
+    return opt.fn(s);
+  }
+  function finish(s) {
+    advance(s, END);
+    let stable = 0, stolen = 0;
+    s.pools.forEach(p => { stolen += p.stolen; stable += p.stolen * p.stable; });
+    const decay = Math.max(0.4, 1 - Math.max(0, (s.issuerAt === null ? END : s.issuerAt) - 60) / 300);
+    const rate = (s.issuer === 'par' ? 0.8 : s.issuer === 'single' ? 0.45 : s.issuer === 'late' ? 0.25 : 0) * decay;
+    const frozen = stable * rate;
+    return { stolen: stolen + s.penalty, frozen, loss: stolen + s.penalty - frozen, stable, native: stolen - stable };
+  }
+  function runPolicy(map, prep) {
+    const s = newState(prep); advance(s, 0);
+    for (let g = 0; g < 20; g++) {
+      const id = nextStep(s); if (!id) break;
+      const step = STEPS[id];
+      if (step.enter) { const to = step.enter(s); if (to > s.t) advance(s, to); }
+      apply(s, step, step.opts.find(o => o.id === map[id]) || step.opts[0]);
+    }
+    return finish(s);
+  }
+
+  const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* 忽略 */ } } };
+  $('pTeach').checked = store.get('irsim.teach') === '1';
+  const M = v => Math.round(v).toLocaleString('en-US') + 'M';
+  let S, timerId, deadline, curStep;
+  const TIME = 45;
+
+  function start() {
+    store.set('irsim.teach', $('pTeach').checked ? '1' : '0');
+    S = newState({ runbook: $('pRunbook').checked, policy: $('pPolicy').checked, alert: $('pAlert').checked });
+    advance(S, 0);
+    $('setup').classList.add('hide'); $('debrief').classList.add('hide'); $('game').classList.remove('hide');
+    go();
+  }
+  function render() {
+    let lost = 0, bal = 0;
+    $('poolBody').innerHTML = S.pools.map(p => {
+      lost += p.stolen; bal += p.bal;
+      const orig = POOLS.find(x => x.id === p.id).bal;
+      return '<tr><td>' + p.name + '</td><td class="num">' + Math.round(p.bal) + '</td><td><div class="bar"><i class="lost" style="width:' + Math.min(100, p.stolen / orig * 100).toFixed(1) + '%"></i></div></td></tr>';
+    }).join('');
+    $('sLost').textContent = M(lost); $('sFro').textContent = '—'; $('sExp').textContent = M(bal);
+    $('clock').textContent = fmtT(Math.max(0, S.t));
+    $('flags').innerHTML = [
+      [S.signStopped, '签名路径已切断', '签名路径开放'],
+      [S.wdPaused, '提现已暂停', '提现未暂停'],
+      [!S.delegation, '无有效委托', '⚠️ 委托有效'],
+      [S.breaker === 'all', '全链熔断', S.breaker === 'partial' ? '部分熔断' : '未熔断']
+    ].map(([ok, y, n]) => '<span class="pill ' + (ok ? 'buy' : 'sell') + '" style="margin:2px 4px 2px 0">' + (ok ? y : n) + '</span>').join('');
+    $('log').textContent = S.log.slice().reverse().join('\n');
+  }
+  function go() {
+    clearInterval(timerId);
+    const id = nextStep(S);
+    if (!id) return end();
+    curStep = STEPS[id];
+    if (curStep.enter) { const to = curStep.enter(S); if (to > S.t) advance(S, to); }
+    $('stepTitle').textContent = curStep.title;
+    $('stepText').innerHTML = curStep.text(S);
+    $('fb').innerHTML = '';
+    $('opts').innerHTML = curStep.opts.map(o => '<button class="opt" data-o="' + o.id + '">' + o.label + (o.sub ? '<small>' + o.sub + '</small>' : '') + '</button>').join('');
+    $('opts').querySelectorAll('button').forEach(b => b.onclick = () => choose(curStep.opts.find(o => o.id === b.dataset.o)));
+    render();
+    const teach = $('pTeach').checked;
+    $('timerWrap').classList.toggle('hide', teach);
+    if (!teach) {
+      deadline = Date.now() + TIME * 1000;
+      $('timer').style.width = '100%';
+      timerId = setInterval(() => {
+        const left = deadline - Date.now();
+        $('timer').style.width = Math.max(0, left / (TIME * 10)) + '%';
+        if (left <= 0) { clearInterval(timerId); choose({ id: 'timeout', label: '超时', d: 15, g: 'bad', fn: s => '⏰ 超时，没有人拍板。你损失了 15 分钟（模型）。' }); }
+      }, 200);
+    }
+  }
+  function choose(opt) {
+    clearInterval(timerId);
+    const fb = apply(S, curStep, opt);
+    $('opts').innerHTML = '';
+    const cls = opt.g === 'good' ? 'info' : 'warn';
+    $('fb').innerHTML = '<div class="callout ' + cls + ' small">' + (opt.g === 'good' ? '✅ ' : opt.g === 'mid' ? '🟡 ' : '❌ ') + fb + '</div><div class="btn-row"><button class="primary" id="next">继续</button></div>';
+    render();
+    $('next').onclick = go;
+  }
+  function end() {
+    const r = finish(S);
+    S.log.push(fmtT(S.t) + '  模型结束');
+    render();
+    const lostTotal = r.stolen;
+    $('sLost').textContent = M(lostTotal); $('sFro').textContent = M(r.frozen); $('sExp').textContent = M(S.pools.reduce((a, p) => a + p.bal, 0));
+    $('fLoss').textContent = M(r.loss); $('fFro').textContent = M(r.frozen); $('fTime').textContent = fmtT(END);
+    const c = (ok, txt, link) => '<div class="chk">' + (ok ? '✅ ' : '❌ ') + txt + (link ? ' <a href="' + link + '">相关章节</a>' : '') + '</div>';
+    const ck = [
+      c(S.detect === 'p0', '告警后立即按事故处理，核实与响应并行。'),
+      c(S.firstStopAt !== null && S.picks.contain === 'stop', '第一项遏制动作是切断签名路径。', '../chapters/29-signing-path-2026.md'),
+      c(S.prep.policy || S.revokedAt !== null, '委托被清零（或策略让它根本没有发生）。<strong>暂停提现不能撤销委托。</strong>', '../chapters/15-account-abstraction-wallets.md'),
+      c(!S.revokeFailed, '撤销之前先切断签名路径，撤销没有被攻击者覆盖。'),
+      c(S.breaker === 'all', '全部链熔断，没有留下未覆盖的链。', '../chapters/23-custody-exchange-ops.md'),
+      c(S.issuer === 'par', '向多家发行方并行发送地址清单。', '../chapters/25-fund-tracing-response.md'),
+      c(S.comms === 'fact', '对外只说已确认的事实，并给出下次更新时间。'),
+      c(S.evidence === 'pres', '恢复之前完成证据保全，再吊销凭证。', '../assessment/A09-incident-response.md'),
+      c(S.recover === 'phased', '确认委托清零后分批恢复。')
+    ];
+    $('checks').innerHTML = ck.join('');
+    const bestP = { detect: 'p0', contain: 'stop', delegation: 'revoke', breaker: 'all', issuer: 'par', comms: 'fact', evidence: 'pres', recover: 'phased' };
+    const paths = [
+      ['你的路径', r.loss, true],
+      ['只暂停提现、关闭热钱包服务', runPolicy({ detect: 'p0', contain: 'pause', contain2: 'hot', delegation: 'pauseHot', delegation2: 'accept', breaker: 'none', issuer: 'par', comms: 'fact', evidence: 'pres', recover: 'phased' }, { runbook: false, policy: false, alert: false }).loss],
+      ['切断签名 + 撤销 + 全链熔断（无预案）', runPolicy(bestP, { runbook: false, policy: false, alert: false }).loss],
+      ['同上 + 已演练撤销手册 + 代码告警', runPolicy(bestP, { runbook: true, policy: false, alert: true }).loss],
+      ['同上 + 策略默认拒签 7702', runPolicy(bestP, { runbook: true, policy: true, alert: true }).loss]
+    ];
+    $('cmpBody').innerHTML = paths.map(p => '<tr' + (p[2] ? ' style="font-weight:650"' : '') + '><td>' + p[0] + '</td><td class="num">' + M(p[1]) + '</td></tr>').join('');
+    const B = 'https://www.linkedin.com/pulse/29-october-binance-security-incident-initial-findings-response-modgf/';
+    const TR = 'https://www.trmlabs.com/resources/blog/north-korea-steals-usd-6-36-billion-from-binance-in-the-largest-hack-in-history';
+    const E = 'https://www.elliptic.co/insights/binance-largest-hack-in-history/';
+    const rows = [
+      ['第一笔流出（XRP）', '20:05', 'T+0', 'T+0', [['Binance', B], ['TRM', TR]]],
+      ['7702 委托上链', '20:20', 'T+15', S.prep.policy ? '被策略拦截' : 'T+15（脚本）', [['TRM', TR], ['Elliptic', E]]],
+      ['以太坊热钱包被清空', '约 20:23–20:24', '约 T+18', 'T+18（脚本）', [['TRM', TR], ['Elliptic', E]]],
+      ['Tether 冻结', '21:01', 'T+56', S.issuerAt !== null ? '你在 T+' + S.issuerAt + ' 发出请求' : '未发出', [['TRM', TR]]],
+      ['Circle 冻结', '21:04', 'T+59', S.issuerAt !== null ? '你在 T+' + S.issuerAt + ' 发出请求' : '未发出', [['TRM', TR]]],
+      ['第二波（Avalanche、Polygon）', '约 23:05', '约 T+180', 'T+180（脚本）', [['TRM', TR], ['Elliptic', E]]],
+      ['最后一笔未授权转账', '23:56', 'T+231', '由你的熔断决定', [['Binance', B]]],
+      ['委托清零', '10-30 00:10', 'T+245（委托存活约 3 小时 50 分）', S.revokedAt !== null ? 'T+' + S.revokedAt : (S.prep.policy ? '未发生委托' : '未清零'), [['Binance', B]]]
+    ];
+    $('pubBody').innerHTML = rows.map(r => '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td><td>' + r[2] + '</td><td>' + r[3] + '</td><td>' + r[4].map(l => '<a href="' + l[1] + '">' + l[0] + '</a>').join('、') + '</td></tr>').join('');
+    store.set('irsim.last', String(Math.round(r.loss)));
+    $('game').classList.add('hide');
+    $('debrief').classList.remove('hide');
+    $('debrief').scrollIntoView();
+  }
+  $('start').onclick = start;
+  $('again').onclick = () => { $('debrief').classList.add('hide'); $('setup').classList.remove('hide'); window.scrollTo(0, 0); };
+  window.__irSim = { runPolicy, STEPS, newState, nextStep, apply, finish, advance };
+})();
+</script>
+<script>
+/* 在单文件阅读版的 iframe 中打开时，把章节链接交给外层阅读器处理 */
+(function () {
+  if (window.parent === window) return;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href');
+    if (/\.md(#|$)/.test(h)) { e.preventDefault(); window.parent.postMessage({ cexNavMd: h }, '*'); }
+  });
+})();
+</script>
+</body>
+</html>

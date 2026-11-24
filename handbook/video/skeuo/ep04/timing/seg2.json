@@ -1,0 +1,2642 @@
+{
+ "id": "seg2",
+ "title": "交出控制权",
+ "pill": 2,
+ "total": 145.41,
+ "lines": [
+  {
+   "id": "seg2-00",
+   "text": "先给一句话的定义。",
+   "spoken": "先给一句话的定义。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-00.mp3",
+   "start": 1.6,
+   "dur": 2.28,
+   "speechStart": 1.698,
+   "speechEnd": 3.031
+  },
+  {
+   "id": "seg2-01",
+   "text": "合约在更新自己的账本之前，把控制权交给了外部地址。",
+   "spoken": "合约在更新自己的账本之前，把控制权交给了外部地址。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-01.mp3",
+   "start": 4.1,
+   "dur": 5.04,
+   "speechStart": 4.198,
+   "speechEnd": 8.305
+  },
+  {
+   "id": "seg2-02",
+   "text": "外部地址趁账本还是旧的，再次调用合约。",
+   "spoken": "外部地址趁账本还是旧的，再次掉用合约。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-02.mp3",
+   "start": 9.36,
+   "dur": 4.368,
+   "speechStart": 9.458,
+   "speechEnd": 12.898
+  },
+  {
+   "id": "seg2-03",
+   "text": "严格来说，重入是一个函数还没执行完，就被外部调用再次进入。",
+   "spoken": "严格来说，虫入是一个函数还没执行完，就被外部掉用再次进入。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-03.mp3",
+   "start": 13.948,
+   "dur": 6.216,
+   "speechStart": 14.046,
+   "speechEnd": 19.319
+  },
+  {
+   "id": "seg2-04",
+   "text": "打个比方。你去银行取 100 元。",
+   "spoken": "打个比方。你去银航取 100 元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-04.mp3",
+   "start": 20.384,
+   "dur": 3.768,
+   "speechStart": 20.482,
+   "speechEnd": 23.313
+  },
+  {
+   "id": "seg2-05",
+   "text": "柜员先把现金递给你，然后才去改账本。",
+   "spoken": "柜员先把现金递给你，然后才去改账本。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-05.mp3",
+   "start": 24.372,
+   "dur": 4.008,
+   "speechStart": 24.47,
+   "speechEnd": 27.541
+  },
+  {
+   "id": "seg2-06",
+   "text": "你接过现金的瞬间，同伴在旁边说：他要再取 100 元。",
+   "spoken": "你接过现金的瞬间，同伴在旁边说：他要再取 100 元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-06.mp3",
+   "start": 28.6,
+   "dur": 5.112,
+   "speechStart": 28.698,
+   "speechEnd": 32.876
+  },
+  {
+   "id": "seg2-07",
+   "text": "柜员一查，账本上还是 100，于是又给了一次。",
+   "spoken": "柜员一查，账本上还是 100，于是又给了一次。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-07.mp3",
+   "start": 33.932,
+   "dur": 4.776,
+   "speechStart": 34.03,
+   "speechEnd": 37.863
+  },
+  {
+   "id": "seg2-08",
+   "text": "只要柜员一直先给钱、后改账，你们就能一直取，直到金库见底。",
+   "spoken": "只要柜员一直先给钱、后改账，你们就能一直取，直到金库见底。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-08.mp3",
+   "start": 38.928,
+   "dur": 6.24,
+   "speechStart": 39.026,
+   "speechEnd": 44.335
+  },
+  {
+   "id": "seg2-09",
+   "text": "这个比方有一处不成立。现实里，柜员可以同时接待两个人。",
+   "spoken": "这个比方有一处不成立。现实里，柜员可以同时接待两个人。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-09.mp3",
+   "start": 45.388,
+   "dur": 6.408,
+   "speechStart": 45.486,
+   "speechEnd": 50.959
+  },
+  {
+   "id": "seg2-10",
+   "text": "EVM 是单线程的。重入不是并发，而是嵌套。",
+   "spoken": "EVM 是单线程的。虫入不是并发，而是嵌套。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-10.mp3",
+   "start": 52.016,
+   "dur": 5.568,
+   "speechStart": 52.114,
+   "speechEnd": 56.73
+  },
+  {
+   "id": "seg2-11",
+   "text": "第二次取款，整个发生在第一次取款的中间。",
+   "spoken": "第二次取款，整个发生在第一次取款的中间。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-11.mp3",
+   "start": 57.804,
+   "dur": 4.08,
+   "speechStart": 57.902,
+   "speechEnd": 61.033
+  },
+  {
+   "id": "seg2-12",
+   "text": "所以，重入的前提只有两个。",
+   "spoken": "所以，虫入的前提只有两个。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-12.mp3",
+   "start": 62.104,
+   "dur": 3.24,
+   "speechStart": 62.202,
+   "speechEnd": 64.511
+  },
+  {
+   "id": "seg2-13",
+   "text": "第一，合约在函数中途发起外部调用，而被调用的一方，受攻击者控制。",
+   "spoken": "第一，合约在函数中途发起外部掉用，而被掉用的一方，受攻击者控制。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-13.mp3",
+   "start": 65.564,
+   "dur": 7.176,
+   "speechStart": 65.662,
+   "speechEnd": 71.9
+  },
+  {
+   "id": "seg2-14",
+   "text": "第二，外部调用发生的时候，合约的状态，还没有更新到最终值。",
+   "spoken": "第二，外部掉用发生的时候，合约的状态，还没有更新到最终值。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-14.mp3",
+   "start": 72.96,
+   "dur": 6.144,
+   "speechStart": 73.058,
+   "speechEnd": 78.272
+  },
+  {
+   "id": "seg2-15",
+   "text": "哪些操作会交出控制权？一共有六类。",
+   "spoken": "哪些操作会交出控制权？一共有六类。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-15.mp3",
+   "start": 79.324,
+   "dur": 4.32,
+   "speechStart": 79.422,
+   "speechEnd": 82.812
+  },
+  {
+   "id": "seg2-16",
+   "text": "用 call 转 ETH。接收方是合约时，会执行它的 receive，或者 fallback。",
+   "spoken": "用 call 转 ETH。接收方是合约时，会执行它的 receive，或者 fallback。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-16.mp3",
+   "start": 83.864,
+   "dur": 6.84,
+   "speechStart": 83.962,
+   "speechEnd": 89.864
+  },
+  {
+   "id": "seg2-17",
+   "text": "调用代币的 transfer。代币如果是攻击者部署的，里面的代码可以是任意的。",
+   "spoken": "掉用代币的 transfer。代币如果是攻击者部署的，里面的代码可以是任意的。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-17.mp3",
+   "start": 90.924,
+   "dur": 6.744,
+   "speechStart": 91.022,
+   "speechEnd": 96.841
+  },
+  {
+   "id": "seg2-18",
+   "text": "ERC-777 代币转账，会触发接收方的钩子。",
+   "spoken": "ERC-777 代币转账，会触发接收方的钩子。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-18.mp3",
+   "start": 97.888,
+   "dur": 4.488,
+   "speechStart": 97.986,
+   "speechEnd": 101.545
+  },
+  {
+   "id": "seg2-19",
+   "text": "NFT 的安全转账和安全铸造，会回调接收方。",
+   "spoken": "NFT 的安全转账和安全铸造，会回掉接收方。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-19.mp3",
+   "start": 102.596,
+   "dur": 4.8,
+   "speechStart": 102.694,
+   "speechEnd": 106.551
+  },
+  {
+   "id": "seg2-20",
+   "text": "闪电贷的回调，设计上就是把控制权交给借款人。",
+   "spoken": "闪电贷的回掉，设计上就是把控制权交给借款人。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-20.mp3",
+   "start": 107.616,
+   "dur": 4.824,
+   "speechStart": 107.714,
+   "speechEnd": 111.595
+  },
+  {
+   "id": "seg2-21",
+   "text": "还有，调用任何用户提供的地址，包括路由器、钩子和预言机。",
+   "spoken": "还有，掉用任何用户提供的地址，包括路由器、钩子和预言机。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-21.mp3",
+   "start": 112.66,
+   "dur": 6.48,
+   "speechStart": 112.758,
+   "speechEnd": 118.305
+  },
+  {
+   "id": "seg2-22",
+   "text": "再补一个细节。同一份代码，换一条链，回调入口就不一样。",
+   "spoken": "再补一个细节。同一份代码，换一条链，回掉入口就不一样。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-22.mp3",
+   "start": 119.36,
+   "dur": 5.784,
+   "speechStart": 119.458,
+   "speechEnd": 124.324
+  },
+  {
+   "id": "seg2-23",
+   "text": "在 TRON 上，用系统交易转 TRX，不会执行接收合约的 fallback。",
+   "spoken": "在 TRON 上，用系统交易转 TRX，不会执行接收合约的 fallback。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-23.mp3",
+   "start": 125.364,
+   "dur": 5.928,
+   "speechStart": 125.462,
+   "speechEnd": 130.462
+  },
+  {
+   "id": "seg2-24",
+   "text": "附带 callValue 去调用合约，才会执行。",
+   "spoken": "附带 callValue 去掉用合约，才会执行。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-24.mp3",
+   "start": 131.512,
+   "dur": 3.624,
+   "speechStart": 131.61,
+   "speechEnd": 134.288
+  },
+  {
+   "id": "seg2-25",
+   "text": "在 Mantle 上，ETH 以 ERC-20 的形式存在，转它不触发 receive。转原生币 MNT，才会触发。",
+   "spoken": "在 Mantle 上，ETH 以 ERC-20 的形式存在，转它不触发 receive。转原生币 MNT，才会触发。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep04/audio/lines/seg2-25.mp3",
+   "start": 135.356,
+   "dur": 8.856,
+   "speechStart": 135.454,
+   "speechEnd": 143.368
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "先",
+   "start": 1.698,
+   "end": 2.007
+  },
+  {
+   "line": 0,
+   "text": "给",
+   "start": 2.007,
+   "end": 2.09
+  },
+  {
+   "line": 0,
+   "text": "一句话",
+   "start": 2.102,
+   "end": 2.483
+  },
+  {
+   "line": 0,
+   "text": "的",
+   "start": 2.483,
+   "end": 2.567
+  },
+  {
+   "line": 0,
+   "text": "定义",
+   "start": 2.579,
+   "end": 3.031
+  },
+  {
+   "line": 1,
+   "text": "合约",
+   "start": 4.198,
+   "end": 4.519
+  },
+  {
+   "line": 1,
+   "text": "在",
+   "start": 4.543,
+   "end": 4.662
+  },
+  {
+   "line": 1,
+   "text": "更新",
+   "start": 4.674,
+   "end": 5.007
+  },
+  {
+   "line": 1,
+   "text": "自己",
+   "start": 5.031,
+   "end": 5.233
+  },
+  {
+   "line": 1,
+   "text": "的",
+   "start": 5.233,
+   "end": 5.317
+  },
+  {
+   "line": 1,
+   "text": "账本",
+   "start": 5.329,
+   "end": 5.65
+  },
+  {
+   "line": 1,
+   "text": "之前",
+   "start": 5.662,
+   "end": 6.174
+  },
+  {
+   "line": 1,
+   "text": "把",
+   "start": 6.376,
+   "end": 6.531
+  },
+  {
+   "line": 1,
+   "text": "控制权",
+   "start": 6.531,
+   "end": 7.162
+  },
+  {
+   "line": 1,
+   "text": "交给",
+   "start": 7.186,
+   "end": 7.483
+  },
+  {
+   "line": 1,
+   "text": "了",
+   "start": 7.483,
+   "end": 7.555
+  },
+  {
+   "line": 1,
+   "text": "外部",
+   "start": 7.579,
+   "end": 7.876
+  },
+  {
+   "line": 1,
+   "text": "地址",
+   "start": 7.888,
+   "end": 8.305
+  },
+  {
+   "line": 2,
+   "text": "外部",
+   "start": 9.458,
+   "end": 9.827
+  },
+  {
+   "line": 2,
+   "text": "地址",
+   "start": 9.839,
+   "end": 10.184
+  },
+  {
+   "line": 2,
+   "text": "趁",
+   "start": 10.208,
+   "end": 10.41
+  },
+  {
+   "line": 2,
+   "text": "账本",
+   "start": 10.41,
+   "end": 10.862
+  },
+  {
+   "line": 2,
+   "text": "还是",
+   "start": 10.886,
+   "end": 11.208
+  },
+  {
+   "line": 2,
+   "text": "旧",
+   "start": 11.22,
+   "end": 11.434
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 11.434,
+   "end": 11.648
+  },
+  {
+   "line": 2,
+   "text": "再次",
+   "start": 11.839,
+   "end": 12.22
+  },
+  {
+   "line": 2,
+   "text": "调用",
+   "start": 12.231,
+   "end": 12.481
+  },
+  {
+   "line": 2,
+   "text": "合约",
+   "start": 12.493,
+   "end": 12.898
+  },
+  {
+   "line": 3,
+   "text": "严格",
+   "start": 14.046,
+   "end": 14.379
+  },
+  {
+   "line": 3,
+   "text": "来说",
+   "start": 14.391,
+   "end": 14.915
+  },
+  {
+   "line": 3,
+   "text": "重",
+   "start": 15.2,
+   "end": 15.498
+  },
+  {
+   "line": 3,
+   "text": "入",
+   "start": 15.498,
+   "end": 15.593
+  },
+  {
+   "line": 3,
+   "text": "是",
+   "start": 15.617,
+   "end": 15.724
+  },
+  {
+   "line": 3,
+   "text": "一个",
+   "start": 15.724,
+   "end": 15.879
+  },
+  {
+   "line": 3,
+   "text": "函数",
+   "start": 15.891,
+   "end": 16.355
+  },
+  {
+   "line": 3,
+   "text": "还",
+   "start": 16.379,
+   "end": 16.51
+  },
+  {
+   "line": 3,
+   "text": "没",
+   "start": 16.51,
+   "end": 16.617
+  },
+  {
+   "line": 3,
+   "text": "执行",
+   "start": 16.629,
+   "end": 16.938
+  },
+  {
+   "line": 3,
+   "text": "完",
+   "start": 16.938,
+   "end": 17.248
+  },
+  {
+   "line": 3,
+   "text": "就",
+   "start": 17.558,
+   "end": 17.712
+  },
+  {
+   "line": 3,
+   "text": "被",
+   "start": 17.712,
+   "end": 17.784
+  },
+  {
+   "line": 3,
+   "text": "外部",
+   "start": 17.796,
+   "end": 18.093
+  },
+  {
+   "line": 3,
+   "text": "调用",
+   "start": 18.093,
+   "end": 18.474
+  },
+  {
+   "line": 3,
+   "text": "再次",
+   "start": 18.569,
+   "end": 18.998
+  },
+  {
+   "line": 3,
+   "text": "进入",
+   "start": 19.01,
+   "end": 19.319
+  },
+  {
+   "line": 4,
+   "text": "打",
+   "start": 20.482,
+   "end": 20.732
+  },
+  {
+   "line": 4,
+   "text": "个",
+   "start": 20.732,
+   "end": 20.815
+  },
+  {
+   "line": 4,
+   "text": "比方",
+   "start": 20.827,
+   "end": 21.267
+  },
+  {
+   "line": 4,
+   "text": "你",
+   "start": 21.801,
+   "end": 22.098
+  },
+  {
+   "line": 4,
+   "text": "去",
+   "start": 22.098,
+   "end": 22.217
+  },
+  {
+   "line": 4,
+   "text": "银",
+   "start": 22.229,
+   "end": 22.36
+  },
+  {
+   "line": 4,
+   "text": "行取",
+   "start": 22.36,
+   "end": 22.694
+  },
+  {
+   "line": 4,
+   "text": "100 元",
+   "start": 22.705,
+   "end": 23.313
+  },
+  {
+   "line": 5,
+   "text": "柜员",
+   "start": 24.47,
+   "end": 24.922
+  },
+  {
+   "line": 5,
+   "text": "先",
+   "start": 24.946,
+   "end": 25.077
+  },
+  {
+   "line": 5,
+   "text": "把",
+   "start": 25.077,
+   "end": 25.148
+  },
+  {
+   "line": 5,
+   "text": "现金",
+   "start": 25.16,
+   "end": 25.529
+  },
+  {
+   "line": 5,
+   "text": "递",
+   "start": 25.553,
+   "end": 25.66
+  },
+  {
+   "line": 5,
+   "text": "给",
+   "start": 25.66,
+   "end": 25.779
+  },
+  {
+   "line": 5,
+   "text": "你",
+   "start": 25.779,
+   "end": 26.005
+  },
+  {
+   "line": 5,
+   "text": "然后",
+   "start": 26.398,
+   "end": 26.743
+  },
+  {
+   "line": 5,
+   "text": "才",
+   "start": 26.755,
+   "end": 26.91
+  },
+  {
+   "line": 5,
+   "text": "去",
+   "start": 26.91,
+   "end": 26.993
+  },
+  {
+   "line": 5,
+   "text": "改",
+   "start": 27.005,
+   "end": 27.124
+  },
+  {
+   "line": 5,
+   "text": "账本",
+   "start": 27.124,
+   "end": 27.541
+  },
+  {
+   "line": 6,
+   "text": "你",
+   "start": 28.698,
+   "end": 28.888
+  },
+  {
+   "line": 6,
+   "text": "接",
+   "start": 28.9,
+   "end": 29.019
+  },
+  {
+   "line": 6,
+   "text": "过",
+   "start": 29.019,
+   "end": 29.102
+  },
+  {
+   "line": 6,
+   "text": "现金",
+   "start": 29.126,
+   "end": 29.471
+  },
+  {
+   "line": 6,
+   "text": "的",
+   "start": 29.471,
+   "end": 29.531
+  },
+  {
+   "line": 6,
+   "text": "瞬间",
+   "start": 29.543,
+   "end": 30.043
+  },
+  {
+   "line": 6,
+   "text": "同伴",
+   "start": 30.34,
+   "end": 30.626
+  },
+  {
+   "line": 6,
+   "text": "在",
+   "start": 30.638,
+   "end": 30.721
+  },
+  {
+   "line": 6,
+   "text": "旁边",
+   "start": 30.733,
+   "end": 31.019
+  },
+  {
+   "line": 6,
+   "text": "说",
+   "start": 31.019,
+   "end": 31.352
+  },
+  {
+   "line": 6,
+   "text": "他",
+   "start": 31.662,
+   "end": 31.817
+  },
+  {
+   "line": 6,
+   "text": "要",
+   "start": 31.817,
+   "end": 31.912
+  },
+  {
+   "line": 6,
+   "text": "再",
+   "start": 31.924,
+   "end": 32.138
+  },
+  {
+   "line": 6,
+   "text": "取",
+   "start": 32.138,
+   "end": 32.317
+  },
+  {
+   "line": 6,
+   "text": "100 元",
+   "start": 32.329,
+   "end": 32.876
+  },
+  {
+   "line": 7,
+   "text": "柜员",
+   "start": 34.03,
+   "end": 34.351
+  },
+  {
+   "line": 7,
+   "text": "一",
+   "start": 34.363,
+   "end": 34.47
+  },
+  {
+   "line": 7,
+   "text": "查",
+   "start": 34.47,
+   "end": 34.875
+  },
+  {
+   "line": 7,
+   "text": "账本",
+   "start": 35.149,
+   "end": 35.553
+  },
+  {
+   "line": 7,
+   "text": "上",
+   "start": 35.553,
+   "end": 35.815
+  },
+  {
+   "line": 7,
+   "text": "还是",
+   "start": 35.839,
+   "end": 36.113
+  },
+  {
+   "line": 7,
+   "text": "100",
+   "start": 36.125,
+   "end": 36.506
+  },
+  {
+   "line": 7,
+   "text": "于是",
+   "start": 36.875,
+   "end": 37.137
+  },
+  {
+   "line": 7,
+   "text": "又",
+   "start": 37.161,
+   "end": 37.327
+  },
+  {
+   "line": 7,
+   "text": "给",
+   "start": 37.327,
+   "end": 37.434
+  },
+  {
+   "line": 7,
+   "text": "了",
+   "start": 37.434,
+   "end": 37.506
+  },
+  {
+   "line": 7,
+   "text": "一次",
+   "start": 37.518,
+   "end": 37.863
+  },
+  {
+   "line": 8,
+   "text": "只要",
+   "start": 39.026,
+   "end": 39.276
+  },
+  {
+   "line": 8,
+   "text": "柜员",
+   "start": 39.288,
+   "end": 39.692
+  },
+  {
+   "line": 8,
+   "text": "一直",
+   "start": 39.716,
+   "end": 39.966
+  },
+  {
+   "line": 8,
+   "text": "先",
+   "start": 39.978,
+   "end": 40.168
+  },
+  {
+   "line": 8,
+   "text": "给",
+   "start": 40.168,
+   "end": 40.299
+  },
+  {
+   "line": 8,
+   "text": "钱",
+   "start": 40.299,
+   "end": 40.692
+  },
+  {
+   "line": 8,
+   "text": "后",
+   "start": 40.883,
+   "end": 41.133
+  },
+  {
+   "line": 8,
+   "text": "改",
+   "start": 41.145,
+   "end": 41.323
+  },
+  {
+   "line": 8,
+   "text": "账",
+   "start": 41.323,
+   "end": 41.585
+  },
+  {
+   "line": 8,
+   "text": "你们",
+   "start": 41.966,
+   "end": 42.168
+  },
+  {
+   "line": 8,
+   "text": "就",
+   "start": 42.18,
+   "end": 42.276
+  },
+  {
+   "line": 8,
+   "text": "能",
+   "start": 42.276,
+   "end": 42.371
+  },
+  {
+   "line": 8,
+   "text": "一直",
+   "start": 42.395,
+   "end": 42.704
+  },
+  {
+   "line": 8,
+   "text": "取",
+   "start": 42.704,
+   "end": 43.026
+  },
+  {
+   "line": 8,
+   "text": "直到",
+   "start": 43.252,
+   "end": 43.561
+  },
+  {
+   "line": 8,
+   "text": "金库",
+   "start": 43.585,
+   "end": 43.918
+  },
+  {
+   "line": 8,
+   "text": "见底",
+   "start": 43.93,
+   "end": 44.335
+  },
+  {
+   "line": 9,
+   "text": "这个",
+   "start": 45.486,
+   "end": 45.748
+  },
+  {
+   "line": 9,
+   "text": "比方",
+   "start": 45.759,
+   "end": 46.259
+  },
+  {
+   "line": 9,
+   "text": "有",
+   "start": 46.355,
+   "end": 46.521
+  },
+  {
+   "line": 9,
+   "text": "一",
+   "start": 46.521,
+   "end": 46.593
+  },
+  {
+   "line": 9,
+   "text": "处",
+   "start": 46.593,
+   "end": 46.712
+  },
+  {
+   "line": 9,
+   "text": "不",
+   "start": 46.736,
+   "end": 46.819
+  },
+  {
+   "line": 9,
+   "text": "成立",
+   "start": 46.819,
+   "end": 47.271
+  },
+  {
+   "line": 9,
+   "text": "现实",
+   "start": 47.805,
+   "end": 48.281
+  },
+  {
+   "line": 9,
+   "text": "里",
+   "start": 48.281,
+   "end": 48.531
+  },
+  {
+   "line": 9,
+   "text": "柜员",
+   "start": 48.936,
+   "end": 49.281
+  },
+  {
+   "line": 9,
+   "text": "可以",
+   "start": 49.293,
+   "end": 49.686
+  },
+  {
+   "line": 9,
+   "text": "同时",
+   "start": 49.793,
+   "end": 50.197
+  },
+  {
+   "line": 9,
+   "text": "接待",
+   "start": 50.209,
+   "end": 50.447
+  },
+  {
+   "line": 9,
+   "text": "两个",
+   "start": 50.471,
+   "end": 50.745
+  },
+  {
+   "line": 9,
+   "text": "人",
+   "start": 50.745,
+   "end": 50.959
+  },
+  {
+   "line": 10,
+   "text": "EVM",
+   "start": 52.114,
+   "end": 52.792
+  },
+  {
+   "line": 10,
+   "text": "是",
+   "start": 52.887,
+   "end": 53.042
+  },
+  {
+   "line": 10,
+   "text": "单线程",
+   "start": 53.054,
+   "end": 53.542
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 53.542,
+   "end": 53.733
+  },
+  {
+   "line": 10,
+   "text": "重",
+   "start": 54.266,
+   "end": 54.564
+  },
+  {
+   "line": 10,
+   "text": "入",
+   "start": 54.564,
+   "end": 54.683
+  },
+  {
+   "line": 10,
+   "text": "不是",
+   "start": 54.706,
+   "end": 54.968
+  },
+  {
+   "line": 10,
+   "text": "并发",
+   "start": 54.98,
+   "end": 55.48
+  },
+  {
+   "line": 10,
+   "text": "而是",
+   "start": 55.885,
+   "end": 56.183
+  },
+  {
+   "line": 10,
+   "text": "嵌套",
+   "start": 56.195,
+   "end": 56.73
+  },
+  {
+   "line": 11,
+   "text": "第二",
+   "start": 57.902,
+   "end": 58.128
+  },
+  {
+   "line": 11,
+   "text": "次",
+   "start": 58.128,
+   "end": 58.247
+  },
+  {
+   "line": 11,
+   "text": "取款",
+   "start": 58.259,
+   "end": 58.723
+  },
+  {
+   "line": 11,
+   "text": "整个",
+   "start": 59.068,
+   "end": 59.33
+  },
+  {
+   "line": 11,
+   "text": "发生",
+   "start": 59.342,
+   "end": 59.663
+  },
+  {
+   "line": 11,
+   "text": "在",
+   "start": 59.664,
+   "end": 59.83
+  },
+  {
+   "line": 11,
+   "text": "第一次",
+   "start": 59.854,
+   "end": 60.235
+  },
+  {
+   "line": 11,
+   "text": "取款",
+   "start": 60.247,
+   "end": 60.544
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 60.544,
+   "end": 60.604
+  },
+  {
+   "line": 11,
+   "text": "中间",
+   "start": 60.616,
+   "end": 61.033
+  },
+  {
+   "line": 12,
+   "text": "所以",
+   "start": 62.202,
+   "end": 62.714
+  },
+  {
+   "line": 12,
+   "text": "重入",
+   "start": 62.987,
+   "end": 63.368
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 63.368,
+   "end": 63.452
+  },
+  {
+   "line": 12,
+   "text": "前提",
+   "start": 63.464,
+   "end": 63.88
+  },
+  {
+   "line": 12,
+   "text": "只有",
+   "start": 63.904,
+   "end": 64.071
+  },
+  {
+   "line": 12,
+   "text": "两",
+   "start": 64.083,
+   "end": 64.273
+  },
+  {
+   "line": 12,
+   "text": "个",
+   "start": 64.273,
+   "end": 64.511
+  },
+  {
+   "line": 13,
+   "text": "第一",
+   "start": 65.662,
+   "end": 66.007
+  },
+  {
+   "line": 13,
+   "text": "合约",
+   "start": 66.424,
+   "end": 66.721
+  },
+  {
+   "line": 13,
+   "text": "在",
+   "start": 66.733,
+   "end": 66.888
+  },
+  {
+   "line": 13,
+   "text": "函数",
+   "start": 66.912,
+   "end": 67.257
+  },
+  {
+   "line": 13,
+   "text": "中途",
+   "start": 67.269,
+   "end": 67.781
+  },
+  {
+   "line": 13,
+   "text": "发起",
+   "start": 67.888,
+   "end": 68.328
+  },
+  {
+   "line": 13,
+   "text": "外部",
+   "start": 68.352,
+   "end": 68.733
+  },
+  {
+   "line": 13,
+   "text": "调用",
+   "start": 68.733,
+   "end": 69.114
+  },
+  {
+   "line": 13,
+   "text": "而",
+   "start": 69.435,
+   "end": 69.614
+  },
+  {
+   "line": 13,
+   "text": "被",
+   "start": 69.614,
+   "end": 69.769
+  },
+  {
+   "line": 13,
+   "text": "调用",
+   "start": 69.793,
+   "end": 70.114
+  },
+  {
+   "line": 13,
+   "text": "的",
+   "start": 70.114,
+   "end": 70.185
+  },
+  {
+   "line": 13,
+   "text": "一方",
+   "start": 70.197,
+   "end": 70.602
+  },
+  {
+   "line": 13,
+   "text": "受",
+   "start": 70.733,
+   "end": 71.019
+  },
+  {
+   "line": 13,
+   "text": "攻击者",
+   "start": 71.031,
+   "end": 71.459
+  },
+  {
+   "line": 13,
+   "text": "控制",
+   "start": 71.471,
+   "end": 71.9
+  },
+  {
+   "line": 14,
+   "text": "第二",
+   "start": 73.058,
+   "end": 73.439
+  },
+  {
+   "line": 14,
+   "text": "外部",
+   "start": 73.879,
+   "end": 74.177
+  },
+  {
+   "line": 14,
+   "text": "调用",
+   "start": 74.189,
+   "end": 74.439
+  },
+  {
+   "line": 14,
+   "text": "发生",
+   "start": 74.462,
+   "end": 74.76
+  },
+  {
+   "line": 14,
+   "text": "的",
+   "start": 74.76,
+   "end": 74.82
+  },
+  {
+   "line": 14,
+   "text": "时候",
+   "start": 74.831,
+   "end": 75.272
+  },
+  {
+   "line": 14,
+   "text": "合约",
+   "start": 75.689,
+   "end": 76.046
+  },
+  {
+   "line": 14,
+   "text": "的",
+   "start": 76.046,
+   "end": 76.117
+  },
+  {
+   "line": 14,
+   "text": "状态",
+   "start": 76.129,
+   "end": 76.605
+  },
+  {
+   "line": 14,
+   "text": "还",
+   "start": 76.796,
+   "end": 76.986
+  },
+  {
+   "line": 14,
+   "text": "没有",
+   "start": 76.998,
+   "end": 77.189
+  },
+  {
+   "line": 14,
+   "text": "更新",
+   "start": 77.2,
+   "end": 77.474
+  },
+  {
+   "line": 14,
+   "text": "到",
+   "start": 77.474,
+   "end": 77.617
+  },
+  {
+   "line": 14,
+   "text": "最终",
+   "start": 77.641,
+   "end": 78.01
+  },
+  {
+   "line": 14,
+   "text": "值",
+   "start": 78.01,
+   "end": 78.272
+  },
+  {
+   "line": 15,
+   "text": "哪些",
+   "start": 79.422,
+   "end": 79.743
+  },
+  {
+   "line": 15,
+   "text": "操作",
+   "start": 79.755,
+   "end": 80.231
+  },
+  {
+   "line": 15,
+   "text": "会",
+   "start": 80.255,
+   "end": 80.398
+  },
+  {
+   "line": 15,
+   "text": "交出",
+   "start": 80.41,
+   "end": 80.719
+  },
+  {
+   "line": 15,
+   "text": "控制权",
+   "start": 80.743,
+   "end": 81.35
+  },
+  {
+   "line": 15,
+   "text": "一共",
+   "start": 81.895,
+   "end": 82.253
+  },
+  {
+   "line": 15,
+   "text": "有",
+   "start": 82.253,
+   "end": 82.36
+  },
+  {
+   "line": 15,
+   "text": "六",
+   "start": 82.372,
+   "end": 82.562
+  },
+  {
+   "line": 15,
+   "text": "类",
+   "start": 82.562,
+   "end": 82.812
+  },
+  {
+   "line": 16,
+   "text": "用",
+   "start": 83.962,
+   "end": 84.259
+  },
+  {
+   "line": 16,
+   "text": "call",
+   "start": 84.259,
+   "end": 84.628
+  },
+  {
+   "line": 16,
+   "text": "转",
+   "start": 84.64,
+   "end": 84.843
+  },
+  {
+   "line": 16,
+   "text": "ETH",
+   "start": 84.843,
+   "end": 85.235
+  },
+  {
+   "line": 16,
+   "text": "接收方",
+   "start": 85.769,
+   "end": 86.328
+  },
+  {
+   "line": 16,
+   "text": "是",
+   "start": 86.352,
+   "end": 86.471
+  },
+  {
+   "line": 16,
+   "text": "合约",
+   "start": 86.483,
+   "end": 86.745
+  },
+  {
+   "line": 16,
+   "text": "时",
+   "start": 86.745,
+   "end": 87.126
+  },
+  {
+   "line": 16,
+   "text": "会",
+   "start": 87.316,
+   "end": 87.483
+  },
+  {
+   "line": 16,
+   "text": "执行",
+   "start": 87.495,
+   "end": 87.745
+  },
+  {
+   "line": 16,
+   "text": "它",
+   "start": 87.757,
+   "end": 87.9
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 87.9,
+   "end": 88.054
+  },
+  {
+   "line": 16,
+   "text": "receive",
+   "start": 88.078,
+   "end": 88.65
+  },
+  {
+   "line": 16,
+   "text": "或者",
+   "start": 88.888,
+   "end": 89.173
+  },
+  {
+   "line": 16,
+   "text": "fallback",
+   "start": 89.197,
+   "end": 89.864
+  },
+  {
+   "line": 17,
+   "text": "调",
+   "start": 91.022,
+   "end": 91.224
+  },
+  {
+   "line": 17,
+   "text": "用",
+   "start": 91.224,
+   "end": 91.367
+  },
+  {
+   "line": 17,
+   "text": "代币",
+   "start": 91.379,
+   "end": 91.676
+  },
+  {
+   "line": 17,
+   "text": "的",
+   "start": 91.676,
+   "end": 91.843
+  },
+  {
+   "line": 17,
+   "text": "transfer",
+   "start": 91.867,
+   "end": 92.557
+  },
+  {
+   "line": 17,
+   "text": "代币",
+   "start": 93.103,
+   "end": 93.507
+  },
+  {
+   "line": 17,
+   "text": "如果",
+   "start": 93.531,
+   "end": 93.698
+  },
+  {
+   "line": 17,
+   "text": "是",
+   "start": 93.698,
+   "end": 93.817
+  },
+  {
+   "line": 17,
+   "text": "攻击者",
+   "start": 93.841,
+   "end": 94.234
+  },
+  {
+   "line": 17,
+   "text": "部署",
+   "start": 94.245,
+   "end": 94.555
+  },
+  {
+   "line": 17,
+   "text": "的",
+   "start": 94.555,
+   "end": 94.853
+  },
+  {
+   "line": 17,
+   "text": "里面",
+   "start": 95.174,
+   "end": 95.4
+  },
+  {
+   "line": 17,
+   "text": "的",
+   "start": 95.4,
+   "end": 95.46
+  },
+  {
+   "line": 17,
+   "text": "代码",
+   "start": 95.472,
+   "end": 95.924
+  },
+  {
+   "line": 17,
+   "text": "可以",
+   "start": 96.007,
+   "end": 96.222
+  },
+  {
+   "line": 17,
+   "text": "是",
+   "start": 96.234,
+   "end": 96.364
+  },
+  {
+   "line": 17,
+   "text": "任意",
+   "start": 96.376,
+   "end": 96.662
+  },
+  {
+   "line": 17,
+   "text": "的",
+   "start": 96.662,
+   "end": 96.841
+  },
+  {
+   "line": 18,
+   "text": "ERC",
+   "start": 97.986,
+   "end": 98.486
+  },
+  {
+   "line": 18,
+   "text": "777",
+   "start": 98.581,
+   "end": 99.188
+  },
+  {
+   "line": 18,
+   "text": "代币",
+   "start": 99.188,
+   "end": 99.462
+  },
+  {
+   "line": 18,
+   "text": "转账",
+   "start": 99.474,
+   "end": 99.914
+  },
+  {
+   "line": 18,
+   "text": "会",
+   "start": 100.105,
+   "end": 100.271
+  },
+  {
+   "line": 18,
+   "text": "触发",
+   "start": 100.283,
+   "end": 100.664
+  },
+  {
+   "line": 18,
+   "text": "接",
+   "start": 100.688,
+   "end": 100.878
+  },
+  {
+   "line": 18,
+   "text": "收方",
+   "start": 100.878,
+   "end": 101.152
+  },
+  {
+   "line": 18,
+   "text": "的",
+   "start": 101.152,
+   "end": 101.224
+  },
+  {
+   "line": 18,
+   "text": "钩子",
+   "start": 101.236,
+   "end": 101.545
+  },
+  {
+   "line": 19,
+   "text": "NFT",
+   "start": 102.694,
+   "end": 103.36
+  },
+  {
+   "line": 19,
+   "text": "的",
+   "start": 103.36,
+   "end": 103.479
+  },
+  {
+   "line": 19,
+   "text": "安全",
+   "start": 103.503,
+   "end": 103.825
+  },
+  {
+   "line": 19,
+   "text": "转账",
+   "start": 103.836,
+   "end": 104.325
+  },
+  {
+   "line": 19,
+   "text": "和",
+   "start": 104.432,
+   "end": 104.622
+  },
+  {
+   "line": 19,
+   "text": "安全",
+   "start": 104.634,
+   "end": 104.967
+  },
+  {
+   "line": 19,
+   "text": "铸造",
+   "start": 104.979,
+   "end": 105.36
+  },
+  {
+   "line": 19,
+   "text": "会",
+   "start": 105.527,
+   "end": 105.67
+  },
+  {
+   "line": 19,
+   "text": "回调",
+   "start": 105.67,
+   "end": 105.955
+  },
+  {
+   "line": 19,
+   "text": "接收方",
+   "start": 105.967,
+   "end": 106.551
+  },
+  {
+   "line": 20,
+   "text": "闪电贷",
+   "start": 107.714,
+   "end": 108.285
+  },
+  {
+   "line": 20,
+   "text": "的",
+   "start": 108.285,
+   "end": 108.356
+  },
+  {
+   "line": 20,
+   "text": "回调",
+   "start": 108.368,
+   "end": 108.809
+  },
+  {
+   "line": 20,
+   "text": "设计",
+   "start": 109.106,
+   "end": 109.511
+  },
+  {
+   "line": 20,
+   "text": "上",
+   "start": 109.511,
+   "end": 109.797
+  },
+  {
+   "line": 20,
+   "text": "就",
+   "start": 109.821,
+   "end": 109.94
+  },
+  {
+   "line": 20,
+   "text": "是",
+   "start": 109.94,
+   "end": 110.035
+  },
+  {
+   "line": 20,
+   "text": "把",
+   "start": 110.035,
+   "end": 110.13
+  },
+  {
+   "line": 20,
+   "text": "控制",
+   "start": 110.154,
+   "end": 110.464
+  },
+  {
+   "line": 20,
+   "text": "权",
+   "start": 110.464,
+   "end": 110.702
+  },
+  {
+   "line": 20,
+   "text": "交给",
+   "start": 110.726,
+   "end": 110.987
+  },
+  {
+   "line": 20,
+   "text": "借款人",
+   "start": 110.999,
+   "end": 111.595
+  },
+  {
+   "line": 21,
+   "text": "还有",
+   "start": 112.758,
+   "end": 113.27
+  },
+  {
+   "line": 21,
+   "text": "调用",
+   "start": 113.674,
+   "end": 114.043
+  },
+  {
+   "line": 21,
+   "text": "任何",
+   "start": 114.067,
+   "end": 114.365
+  },
+  {
+   "line": 21,
+   "text": "用户",
+   "start": 114.377,
+   "end": 114.639
+  },
+  {
+   "line": 21,
+   "text": "提供",
+   "start": 114.662,
+   "end": 114.889
+  },
+  {
+   "line": 21,
+   "text": "的",
+   "start": 114.889,
+   "end": 114.96
+  },
+  {
+   "line": 21,
+   "text": "地址",
+   "start": 114.972,
+   "end": 115.424
+  },
+  {
+   "line": 21,
+   "text": "包括",
+   "start": 115.71,
+   "end": 116.02
+  },
+  {
+   "line": 21,
+   "text": "路由器",
+   "start": 116.043,
+   "end": 116.627
+  },
+  {
+   "line": 21,
+   "text": "钩子",
+   "start": 116.936,
+   "end": 117.484
+  },
+  {
+   "line": 21,
+   "text": "和",
+   "start": 117.603,
+   "end": 117.77
+  },
+  {
+   "line": 21,
+   "text": "预言机",
+   "start": 117.781,
+   "end": 118.305
+  },
+  {
+   "line": 22,
+   "text": "再",
+   "start": 119.458,
+   "end": 119.72
+  },
+  {
+   "line": 22,
+   "text": "补",
+   "start": 119.72,
+   "end": 119.827
+  },
+  {
+   "line": 22,
+   "text": "一个",
+   "start": 119.839,
+   "end": 119.981
+  },
+  {
+   "line": 22,
+   "text": "细节",
+   "start": 119.993,
+   "end": 120.505
+  },
+  {
+   "line": 22,
+   "text": "同",
+   "start": 121.05,
+   "end": 121.241
+  },
+  {
+   "line": 22,
+   "text": "一",
+   "start": 121.241,
+   "end": 121.312
+  },
+  {
+   "line": 22,
+   "text": "份",
+   "start": 121.312,
+   "end": 121.431
+  },
+  {
+   "line": 22,
+   "text": "代码",
+   "start": 121.443,
+   "end": 121.86
+  },
+  {
+   "line": 22,
+   "text": "换",
+   "start": 122.086,
+   "end": 122.336
+  },
+  {
+   "line": 22,
+   "text": "一条",
+   "start": 122.336,
+   "end": 122.574
+  },
+  {
+   "line": 22,
+   "text": "链",
+   "start": 122.574,
+   "end": 122.8
+  },
+  {
+   "line": 22,
+   "text": "回调",
+   "start": 123.134,
+   "end": 123.479
+  },
+  {
+   "line": 22,
+   "text": "入口",
+   "start": 123.491,
+   "end": 123.812
+  },
+  {
+   "line": 22,
+   "text": "就",
+   "start": 123.836,
+   "end": 123.931
+  },
+  {
+   "line": 22,
+   "text": "不",
+   "start": 123.931,
+   "end": 124.05
+  },
+  {
+   "line": 22,
+   "text": "一样",
+   "start": 124.05,
+   "end": 124.324
+  },
+  {
+   "line": 23,
+   "text": "在",
+   "start": 125.462,
+   "end": 125.628
+  },
+  {
+   "line": 23,
+   "text": "TRON",
+   "start": 125.652,
+   "end": 125.89
+  },
+  {
+   "line": 23,
+   "text": "上",
+   "start": 125.89,
+   "end": 126.2
+  },
+  {
+   "line": 23,
+   "text": "用",
+   "start": 126.485,
+   "end": 126.7
+  },
+  {
+   "line": 23,
+   "text": "系统",
+   "start": 126.712,
+   "end": 127.069
+  },
+  {
+   "line": 23,
+   "text": "交易",
+   "start": 127.081,
+   "end": 127.366
+  },
+  {
+   "line": 23,
+   "text": "转",
+   "start": 127.378,
+   "end": 127.616
+  },
+  {
+   "line": 23,
+   "text": "TRX",
+   "start": 127.616,
+   "end": 128.295
+  },
+  {
+   "line": 23,
+   "text": "不会",
+   "start": 128.497,
+   "end": 128.724
+  },
+  {
+   "line": 23,
+   "text": "执行",
+   "start": 128.735,
+   "end": 129.033
+  },
+  {
+   "line": 23,
+   "text": "接收",
+   "start": 129.057,
+   "end": 129.343
+  },
+  {
+   "line": 23,
+   "text": "合约",
+   "start": 129.354,
+   "end": 129.64
+  },
+  {
+   "line": 23,
+   "text": "的",
+   "start": 129.64,
+   "end": 129.795
+  },
+  {
+   "line": 23,
+   "text": "fallback",
+   "start": 129.819,
+   "end": 130.462
+  },
+  {
+   "line": 24,
+   "text": "附带",
+   "start": 131.61,
+   "end": 131.979
+  },
+  {
+   "line": 24,
+   "text": "callValue",
+   "start": 132.002,
+   "end": 132.562
+  },
+  {
+   "line": 24,
+   "text": "去调",
+   "start": 132.574,
+   "end": 132.883
+  },
+  {
+   "line": 24,
+   "text": "用",
+   "start": 132.895,
+   "end": 133.014
+  },
+  {
+   "line": 24,
+   "text": "合约",
+   "start": 133.014,
+   "end": 133.383
+  },
+  {
+   "line": 24,
+   "text": "才",
+   "start": 133.538,
+   "end": 133.717
+  },
+  {
+   "line": 24,
+   "text": "会",
+   "start": 133.717,
+   "end": 133.824
+  },
+  {
+   "line": 24,
+   "text": "执行",
+   "start": 133.836,
+   "end": 134.288
+  },
+  {
+   "line": 25,
+   "text": "在",
+   "start": 135.454,
+   "end": 135.668
+  },
+  {
+   "line": 25,
+   "text": "Mantle",
+   "start": 135.692,
+   "end": 136.037
+  },
+  {
+   "line": 25,
+   "text": "上",
+   "start": 136.037,
+   "end": 136.346
+  },
+  {
+   "line": 25,
+   "text": "ETH",
+   "start": 136.716,
+   "end": 136.966
+  },
+  {
+   "line": 25,
+   "text": "以",
+   "start": 136.977,
+   "end": 137.192
+  },
+  {
+   "line": 25,
+   "text": "ERC",
+   "start": 137.192,
+   "end": 137.525
+  },
+  {
+   "line": 25,
+   "text": "20",
+   "start": 137.62,
+   "end": 137.942
+  },
+  {
+   "line": 25,
+   "text": "的",
+   "start": 137.942,
+   "end": 138.025
+  },
+  {
+   "line": 25,
+   "text": "形式",
+   "start": 138.037,
+   "end": 138.299
+  },
+  {
+   "line": 25,
+   "text": "存在",
+   "start": 138.311,
+   "end": 138.751
+  },
+  {
+   "line": 25,
+   "text": "转",
+   "start": 139.061,
+   "end": 139.287
+  },
+  {
+   "line": 25,
+   "text": "它",
+   "start": 139.287,
+   "end": 139.489
+  },
+  {
+   "line": 25,
+   "text": "不",
+   "start": 139.501,
+   "end": 139.68
+  },
+  {
+   "line": 25,
+   "text": "触发",
+   "start": 139.68,
+   "end": 140.025
+  },
+  {
+   "line": 25,
+   "text": "receive",
+   "start": 140.049,
+   "end": 140.525
+  },
+  {
+   "line": 25,
+   "text": "转",
+   "start": 141.07,
+   "end": 141.285
+  },
+  {
+   "line": 25,
+   "text": "原",
+   "start": 141.285,
+   "end": 141.416
+  },
+  {
+   "line": 25,
+   "text": "生币",
+   "start": 141.427,
+   "end": 141.82
+  },
+  {
+   "line": 25,
+   "text": "MNT",
+   "start": 141.82,
+   "end": 142.463
+  },
+  {
+   "line": 25,
+   "text": "才",
+   "start": 142.618,
+   "end": 142.796
+  },
+  {
+   "line": 25,
+   "text": "会",
+   "start": 142.796,
+   "end": 142.915
+  },
+  {
+   "line": 25,
+   "text": "触发",
+   "start": 142.927,
+   "end": 143.368
+  }
+ ],
+ "captions": [
+  {
+   "text": "先给一句话的定义",
+   "start": 1.648,
+   "end": 3.151,
+   "id": "c0"
+  },
+  {
+   "text": "合约在更新自己的账本之前",
+   "start": 4.148,
+   "end": 6.294,
+   "id": "c1"
+  },
+  {
+   "text": "把控制权交给了外部地址",
+   "start": 6.326,
+   "end": 8.425,
+   "id": "c2"
+  },
+  {
+   "text": "外部地址趁账本还是旧的",
+   "start": 9.408,
+   "end": 11.768,
+   "id": "c3"
+  },
+  {
+   "text": "再次调用合约",
+   "start": 11.789,
+   "end": 13.018,
+   "id": "c4"
+  },
+  {
+   "text": "严格来说",
+   "start": 13.996,
+   "end": 15.035,
+   "id": "c5"
+  },
+  {
+   "text": "重入是一个函数还没执行完",
+   "start": 15.15,
+   "end": 17.368,
+   "id": "c6"
+  },
+  {
+   "text": "就被外部调用再次进入",
+   "start": 17.508,
+   "end": 19.439,
+   "id": "c7"
+  },
+  {
+   "text": "打个比方",
+   "start": 20.432,
+   "end": 21.387,
+   "id": "c8"
+  },
+  {
+   "text": "你去银行取 100 元",
+   "start": 21.751,
+   "end": 23.433,
+   "id": "c9"
+  },
+  {
+   "text": "柜员先把现金递给你",
+   "start": 24.42,
+   "end": 26.125,
+   "id": "c10"
+  },
+  {
+   "text": "然后才去改账本",
+   "start": 26.348,
+   "end": 27.661,
+   "id": "c11"
+  },
+  {
+   "text": "你接过现金的瞬间",
+   "start": 28.648,
+   "end": 30.163,
+   "id": "c12"
+  },
+  {
+   "text": "同伴在旁边说",
+   "start": 30.29,
+   "end": 31.472,
+   "id": "c13"
+  },
+  {
+   "text": "他要再取 100 元",
+   "start": 31.612,
+   "end": 32.996,
+   "id": "c14"
+  },
+  {
+   "text": "柜员一查",
+   "start": 33.98,
+   "end": 34.995,
+   "id": "c15"
+  },
+  {
+   "text": "账本上还是 100",
+   "start": 35.099,
+   "end": 36.626,
+   "id": "c16"
+  },
+  {
+   "text": "于是又给了一次",
+   "start": 36.825,
+   "end": 37.983,
+   "id": "c17"
+  },
+  {
+   "text": "只要柜员一直先给钱 后改账",
+   "start": 38.976,
+   "end": 41.705,
+   "id": "c18"
+  },
+  {
+   "text": "你们就能一直取",
+   "start": 41.916,
+   "end": 43.146,
+   "id": "c19"
+  },
+  {
+   "text": "直到金库见底",
+   "start": 43.202,
+   "end": 44.455,
+   "id": "c20"
+  },
+  {
+   "text": "这个比方有一处不成立",
+   "start": 45.436,
+   "end": 47.391,
+   "id": "c21"
+  },
+  {
+   "text": "现实里 柜员可以同时接待两个人",
+   "start": 47.755,
+   "end": 51.079,
+   "id": "c22"
+  },
+  {
+   "text": "EVM 是单线程的",
+   "start": 52.064,
+   "end": 53.853,
+   "id": "c23"
+  },
+  {
+   "text": "重入不是并发",
+   "start": 54.216,
+   "end": 55.6,
+   "id": "c24"
+  },
+  {
+   "text": "而是嵌套",
+   "start": 55.835,
+   "end": 56.85,
+   "id": "c25"
+  },
+  {
+   "text": "第二次取款",
+   "start": 57.852,
+   "end": 58.843,
+   "id": "c26"
+  },
+  {
+   "text": "整个发生在第一次取款的中间",
+   "start": 59.018,
+   "end": 61.153,
+   "id": "c27"
+  },
+  {
+   "text": "所以 重入的前提只有两个",
+   "start": 62.152,
+   "end": 64.631,
+   "id": "c28"
+  },
+  {
+   "text": "第一 合约在函数中途发起外部调用",
+   "start": 65.612,
+   "end": 69.234,
+   "id": "c29"
+  },
+  {
+   "text": "而被调用的一方",
+   "start": 69.385,
+   "end": 70.663,
+   "id": "c30"
+  },
+  {
+   "text": "受攻击者控制",
+   "start": 70.683,
+   "end": 72.02,
+   "id": "c31"
+  },
+  {
+   "text": "第二 外部调用发生的时候",
+   "start": 73.008,
+   "end": 75.392,
+   "id": "c32"
+  },
+  {
+   "text": "合约的状态",
+   "start": 75.639,
+   "end": 76.725,
+   "id": "c33"
+  },
+  {
+   "text": "还没有更新到最终值",
+   "start": 76.746,
+   "end": 78.392,
+   "id": "c34"
+  },
+  {
+   "text": "哪些操作会交出控制权",
+   "start": 79.372,
+   "end": 81.47,
+   "id": "c35"
+  },
+  {
+   "text": "一共有六类",
+   "start": 81.845,
+   "end": 82.932,
+   "id": "c36"
+  },
+  {
+   "text": "用 call 转 ETH",
+   "start": 83.912,
+   "end": 85.355,
+   "id": "c37"
+  },
+  {
+   "text": "接收方是合约时",
+   "start": 85.719,
+   "end": 87.246,
+   "id": "c38"
+  },
+  {
+   "text": "会执行它的 receive",
+   "start": 87.266,
+   "end": 88.77,
+   "id": "c39"
+  },
+  {
+   "text": "或者 fallback",
+   "start": 88.838,
+   "end": 89.984,
+   "id": "c40"
+  },
+  {
+   "text": "调用代币的 transfer",
+   "start": 90.972,
+   "end": 92.677,
+   "id": "c41"
+  },
+  {
+   "text": "代币如果是攻击者部署的",
+   "start": 93.053,
+   "end": 94.973,
+   "id": "c42"
+  },
+  {
+   "text": "里面的代码可以是任意的",
+   "start": 95.124,
+   "end": 96.961,
+   "id": "c43"
+  },
+  {
+   "text": "ERC-777 代币转账",
+   "start": 97.936,
+   "end": 100.034,
+   "id": "c44"
+  },
+  {
+   "text": "会触发接收方的钩子",
+   "start": 100.055,
+   "end": 101.665,
+   "id": "c45"
+  },
+  {
+   "text": "NFT 的安全转账和安全铸造",
+   "start": 102.644,
+   "end": 105.457,
+   "id": "c46"
+  },
+  {
+   "text": "会回调接收方",
+   "start": 105.477,
+   "end": 106.671,
+   "id": "c47"
+  },
+  {
+   "text": "闪电贷的回调",
+   "start": 107.664,
+   "end": 108.929,
+   "id": "c48"
+  },
+  {
+   "text": "设计上就是把控制权交给借款人",
+   "start": 109.056,
+   "end": 111.715,
+   "id": "c49"
+  },
+  {
+   "text": "还有 调用任何用户提供的地址",
+   "start": 112.708,
+   "end": 115.544,
+   "id": "c50"
+  },
+  {
+   "text": "包括路由器",
+   "start": 115.66,
+   "end": 116.747,
+   "id": "c51"
+  },
+  {
+   "text": "钩子和预言机",
+   "start": 116.886,
+   "end": 118.425,
+   "id": "c52"
+  },
+  {
+   "text": "再补一个细节",
+   "start": 119.408,
+   "end": 120.625,
+   "id": "c53"
+  },
+  {
+   "text": "同一份代码",
+   "start": 121.0,
+   "end": 121.98,
+   "id": "c54"
+  },
+  {
+   "text": "换一条链",
+   "start": 122.036,
+   "end": 122.92,
+   "id": "c55"
+  },
+  {
+   "text": "回调入口就不一样",
+   "start": 123.084,
+   "end": 124.444,
+   "id": "c56"
+  },
+  {
+   "text": "在 TRON 上",
+   "start": 125.412,
+   "end": 126.32,
+   "id": "c57"
+  },
+  {
+   "text": "用系统交易转 TRX",
+   "start": 126.435,
+   "end": 128.415,
+   "id": "c58"
+  },
+  {
+   "text": "不会执行接收合约的 fallback",
+   "start": 128.447,
+   "end": 130.582,
+   "id": "c59"
+  },
+  {
+   "text": "附带 callValue 去调用合约",
+   "start": 131.56,
+   "end": 133.468,
+   "id": "c60"
+  },
+  {
+   "text": "才会执行",
+   "start": 133.488,
+   "end": 134.408,
+   "id": "c61"
+  },
+  {
+   "text": "在 Mantle 上",
+   "start": 135.404,
+   "end": 136.466,
+   "id": "c62"
+  },
+  {
+   "text": "ETH 以 ERC-20 的形式存在",
+   "start": 136.666,
+   "end": 138.871,
+   "id": "c63"
+  },
+  {
+   "text": "转它不触发 receive",
+   "start": 139.011,
+   "end": 140.645,
+   "id": "c64"
+  },
+  {
+   "text": "转原生币 MNT",
+   "start": 141.02,
+   "end": 142.548,
+   "id": "c65"
+  },
+  {
+   "text": "才会触发",
+   "start": 142.568,
+   "end": 143.488,
+   "id": "c66"
+  }
+ ]
+}

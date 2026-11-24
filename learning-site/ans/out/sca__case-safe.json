@@ -1,1 +1,0 @@
-{"answers": ["因为 <code>operation = 1</code> 是 DELEGATECALL，目标合约的代码会在 Safe 自己的存储上下文里执行。代理形式的 Safe 把实现地址放在 slot 0，恶意代码可以改写它，再顺带改 owners、threshold，等于把整个多签夺走。所以日常转账永远不应该是 1，最好用 Guard 直接拒绝。", "增加“独立重算哈希”这一步：签名者在另一台设备上，用独立工具从原始字段（to、value、data、operation、nonce 等）重算 <code>safeTxHash</code>，并解码 calldata，再与硬件钱包上显示的哈希比对。另外要选能显示可读字段的硬件钱包，避免盲签，并可用 Guard 拒绝 operation=1 和非白名单目标。"]}

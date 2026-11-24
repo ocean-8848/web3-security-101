@@ -1,0 +1,1474 @@
+{
+ "id": "seg1",
+ "title": "种子只有32位",
+ "pill": 1,
+ "total": 58.82,
+ "lines": [
+  {
+   "id": "seg1-00",
+   "text": "2022 年 9 月，Wintermute 的金库被盗，约 1.6 亿美元。",
+   "spoken": "2022 年 9 月，Wintermute 的金库被盗，约 1.6 亿美元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep02/audio/lines/seg1-00.wav",
+   "start": 1.6,
+   "dur": 5.12,
+   "speechStart": 1.703,
+   "speechEnd": 6.529
+  },
+  {
+   "id": "seg1-01",
+   "text": "这个金库的地址，是用一个叫 Profanity 的靶号工具生成的。",
+   "spoken": "这个金库的地址，是用一个叫 Profanity 的靶号工具生成的。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep02/audio/lines/seg1-01.wav",
+   "start": 6.94,
+   "dur": 4.48,
+   "speechStart": 6.94,
+   "speechEnd": 11.263
+  },
+  {
+   "id": "seg1-02",
+   "text": "靶号地址，就是首尾字符符合指定模式的地址。比如开头是一串 0。",
+   "spoken": "靶号地址，就是首尾字符符合指定模式的地址。比如开头是一串 0。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep02/audio/lines/seg1-02.wav",
+   "start": 11.64,
+   "dur": 6.32,
+   "speechStart": 11.737,
+   "speechEnd": 17.72
+  },
+  {
+   "id": "seg1-03",
+   "text": "私钥有 256 位，按理说，没人猜得出来。",
+   "spoken": "私钥有 256 位，按理说，没人猜得出来。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep02/audio/lines/seg1-03.wav",
+   "start": 18.18,
+   "dur": 4.72,
+   "speechStart": 18.18,
+   "speechEnd": 22.69
+  },
+  {
+   "id": "seg1-04",
+   "text": "可这个工具的随机数，只用了一个 32 位的种子。",
+   "spoken": "可这个工具的随机数，只用了一个 32 位的种子。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep02/audio/lines/seg1-04.wav",
+   "start": 23.12,
+   "dur": 5.2,
+   "speechStart": 23.12,
+   "speechEnd": 28.083
+  },
+  {
+   "id": "seg1-05",
+   "text": "32 位种子，只有约 43 亿种可能。",
+   "spoken": "32 位种子，只有约 43 亿种可能。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep02/audio/lines/seg1-05.wav",
+   "start": 28.54,
+   "dur": 4.32,
+   "speechStart": 28.54,
+   "speechEnd": 32.652
+  },
+  {
+   "id": "seg1-06",
+   "text": "做个示例计算。如果每秒试 10 亿个种子，全部试完，最多约 4.3 秒。",
+   "spoken": "做个示例计算。如果每秒试 10 亿个种子，全部试完，最多约 4.3 秒。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep02/audio/lines/seg1-06.wav",
+   "start": 33.08,
+   "dur": 6.8,
+   "speechStart": 33.08,
+   "speechEnd": 39.676
+  },
+  {
+   "id": "seg1-07",
+   "text": "真实攻击还要从种子算出地址，会慢一些。但一张 GPU，几分钟就够。",
+   "spoken": "真实攻击还要从种子算出地址，会慢一些。但一张 GPU，几分钟就够。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep02/audio/lines/seg1-07.wav",
+   "start": 40.1,
+   "dur": 6.0,
+   "speechStart": 40.199,
+   "speechEnd": 45.935
+  },
+  {
+   "id": "seg1-08",
+   "text": "那么问题来了。一把 256 位的私钥，为什么只值 32 位？",
+   "spoken": "那么问题来了。一把 256 位的私钥，为什么只值 32 位？",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep02/audio/lines/seg1-08.wav",
+   "start": 46.32,
+   "dur": 5.44,
+   "speechStart": 46.414,
+   "speechEnd": 51.514
+  },
+  {
+   "id": "seg1-09",
+   "text": "这一集，我们讲私钥从哪里来，又是怎么被算出来的。",
+   "spoken": "这一集，我们讲私钥从哪里来，又是怎么被算出来的。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep02/audio/lines/seg1-09.wav",
+   "start": 52.26,
+   "dur": 5.36,
+   "speechStart": 52.358,
+   "speechEnd": 57.412
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "2022",
+   "start": 1.703,
+   "end": 2.362
+  },
+  {
+   "line": 0,
+   "text": "年",
+   "start": 2.362,
+   "end": 2.541
+  },
+  {
+   "line": 0,
+   "text": "9",
+   "start": 2.541,
+   "end": 2.745
+  },
+  {
+   "line": 0,
+   "text": "月",
+   "start": 2.745,
+   "end": 2.923
+  },
+  {
+   "line": 0,
+   "text": "Wintermute",
+   "start": 3.36,
+   "end": 4.094
+  },
+  {
+   "line": 0,
+   "text": "的",
+   "start": 4.094,
+   "end": 4.269
+  },
+  {
+   "line": 0,
+   "text": "金",
+   "start": 4.269,
+   "end": 4.444
+  },
+  {
+   "line": 0,
+   "text": "库",
+   "start": 4.444,
+   "end": 4.619
+  },
+  {
+   "line": 0,
+   "text": "被",
+   "start": 4.619,
+   "end": 4.794
+  },
+  {
+   "line": 0,
+   "text": "盗",
+   "start": 4.794,
+   "end": 4.969
+  },
+  {
+   "line": 0,
+   "text": "约",
+   "start": 5.103,
+   "end": 5.341
+  },
+  {
+   "line": 0,
+   "text": "1.6",
+   "start": 5.341,
+   "end": 5.816
+  },
+  {
+   "line": 0,
+   "text": "亿",
+   "start": 5.816,
+   "end": 6.054
+  },
+  {
+   "line": 0,
+   "text": "美",
+   "start": 6.054,
+   "end": 6.292
+  },
+  {
+   "line": 0,
+   "text": "元",
+   "start": 6.292,
+   "end": 6.529
+  },
+  {
+   "line": 1,
+   "text": "这",
+   "start": 6.94,
+   "end": 7.123
+  },
+  {
+   "line": 1,
+   "text": "个",
+   "start": 7.123,
+   "end": 7.306
+  },
+  {
+   "line": 1,
+   "text": "金",
+   "start": 7.306,
+   "end": 7.49
+  },
+  {
+   "line": 1,
+   "text": "库",
+   "start": 7.49,
+   "end": 7.673
+  },
+  {
+   "line": 1,
+   "text": "的",
+   "start": 7.673,
+   "end": 7.856
+  },
+  {
+   "line": 1,
+   "text": "地",
+   "start": 7.856,
+   "end": 8.039
+  },
+  {
+   "line": 1,
+   "text": "址",
+   "start": 8.039,
+   "end": 8.222
+  },
+  {
+   "line": 1,
+   "text": "是",
+   "start": 8.502,
+   "end": 8.667
+  },
+  {
+   "line": 1,
+   "text": "用",
+   "start": 8.667,
+   "end": 8.831
+  },
+  {
+   "line": 1,
+   "text": "一",
+   "start": 8.831,
+   "end": 8.996
+  },
+  {
+   "line": 1,
+   "text": "个",
+   "start": 8.996,
+   "end": 9.16
+  },
+  {
+   "line": 1,
+   "text": "叫",
+   "start": 9.16,
+   "end": 9.325
+  },
+  {
+   "line": 1,
+   "text": "Profanity",
+   "start": 9.325,
+   "end": 9.947
+  },
+  {
+   "line": 1,
+   "text": "的",
+   "start": 9.947,
+   "end": 10.112
+  },
+  {
+   "line": 1,
+   "text": "靶",
+   "start": 10.112,
+   "end": 10.276
+  },
+  {
+   "line": 1,
+   "text": "号",
+   "start": 10.276,
+   "end": 10.441
+  },
+  {
+   "line": 1,
+   "text": "工",
+   "start": 10.441,
+   "end": 10.605
+  },
+  {
+   "line": 1,
+   "text": "具",
+   "start": 10.605,
+   "end": 10.77
+  },
+  {
+   "line": 1,
+   "text": "生",
+   "start": 10.77,
+   "end": 10.934
+  },
+  {
+   "line": 1,
+   "text": "成",
+   "start": 10.934,
+   "end": 11.099
+  },
+  {
+   "line": 1,
+   "text": "的",
+   "start": 11.099,
+   "end": 11.263
+  },
+  {
+   "line": 2,
+   "text": "靶",
+   "start": 11.737,
+   "end": 11.935
+  },
+  {
+   "line": 2,
+   "text": "号",
+   "start": 11.935,
+   "end": 12.133
+  },
+  {
+   "line": 2,
+   "text": "地",
+   "start": 12.133,
+   "end": 12.33
+  },
+  {
+   "line": 2,
+   "text": "址",
+   "start": 12.33,
+   "end": 12.528
+  },
+  {
+   "line": 2,
+   "text": "就",
+   "start": 12.712,
+   "end": 12.9
+  },
+  {
+   "line": 2,
+   "text": "是",
+   "start": 12.9,
+   "end": 13.089
+  },
+  {
+   "line": 2,
+   "text": "首",
+   "start": 13.089,
+   "end": 13.277
+  },
+  {
+   "line": 2,
+   "text": "尾",
+   "start": 13.277,
+   "end": 13.465
+  },
+  {
+   "line": 2,
+   "text": "字",
+   "start": 13.465,
+   "end": 13.653
+  },
+  {
+   "line": 2,
+   "text": "符",
+   "start": 13.653,
+   "end": 13.842
+  },
+  {
+   "line": 2,
+   "text": "符",
+   "start": 13.842,
+   "end": 14.03
+  },
+  {
+   "line": 2,
+   "text": "合",
+   "start": 14.03,
+   "end": 14.218
+  },
+  {
+   "line": 2,
+   "text": "指",
+   "start": 14.218,
+   "end": 14.406
+  },
+  {
+   "line": 2,
+   "text": "定",
+   "start": 14.406,
+   "end": 14.594
+  },
+  {
+   "line": 2,
+   "text": "模",
+   "start": 14.594,
+   "end": 14.783
+  },
+  {
+   "line": 2,
+   "text": "式",
+   "start": 14.783,
+   "end": 14.971
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 14.971,
+   "end": 15.159
+  },
+  {
+   "line": 2,
+   "text": "地",
+   "start": 15.159,
+   "end": 15.347
+  },
+  {
+   "line": 2,
+   "text": "址",
+   "start": 15.347,
+   "end": 15.536
+  },
+  {
+   "line": 2,
+   "text": "比",
+   "start": 15.966,
+   "end": 16.181
+  },
+  {
+   "line": 2,
+   "text": "如",
+   "start": 16.181,
+   "end": 16.397
+  },
+  {
+   "line": 2,
+   "text": "开",
+   "start": 16.397,
+   "end": 16.612
+  },
+  {
+   "line": 2,
+   "text": "头",
+   "start": 16.612,
+   "end": 16.827
+  },
+  {
+   "line": 2,
+   "text": "是",
+   "start": 16.827,
+   "end": 17.042
+  },
+  {
+   "line": 2,
+   "text": "一",
+   "start": 17.042,
+   "end": 17.258
+  },
+  {
+   "line": 2,
+   "text": "串",
+   "start": 17.258,
+   "end": 17.473
+  },
+  {
+   "line": 2,
+   "text": "0",
+   "start": 17.473,
+   "end": 17.72
+  },
+  {
+   "line": 3,
+   "text": "私",
+   "start": 18.18,
+   "end": 18.466
+  },
+  {
+   "line": 3,
+   "text": "钥",
+   "start": 18.466,
+   "end": 18.752
+  },
+  {
+   "line": 3,
+   "text": "有",
+   "start": 18.752,
+   "end": 19.037
+  },
+  {
+   "line": 3,
+   "text": "256",
+   "start": 19.037,
+   "end": 19.852
+  },
+  {
+   "line": 3,
+   "text": "位",
+   "start": 19.852,
+   "end": 20.138
+  },
+  {
+   "line": 3,
+   "text": "按",
+   "start": 20.55,
+   "end": 20.831
+  },
+  {
+   "line": 3,
+   "text": "理",
+   "start": 20.831,
+   "end": 21.112
+  },
+  {
+   "line": 3,
+   "text": "说",
+   "start": 21.112,
+   "end": 21.393
+  },
+  {
+   "line": 3,
+   "text": "没",
+   "start": 21.702,
+   "end": 21.866
+  },
+  {
+   "line": 3,
+   "text": "人",
+   "start": 21.866,
+   "end": 22.031
+  },
+  {
+   "line": 3,
+   "text": "猜",
+   "start": 22.031,
+   "end": 22.196
+  },
+  {
+   "line": 3,
+   "text": "得",
+   "start": 22.196,
+   "end": 22.36
+  },
+  {
+   "line": 3,
+   "text": "出",
+   "start": 22.36,
+   "end": 22.525
+  },
+  {
+   "line": 3,
+   "text": "来",
+   "start": 22.525,
+   "end": 22.69
+  },
+  {
+   "line": 4,
+   "text": "可",
+   "start": 23.12,
+   "end": 23.351
+  },
+  {
+   "line": 4,
+   "text": "这",
+   "start": 23.351,
+   "end": 23.581
+  },
+  {
+   "line": 4,
+   "text": "个",
+   "start": 23.581,
+   "end": 23.812
+  },
+  {
+   "line": 4,
+   "text": "工",
+   "start": 23.812,
+   "end": 24.043
+  },
+  {
+   "line": 4,
+   "text": "具",
+   "start": 24.043,
+   "end": 24.273
+  },
+  {
+   "line": 4,
+   "text": "的",
+   "start": 24.273,
+   "end": 24.504
+  },
+  {
+   "line": 4,
+   "text": "随",
+   "start": 24.504,
+   "end": 24.735
+  },
+  {
+   "line": 4,
+   "text": "机",
+   "start": 24.735,
+   "end": 24.966
+  },
+  {
+   "line": 4,
+   "text": "数",
+   "start": 24.966,
+   "end": 25.196
+  },
+  {
+   "line": 4,
+   "text": "只",
+   "start": 25.523,
+   "end": 25.756
+  },
+  {
+   "line": 4,
+   "text": "用",
+   "start": 25.756,
+   "end": 25.989
+  },
+  {
+   "line": 4,
+   "text": "了",
+   "start": 25.989,
+   "end": 26.221
+  },
+  {
+   "line": 4,
+   "text": "一",
+   "start": 26.221,
+   "end": 26.454
+  },
+  {
+   "line": 4,
+   "text": "个",
+   "start": 26.454,
+   "end": 26.687
+  },
+  {
+   "line": 4,
+   "text": "32",
+   "start": 26.687,
+   "end": 27.152
+  },
+  {
+   "line": 4,
+   "text": "位",
+   "start": 27.152,
+   "end": 27.385
+  },
+  {
+   "line": 4,
+   "text": "的",
+   "start": 27.385,
+   "end": 27.618
+  },
+  {
+   "line": 4,
+   "text": "种",
+   "start": 27.618,
+   "end": 27.851
+  },
+  {
+   "line": 4,
+   "text": "子",
+   "start": 27.851,
+   "end": 28.083
+  },
+  {
+   "line": 5,
+   "text": "32",
+   "start": 28.54,
+   "end": 29.022
+  },
+  {
+   "line": 5,
+   "text": "位",
+   "start": 29.022,
+   "end": 29.264
+  },
+  {
+   "line": 5,
+   "text": "种",
+   "start": 29.264,
+   "end": 29.505
+  },
+  {
+   "line": 5,
+   "text": "子",
+   "start": 29.505,
+   "end": 29.746
+  },
+  {
+   "line": 5,
+   "text": "只",
+   "start": 30.314,
+   "end": 30.574
+  },
+  {
+   "line": 5,
+   "text": "有",
+   "start": 30.574,
+   "end": 30.834
+  },
+  {
+   "line": 5,
+   "text": "约",
+   "start": 30.834,
+   "end": 31.094
+  },
+  {
+   "line": 5,
+   "text": "43",
+   "start": 31.094,
+   "end": 31.613
+  },
+  {
+   "line": 5,
+   "text": "亿",
+   "start": 31.613,
+   "end": 31.873
+  },
+  {
+   "line": 5,
+   "text": "种",
+   "start": 31.873,
+   "end": 32.133
+  },
+  {
+   "line": 5,
+   "text": "可",
+   "start": 32.133,
+   "end": 32.393
+  },
+  {
+   "line": 5,
+   "text": "能",
+   "start": 32.393,
+   "end": 32.652
+  },
+  {
+   "line": 6,
+   "text": "做",
+   "start": 33.08,
+   "end": 33.259
+  },
+  {
+   "line": 6,
+   "text": "个",
+   "start": 33.259,
+   "end": 33.439
+  },
+  {
+   "line": 6,
+   "text": "示",
+   "start": 33.439,
+   "end": 33.618
+  },
+  {
+   "line": 6,
+   "text": "例",
+   "start": 33.618,
+   "end": 33.797
+  },
+  {
+   "line": 6,
+   "text": "计",
+   "start": 33.797,
+   "end": 33.976
+  },
+  {
+   "line": 6,
+   "text": "算",
+   "start": 33.976,
+   "end": 34.156
+  },
+  {
+   "line": 6,
+   "text": "如",
+   "start": 34.584,
+   "end": 34.762
+  },
+  {
+   "line": 6,
+   "text": "果",
+   "start": 34.762,
+   "end": 34.94
+  },
+  {
+   "line": 6,
+   "text": "每",
+   "start": 34.94,
+   "end": 35.118
+  },
+  {
+   "line": 6,
+   "text": "秒",
+   "start": 35.118,
+   "end": 35.296
+  },
+  {
+   "line": 6,
+   "text": "试",
+   "start": 35.296,
+   "end": 35.474
+  },
+  {
+   "line": 6,
+   "text": "10",
+   "start": 35.474,
+   "end": 35.83
+  },
+  {
+   "line": 6,
+   "text": "亿",
+   "start": 35.83,
+   "end": 36.008
+  },
+  {
+   "line": 6,
+   "text": "个",
+   "start": 36.008,
+   "end": 36.186
+  },
+  {
+   "line": 6,
+   "text": "种",
+   "start": 36.186,
+   "end": 36.364
+  },
+  {
+   "line": 6,
+   "text": "子",
+   "start": 36.364,
+   "end": 36.541
+  },
+  {
+   "line": 6,
+   "text": "全",
+   "start": 37.282,
+   "end": 37.476
+  },
+  {
+   "line": 6,
+   "text": "部",
+   "start": 37.476,
+   "end": 37.67
+  },
+  {
+   "line": 6,
+   "text": "试",
+   "start": 37.67,
+   "end": 37.864
+  },
+  {
+   "line": 6,
+   "text": "完",
+   "start": 37.864,
+   "end": 38.057
+  },
+  {
+   "line": 6,
+   "text": "最",
+   "start": 38.238,
+   "end": 38.477
+  },
+  {
+   "line": 6,
+   "text": "多",
+   "start": 38.477,
+   "end": 38.717
+  },
+  {
+   "line": 6,
+   "text": "约",
+   "start": 38.717,
+   "end": 38.957
+  },
+  {
+   "line": 6,
+   "text": "4.3",
+   "start": 38.957,
+   "end": 39.436
+  },
+  {
+   "line": 6,
+   "text": "秒",
+   "start": 39.436,
+   "end": 39.676
+  },
+  {
+   "line": 7,
+   "text": "真",
+   "start": 40.199,
+   "end": 40.401
+  },
+  {
+   "line": 7,
+   "text": "实",
+   "start": 40.401,
+   "end": 40.602
+  },
+  {
+   "line": 7,
+   "text": "攻",
+   "start": 40.602,
+   "end": 40.804
+  },
+  {
+   "line": 7,
+   "text": "击",
+   "start": 40.804,
+   "end": 41.006
+  },
+  {
+   "line": 7,
+   "text": "还",
+   "start": 41.006,
+   "end": 41.208
+  },
+  {
+   "line": 7,
+   "text": "要",
+   "start": 41.208,
+   "end": 41.409
+  },
+  {
+   "line": 7,
+   "text": "从",
+   "start": 41.409,
+   "end": 41.611
+  },
+  {
+   "line": 7,
+   "text": "种",
+   "start": 41.611,
+   "end": 41.813
+  },
+  {
+   "line": 7,
+   "text": "子",
+   "start": 41.813,
+   "end": 42.015
+  },
+  {
+   "line": 7,
+   "text": "算",
+   "start": 42.015,
+   "end": 42.216
+  },
+  {
+   "line": 7,
+   "text": "出",
+   "start": 42.216,
+   "end": 42.418
+  },
+  {
+   "line": 7,
+   "text": "地",
+   "start": 42.418,
+   "end": 42.62
+  },
+  {
+   "line": 7,
+   "text": "址",
+   "start": 42.62,
+   "end": 42.822
+  },
+  {
+   "line": 7,
+   "text": "会",
+   "start": 43.014,
+   "end": 43.15
+  },
+  {
+   "line": 7,
+   "text": "慢",
+   "start": 43.15,
+   "end": 43.287
+  },
+  {
+   "line": 7,
+   "text": "一",
+   "start": 43.287,
+   "end": 43.423
+  },
+  {
+   "line": 7,
+   "text": "些",
+   "start": 43.423,
+   "end": 43.56
+  },
+  {
+   "line": 7,
+   "text": "但",
+   "start": 44.189,
+   "end": 44.387
+  },
+  {
+   "line": 7,
+   "text": "一",
+   "start": 44.387,
+   "end": 44.585
+  },
+  {
+   "line": 7,
+   "text": "张",
+   "start": 44.585,
+   "end": 44.783
+  },
+  {
+   "line": 7,
+   "text": "GPU",
+   "start": 44.783,
+   "end": 45.033
+  },
+  {
+   "line": 7,
+   "text": "几",
+   "start": 45.218,
+   "end": 45.362
+  },
+  {
+   "line": 7,
+   "text": "分",
+   "start": 45.362,
+   "end": 45.505
+  },
+  {
+   "line": 7,
+   "text": "钟",
+   "start": 45.505,
+   "end": 45.648
+  },
+  {
+   "line": 7,
+   "text": "就",
+   "start": 45.648,
+   "end": 45.792
+  },
+  {
+   "line": 7,
+   "text": "够",
+   "start": 45.792,
+   "end": 45.935
+  },
+  {
+   "line": 8,
+   "text": "那",
+   "start": 46.414,
+   "end": 46.55
+  },
+  {
+   "line": 8,
+   "text": "么",
+   "start": 46.55,
+   "end": 46.687
+  },
+  {
+   "line": 8,
+   "text": "问",
+   "start": 46.687,
+   "end": 46.824
+  },
+  {
+   "line": 8,
+   "text": "题",
+   "start": 46.824,
+   "end": 46.96
+  },
+  {
+   "line": 8,
+   "text": "来",
+   "start": 46.96,
+   "end": 47.097
+  },
+  {
+   "line": 8,
+   "text": "了",
+   "start": 47.097,
+   "end": 47.234
+  },
+  {
+   "line": 8,
+   "text": "一",
+   "start": 47.72,
+   "end": 47.947
+  },
+  {
+   "line": 8,
+   "text": "把",
+   "start": 47.947,
+   "end": 48.174
+  },
+  {
+   "line": 8,
+   "text": "256",
+   "start": 48.174,
+   "end": 48.822
+  },
+  {
+   "line": 8,
+   "text": "位",
+   "start": 48.822,
+   "end": 49.049
+  },
+  {
+   "line": 8,
+   "text": "的",
+   "start": 49.049,
+   "end": 49.277
+  },
+  {
+   "line": 8,
+   "text": "私",
+   "start": 49.277,
+   "end": 49.504
+  },
+  {
+   "line": 8,
+   "text": "钥",
+   "start": 49.504,
+   "end": 49.731
+  },
+  {
+   "line": 8,
+   "text": "为",
+   "start": 49.986,
+   "end": 50.177
+  },
+  {
+   "line": 8,
+   "text": "什",
+   "start": 50.177,
+   "end": 50.368
+  },
+  {
+   "line": 8,
+   "text": "么",
+   "start": 50.368,
+   "end": 50.559
+  },
+  {
+   "line": 8,
+   "text": "只",
+   "start": 50.559,
+   "end": 50.75
+  },
+  {
+   "line": 8,
+   "text": "值",
+   "start": 50.75,
+   "end": 50.941
+  },
+  {
+   "line": 8,
+   "text": "32",
+   "start": 50.941,
+   "end": 51.323
+  },
+  {
+   "line": 8,
+   "text": "位",
+   "start": 51.323,
+   "end": 51.514
+  },
+  {
+   "line": 9,
+   "text": "这",
+   "start": 52.358,
+   "end": 52.531
+  },
+  {
+   "line": 9,
+   "text": "一",
+   "start": 52.531,
+   "end": 52.704
+  },
+  {
+   "line": 9,
+   "text": "集",
+   "start": 52.704,
+   "end": 52.877
+  },
+  {
+   "line": 9,
+   "text": "我",
+   "start": 53.104,
+   "end": 53.356
+  },
+  {
+   "line": 9,
+   "text": "们",
+   "start": 53.356,
+   "end": 53.608
+  },
+  {
+   "line": 9,
+   "text": "讲",
+   "start": 53.608,
+   "end": 53.86
+  },
+  {
+   "line": 9,
+   "text": "私",
+   "start": 53.86,
+   "end": 54.112
+  },
+  {
+   "line": 9,
+   "text": "钥",
+   "start": 54.112,
+   "end": 54.364
+  },
+  {
+   "line": 9,
+   "text": "从",
+   "start": 54.364,
+   "end": 54.615
+  },
+  {
+   "line": 9,
+   "text": "哪",
+   "start": 54.615,
+   "end": 54.867
+  },
+  {
+   "line": 9,
+   "text": "里",
+   "start": 54.867,
+   "end": 55.119
+  },
+  {
+   "line": 9,
+   "text": "来",
+   "start": 55.119,
+   "end": 55.371
+  },
+  {
+   "line": 9,
+   "text": "又",
+   "start": 55.761,
+   "end": 55.944
+  },
+  {
+   "line": 9,
+   "text": "是",
+   "start": 55.944,
+   "end": 56.128
+  },
+  {
+   "line": 9,
+   "text": "怎",
+   "start": 56.128,
+   "end": 56.311
+  },
+  {
+   "line": 9,
+   "text": "么",
+   "start": 56.311,
+   "end": 56.495
+  },
+  {
+   "line": 9,
+   "text": "被",
+   "start": 56.495,
+   "end": 56.678
+  },
+  {
+   "line": 9,
+   "text": "算",
+   "start": 56.678,
+   "end": 56.861
+  },
+  {
+   "line": 9,
+   "text": "出",
+   "start": 56.861,
+   "end": 57.045
+  },
+  {
+   "line": 9,
+   "text": "来",
+   "start": 57.045,
+   "end": 57.228
+  },
+  {
+   "line": 9,
+   "text": "的",
+   "start": 57.228,
+   "end": 57.412
+  }
+ ],
+ "captions": [
+  {
+   "text": "2022 年 9 月",
+   "start": 1.653,
+   "end": 3.043,
+   "id": "c0"
+  },
+  {
+   "text": "Wintermute 的金库被盗",
+   "start": 3.31,
+   "end": 5.033,
+   "id": "c1"
+  },
+  {
+   "text": "约 1.6 亿美元",
+   "start": 5.053,
+   "end": 6.649,
+   "id": "c2"
+  },
+  {
+   "text": "这个金库的地址",
+   "start": 6.89,
+   "end": 8.342,
+   "id": "c3"
+  },
+  {
+   "text": "是用一个叫 Profanity 的靶号工具生成的",
+   "start": 8.452,
+   "end": 11.383,
+   "id": "c4"
+  },
+  {
+   "text": "靶号地址",
+   "start": 11.687,
+   "end": 12.642,
+   "id": "c5"
+  },
+  {
+   "text": "就是首尾字符符合指定模式的地址",
+   "start": 12.662,
+   "end": 15.656,
+   "id": "c6"
+  },
+  {
+   "text": "比如开头是一串 0",
+   "start": 15.916,
+   "end": 17.84,
+   "id": "c7"
+  },
+  {
+   "text": "私钥有 256 位 按理说",
+   "start": 18.13,
+   "end": 21.513,
+   "id": "c8"
+  },
+  {
+   "text": "没人猜得出来",
+   "start": 21.652,
+   "end": 22.81,
+   "id": "c9"
+  },
+  {
+   "text": "可这个工具的随机数",
+   "start": 23.07,
+   "end": 25.316,
+   "id": "c10"
+  },
+  {
+   "text": "只用了一个 32 位的种子",
+   "start": 25.473,
+   "end": 28.203,
+   "id": "c11"
+  },
+  {
+   "text": "32 位种子",
+   "start": 28.49,
+   "end": 29.866,
+   "id": "c12"
+  },
+  {
+   "text": "只有约 43 亿种可能",
+   "start": 30.264,
+   "end": 32.772,
+   "id": "c13"
+  },
+  {
+   "text": "做个示例计算",
+   "start": 33.03,
+   "end": 34.276,
+   "id": "c14"
+  },
+  {
+   "text": "如果每秒试 10 亿个种子",
+   "start": 34.534,
+   "end": 36.661,
+   "id": "c15"
+  },
+  {
+   "text": "全部试完",
+   "start": 37.232,
+   "end": 38.168,
+   "id": "c16"
+  },
+  {
+   "text": "最多约 4.3 秒",
+   "start": 38.188,
+   "end": 39.796,
+   "id": "c17"
+  },
+  {
+   "text": "真实攻击还要从种子算出地址",
+   "start": 40.149,
+   "end": 42.942,
+   "id": "c18"
+  },
+  {
+   "text": "会慢一些",
+   "start": 42.964,
+   "end": 43.68,
+   "id": "c19"
+  },
+  {
+   "text": "但一张 GPU",
+   "start": 44.139,
+   "end": 45.148,
+   "id": "c20"
+  },
+  {
+   "text": "几分钟就够",
+   "start": 45.168,
+   "end": 46.055,
+   "id": "c21"
+  },
+  {
+   "text": "那么问题来了",
+   "start": 46.364,
+   "end": 47.354,
+   "id": "c22"
+  },
+  {
+   "text": "一把 256 位的私钥",
+   "start": 47.67,
+   "end": 49.851,
+   "id": "c23"
+  },
+  {
+   "text": "为什么只值 32 位",
+   "start": 49.936,
+   "end": 51.634,
+   "id": "c24"
+  },
+  {
+   "text": "这一集 我们讲私钥从哪里来",
+   "start": 52.308,
+   "end": 55.491,
+   "id": "c25"
+  },
+  {
+   "text": "又是怎么被算出来的",
+   "start": 55.711,
+   "end": 57.532,
+   "id": "c26"
+  }
+ ]
+}

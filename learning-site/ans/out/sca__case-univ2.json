@@ -1,1 +1,0 @@
-{"answers": ["标题可以写成：“手续费只改了 Library，与 Pair 中 swap 的 1000/3 常数不一致”。影响是 Router 按 0.25% 费率算出的报价，会被 Pair 按 0.3% 费率做的 K 值检查拒绝，相关 swap 会 revert，交易不可用。修复是同步修改 swap 里的常数和 Library 中的计算。", "因为 Pair 的安全只取决于不变量：扣除 0.3% 输入费后，K 值不得减少。如果用户拿到的输出过少，伤害的是用户自己，不是 Pair，Pair 的资产不受影响。滑点和 deadline 这类用户保护放在 Router，所以调用 Router 时才要设置非 0 的 <code>amountOutMin</code>。"]}

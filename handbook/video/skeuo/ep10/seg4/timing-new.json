@@ -1,0 +1,2412 @@
+{
+ "id": "seg4",
+ "title": "初始化缺失",
+ "pill": 4,
+ "total": 130.58,
+ "lines": [
+  {
+   "id": "seg4-00",
+   "text": "普通合约用构造函数设置主人。代理合约不行。",
+   "spoken": "普通合约用构造函数设置主人。代理合约不行。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-00.mp3",
+   "start": 1.6,
+   "dur": 5.016,
+   "speechStart": 1.698,
+   "speechEnd": 5.767
+  },
+  {
+   "id": "seg4-01",
+   "text": "构造函数只在实现合约自己的存储里运行，写不进代理。",
+   "spoken": "构造函数只在实现合约自己的存储里运行，写不进代理。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-01.mp3",
+   "start": 6.836,
+   "dur": 5.376,
+   "speechStart": 6.934,
+   "speechEnd": 11.362
+  },
+  {
+   "id": "seg4-02",
+   "text": "所以可升级合约用一个初始化函数代替，部署以后再调用一次。",
+   "spoken": "所以可升级合约用一个初始化函数代替，部署以后再掉用一次。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-02.mp3",
+   "start": 12.432,
+   "dur": 6.336,
+   "speechStart": 12.53,
+   "speechEnd": 17.934
+  },
+  {
+   "id": "seg4-03",
+   "text": "这一次调用，就是风险所在。",
+   "spoken": "这一次掉用，就是风险所在。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-03.mp3",
+   "start": 18.988,
+   "dur": 3.024,
+   "speechStart": 19.086,
+   "speechEnd": 21.181
+  },
+  {
+   "id": "seg4-04",
+   "text": "第一种情况：部署代理和初始化，分成了两笔交易。",
+   "spoken": "第一种情况：部署代理和初始化，分成了两笔交易。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-04.mp3",
+   "start": 22.232,
+   "dur": 4.824,
+   "speechStart": 22.33,
+   "speechEnd": 26.223
+  },
+  {
+   "id": "seg4-05",
+   "text": "中间有空隙，别人可以抢先初始化，成为主人。修复是在同一笔交易里完成。",
+   "spoken": "中间有空隙，别人可以抢先初始化，成为主人。修复是在同一笔交易里完成。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-05.mp3",
+   "start": 27.276,
+   "dur": 7.32,
+   "speechStart": 27.374,
+   "speechEnd": 33.752
+  },
+  {
+   "id": "seg4-06",
+   "text": "第二种：初始化函数可以重复调用，任何人都能重置主人。修复是加上只能调用一次的修饰器。",
+   "spoken": "第二种：初始化函数可以虫复掉用，任何人都能虫置主人。修复是加上只能掉用一次的修饰器。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-06.mp3",
+   "start": 34.816,
+   "dur": 8.904,
+   "speechStart": 34.914,
+   "speechEnd": 42.875
+  },
+  {
+   "id": "seg4-07",
+   "text": "第三种：代理初始化了，实现合约本身没有。",
+   "spoken": "第三种：代理初始化了，实现合约本身没有。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-07.mp3",
+   "start": 43.94,
+   "dur": 4.512,
+   "speechStart": 44.038,
+   "speechEnd": 47.609
+  },
+  {
+   "id": "seg4-08",
+   "text": "代理的初始化，写在代理的存储里。实现合约自己的存储，还是空的。",
+   "spoken": "代理的初始化，写在代理的存储里。实现合约自己的存储，还是空的。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-08.mp3",
+   "start": 48.672,
+   "dur": 6.648,
+   "speechStart": 48.77,
+   "speechEnd": 54.493
+  },
+  {
+   "id": "seg4-09",
+   "text": "先猜一道题。别人能直接调用实现合约的初始化函数吗？",
+   "spoken": "先猜一道题。别人能直接掉用实现合约的初始化函数吗？",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-09.mp3",
+   "start": 55.54,
+   "dur": 5.856,
+   "speechStart": 55.638,
+   "speechEnd": 60.576
+  },
+  {
+   "id": "seg4-10",
+   "text": "能。他会成为实现合约的主人。",
+   "spoken": "能。他会成为实现合约的主人。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-10.mp3",
+   "start": 61.896,
+   "dur": 3.816,
+   "speechStart": 61.994,
+   "speechEnd": 64.86
+  },
+  {
+   "id": "seg4-11",
+   "text": "如果实现合约里有 delegatecall 或者自毁的路径，所有指向它的代理，都可能失效。",
+   "spoken": "如果实现合约里有 delegatecall 或者自毁的路径，所有指向它的代理，都可能失效。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-11.mp3",
+   "start": 65.932,
+   "dur": 6.768,
+   "speechStart": 66.03,
+   "speechEnd": 71.863
+  },
+  {
+   "id": "seg4-12",
+   "text": "2021 年 9 月，OpenZeppelin 发布安全公告：它的 UUPS 实现，有几个版本存在这个问题，随后发布了修复版本。",
+   "spoken": "2021 年 9 月，OpenZeppelin 发布安全公告：它的 UUPS 实现，有几个版本存在这个问题，随后发布了修复版本。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-12.mp3",
+   "start": 72.92,
+   "dur": 9.024,
+   "speechStart": 73.018,
+   "speechEnd": 81.113
+  },
+  {
+   "id": "seg4-13",
+   "text": "修复是在实现合约的构造函数里，禁用初始化。这样谁都不能再初始化它。",
+   "spoken": "修复是在实现合约的构造函数里，禁用初始化。这样谁都不能再初始化它。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-13.mp3",
+   "start": 82.164,
+   "dur": 7.128,
+   "speechStart": 82.262,
+   "speechEnd": 88.462
+  },
+  {
+   "id": "seg4-14",
+   "text": "回到开头的 Nomad。它的问题，出在升级时的初始化参数。",
+   "spoken": "回到开头的 Nomad。它的问题，出在升级时的初始化参数。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-14.mp3",
+   "start": 89.512,
+   "dur": 5.976,
+   "speechStart": 89.61,
+   "speechEnd": 94.643
+  },
+  {
+   "id": "seg4-15",
+   "text": "合约用一张表，记录每个根什么时候被确认。升级把全零这个根，标记成了已确认。",
+   "spoken": "合约用一张表，记录每个根什么时候被确认。升级把全零这个根，标记成了已确认。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-15.mp3",
+   "start": 95.708,
+   "dur": 7.56,
+   "speechStart": 95.806,
+   "speechEnd": 102.422
+  },
+  {
+   "id": "seg4-16",
+   "text": "而没被证明过的消息，查到的根，默认也是全零。",
+   "spoken": "而没被证明过的消息，查到的根，默认也是全零。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-16.mp3",
+   "start": 103.488,
+   "dur": 4.68,
+   "speechStart": 103.586,
+   "speechEnd": 107.347
+  },
+  {
+   "id": "seg4-17",
+   "text": "默认值和合法值，撞在了一起。",
+   "spoken": "默认值和合法值，撞在了一起。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-17.mp3",
+   "start": 108.388,
+   "dur": 3.216,
+   "speechStart": 108.486,
+   "speechEnd": 110.771
+  },
+  {
+   "id": "seg4-18",
+   "text": "教训有三条。初始化参数，和代码一样需要审计。",
+   "spoken": "教训有三条。初始化参数，和代码一样需要审计。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-18.mp3",
+   "start": 111.824,
+   "dur": 5.352,
+   "speechStart": 111.922,
+   "speechEnd": 116.336
+  },
+  {
+   "id": "seg4-19",
+   "text": "零值不能带有业务含义，默认值必须和合法值区分开。",
+   "spoken": "零值不能带有业务含义，默认值必须和合法值区分开。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-19.mp3",
+   "start": 117.396,
+   "dur": 5.16,
+   "speechStart": 117.494,
+   "speechEnd": 121.72
+  },
+  {
+   "id": "seg4-20",
+   "text": "升级以后要跑回归测试，覆盖这一条：未授权的消息必须被拒绝。",
+   "spoken": "升级以后要跑回归测试，覆盖这一条：未授权的消息必须被拒绝。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep10/audio/lines/seg4-20.mp3",
+   "start": 122.776,
+   "dur": 6.6,
+   "speechStart": 122.874,
+   "speechEnd": 128.552
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "普通",
+   "start": 1.698,
+   "end": 2.055
+  },
+  {
+   "line": 0,
+   "text": "合约",
+   "start": 2.067,
+   "end": 2.471
+  },
+  {
+   "line": 0,
+   "text": "用",
+   "start": 2.567,
+   "end": 2.817
+  },
+  {
+   "line": 0,
+   "text": "构造",
+   "start": 2.829,
+   "end": 3.138
+  },
+  {
+   "line": 0,
+   "text": "函数",
+   "start": 3.15,
+   "end": 3.555
+  },
+  {
+   "line": 0,
+   "text": "设置",
+   "start": 3.579,
+   "end": 3.817
+  },
+  {
+   "line": 0,
+   "text": "主人",
+   "start": 3.829,
+   "end": 4.257
+  },
+  {
+   "line": 0,
+   "text": "代理",
+   "start": 4.802,
+   "end": 5.064
+  },
+  {
+   "line": 0,
+   "text": "合约",
+   "start": 5.076,
+   "end": 5.338
+  },
+  {
+   "line": 0,
+   "text": "不行",
+   "start": 5.35,
+   "end": 5.767
+  },
+  {
+   "line": 1,
+   "text": "构造",
+   "start": 6.934,
+   "end": 7.291
+  },
+  {
+   "line": 1,
+   "text": "函数",
+   "start": 7.303,
+   "end": 7.922
+  },
+  {
+   "line": 1,
+   "text": "只",
+   "start": 8.029,
+   "end": 8.219
+  },
+  {
+   "line": 1,
+   "text": "在",
+   "start": 8.219,
+   "end": 8.326
+  },
+  {
+   "line": 1,
+   "text": "实现",
+   "start": 8.338,
+   "end": 8.684
+  },
+  {
+   "line": 1,
+   "text": "合约",
+   "start": 8.696,
+   "end": 9.017
+  },
+  {
+   "line": 1,
+   "text": "自己",
+   "start": 9.041,
+   "end": 9.267
+  },
+  {
+   "line": 1,
+   "text": "的",
+   "start": 9.267,
+   "end": 9.35
+  },
+  {
+   "line": 1,
+   "text": "存储",
+   "start": 9.374,
+   "end": 9.743
+  },
+  {
+   "line": 1,
+   "text": "里",
+   "start": 9.743,
+   "end": 9.815
+  },
+  {
+   "line": 1,
+   "text": "运行",
+   "start": 9.826,
+   "end": 10.326
+  },
+  {
+   "line": 1,
+   "text": "写",
+   "start": 10.517,
+   "end": 10.767
+  },
+  {
+   "line": 1,
+   "text": "不",
+   "start": 10.767,
+   "end": 10.862
+  },
+  {
+   "line": 1,
+   "text": "进",
+   "start": 10.862,
+   "end": 10.993
+  },
+  {
+   "line": 1,
+   "text": "代理",
+   "start": 11.005,
+   "end": 11.362
+  },
+  {
+   "line": 2,
+   "text": "所以",
+   "start": 12.53,
+   "end": 13.101
+  },
+  {
+   "line": 2,
+   "text": "可",
+   "start": 13.208,
+   "end": 13.375
+  },
+  {
+   "line": 2,
+   "text": "升级",
+   "start": 13.387,
+   "end": 13.72
+  },
+  {
+   "line": 2,
+   "text": "合约",
+   "start": 13.732,
+   "end": 14.161
+  },
+  {
+   "line": 2,
+   "text": "用",
+   "start": 14.256,
+   "end": 14.422
+  },
+  {
+   "line": 2,
+   "text": "一个",
+   "start": 14.434,
+   "end": 14.601
+  },
+  {
+   "line": 2,
+   "text": "初始化",
+   "start": 14.625,
+   "end": 15.077
+  },
+  {
+   "line": 2,
+   "text": "函数",
+   "start": 15.089,
+   "end": 15.446
+  },
+  {
+   "line": 2,
+   "text": "代替",
+   "start": 15.458,
+   "end": 15.875
+  },
+  {
+   "line": 2,
+   "text": "部署",
+   "start": 16.28,
+   "end": 16.553
+  },
+  {
+   "line": 2,
+   "text": "以后",
+   "start": 16.565,
+   "end": 16.994
+  },
+  {
+   "line": 2,
+   "text": "再",
+   "start": 17.101,
+   "end": 17.351
+  },
+  {
+   "line": 2,
+   "text": "调",
+   "start": 17.363,
+   "end": 17.506
+  },
+  {
+   "line": 2,
+   "text": "用",
+   "start": 17.506,
+   "end": 17.601
+  },
+  {
+   "line": 2,
+   "text": "一次",
+   "start": 17.613,
+   "end": 17.934
+  },
+  {
+   "line": 3,
+   "text": "这",
+   "start": 19.086,
+   "end": 19.252
+  },
+  {
+   "line": 3,
+   "text": "一次",
+   "start": 19.252,
+   "end": 19.467
+  },
+  {
+   "line": 3,
+   "text": "调用",
+   "start": 19.478,
+   "end": 19.967
+  },
+  {
+   "line": 3,
+   "text": "就",
+   "start": 20.133,
+   "end": 20.288
+  },
+  {
+   "line": 3,
+   "text": "是",
+   "start": 20.288,
+   "end": 20.383
+  },
+  {
+   "line": 3,
+   "text": "风险",
+   "start": 20.407,
+   "end": 20.788
+  },
+  {
+   "line": 3,
+   "text": "所在",
+   "start": 20.8,
+   "end": 21.181
+  },
+  {
+   "line": 4,
+   "text": "第一",
+   "start": 22.33,
+   "end": 22.544
+  },
+  {
+   "line": 4,
+   "text": "种",
+   "start": 22.544,
+   "end": 22.687
+  },
+  {
+   "line": 4,
+   "text": "情况",
+   "start": 22.699,
+   "end": 23.199
+  },
+  {
+   "line": 4,
+   "text": "部署",
+   "start": 23.615,
+   "end": 23.913
+  },
+  {
+   "line": 4,
+   "text": "代理",
+   "start": 23.925,
+   "end": 24.282
+  },
+  {
+   "line": 4,
+   "text": "和",
+   "start": 24.306,
+   "end": 24.401
+  },
+  {
+   "line": 4,
+   "text": "初始化",
+   "start": 24.413,
+   "end": 24.961
+  },
+  {
+   "line": 4,
+   "text": "分成",
+   "start": 25.163,
+   "end": 25.461
+  },
+  {
+   "line": 4,
+   "text": "了",
+   "start": 25.461,
+   "end": 25.544
+  },
+  {
+   "line": 4,
+   "text": "两",
+   "start": 25.568,
+   "end": 25.77
+  },
+  {
+   "line": 4,
+   "text": "笔",
+   "start": 25.77,
+   "end": 25.865
+  },
+  {
+   "line": 4,
+   "text": "交易",
+   "start": 25.877,
+   "end": 26.223
+  },
+  {
+   "line": 5,
+   "text": "中间",
+   "start": 27.374,
+   "end": 27.743
+  },
+  {
+   "line": 5,
+   "text": "有",
+   "start": 27.766,
+   "end": 27.897
+  },
+  {
+   "line": 5,
+   "text": "空隙",
+   "start": 27.897,
+   "end": 28.421
+  },
+  {
+   "line": 5,
+   "text": "别人",
+   "start": 28.778,
+   "end": 29.005
+  },
+  {
+   "line": 5,
+   "text": "可以",
+   "start": 29.016,
+   "end": 29.195
+  },
+  {
+   "line": 5,
+   "text": "抢先",
+   "start": 29.207,
+   "end": 29.588
+  },
+  {
+   "line": 5,
+   "text": "初始化",
+   "start": 29.612,
+   "end": 30.135
+  },
+  {
+   "line": 5,
+   "text": "成为",
+   "start": 30.338,
+   "end": 30.659
+  },
+  {
+   "line": 5,
+   "text": "主人",
+   "start": 30.671,
+   "end": 31.183
+  },
+  {
+   "line": 5,
+   "text": "修复",
+   "start": 31.728,
+   "end": 32.312
+  },
+  {
+   "line": 5,
+   "text": "是",
+   "start": 32.336,
+   "end": 32.443
+  },
+  {
+   "line": 5,
+   "text": "在",
+   "start": 32.443,
+   "end": 32.55
+  },
+  {
+   "line": 5,
+   "text": "同",
+   "start": 32.574,
+   "end": 32.752
+  },
+  {
+   "line": 5,
+   "text": "一",
+   "start": 32.752,
+   "end": 32.836
+  },
+  {
+   "line": 5,
+   "text": "笔",
+   "start": 32.836,
+   "end": 32.931
+  },
+  {
+   "line": 5,
+   "text": "交易",
+   "start": 32.943,
+   "end": 33.205
+  },
+  {
+   "line": 5,
+   "text": "里",
+   "start": 33.205,
+   "end": 33.264
+  },
+  {
+   "line": 5,
+   "text": "完成",
+   "start": 33.276,
+   "end": 33.752
+  },
+  {
+   "line": 6,
+   "text": "第二",
+   "start": 34.914,
+   "end": 35.187
+  },
+  {
+   "line": 6,
+   "text": "种",
+   "start": 35.187,
+   "end": 35.485
+  },
+  {
+   "line": 6,
+   "text": "初始化",
+   "start": 35.842,
+   "end": 36.342
+  },
+  {
+   "line": 6,
+   "text": "函数",
+   "start": 36.354,
+   "end": 36.89
+  },
+  {
+   "line": 6,
+   "text": "可以",
+   "start": 36.985,
+   "end": 37.223
+  },
+  {
+   "line": 6,
+   "text": "重",
+   "start": 37.235,
+   "end": 37.473
+  },
+  {
+   "line": 6,
+   "text": "复",
+   "start": 37.473,
+   "end": 37.616
+  },
+  {
+   "line": 6,
+   "text": "调用",
+   "start": 37.616,
+   "end": 38.009
+  },
+  {
+   "line": 6,
+   "text": "任何",
+   "start": 38.33,
+   "end": 38.699
+  },
+  {
+   "line": 6,
+   "text": "人",
+   "start": 38.699,
+   "end": 38.914
+  },
+  {
+   "line": 6,
+   "text": "都",
+   "start": 38.937,
+   "end": 39.068
+  },
+  {
+   "line": 6,
+   "text": "能重",
+   "start": 39.08,
+   "end": 39.366
+  },
+  {
+   "line": 6,
+   "text": "置",
+   "start": 39.366,
+   "end": 39.473
+  },
+  {
+   "line": 6,
+   "text": "主人",
+   "start": 39.485,
+   "end": 39.961
+  },
+  {
+   "line": 6,
+   "text": "修复",
+   "start": 40.506,
+   "end": 40.935
+  },
+  {
+   "line": 6,
+   "text": "是",
+   "start": 40.947,
+   "end": 41.042
+  },
+  {
+   "line": 6,
+   "text": "加上",
+   "start": 41.054,
+   "end": 41.542
+  },
+  {
+   "line": 6,
+   "text": "只能",
+   "start": 41.637,
+   "end": 41.828
+  },
+  {
+   "line": 6,
+   "text": "调用",
+   "start": 41.84,
+   "end": 42.066
+  },
+  {
+   "line": 6,
+   "text": "一次",
+   "start": 42.066,
+   "end": 42.316
+  },
+  {
+   "line": 6,
+   "text": "的",
+   "start": 42.316,
+   "end": 42.376
+  },
+  {
+   "line": 6,
+   "text": "修饰器",
+   "start": 42.387,
+   "end": 42.875
+  },
+  {
+   "line": 7,
+   "text": "第三",
+   "start": 44.038,
+   "end": 44.383
+  },
+  {
+   "line": 7,
+   "text": "种",
+   "start": 44.383,
+   "end": 44.633
+  },
+  {
+   "line": 7,
+   "text": "代理",
+   "start": 44.966,
+   "end": 45.228
+  },
+  {
+   "line": 7,
+   "text": "初始化",
+   "start": 45.252,
+   "end": 45.752
+  },
+  {
+   "line": 7,
+   "text": "了",
+   "start": 45.752,
+   "end": 45.966
+  },
+  {
+   "line": 7,
+   "text": "实现",
+   "start": 46.133,
+   "end": 46.585
+  },
+  {
+   "line": 7,
+   "text": "合约",
+   "start": 46.597,
+   "end": 46.907
+  },
+  {
+   "line": 7,
+   "text": "本身",
+   "start": 46.93,
+   "end": 47.299
+  },
+  {
+   "line": 7,
+   "text": "没有",
+   "start": 47.311,
+   "end": 47.609
+  },
+  {
+   "line": 8,
+   "text": "代理",
+   "start": 48.77,
+   "end": 49.055
+  },
+  {
+   "line": 8,
+   "text": "的",
+   "start": 49.055,
+   "end": 49.139
+  },
+  {
+   "line": 8,
+   "text": "初始化",
+   "start": 49.151,
+   "end": 49.817
+  },
+  {
+   "line": 8,
+   "text": "写",
+   "start": 50.02,
+   "end": 50.234
+  },
+  {
+   "line": 8,
+   "text": "在",
+   "start": 50.234,
+   "end": 50.341
+  },
+  {
+   "line": 8,
+   "text": "代理",
+   "start": 50.365,
+   "end": 50.591
+  },
+  {
+   "line": 8,
+   "text": "的",
+   "start": 50.591,
+   "end": 50.662
+  },
+  {
+   "line": 8,
+   "text": "存储",
+   "start": 50.674,
+   "end": 51.127
+  },
+  {
+   "line": 8,
+   "text": "里",
+   "start": 51.127,
+   "end": 51.305
+  },
+  {
+   "line": 8,
+   "text": "实现",
+   "start": 51.839,
+   "end": 52.279
+  },
+  {
+   "line": 8,
+   "text": "合约",
+   "start": 52.291,
+   "end": 52.577
+  },
+  {
+   "line": 8,
+   "text": "自己",
+   "start": 52.601,
+   "end": 52.815
+  },
+  {
+   "line": 8,
+   "text": "的",
+   "start": 52.815,
+   "end": 52.874
+  },
+  {
+   "line": 8,
+   "text": "存储",
+   "start": 52.886,
+   "end": 53.434
+  },
+  {
+   "line": 8,
+   "text": "还是",
+   "start": 53.767,
+   "end": 54.077
+  },
+  {
+   "line": 8,
+   "text": "空",
+   "start": 54.089,
+   "end": 54.362
+  },
+  {
+   "line": 8,
+   "text": "的",
+   "start": 54.362,
+   "end": 54.493
+  },
+  {
+   "line": 9,
+   "text": "先",
+   "start": 55.638,
+   "end": 56.007
+  },
+  {
+   "line": 9,
+   "text": "猜",
+   "start": 56.007,
+   "end": 56.161
+  },
+  {
+   "line": 9,
+   "text": "一道",
+   "start": 56.173,
+   "end": 56.388
+  },
+  {
+   "line": 9,
+   "text": "题",
+   "start": 56.388,
+   "end": 56.792
+  },
+  {
+   "line": 9,
+   "text": "别人",
+   "start": 57.326,
+   "end": 57.588
+  },
+  {
+   "line": 9,
+   "text": "能",
+   "start": 57.6,
+   "end": 57.742
+  },
+  {
+   "line": 9,
+   "text": "直接",
+   "start": 57.766,
+   "end": 58.028
+  },
+  {
+   "line": 9,
+   "text": "调",
+   "start": 58.04,
+   "end": 58.23
+  },
+  {
+   "line": 9,
+   "text": "用",
+   "start": 58.23,
+   "end": 58.528
+  },
+  {
+   "line": 9,
+   "text": "实现",
+   "start": 58.623,
+   "end": 59.04
+  },
+  {
+   "line": 9,
+   "text": "合约",
+   "start": 59.052,
+   "end": 59.361
+  },
+  {
+   "line": 9,
+   "text": "的",
+   "start": 59.361,
+   "end": 59.48
+  },
+  {
+   "line": 9,
+   "text": "初始化",
+   "start": 59.504,
+   "end": 59.921
+  },
+  {
+   "line": 9,
+   "text": "函数",
+   "start": 59.933,
+   "end": 60.35
+  },
+  {
+   "line": 9,
+   "text": "吗",
+   "start": 60.35,
+   "end": 60.576
+  },
+  {
+   "line": 10,
+   "text": "能",
+   "start": 61.994,
+   "end": 62.517
+  },
+  {
+   "line": 10,
+   "text": "他",
+   "start": 63.039,
+   "end": 63.194
+  },
+  {
+   "line": 10,
+   "text": "会",
+   "start": 63.194,
+   "end": 63.313
+  },
+  {
+   "line": 10,
+   "text": "成为",
+   "start": 63.325,
+   "end": 63.598
+  },
+  {
+   "line": 10,
+   "text": "实现",
+   "start": 63.622,
+   "end": 63.932
+  },
+  {
+   "line": 10,
+   "text": "合约",
+   "start": 63.944,
+   "end": 64.265
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 64.265,
+   "end": 64.348
+  },
+  {
+   "line": 10,
+   "text": "主人",
+   "start": 64.36,
+   "end": 64.86
+  },
+  {
+   "line": 11,
+   "text": "如果",
+   "start": 66.03,
+   "end": 66.256
+  },
+  {
+   "line": 11,
+   "text": "实现",
+   "start": 66.268,
+   "end": 66.553
+  },
+  {
+   "line": 11,
+   "text": "合约",
+   "start": 66.565,
+   "end": 66.839
+  },
+  {
+   "line": 11,
+   "text": "里",
+   "start": 66.839,
+   "end": 67.172
+  },
+  {
+   "line": 11,
+   "text": "有",
+   "start": 67.28,
+   "end": 67.53
+  },
+  {
+   "line": 11,
+   "text": "delegatecall",
+   "start": 67.53,
+   "end": 68.268
+  },
+  {
+   "line": 11,
+   "text": "或者",
+   "start": 68.375,
+   "end": 68.649
+  },
+  {
+   "line": 11,
+   "text": "自毁",
+   "start": 68.672,
+   "end": 69.006
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 69.006,
+   "end": 69.089
+  },
+  {
+   "line": 11,
+   "text": "路径",
+   "start": 69.101,
+   "end": 69.47
+  },
+  {
+   "line": 11,
+   "text": "所有",
+   "start": 69.768,
+   "end": 70.101
+  },
+  {
+   "line": 11,
+   "text": "指向",
+   "start": 70.113,
+   "end": 70.339
+  },
+  {
+   "line": 11,
+   "text": "它",
+   "start": 70.351,
+   "end": 70.434
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 70.434,
+   "end": 70.506
+  },
+  {
+   "line": 11,
+   "text": "代理",
+   "start": 70.518,
+   "end": 70.887
+  },
+  {
+   "line": 11,
+   "text": "都",
+   "start": 71.065,
+   "end": 71.22
+  },
+  {
+   "line": 11,
+   "text": "可能",
+   "start": 71.232,
+   "end": 71.458
+  },
+  {
+   "line": 11,
+   "text": "失效",
+   "start": 71.47,
+   "end": 71.863
+  },
+  {
+   "line": 12,
+   "text": "2021",
+   "start": 73.018,
+   "end": 73.458
+  },
+  {
+   "line": 12,
+   "text": "年",
+   "start": 73.458,
+   "end": 73.625
+  },
+  {
+   "line": 12,
+   "text": "9 月",
+   "start": 73.637,
+   "end": 74.089
+  },
+  {
+   "line": 12,
+   "text": "OpenZeppelin",
+   "start": 74.351,
+   "end": 75.149
+  },
+  {
+   "line": 12,
+   "text": "发布",
+   "start": 75.244,
+   "end": 75.529
+  },
+  {
+   "line": 12,
+   "text": "安全",
+   "start": 75.553,
+   "end": 75.815
+  },
+  {
+   "line": 12,
+   "text": "公告",
+   "start": 75.827,
+   "end": 76.184
+  },
+  {
+   "line": 12,
+   "text": "它",
+   "start": 76.482,
+   "end": 76.649
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 76.649,
+   "end": 76.756
+  },
+  {
+   "line": 12,
+   "text": "UUPS",
+   "start": 76.768,
+   "end": 77.351
+  },
+  {
+   "line": 12,
+   "text": "实现",
+   "start": 77.363,
+   "end": 77.78
+  },
+  {
+   "line": 12,
+   "text": "有",
+   "start": 77.994,
+   "end": 78.172
+  },
+  {
+   "line": 12,
+   "text": "几个",
+   "start": 78.184,
+   "end": 78.363
+  },
+  {
+   "line": 12,
+   "text": "版本",
+   "start": 78.375,
+   "end": 78.72
+  },
+  {
+   "line": 12,
+   "text": "存在",
+   "start": 78.744,
+   "end": 79.006
+  },
+  {
+   "line": 12,
+   "text": "这个",
+   "start": 79.018,
+   "end": 79.16
+  },
+  {
+   "line": 12,
+   "text": "问题",
+   "start": 79.172,
+   "end": 79.601
+  },
+  {
+   "line": 12,
+   "text": "随后",
+   "start": 79.768,
+   "end": 80.137
+  },
+  {
+   "line": 12,
+   "text": "发布",
+   "start": 80.149,
+   "end": 80.387
+  },
+  {
+   "line": 12,
+   "text": "了",
+   "start": 80.387,
+   "end": 80.47
+  },
+  {
+   "line": 12,
+   "text": "修复",
+   "start": 80.494,
+   "end": 80.768
+  },
+  {
+   "line": 12,
+   "text": "版本",
+   "start": 80.78,
+   "end": 81.113
+  },
+  {
+   "line": 13,
+   "text": "修复",
+   "start": 82.262,
+   "end": 82.774
+  },
+  {
+   "line": 13,
+   "text": "是",
+   "start": 82.797,
+   "end": 82.916
+  },
+  {
+   "line": 13,
+   "text": "在",
+   "start": 82.916,
+   "end": 83.023
+  },
+  {
+   "line": 13,
+   "text": "实现",
+   "start": 83.035,
+   "end": 83.381
+  },
+  {
+   "line": 13,
+   "text": "合约",
+   "start": 83.393,
+   "end": 83.678
+  },
+  {
+   "line": 13,
+   "text": "的",
+   "start": 83.678,
+   "end": 83.785
+  },
+  {
+   "line": 13,
+   "text": "构造",
+   "start": 83.809,
+   "end": 84.059
+  },
+  {
+   "line": 13,
+   "text": "函数",
+   "start": 84.071,
+   "end": 84.452
+  },
+  {
+   "line": 13,
+   "text": "里",
+   "start": 84.452,
+   "end": 84.678
+  },
+  {
+   "line": 13,
+   "text": "禁用",
+   "start": 84.845,
+   "end": 85.214
+  },
+  {
+   "line": 13,
+   "text": "初始化",
+   "start": 85.238,
+   "end": 85.75
+  },
+  {
+   "line": 13,
+   "text": "这样",
+   "start": 86.295,
+   "end": 86.914
+  },
+  {
+   "line": 13,
+   "text": "谁",
+   "start": 87.009,
+   "end": 87.331
+  },
+  {
+   "line": 13,
+   "text": "都",
+   "start": 87.331,
+   "end": 87.402
+  },
+  {
+   "line": 13,
+   "text": "不能",
+   "start": 87.414,
+   "end": 87.616
+  },
+  {
+   "line": 13,
+   "text": "再",
+   "start": 87.64,
+   "end": 87.747
+  },
+  {
+   "line": 13,
+   "text": "初始化",
+   "start": 87.759,
+   "end": 88.212
+  },
+  {
+   "line": 13,
+   "text": "它",
+   "start": 88.212,
+   "end": 88.462
+  },
+  {
+   "line": 14,
+   "text": "回到",
+   "start": 89.61,
+   "end": 89.895
+  },
+  {
+   "line": 14,
+   "text": "开头",
+   "start": 89.907,
+   "end": 90.276
+  },
+  {
+   "line": 14,
+   "text": "的",
+   "start": 90.276,
+   "end": 90.514
+  },
+  {
+   "line": 14,
+   "text": "Nomad",
+   "start": 90.622,
+   "end": 91.193
+  },
+  {
+   "line": 14,
+   "text": "它",
+   "start": 91.738,
+   "end": 91.893
+  },
+  {
+   "line": 14,
+   "text": "的",
+   "start": 91.893,
+   "end": 91.964
+  },
+  {
+   "line": 14,
+   "text": "问题",
+   "start": 91.976,
+   "end": 92.512
+  },
+  {
+   "line": 14,
+   "text": "出在",
+   "start": 92.679,
+   "end": 92.988
+  },
+  {
+   "line": 14,
+   "text": "升级",
+   "start": 93.012,
+   "end": 93.357
+  },
+  {
+   "line": 14,
+   "text": "时",
+   "start": 93.357,
+   "end": 93.5
+  },
+  {
+   "line": 14,
+   "text": "的",
+   "start": 93.5,
+   "end": 93.691
+  },
+  {
+   "line": 14,
+   "text": "初始化",
+   "start": 93.714,
+   "end": 94.202
+  },
+  {
+   "line": 14,
+   "text": "参数",
+   "start": 94.214,
+   "end": 94.643
+  },
+  {
+   "line": 15,
+   "text": "合约",
+   "start": 95.806,
+   "end": 96.163
+  },
+  {
+   "line": 15,
+   "text": "用",
+   "start": 96.187,
+   "end": 96.306
+  },
+  {
+   "line": 15,
+   "text": "一",
+   "start": 96.306,
+   "end": 96.389
+  },
+  {
+   "line": 15,
+   "text": "张",
+   "start": 96.389,
+   "end": 96.568
+  },
+  {
+   "line": 15,
+   "text": "表",
+   "start": 96.568,
+   "end": 96.877
+  },
+  {
+   "line": 15,
+   "text": "记录",
+   "start": 97.175,
+   "end": 97.437
+  },
+  {
+   "line": 15,
+   "text": "每",
+   "start": 97.46,
+   "end": 97.627
+  },
+  {
+   "line": 15,
+   "text": "个",
+   "start": 97.627,
+   "end": 97.734
+  },
+  {
+   "line": 15,
+   "text": "根",
+   "start": 97.746,
+   "end": 98.02
+  },
+  {
+   "line": 15,
+   "text": "什么时候",
+   "start": 98.115,
+   "end": 98.615
+  },
+  {
+   "line": 15,
+   "text": "被",
+   "start": 98.639,
+   "end": 98.722
+  },
+  {
+   "line": 15,
+   "text": "确认",
+   "start": 98.722,
+   "end": 99.091
+  },
+  {
+   "line": 15,
+   "text": "升级",
+   "start": 99.625,
+   "end": 100.089
+  },
+  {
+   "line": 15,
+   "text": "把",
+   "start": 100.113,
+   "end": 100.208
+  },
+  {
+   "line": 15,
+   "text": "全",
+   "start": 100.22,
+   "end": 100.434
+  },
+  {
+   "line": 15,
+   "text": "零",
+   "start": 100.434,
+   "end": 100.577
+  },
+  {
+   "line": 15,
+   "text": "这个",
+   "start": 100.589,
+   "end": 100.791
+  },
+  {
+   "line": 15,
+   "text": "根",
+   "start": 100.791,
+   "end": 101.113
+  },
+  {
+   "line": 15,
+   "text": "标",
+   "start": 101.327,
+   "end": 101.541
+  },
+  {
+   "line": 15,
+   "text": "记成",
+   "start": 101.541,
+   "end": 101.803
+  },
+  {
+   "line": 15,
+   "text": "了",
+   "start": 101.803,
+   "end": 101.875
+  },
+  {
+   "line": 15,
+   "text": "已",
+   "start": 101.898,
+   "end": 101.982
+  },
+  {
+   "line": 15,
+   "text": "确认",
+   "start": 101.994,
+   "end": 102.422
+  },
+  {
+   "line": 16,
+   "text": "而",
+   "start": 103.586,
+   "end": 103.728
+  },
+  {
+   "line": 16,
+   "text": "没",
+   "start": 103.74,
+   "end": 103.871
+  },
+  {
+   "line": 16,
+   "text": "被",
+   "start": 103.871,
+   "end": 103.978
+  },
+  {
+   "line": 16,
+   "text": "证明",
+   "start": 103.99,
+   "end": 104.276
+  },
+  {
+   "line": 16,
+   "text": "过",
+   "start": 104.276,
+   "end": 104.383
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 104.383,
+   "end": 104.443
+  },
+  {
+   "line": 16,
+   "text": "消息",
+   "start": 104.455,
+   "end": 105.014
+  },
+  {
+   "line": 16,
+   "text": "查到",
+   "start": 105.288,
+   "end": 105.633
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 105.633,
+   "end": 105.728
+  },
+  {
+   "line": 16,
+   "text": "根",
+   "start": 105.728,
+   "end": 106.002
+  },
+  {
+   "line": 16,
+   "text": "默认",
+   "start": 106.252,
+   "end": 106.621
+  },
+  {
+   "line": 16,
+   "text": "也",
+   "start": 106.645,
+   "end": 106.728
+  },
+  {
+   "line": 16,
+   "text": "是",
+   "start": 106.728,
+   "end": 106.824
+  },
+  {
+   "line": 16,
+   "text": "全",
+   "start": 106.836,
+   "end": 107.074
+  },
+  {
+   "line": 16,
+   "text": "零",
+   "start": 107.074,
+   "end": 107.347
+  },
+  {
+   "line": 17,
+   "text": "默认",
+   "start": 108.486,
+   "end": 108.819
+  },
+  {
+   "line": 17,
+   "text": "值",
+   "start": 108.819,
+   "end": 108.986
+  },
+  {
+   "line": 17,
+   "text": "和",
+   "start": 109.009,
+   "end": 109.105
+  },
+  {
+   "line": 17,
+   "text": "合法",
+   "start": 109.117,
+   "end": 109.462
+  },
+  {
+   "line": 17,
+   "text": "值",
+   "start": 109.462,
+   "end": 109.795
+  },
+  {
+   "line": 17,
+   "text": "撞",
+   "start": 109.986,
+   "end": 110.224
+  },
+  {
+   "line": 17,
+   "text": "在",
+   "start": 110.224,
+   "end": 110.319
+  },
+  {
+   "line": 17,
+   "text": "了",
+   "start": 110.319,
+   "end": 110.39
+  },
+  {
+   "line": 17,
+   "text": "一起",
+   "start": 110.402,
+   "end": 110.771
+  },
+  {
+   "line": 18,
+   "text": "教训",
+   "start": 111.922,
+   "end": 112.374
+  },
+  {
+   "line": 18,
+   "text": "有",
+   "start": 112.374,
+   "end": 112.457
+  },
+  {
+   "line": 18,
+   "text": "三",
+   "start": 112.469,
+   "end": 112.66
+  },
+  {
+   "line": 18,
+   "text": "条",
+   "start": 112.66,
+   "end": 113.029
+  },
+  {
+   "line": 18,
+   "text": "初始化",
+   "start": 113.562,
+   "end": 114.05
+  },
+  {
+   "line": 18,
+   "text": "参数",
+   "start": 114.062,
+   "end": 114.574
+  },
+  {
+   "line": 18,
+   "text": "和",
+   "start": 114.753,
+   "end": 114.907
+  },
+  {
+   "line": 18,
+   "text": "代码",
+   "start": 114.919,
+   "end": 115.193
+  },
+  {
+   "line": 18,
+   "text": "一样",
+   "start": 115.205,
+   "end": 115.55
+  },
+  {
+   "line": 18,
+   "text": "需要",
+   "start": 115.645,
+   "end": 115.919
+  },
+  {
+   "line": 18,
+   "text": "审计",
+   "start": 115.931,
+   "end": 116.336
+  },
+  {
+   "line": 19,
+   "text": "零值",
+   "start": 117.494,
+   "end": 117.922
+  },
+  {
+   "line": 19,
+   "text": "不能",
+   "start": 117.946,
+   "end": 118.184
+  },
+  {
+   "line": 19,
+   "text": "带有",
+   "start": 118.196,
+   "end": 118.458
+  },
+  {
+   "line": 19,
+   "text": "业务",
+   "start": 118.482,
+   "end": 118.755
+  },
+  {
+   "line": 19,
+   "text": "含义",
+   "start": 118.767,
+   "end": 119.244
+  },
+  {
+   "line": 19,
+   "text": "默认",
+   "start": 119.553,
+   "end": 119.898
+  },
+  {
+   "line": 19,
+   "text": "值",
+   "start": 119.898,
+   "end": 120.125
+  },
+  {
+   "line": 19,
+   "text": "必须",
+   "start": 120.148,
+   "end": 120.553
+  },
+  {
+   "line": 19,
+   "text": "和",
+   "start": 120.565,
+   "end": 120.708
+  },
+  {
+   "line": 19,
+   "text": "合法",
+   "start": 120.732,
+   "end": 121.029
+  },
+  {
+   "line": 19,
+   "text": "值区",
+   "start": 121.041,
+   "end": 121.291
+  },
+  {
+   "line": 19,
+   "text": "分开",
+   "start": 121.303,
+   "end": 121.72
+  },
+  {
+   "line": 20,
+   "text": "升级",
+   "start": 122.874,
+   "end": 123.255
+  },
+  {
+   "line": 20,
+   "text": "以后",
+   "start": 123.266,
+   "end": 123.778
+  },
+  {
+   "line": 20,
+   "text": "要",
+   "start": 123.886,
+   "end": 124.052
+  },
+  {
+   "line": 20,
+   "text": "跑",
+   "start": 124.052,
+   "end": 124.183
+  },
+  {
+   "line": 20,
+   "text": "回归",
+   "start": 124.207,
+   "end": 124.516
+  },
+  {
+   "line": 20,
+   "text": "测试",
+   "start": 124.528,
+   "end": 124.969
+  },
+  {
+   "line": 20,
+   "text": "覆盖",
+   "start": 125.302,
+   "end": 125.576
+  },
+  {
+   "line": 20,
+   "text": "这",
+   "start": 125.588,
+   "end": 125.695
+  },
+  {
+   "line": 20,
+   "text": "一条",
+   "start": 125.695,
+   "end": 126.159
+  },
+  {
+   "line": 20,
+   "text": "未",
+   "start": 126.469,
+   "end": 126.659
+  },
+  {
+   "line": 20,
+   "text": "授权",
+   "start": 126.659,
+   "end": 126.945
+  },
+  {
+   "line": 20,
+   "text": "的",
+   "start": 126.945,
+   "end": 127.016
+  },
+  {
+   "line": 20,
+   "text": "消息",
+   "start": 127.028,
+   "end": 127.54
+  },
+  {
+   "line": 20,
+   "text": "必须",
+   "start": 127.647,
+   "end": 127.969
+  },
+  {
+   "line": 20,
+   "text": "被",
+   "start": 127.981,
+   "end": 128.112
+  },
+  {
+   "line": 20,
+   "text": "拒绝",
+   "start": 128.112,
+   "end": 128.552
+  }
+ ],
+ "captions": [
+  {
+   "text": "普通合约用构造函数设置主人",
+   "start": 1.648,
+   "end": 4.377,
+   "id": "c0"
+  },
+  {
+   "text": "代理合约不行",
+   "start": 4.752,
+   "end": 5.887,
+   "id": "c1"
+  },
+  {
+   "text": "构造函数只在实现合约自己的存储里运行",
+   "start": 6.884,
+   "end": 10.446,
+   "id": "c2"
+  },
+  {
+   "text": "写不进代理",
+   "start": 10.467,
+   "end": 11.482,
+   "id": "c3"
+  },
+  {
+   "text": "所以可升级合约用一个初始化函数代替",
+   "start": 12.48,
+   "end": 15.995,
+   "id": "c4"
+  },
+  {
+   "text": "部署以后再调用一次",
+   "start": 16.23,
+   "end": 18.054,
+   "id": "c5"
+  },
+  {
+   "text": "这一次调用",
+   "start": 19.036,
+   "end": 20.063,
+   "id": "c6"
+  },
+  {
+   "text": "就是风险所在",
+   "start": 20.083,
+   "end": 21.301,
+   "id": "c7"
+  },
+  {
+   "text": "第一种情况",
+   "start": 22.28,
+   "end": 23.319,
+   "id": "c8"
+  },
+  {
+   "text": "部署代理和初始化",
+   "start": 23.565,
+   "end": 25.081,
+   "id": "c9"
+  },
+  {
+   "text": "分成了两笔交易",
+   "start": 25.113,
+   "end": 26.343,
+   "id": "c10"
+  },
+  {
+   "text": "中间有空隙",
+   "start": 27.324,
+   "end": 28.541,
+   "id": "c11"
+  },
+  {
+   "text": "别人可以抢先初始化",
+   "start": 28.728,
+   "end": 30.255,
+   "id": "c12"
+  },
+  {
+   "text": "成为主人",
+   "start": 30.288,
+   "end": 31.303,
+   "id": "c13"
+  },
+  {
+   "text": "修复是在同一笔交易里完成",
+   "start": 31.678,
+   "end": 33.872,
+   "id": "c14"
+  },
+  {
+   "text": "第二种 初始化函数可以重复调用",
+   "start": 34.864,
+   "end": 38.129,
+   "id": "c15"
+  },
+  {
+   "text": "任何人都能重置主人",
+   "start": 38.28,
+   "end": 40.081,
+   "id": "c16"
+  },
+  {
+   "text": "修复是加上只能调用一次的修饰器",
+   "start": 40.456,
+   "end": 42.995,
+   "id": "c17"
+  },
+  {
+   "text": "第三种 代理初始化了",
+   "start": 43.988,
+   "end": 46.063,
+   "id": "c18"
+  },
+  {
+   "text": "实现合约本身没有",
+   "start": 46.083,
+   "end": 47.729,
+   "id": "c19"
+  },
+  {
+   "text": "代理的初始化",
+   "start": 48.72,
+   "end": 49.937,
+   "id": "c20"
+  },
+  {
+   "text": "写在代理的存储里",
+   "start": 49.97,
+   "end": 51.425,
+   "id": "c21"
+  },
+  {
+   "text": "实现合约自己的存储",
+   "start": 51.789,
+   "end": 53.554,
+   "id": "c22"
+  },
+  {
+   "text": "还是空的",
+   "start": 53.717,
+   "end": 54.613,
+   "id": "c23"
+  },
+  {
+   "text": "先猜一道题",
+   "start": 55.588,
+   "end": 56.912,
+   "id": "c24"
+  },
+  {
+   "text": "别人能直接调用实现合约的初始化函数吗",
+   "start": 57.276,
+   "end": 60.696,
+   "id": "c25"
+  },
+  {
+   "text": "能",
+   "start": 61.944,
+   "end": 62.637,
+   "id": "c26"
+  },
+  {
+   "text": "他会成为实现合约的主人",
+   "start": 62.989,
+   "end": 64.98,
+   "id": "c27"
+  },
+  {
+   "text": "如果实现合约里有 delegatecall",
+   "start": 65.98,
+   "end": 68.305,
+   "id": "c28"
+  },
+  {
+   "text": "或者自毁的路径",
+   "start": 68.325,
+   "end": 69.59,
+   "id": "c29"
+  },
+  {
+   "text": "所有指向它的代理",
+   "start": 69.718,
+   "end": 70.995,
+   "id": "c30"
+  },
+  {
+   "text": "都可能失效",
+   "start": 71.015,
+   "end": 71.983,
+   "id": "c31"
+  },
+  {
+   "text": "2021 年 9 月",
+   "start": 72.968,
+   "end": 74.209,
+   "id": "c32"
+  },
+  {
+   "text": "OpenZeppelin 发布安全公告",
+   "start": 74.301,
+   "end": 76.304,
+   "id": "c33"
+  },
+  {
+   "text": "它的 UUPS 实现",
+   "start": 76.432,
+   "end": 77.9,
+   "id": "c34"
+  },
+  {
+   "text": "有几个版本存在这个问题",
+   "start": 77.944,
+   "end": 79.698,
+   "id": "c35"
+  },
+  {
+   "text": "随后发布了修复版本",
+   "start": 79.718,
+   "end": 81.233,
+   "id": "c36"
+  },
+  {
+   "text": "修复是在实现合约的构造函数里",
+   "start": 82.212,
+   "end": 84.775,
+   "id": "c37"
+  },
+  {
+   "text": "禁用初始化",
+   "start": 84.795,
+   "end": 85.87,
+   "id": "c38"
+  },
+  {
+   "text": "这样谁都不能再初始化它",
+   "start": 86.245,
+   "end": 88.582,
+   "id": "c39"
+  },
+  {
+   "text": "回到开头的 Nomad",
+   "start": 89.56,
+   "end": 91.313,
+   "id": "c40"
+  },
+  {
+   "text": "它的问题",
+   "start": 91.688,
+   "end": 92.609,
+   "id": "c41"
+  },
+  {
+   "text": "出在升级时的初始化参数",
+   "start": 92.629,
+   "end": 94.763,
+   "id": "c42"
+  },
+  {
+   "text": "合约用一张表",
+   "start": 95.756,
+   "end": 96.997,
+   "id": "c43"
+  },
+  {
+   "text": "记录每个根什么时候被确认",
+   "start": 97.125,
+   "end": 99.211,
+   "id": "c44"
+  },
+  {
+   "text": "升级把全零这个根",
+   "start": 99.575,
+   "end": 101.233,
+   "id": "c45"
+  },
+  {
+   "text": "标记成了已确认",
+   "start": 101.277,
+   "end": 102.542,
+   "id": "c46"
+  },
+  {
+   "text": "而没被证明过的消息",
+   "start": 103.536,
+   "end": 105.134,
+   "id": "c47"
+  },
+  {
+   "text": "查到的根",
+   "start": 105.238,
+   "end": 106.122,
+   "id": "c48"
+  },
+  {
+   "text": "默认也是全零",
+   "start": 106.202,
+   "end": 107.467,
+   "id": "c49"
+  },
+  {
+   "text": "默认值和合法值",
+   "start": 108.436,
+   "end": 109.915,
+   "id": "c50"
+  },
+  {
+   "text": "撞在了一起",
+   "start": 109.936,
+   "end": 110.891,
+   "id": "c51"
+  },
+  {
+   "text": "教训有三条",
+   "start": 111.872,
+   "end": 113.149,
+   "id": "c52"
+  },
+  {
+   "text": "初始化参数",
+   "start": 113.512,
+   "end": 114.683,
+   "id": "c53"
+  },
+  {
+   "text": "和代码一样需要审计",
+   "start": 114.703,
+   "end": 116.456,
+   "id": "c54"
+  },
+  {
+   "text": "零值不能带有业务含义",
+   "start": 117.444,
+   "end": 119.364,
+   "id": "c55"
+  },
+  {
+   "text": "默认值必须和合法值区分开",
+   "start": 119.503,
+   "end": 121.84,
+   "id": "c56"
+  },
+  {
+   "text": "升级以后要跑回归测试",
+   "start": 122.824,
+   "end": 125.089,
+   "id": "c57"
+  },
+  {
+   "text": "覆盖这一条",
+   "start": 125.252,
+   "end": 126.279,
+   "id": "c58"
+  },
+  {
+   "text": "未授权的消息必须被拒绝",
+   "start": 126.419,
+   "end": 128.672,
+   "id": "c59"
+  }
+ ]
+}

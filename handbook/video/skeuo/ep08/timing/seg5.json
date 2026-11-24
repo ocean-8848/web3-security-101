@@ -1,0 +1,2960 @@
+{
+ "id": "seg5",
+ "title": "安全读价",
+ "pill": 5,
+ "total": 171.43,
+ "lines": [
+  {
+   "id": "seg5-00",
+   "text": "选了链下预言机，读取时还要做四项检查。",
+   "spoken": "选了链下预言机，读取时还要做四项检查。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-00.mp3",
+   "start": 1.6,
+   "dur": 4.392,
+   "speechStart": 1.698,
+   "speechEnd": 5.138
+  },
+  {
+   "id": "seg5-01",
+   "text": "一，价格大于 0。",
+   "spoken": "一，价格大于 0。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-01.mp3",
+   "start": 6.212,
+   "dur": 2.856,
+   "speechStart": 6.31,
+   "speechEnd": 8.238
+  },
+  {
+   "id": "seg5-02",
+   "text": "二，时效：现在的时间减去更新时间，不超过这个喂价的心跳。",
+   "spoken": "二，时效：现在的时间减去更新时间，不超过这个喂价的心跳。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-02.mp3",
+   "start": 9.288,
+   "dur": 6.168,
+   "speechStart": 9.386,
+   "speechEnd": 14.624
+  },
+  {
+   "id": "seg5-03",
+   "text": "三，上下限：价格落在合理的区间里。",
+   "spoken": "三，上下限：价格落在合理的区间里。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-03.mp3",
+   "start": 15.676,
+   "dur": 4.392,
+   "speechStart": 15.774,
+   "speechEnd": 19.238
+  },
+  {
+   "id": "seg5-04",
+   "text": "四，精度：从喂价读取小数位数，不要写死 8。",
+   "spoken": "四，精度：从喂价读取小数位数，不要写死 8。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-04.mp3",
+   "start": 20.288,
+   "dur": 5.04,
+   "speechStart": 20.386,
+   "speechEnd": 24.493
+  },
+  {
+   "id": "seg5-05",
+   "text": "为什么要查上下限？看一个案例。",
+   "spoken": "为什么要查上下限？看一个案例。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-05.mp3",
+   "start": 25.548,
+   "dur": 3.504,
+   "speechStart": 25.646,
+   "speechEnd": 28.215
+  },
+  {
+   "id": "seg5-06",
+   "text": "2022 年 5 月，LUNA 崩盘。",
+   "spoken": "2022 年 5 月，LUNA 崩盘。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-06.mp3",
+   "start": 29.272,
+   "dur": 3.144,
+   "speechStart": 29.37,
+   "speechEnd": 31.584
+  },
+  {
+   "id": "seg5-07",
+   "text": "公开报道称，Chainlink 的 LUNA 喂价，设了一个最低价：0.10 美元。",
+   "spoken": "公开报道称，Chainlink 的 LUNA 喂价，设了一个最低价：0.10 美元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-07.mp3",
+   "start": 32.636,
+   "dur": 6.24,
+   "speechStart": 32.734,
+   "speechEnd": 38.031
+  },
+  {
+   "id": "seg5-08",
+   "text": "市场价跌到远低于 0.10 美元，喂价停在下限附近。",
+   "spoken": "市场价跌到远低于 0.10 美元，喂价停在下限附近。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-08.mp3",
+   "start": 39.096,
+   "dur": 5.64,
+   "speechStart": 39.194,
+   "speechEnd": 43.896
+  },
+  {
+   "id": "seg5-09",
+   "text": "假设市场价是 0.01 美元。这是示例。",
+   "spoken": "假设市场价是 0.01 美元。这是示例。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-09.mp3",
+   "start": 44.956,
+   "dur": 4.464,
+   "speechStart": 45.054,
+   "speechEnd": 48.575
+  },
+  {
+   "id": "seg5-10",
+   "text": "喂价仍然返回约 0.10 美元。抵押品被高估约 10 倍。",
+   "spoken": "喂价仍然返回约 0.10 美元。抵押品被高估约 10 倍。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-10.mp3",
+   "start": 49.64,
+   "dur": 5.712,
+   "speechStart": 49.738,
+   "speechEnd": 54.521
+  },
+  {
+   "id": "seg5-11",
+   "text": "价格是正的，时间戳也可能是新的。前两项检查，全部通过。",
+   "spoken": "价格是正的，时间戳也可能是新的。前两项检查，全部通过。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-11.mp3",
+   "start": 55.572,
+   "dur": 6.312,
+   "speechStart": 55.67,
+   "speechEnd": 61.036
+  },
+  {
+   "id": "seg5-12",
+   "text": "BNB Chain 上的 Venus，仍按约 0.1 美元给 LUNA 抵押品估值。",
+   "spoken": "BNB Chain 上的 Venus，仍按约 0.1 美元给 LUNA 抵押品估值。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-12.mp3",
+   "start": 62.104,
+   "dur": 5.616,
+   "speechStart": 62.202,
+   "speechEnd": 66.868
+  },
+  {
+   "id": "seg5-13",
+   "text": "有人在市场上低价买入 LUNA，存进去，借出别的资产。",
+   "spoken": "有人在市场上低价买入 LUNA，存进去，借出别的资产。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-13.mp3",
+   "start": 67.94,
+   "dur": 5.448,
+   "speechStart": 68.038,
+   "speechEnd": 72.538
+  },
+  {
+   "id": "seg5-14",
+   "text": "按公开报道，协议损失约 1100 万美元。",
+   "spoken": "按公开报道，协议损失约 1100 万美元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-14.mp3",
+   "start": 73.608,
+   "dur": 4.392,
+   "speechStart": 73.706,
+   "speechEnd": 77.158
+  },
+  {
+   "id": "seg5-15",
+   "text": "还有四个读取陷阱。",
+   "spoken": "还有四个读取陷阱。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-15.mp3",
+   "start": 78.22,
+   "dur": 2.28,
+   "speechStart": 78.318,
+   "speechEnd": 79.651
+  },
+  {
+   "id": "seg5-16",
+   "text": "第一，不要用 latestAnswer 判断价格新不新鲜。",
+   "spoken": "第一，不要用 latestAnswer 判断价格新不新鲜。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-16.mp3",
+   "start": 80.72,
+   "dur": 4.512,
+   "speechStart": 80.818,
+   "speechEnd": 84.401
+  },
+  {
+   "id": "seg5-17",
+   "text": "Chainlink 的 API 文档写明，它不含时间戳。改用 latestRoundData。",
+   "spoken": "Chainlink 的 API 文档写明，它不含时间戳。改用 latestRoundData。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-17.mp3",
+   "start": 85.452,
+   "dur": 6.36,
+   "speechStart": 85.55,
+   "speechEnd": 90.976
+  },
+  {
+   "id": "seg5-18",
+   "text": "第二，每个喂价的心跳不同。不要给所有资产，用同一个延迟上限。",
+   "spoken": "第二，每个喂价的心跳不同。不要给所有资产，用同一个延迟上限。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-18.mp3",
+   "start": 92.032,
+   "dur": 6.624,
+   "speechStart": 92.13,
+   "speechEnd": 97.806
+  },
+  {
+   "id": "seg5-19",
+   "text": "第三，喂价失效时，要有降级路径。",
+   "spoken": "第三，喂价失效时，要有降级路径。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-19.mp3",
+   "start": 98.876,
+   "dur": 4.344,
+   "speechStart": 98.974,
+   "speechEnd": 102.378
+  },
+  {
+   "id": "seg5-20",
+   "text": "用 try catch 包住读取，切到备用价格源，或者暂停。不要让清算全部回滚。",
+   "spoken": "用 try catch 包住读取，切到备用价格源，或者暂停。不要让清算全部回滚。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-20.mp3",
+   "start": 103.44,
+   "dur": 7.08,
+   "speechStart": 103.538,
+   "speechEnd": 109.678
+  },
+  {
+   "id": "seg5-21",
+   "text": "第四，拉取式预言机，由用户在交易里提交签名价格。",
+   "spoken": "第四，拉取式预言机，由用户在交易里提交签名价格。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-21.mp3",
+   "start": 110.74,
+   "dur": 5.64,
+   "speechStart": 110.838,
+   "speechEnd": 115.528
+  },
+  {
+   "id": "seg5-22",
+   "text": "提交者可以挑一个对自己有利的更新。",
+   "spoken": "提交者可以挑一个对自己有利的更新。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-22.mp3",
+   "start": 116.6,
+   "dur": 3.432,
+   "speechStart": 116.698,
+   "speechEnd": 119.186
+  },
+  {
+   "id": "seg5-23",
+   "text": "按 Pyth 文档，合约要自己检查价格的时间戳和置信区间。",
+   "spoken": "按 Pyth 文档，合约要自己检查价格的时间戳和置信区间。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-23.mp3",
+   "start": 120.252,
+   "dur": 5.64,
+   "speechStart": 120.35,
+   "speechEnd": 125.052
+  },
+  {
+   "id": "seg5-24",
+   "text": "在 L2 上，要多查一项：排序器是否在线。",
+   "spoken": "在 L2 上，要多查一项：排序器是否在线。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-24.mp3",
+   "start": 126.112,
+   "dur": 4.584,
+   "speechStart": 126.21,
+   "speechEnd": 129.864
+  },
+  {
+   "id": "seg5-25",
+   "text": "排序器宕机时，喂价交易上不了链，价格停在宕机前。",
+   "spoken": "排序器宕机时，喂价交易上不了链，价格停在宕机前。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-25.mp3",
+   "start": 130.916,
+   "dur": 5.328,
+   "speechStart": 131.014,
+   "speechEnd": 135.406
+  },
+  {
+   "id": "seg5-26",
+   "text": "恢复后的第一批区块里，清算机器人和普通用户同时涌入。",
+   "spoken": "恢复后的第一批区块里，清算机器人和普通用户同时涌入。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-26.mp3",
+   "start": 136.464,
+   "dur": 5.472,
+   "speechStart": 136.562,
+   "speechEnd": 141.097
+  },
+  {
+   "id": "seg5-27",
+   "text": "能通过 L1 强制提交交易的少数人，占了先机。",
+   "spoken": "能通过 L1 强制提交交易的少数人，占了先机。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-27.mp3",
+   "start": 142.156,
+   "dur": 4.704,
+   "speechStart": 142.254,
+   "speechEnd": 146.027
+  },
+  {
+   "id": "seg5-28",
+   "text": "按 L2BEAT 截至 2026 年 11 月的页面，Mantle 排序器宕机时，从 L1 强制提交，最长要等 12 小时。",
+   "spoken": "按 L2BEAT 截至 2026 年 11 月的页面，Mantle 排序器宕机时，从 L1 强制提交，最常要等 12 小时。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-28.mp3",
+   "start": 147.08,
+   "dur": 9.024,
+   "speechStart": 147.178,
+   "speechEnd": 155.261
+  },
+  {
+   "id": "seg5-29",
+   "text": "做法是读取 Chainlink 提供的排序器在线状态喂价。",
+   "spoken": "做法是读取 Chainlink 提供的排序器在线状态喂价。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-29.mp3",
+   "start": 156.324,
+   "dur": 5.352,
+   "speechStart": 156.422,
+   "speechEnd": 160.838
+  },
+  {
+   "id": "seg5-30",
+   "text": "恢复后设一段宽限期，比如 1 小时，这是示例。",
+   "spoken": "恢复后设一段宽限期，比如 1 小时，这是示例。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-30.mp3",
+   "start": 161.896,
+   "dur": 4.488,
+   "speechStart": 161.994,
+   "speechEnd": 165.541
+  },
+  {
+   "id": "seg5-31",
+   "text": "宽限期内，暂停清算和新借款。",
+   "spoken": "宽限期内，暂停清算和新借款。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep08/audio/lines/seg5-31.mp3",
+   "start": 166.604,
+   "dur": 3.624,
+   "speechStart": 166.702,
+   "speechEnd": 169.392
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "选",
+   "start": 1.698,
+   "end": 1.936
+  },
+  {
+   "line": 0,
+   "text": "了",
+   "start": 1.936,
+   "end": 2.019
+  },
+  {
+   "line": 0,
+   "text": "链",
+   "start": 2.031,
+   "end": 2.186
+  },
+  {
+   "line": 0,
+   "text": "下",
+   "start": 2.186,
+   "end": 2.305
+  },
+  {
+   "line": 0,
+   "text": "预言机",
+   "start": 2.317,
+   "end": 2.852
+  },
+  {
+   "line": 0,
+   "text": "读取",
+   "start": 3.09,
+   "end": 3.412
+  },
+  {
+   "line": 0,
+   "text": "时",
+   "start": 3.412,
+   "end": 3.757
+  },
+  {
+   "line": 0,
+   "text": "还要",
+   "start": 3.864,
+   "end": 4.138
+  },
+  {
+   "line": 0,
+   "text": "做",
+   "start": 4.138,
+   "end": 4.269
+  },
+  {
+   "line": 0,
+   "text": "四",
+   "start": 4.293,
+   "end": 4.495
+  },
+  {
+   "line": 0,
+   "text": "项",
+   "start": 4.495,
+   "end": 4.638
+  },
+  {
+   "line": 0,
+   "text": "检查",
+   "start": 4.65,
+   "end": 5.138
+  },
+  {
+   "line": 1,
+   "text": "一",
+   "start": 6.31,
+   "end": 6.667
+  },
+  {
+   "line": 1,
+   "text": "价格",
+   "start": 7.083,
+   "end": 7.571
+  },
+  {
+   "line": 1,
+   "text": "大于 0",
+   "start": 7.595,
+   "end": 8.238
+  },
+  {
+   "line": 2,
+   "text": "二",
+   "start": 9.386,
+   "end": 9.707
+  },
+  {
+   "line": 2,
+   "text": "时效",
+   "start": 10.028,
+   "end": 10.612
+  },
+  {
+   "line": 2,
+   "text": "现在",
+   "start": 11.005,
+   "end": 11.409
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 11.409,
+   "end": 11.469
+  },
+  {
+   "line": 2,
+   "text": "时间",
+   "start": 11.481,
+   "end": 11.945
+  },
+  {
+   "line": 2,
+   "text": "减去",
+   "start": 11.969,
+   "end": 12.267
+  },
+  {
+   "line": 2,
+   "text": "更新",
+   "start": 12.29,
+   "end": 12.552
+  },
+  {
+   "line": 2,
+   "text": "时间",
+   "start": 12.564,
+   "end": 13.005
+  },
+  {
+   "line": 2,
+   "text": "不",
+   "start": 13.219,
+   "end": 13.398
+  },
+  {
+   "line": 2,
+   "text": "超过",
+   "start": 13.398,
+   "end": 13.683
+  },
+  {
+   "line": 2,
+   "text": "这个",
+   "start": 13.695,
+   "end": 13.862
+  },
+  {
+   "line": 2,
+   "text": "喂",
+   "start": 13.886,
+   "end": 14.005
+  },
+  {
+   "line": 2,
+   "text": "价",
+   "start": 14.005,
+   "end": 14.124
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 14.124,
+   "end": 14.195
+  },
+  {
+   "line": 2,
+   "text": "心跳",
+   "start": 14.207,
+   "end": 14.624
+  },
+  {
+   "line": 3,
+   "text": "三",
+   "start": 15.774,
+   "end": 16.19
+  },
+  {
+   "line": 3,
+   "text": "上",
+   "start": 16.571,
+   "end": 16.797
+  },
+  {
+   "line": 3,
+   "text": "下限",
+   "start": 16.809,
+   "end": 17.262
+  },
+  {
+   "line": 3,
+   "text": "价格",
+   "start": 17.643,
+   "end": 18.071
+  },
+  {
+   "line": 3,
+   "text": "落",
+   "start": 18.083,
+   "end": 18.202
+  },
+  {
+   "line": 3,
+   "text": "在",
+   "start": 18.202,
+   "end": 18.309
+  },
+  {
+   "line": 3,
+   "text": "合理",
+   "start": 18.333,
+   "end": 18.631
+  },
+  {
+   "line": 3,
+   "text": "的",
+   "start": 18.631,
+   "end": 18.702
+  },
+  {
+   "line": 3,
+   "text": "区间",
+   "start": 18.714,
+   "end": 19.047
+  },
+  {
+   "line": 3,
+   "text": "里",
+   "start": 19.047,
+   "end": 19.238
+  },
+  {
+   "line": 4,
+   "text": "四",
+   "start": 20.386,
+   "end": 20.779
+  },
+  {
+   "line": 4,
+   "text": "精度",
+   "start": 21.136,
+   "end": 21.636
+  },
+  {
+   "line": 4,
+   "text": "从",
+   "start": 21.826,
+   "end": 22.028
+  },
+  {
+   "line": 4,
+   "text": "喂",
+   "start": 22.04,
+   "end": 22.231
+  },
+  {
+   "line": 4,
+   "text": "价",
+   "start": 22.231,
+   "end": 22.374
+  },
+  {
+   "line": 4,
+   "text": "读取",
+   "start": 22.386,
+   "end": 22.719
+  },
+  {
+   "line": 4,
+   "text": "小数",
+   "start": 22.743,
+   "end": 23.052
+  },
+  {
+   "line": 4,
+   "text": "位",
+   "start": 23.064,
+   "end": 23.243
+  },
+  {
+   "line": 4,
+   "text": "数",
+   "start": 23.243,
+   "end": 23.469
+  },
+  {
+   "line": 4,
+   "text": "不要",
+   "start": 23.683,
+   "end": 23.933
+  },
+  {
+   "line": 4,
+   "text": "写死",
+   "start": 23.945,
+   "end": 24.231
+  },
+  {
+   "line": 4,
+   "text": "8",
+   "start": 24.231,
+   "end": 24.493
+  },
+  {
+   "line": 5,
+   "text": "为什么",
+   "start": 25.646,
+   "end": 25.991
+  },
+  {
+   "line": 5,
+   "text": "要",
+   "start": 26.003,
+   "end": 26.074
+  },
+  {
+   "line": 5,
+   "text": "查上",
+   "start": 26.074,
+   "end": 26.336
+  },
+  {
+   "line": 5,
+   "text": "下限",
+   "start": 26.348,
+   "end": 26.824
+  },
+  {
+   "line": 5,
+   "text": "看",
+   "start": 27.369,
+   "end": 27.643
+  },
+  {
+   "line": 5,
+   "text": "一个",
+   "start": 27.643,
+   "end": 27.786
+  },
+  {
+   "line": 5,
+   "text": "案例",
+   "start": 27.798,
+   "end": 28.215
+  },
+  {
+   "line": 6,
+   "text": "2022",
+   "start": 29.37,
+   "end": 29.858
+  },
+  {
+   "line": 6,
+   "text": "年",
+   "start": 29.858,
+   "end": 30.048
+  },
+  {
+   "line": 6,
+   "text": "5 月",
+   "start": 30.06,
+   "end": 30.465
+  },
+  {
+   "line": 6,
+   "text": "LUNA",
+   "start": 30.715,
+   "end": 31.096
+  },
+  {
+   "line": 6,
+   "text": "崩盘",
+   "start": 31.108,
+   "end": 31.584
+  },
+  {
+   "line": 7,
+   "text": "公开",
+   "start": 32.734,
+   "end": 33.031
+  },
+  {
+   "line": 7,
+   "text": "报道",
+   "start": 33.043,
+   "end": 33.257
+  },
+  {
+   "line": 7,
+   "text": "称",
+   "start": 33.257,
+   "end": 33.591
+  },
+  {
+   "line": 7,
+   "text": "Chainlink",
+   "start": 33.888,
+   "end": 34.436
+  },
+  {
+   "line": 7,
+   "text": "的",
+   "start": 34.436,
+   "end": 34.674
+  },
+  {
+   "line": 7,
+   "text": "LUNA",
+   "start": 34.781,
+   "end": 35.15
+  },
+  {
+   "line": 7,
+   "text": "喂",
+   "start": 35.162,
+   "end": 35.341
+  },
+  {
+   "line": 7,
+   "text": "价",
+   "start": 35.341,
+   "end": 35.567
+  },
+  {
+   "line": 7,
+   "text": "设",
+   "start": 35.722,
+   "end": 35.972
+  },
+  {
+   "line": 7,
+   "text": "了",
+   "start": 35.972,
+   "end": 36.043
+  },
+  {
+   "line": 7,
+   "text": "一个",
+   "start": 36.055,
+   "end": 36.245
+  },
+  {
+   "line": 7,
+   "text": "最低价",
+   "start": 36.269,
+   "end": 36.805
+  },
+  {
+   "line": 7,
+   "text": "0.10 美元",
+   "start": 36.996,
+   "end": 38.031
+  },
+  {
+   "line": 8,
+   "text": "市场价",
+   "start": 39.194,
+   "end": 39.896
+  },
+  {
+   "line": 8,
+   "text": "跌",
+   "start": 39.92,
+   "end": 40.063
+  },
+  {
+   "line": 8,
+   "text": "到",
+   "start": 40.063,
+   "end": 40.229
+  },
+  {
+   "line": 8,
+   "text": "远",
+   "start": 40.253,
+   "end": 40.479
+  },
+  {
+   "line": 8,
+   "text": "低于",
+   "start": 40.479,
+   "end": 40.836
+  },
+  {
+   "line": 8,
+   "text": "0.10 美元",
+   "start": 40.86,
+   "end": 41.86
+  },
+  {
+   "line": 8,
+   "text": "喂",
+   "start": 42.229,
+   "end": 42.467
+  },
+  {
+   "line": 8,
+   "text": "价",
+   "start": 42.467,
+   "end": 42.765
+  },
+  {
+   "line": 8,
+   "text": "停",
+   "start": 42.86,
+   "end": 43.051
+  },
+  {
+   "line": 8,
+   "text": "在",
+   "start": 43.051,
+   "end": 43.182
+  },
+  {
+   "line": 8,
+   "text": "下限",
+   "start": 43.206,
+   "end": 43.551
+  },
+  {
+   "line": 8,
+   "text": "附近",
+   "start": 43.563,
+   "end": 43.896
+  },
+  {
+   "line": 9,
+   "text": "假设",
+   "start": 45.054,
+   "end": 45.542
+  },
+  {
+   "line": 9,
+   "text": "市场价",
+   "start": 45.566,
+   "end": 46.006
+  },
+  {
+   "line": 9,
+   "text": "是",
+   "start": 46.018,
+   "end": 46.232
+  },
+  {
+   "line": 9,
+   "text": "0.01 美元",
+   "start": 46.244,
+   "end": 47.256
+  },
+  {
+   "line": 9,
+   "text": "这",
+   "start": 47.801,
+   "end": 47.992
+  },
+  {
+   "line": 9,
+   "text": "是",
+   "start": 47.992,
+   "end": 48.075
+  },
+  {
+   "line": 9,
+   "text": "示例",
+   "start": 48.087,
+   "end": 48.575
+  },
+  {
+   "line": 10,
+   "text": "喂",
+   "start": 49.738,
+   "end": 50.035
+  },
+  {
+   "line": 10,
+   "text": "价",
+   "start": 50.035,
+   "end": 50.238
+  },
+  {
+   "line": 10,
+   "text": "仍然",
+   "start": 50.261,
+   "end": 50.499
+  },
+  {
+   "line": 10,
+   "text": "返回",
+   "start": 50.511,
+   "end": 50.857
+  },
+  {
+   "line": 10,
+   "text": "约",
+   "start": 50.88,
+   "end": 51.059
+  },
+  {
+   "line": 10,
+   "text": "0.10 美元",
+   "start": 51.071,
+   "end": 52.178
+  },
+  {
+   "line": 10,
+   "text": "抵押品",
+   "start": 52.723,
+   "end": 53.39
+  },
+  {
+   "line": 10,
+   "text": "被",
+   "start": 53.414,
+   "end": 53.545
+  },
+  {
+   "line": 10,
+   "text": "高估",
+   "start": 53.557,
+   "end": 53.819
+  },
+  {
+   "line": 10,
+   "text": "约",
+   "start": 53.819,
+   "end": 53.902
+  },
+  {
+   "line": 10,
+   "text": "10 倍",
+   "start": 53.914,
+   "end": 54.521
+  },
+  {
+   "line": 11,
+   "text": "价格",
+   "start": 55.67,
+   "end": 56.003
+  },
+  {
+   "line": 11,
+   "text": "是",
+   "start": 56.027,
+   "end": 56.122
+  },
+  {
+   "line": 11,
+   "text": "正",
+   "start": 56.122,
+   "end": 56.324
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 56.324,
+   "end": 56.598
+  },
+  {
+   "line": 11,
+   "text": "时间",
+   "start": 56.872,
+   "end": 57.265
+  },
+  {
+   "line": 11,
+   "text": "戳",
+   "start": 57.277,
+   "end": 57.622
+  },
+  {
+   "line": 11,
+   "text": "也",
+   "start": 57.646,
+   "end": 57.765
+  },
+  {
+   "line": 11,
+   "text": "可能",
+   "start": 57.765,
+   "end": 57.943
+  },
+  {
+   "line": 11,
+   "text": "是",
+   "start": 57.943,
+   "end": 58.015
+  },
+  {
+   "line": 11,
+   "text": "新",
+   "start": 58.027,
+   "end": 58.241
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 58.241,
+   "end": 58.384
+  },
+  {
+   "line": 11,
+   "text": "前",
+   "start": 58.917,
+   "end": 59.167
+  },
+  {
+   "line": 11,
+   "text": "两项",
+   "start": 59.167,
+   "end": 59.477
+  },
+  {
+   "line": 11,
+   "text": "检查",
+   "start": 59.489,
+   "end": 60.012
+  },
+  {
+   "line": 11,
+   "text": "全部",
+   "start": 60.203,
+   "end": 60.632
+  },
+  {
+   "line": 11,
+   "text": "通过",
+   "start": 60.643,
+   "end": 61.036
+  },
+  {
+   "line": 12,
+   "text": "BNB",
+   "start": 62.202,
+   "end": 62.559
+  },
+  {
+   "line": 12,
+   "text": "Chain",
+   "start": 62.571,
+   "end": 62.892
+  },
+  {
+   "line": 12,
+   "text": "上",
+   "start": 62.892,
+   "end": 63.071
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 63.071,
+   "end": 63.225
+  },
+  {
+   "line": 12,
+   "text": "Venus",
+   "start": 63.249,
+   "end": 63.785
+  },
+  {
+   "line": 12,
+   "text": "仍",
+   "start": 64.047,
+   "end": 64.225
+  },
+  {
+   "line": 12,
+   "text": "按约",
+   "start": 64.225,
+   "end": 64.547
+  },
+  {
+   "line": 12,
+   "text": "0.1 美元",
+   "start": 64.559,
+   "end": 65.249
+  },
+  {
+   "line": 12,
+   "text": "给",
+   "start": 65.261,
+   "end": 65.523
+  },
+  {
+   "line": 12,
+   "text": "LUNA",
+   "start": 65.618,
+   "end": 66.023
+  },
+  {
+   "line": 12,
+   "text": "抵押品",
+   "start": 66.035,
+   "end": 66.404
+  },
+  {
+   "line": 12,
+   "text": "估值",
+   "start": 66.416,
+   "end": 66.868
+  },
+  {
+   "line": 13,
+   "text": "有人",
+   "start": 68.038,
+   "end": 68.335
+  },
+  {
+   "line": 13,
+   "text": "在",
+   "start": 68.347,
+   "end": 68.454
+  },
+  {
+   "line": 13,
+   "text": "市场",
+   "start": 68.466,
+   "end": 68.8
+  },
+  {
+   "line": 13,
+   "text": "上",
+   "start": 68.8,
+   "end": 69.05
+  },
+  {
+   "line": 13,
+   "text": "低价",
+   "start": 69.073,
+   "end": 69.383
+  },
+  {
+   "line": 13,
+   "text": "买入",
+   "start": 69.383,
+   "end": 69.811
+  },
+  {
+   "line": 13,
+   "text": "LUNA",
+   "start": 69.907,
+   "end": 70.347
+  },
+  {
+   "line": 13,
+   "text": "存",
+   "start": 70.633,
+   "end": 70.907
+  },
+  {
+   "line": 13,
+   "text": "进去",
+   "start": 70.907,
+   "end": 71.359
+  },
+  {
+   "line": 13,
+   "text": "借",
+   "start": 71.526,
+   "end": 71.692
+  },
+  {
+   "line": 13,
+   "text": "出",
+   "start": 71.692,
+   "end": 71.883
+  },
+  {
+   "line": 13,
+   "text": "别的",
+   "start": 71.907,
+   "end": 72.145
+  },
+  {
+   "line": 13,
+   "text": "资产",
+   "start": 72.157,
+   "end": 72.538
+  },
+  {
+   "line": 14,
+   "text": "按",
+   "start": 73.706,
+   "end": 73.92
+  },
+  {
+   "line": 14,
+   "text": "公开",
+   "start": 73.944,
+   "end": 74.229
+  },
+  {
+   "line": 14,
+   "text": "报道",
+   "start": 74.241,
+   "end": 74.646
+  },
+  {
+   "line": 14,
+   "text": "协议",
+   "start": 74.956,
+   "end": 75.277
+  },
+  {
+   "line": 14,
+   "text": "损失",
+   "start": 75.289,
+   "end": 75.777
+  },
+  {
+   "line": 14,
+   "text": "约",
+   "start": 75.801,
+   "end": 76.015
+  },
+  {
+   "line": 14,
+   "text": "1100 万",
+   "start": 76.027,
+   "end": 76.741
+  },
+  {
+   "line": 14,
+   "text": "美元",
+   "start": 76.753,
+   "end": 77.158
+  },
+  {
+   "line": 15,
+   "text": "还有",
+   "start": 78.318,
+   "end": 78.627
+  },
+  {
+   "line": 15,
+   "text": "四",
+   "start": 78.639,
+   "end": 78.841
+  },
+  {
+   "line": 15,
+   "text": "个",
+   "start": 78.841,
+   "end": 78.913
+  },
+  {
+   "line": 15,
+   "text": "读取",
+   "start": 78.937,
+   "end": 79.187
+  },
+  {
+   "line": 15,
+   "text": "陷阱",
+   "start": 79.199,
+   "end": 79.651
+  },
+  {
+   "line": 16,
+   "text": "第一",
+   "start": 80.818,
+   "end": 81.175
+  },
+  {
+   "line": 16,
+   "text": "不要",
+   "start": 81.568,
+   "end": 81.758
+  },
+  {
+   "line": 16,
+   "text": "用",
+   "start": 81.77,
+   "end": 81.972
+  },
+  {
+   "line": 16,
+   "text": "latestAnswer",
+   "start": 81.984,
+   "end": 82.818
+  },
+  {
+   "line": 16,
+   "text": "判断",
+   "start": 82.925,
+   "end": 83.234
+  },
+  {
+   "line": 16,
+   "text": "价格",
+   "start": 83.246,
+   "end": 83.627
+  },
+  {
+   "line": 16,
+   "text": "新",
+   "start": 83.651,
+   "end": 83.901
+  },
+  {
+   "line": 16,
+   "text": "不",
+   "start": 83.901,
+   "end": 83.984
+  },
+  {
+   "line": 16,
+   "text": "新鲜",
+   "start": 83.984,
+   "end": 84.401
+  },
+  {
+   "line": 17,
+   "text": "Chainlink",
+   "start": 85.55,
+   "end": 86.085
+  },
+  {
+   "line": 17,
+   "text": "的",
+   "start": 86.085,
+   "end": 86.3
+  },
+  {
+   "line": 17,
+   "text": "API",
+   "start": 86.407,
+   "end": 86.907
+  },
+  {
+   "line": 17,
+   "text": "文档",
+   "start": 86.919,
+   "end": 87.204
+  },
+  {
+   "line": 17,
+   "text": "写明",
+   "start": 87.216,
+   "end": 87.681
+  },
+  {
+   "line": 17,
+   "text": "它",
+   "start": 87.859,
+   "end": 88.026
+  },
+  {
+   "line": 17,
+   "text": "不",
+   "start": 88.038,
+   "end": 88.157
+  },
+  {
+   "line": 17,
+   "text": "含",
+   "start": 88.157,
+   "end": 88.3
+  },
+  {
+   "line": 17,
+   "text": "时间",
+   "start": 88.312,
+   "end": 88.585
+  },
+  {
+   "line": 17,
+   "text": "戳",
+   "start": 88.597,
+   "end": 88.859
+  },
+  {
+   "line": 17,
+   "text": "改用",
+   "start": 89.404,
+   "end": 89.821
+  },
+  {
+   "line": 17,
+   "text": "latestRoundData",
+   "start": 89.833,
+   "end": 90.976
+  },
+  {
+   "line": 18,
+   "text": "第二",
+   "start": 92.13,
+   "end": 92.534
+  },
+  {
+   "line": 18,
+   "text": "每个",
+   "start": 92.892,
+   "end": 93.189
+  },
+  {
+   "line": 18,
+   "text": "喂价",
+   "start": 93.201,
+   "end": 93.487
+  },
+  {
+   "line": 18,
+   "text": "的",
+   "start": 93.487,
+   "end": 93.606
+  },
+  {
+   "line": 18,
+   "text": "心跳",
+   "start": 93.63,
+   "end": 93.975
+  },
+  {
+   "line": 18,
+   "text": "不同",
+   "start": 93.987,
+   "end": 94.439
+  },
+  {
+   "line": 18,
+   "text": "不要",
+   "start": 94.984,
+   "end": 95.258
+  },
+  {
+   "line": 18,
+   "text": "给",
+   "start": 95.258,
+   "end": 95.389
+  },
+  {
+   "line": 18,
+   "text": "所有",
+   "start": 95.413,
+   "end": 95.734
+  },
+  {
+   "line": 18,
+   "text": "资产",
+   "start": 95.746,
+   "end": 96.199
+  },
+  {
+   "line": 18,
+   "text": "用",
+   "start": 96.484,
+   "end": 96.687
+  },
+  {
+   "line": 18,
+   "text": "同",
+   "start": 96.699,
+   "end": 96.949
+  },
+  {
+   "line": 18,
+   "text": "一个",
+   "start": 96.949,
+   "end": 97.08
+  },
+  {
+   "line": 18,
+   "text": "延迟",
+   "start": 97.103,
+   "end": 97.389
+  },
+  {
+   "line": 18,
+   "text": "上限",
+   "start": 97.401,
+   "end": 97.806
+  },
+  {
+   "line": 19,
+   "text": "第三",
+   "start": 98.974,
+   "end": 99.474
+  },
+  {
+   "line": 19,
+   "text": "喂",
+   "start": 99.914,
+   "end": 100.128
+  },
+  {
+   "line": 19,
+   "text": "价",
+   "start": 100.128,
+   "end": 100.283
+  },
+  {
+   "line": 19,
+   "text": "失效",
+   "start": 100.295,
+   "end": 100.688
+  },
+  {
+   "line": 19,
+   "text": "时",
+   "start": 100.688,
+   "end": 101.057
+  },
+  {
+   "line": 19,
+   "text": "要",
+   "start": 101.271,
+   "end": 101.426
+  },
+  {
+   "line": 19,
+   "text": "有",
+   "start": 101.426,
+   "end": 101.581
+  },
+  {
+   "line": 19,
+   "text": "降级",
+   "start": 101.605,
+   "end": 102.009
+  },
+  {
+   "line": 19,
+   "text": "路径",
+   "start": 102.021,
+   "end": 102.378
+  },
+  {
+   "line": 20,
+   "text": "用",
+   "start": 103.538,
+   "end": 103.847
+  },
+  {
+   "line": 20,
+   "text": "try",
+   "start": 103.847,
+   "end": 104.061
+  },
+  {
+   "line": 20,
+   "text": "catch",
+   "start": 104.073,
+   "end": 104.49
+  },
+  {
+   "line": 20,
+   "text": "包",
+   "start": 104.49,
+   "end": 104.68
+  },
+  {
+   "line": 20,
+   "text": "住",
+   "start": 104.68,
+   "end": 104.788
+  },
+  {
+   "line": 20,
+   "text": "读取",
+   "start": 104.8,
+   "end": 105.264
+  },
+  {
+   "line": 20,
+   "text": "切到",
+   "start": 105.478,
+   "end": 105.847
+  },
+  {
+   "line": 20,
+   "text": "备用",
+   "start": 105.871,
+   "end": 106.109
+  },
+  {
+   "line": 20,
+   "text": "价格",
+   "start": 106.121,
+   "end": 106.371
+  },
+  {
+   "line": 20,
+   "text": "源",
+   "start": 106.371,
+   "end": 106.669
+  },
+  {
+   "line": 20,
+   "text": "或者",
+   "start": 106.823,
+   "end": 107.061
+  },
+  {
+   "line": 20,
+   "text": "暂停",
+   "start": 107.073,
+   "end": 107.609
+  },
+  {
+   "line": 20,
+   "text": "不要",
+   "start": 108.154,
+   "end": 108.357
+  },
+  {
+   "line": 20,
+   "text": "让",
+   "start": 108.369,
+   "end": 108.488
+  },
+  {
+   "line": 20,
+   "text": "清算",
+   "start": 108.5,
+   "end": 108.869
+  },
+  {
+   "line": 20,
+   "text": "全部",
+   "start": 108.892,
+   "end": 109.238
+  },
+  {
+   "line": 20,
+   "text": "回滚",
+   "start": 109.25,
+   "end": 109.678
+  },
+  {
+   "line": 21,
+   "text": "第",
+   "start": 110.838,
+   "end": 110.992
+  },
+  {
+   "line": 21,
+   "text": "四",
+   "start": 110.992,
+   "end": 111.302
+  },
+  {
+   "line": 21,
+   "text": "拉取",
+   "start": 111.683,
+   "end": 112.076
+  },
+  {
+   "line": 21,
+   "text": "式",
+   "start": 112.076,
+   "end": 112.207
+  },
+  {
+   "line": 21,
+   "text": "预言机",
+   "start": 112.219,
+   "end": 112.719
+  },
+  {
+   "line": 21,
+   "text": "由",
+   "start": 113.064,
+   "end": 113.207
+  },
+  {
+   "line": 21,
+   "text": "用户",
+   "start": 113.219,
+   "end": 113.552
+  },
+  {
+   "line": 21,
+   "text": "在",
+   "start": 113.576,
+   "end": 113.695
+  },
+  {
+   "line": 21,
+   "text": "交易",
+   "start": 113.707,
+   "end": 114.016
+  },
+  {
+   "line": 21,
+   "text": "里",
+   "start": 114.016,
+   "end": 114.242
+  },
+  {
+   "line": 21,
+   "text": "提交",
+   "start": 114.35,
+   "end": 114.695
+  },
+  {
+   "line": 21,
+   "text": "签名",
+   "start": 114.719,
+   "end": 115.076
+  },
+  {
+   "line": 21,
+   "text": "价格",
+   "start": 115.088,
+   "end": 115.528
+  },
+  {
+   "line": 22,
+   "text": "提交者",
+   "start": 116.698,
+   "end": 117.174
+  },
+  {
+   "line": 22,
+   "text": "可以",
+   "start": 117.198,
+   "end": 117.376
+  },
+  {
+   "line": 22,
+   "text": "挑",
+   "start": 117.388,
+   "end": 117.59
+  },
+  {
+   "line": 22,
+   "text": "一个",
+   "start": 117.59,
+   "end": 117.983
+  },
+  {
+   "line": 22,
+   "text": "对",
+   "start": 118.09,
+   "end": 118.233
+  },
+  {
+   "line": 22,
+   "text": "自己",
+   "start": 118.245,
+   "end": 118.46
+  },
+  {
+   "line": 22,
+   "text": "有利",
+   "start": 118.471,
+   "end": 118.733
+  },
+  {
+   "line": 22,
+   "text": "的",
+   "start": 118.733,
+   "end": 118.793
+  },
+  {
+   "line": 22,
+   "text": "更新",
+   "start": 118.805,
+   "end": 119.186
+  },
+  {
+   "line": 23,
+   "text": "按",
+   "start": 120.35,
+   "end": 120.576
+  },
+  {
+   "line": 23,
+   "text": "Pyth",
+   "start": 120.6,
+   "end": 121.254
+  },
+  {
+   "line": 23,
+   "text": "文档",
+   "start": 121.266,
+   "end": 121.683
+  },
+  {
+   "line": 23,
+   "text": "合约",
+   "start": 122.004,
+   "end": 122.338
+  },
+  {
+   "line": 23,
+   "text": "要",
+   "start": 122.35,
+   "end": 122.504
+  },
+  {
+   "line": 23,
+   "text": "自己",
+   "start": 122.504,
+   "end": 122.742
+  },
+  {
+   "line": 23,
+   "text": "检查",
+   "start": 122.754,
+   "end": 123.016
+  },
+  {
+   "line": 23,
+   "text": "价格",
+   "start": 123.04,
+   "end": 123.266
+  },
+  {
+   "line": 23,
+   "text": "的",
+   "start": 123.266,
+   "end": 123.338
+  },
+  {
+   "line": 23,
+   "text": "时间",
+   "start": 123.35,
+   "end": 123.79
+  },
+  {
+   "line": 23,
+   "text": "戳",
+   "start": 123.897,
+   "end": 124.183
+  },
+  {
+   "line": 23,
+   "text": "和",
+   "start": 124.183,
+   "end": 124.338
+  },
+  {
+   "line": 23,
+   "text": "置信区间",
+   "start": 124.35,
+   "end": 125.052
+  },
+  {
+   "line": 24,
+   "text": "在",
+   "start": 126.21,
+   "end": 126.448
+  },
+  {
+   "line": 24,
+   "text": "L",
+   "start": 126.46,
+   "end": 126.662
+  },
+  {
+   "line": 24,
+   "text": "2",
+   "start": 126.662,
+   "end": 126.817
+  },
+  {
+   "line": 24,
+   "text": "上",
+   "start": 126.817,
+   "end": 127.138
+  },
+  {
+   "line": 24,
+   "text": "要",
+   "start": 127.388,
+   "end": 127.591
+  },
+  {
+   "line": 24,
+   "text": "多",
+   "start": 127.602,
+   "end": 127.757
+  },
+  {
+   "line": 24,
+   "text": "查",
+   "start": 127.757,
+   "end": 127.912
+  },
+  {
+   "line": 24,
+   "text": "一",
+   "start": 127.924,
+   "end": 127.995
+  },
+  {
+   "line": 24,
+   "text": "项",
+   "start": 127.995,
+   "end": 128.245
+  },
+  {
+   "line": 24,
+   "text": "排序器",
+   "start": 128.507,
+   "end": 129.15
+  },
+  {
+   "line": 24,
+   "text": "是否",
+   "start": 129.174,
+   "end": 129.46
+  },
+  {
+   "line": 24,
+   "text": "在线",
+   "start": 129.472,
+   "end": 129.864
+  },
+  {
+   "line": 25,
+   "text": "排序",
+   "start": 131.014,
+   "end": 131.395
+  },
+  {
+   "line": 25,
+   "text": "器宕",
+   "start": 131.406,
+   "end": 131.728
+  },
+  {
+   "line": 25,
+   "text": "机",
+   "start": 131.728,
+   "end": 131.895
+  },
+  {
+   "line": 25,
+   "text": "时",
+   "start": 131.895,
+   "end": 132.264
+  },
+  {
+   "line": 25,
+   "text": "喂",
+   "start": 132.561,
+   "end": 132.787
+  },
+  {
+   "line": 25,
+   "text": "价",
+   "start": 132.787,
+   "end": 132.918
+  },
+  {
+   "line": 25,
+   "text": "交易",
+   "start": 132.93,
+   "end": 133.18
+  },
+  {
+   "line": 25,
+   "text": "上",
+   "start": 133.204,
+   "end": 133.406
+  },
+  {
+   "line": 25,
+   "text": "不了",
+   "start": 133.406,
+   "end": 133.621
+  },
+  {
+   "line": 25,
+   "text": "链",
+   "start": 133.621,
+   "end": 133.811
+  },
+  {
+   "line": 25,
+   "text": "价格",
+   "start": 134.156,
+   "end": 134.514
+  },
+  {
+   "line": 25,
+   "text": "停",
+   "start": 134.526,
+   "end": 134.68
+  },
+  {
+   "line": 25,
+   "text": "在",
+   "start": 134.68,
+   "end": 134.776
+  },
+  {
+   "line": 25,
+   "text": "宕机",
+   "start": 134.787,
+   "end": 135.121
+  },
+  {
+   "line": 25,
+   "text": "前",
+   "start": 135.121,
+   "end": 135.406
+  },
+  {
+   "line": 26,
+   "text": "恢复",
+   "start": 136.562,
+   "end": 136.907
+  },
+  {
+   "line": 26,
+   "text": "后",
+   "start": 136.907,
+   "end": 137.026
+  },
+  {
+   "line": 26,
+   "text": "的",
+   "start": 137.026,
+   "end": 137.145
+  },
+  {
+   "line": 26,
+   "text": "第一",
+   "start": 137.169,
+   "end": 137.359
+  },
+  {
+   "line": 26,
+   "text": "批",
+   "start": 137.359,
+   "end": 137.49
+  },
+  {
+   "line": 26,
+   "text": "区块",
+   "start": 137.502,
+   "end": 137.812
+  },
+  {
+   "line": 26,
+   "text": "里",
+   "start": 137.812,
+   "end": 138.05
+  },
+  {
+   "line": 26,
+   "text": "清算",
+   "start": 138.335,
+   "end": 138.752
+  },
+  {
+   "line": 26,
+   "text": "机器人",
+   "start": 138.764,
+   "end": 139.276
+  },
+  {
+   "line": 26,
+   "text": "和",
+   "start": 139.3,
+   "end": 139.466
+  },
+  {
+   "line": 26,
+   "text": "普通",
+   "start": 139.478,
+   "end": 139.788
+  },
+  {
+   "line": 26,
+   "text": "用户",
+   "start": 139.8,
+   "end": 140.204
+  },
+  {
+   "line": 26,
+   "text": "同时",
+   "start": 140.312,
+   "end": 140.716
+  },
+  {
+   "line": 26,
+   "text": "涌入",
+   "start": 140.728,
+   "end": 141.097
+  },
+  {
+   "line": 27,
+   "text": "能",
+   "start": 142.254,
+   "end": 142.42
+  },
+  {
+   "line": 27,
+   "text": "通过",
+   "start": 142.432,
+   "end": 142.873
+  },
+  {
+   "line": 27,
+   "text": "L",
+   "start": 142.98,
+   "end": 143.325
+  },
+  {
+   "line": 27,
+   "text": "1",
+   "start": 143.325,
+   "end": 143.527
+  },
+  {
+   "line": 27,
+   "text": "强制",
+   "start": 143.551,
+   "end": 143.968
+  },
+  {
+   "line": 27,
+   "text": "提交",
+   "start": 143.98,
+   "end": 144.254
+  },
+  {
+   "line": 27,
+   "text": "交易",
+   "start": 144.266,
+   "end": 144.504
+  },
+  {
+   "line": 27,
+   "text": "的",
+   "start": 144.504,
+   "end": 144.575
+  },
+  {
+   "line": 27,
+   "text": "少数",
+   "start": 144.587,
+   "end": 144.932
+  },
+  {
+   "line": 27,
+   "text": "人",
+   "start": 144.932,
+   "end": 145.194
+  },
+  {
+   "line": 27,
+   "text": "占",
+   "start": 145.349,
+   "end": 145.527
+  },
+  {
+   "line": 27,
+   "text": "了",
+   "start": 145.527,
+   "end": 145.599
+  },
+  {
+   "line": 27,
+   "text": "先机",
+   "start": 145.611,
+   "end": 146.027
+  },
+  {
+   "line": 28,
+   "text": "按",
+   "start": 147.178,
+   "end": 147.416
+  },
+  {
+   "line": 28,
+   "text": "L",
+   "start": 147.416,
+   "end": 147.63
+  },
+  {
+   "line": 28,
+   "text": "2",
+   "start": 147.642,
+   "end": 147.785
+  },
+  {
+   "line": 28,
+   "text": "BEAT",
+   "start": 147.785,
+   "end": 148.094
+  },
+  {
+   "line": 28,
+   "text": "截至",
+   "start": 148.106,
+   "end": 148.499
+  },
+  {
+   "line": 28,
+   "text": "2026",
+   "start": 148.523,
+   "end": 149.011
+  },
+  {
+   "line": 28,
+   "text": "年",
+   "start": 149.011,
+   "end": 149.213
+  },
+  {
+   "line": 28,
+   "text": "11 月",
+   "start": 149.237,
+   "end": 149.594
+  },
+  {
+   "line": 28,
+   "text": "的",
+   "start": 149.594,
+   "end": 149.666
+  },
+  {
+   "line": 28,
+   "text": "页面",
+   "start": 149.678,
+   "end": 150.094
+  },
+  {
+   "line": 28,
+   "text": "Mantle",
+   "start": 150.368,
+   "end": 150.809
+  },
+  {
+   "line": 28,
+   "text": "排序器",
+   "start": 150.832,
+   "end": 151.249
+  },
+  {
+   "line": 28,
+   "text": "宕机",
+   "start": 151.261,
+   "end": 151.523
+  },
+  {
+   "line": 28,
+   "text": "时",
+   "start": 151.523,
+   "end": 151.856
+  },
+  {
+   "line": 28,
+   "text": "从",
+   "start": 152.07,
+   "end": 152.38
+  },
+  {
+   "line": 28,
+   "text": "L",
+   "start": 152.404,
+   "end": 152.642
+  },
+  {
+   "line": 28,
+   "text": "1",
+   "start": 152.642,
+   "end": 152.809
+  },
+  {
+   "line": 28,
+   "text": "强制",
+   "start": 152.82,
+   "end": 153.201
+  },
+  {
+   "line": 28,
+   "text": "提交",
+   "start": 153.213,
+   "end": 153.618
+  },
+  {
+   "line": 28,
+   "text": "最",
+   "start": 153.785,
+   "end": 154.011
+  },
+  {
+   "line": 28,
+   "text": "长要",
+   "start": 154.011,
+   "end": 154.344
+  },
+  {
+   "line": 28,
+   "text": "等",
+   "start": 154.344,
+   "end": 154.511
+  },
+  {
+   "line": 28,
+   "text": "12 小时",
+   "start": 154.535,
+   "end": 155.261
+  },
+  {
+   "line": 29,
+   "text": "做法",
+   "start": 156.422,
+   "end": 157.053
+  },
+  {
+   "line": 29,
+   "text": "是",
+   "start": 157.148,
+   "end": 157.374
+  },
+  {
+   "line": 29,
+   "text": "读取",
+   "start": 157.386,
+   "end": 157.862
+  },
+  {
+   "line": 29,
+   "text": "Chainlink",
+   "start": 157.957,
+   "end": 158.576
+  },
+  {
+   "line": 29,
+   "text": "提供",
+   "start": 158.588,
+   "end": 158.862
+  },
+  {
+   "line": 29,
+   "text": "的",
+   "start": 158.862,
+   "end": 158.969
+  },
+  {
+   "line": 29,
+   "text": "排序器",
+   "start": 158.993,
+   "end": 159.612
+  },
+  {
+   "line": 29,
+   "text": "在线",
+   "start": 159.719,
+   "end": 160.148
+  },
+  {
+   "line": 29,
+   "text": "状态",
+   "start": 160.16,
+   "end": 160.398
+  },
+  {
+   "line": 29,
+   "text": "喂价",
+   "start": 160.41,
+   "end": 160.838
+  },
+  {
+   "line": 30,
+   "text": "恢复",
+   "start": 161.994,
+   "end": 162.339
+  },
+  {
+   "line": 30,
+   "text": "后",
+   "start": 162.339,
+   "end": 162.577
+  },
+  {
+   "line": 30,
+   "text": "设",
+   "start": 162.601,
+   "end": 162.72
+  },
+  {
+   "line": 30,
+   "text": "一段",
+   "start": 162.72,
+   "end": 162.922
+  },
+  {
+   "line": 30,
+   "text": "宽限期",
+   "start": 162.946,
+   "end": 163.601
+  },
+  {
+   "line": 30,
+   "text": "比如",
+   "start": 163.827,
+   "end": 164.053
+  },
+  {
+   "line": 30,
+   "text": "1 小时",
+   "start": 164.077,
+   "end": 164.708
+  },
+  {
+   "line": 30,
+   "text": "这",
+   "start": 164.886,
+   "end": 165.017
+  },
+  {
+   "line": 30,
+   "text": "是",
+   "start": 165.017,
+   "end": 165.113
+  },
+  {
+   "line": 30,
+   "text": "示例",
+   "start": 165.125,
+   "end": 165.541
+  },
+  {
+   "line": 31,
+   "text": "宽限",
+   "start": 166.702,
+   "end": 167.094
+  },
+  {
+   "line": 31,
+   "text": "期",
+   "start": 167.106,
+   "end": 167.285
+  },
+  {
+   "line": 31,
+   "text": "内",
+   "start": 167.285,
+   "end": 167.499
+  },
+  {
+   "line": 31,
+   "text": "暂停",
+   "start": 167.714,
+   "end": 168.094
+  },
+  {
+   "line": 31,
+   "text": "清算",
+   "start": 168.106,
+   "end": 168.571
+  },
+  {
+   "line": 31,
+   "text": "和",
+   "start": 168.594,
+   "end": 168.761
+  },
+  {
+   "line": 31,
+   "text": "新",
+   "start": 168.773,
+   "end": 168.987
+  },
+  {
+   "line": 31,
+   "text": "借款",
+   "start": 168.987,
+   "end": 169.392
+  }
+ ],
+ "captions": [
+  {
+   "text": "选了链下预言机",
+   "start": 1.648,
+   "end": 2.972,
+   "id": "c0"
+  },
+  {
+   "text": "读取时还要做四项检查",
+   "start": 3.04,
+   "end": 5.258,
+   "id": "c1"
+  },
+  {
+   "text": "一 价格大于 0",
+   "start": 6.26,
+   "end": 8.358,
+   "id": "c2"
+  },
+  {
+   "text": "二 时效 现在的时间减去更新时间",
+   "start": 9.336,
+   "end": 13.125,
+   "id": "c3"
+  },
+  {
+   "text": "不超过这个喂价的心跳",
+   "start": 13.169,
+   "end": 14.744,
+   "id": "c4"
+  },
+  {
+   "text": "三 上下限",
+   "start": 15.724,
+   "end": 17.382,
+   "id": "c5"
+  },
+  {
+   "text": "价格落在合理的区间里",
+   "start": 17.593,
+   "end": 19.358,
+   "id": "c6"
+  },
+  {
+   "text": "四 精度 从喂价读取小数位数",
+   "start": 20.336,
+   "end": 23.589,
+   "id": "c7"
+  },
+  {
+   "text": "不要写死 8",
+   "start": 23.633,
+   "end": 24.613,
+   "id": "c8"
+  },
+  {
+   "text": "为什么要查上下限",
+   "start": 25.596,
+   "end": 26.944,
+   "id": "c9"
+  },
+  {
+   "text": "看一个案例",
+   "start": 27.319,
+   "end": 28.335,
+   "id": "c10"
+  },
+  {
+   "text": "2022 年 5 月",
+   "start": 29.32,
+   "end": 30.585,
+   "id": "c11"
+  },
+  {
+   "text": "LUNA 崩盘",
+   "start": 30.665,
+   "end": 31.704,
+   "id": "c12"
+  },
+  {
+   "text": "公开报道称",
+   "start": 32.684,
+   "end": 33.711,
+   "id": "c13"
+  },
+  {
+   "text": "Chainlink 的 LUNA 喂价",
+   "start": 33.838,
+   "end": 35.652,
+   "id": "c14"
+  },
+  {
+   "text": "设了一个最低价",
+   "start": 35.672,
+   "end": 36.925,
+   "id": "c15"
+  },
+  {
+   "text": "0.10 美元",
+   "start": 36.946,
+   "end": 38.151,
+   "id": "c16"
+  },
+  {
+   "text": "市场价跌到远低于 0.10 美元",
+   "start": 39.144,
+   "end": 41.98,
+   "id": "c17"
+  },
+  {
+   "text": "喂价停在下限附近",
+   "start": 42.179,
+   "end": 44.016,
+   "id": "c18"
+  },
+  {
+   "text": "假设市场价是 0.01 美元",
+   "start": 45.004,
+   "end": 47.376,
+   "id": "c19"
+  },
+  {
+   "text": "这是示例",
+   "start": 47.751,
+   "end": 48.695,
+   "id": "c20"
+  },
+  {
+   "text": "喂价仍然返回约 0.10 美元",
+   "start": 49.688,
+   "end": 52.298,
+   "id": "c21"
+  },
+  {
+   "text": "抵押品被高估约 10 倍",
+   "start": 52.673,
+   "end": 54.641,
+   "id": "c22"
+  },
+  {
+   "text": "价格是正的",
+   "start": 55.62,
+   "end": 56.718,
+   "id": "c23"
+  },
+  {
+   "text": "时间戳也可能是新的",
+   "start": 56.822,
+   "end": 58.504,
+   "id": "c24"
+  },
+  {
+   "text": "前两项检查",
+   "start": 58.867,
+   "end": 60.132,
+   "id": "c25"
+  },
+  {
+   "text": "全部通过",
+   "start": 60.153,
+   "end": 61.156,
+   "id": "c26"
+  },
+  {
+   "text": "BNB Chain 上的 Venus",
+   "start": 62.152,
+   "end": 63.905,
+   "id": "c27"
+  },
+  {
+   "text": "仍按约 0.1 美元给 LUNA 抵押品估值",
+   "start": 63.997,
+   "end": 66.988,
+   "id": "c28"
+  },
+  {
+   "text": "有人在市场上低价买入 LUNA 存进去",
+   "start": 67.988,
+   "end": 71.456,
+   "id": "c29"
+  },
+  {
+   "text": "借出别的资产",
+   "start": 71.476,
+   "end": 72.658,
+   "id": "c30"
+  },
+  {
+   "text": "按公开报道",
+   "start": 73.656,
+   "end": 74.766,
+   "id": "c31"
+  },
+  {
+   "text": "协议损失约 1100 万美元",
+   "start": 74.906,
+   "end": 77.278,
+   "id": "c32"
+  },
+  {
+   "text": "还有四个读取陷阱",
+   "start": 78.268,
+   "end": 79.771,
+   "id": "c33"
+  },
+  {
+   "text": "第一",
+   "start": 80.768,
+   "end": 81.295,
+   "id": "c34"
+  },
+  {
+   "text": "不要用 latestAnswer",
+   "start": 81.518,
+   "end": 82.855,
+   "id": "c35"
+  },
+  {
+   "text": "判断价格新不新鲜",
+   "start": 82.875,
+   "end": 84.521,
+   "id": "c36"
+  },
+  {
+   "text": "Chainlink 的 API 文档写明",
+   "start": 85.5,
+   "end": 87.789,
+   "id": "c37"
+  },
+  {
+   "text": "它不含时间戳",
+   "start": 87.809,
+   "end": 88.979,
+   "id": "c38"
+  },
+  {
+   "text": "改用 latestRoundData",
+   "start": 89.354,
+   "end": 91.096,
+   "id": "c39"
+  },
+  {
+   "text": "第二 每个喂价的心跳不同",
+   "start": 92.08,
+   "end": 94.559,
+   "id": "c40"
+  },
+  {
+   "text": "不要给所有资产",
+   "start": 94.934,
+   "end": 96.319,
+   "id": "c41"
+  },
+  {
+   "text": "用同一个延迟上限",
+   "start": 96.434,
+   "end": 97.926,
+   "id": "c42"
+  },
+  {
+   "text": "第三 喂价失效时",
+   "start": 98.924,
+   "end": 101.177,
+   "id": "c43"
+  },
+  {
+   "text": "要有降级路径",
+   "start": 101.221,
+   "end": 102.498,
+   "id": "c44"
+  },
+  {
+   "text": "用 try catch 包住读取",
+   "start": 103.488,
+   "end": 105.384,
+   "id": "c45"
+  },
+  {
+   "text": "切到备用价格源",
+   "start": 105.428,
+   "end": 106.753,
+   "id": "c46"
+  },
+  {
+   "text": "或者暂停",
+   "start": 106.773,
+   "end": 107.729,
+   "id": "c47"
+  },
+  {
+   "text": "不要让清算全部回滚",
+   "start": 108.104,
+   "end": 109.798,
+   "id": "c48"
+  },
+  {
+   "text": "第四 拉取式预言机",
+   "start": 110.788,
+   "end": 112.839,
+   "id": "c49"
+  },
+  {
+   "text": "由用户在交易里提交签名价格",
+   "start": 113.014,
+   "end": 115.648,
+   "id": "c50"
+  },
+  {
+   "text": "提交者可以挑一个对自己有利的更新",
+   "start": 116.648,
+   "end": 119.306,
+   "id": "c51"
+  },
+  {
+   "text": "按 Pyth 文档",
+   "start": 120.3,
+   "end": 121.803,
+   "id": "c52"
+  },
+  {
+   "text": "合约要自己检查价格的时间戳和置信区间",
+   "start": 121.954,
+   "end": 125.172,
+   "id": "c53"
+  },
+  {
+   "text": "在 L2 上",
+   "start": 126.16,
+   "end": 127.258,
+   "id": "c54"
+  },
+  {
+   "text": "要多查一项",
+   "start": 127.338,
+   "end": 128.365,
+   "id": "c55"
+  },
+  {
+   "text": "排序器是否在线",
+   "start": 128.457,
+   "end": 129.984,
+   "id": "c56"
+  },
+  {
+   "text": "排序器宕机时",
+   "start": 130.964,
+   "end": 132.384,
+   "id": "c57"
+  },
+  {
+   "text": "喂价交易上不了链",
+   "start": 132.511,
+   "end": 133.931,
+   "id": "c58"
+  },
+  {
+   "text": "价格停在宕机前",
+   "start": 134.106,
+   "end": 135.526,
+   "id": "c59"
+  },
+  {
+   "text": "恢复后的第一批区块里",
+   "start": 136.512,
+   "end": 138.17,
+   "id": "c60"
+  },
+  {
+   "text": "清算机器人和普通用户同时涌入",
+   "start": 138.285,
+   "end": 141.217,
+   "id": "c61"
+  },
+  {
+   "text": "能通过 L1 强制提交交易的少数人",
+   "start": 142.204,
+   "end": 145.279,
+   "id": "c62"
+  },
+  {
+   "text": "占了先机",
+   "start": 145.299,
+   "end": 146.147,
+   "id": "c63"
+  },
+  {
+   "text": "按 L2BEAT 截至 2026 年 11 月的页面",
+   "start": 147.128,
+   "end": 150.214,
+   "id": "c64"
+  },
+  {
+   "text": "Mantle 排序器宕机时",
+   "start": 150.318,
+   "end": 151.976,
+   "id": "c65"
+  },
+  {
+   "text": "从 L1 强制提交",
+   "start": 152.02,
+   "end": 153.715,
+   "id": "c66"
+  },
+  {
+   "text": "最长要等 12 小时",
+   "start": 153.735,
+   "end": 155.381,
+   "id": "c67"
+  },
+  {
+   "text": "做法是读取 Chainlink",
+   "start": 156.372,
+   "end": 158.518,
+   "id": "c68"
+  },
+  {
+   "text": "提供的排序器在线状态喂价",
+   "start": 158.538,
+   "end": 160.958,
+   "id": "c69"
+  },
+  {
+   "text": "恢复后设一段宽限期",
+   "start": 161.944,
+   "end": 163.721,
+   "id": "c70"
+  },
+  {
+   "text": "比如 1 小时",
+   "start": 163.777,
+   "end": 164.816,
+   "id": "c71"
+  },
+  {
+   "text": "这是示例",
+   "start": 164.836,
+   "end": 165.661,
+   "id": "c72"
+  },
+  {
+   "text": "宽限期内",
+   "start": 166.652,
+   "end": 167.619,
+   "id": "c73"
+  },
+  {
+   "text": "暂停清算和新借款",
+   "start": 167.664,
+   "end": 169.512,
+   "id": "c74"
+  }
+ ]
+}

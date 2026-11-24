@@ -1,0 +1,2470 @@
+{
+ "id": "seg3",
+ "title": "测试三层",
+ "pill": 3,
+ "total": 130.47,
+ "lines": [
+  {
+   "id": "seg3-00",
+   "text": "测试之前，先要写清楚测什么。",
+   "spoken": "测试之前，先要写清楚测什么。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-00.mp3",
+   "start": 1.6,
+   "dur": 3.264,
+   "speechStart": 1.698,
+   "speechEnd": 4.031
+  },
+  {
+   "id": "seg3-01",
+   "text": "规格里，写出每个函数调用前要满足什么，调用后保证什么。",
+   "spoken": "规格里，写出每个函数掉用前要满足什么，掉用后保证什么。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-01.mp3",
+   "start": 5.084,
+   "dur": 5.76,
+   "speechStart": 5.182,
+   "speechEnd": 9.991
+  },
+  {
+   "id": "seg3-02",
+   "text": "再写出系统的不变量，也就是任何时候都必须成立的性质。",
+   "spoken": "再写出系统的不变量，也就是任何时候都必须成立的性质。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-02.mp3",
+   "start": 11.064,
+   "dur": 5.256,
+   "speechStart": 11.162,
+   "speechEnd": 15.471
+  },
+  {
+   "id": "seg3-03",
+   "text": "还要列出每个特权角色，最多能造成多大破坏。",
+   "spoken": "还要列出每个特权决色，最多能造成多大破坏。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-03.mp3",
+   "start": 16.54,
+   "dur": 4.392,
+   "speechStart": 16.638,
+   "speechEnd": 20.09
+  },
+  {
+   "id": "seg3-04",
+   "text": "有了这些，测试分三层。",
+   "spoken": "有了这些，测试分三层。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-04.mp3",
+   "start": 21.152,
+   "dur": 2.904,
+   "speechStart": 21.25,
+   "speechEnd": 23.238
+  },
+  {
+   "id": "seg3-05",
+   "text": "第一层，单元测试，验证你想到的情况。",
+   "spoken": "第一层，单元测试，验证你想到的情况。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-05.mp3",
+   "start": 24.276,
+   "dur": 4.08,
+   "speechStart": 24.374,
+   "speechEnd": 27.505
+  },
+  {
+   "id": "seg3-06",
+   "text": "第二层，模糊测试，让工具生成大量随机输入。",
+   "spoken": "第二层，模糊测试，让工具生成大量随机输入。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-06.mp3",
+   "start": 28.576,
+   "dur": 4.92,
+   "speechStart": 28.674,
+   "speechEnd": 32.662
+  },
+  {
+   "id": "seg3-07",
+   "text": "比如一个金库，存进去，马上取出来，用户不能多拿。",
+   "spoken": "比如一个金库，存进去，马上取出来，用户不能多拿。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-07.mp3",
+   "start": 33.716,
+   "dur": 5.472,
+   "speechStart": 33.814,
+   "speechEnd": 38.361
+  },
+  {
+   "id": "seg3-08",
+   "text": "工具会换着各种随机金额，一遍遍去试。",
+   "spoken": "工具会换着各种随机金额，一遍遍去试。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-08.mp3",
+   "start": 39.408,
+   "dur": 3.888,
+   "speechStart": 39.506,
+   "speechEnd": 42.458
+  },
+  {
+   "id": "seg3-09",
+   "text": "只要有一个金额，让取回的比存入的多，测试就失败。",
+   "spoken": "只要有一个金额，让取回的比存入的多，测试就失败。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-09.mp3",
+   "start": 43.516,
+   "dur": 4.896,
+   "speechStart": 43.614,
+   "speechEnd": 47.578
+  },
+  {
+   "id": "seg3-10",
+   "text": "这条性质背后的规则是，舍入必须偏向金库。",
+   "spoken": "这条性质背后的规则是，舍入必须偏向金库。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-10.mp3",
+   "start": 48.632,
+   "dur": 4.44,
+   "speechStart": 48.73,
+   "speechEnd": 52.218
+  },
+  {
+   "id": "seg3-11",
+   "text": "第三层，不变量测试，随机的不是参数，是调用的顺序。",
+   "spoken": "第三层，不变量测试，随机的不是参数，是掉用的顺序。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-11.mp3",
+   "start": 53.292,
+   "dur": 5.4,
+   "speechStart": 53.39,
+   "speechEnd": 57.854
+  },
+  {
+   "id": "seg3-12",
+   "text": "比如一个银行合约，存款、取款、转账，被随机组合着连续调用。",
+   "spoken": "比如一个银航合约，存款、取款、转账，被随机组合着连续掉用。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-12.mp3",
+   "start": 58.912,
+   "dur": 6.552,
+   "speechStart": 59.01,
+   "speechEnd": 64.629
+  },
+  {
+   "id": "seg3-13",
+   "text": "每一步之后都检查一次，银行的余额，不少于所有存款加起来。",
+   "spoken": "每一步之后都检查一次，银航的余额，不少于所有存款加起来。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-13.mp3",
+   "start": 65.684,
+   "dur": 5.544,
+   "speechStart": 65.782,
+   "speechEnd": 70.401
+  },
+  {
+   "id": "seg3-14",
+   "text": "先猜一道题。",
+   "spoken": "先猜一道题。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-14.mp3",
+   "start": 71.448,
+   "dur": 2.088,
+   "speechStart": 71.546,
+   "speechEnd": 72.7
+  },
+  {
+   "id": "seg3-15",
+   "text": "一个重入漏洞，要先调用存款，再在回调里调用转账，才会触发。",
+   "spoken": "一个虫入漏洞，要先掉用存款，再在回掉里掉用转账，才会触发。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-15.mp3",
+   "start": 73.756,
+   "dur": 6.168,
+   "speechStart": 73.854,
+   "speechEnd": 79.092
+  },
+  {
+   "id": "seg3-16",
+   "text": "只随机参数的模糊测试，能发现它吗？",
+   "spoken": "只随机参数的模糊测试，能发现它吗？",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-16.mp3",
+   "start": 80.144,
+   "dur": 4.224,
+   "speechStart": 80.242,
+   "speechEnd": 83.527
+  },
+  {
+   "id": "seg3-17",
+   "text": "通常不能，因为它不会打乱调用顺序。",
+   "spoken": "通常不能，因为它不会打乱掉用顺序。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-17.mp3",
+   "start": 84.868,
+   "dur": 3.624,
+   "speechStart": 84.966,
+   "speechEnd": 87.656
+  },
+  {
+   "id": "seg3-18",
+   "text": "不变量测试生成随机调用序列，再配上能触发回调的封装合约，才有机会发现。",
+   "spoken": "不变量测试生成随机掉用序列，再配上能触发回掉的封装合约，才有机会发现。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-18.mp3",
+   "start": 88.712,
+   "dur": 6.72,
+   "speechStart": 88.81,
+   "speechEnd": 94.583
+  },
+  {
+   "id": "seg3-19",
+   "text": "但要注意，不变量测试只检查你写下的不变量。",
+   "spoken": "但要注意，不变量测试只检查你写下的不变量。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-19.mp3",
+   "start": 95.652,
+   "dur": 4.728,
+   "speechStart": 95.75,
+   "speechEnd": 99.571
+  },
+  {
+   "id": "seg3-20",
+   "text": "Euler 事故里那一条，每个账户健康因子不低于 1，或者能被清算，而且清算后协议不亏。",
+   "spoken": "Euler 事故里那一条，每个账户健康因子不低于 1，或者能被清算，而且清算后协议不亏。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-20.mp3",
+   "start": 100.6,
+   "dur": 7.416,
+   "speechStart": 100.698,
+   "speechEnd": 107.198
+  },
+  {
+   "id": "seg3-21",
+   "text": "如果它没写进测试，工具也不会发现。",
+   "spoken": "如果它没写进测试，工具也不会发现。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-21.mp3",
+   "start": 108.236,
+   "dur": 4.08,
+   "speechStart": 108.334,
+   "speechEnd": 111.465
+  },
+  {
+   "id": "seg3-22",
+   "text": "核心数学库、清算逻辑、跨链桥的证明验证，还可以再做形式化验证。",
+   "spoken": "核心数学库、清算逻辑、跨链桥的证明验证，还可以再做形式化验证。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-22.mp3",
+   "start": 112.536,
+   "dur": 6.888,
+   "speechStart": 112.634,
+   "speechEnd": 118.586
+  },
+  {
+   "id": "seg3-23",
+   "text": "它用数学方法证明，代码在所有输入和状态下都满足规格。",
+   "spoken": "它用数学方法证明，代码在所有输入和状态下都满足规格。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-23.mp3",
+   "start": 119.644,
+   "dur": 5.664,
+   "speechStart": 119.742,
+   "speechEnd": 124.468
+  },
+  {
+   "id": "seg3-24",
+   "text": "代价是规格难写，需要专门的人才。",
+   "spoken": "代价是规格难写，需要专门的人才。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep27/audio/lines/seg3-24.mp3",
+   "start": 125.528,
+   "dur": 3.744,
+   "speechStart": 125.626,
+   "speechEnd": 128.435
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "测试",
+   "start": 1.698,
+   "end": 2.019
+  },
+  {
+   "line": 0,
+   "text": "之前",
+   "start": 2.031,
+   "end": 2.531
+  },
+  {
+   "line": 0,
+   "text": "先",
+   "start": 2.84,
+   "end": 3.031
+  },
+  {
+   "line": 0,
+   "text": "要",
+   "start": 3.031,
+   "end": 3.114
+  },
+  {
+   "line": 0,
+   "text": "写",
+   "start": 3.126,
+   "end": 3.281
+  },
+  {
+   "line": 0,
+   "text": "清楚",
+   "start": 3.281,
+   "end": 3.543
+  },
+  {
+   "line": 0,
+   "text": "测",
+   "start": 3.567,
+   "end": 3.721
+  },
+  {
+   "line": 0,
+   "text": "什么",
+   "start": 3.721,
+   "end": 4.031
+  },
+  {
+   "line": 1,
+   "text": "规格",
+   "start": 5.182,
+   "end": 5.515
+  },
+  {
+   "line": 1,
+   "text": "里",
+   "start": 5.515,
+   "end": 5.824
+  },
+  {
+   "line": 1,
+   "text": "写出",
+   "start": 6.194,
+   "end": 6.527
+  },
+  {
+   "line": 1,
+   "text": "每个",
+   "start": 6.551,
+   "end": 6.765
+  },
+  {
+   "line": 1,
+   "text": "函数",
+   "start": 6.777,
+   "end": 7.122
+  },
+  {
+   "line": 1,
+   "text": "调用",
+   "start": 7.146,
+   "end": 7.42
+  },
+  {
+   "line": 1,
+   "text": "前",
+   "start": 7.42,
+   "end": 7.729
+  },
+  {
+   "line": 1,
+   "text": "要",
+   "start": 7.753,
+   "end": 7.896
+  },
+  {
+   "line": 1,
+   "text": "满足",
+   "start": 7.908,
+   "end": 8.229
+  },
+  {
+   "line": 1,
+   "text": "什么",
+   "start": 8.241,
+   "end": 8.574
+  },
+  {
+   "line": 1,
+   "text": "调用",
+   "start": 8.824,
+   "end": 9.098
+  },
+  {
+   "line": 1,
+   "text": "后",
+   "start": 9.098,
+   "end": 9.324
+  },
+  {
+   "line": 1,
+   "text": "保证",
+   "start": 9.348,
+   "end": 9.682
+  },
+  {
+   "line": 1,
+   "text": "什么",
+   "start": 9.694,
+   "end": 9.991
+  },
+  {
+   "line": 2,
+   "text": "再",
+   "start": 11.162,
+   "end": 11.34
+  },
+  {
+   "line": 2,
+   "text": "写出",
+   "start": 11.34,
+   "end": 11.614
+  },
+  {
+   "line": 2,
+   "text": "系统",
+   "start": 11.638,
+   "end": 11.947
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 11.947,
+   "end": 12.019
+  },
+  {
+   "line": 2,
+   "text": "不",
+   "start": 12.043,
+   "end": 12.15
+  },
+  {
+   "line": 2,
+   "text": "变量",
+   "start": 12.15,
+   "end": 12.59
+  },
+  {
+   "line": 2,
+   "text": "也",
+   "start": 12.971,
+   "end": 13.114
+  },
+  {
+   "line": 2,
+   "text": "就",
+   "start": 13.114,
+   "end": 13.221
+  },
+  {
+   "line": 2,
+   "text": "是",
+   "start": 13.221,
+   "end": 13.328
+  },
+  {
+   "line": 2,
+   "text": "任何",
+   "start": 13.352,
+   "end": 13.638
+  },
+  {
+   "line": 2,
+   "text": "时候",
+   "start": 13.65,
+   "end": 14.162
+  },
+  {
+   "line": 2,
+   "text": "都",
+   "start": 14.269,
+   "end": 14.424
+  },
+  {
+   "line": 2,
+   "text": "必须",
+   "start": 14.435,
+   "end": 14.673
+  },
+  {
+   "line": 2,
+   "text": "成立",
+   "start": 14.685,
+   "end": 15.019
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 15.019,
+   "end": 15.09
+  },
+  {
+   "line": 2,
+   "text": "性质",
+   "start": 15.102,
+   "end": 15.471
+  },
+  {
+   "line": 3,
+   "text": "还要",
+   "start": 16.638,
+   "end": 16.888
+  },
+  {
+   "line": 3,
+   "text": "列出",
+   "start": 16.9,
+   "end": 17.209
+  },
+  {
+   "line": 3,
+   "text": "每个",
+   "start": 17.233,
+   "end": 17.435
+  },
+  {
+   "line": 3,
+   "text": "特权",
+   "start": 17.447,
+   "end": 17.757
+  },
+  {
+   "line": 3,
+   "text": "角色",
+   "start": 17.769,
+   "end": 18.209
+  },
+  {
+   "line": 3,
+   "text": "最多",
+   "start": 18.53,
+   "end": 18.888
+  },
+  {
+   "line": 3,
+   "text": "能",
+   "start": 18.9,
+   "end": 19.03
+  },
+  {
+   "line": 3,
+   "text": "造成",
+   "start": 19.042,
+   "end": 19.34
+  },
+  {
+   "line": 3,
+   "text": "多",
+   "start": 19.364,
+   "end": 19.554
+  },
+  {
+   "line": 3,
+   "text": "大",
+   "start": 19.554,
+   "end": 19.673
+  },
+  {
+   "line": 3,
+   "text": "破坏",
+   "start": 19.685,
+   "end": 20.09
+  },
+  {
+   "line": 4,
+   "text": "有",
+   "start": 21.25,
+   "end": 21.404
+  },
+  {
+   "line": 4,
+   "text": "了",
+   "start": 21.404,
+   "end": 21.464
+  },
+  {
+   "line": 4,
+   "text": "这些",
+   "start": 21.476,
+   "end": 21.952
+  },
+  {
+   "line": 4,
+   "text": "测试",
+   "start": 22.178,
+   "end": 22.607
+  },
+  {
+   "line": 4,
+   "text": "分",
+   "start": 22.607,
+   "end": 22.75
+  },
+  {
+   "line": 4,
+   "text": "三",
+   "start": 22.762,
+   "end": 22.964
+  },
+  {
+   "line": 4,
+   "text": "层",
+   "start": 22.964,
+   "end": 23.238
+  },
+  {
+   "line": 5,
+   "text": "第一",
+   "start": 24.374,
+   "end": 24.588
+  },
+  {
+   "line": 5,
+   "text": "层",
+   "start": 24.588,
+   "end": 24.957
+  },
+  {
+   "line": 5,
+   "text": "单元",
+   "start": 25.266,
+   "end": 25.576
+  },
+  {
+   "line": 5,
+   "text": "测试",
+   "start": 25.588,
+   "end": 26.052
+  },
+  {
+   "line": 5,
+   "text": "验证",
+   "start": 26.409,
+   "end": 26.683
+  },
+  {
+   "line": 5,
+   "text": "你",
+   "start": 26.695,
+   "end": 26.766
+  },
+  {
+   "line": 5,
+   "text": "想到",
+   "start": 26.778,
+   "end": 27.016
+  },
+  {
+   "line": 5,
+   "text": "的",
+   "start": 27.016,
+   "end": 27.076
+  },
+  {
+   "line": 5,
+   "text": "情况",
+   "start": 27.088,
+   "end": 27.505
+  },
+  {
+   "line": 6,
+   "text": "第二",
+   "start": 28.674,
+   "end": 28.924
+  },
+  {
+   "line": 6,
+   "text": "层",
+   "start": 28.924,
+   "end": 29.281
+  },
+  {
+   "line": 6,
+   "text": "模糊",
+   "start": 29.602,
+   "end": 29.924
+  },
+  {
+   "line": 6,
+   "text": "测试",
+   "start": 29.936,
+   "end": 30.424
+  },
+  {
+   "line": 6,
+   "text": "让",
+   "start": 30.59,
+   "end": 30.781
+  },
+  {
+   "line": 6,
+   "text": "工具",
+   "start": 30.793,
+   "end": 31.09
+  },
+  {
+   "line": 6,
+   "text": "生成",
+   "start": 31.102,
+   "end": 31.531
+  },
+  {
+   "line": 6,
+   "text": "大量",
+   "start": 31.555,
+   "end": 31.924
+  },
+  {
+   "line": 6,
+   "text": "随机",
+   "start": 31.947,
+   "end": 32.316
+  },
+  {
+   "line": 6,
+   "text": "输入",
+   "start": 32.328,
+   "end": 32.662
+  },
+  {
+   "line": 7,
+   "text": "比如",
+   "start": 33.814,
+   "end": 34.076
+  },
+  {
+   "line": 7,
+   "text": "一个",
+   "start": 34.099,
+   "end": 34.266
+  },
+  {
+   "line": 7,
+   "text": "金库",
+   "start": 34.278,
+   "end": 34.766
+  },
+  {
+   "line": 7,
+   "text": "存",
+   "start": 35.028,
+   "end": 35.278
+  },
+  {
+   "line": 7,
+   "text": "进去",
+   "start": 35.278,
+   "end": 35.742
+  },
+  {
+   "line": 7,
+   "text": "马上",
+   "start": 35.956,
+   "end": 36.325
+  },
+  {
+   "line": 7,
+   "text": "取",
+   "start": 36.337,
+   "end": 36.48
+  },
+  {
+   "line": 7,
+   "text": "出来",
+   "start": 36.48,
+   "end": 36.873
+  },
+  {
+   "line": 7,
+   "text": "用户",
+   "start": 37.195,
+   "end": 37.635
+  },
+  {
+   "line": 7,
+   "text": "不能",
+   "start": 37.659,
+   "end": 37.861
+  },
+  {
+   "line": 7,
+   "text": "多",
+   "start": 37.873,
+   "end": 38.052
+  },
+  {
+   "line": 7,
+   "text": "拿",
+   "start": 38.052,
+   "end": 38.361
+  },
+  {
+   "line": 8,
+   "text": "工具",
+   "start": 39.506,
+   "end": 39.863
+  },
+  {
+   "line": 8,
+   "text": "会",
+   "start": 39.875,
+   "end": 40.006
+  },
+  {
+   "line": 8,
+   "text": "换",
+   "start": 40.006,
+   "end": 40.16
+  },
+  {
+   "line": 8,
+   "text": "着",
+   "start": 40.16,
+   "end": 40.244
+  },
+  {
+   "line": 8,
+   "text": "各种",
+   "start": 40.268,
+   "end": 40.553
+  },
+  {
+   "line": 8,
+   "text": "随机",
+   "start": 40.577,
+   "end": 40.887
+  },
+  {
+   "line": 8,
+   "text": "金额",
+   "start": 40.898,
+   "end": 41.41
+  },
+  {
+   "line": 8,
+   "text": "一遍遍",
+   "start": 41.66,
+   "end": 42.077
+  },
+  {
+   "line": 8,
+   "text": "去",
+   "start": 42.089,
+   "end": 42.22
+  },
+  {
+   "line": 8,
+   "text": "试",
+   "start": 42.22,
+   "end": 42.458
+  },
+  {
+   "line": 9,
+   "text": "只要",
+   "start": 43.614,
+   "end": 43.864
+  },
+  {
+   "line": 9,
+   "text": "有",
+   "start": 43.876,
+   "end": 44.018
+  },
+  {
+   "line": 9,
+   "text": "一个",
+   "start": 44.018,
+   "end": 44.185
+  },
+  {
+   "line": 9,
+   "text": "金额",
+   "start": 44.197,
+   "end": 44.745
+  },
+  {
+   "line": 9,
+   "text": "让",
+   "start": 45.006,
+   "end": 45.185
+  },
+  {
+   "line": 9,
+   "text": "取回",
+   "start": 45.197,
+   "end": 45.53
+  },
+  {
+   "line": 9,
+   "text": "的",
+   "start": 45.53,
+   "end": 45.602
+  },
+  {
+   "line": 9,
+   "text": "比",
+   "start": 45.626,
+   "end": 45.709
+  },
+  {
+   "line": 9,
+   "text": "存入",
+   "start": 45.721,
+   "end": 46.042
+  },
+  {
+   "line": 9,
+   "text": "的",
+   "start": 46.042,
+   "end": 46.114
+  },
+  {
+   "line": 9,
+   "text": "多",
+   "start": 46.126,
+   "end": 46.399
+  },
+  {
+   "line": 9,
+   "text": "测试",
+   "start": 46.661,
+   "end": 47.102
+  },
+  {
+   "line": 9,
+   "text": "就",
+   "start": 47.126,
+   "end": 47.185
+  },
+  {
+   "line": 9,
+   "text": "失败",
+   "start": 47.197,
+   "end": 47.578
+  },
+  {
+   "line": 10,
+   "text": "这",
+   "start": 48.73,
+   "end": 48.908
+  },
+  {
+   "line": 10,
+   "text": "条",
+   "start": 48.908,
+   "end": 49.039
+  },
+  {
+   "line": 10,
+   "text": "性质",
+   "start": 49.063,
+   "end": 49.361
+  },
+  {
+   "line": 10,
+   "text": "背后",
+   "start": 49.372,
+   "end": 49.622
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 49.622,
+   "end": 49.694
+  },
+  {
+   "line": 10,
+   "text": "规则",
+   "start": 49.706,
+   "end": 50.027
+  },
+  {
+   "line": 10,
+   "text": "是",
+   "start": 50.039,
+   "end": 50.384
+  },
+  {
+   "line": 10,
+   "text": "舍",
+   "start": 50.563,
+   "end": 50.849
+  },
+  {
+   "line": 10,
+   "text": "入",
+   "start": 50.849,
+   "end": 51.015
+  },
+  {
+   "line": 10,
+   "text": "必须",
+   "start": 51.039,
+   "end": 51.396
+  },
+  {
+   "line": 10,
+   "text": "偏向",
+   "start": 51.408,
+   "end": 51.813
+  },
+  {
+   "line": 10,
+   "text": "金库",
+   "start": 51.825,
+   "end": 52.218
+  },
+  {
+   "line": 11,
+   "text": "第三",
+   "start": 53.39,
+   "end": 53.723
+  },
+  {
+   "line": 11,
+   "text": "层",
+   "start": 53.723,
+   "end": 54.08
+  },
+  {
+   "line": 11,
+   "text": "不",
+   "start": 54.306,
+   "end": 54.473
+  },
+  {
+   "line": 11,
+   "text": "变量",
+   "start": 54.473,
+   "end": 54.735
+  },
+  {
+   "line": 11,
+   "text": "测试",
+   "start": 54.747,
+   "end": 55.223
+  },
+  {
+   "line": 11,
+   "text": "随机",
+   "start": 55.497,
+   "end": 55.901
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 55.902,
+   "end": 55.973
+  },
+  {
+   "line": 11,
+   "text": "不是",
+   "start": 55.997,
+   "end": 56.223
+  },
+  {
+   "line": 11,
+   "text": "参数",
+   "start": 56.235,
+   "end": 56.747
+  },
+  {
+   "line": 11,
+   "text": "是",
+   "start": 56.937,
+   "end": 57.116
+  },
+  {
+   "line": 11,
+   "text": "调用",
+   "start": 57.128,
+   "end": 57.378
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 57.378,
+   "end": 57.449
+  },
+  {
+   "line": 11,
+   "text": "顺序",
+   "start": 57.461,
+   "end": 57.854
+  },
+  {
+   "line": 12,
+   "text": "比如",
+   "start": 59.01,
+   "end": 59.26
+  },
+  {
+   "line": 12,
+   "text": "一个",
+   "start": 59.272,
+   "end": 59.498
+  },
+  {
+   "line": 12,
+   "text": "银行",
+   "start": 59.522,
+   "end": 59.879
+  },
+  {
+   "line": 12,
+   "text": "合约",
+   "start": 59.891,
+   "end": 60.319
+  },
+  {
+   "line": 12,
+   "text": "存款",
+   "start": 60.533,
+   "end": 61.141
+  },
+  {
+   "line": 12,
+   "text": "取款",
+   "start": 61.379,
+   "end": 62.01
+  },
+  {
+   "line": 12,
+   "text": "转账",
+   "start": 62.2,
+   "end": 62.712
+  },
+  {
+   "line": 12,
+   "text": "被",
+   "start": 62.986,
+   "end": 63.141
+  },
+  {
+   "line": 12,
+   "text": "随机",
+   "start": 63.152,
+   "end": 63.533
+  },
+  {
+   "line": 12,
+   "text": "组合",
+   "start": 63.545,
+   "end": 63.807
+  },
+  {
+   "line": 12,
+   "text": "着",
+   "start": 63.807,
+   "end": 63.902
+  },
+  {
+   "line": 12,
+   "text": "连续",
+   "start": 63.926,
+   "end": 64.295
+  },
+  {
+   "line": 12,
+   "text": "调用",
+   "start": 64.307,
+   "end": 64.629
+  },
+  {
+   "line": 13,
+   "text": "每",
+   "start": 65.782,
+   "end": 65.96
+  },
+  {
+   "line": 13,
+   "text": "一",
+   "start": 65.96,
+   "end": 66.044
+  },
+  {
+   "line": 13,
+   "text": "步",
+   "start": 66.044,
+   "end": 66.139
+  },
+  {
+   "line": 13,
+   "text": "之后",
+   "start": 66.151,
+   "end": 66.591
+  },
+  {
+   "line": 13,
+   "text": "都",
+   "start": 66.615,
+   "end": 66.746
+  },
+  {
+   "line": 13,
+   "text": "检查",
+   "start": 66.758,
+   "end": 67.055
+  },
+  {
+   "line": 13,
+   "text": "一次",
+   "start": 67.067,
+   "end": 67.448
+  },
+  {
+   "line": 13,
+   "text": "银行",
+   "start": 67.805,
+   "end": 68.091
+  },
+  {
+   "line": 13,
+   "text": "的",
+   "start": 68.091,
+   "end": 68.163
+  },
+  {
+   "line": 13,
+   "text": "余额",
+   "start": 68.174,
+   "end": 68.627
+  },
+  {
+   "line": 13,
+   "text": "不",
+   "start": 68.782,
+   "end": 68.913
+  },
+  {
+   "line": 13,
+   "text": "少于",
+   "start": 68.913,
+   "end": 69.186
+  },
+  {
+   "line": 13,
+   "text": "所有",
+   "start": 69.21,
+   "end": 69.555
+  },
+  {
+   "line": 13,
+   "text": "存款",
+   "start": 69.567,
+   "end": 69.877
+  },
+  {
+   "line": 13,
+   "text": "加",
+   "start": 69.901,
+   "end": 70.067
+  },
+  {
+   "line": 13,
+   "text": "起来",
+   "start": 70.067,
+   "end": 70.401
+  },
+  {
+   "line": 14,
+   "text": "先",
+   "start": 71.546,
+   "end": 71.915
+  },
+  {
+   "line": 14,
+   "text": "猜",
+   "start": 71.915,
+   "end": 72.069
+  },
+  {
+   "line": 14,
+   "text": "一道",
+   "start": 72.081,
+   "end": 72.296
+  },
+  {
+   "line": 14,
+   "text": "题",
+   "start": 72.296,
+   "end": 72.7
+  },
+  {
+   "line": 15,
+   "text": "一个",
+   "start": 73.854,
+   "end": 74.08
+  },
+  {
+   "line": 15,
+   "text": "重",
+   "start": 74.092,
+   "end": 74.354
+  },
+  {
+   "line": 15,
+   "text": "入",
+   "start": 74.354,
+   "end": 74.437
+  },
+  {
+   "line": 15,
+   "text": "漏洞",
+   "start": 74.449,
+   "end": 74.913
+  },
+  {
+   "line": 15,
+   "text": "要",
+   "start": 75.175,
+   "end": 75.33
+  },
+  {
+   "line": 15,
+   "text": "先",
+   "start": 75.342,
+   "end": 75.58
+  },
+  {
+   "line": 15,
+   "text": "调用",
+   "start": 75.58,
+   "end": 75.865
+  },
+  {
+   "line": 15,
+   "text": "存款",
+   "start": 75.877,
+   "end": 76.449
+  },
+  {
+   "line": 15,
+   "text": "再",
+   "start": 76.746,
+   "end": 76.901
+  },
+  {
+   "line": 15,
+   "text": "在",
+   "start": 76.901,
+   "end": 76.996
+  },
+  {
+   "line": 15,
+   "text": "回调",
+   "start": 77.008,
+   "end": 77.306
+  },
+  {
+   "line": 15,
+   "text": "里",
+   "start": 77.306,
+   "end": 77.377
+  },
+  {
+   "line": 15,
+   "text": "调用",
+   "start": 77.401,
+   "end": 77.663
+  },
+  {
+   "line": 15,
+   "text": "转账",
+   "start": 77.675,
+   "end": 78.115
+  },
+  {
+   "line": 15,
+   "text": "才",
+   "start": 78.366,
+   "end": 78.544
+  },
+  {
+   "line": 15,
+   "text": "会",
+   "start": 78.544,
+   "end": 78.651
+  },
+  {
+   "line": 15,
+   "text": "触发",
+   "start": 78.663,
+   "end": 79.092
+  },
+  {
+   "line": 16,
+   "text": "只",
+   "start": 80.242,
+   "end": 80.456
+  },
+  {
+   "line": 16,
+   "text": "随机",
+   "start": 80.456,
+   "end": 80.765
+  },
+  {
+   "line": 16,
+   "text": "参数",
+   "start": 80.777,
+   "end": 81.146
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 81.146,
+   "end": 81.218
+  },
+  {
+   "line": 16,
+   "text": "模糊",
+   "start": 81.242,
+   "end": 81.504
+  },
+  {
+   "line": 16,
+   "text": "测试",
+   "start": 81.515,
+   "end": 82.146
+  },
+  {
+   "line": 16,
+   "text": "能",
+   "start": 82.551,
+   "end": 82.813
+  },
+  {
+   "line": 16,
+   "text": "发现",
+   "start": 82.825,
+   "end": 83.17
+  },
+  {
+   "line": 16,
+   "text": "它",
+   "start": 83.182,
+   "end": 83.349
+  },
+  {
+   "line": 16,
+   "text": "吗",
+   "start": 83.349,
+   "end": 83.527
+  },
+  {
+   "line": 17,
+   "text": "通常",
+   "start": 84.966,
+   "end": 85.335
+  },
+  {
+   "line": 17,
+   "text": "不能",
+   "start": 85.347,
+   "end": 85.751
+  },
+  {
+   "line": 17,
+   "text": "因为",
+   "start": 86.073,
+   "end": 86.299
+  },
+  {
+   "line": 17,
+   "text": "它",
+   "start": 86.299,
+   "end": 86.418
+  },
+  {
+   "line": 17,
+   "text": "不会",
+   "start": 86.43,
+   "end": 86.68
+  },
+  {
+   "line": 17,
+   "text": "打乱",
+   "start": 86.692,
+   "end": 86.989
+  },
+  {
+   "line": 17,
+   "text": "调用",
+   "start": 87.013,
+   "end": 87.239
+  },
+  {
+   "line": 17,
+   "text": "顺序",
+   "start": 87.251,
+   "end": 87.656
+  },
+  {
+   "line": 18,
+   "text": "不",
+   "start": 88.81,
+   "end": 88.988
+  },
+  {
+   "line": 18,
+   "text": "变量",
+   "start": 88.988,
+   "end": 89.298
+  },
+  {
+   "line": 18,
+   "text": "测试生",
+   "start": 89.31,
+   "end": 89.774
+  },
+  {
+   "line": 18,
+   "text": "成",
+   "start": 89.774,
+   "end": 89.988
+  },
+  {
+   "line": 18,
+   "text": "随机",
+   "start": 90.012,
+   "end": 90.381
+  },
+  {
+   "line": 18,
+   "text": "调用",
+   "start": 90.393,
+   "end": 90.631
+  },
+  {
+   "line": 18,
+   "text": "序列",
+   "start": 90.643,
+   "end": 91.107
+  },
+  {
+   "line": 18,
+   "text": "再",
+   "start": 91.333,
+   "end": 91.5
+  },
+  {
+   "line": 18,
+   "text": "配上",
+   "start": 91.512,
+   "end": 91.941
+  },
+  {
+   "line": 18,
+   "text": "能",
+   "start": 91.941,
+   "end": 92.083
+  },
+  {
+   "line": 18,
+   "text": "触发",
+   "start": 92.095,
+   "end": 92.393
+  },
+  {
+   "line": 18,
+   "text": "回调",
+   "start": 92.405,
+   "end": 92.691
+  },
+  {
+   "line": 18,
+   "text": "的",
+   "start": 92.691,
+   "end": 92.762
+  },
+  {
+   "line": 18,
+   "text": "封装",
+   "start": 92.786,
+   "end": 93.107
+  },
+  {
+   "line": 18,
+   "text": "合约",
+   "start": 93.119,
+   "end": 93.5
+  },
+  {
+   "line": 18,
+   "text": "才有",
+   "start": 93.679,
+   "end": 93.929
+  },
+  {
+   "line": 18,
+   "text": "机会",
+   "start": 93.941,
+   "end": 94.226
+  },
+  {
+   "line": 18,
+   "text": "发现",
+   "start": 94.238,
+   "end": 94.583
+  },
+  {
+   "line": 19,
+   "text": "但",
+   "start": 95.75,
+   "end": 95.881
+  },
+  {
+   "line": 19,
+   "text": "要",
+   "start": 95.881,
+   "end": 96.0
+  },
+  {
+   "line": 19,
+   "text": "注意",
+   "start": 96.012,
+   "end": 96.535
+  },
+  {
+   "line": 19,
+   "text": "不",
+   "start": 96.892,
+   "end": 97.083
+  },
+  {
+   "line": 19,
+   "text": "变量",
+   "start": 97.083,
+   "end": 97.345
+  },
+  {
+   "line": 19,
+   "text": "测试",
+   "start": 97.357,
+   "end": 97.928
+  },
+  {
+   "line": 19,
+   "text": "只",
+   "start": 98.035,
+   "end": 98.285
+  },
+  {
+   "line": 19,
+   "text": "检查",
+   "start": 98.285,
+   "end": 98.583
+  },
+  {
+   "line": 19,
+   "text": "你",
+   "start": 98.607,
+   "end": 98.69
+  },
+  {
+   "line": 19,
+   "text": "写",
+   "start": 98.702,
+   "end": 98.857
+  },
+  {
+   "line": 19,
+   "text": "下",
+   "start": 98.857,
+   "end": 98.976
+  },
+  {
+   "line": 19,
+   "text": "的",
+   "start": 98.976,
+   "end": 99.035
+  },
+  {
+   "line": 19,
+   "text": "不",
+   "start": 99.059,
+   "end": 99.178
+  },
+  {
+   "line": 19,
+   "text": "变量",
+   "start": 99.178,
+   "end": 99.571
+  },
+  {
+   "line": 20,
+   "text": "Euler",
+   "start": 100.698,
+   "end": 101.055
+  },
+  {
+   "line": 20,
+   "text": "事故",
+   "start": 101.067,
+   "end": 101.364
+  },
+  {
+   "line": 20,
+   "text": "里",
+   "start": 101.364,
+   "end": 101.448
+  },
+  {
+   "line": 20,
+   "text": "那",
+   "start": 101.46,
+   "end": 101.567
+  },
+  {
+   "line": 20,
+   "text": "一条",
+   "start": 101.567,
+   "end": 101.983
+  },
+  {
+   "line": 20,
+   "text": "每个",
+   "start": 102.233,
+   "end": 102.531
+  },
+  {
+   "line": 20,
+   "text": "账户",
+   "start": 102.543,
+   "end": 102.84
+  },
+  {
+   "line": 20,
+   "text": "健康",
+   "start": 102.864,
+   "end": 103.15
+  },
+  {
+   "line": 20,
+   "text": "因子",
+   "start": 103.162,
+   "end": 103.555
+  },
+  {
+   "line": 20,
+   "text": "不",
+   "start": 103.579,
+   "end": 103.721
+  },
+  {
+   "line": 20,
+   "text": "低于",
+   "start": 103.721,
+   "end": 103.971
+  },
+  {
+   "line": 20,
+   "text": "1",
+   "start": 103.983,
+   "end": 104.186
+  },
+  {
+   "line": 20,
+   "text": "或者",
+   "start": 104.376,
+   "end": 104.602
+  },
+  {
+   "line": 20,
+   "text": "能",
+   "start": 104.626,
+   "end": 104.733
+  },
+  {
+   "line": 20,
+   "text": "被",
+   "start": 104.733,
+   "end": 104.84
+  },
+  {
+   "line": 20,
+   "text": "清算",
+   "start": 104.852,
+   "end": 105.269
+  },
+  {
+   "line": 20,
+   "text": "而且",
+   "start": 105.507,
+   "end": 105.888
+  },
+  {
+   "line": 20,
+   "text": "清算",
+   "start": 105.912,
+   "end": 106.245
+  },
+  {
+   "line": 20,
+   "text": "后",
+   "start": 106.245,
+   "end": 106.46
+  },
+  {
+   "line": 20,
+   "text": "协议",
+   "start": 106.483,
+   "end": 106.805
+  },
+  {
+   "line": 20,
+   "text": "不",
+   "start": 106.817,
+   "end": 106.936
+  },
+  {
+   "line": 20,
+   "text": "亏",
+   "start": 106.936,
+   "end": 107.198
+  },
+  {
+   "line": 21,
+   "text": "如果",
+   "start": 108.334,
+   "end": 108.572
+  },
+  {
+   "line": 21,
+   "text": "它",
+   "start": 108.596,
+   "end": 108.726
+  },
+  {
+   "line": 21,
+   "text": "没",
+   "start": 108.738,
+   "end": 108.905
+  },
+  {
+   "line": 21,
+   "text": "写进",
+   "start": 108.905,
+   "end": 109.191
+  },
+  {
+   "line": 21,
+   "text": "测试",
+   "start": 109.203,
+   "end": 109.691
+  },
+  {
+   "line": 21,
+   "text": "工具",
+   "start": 110.012,
+   "end": 110.643
+  },
+  {
+   "line": 21,
+   "text": "也",
+   "start": 110.75,
+   "end": 110.893
+  },
+  {
+   "line": 21,
+   "text": "不会",
+   "start": 110.905,
+   "end": 111.095
+  },
+  {
+   "line": 21,
+   "text": "发现",
+   "start": 111.107,
+   "end": 111.465
+  },
+  {
+   "line": 22,
+   "text": "核心",
+   "start": 112.634,
+   "end": 113.086
+  },
+  {
+   "line": 22,
+   "text": "数学库",
+   "start": 113.098,
+   "end": 113.717
+  },
+  {
+   "line": 22,
+   "text": "清算",
+   "start": 113.896,
+   "end": 114.324
+  },
+  {
+   "line": 22,
+   "text": "逻辑",
+   "start": 114.336,
+   "end": 114.8
+  },
+  {
+   "line": 22,
+   "text": "跨",
+   "start": 115.134,
+   "end": 115.36
+  },
+  {
+   "line": 22,
+   "text": "链",
+   "start": 115.36,
+   "end": 115.479
+  },
+  {
+   "line": 22,
+   "text": "桥",
+   "start": 115.479,
+   "end": 115.61
+  },
+  {
+   "line": 22,
+   "text": "的",
+   "start": 115.61,
+   "end": 115.693
+  },
+  {
+   "line": 22,
+   "text": "证明",
+   "start": 115.717,
+   "end": 115.979
+  },
+  {
+   "line": 22,
+   "text": "验证",
+   "start": 115.991,
+   "end": 116.395
+  },
+  {
+   "line": 22,
+   "text": "还",
+   "start": 116.681,
+   "end": 116.86
+  },
+  {
+   "line": 22,
+   "text": "可以",
+   "start": 116.86,
+   "end": 117.241
+  },
+  {
+   "line": 22,
+   "text": "再",
+   "start": 117.348,
+   "end": 117.598
+  },
+  {
+   "line": 22,
+   "text": "做",
+   "start": 117.598,
+   "end": 117.705
+  },
+  {
+   "line": 22,
+   "text": "形式",
+   "start": 117.729,
+   "end": 118.086
+  },
+  {
+   "line": 22,
+   "text": "化验",
+   "start": 118.098,
+   "end": 118.396
+  },
+  {
+   "line": 22,
+   "text": "证",
+   "start": 118.396,
+   "end": 118.586
+  },
+  {
+   "line": 23,
+   "text": "它",
+   "start": 119.742,
+   "end": 119.908
+  },
+  {
+   "line": 23,
+   "text": "用",
+   "start": 119.908,
+   "end": 120.063
+  },
+  {
+   "line": 23,
+   "text": "数学",
+   "start": 120.087,
+   "end": 120.444
+  },
+  {
+   "line": 23,
+   "text": "方法",
+   "start": 120.456,
+   "end": 120.73
+  },
+  {
+   "line": 23,
+   "text": "证明",
+   "start": 120.742,
+   "end": 121.242
+  },
+  {
+   "line": 23,
+   "text": "代码",
+   "start": 121.587,
+   "end": 121.884
+  },
+  {
+   "line": 23,
+   "text": "在",
+   "start": 121.896,
+   "end": 122.003
+  },
+  {
+   "line": 23,
+   "text": "所有",
+   "start": 122.015,
+   "end": 122.349
+  },
+  {
+   "line": 23,
+   "text": "输入",
+   "start": 122.361,
+   "end": 122.694
+  },
+  {
+   "line": 23,
+   "text": "和",
+   "start": 122.718,
+   "end": 122.813
+  },
+  {
+   "line": 23,
+   "text": "状态",
+   "start": 122.825,
+   "end": 123.123
+  },
+  {
+   "line": 23,
+   "text": "下",
+   "start": 123.123,
+   "end": 123.432
+  },
+  {
+   "line": 23,
+   "text": "都",
+   "start": 123.527,
+   "end": 123.706
+  },
+  {
+   "line": 23,
+   "text": "满足",
+   "start": 123.706,
+   "end": 124.015
+  },
+  {
+   "line": 23,
+   "text": "规格",
+   "start": 124.027,
+   "end": 124.468
+  },
+  {
+   "line": 24,
+   "text": "代价",
+   "start": 125.626,
+   "end": 125.971
+  },
+  {
+   "line": 24,
+   "text": "是",
+   "start": 125.983,
+   "end": 126.126
+  },
+  {
+   "line": 24,
+   "text": "规格",
+   "start": 126.149,
+   "end": 126.459
+  },
+  {
+   "line": 24,
+   "text": "难",
+   "start": 126.471,
+   "end": 126.673
+  },
+  {
+   "line": 24,
+   "text": "写",
+   "start": 126.673,
+   "end": 127.018
+  },
+  {
+   "line": 24,
+   "text": "需要",
+   "start": 127.233,
+   "end": 127.554
+  },
+  {
+   "line": 24,
+   "text": "专门",
+   "start": 127.578,
+   "end": 127.852
+  },
+  {
+   "line": 24,
+   "text": "的",
+   "start": 127.852,
+   "end": 127.923
+  },
+  {
+   "line": 24,
+   "text": "人才",
+   "start": 127.935,
+   "end": 128.435
+  }
+ ],
+ "captions": [
+  {
+   "text": "测试之前",
+   "start": 1.648,
+   "end": 2.651,
+   "id": "c0"
+  },
+  {
+   "text": "先要写清楚测什么",
+   "start": 2.79,
+   "end": 4.151,
+   "id": "c1"
+  },
+  {
+   "text": "规格里 写出每个函数调用前要满足什么",
+   "start": 5.132,
+   "end": 8.694,
+   "id": "c2"
+  },
+  {
+   "text": "调用后保证什么",
+   "start": 8.774,
+   "end": 10.111,
+   "id": "c3"
+  },
+  {
+   "text": "再写出系统的不变量",
+   "start": 11.112,
+   "end": 12.71,
+   "id": "c4"
+  },
+  {
+   "text": "也就是任何时候都必须成立的性质",
+   "start": 12.921,
+   "end": 15.591,
+   "id": "c5"
+  },
+  {
+   "text": "还要列出每个特权角色",
+   "start": 16.588,
+   "end": 18.329,
+   "id": "c6"
+  },
+  {
+   "text": "最多能造成多大破坏",
+   "start": 18.48,
+   "end": 20.21,
+   "id": "c7"
+  },
+  {
+   "text": "有了这些",
+   "start": 21.2,
+   "end": 22.072,
+   "id": "c8"
+  },
+  {
+   "text": "测试分三层",
+   "start": 22.128,
+   "end": 23.358,
+   "id": "c9"
+  },
+  {
+   "text": "第一层 单元测试",
+   "start": 24.324,
+   "end": 26.172,
+   "id": "c10"
+  },
+  {
+   "text": "验证你想到的情况",
+   "start": 26.359,
+   "end": 27.625,
+   "id": "c11"
+  },
+  {
+   "text": "第二层 模糊测试",
+   "start": 28.624,
+   "end": 30.52,
+   "id": "c12"
+  },
+  {
+   "text": "让工具生成大量随机输入",
+   "start": 30.54,
+   "end": 32.782,
+   "id": "c13"
+  },
+  {
+   "text": "比如一个金库 存进去",
+   "start": 33.764,
+   "end": 35.862,
+   "id": "c14"
+  },
+  {
+   "text": "马上取出来",
+   "start": 35.906,
+   "end": 36.993,
+   "id": "c15"
+  },
+  {
+   "text": "用户不能多拿",
+   "start": 37.145,
+   "end": 38.481,
+   "id": "c16"
+  },
+  {
+   "text": "工具会换着各种随机金额",
+   "start": 39.456,
+   "end": 41.53,
+   "id": "c17"
+  },
+  {
+   "text": "一遍遍去试",
+   "start": 41.61,
+   "end": 42.578,
+   "id": "c18"
+  },
+  {
+   "text": "只要有一个金额",
+   "start": 43.564,
+   "end": 44.865,
+   "id": "c19"
+  },
+  {
+   "text": "让取回的比存入的多",
+   "start": 44.956,
+   "end": 46.519,
+   "id": "c20"
+  },
+  {
+   "text": "测试就失败",
+   "start": 46.611,
+   "end": 47.698,
+   "id": "c21"
+  },
+  {
+   "text": "这条性质背后的规则是",
+   "start": 48.68,
+   "end": 50.493,
+   "id": "c22"
+  },
+  {
+   "text": "舍入必须偏向金库",
+   "start": 50.513,
+   "end": 52.338,
+   "id": "c23"
+  },
+  {
+   "text": "第三层 不变量测试",
+   "start": 53.34,
+   "end": 55.343,
+   "id": "c24"
+  },
+  {
+   "text": "随机的不是参数",
+   "start": 55.447,
+   "end": 56.867,
+   "id": "c25"
+  },
+  {
+   "text": "是调用的顺序",
+   "start": 56.887,
+   "end": 57.974,
+   "id": "c26"
+  },
+  {
+   "text": "比如一个银行合约 存款 取款 转账",
+   "start": 58.96,
+   "end": 62.832,
+   "id": "c27"
+  },
+  {
+   "text": "被随机组合着连续调用",
+   "start": 62.936,
+   "end": 64.749,
+   "id": "c28"
+  },
+  {
+   "text": "每一步之后都检查一次",
+   "start": 65.732,
+   "end": 67.568,
+   "id": "c29"
+  },
+  {
+   "text": "银行的余额",
+   "start": 67.755,
+   "end": 68.712,
+   "id": "c30"
+  },
+  {
+   "text": "不少于所有存款加起来",
+   "start": 68.732,
+   "end": 70.521,
+   "id": "c31"
+  },
+  {
+   "text": "先猜一道题",
+   "start": 71.496,
+   "end": 72.82,
+   "id": "c32"
+  },
+  {
+   "text": "一个重入漏洞",
+   "start": 73.804,
+   "end": 75.033,
+   "id": "c33"
+  },
+  {
+   "text": "要先调用存款",
+   "start": 75.125,
+   "end": 76.569,
+   "id": "c34"
+  },
+  {
+   "text": "再在回调里调用转账",
+   "start": 76.696,
+   "end": 78.235,
+   "id": "c35"
+  },
+  {
+   "text": "才会触发",
+   "start": 78.316,
+   "end": 79.212,
+   "id": "c36"
+  },
+  {
+   "text": "只随机参数的模糊测试",
+   "start": 80.192,
+   "end": 82.266,
+   "id": "c37"
+  },
+  {
+   "text": "能发现它吗",
+   "start": 82.501,
+   "end": 83.647,
+   "id": "c38"
+  },
+  {
+   "text": "通常不能",
+   "start": 84.916,
+   "end": 85.871,
+   "id": "c39"
+  },
+  {
+   "text": "因为它不会打乱调用顺序",
+   "start": 86.023,
+   "end": 87.776,
+   "id": "c40"
+  },
+  {
+   "text": "不变量测试生成随机调用序列",
+   "start": 88.76,
+   "end": 91.227,
+   "id": "c41"
+  },
+  {
+   "text": "再配上能触发回调的封装合约",
+   "start": 91.283,
+   "end": 93.609,
+   "id": "c42"
+  },
+  {
+   "text": "才有机会发现",
+   "start": 93.629,
+   "end": 94.703,
+   "id": "c43"
+  },
+  {
+   "text": "但要注意",
+   "start": 95.7,
+   "end": 96.655,
+   "id": "c44"
+  },
+  {
+   "text": "不变量测试只检查你写下的不变量",
+   "start": 96.842,
+   "end": 99.691,
+   "id": "c45"
+  },
+  {
+   "text": "Euler 事故里那一条",
+   "start": 100.648,
+   "end": 102.103,
+   "id": "c46"
+  },
+  {
+   "text": "每个账户健康因子不低于 1",
+   "start": 102.183,
+   "end": 104.306,
+   "id": "c47"
+  },
+  {
+   "text": "或者能被清算",
+   "start": 104.326,
+   "end": 105.389,
+   "id": "c48"
+  },
+  {
+   "text": "而且清算后协议不亏",
+   "start": 105.457,
+   "end": 107.318,
+   "id": "c49"
+  },
+  {
+   "text": "如果它没写进测试",
+   "start": 108.284,
+   "end": 109.811,
+   "id": "c50"
+  },
+  {
+   "text": "工具也不会发现",
+   "start": 109.962,
+   "end": 111.585,
+   "id": "c51"
+  },
+  {
+   "text": "核心数学库",
+   "start": 112.584,
+   "end": 113.826,
+   "id": "c52"
+  },
+  {
+   "text": "清算逻辑",
+   "start": 113.846,
+   "end": 114.92,
+   "id": "c53"
+  },
+  {
+   "text": "跨链桥的证明验证",
+   "start": 115.084,
+   "end": 116.515,
+   "id": "c54"
+  },
+  {
+   "text": "还可以再做形式化验证",
+   "start": 116.631,
+   "end": 118.706,
+   "id": "c55"
+  },
+  {
+   "text": "它用数学方法证明",
+   "start": 119.692,
+   "end": 121.362,
+   "id": "c56"
+  },
+  {
+   "text": "代码在所有输入和状态下都满足规格",
+   "start": 121.537,
+   "end": 124.588,
+   "id": "c57"
+  },
+  {
+   "text": "代价是规格难写",
+   "start": 125.576,
+   "end": 127.138,
+   "id": "c58"
+  },
+  {
+   "text": "需要专门的人才",
+   "start": 127.183,
+   "end": 128.555,
+   "id": "c59"
+  }
+ ]
+}

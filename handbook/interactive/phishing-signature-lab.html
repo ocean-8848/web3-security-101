@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>钓鱼签名识别</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+  .wallet { border: 1px solid var(--border); border-radius: 12px; background: var(--surface); overflow: hidden; }
+  .wallet .bar { display: flex; justify-content: space-between; gap: 8px; align-items: center; padding: 10px 14px; background: var(--surface-2); font-size: 13px; }
+  .wallet .site { font-family: var(--mono); font-size: 12.5px; word-break: break-all; }
+  .wallet .body { padding: 14px; }
+  .wallet .kind { font-size: 12px; color: var(--text-2); }
+  .wallet .title { font-size: 17px; font-weight: 650; margin: 2px 0 8px; }
+  .raw { font-family: var(--mono); font-size: 12px; background: var(--surface-2); border-radius: 8px; padding: 10px; white-space: pre-wrap; word-break: break-all; max-height: 220px; overflow: auto; }
+  .dec { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; font-size: 13px; margin-top: 6px; }
+  .dec .k { color: var(--text-2); }
+  .dec .v { font-family: var(--mono); font-size: 12.5px; word-break: break-all; }
+  .dec .v.bad { color: var(--sell); font-weight: 700; }
+  .dec .v.good { color: var(--buy); }
+  .view-toggle { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .view-toggle button { border: 0; border-radius: 0; background: transparent; padding: 5px 12px; font-size: 13px; }
+  .view-toggle button[aria-pressed="true"] { background: var(--accent-soft); color: var(--text); font-weight: 600; }
+  .answer { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .progress { display: flex; gap: 4px; flex-wrap: wrap; margin: 8px 0 0; }
+  .progress span { width: 22px; height: 6px; border-radius: 3px; background: var(--border); }
+  .progress span.ok { background: var(--buy); } .progress span.bad { background: var(--sell); } .progress span.cur { background: var(--accent); }
+  .flags { margin: 8px 0 0; padding-left: 18px; font-size: 13.5px; }
+  .flags li { margin: 3px 0; }
+  .verdict { font-weight: 700; font-size: 15px; }
+  .summary td:first-child { white-space: nowrap; }
+  .score { font-size: 15px; font-weight: 650; margin: 0 0 8px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="back" href="index.html">← 交互实验目录</a>
+    <h1>钓鱼签名识别</h1>
+  </header>
+  <p class="lead">10 个钱包签名请求，来自 10 个不同网站。每个请求先看钱包的原始显示，再决定签还是拒。然后切到"解码视图"，看这个签名到底授权了什么。配套章节：<a href="../chapters/19-user-scams.md">19 用户侧诈骗</a>、<a href="../chapters/09-mev-signatures.md">09 MEV 与签名安全</a>、<a href="../chapters/18-wallet-key-management.md">18 钱包与密钥管理</a>、<a href="../chapters/20-frontend-dns-supply-chain.md">20 前端与供应链</a>。</p>
+
+  <div class="card">
+    <h3>怎么玩</h3>
+    <ol class="small">
+      <li>读钱包弹窗：来源网站、请求类型、原始数据。</li>
+      <li>点"签名"或"拒绝"。</li>
+      <li>看解码结果和危险信号。红色字段就是攻击者想要的东西。</li>
+    </ol>
+    <p class="small muted">所有地址、域名和数据都是示例。地址是随机生成的，不对应任何真实账户。</p>
+  </div>
+
+  <h2>签名请求 <span id="idx" class="muted small"></span></h2>
+  <div class="progress" id="progress"></div>
+  <div class="grid cols-2" style="margin-top:12px">
+    <div class="wallet">
+      <div class="bar"><span>🦊 钱包签名请求</span><span class="site" id="site"></span></div>
+      <div class="body">
+        <div class="kind" id="kind"></div>
+        <div class="title" id="title"></div>
+        <div class="btn-row" style="margin:0 0 8px">
+          <span class="view-toggle" role="group" aria-label="显示方式">
+            <button id="vRaw" aria-pressed="true">钱包原始显示</button>
+            <button id="vDec" aria-pressed="false">解码视图</button>
+          </span>
+        </div>
+        <div id="rawBox" class="raw"></div>
+        <div id="decBox" class="dec" hidden></div>
+        <div class="answer">
+          <button class="buy" id="btnSign">签名</button>
+          <button class="sell" id="btnReject">拒绝</button>
+        </div>
+      </div>
+    </div>
+    <div class="card" id="result">
+      <h3>结果</h3>
+      <p class="small muted">先做出选择，这里会显示判断依据。</p>
+    </div>
+  </div>
+  <div class="btn-row"><button id="prev">← 上一个</button><button class="primary" id="next">下一个 →</button><button id="restart">重新开始</button></div>
+
+  <h2>总结</h2>
+  <div class="card">
+    <p class="score" id="score">还没有答题。</p>
+    <div class="table-wrap"><table class="summary"><thead><tr><th>#</th><th>请求</th><th>正确做法</th><th>你的选择</th></tr></thead><tbody id="sumBody"></tbody></table></div>
+  </div>
+
+  <h2>五条判断规则</h2>
+  <div class="card">
+    <ol class="small">
+      <li><strong>看授权对象</strong>：<code>spender</code>、<code>operator</code>、委托合约地址，是不是你要用的那个协议的官方合约？</li>
+      <li><strong>看数额</strong>：<code>2²⁵⁶−1</code>（无限）或远大于本次操作的数额，就是危险信号。</li>
+      <li><strong>看期限</strong>：<code>deadline</code> 或 <code>expiration</code> 设到几十年后，签名会长期有效。</li>
+      <li><strong>看类型</strong>：<code>eth_sign</code> 原始哈希、<code>setApprovalForAll</code>、Permit2 批量、7702 委托、多签 <code>DELEGATECALL</code>，默认拒绝，除非你能逐字段解释。</li>
+      <li><strong>看域名</strong>：签名请求里的域名和地址栏一致吗？"免费领取""空投""紧急"是诱导信号。</li>
+    </ol>
+  </div>
+
+  <footer class="note">本页只用于识别钓鱼签名。示例数据不对应真实地址。真实钱包的显示方式因钱包和版本而异。</footer>
+</div>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const MAX = 'f'.repeat(64);
+  const pad = h => h.replace(/^0x/, '').toLowerCase().padStart(64, '0');
+  const cd = (sel, ...args) => '0x' + sel + args.map(pad).join('');
+  const A = {
+    evil: '0x7a3fd2c16e0b94a55e1cbe02f8c0b4e9d1a6c3f0',
+    evil2: '0x9c41e07b2d5af8836e10c4b7fd29a05e3b81d74c',
+    me: '0x3b12aa90c4e7f1d06a28e5b9c03f7d41e8a6b215',
+    usdt: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+    usdc: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+    nft: '0x5d8e2b0c7a91f4e36c0b18d2a7e4f95c31b06a82',
+    permit2: '0x000000000022d473030f116ddee9f6b43ac78ba3',
+    router: '0xe592427a0aece92de3edee1f18e0157c05861564',
+    aave: '0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2',
+    safe: '0x1db92e2eebc8e0c075a02bea49a2935bcd2dfcf4',
+    evilImpl: '0x96221423681a6d52e184d440a8efcebb105c7242',
+  };
+  const S = [
+    { site: 'claim-usdt-airdrop.xyz', kind: 'eth_sendTransaction · 发送交易', title: '领取 500 USDT 空投',
+      raw: 'To: ' + A.usdt + '\nValue: 0 ETH\nData:\n' + cd('095ea7b3', A.evil, MAX),
+      dec: [['合约', 'USDT（' + A.usdt.slice(0, 10) + '…）'], ['函数', 'approve(spender, amount)'], ['spender', A.evil, 'bad'], ['amount', '2²⁵⁶−1（无限）', 'bad']],
+      ans: 'reject', flags: ['"领取空投"实际是 approve：把你全部 USDT 的转账权限给了一个陌生地址。', 'spender 是普通地址，不是任何协议合约。', '数额是无限。签完后攻击者随时可以用 transferFrom 转走余额。'],
+      fix: '已经签了：立刻到授权管理工具撤销该授权（approve 为 0），并把剩余资产转到新地址。' },
+    { site: 'app-uniswap.org-claim.io', kind: 'eth_signTypedData_v4 · 链下签名（不花 Gas）', title: '验证钱包所有权',
+      raw: JSON.stringify({ domain: { name: 'USD Coin', version: '2', chainId: 1, verifyingContract: A.usdc }, primaryType: 'Permit', message: { owner: A.me, spender: A.evil, value: '115792089237316195423570985008687907853269984665640564039457584007913129639935', nonce: 0, deadline: 4102444800 } }, null, 1),
+      dec: [['类型', 'EIP-2612 Permit（USDC）'], ['owner', A.me + '（你）', 'good'], ['spender', A.evil, 'bad'], ['value', '2²⁵⁶−1（无限）', 'bad'], ['deadline', '4102444800 = 2100-01-01', 'bad']],
+      ans: 'reject', flags: ['"验证所有权"不需要 Permit。Permit 是一张"授权支票"。', '链下签名不花 Gas、钱包里没有交易记录，用户最容易放松警惕。', '攻击者拿到签名后自己上链调用 permit + transferFrom。', '域名 app-uniswap.org-claim.io 的真实主域是 org-claim.io，不是 uniswap.org。'],
+      fix: 'Permit 签名一旦被提交就无法撤回。只能抢在攻击者之前转走资产，或在被提交后撤销授权。' },
+    { site: 'free-mint-apes.club', kind: 'eth_sendTransaction · 发送交易', title: '免费铸造 1 个 NFT',
+      raw: 'To: ' + A.nft + '\nValue: 0 ETH\nData:\n' + cd('a22cb465', A.evil2, '1'),
+      dec: [['合约', '你已持有的 NFT 系列 ' + A.nft.slice(0, 10) + '…'], ['函数', 'setApprovalForAll(operator, approved)'], ['operator', A.evil2, 'bad'], ['approved', 'true（该系列全部 NFT）', 'bad']],
+      ans: 'reject', flags: ['"免费铸造"调用的不是 mint，而是 setApprovalForAll。', '它授权 operator 转走你在这个系列里的所有 NFT，包括以后买入的。', '合约是你已持有的系列，不是新项目。'],
+      fix: '撤销 setApprovalForAll（设为 false），把高价值 NFT 转到冷钱包。' },
+    { site: 'pancake-rewards.finance', kind: 'eth_signTypedData_v4 · 链下签名（不花 Gas）', title: '领取流动性奖励',
+      raw: JSON.stringify({ domain: { name: 'Permit2', chainId: 1, verifyingContract: A.permit2 }, primaryType: 'PermitBatch', message: { details: [{ token: A.usdt, amount: '1461501637330902918203684832716283019655932542975', expiration: 1893456000, nonce: 0 }, { token: A.usdc, amount: '1461501637330902918203684832716283019655932542975', expiration: 1893456000, nonce: 0 }], spender: A.evil, sigDeadline: 1893456000 } }, null, 1),
+      dec: [['类型', 'Permit2 PermitBatch（批量）'], ['token', 'USDT、USDC 两种'], ['amount', '2¹⁶⁰−1（Permit2 的"无限"）', 'bad'], ['spender', A.evil, 'bad'], ['expiration', '1893456000 = 2030-01-01', 'bad']],
+      ans: 'reject', flags: ['Permit2 是合法合约。危险在于你通过它把多种代币一次授权给陌生 spender。', '你以前对 Permit2 做过的 approve，让这张签名可以直接生效。', '批量 + 无限 + 长期，是 Drainer 套件最喜欢的组合。'],
+      fix: '在授权管理工具里检查 Permit2 下的子授权，并撤销。' },
+    { site: 'wallet-upgrade-7702.app', kind: 'EIP-7702 授权 · 把你的地址委托给合约', title: '升级为智能账户，享受免 Gas',
+      raw: 'Authorization:\n  chainId: 0\n  address: ' + A.evilImpl + '\n  nonce: 12',
+      dec: [['类型', 'EIP-7702 委托授权'], ['chainId', '0（所有 EVM 链都生效）', 'bad'], ['委托合约', A.evilImpl + '（未验证源码）', 'bad'], ['效果', '你的地址执行该合约的代码，合约可以转走全部资产', 'bad']],
+      ans: 'reject', flags: ['7702 授权让你的普通地址运行别人的代码。代码可以随意转走 ETH、代币和 NFT。', 'chainId 为 0 表示授权在所有链上有效。', '正规钱包只会委托给自己审计过的实现合约，并且通常在钱包内完成，不会由网站发起。'],
+      fix: '再签一个委托给 0 地址的 7702 授权来清除委托，并转移资产。见 15 章。' },
+    { site: 'app.example-dex.com', kind: 'personal_sign · 登录消息', title: '登录 Example DEX',
+      raw: 'app.example-dex.com wants you to sign in with your Ethereum account:\n' + A.me + '\n\nSign in to Example DEX.\n\nURI: https://app.example-dex.com\nVersion: 1\nChain ID: 1\nNonce: 8f3k2LmQ\nIssued At: 2026-11-08T09:12:00Z',
+      dec: [['类型', 'EIP-4361 Sign-In with Ethereum'], ['域名', 'app.example-dex.com（与地址栏一致）', 'good'], ['授权内容', '无，仅证明你控制该地址', 'good'], ['Nonce / 时间', '一次性随机数 + 签发时间', 'good']],
+      ans: 'sign', flags: ['这是标准登录消息：可读的纯文本，不含 spender、数额或合约调用。', '要核对的是：消息里的域名和 URI 与地址栏一致。'],
+      fix: '如果消息里的域名和地址栏不一致，就拒绝：这是在别的网站冒用你的登录。' },
+    { site: 'app.uniswap.org', kind: 'eth_sendTransaction · 发送交易', title: '兑换 1 ETH → USDC',
+      raw: 'To: ' + A.router + '\nValue: 1 ETH\nData:\n' + cd('414bf389', '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', A.usdc, 'bb8', A.me, '6a0e5c40', 'de0b6b3a7640000', 'b6a1a9c0', '0'),
+      dec: [['合约', 'Uniswap V3 SwapRouter（官方地址）', 'good'], ['函数', 'exactInputSingle'], ['recipient', A.me + '（你自己）', 'good'], ['amountIn', '1 ETH'], ['amountOutMinimum', '3,064 USDC（示例，约 0.5% 滑点）', 'good']],
+      ans: 'sign', flags: ['合约是官方路由，收款人是你自己，最少收到的数额合理。', '仍要核对：地址栏是官方域名；收款人不是陌生地址；滑点没有设成 100%。'],
+      fix: '如果 recipient 不是你，或 amountOutMinimum 为 0，就拒绝。' },
+    { site: 'app.safe.global（页面已被篡改）', kind: 'Safe 多签 · eth_signTypedData_v4', title: '例行转账：冷钱包 → 热钱包',
+      raw: JSON.stringify({ domain: { chainId: 1, verifyingContract: A.safe }, primaryType: 'SafeTx', message: { to: A.evilImpl, value: 0, data: '0xa9059cbb' + pad(A.evil2) + pad('0'), operation: 1, safeTxGas: 45746, baseGas: 0, gasPrice: 0, gasToken: '0x0000000000000000000000000000000000000000', refundReceiver: '0x0000000000000000000000000000000000000000', nonce: 71 } }, null, 1),
+      dec: [['界面显示', '"转账 30,000 ETH 到热钱包"'], ['to', A.evilImpl + '（不是热钱包）', 'bad'], ['operation', '1 = DELEGATECALL', 'bad'], ['data', 'transfer(…) 的选择器，但在 delegatecall 下执行攻击合约代码', 'bad'], ['效果', '攻击合约在 Safe 的存储上下文中运行，可改写实现地址', 'bad']],
+      ans: 'reject', flags: ['界面写着"转账"，但真正被签名的是 operation=1（DELEGATECALL）到陌生合约。', '这正是 2025 年 Bybit 事件的形态：签名人看到的界面和签名内容不一致。', '例行转账应该是 operation=0（CALL），to 是代币合约或热钱包地址。'],
+      fix: '多签签名人在硬件钱包上独立核对 to、operation、data 和 safeTxHash。见 18、20 章。' },
+    { site: 'nft-verify.support', kind: 'eth_sign · 签名原始哈希', title: '验证你的 NFT 持有',
+      raw: 'Message (32 bytes):\n0x4b2a7c9e0d81f53a6e2c10b94f7d8a35c6e1b0f29d43a7e8c51f06b2d9e3a174',
+      dec: [['类型', 'eth_sign：对任意 32 字节哈希签名'], ['可读内容', '无', 'bad'], ['可能代表', '一笔完整的交易哈希、一张 Permit、一份多签授权', 'bad']],
+      ans: 'reject', flags: ['eth_sign 签的是一个看不懂的哈希。它可以是任何东西的哈希，包括转走全部资产的交易。', '多数主流钱包默认禁用或强警告 eth_sign。', '正规 DApp 不需要你签原始哈希。'],
+      fix: '在钱包设置里保持 eth_sign 关闭。' },
+    { site: 'app.aave.com', kind: 'eth_sendTransaction · 发送交易', title: '授权 100 USDC 用于存款',
+      raw: 'To: ' + A.usdc + '\nValue: 0 ETH\nData:\n' + cd('095ea7b3', A.aave, '5f5e100'),
+      dec: [['合约', 'USDC（官方地址）', 'good'], ['函数', 'approve(spender, amount)'], ['spender', 'Aave V3 Pool（官方地址）', 'good'], ['amount', '100 USDC（与本次存款一致）', 'good']],
+      ans: 'sign', flags: ['spender 是你要使用的协议的官方合约，数额与本次操作一致。', '这是 approve 的正确用法：精确数额，用完即止。'],
+      fix: '定期检查授权列表，撤销不再使用的协议授权。' },
+  ];
+  let i = 0, view = 'raw';
+  const picks = new Array(S.length).fill(null);
+  try { const s = JSON.parse(localStorage.getItem('phishLab') || 'null'); if (Array.isArray(s) && s.length === S.length) s.forEach((v, k) => picks[k] = v); } catch (e) {}
+  const save = () => { try { localStorage.setItem('phishLab', JSON.stringify(picks)); } catch (e) {} };
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const label = a => a === 'sign' ? '签名' : '拒绝';
+
+  function render() {
+    const s = S[i];
+    $('idx').textContent = (i + 1) + ' / ' + S.length;
+    $('site').textContent = s.site;
+    $('kind').textContent = s.kind;
+    $('title').textContent = s.title;
+    $('rawBox').textContent = s.raw;
+    $('decBox').innerHTML = s.dec.map(([k, v, c]) => '<span class="k">' + esc(k) + '</span><span class="v ' + (c || '') + '">' + esc(v) + '</span>').join('');
+    setView(view);
+    $('progress').innerHTML = S.map((x, k) => '<span class="' + (k === i ? 'cur' : picks[k] == null ? '' : picks[k] === x.ans ? 'ok' : 'bad') + '"></span>').join('');
+    const p = picks[i];
+    if (p == null) { $('result').innerHTML = '<h3>结果</h3><p class="small muted">先做出选择，这里会显示判断依据。</p>'; }
+    else {
+      const ok = p === s.ans;
+      $('result').innerHTML = '<h3>结果</h3><p class="verdict" style="color:' + (ok ? 'var(--buy)' : 'var(--sell)') + '">' + (ok ? '✓ 判断正确' : '✗ 判断错误') + '：正确做法是' + label(s.ans) + '</p>' +
+        '<ul class="flags">' + s.flags.map(f => '<li>' + esc(f) + '</li>').join('') + '</ul>' +
+        '<div class="callout ' + (s.ans === 'reject' ? 'warn' : 'info') + ' small">' + esc(s.fix) + '</div>';
+      if (view === 'raw') setView('dec');
+    }
+    $('prev').disabled = i === 0; $('next').disabled = i === S.length - 1;
+    summary();
+  }
+  function setView(v) {
+    view = v;
+    $('vRaw').setAttribute('aria-pressed', v === 'raw'); $('vDec').setAttribute('aria-pressed', v === 'dec');
+    $('rawBox').hidden = v !== 'raw'; $('decBox').hidden = v !== 'dec';
+  }
+  function summary() {
+    const done = picks.filter(p => p != null).length, right = picks.filter((p, k) => p === S[k].ans).length;
+    $('score').textContent = done ? '已答 ' + done + ' / ' + S.length + '，正确 ' + right + '。' + (done === S.length ? (right === S.length ? ' 全对。' : ' 回到红色的题目，切到解码视图再看一遍。') : '') : '还没有答题。';
+    $('sumBody').innerHTML = S.map((s, k) => '<tr><td>' + (k + 1) + '</td><td>' + esc(s.title) + '<div class="small muted">' + esc(s.kind) + '</div></td><td>' + label(s.ans) + '</td><td>' + (picks[k] == null ? '—' : (picks[k] === s.ans ? '<span class="pill buy">' : '<span class="pill sell">') + label(picks[k]) + '</span>') + '</td></tr>').join('');
+  }
+  const pick = a => { picks[i] = a; save(); render(); };
+  $('btnSign').onclick = () => pick('sign');
+  $('btnReject').onclick = () => pick('reject');
+  $('vRaw').onclick = () => setView('raw');
+  $('vDec').onclick = () => setView('dec');
+  $('prev').onclick = () => { if (i > 0) { i--; view = 'raw'; render(); } };
+  $('next').onclick = () => { if (i < S.length - 1) { i++; view = 'raw'; render(); } };
+  $('restart').onclick = () => { picks.fill(null); save(); i = 0; view = 'raw'; render(); };
+  render();
+})();
+</script>
+<script>
+/* 在单文件阅读版的 iframe 中打开时，把章节链接交给外层阅读器处理 */
+(function () {
+  if (window.parent === window) return;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href');
+    if (/\.md(#|$)/.test(h)) { e.preventDefault(); window.parent.postMessage({ cexNavMd: h }, '*'); }
+  });
+})();
+</script>
+</body>
+</html>

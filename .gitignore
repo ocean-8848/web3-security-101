@@ -2,9 +2,9 @@
 /*
 !/.gitignore
 !/README.md
-!/Web3-Security/
+!/handbook/
 !/learning-site/
-!/practice-example-code/
+!/code/
 
 # 系统与编辑器
 .DS_Store
@@ -12,27 +12,35 @@
 
 # 依赖与构建缓存
 node_modules/
-**/practice-example-code/**/lib/
-!**/practice-example-code/ops/lib/
-**/practice-example-code/**/out/
-**/practice-example-code/**/out-*/
-**/practice-example-code/**/cache/
-**/practice-example-code/**/broadcast/
+**/code/**/lib/
+!**/code/offchain-ops/lib/
+**/code/**/out/
+**/code/**/out-*/
+**/code/**/cache/
+**/code/**/broadcast/
 
 # 视频成品与媒体（只保留脚本、幻灯片和工具源码）
-Web3-Security/video/output/
+handbook/video/output/
 # 拟物化 / 3b1b 视频工程：成片、字体、配乐只放本地（主 checkout），不入库
-Web3-Security/video/skeuo/ep*/out
-Web3-Security/video/skeuo/**/fonts/
-Web3-Security/video/skeuo/**/*.woff2
-Web3-Security/video/skeuo/**/*.ttf
-Web3-Security/video/skeuo/**/*.mp3
-Web3-Security/video/skeuo/**/.hyperframes/
-Web3-Security/video/skeuo/**/renders/
-Web3-Security/video/skeuo/**/review/
-Web3-Security/video/3b1b/output
+handbook/video/skeuo/ep*/out
+handbook/video/skeuo/**/fonts/
+handbook/video/skeuo/**/*.woff2
+handbook/video/skeuo/**/*.ttf
+handbook/video/skeuo/**/*.mp3
+handbook/video/skeuo/**/.hyperframes/
+handbook/video/skeuo/**/renders/
+handbook/video/skeuo/**/review/
+handbook/video/3b1b/output
 *.mp4
 *.mov
 *.webm
 *.wav
 *.mp3
+
+# 构建产物（本仓库能重建：node handbook/tools/build.mjs、python3 learning-site/build.py）
+handbook/dist/
+handbook/preview.html
+learning-site/security/
+
+# Python 缓存
+__pycache__/

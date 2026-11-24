@@ -1,0 +1,1774 @@
+{
+ "id": "seg6",
+ "title": "接入一条新链",
+ "pill": 6,
+ "total": 96.72,
+ "lines": [
+  {
+   "id": "seg6-00",
+   "text": "放到一个具体场景里。交易所要接入一条新链。",
+   "spoken": "放到一个具体场景里。交易所要接入一条新链。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep13/audio/lines/seg6-00.mp3",
+   "start": 1.6,
+   "dur": 4.488,
+   "speechStart": 1.698,
+   "speechEnd": 5.255
+  },
+  {
+   "id": "seg6-01",
+   "text": "照搬以太坊的接入逻辑，是假充值、错账和资金丢失的主要来源。",
+   "spoken": "照搬以太坊的接入逻辑，是假充值、错账和资金丢失的主要来源。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep13/audio/lines/seg6-01.mp3",
+   "start": 6.308,
+   "dur": 6.576,
+   "speechStart": 6.406,
+   "speechEnd": 12.048
+  },
+  {
+   "id": "seg6-02",
+   "text": "接入的人，先问这几件事。",
+   "spoken": "接入的人，先问这几件事。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep13/audio/lines/seg6-02.mp3",
+   "start": 13.104,
+   "dur": 2.928,
+   "speechStart": 13.202,
+   "speechEnd": 15.202
+  },
+  {
+   "id": "seg6-03",
+   "text": "失败的交易会不会上链，实际到账金额怎么读。",
+   "spoken": "失败的交易会不会上链，实际到账金额怎么读。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep13/audio/lines/seg6-03.mp3",
+   "start": 16.252,
+   "dur": 4.584,
+   "speechStart": 16.35,
+   "speechEnd": 20.016
+  },
+  {
+   "id": "seg6-04",
+   "text": "代币由什么唯一标识，合约地址、mint 地址、对象类型，还是 denom。有没有同名假币。",
+   "spoken": "代币由什么唯一标识，合约地址、mint 地址、对象类型，还是 denom。有没有同名假币。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep13/audio/lines/seg6-04.mp3",
+   "start": 21.056,
+   "dur": 8.304,
+   "speechStart": 21.154,
+   "speechEnd": 28.508
+  },
+  {
+   "id": "seg6-05",
+   "text": "多少个区块之后不可回滚，历史上有没有停链。",
+   "spoken": "多少个区块之后不可回滚，历史上有没有停链。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep13/audio/lines/seg6-05.mp3",
+   "start": 29.58,
+   "dur": 4.44,
+   "speechStart": 29.678,
+   "speechEnd": 33.19
+  },
+  {
+   "id": "seg6-06",
+   "text": "有没有两个独立运营的节点。现有的 HSM 和 MPC，支不支持这条链的签名算法。",
+   "spoken": "有没有两个独立运营的节点。现有的 HSM 和 MPC，支不支持这条链的签名算法。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep13/audio/lines/seg6-06.mp3",
+   "start": 34.24,
+   "dur": 7.416,
+   "speechStart": 34.338,
+   "speechEnd": 40.811
+  },
+  {
+   "id": "seg6-07",
+   "text": "资产是否依赖链下索引器，用哪个版本，多个索引器的结果是否一致。",
+   "spoken": "资产是否依赖链下索引器，用哪个版本，多个索引器的结果是否一致。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep13/audio/lines/seg6-07.mp3",
+   "start": 41.876,
+   "dur": 5.976,
+   "speechStart": 41.974,
+   "speechEnd": 46.997
+  },
+  {
+   "id": "seg6-08",
+   "text": "链官方的 SDK 也是供应链。签名服务不要和业务代码共用依赖。",
+   "spoken": "链官方的 SDK 也是公应链。签名服务不要和业务代码共用依赖。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep13/audio/lines/seg6-08.mp3",
+   "start": 48.072,
+   "dur": 6.528,
+   "speechStart": 48.17,
+   "speechEnd": 53.751
+  },
+  {
+   "id": "seg6-09",
+   "text": "普通用户，跨链前确认代币的唯一标识，不只看名称。在 Solana 上签名时，看到陌生程序，不签。",
+   "spoken": "普通用户，跨链前确认代币的唯一标识，不只看名称。在 Solana 上签名时，看到陌生程序，不签。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep13/audio/lines/seg6-09.mp3",
+   "start": 54.82,
+   "dur": 9.384,
+   "speechStart": 54.918,
+   "speechEnd": 63.368
+  },
+  {
+   "id": "seg6-10",
+   "text": "回到开头的问题。Solana 程序要读的账户，由谁提供？",
+   "spoken": "回到开头的问题。Solana 程序要读的账户，由谁提供？",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep13/audio/lines/seg6-10.mp3",
+   "start": 64.424,
+   "dur": 5.208,
+   "speechStart": 64.522,
+   "speechEnd": 68.793
+  },
+  {
+   "id": "seg6-11",
+   "text": "由调用者在交易里传进来。所以程序必须自己核对每个账户的 owner、类型和地址。",
+   "spoken": "由掉用者在交易里传进来。所以程序必须自己核对每个账户的 owner、类型和地址。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep13/audio/lines/seg6-11.mp3",
+   "start": 70.132,
+   "dur": 7.896,
+   "speechStart": 70.23,
+   "speechEnd": 77.192
+  },
+  {
+   "id": "seg6-12",
+   "text": "这个答案只对 Solana 成立。换一条链，输入换了样子。",
+   "spoken": "这个答案只对 Solana 成立。换一条链，输入换了样子。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep13/audio/lines/seg6-12.mp3",
+   "start": 78.248,
+   "dur": 5.496,
+   "speechStart": 78.346,
+   "speechEnd": 82.891
+  },
+  {
+   "id": "seg6-13",
+   "text": "要问的仍是同一个问题，谁决定这个输入可信。",
+   "spoken": "要问的仍是同一个问题，谁决定这个输入可信。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep13/audio/lines/seg6-13.mp3",
+   "start": 83.964,
+   "dur": 4.152,
+   "speechStart": 84.062,
+   "speechEnd": 87.264
+  },
+  {
+   "id": "seg6-14",
+   "text": "换一种账户模型，就换一组漏洞。",
+   "spoken": "换一种账户模型，就换一组漏洞。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep13/audio/lines/seg6-14.mp3",
+   "start": 88.336,
+   "dur": 3.432,
+   "speechStart": 88.434,
+   "speechEnd": 90.922
+  },
+  {
+   "id": "seg6-15",
+   "text": "下一集讲 ZK 与证明系统的安全。",
+   "spoken": "下一集讲 ZK 与证明系统的安全。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep13/audio/lines/seg6-15.mp3",
+   "start": 91.988,
+   "dur": 3.528,
+   "speechStart": 92.086,
+   "speechEnd": 94.669
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "放",
+   "start": 1.698,
+   "end": 1.924
+  },
+  {
+   "line": 0,
+   "text": "到",
+   "start": 1.924,
+   "end": 2.007
+  },
+  {
+   "line": 0,
+   "text": "一个",
+   "start": 2.019,
+   "end": 2.186
+  },
+  {
+   "line": 0,
+   "text": "具体",
+   "start": 2.21,
+   "end": 2.495
+  },
+  {
+   "line": 0,
+   "text": "场景",
+   "start": 2.507,
+   "end": 2.864
+  },
+  {
+   "line": 0,
+   "text": "里",
+   "start": 2.864,
+   "end": 3.114
+  },
+  {
+   "line": 0,
+   "text": "交易所",
+   "start": 3.648,
+   "end": 4.231
+  },
+  {
+   "line": 0,
+   "text": "要",
+   "start": 4.255,
+   "end": 4.362
+  },
+  {
+   "line": 0,
+   "text": "接入",
+   "start": 4.374,
+   "end": 4.612
+  },
+  {
+   "line": 0,
+   "text": "一条",
+   "start": 4.624,
+   "end": 4.814
+  },
+  {
+   "line": 0,
+   "text": "新链",
+   "start": 4.826,
+   "end": 5.255
+  },
+  {
+   "line": 1,
+   "text": "照搬",
+   "start": 6.406,
+   "end": 6.846
+  },
+  {
+   "line": 1,
+   "text": "以",
+   "start": 6.87,
+   "end": 6.977
+  },
+  {
+   "line": 1,
+   "text": "太坊",
+   "start": 6.989,
+   "end": 7.358
+  },
+  {
+   "line": 1,
+   "text": "的",
+   "start": 7.358,
+   "end": 7.465
+  },
+  {
+   "line": 1,
+   "text": "接入",
+   "start": 7.489,
+   "end": 7.703
+  },
+  {
+   "line": 1,
+   "text": "逻辑",
+   "start": 7.715,
+   "end": 8.203
+  },
+  {
+   "line": 1,
+   "text": "是",
+   "start": 8.382,
+   "end": 8.656
+  },
+  {
+   "line": 1,
+   "text": "假",
+   "start": 8.679,
+   "end": 8.917
+  },
+  {
+   "line": 1,
+   "text": "充值",
+   "start": 8.918,
+   "end": 9.489
+  },
+  {
+   "line": 1,
+   "text": "错账",
+   "start": 9.715,
+   "end": 10.275
+  },
+  {
+   "line": 1,
+   "text": "和",
+   "start": 10.382,
+   "end": 10.56
+  },
+  {
+   "line": 1,
+   "text": "资金",
+   "start": 10.572,
+   "end": 10.846
+  },
+  {
+   "line": 1,
+   "text": "丢失",
+   "start": 10.858,
+   "end": 11.179
+  },
+  {
+   "line": 1,
+   "text": "的",
+   "start": 11.179,
+   "end": 11.322
+  },
+  {
+   "line": 1,
+   "text": "主要",
+   "start": 11.346,
+   "end": 11.62
+  },
+  {
+   "line": 1,
+   "text": "来源",
+   "start": 11.632,
+   "end": 12.048
+  },
+  {
+   "line": 2,
+   "text": "接入",
+   "start": 13.202,
+   "end": 13.547
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 13.547,
+   "end": 13.654
+  },
+  {
+   "line": 2,
+   "text": "人",
+   "start": 13.654,
+   "end": 13.987
+  },
+  {
+   "line": 2,
+   "text": "先",
+   "start": 14.225,
+   "end": 14.499
+  },
+  {
+   "line": 2,
+   "text": "问",
+   "start": 14.499,
+   "end": 14.606
+  },
+  {
+   "line": 2,
+   "text": "这",
+   "start": 14.63,
+   "end": 14.737
+  },
+  {
+   "line": 2,
+   "text": "几件",
+   "start": 14.737,
+   "end": 14.975
+  },
+  {
+   "line": 2,
+   "text": "事",
+   "start": 14.975,
+   "end": 15.202
+  },
+  {
+   "line": 3,
+   "text": "失败",
+   "start": 16.35,
+   "end": 16.778
+  },
+  {
+   "line": 3,
+   "text": "的",
+   "start": 16.778,
+   "end": 16.85
+  },
+  {
+   "line": 3,
+   "text": "交易会",
+   "start": 16.862,
+   "end": 17.409
+  },
+  {
+   "line": 3,
+   "text": "不会",
+   "start": 17.504,
+   "end": 17.754
+  },
+  {
+   "line": 3,
+   "text": "上链",
+   "start": 17.754,
+   "end": 18.183
+  },
+  {
+   "line": 3,
+   "text": "实际",
+   "start": 18.504,
+   "end": 18.933
+  },
+  {
+   "line": 3,
+   "text": "到账",
+   "start": 18.945,
+   "end": 19.266
+  },
+  {
+   "line": 3,
+   "text": "金额",
+   "start": 19.266,
+   "end": 19.564
+  },
+  {
+   "line": 3,
+   "text": "怎么",
+   "start": 19.588,
+   "end": 19.802
+  },
+  {
+   "line": 3,
+   "text": "读",
+   "start": 19.802,
+   "end": 20.016
+  },
+  {
+   "line": 4,
+   "text": "代币",
+   "start": 21.154,
+   "end": 21.57
+  },
+  {
+   "line": 4,
+   "text": "由",
+   "start": 21.57,
+   "end": 21.666
+  },
+  {
+   "line": 4,
+   "text": "什么",
+   "start": 21.677,
+   "end": 21.927
+  },
+  {
+   "line": 4,
+   "text": "唯一",
+   "start": 21.951,
+   "end": 22.177
+  },
+  {
+   "line": 4,
+   "text": "标识",
+   "start": 22.189,
+   "end": 22.725
+  },
+  {
+   "line": 4,
+   "text": "合约",
+   "start": 22.904,
+   "end": 23.201
+  },
+  {
+   "line": 4,
+   "text": "地址",
+   "start": 23.213,
+   "end": 23.654
+  },
+  {
+   "line": 4,
+   "text": "mint",
+   "start": 23.916,
+   "end": 24.32
+  },
+  {
+   "line": 4,
+   "text": "地址",
+   "start": 24.32,
+   "end": 24.796
+  },
+  {
+   "line": 4,
+   "text": "对象",
+   "start": 24.987,
+   "end": 25.296
+  },
+  {
+   "line": 4,
+   "text": "类型",
+   "start": 25.308,
+   "end": 25.796
+  },
+  {
+   "line": 4,
+   "text": "还是",
+   "start": 25.951,
+   "end": 26.32
+  },
+  {
+   "line": 4,
+   "text": "denom",
+   "start": 26.344,
+   "end": 26.773
+  },
+  {
+   "line": 4,
+   "text": "有没有",
+   "start": 27.318,
+   "end": 27.735
+  },
+  {
+   "line": 4,
+   "text": "同名",
+   "start": 27.758,
+   "end": 28.056
+  },
+  {
+   "line": 4,
+   "text": "假币",
+   "start": 28.068,
+   "end": 28.508
+  },
+  {
+   "line": 5,
+   "text": "多少",
+   "start": 29.678,
+   "end": 30.011
+  },
+  {
+   "line": 5,
+   "text": "个",
+   "start": 30.011,
+   "end": 30.082
+  },
+  {
+   "line": 5,
+   "text": "区块",
+   "start": 30.094,
+   "end": 30.38
+  },
+  {
+   "line": 5,
+   "text": "之后",
+   "start": 30.392,
+   "end": 30.832
+  },
+  {
+   "line": 5,
+   "text": "不可",
+   "start": 30.951,
+   "end": 31.201
+  },
+  {
+   "line": 5,
+   "text": "回滚",
+   "start": 31.213,
+   "end": 31.678
+  },
+  {
+   "line": 5,
+   "text": "历史",
+   "start": 31.987,
+   "end": 32.32
+  },
+  {
+   "line": 5,
+   "text": "上",
+   "start": 32.32,
+   "end": 32.475
+  },
+  {
+   "line": 5,
+   "text": "有没有",
+   "start": 32.499,
+   "end": 32.785
+  },
+  {
+   "line": 5,
+   "text": "停链",
+   "start": 32.797,
+   "end": 33.19
+  },
+  {
+   "line": 6,
+   "text": "有没有",
+   "start": 34.338,
+   "end": 34.683
+  },
+  {
+   "line": 6,
+   "text": "两",
+   "start": 34.695,
+   "end": 34.873
+  },
+  {
+   "line": 6,
+   "text": "个",
+   "start": 34.873,
+   "end": 34.957
+  },
+  {
+   "line": 6,
+   "text": "独立",
+   "start": 34.98,
+   "end": 35.266
+  },
+  {
+   "line": 6,
+   "text": "运营",
+   "start": 35.278,
+   "end": 35.48
+  },
+  {
+   "line": 6,
+   "text": "的",
+   "start": 35.48,
+   "end": 35.552
+  },
+  {
+   "line": 6,
+   "text": "节点",
+   "start": 35.564,
+   "end": 35.992
+  },
+  {
+   "line": 6,
+   "text": "现有",
+   "start": 36.538,
+   "end": 36.895
+  },
+  {
+   "line": 6,
+   "text": "的",
+   "start": 36.895,
+   "end": 37.038
+  },
+  {
+   "line": 6,
+   "text": "HSM",
+   "start": 37.061,
+   "end": 37.823
+  },
+  {
+   "line": 6,
+   "text": "和",
+   "start": 37.835,
+   "end": 37.978
+  },
+  {
+   "line": 6,
+   "text": "MPC",
+   "start": 37.99,
+   "end": 38.68
+  },
+  {
+   "line": 6,
+   "text": "支",
+   "start": 38.966,
+   "end": 39.169
+  },
+  {
+   "line": 6,
+   "text": "不",
+   "start": 39.18,
+   "end": 39.299
+  },
+  {
+   "line": 6,
+   "text": "支持",
+   "start": 39.3,
+   "end": 39.561
+  },
+  {
+   "line": 6,
+   "text": "这",
+   "start": 39.585,
+   "end": 39.68
+  },
+  {
+   "line": 6,
+   "text": "条",
+   "start": 39.68,
+   "end": 39.823
+  },
+  {
+   "line": 6,
+   "text": "链",
+   "start": 39.823,
+   "end": 39.954
+  },
+  {
+   "line": 6,
+   "text": "的",
+   "start": 39.954,
+   "end": 40.085
+  },
+  {
+   "line": 6,
+   "text": "签名",
+   "start": 40.109,
+   "end": 40.383
+  },
+  {
+   "line": 6,
+   "text": "算法",
+   "start": 40.395,
+   "end": 40.811
+  },
+  {
+   "line": 7,
+   "text": "资产",
+   "start": 41.974,
+   "end": 42.414
+  },
+  {
+   "line": 7,
+   "text": "是否",
+   "start": 42.438,
+   "end": 42.771
+  },
+  {
+   "line": 7,
+   "text": "依赖",
+   "start": 42.783,
+   "end": 43.009
+  },
+  {
+   "line": 7,
+   "text": "链",
+   "start": 43.009,
+   "end": 43.14
+  },
+  {
+   "line": 7,
+   "text": "下",
+   "start": 43.164,
+   "end": 43.307
+  },
+  {
+   "line": 7,
+   "text": "索引器",
+   "start": 43.307,
+   "end": 43.89
+  },
+  {
+   "line": 7,
+   "text": "用",
+   "start": 44.057,
+   "end": 44.224
+  },
+  {
+   "line": 7,
+   "text": "哪个",
+   "start": 44.236,
+   "end": 44.474
+  },
+  {
+   "line": 7,
+   "text": "版本",
+   "start": 44.486,
+   "end": 44.866
+  },
+  {
+   "line": 7,
+   "text": "多个",
+   "start": 45.176,
+   "end": 45.402
+  },
+  {
+   "line": 7,
+   "text": "索引器",
+   "start": 45.414,
+   "end": 45.747
+  },
+  {
+   "line": 7,
+   "text": "的",
+   "start": 45.747,
+   "end": 45.819
+  },
+  {
+   "line": 7,
+   "text": "结果",
+   "start": 45.831,
+   "end": 46.259
+  },
+  {
+   "line": 7,
+   "text": "是否",
+   "start": 46.283,
+   "end": 46.616
+  },
+  {
+   "line": 7,
+   "text": "一致",
+   "start": 46.628,
+   "end": 46.997
+  },
+  {
+   "line": 8,
+   "text": "链",
+   "start": 48.17,
+   "end": 48.408
+  },
+  {
+   "line": 8,
+   "text": "官方",
+   "start": 48.408,
+   "end": 48.741
+  },
+  {
+   "line": 8,
+   "text": "的",
+   "start": 48.741,
+   "end": 48.943
+  },
+  {
+   "line": 8,
+   "text": "SDK",
+   "start": 49.027,
+   "end": 49.824
+  },
+  {
+   "line": 8,
+   "text": "也",
+   "start": 49.92,
+   "end": 50.062
+  },
+  {
+   "line": 8,
+   "text": "是",
+   "start": 50.062,
+   "end": 50.158
+  },
+  {
+   "line": 8,
+   "text": "供应链",
+   "start": 50.17,
+   "end": 50.622
+  },
+  {
+   "line": 8,
+   "text": "签名",
+   "start": 51.167,
+   "end": 51.512
+  },
+  {
+   "line": 8,
+   "text": "服务",
+   "start": 51.524,
+   "end": 51.917
+  },
+  {
+   "line": 8,
+   "text": "不要",
+   "start": 52.024,
+   "end": 52.286
+  },
+  {
+   "line": 8,
+   "text": "和",
+   "start": 52.298,
+   "end": 52.429
+  },
+  {
+   "line": 8,
+   "text": "业务",
+   "start": 52.453,
+   "end": 52.691
+  },
+  {
+   "line": 8,
+   "text": "代码",
+   "start": 52.703,
+   "end": 53.084
+  },
+  {
+   "line": 8,
+   "text": "共",
+   "start": 53.108,
+   "end": 53.262
+  },
+  {
+   "line": 8,
+   "text": "用",
+   "start": 53.262,
+   "end": 53.381
+  },
+  {
+   "line": 8,
+   "text": "依赖",
+   "start": 53.393,
+   "end": 53.751
+  },
+  {
+   "line": 9,
+   "text": "普通",
+   "start": 54.918,
+   "end": 55.275
+  },
+  {
+   "line": 9,
+   "text": "用户",
+   "start": 55.287,
+   "end": 55.691
+  },
+  {
+   "line": 9,
+   "text": "跨链",
+   "start": 56.12,
+   "end": 56.465
+  },
+  {
+   "line": 9,
+   "text": "前确",
+   "start": 56.465,
+   "end": 56.775
+  },
+  {
+   "line": 9,
+   "text": "认代",
+   "start": 56.787,
+   "end": 57.06
+  },
+  {
+   "line": 9,
+   "text": "币",
+   "start": 57.06,
+   "end": 57.179
+  },
+  {
+   "line": 9,
+   "text": "的",
+   "start": 57.18,
+   "end": 57.287
+  },
+  {
+   "line": 9,
+   "text": "唯一",
+   "start": 57.31,
+   "end": 57.56
+  },
+  {
+   "line": 9,
+   "text": "标识",
+   "start": 57.572,
+   "end": 58.084
+  },
+  {
+   "line": 9,
+   "text": "不只",
+   "start": 58.299,
+   "end": 58.608
+  },
+  {
+   "line": 9,
+   "text": "看",
+   "start": 58.62,
+   "end": 58.81
+  },
+  {
+   "line": 9,
+   "text": "名称",
+   "start": 58.81,
+   "end": 59.227
+  },
+  {
+   "line": 9,
+   "text": "在",
+   "start": 59.76,
+   "end": 60.01
+  },
+  {
+   "line": 9,
+   "text": "Solana",
+   "start": 60.034,
+   "end": 60.499
+  },
+  {
+   "line": 9,
+   "text": "上",
+   "start": 60.499,
+   "end": 60.725
+  },
+  {
+   "line": 9,
+   "text": "签名",
+   "start": 60.737,
+   "end": 61.022
+  },
+  {
+   "line": 9,
+   "text": "时",
+   "start": 61.022,
+   "end": 61.368
+  },
+  {
+   "line": 9,
+   "text": "看到",
+   "start": 61.57,
+   "end": 61.915
+  },
+  {
+   "line": 9,
+   "text": "陌生",
+   "start": 61.939,
+   "end": 62.249
+  },
+  {
+   "line": 9,
+   "text": "程序",
+   "start": 62.26,
+   "end": 62.725
+  },
+  {
+   "line": 9,
+   "text": "不",
+   "start": 62.915,
+   "end": 63.046
+  },
+  {
+   "line": 9,
+   "text": "签",
+   "start": 63.046,
+   "end": 63.368
+  },
+  {
+   "line": 10,
+   "text": "回到",
+   "start": 64.522,
+   "end": 64.855
+  },
+  {
+   "line": 10,
+   "text": "开头",
+   "start": 64.879,
+   "end": 65.248
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 65.248,
+   "end": 65.307
+  },
+  {
+   "line": 10,
+   "text": "问题",
+   "start": 65.319,
+   "end": 65.736
+  },
+  {
+   "line": 10,
+   "text": "Solana",
+   "start": 66.281,
+   "end": 66.781
+  },
+  {
+   "line": 10,
+   "text": "程序",
+   "start": 66.793,
+   "end": 67.079
+  },
+  {
+   "line": 10,
+   "text": "要",
+   "start": 67.103,
+   "end": 67.21
+  },
+  {
+   "line": 10,
+   "text": "读",
+   "start": 67.21,
+   "end": 67.329
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 67.329,
+   "end": 67.388
+  },
+  {
+   "line": 10,
+   "text": "账户",
+   "start": 67.4,
+   "end": 67.829
+  },
+  {
+   "line": 10,
+   "text": "由",
+   "start": 68.031,
+   "end": 68.21
+  },
+  {
+   "line": 10,
+   "text": "谁",
+   "start": 68.21,
+   "end": 68.388
+  },
+  {
+   "line": 10,
+   "text": "提供",
+   "start": 68.4,
+   "end": 68.793
+  },
+  {
+   "line": 11,
+   "text": "由",
+   "start": 70.23,
+   "end": 70.456
+  },
+  {
+   "line": 11,
+   "text": "调用",
+   "start": 70.48,
+   "end": 70.813
+  },
+  {
+   "line": 11,
+   "text": "者",
+   "start": 70.813,
+   "end": 71.015
+  },
+  {
+   "line": 11,
+   "text": "在",
+   "start": 71.039,
+   "end": 71.158
+  },
+  {
+   "line": 11,
+   "text": "交易",
+   "start": 71.17,
+   "end": 71.48
+  },
+  {
+   "line": 11,
+   "text": "里",
+   "start": 71.48,
+   "end": 71.587
+  },
+  {
+   "line": 11,
+   "text": "传",
+   "start": 71.611,
+   "end": 71.813
+  },
+  {
+   "line": 11,
+   "text": "进来",
+   "start": 71.813,
+   "end": 72.158
+  },
+  {
+   "line": 11,
+   "text": "所以",
+   "start": 72.692,
+   "end": 73.203
+  },
+  {
+   "line": 11,
+   "text": "程序",
+   "start": 73.311,
+   "end": 73.906
+  },
+  {
+   "line": 11,
+   "text": "必须",
+   "start": 73.918,
+   "end": 74.203
+  },
+  {
+   "line": 11,
+   "text": "自己",
+   "start": 74.215,
+   "end": 74.453
+  },
+  {
+   "line": 11,
+   "text": "核对",
+   "start": 74.465,
+   "end": 74.751
+  },
+  {
+   "line": 11,
+   "text": "每个",
+   "start": 74.775,
+   "end": 74.977
+  },
+  {
+   "line": 11,
+   "text": "账户",
+   "start": 74.989,
+   "end": 75.263
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 75.263,
+   "end": 75.37
+  },
+  {
+   "line": 11,
+   "text": "owner",
+   "start": 75.394,
+   "end": 75.822
+  },
+  {
+   "line": 11,
+   "text": "类型",
+   "start": 76.025,
+   "end": 76.561
+  },
+  {
+   "line": 11,
+   "text": "和",
+   "start": 76.584,
+   "end": 76.763
+  },
+  {
+   "line": 11,
+   "text": "地址",
+   "start": 76.775,
+   "end": 77.192
+  },
+  {
+   "line": 12,
+   "text": "这个",
+   "start": 78.346,
+   "end": 78.56
+  },
+  {
+   "line": 12,
+   "text": "答案",
+   "start": 78.572,
+   "end": 78.869
+  },
+  {
+   "line": 12,
+   "text": "只",
+   "start": 78.881,
+   "end": 79.024
+  },
+  {
+   "line": 12,
+   "text": "对",
+   "start": 79.024,
+   "end": 79.298
+  },
+  {
+   "line": 12,
+   "text": "Solana",
+   "start": 79.381,
+   "end": 79.905
+  },
+  {
+   "line": 12,
+   "text": "成立",
+   "start": 79.917,
+   "end": 80.322
+  },
+  {
+   "line": 12,
+   "text": "换",
+   "start": 80.867,
+   "end": 81.153
+  },
+  {
+   "line": 12,
+   "text": "一条",
+   "start": 81.153,
+   "end": 81.415
+  },
+  {
+   "line": 12,
+   "text": "链",
+   "start": 81.415,
+   "end": 81.688
+  },
+  {
+   "line": 12,
+   "text": "输入",
+   "start": 81.962,
+   "end": 82.296
+  },
+  {
+   "line": 12,
+   "text": "换",
+   "start": 82.319,
+   "end": 82.522
+  },
+  {
+   "line": 12,
+   "text": "了",
+   "start": 82.522,
+   "end": 82.581
+  },
+  {
+   "line": 12,
+   "text": "样子",
+   "start": 82.593,
+   "end": 82.891
+  },
+  {
+   "line": 13,
+   "text": "要",
+   "start": 84.062,
+   "end": 84.252
+  },
+  {
+   "line": 13,
+   "text": "问",
+   "start": 84.252,
+   "end": 84.395
+  },
+  {
+   "line": 13,
+   "text": "的",
+   "start": 84.395,
+   "end": 84.478
+  },
+  {
+   "line": 13,
+   "text": "仍",
+   "start": 84.502,
+   "end": 84.657
+  },
+  {
+   "line": 13,
+   "text": "是",
+   "start": 84.657,
+   "end": 84.788
+  },
+  {
+   "line": 13,
+   "text": "同",
+   "start": 84.8,
+   "end": 85.038
+  },
+  {
+   "line": 13,
+   "text": "一个",
+   "start": 85.038,
+   "end": 85.169
+  },
+  {
+   "line": 13,
+   "text": "问题",
+   "start": 85.181,
+   "end": 85.621
+  },
+  {
+   "line": 13,
+   "text": "谁",
+   "start": 85.919,
+   "end": 86.276
+  },
+  {
+   "line": 13,
+   "text": "决定",
+   "start": 86.276,
+   "end": 86.502
+  },
+  {
+   "line": 13,
+   "text": "这个",
+   "start": 86.526,
+   "end": 86.657
+  },
+  {
+   "line": 13,
+   "text": "输入",
+   "start": 86.669,
+   "end": 86.883
+  },
+  {
+   "line": 13,
+   "text": "可信",
+   "start": 86.895,
+   "end": 87.264
+  },
+  {
+   "line": 14,
+   "text": "换",
+   "start": 88.434,
+   "end": 88.684
+  },
+  {
+   "line": 14,
+   "text": "一种",
+   "start": 88.684,
+   "end": 88.886
+  },
+  {
+   "line": 14,
+   "text": "账户",
+   "start": 88.91,
+   "end": 89.172
+  },
+  {
+   "line": 14,
+   "text": "模型",
+   "start": 89.184,
+   "end": 89.707
+  },
+  {
+   "line": 14,
+   "text": "就",
+   "start": 90.041,
+   "end": 90.207
+  },
+  {
+   "line": 14,
+   "text": "换",
+   "start": 90.207,
+   "end": 90.374
+  },
+  {
+   "line": 14,
+   "text": "一",
+   "start": 90.386,
+   "end": 90.469
+  },
+  {
+   "line": 14,
+   "text": "组",
+   "start": 90.469,
+   "end": 90.588
+  },
+  {
+   "line": 14,
+   "text": "漏洞",
+   "start": 90.6,
+   "end": 90.922
+  },
+  {
+   "line": 15,
+   "text": "下",
+   "start": 92.086,
+   "end": 92.348
+  },
+  {
+   "line": 15,
+   "text": "一",
+   "start": 92.348,
+   "end": 92.431
+  },
+  {
+   "line": 15,
+   "text": "集",
+   "start": 92.431,
+   "end": 92.562
+  },
+  {
+   "line": 15,
+   "text": "讲",
+   "start": 92.574,
+   "end": 92.847
+  },
+  {
+   "line": 15,
+   "text": "ZK",
+   "start": 92.943,
+   "end": 93.526
+  },
+  {
+   "line": 15,
+   "text": "与",
+   "start": 93.538,
+   "end": 93.669
+  },
+  {
+   "line": 15,
+   "text": "证明",
+   "start": 93.681,
+   "end": 93.907
+  },
+  {
+   "line": 15,
+   "text": "系统",
+   "start": 93.931,
+   "end": 94.181
+  },
+  {
+   "line": 15,
+   "text": "的",
+   "start": 94.181,
+   "end": 94.24
+  },
+  {
+   "line": 15,
+   "text": "安全",
+   "start": 94.252,
+   "end": 94.669
+  }
+ ],
+ "captions": [
+  {
+   "text": "放到一个具体场景里",
+   "start": 1.648,
+   "end": 3.234,
+   "id": "c0"
+  },
+  {
+   "text": "交易所要接入一条新链",
+   "start": 3.598,
+   "end": 5.375,
+   "id": "c1"
+  },
+  {
+   "text": "照搬以太坊的接入逻辑",
+   "start": 6.356,
+   "end": 8.312,
+   "id": "c2"
+  },
+  {
+   "text": "是假充值",
+   "start": 8.332,
+   "end": 9.609,
+   "id": "c3"
+  },
+  {
+   "text": "错账和资金丢失的主要来源",
+   "start": 9.665,
+   "end": 12.168,
+   "id": "c4"
+  },
+  {
+   "text": "接入的人",
+   "start": 13.152,
+   "end": 14.107,
+   "id": "c5"
+  },
+  {
+   "text": "先问这几件事",
+   "start": 14.175,
+   "end": 15.322,
+   "id": "c6"
+  },
+  {
+   "text": "失败的交易会不会上链",
+   "start": 16.3,
+   "end": 18.303,
+   "id": "c7"
+  },
+  {
+   "text": "实际到账金额怎么读",
+   "start": 18.454,
+   "end": 20.136,
+   "id": "c8"
+  },
+  {
+   "text": "代币由什么唯一标识",
+   "start": 21.104,
+   "end": 22.834,
+   "id": "c9"
+  },
+  {
+   "text": "合约地址",
+   "start": 22.854,
+   "end": 23.774,
+   "id": "c10"
+  },
+  {
+   "text": "mint 地址",
+   "start": 23.866,
+   "end": 24.916,
+   "id": "c11"
+  },
+  {
+   "text": "对象类型",
+   "start": 24.937,
+   "end": 25.881,
+   "id": "c12"
+  },
+  {
+   "text": "还是 denom",
+   "start": 25.901,
+   "end": 26.893,
+   "id": "c13"
+  },
+  {
+   "text": "有没有同名假币",
+   "start": 27.268,
+   "end": 28.628,
+   "id": "c14"
+  },
+  {
+   "text": "多少个区块之后不可回滚",
+   "start": 29.628,
+   "end": 31.798,
+   "id": "c15"
+  },
+  {
+   "text": "历史上有没有停链",
+   "start": 31.937,
+   "end": 33.31,
+   "id": "c16"
+  },
+  {
+   "text": "有没有两个独立运营的节点",
+   "start": 34.288,
+   "end": 36.112,
+   "id": "c17"
+  },
+  {
+   "text": "现有的 HSM 和 MPC",
+   "start": 36.488,
+   "end": 38.8,
+   "id": "c18"
+  },
+  {
+   "text": "支不支持这条链的签名算法",
+   "start": 38.916,
+   "end": 40.931,
+   "id": "c19"
+  },
+  {
+   "text": "资产是否依赖链下索引器",
+   "start": 41.924,
+   "end": 43.987,
+   "id": "c20"
+  },
+  {
+   "text": "用哪个版本",
+   "start": 44.007,
+   "end": 44.986,
+   "id": "c21"
+  },
+  {
+   "text": "多个索引器的结果是否一致",
+   "start": 45.126,
+   "end": 47.117,
+   "id": "c22"
+  },
+  {
+   "text": "链官方的 SDK 也是供应链",
+   "start": 48.12,
+   "end": 50.742,
+   "id": "c23"
+  },
+  {
+   "text": "签名服务不要和业务代码共用依赖",
+   "start": 51.117,
+   "end": 53.871,
+   "id": "c24"
+  },
+  {
+   "text": "普通用户",
+   "start": 54.868,
+   "end": 55.811,
+   "id": "c25"
+  },
+  {
+   "text": "跨链前确认代币的唯一标识",
+   "start": 56.07,
+   "end": 58.204,
+   "id": "c26"
+  },
+  {
+   "text": "不只看名称",
+   "start": 58.249,
+   "end": 59.347,
+   "id": "c27"
+  },
+  {
+   "text": "在 Solana 上签名时",
+   "start": 59.71,
+   "end": 61.488,
+   "id": "c28"
+  },
+  {
+   "text": "看到陌生程序 不签",
+   "start": 61.52,
+   "end": 63.488,
+   "id": "c29"
+  },
+  {
+   "text": "回到开头的问题",
+   "start": 64.472,
+   "end": 65.856,
+   "id": "c30"
+  },
+  {
+   "text": "Solana 程序要读的账户",
+   "start": 66.231,
+   "end": 67.949,
+   "id": "c31"
+  },
+  {
+   "text": "由谁提供",
+   "start": 67.981,
+   "end": 68.913,
+   "id": "c32"
+  },
+  {
+   "text": "由调用者在交易里传进来",
+   "start": 70.18,
+   "end": 72.278,
+   "id": "c33"
+  },
+  {
+   "text": "所以程序必须自己核对每个账户的 owner",
+   "start": 72.642,
+   "end": 75.942,
+   "id": "c34"
+  },
+  {
+   "text": "类型和地址",
+   "start": 75.975,
+   "end": 77.312,
+   "id": "c35"
+  },
+  {
+   "text": "这个答案只对 Solana 成立",
+   "start": 78.296,
+   "end": 80.442,
+   "id": "c36"
+  },
+  {
+   "text": "换一条链",
+   "start": 80.817,
+   "end": 81.808,
+   "id": "c37"
+  },
+  {
+   "text": "输入换了样子",
+   "start": 81.912,
+   "end": 83.011,
+   "id": "c38"
+  },
+  {
+   "text": "要问的仍是同一个问题",
+   "start": 84.012,
+   "end": 85.741,
+   "id": "c39"
+  },
+  {
+   "text": "谁决定这个输入可信",
+   "start": 85.869,
+   "end": 87.384,
+   "id": "c40"
+  },
+  {
+   "text": "换一种账户模型",
+   "start": 88.384,
+   "end": 89.827,
+   "id": "c41"
+  },
+  {
+   "text": "就换一组漏洞",
+   "start": 89.991,
+   "end": 91.042,
+   "id": "c42"
+  },
+  {
+   "text": "下一集讲 ZK 与证明系统的安全",
+   "start": 92.036,
+   "end": 94.789,
+   "id": "c43"
+  }
+ ]
+}

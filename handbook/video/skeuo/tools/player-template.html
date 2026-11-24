@@ -1,0 +1,69 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Web3 安全 · 视频浏览</title>
+<style>
+:root{--bg:#f3efe7;--card:#fffdf8;--ink:#1c1c1c;--mut:#7a746a;--line:#e1dacb;--acc:#c0392b;--side:#ebe5d8}
+@media(prefers-color-scheme:dark){:root{--bg:#1a1917;--card:#24221f;--ink:#ece6da;--mut:#9a9387;--line:#38352f;--acc:#ef7060;--side:#201e1b}}
+[hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 -apple-system,"PingFang SC","Noto Sans SC",sans-serif;display:flex;height:100vh}
+#side{width:320px;flex:none;background:var(--side);border-right:1px solid var(--line);overflow:auto;padding:12px 0}
+#side h1{font-size:15px;margin:4px 16px 8px}
+#q{margin:0 12px 8px;width:calc(100% - 24px);padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.g{margin-top:6px}.gh{display:flex;justify-content:space-between;padding:6px 16px;font-weight:700;font-size:13px;color:var(--mut);cursor:pointer;user-select:none}
+.gh:hover{color:var(--ink)}.g.c .it{display:none}
+.it{display:block;padding:6px 16px 6px 22px;cursor:pointer;font-size:14px;border-left:3px solid transparent}
+.it:hover{background:rgba(128,120,100,.12)}.it.on{background:var(--card);border-left-color:var(--acc);font-weight:600}
+.it b{color:var(--mut);font-weight:500;margin-right:6px;font-variant-numeric:tabular-nums}
+#main{flex:1;min-width:0;display:flex;flex-direction:column;overflow:auto;padding:16px 22px}
+#bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+#bar h2{font-size:18px;margin:0;flex:1;min-width:240px}
+button,select{font:inherit;padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);cursor:pointer}
+button:hover{border-color:var(--acc)}button.on{background:var(--ink);color:var(--bg)}
+video{width:100%;max-height:62vh;background:#000;border-radius:10px;outline:none}
+#segs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+#segs button{font-size:13px;padding:4px 10px}#segs button.on{border-color:var(--acc);color:var(--acc);font-weight:700}
+#panel{margin-top:6px;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:none}
+#panel.show{display:block}#panel iframe{width:100%;height:78vh;border:0;display:block}
+#script{padding:14px 20px;max-height:70vh;overflow:auto}#script h3{margin:14px 0 4px;font-size:15px;color:var(--acc)}#script p{margin:2px 0;cursor:pointer}#script p:hover{background:rgba(192,57,43,.1)}
+#tip{color:var(--mut);font-size:12px;margin-top:8px}
+@media(max-width:800px){body{flex-direction:column;height:auto}#side{width:100%;max-height:40vh}}
+</style></head><body>
+<nav id="side"><h1>Web3 安全 · 30 集</h1><input id="q" placeholder="搜索标题…"><div id="list"></div></nav>
+<main id="main">
+ <div id="bar"><h2 id="title"></h2>
+  <select id="rate"><option>0.75</option><option selected>1</option><option>1.25</option><option>1.5</option><option>2</option></select>
+  <button id="bq">预览 720p</button><button id="bp">📊 幻灯片</button><button id="bs">📄 讲稿</button><button id="bn">下一集 ›</button></div>
+ <video id="v" controls preload="metadata"></video>
+ <div id="segs"></div>
+ <div id="panel"><iframe id="deck" hidden></iframe><div id="script" hidden></div></div>
+ <div id="tip">快捷键：← → 快退/快进 5 秒　空格 播放/暂停　[ ] 上一集/下一集　P 幻灯片　S 讲稿　点讲稿句子可跳到对应段落开头</div>
+</main>
+<script>
+const D=__DATA__, DECK="../../../web3-security-101/handbook/decks/skeuomorphic/ch";
+const $=id=>document.getElementById(id), pad=n=>String(n).padStart(2,"0");
+const all=D.groups.flatMap(g=>g.eps); let cur=+localStorage.getItem("w3v-cur")||1, hq=localStorage.getItem("w3v-hq")==="1", panel="";
+const v=$("v");
+function list(f=""){const L=$("list");L.innerHTML="";D.groups.forEach((g,gi)=>{const es=g.eps.filter(e=>!f||e.title.includes(f)||pad(e.n).includes(f));if(!es.length)return;
+ const d=document.createElement("div");d.className="g";d.innerHTML=`<div class="gh"><span>${g.name}</span><span>${es.length}</span></div>`;
+ d.firstChild.onclick=()=>d.classList.toggle("c");
+ es.forEach(e=>{const a=document.createElement("a");a.className="it"+(e.n===cur?" on":"");a.dataset.n=e.n;a.innerHTML=`<b>${pad(e.n)}</b>${e.title.split("：")[0]}`;a.title=e.title;a.onclick=()=>go(e.n);d.append(a)});L.append(d)})}
+function go(n,t){cur=n;localStorage.setItem("w3v-cur",n);const e=all.find(x=>x.n===n),ep="ep"+pad(n);
+ $("title").textContent=pad(n)+"　"+e.title;document.title=pad(n)+" "+e.title.split("：")[0];
+ v.src=`${ep}/out/${ep}-full${hq?"":"-preview-720p"}.mp4`;$("bq").textContent=hq?"原画 1080p":"预览 720p";
+ v.onloadedmetadata=()=>{v.playbackRate=+$("rate").value;if(t)v.currentTime=t};v.play().catch(()=>{});
+ $("segs").innerHTML="";e.segs.forEach((s,i)=>{const b=document.createElement("button");b.textContent=`${i+1} ${s.t}`;b.onclick=()=>{v.currentTime=s.at+.3;v.play()};$("segs").append(b)});
+ document.querySelectorAll(".it").forEach(a=>a.classList.toggle("on",+a.dataset.n===n));
+ const on=document.querySelector(".it.on");on&&on.scrollIntoView({block:"nearest"});show(panel)}
+function show(p){panel=p;const P=$("panel"),F=$("deck"),S=$("script");P.classList.toggle("show",!!p);F.hidden=p!=="deck";S.hidden=p!=="script";
+ $("bp").classList.toggle("on",p==="deck");$("bs").classList.toggle("on",p==="script");
+ if(p==="deck"){const u=DECK+pad(cur)+"/index.html";if(F.dataset.u!==u){F.src=u;F.dataset.u=u}}
+ if(p==="script"){const e=all.find(x=>x.n===cur);S.innerHTML=e.segs.map((s,i)=>`<h3>${i+1} ${s.t}</h3>`+s.lines.map(l=>`<p data-t="${s.at}">${l}</p>`).join("")).join("");
+  S.querySelectorAll("p").forEach(p=>p.onclick=()=>{v.currentTime=+p.dataset.t+.3;v.play()})}
+ if(p)P.scrollIntoView({behavior:"smooth",block:"nearest"})}
+$("bp").onclick=()=>show(panel==="deck"?"":"deck");$("bs").onclick=()=>show(panel==="script"?"":"script");
+$("bn").onclick=()=>go(cur%30+1);$("bq").onclick=()=>{hq=!hq;localStorage.setItem("w3v-hq",hq?"1":"0");const t=v.currentTime;go(cur,t)};
+$("rate").onchange=()=>v.playbackRate=+$("rate").value;$("q").oninput=e=>list(e.target.value.trim());
+v.onended=()=>go(cur%30+1);
+document.onkeydown=e=>{if(e.target.tagName==="INPUT"||e.target.tagName==="SELECT")return;
+ if(e.key==="ArrowLeft"){v.currentTime-=5}else if(e.key==="ArrowRight"){v.currentTime+=5}else if(e.key===" "){e.preventDefault();v.paused?v.play():v.pause()}
+ else if(e.key==="]")go(cur%30+1);else if(e.key==="[")go((cur+28)%30+1);else if(e.key==="p"||e.key==="P")$("bp").click();else if(e.key==="s"||e.key==="S")$("bs").click()};
+list();go(cur);
+</script></body></html>

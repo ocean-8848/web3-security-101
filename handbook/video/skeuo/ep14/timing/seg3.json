@@ -1,0 +1,2028 @@
+{
+ "id": "seg3",
+ "title": "漏写一条",
+ "pill": 3,
+ "total": 108.77,
+ "lines": [
+  {
+   "id": "seg3-00",
+   "text": "电路最常见的漏洞，叫约束不足。",
+   "spoken": "电路最常见的漏洞，叫约束不足。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-00.mp3",
+   "start": 1.6,
+   "dur": 3.96,
+   "speechStart": 1.698,
+   "speechEnd": 4.721
+  },
+  {
+   "id": "seg3-01",
+   "text": "某个值被算出来了，却没有被约束。",
+   "spoken": "某个值被算出来了，却没有被约束。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-01.mp3",
+   "start": 5.78,
+   "dur": 3.336,
+   "speechStart": 5.878,
+   "speechEnd": 8.294
+  },
+  {
+   "id": "seg3-02",
+   "text": "在 Circom 语言里，有一种写法只赋值，不约束。另一种写法，赋值的同时加上约束。",
+   "spoken": "在 Circom 语言里，有一种写法只赋值，不约束。另一种写法，赋值的同时加上约束。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-02.mp3",
+   "start": 9.336,
+   "dur": 7.872,
+   "speechStart": 9.434,
+   "speechEnd": 16.36
+  },
+  {
+   "id": "seg3-03",
+   "text": "只用了前一种写法的信号，恶意证明者可以填任何值。",
+   "spoken": "只用了前一种写法的信号，恶意证明者可以填任何值。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-03.mp3",
+   "start": 17.428,
+   "dur": 5.136,
+   "speechStart": 17.526,
+   "speechEnd": 21.74
+  },
+  {
+   "id": "seg3-04",
+   "text": "看一个玩具例子。账户余额是 20，有人要提款 25。",
+   "spoken": "看一个玩具例子。账户余额是 20，有人要提款 25。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-04.mp3",
+   "start": 22.784,
+   "dur": 5.424,
+   "speechStart": 22.882,
+   "speechEnd": 27.367
+  },
+  {
+   "id": "seg3-05",
+   "text": "电路要求，新余额拆成 5 个二进制位，每一位只能是 0 或 1。",
+   "spoken": "电路要求，新余额拆成 5 个二进制位，每一位只能是 0 或 1。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-05.mp3",
+   "start": 28.428,
+   "dur": 5.88,
+   "speechStart": 28.526,
+   "speechEnd": 33.478
+  },
+  {
+   "id": "seg3-06",
+   "text": "只去掉最高位的这一条，恶意证明者就把最高位填成 30。",
+   "spoken": "只去掉最高位的这一条，恶意证明者就把最高位填成 30。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-06.mp3",
+   "start": 34.528,
+   "dur": 5.184,
+   "speechStart": 34.626,
+   "speechEnd": 38.864
+  },
+  {
+   "id": "seg3-07",
+   "text": "电路里的数，算到一个上限就绕回去。填 30 之后，等式照样成立。",
+   "spoken": "电路里的数，算到一个上限就绕回去。填 30 之后，等式照样成立。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-07.mp3",
+   "start": 39.932,
+   "dur": 6.792,
+   "speechStart": 40.03,
+   "speechEnd": 45.872
+  },
+  {
+   "id": "seg3-08",
+   "text": "余额检查被绕过，提款 25 通过了验证。",
+   "spoken": "余额检查被绕过，提款 25 通过了验证。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-08.mp3",
+   "start": 46.944,
+   "dur": 4.008,
+   "speechStart": 47.042,
+   "speechEnd": 50.113
+  },
+  {
+   "id": "seg3-09",
+   "text": "反过来，约束写得太严，叫过度约束。",
+   "spoken": "反过来，约束写得太严，叫过度约束。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-09.mp3",
+   "start": 51.172,
+   "dur": 4.2,
+   "speechStart": 51.27,
+   "speechEnd": 54.52
+  },
+  {
+   "id": "seg3-10",
+   "text": "合法的输入也无法生成证明，结果是拒绝服务，资金可能被锁住。",
+   "spoken": "合法的输入也无法生成证明，结果是拒绝服务，资金可能被锁住。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-10.mp3",
+   "start": 55.592,
+   "dur": 6.576,
+   "speechStart": 55.69,
+   "speechEnd": 61.332
+  },
+  {
+   "id": "seg3-11",
+   "text": "真实的例子在 2019 年。",
+   "spoken": "真实的例子在 2019 年。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-11.mp3",
+   "start": 62.388,
+   "dur": 2.928,
+   "speechStart": 62.486,
+   "speechEnd": 64.486
+  },
+  {
+   "id": "seg3-12",
+   "text": "按 Trail of Bits 的介绍，Tornado Cash 用的一个哈希实现里，有一个输出只被赋值，没有被约束。",
+   "spoken": "按 Trail of Bits 的介绍，Tornado Cash 用的一个哈希实现里，有一个输出只被赋值，没有被约束。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-12.mp3",
+   "start": 65.536,
+   "dur": 7.488,
+   "speechStart": 65.634,
+   "speechEnd": 72.193
+  },
+  {
+   "id": "seg3-13",
+   "text": "攻击者本可以伪造 Merkle 根，取走别人的资金。",
+   "spoken": "攻击者本可以伪造 Merkle 根，取走别人的资金。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-13.mp3",
+   "start": 73.244,
+   "dur": 4.416,
+   "speechStart": 73.342,
+   "speechEnd": 76.818
+  },
+  {
+   "id": "seg3-14",
+   "text": "团队发现后，抢先利用这个漏洞，把资金转走保护起来，再修复。",
+   "spoken": "团队发现后，抢先利用这个漏洞，把资金转走保护起来，再修复。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-14.mp3",
+   "start": 77.88,
+   "dur": 6.024,
+   "speechStart": 77.978,
+   "speechEnd": 83.073
+  },
+  {
+   "id": "seg3-15",
+   "text": "没有资金被盗。",
+   "spoken": "没有资金被盗。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-15.mp3",
+   "start": 84.124,
+   "dur": 2.064,
+   "speechStart": 84.222,
+   "speechEnd": 85.353
+  },
+  {
+   "id": "seg3-16",
+   "text": "同类问题很多。0xPARC 维护的公开漏洞清单里，收录了大量这样的例子。",
+   "spoken": "同类问题很多。0xPARC 维护的公开漏洞清单里，收录了大量这样的例子。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-16.mp3",
+   "start": 86.408,
+   "dur": 6.768,
+   "speechStart": 86.506,
+   "speechEnd": 92.325
+  },
+  {
+   "id": "seg3-17",
+   "text": "防御有三条。",
+   "spoken": "防御有三条。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-17.mp3",
+   "start": 93.396,
+   "dur": 2.064,
+   "speechStart": 93.494,
+   "speechEnd": 94.625
+  },
+  {
+   "id": "seg3-18",
+   "text": "用静态分析工具，找出没有约束的信号。",
+   "spoken": "用静态分析工具，找出没有约束的信号。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-18.mp3",
+   "start": 95.68,
+   "dur": 3.792,
+   "speechStart": 95.778,
+   "speechEnd": 98.623
+  },
+  {
+   "id": "seg3-19",
+   "text": "关键电路，做形式化验证。",
+   "spoken": "关键电路，做形式化验证。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-19.mp3",
+   "start": 99.692,
+   "dur": 3.216,
+   "speechStart": 99.79,
+   "speechEnd": 102.075
+  },
+  {
+   "id": "seg3-20",
+   "text": "每条约束写正反两种测试，恶意的输入也要测。",
+   "spoken": "每条约束写正反两种测试，恶意的输入也要测。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep14/audio/lines/seg3-20.mp3",
+   "start": 103.128,
+   "dur": 4.44,
+   "speechStart": 103.226,
+   "speechEnd": 106.726
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "电路",
+   "start": 1.698,
+   "end": 2.114
+  },
+  {
+   "line": 0,
+   "text": "最",
+   "start": 2.138,
+   "end": 2.352
+  },
+  {
+   "line": 0,
+   "text": "常见",
+   "start": 2.352,
+   "end": 2.686
+  },
+  {
+   "line": 0,
+   "text": "的",
+   "start": 2.686,
+   "end": 2.757
+  },
+  {
+   "line": 0,
+   "text": "漏洞",
+   "start": 2.769,
+   "end": 3.174
+  },
+  {
+   "line": 0,
+   "text": "叫",
+   "start": 3.46,
+   "end": 3.757
+  },
+  {
+   "line": 0,
+   "text": "约束不足",
+   "start": 3.781,
+   "end": 4.721
+  },
+  {
+   "line": 1,
+   "text": "某个",
+   "start": 5.878,
+   "end": 6.163
+  },
+  {
+   "line": 1,
+   "text": "值",
+   "start": 6.163,
+   "end": 6.282
+  },
+  {
+   "line": 1,
+   "text": "被",
+   "start": 6.306,
+   "end": 6.39
+  },
+  {
+   "line": 1,
+   "text": "算",
+   "start": 6.401,
+   "end": 6.616
+  },
+  {
+   "line": 1,
+   "text": "出来",
+   "start": 6.616,
+   "end": 6.842
+  },
+  {
+   "line": 1,
+   "text": "了",
+   "start": 6.842,
+   "end": 7.08
+  },
+  {
+   "line": 1,
+   "text": "却",
+   "start": 7.425,
+   "end": 7.651
+  },
+  {
+   "line": 1,
+   "text": "没有",
+   "start": 7.651,
+   "end": 7.806
+  },
+  {
+   "line": 1,
+   "text": "被",
+   "start": 7.818,
+   "end": 7.925
+  },
+  {
+   "line": 1,
+   "text": "约束",
+   "start": 7.925,
+   "end": 8.294
+  },
+  {
+   "line": 2,
+   "text": "在",
+   "start": 9.434,
+   "end": 9.66
+  },
+  {
+   "line": 2,
+   "text": "Circom",
+   "start": 9.684,
+   "end": 10.172
+  },
+  {
+   "line": 2,
+   "text": "语言",
+   "start": 10.184,
+   "end": 10.41
+  },
+  {
+   "line": 2,
+   "text": "里",
+   "start": 10.41,
+   "end": 10.672
+  },
+  {
+   "line": 2,
+   "text": "有",
+   "start": 10.993,
+   "end": 11.136
+  },
+  {
+   "line": 2,
+   "text": "一种",
+   "start": 11.136,
+   "end": 11.35
+  },
+  {
+   "line": 2,
+   "text": "写法",
+   "start": 11.362,
+   "end": 11.779
+  },
+  {
+   "line": 2,
+   "text": "只",
+   "start": 11.803,
+   "end": 11.946
+  },
+  {
+   "line": 2,
+   "text": "赋值",
+   "start": 11.946,
+   "end": 12.434
+  },
+  {
+   "line": 2,
+   "text": "不",
+   "start": 12.624,
+   "end": 12.767
+  },
+  {
+   "line": 2,
+   "text": "约束",
+   "start": 12.767,
+   "end": 13.148
+  },
+  {
+   "line": 2,
+   "text": "另",
+   "start": 13.681,
+   "end": 13.86
+  },
+  {
+   "line": 2,
+   "text": "一种",
+   "start": 13.86,
+   "end": 14.062
+  },
+  {
+   "line": 2,
+   "text": "写法",
+   "start": 14.074,
+   "end": 14.574
+  },
+  {
+   "line": 2,
+   "text": "赋值",
+   "start": 14.848,
+   "end": 15.193
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 15.193,
+   "end": 15.288
+  },
+  {
+   "line": 2,
+   "text": "同时",
+   "start": 15.3,
+   "end": 15.657
+  },
+  {
+   "line": 2,
+   "text": "加上",
+   "start": 15.681,
+   "end": 15.955
+  },
+  {
+   "line": 2,
+   "text": "约束",
+   "start": 15.967,
+   "end": 16.36
+  },
+  {
+   "line": 3,
+   "text": "只",
+   "start": 17.526,
+   "end": 17.668
+  },
+  {
+   "line": 3,
+   "text": "用",
+   "start": 17.668,
+   "end": 17.776
+  },
+  {
+   "line": 3,
+   "text": "了",
+   "start": 17.776,
+   "end": 17.859
+  },
+  {
+   "line": 3,
+   "text": "前",
+   "start": 17.883,
+   "end": 18.073
+  },
+  {
+   "line": 3,
+   "text": "一种",
+   "start": 18.073,
+   "end": 18.288
+  },
+  {
+   "line": 3,
+   "text": "写法",
+   "start": 18.311,
+   "end": 18.621
+  },
+  {
+   "line": 3,
+   "text": "的",
+   "start": 18.621,
+   "end": 18.68
+  },
+  {
+   "line": 3,
+   "text": "信号",
+   "start": 18.692,
+   "end": 19.18
+  },
+  {
+   "line": 3,
+   "text": "恶意",
+   "start": 19.538,
+   "end": 19.847
+  },
+  {
+   "line": 3,
+   "text": "证明",
+   "start": 19.859,
+   "end": 20.157
+  },
+  {
+   "line": 3,
+   "text": "者",
+   "start": 20.157,
+   "end": 20.442
+  },
+  {
+   "line": 3,
+   "text": "可以",
+   "start": 20.549,
+   "end": 20.799
+  },
+  {
+   "line": 3,
+   "text": "填",
+   "start": 20.811,
+   "end": 21.038
+  },
+  {
+   "line": 3,
+   "text": "任何",
+   "start": 21.061,
+   "end": 21.418
+  },
+  {
+   "line": 3,
+   "text": "值",
+   "start": 21.418,
+   "end": 21.74
+  },
+  {
+   "line": 4,
+   "text": "看",
+   "start": 22.882,
+   "end": 23.12
+  },
+  {
+   "line": 4,
+   "text": "一个",
+   "start": 23.12,
+   "end": 23.251
+  },
+  {
+   "line": 4,
+   "text": "玩具",
+   "start": 23.274,
+   "end": 23.548
+  },
+  {
+   "line": 4,
+   "text": "例子",
+   "start": 23.56,
+   "end": 23.917
+  },
+  {
+   "line": 4,
+   "text": "账户",
+   "start": 24.463,
+   "end": 24.832
+  },
+  {
+   "line": 4,
+   "text": "余额",
+   "start": 24.844,
+   "end": 25.153
+  },
+  {
+   "line": 4,
+   "text": "是",
+   "start": 25.177,
+   "end": 25.284
+  },
+  {
+   "line": 4,
+   "text": "20",
+   "start": 25.296,
+   "end": 25.867
+  },
+  {
+   "line": 4,
+   "text": "有人",
+   "start": 26.141,
+   "end": 26.391
+  },
+  {
+   "line": 4,
+   "text": "要",
+   "start": 26.403,
+   "end": 26.522
+  },
+  {
+   "line": 4,
+   "text": "提款",
+   "start": 26.534,
+   "end": 26.832
+  },
+  {
+   "line": 4,
+   "text": "25",
+   "start": 26.855,
+   "end": 27.367
+  },
+  {
+   "line": 5,
+   "text": "电路",
+   "start": 28.526,
+   "end": 28.788
+  },
+  {
+   "line": 5,
+   "text": "要求",
+   "start": 28.799,
+   "end": 29.323
+  },
+  {
+   "line": 5,
+   "text": "新",
+   "start": 29.68,
+   "end": 29.966
+  },
+  {
+   "line": 5,
+   "text": "余额",
+   "start": 29.966,
+   "end": 30.252
+  },
+  {
+   "line": 5,
+   "text": "拆",
+   "start": 30.276,
+   "end": 30.466
+  },
+  {
+   "line": 5,
+   "text": "成",
+   "start": 30.466,
+   "end": 30.633
+  },
+  {
+   "line": 5,
+   "text": "5 个",
+   "start": 30.657,
+   "end": 30.871
+  },
+  {
+   "line": 5,
+   "text": "二进",
+   "start": 30.883,
+   "end": 31.192
+  },
+  {
+   "line": 5,
+   "text": "制位",
+   "start": 31.192,
+   "end": 31.561
+  },
+  {
+   "line": 5,
+   "text": "每",
+   "start": 31.859,
+   "end": 32.038
+  },
+  {
+   "line": 5,
+   "text": "一",
+   "start": 32.038,
+   "end": 32.133
+  },
+  {
+   "line": 5,
+   "text": "位",
+   "start": 32.133,
+   "end": 32.347
+  },
+  {
+   "line": 5,
+   "text": "只能",
+   "start": 32.371,
+   "end": 32.633
+  },
+  {
+   "line": 5,
+   "text": "是",
+   "start": 32.633,
+   "end": 32.835
+  },
+  {
+   "line": 5,
+   "text": "0",
+   "start": 32.859,
+   "end": 33.038
+  },
+  {
+   "line": 5,
+   "text": "或",
+   "start": 33.049,
+   "end": 33.216
+  },
+  {
+   "line": 5,
+   "text": "1",
+   "start": 33.216,
+   "end": 33.478
+  },
+  {
+   "line": 6,
+   "text": "只",
+   "start": 34.626,
+   "end": 34.792
+  },
+  {
+   "line": 6,
+   "text": "去掉",
+   "start": 34.792,
+   "end": 35.042
+  },
+  {
+   "line": 6,
+   "text": "最",
+   "start": 35.066,
+   "end": 35.268
+  },
+  {
+   "line": 6,
+   "text": "高位",
+   "start": 35.268,
+   "end": 35.518
+  },
+  {
+   "line": 6,
+   "text": "的",
+   "start": 35.518,
+   "end": 35.578
+  },
+  {
+   "line": 6,
+   "text": "这",
+   "start": 35.59,
+   "end": 35.697
+  },
+  {
+   "line": 6,
+   "text": "一条",
+   "start": 35.697,
+   "end": 36.126
+  },
+  {
+   "line": 6,
+   "text": "恶意",
+   "start": 36.447,
+   "end": 36.709
+  },
+  {
+   "line": 6,
+   "text": "证明者",
+   "start": 36.721,
+   "end": 37.328
+  },
+  {
+   "line": 6,
+   "text": "就",
+   "start": 37.435,
+   "end": 37.578
+  },
+  {
+   "line": 6,
+   "text": "把",
+   "start": 37.578,
+   "end": 37.685
+  },
+  {
+   "line": 6,
+   "text": "最高位",
+   "start": 37.697,
+   "end": 38.137
+  },
+  {
+   "line": 6,
+   "text": "填成",
+   "start": 38.138,
+   "end": 38.423
+  },
+  {
+   "line": 6,
+   "text": "30",
+   "start": 38.435,
+   "end": 38.864
+  },
+  {
+   "line": 7,
+   "text": "电路",
+   "start": 40.03,
+   "end": 40.399
+  },
+  {
+   "line": 7,
+   "text": "里",
+   "start": 40.399,
+   "end": 40.482
+  },
+  {
+   "line": 7,
+   "text": "的",
+   "start": 40.482,
+   "end": 40.565
+  },
+  {
+   "line": 7,
+   "text": "数",
+   "start": 40.577,
+   "end": 40.887
+  },
+  {
+   "line": 7,
+   "text": "算到",
+   "start": 41.184,
+   "end": 41.518
+  },
+  {
+   "line": 7,
+   "text": "一个",
+   "start": 41.53,
+   "end": 41.672
+  },
+  {
+   "line": 7,
+   "text": "上限",
+   "start": 41.684,
+   "end": 42.256
+  },
+  {
+   "line": 7,
+   "text": "就",
+   "start": 42.363,
+   "end": 42.506
+  },
+  {
+   "line": 7,
+   "text": "绕",
+   "start": 42.518,
+   "end": 42.696
+  },
+  {
+   "line": 7,
+   "text": "回去",
+   "start": 42.696,
+   "end": 43.018
+  },
+  {
+   "line": 7,
+   "text": "填",
+   "start": 43.551,
+   "end": 43.777
+  },
+  {
+   "line": 7,
+   "text": "30",
+   "start": 43.777,
+   "end": 44.063
+  },
+  {
+   "line": 7,
+   "text": "之后",
+   "start": 44.075,
+   "end": 44.539
+  },
+  {
+   "line": 7,
+   "text": "等式",
+   "start": 44.789,
+   "end": 45.075
+  },
+  {
+   "line": 7,
+   "text": "照样",
+   "start": 45.099,
+   "end": 45.432
+  },
+  {
+   "line": 7,
+   "text": "成立",
+   "start": 45.444,
+   "end": 45.872
+  },
+  {
+   "line": 8,
+   "text": "余额",
+   "start": 47.042,
+   "end": 47.363
+  },
+  {
+   "line": 8,
+   "text": "检查",
+   "start": 47.375,
+   "end": 47.696
+  },
+  {
+   "line": 8,
+   "text": "被",
+   "start": 47.72,
+   "end": 47.804
+  },
+  {
+   "line": 8,
+   "text": "绕",
+   "start": 47.815,
+   "end": 48.03
+  },
+  {
+   "line": 8,
+   "text": "过",
+   "start": 48.03,
+   "end": 48.256
+  },
+  {
+   "line": 8,
+   "text": "提款",
+   "start": 48.589,
+   "end": 48.899
+  },
+  {
+   "line": 8,
+   "text": "25",
+   "start": 48.911,
+   "end": 49.399
+  },
+  {
+   "line": 8,
+   "text": "通过",
+   "start": 49.423,
+   "end": 49.684
+  },
+  {
+   "line": 8,
+   "text": "了",
+   "start": 49.684,
+   "end": 49.756
+  },
+  {
+   "line": 8,
+   "text": "验证",
+   "start": 49.768,
+   "end": 50.113
+  },
+  {
+   "line": 9,
+   "text": "反过来",
+   "start": 51.27,
+   "end": 51.924
+  },
+  {
+   "line": 9,
+   "text": "约束",
+   "start": 52.305,
+   "end": 52.615
+  },
+  {
+   "line": 9,
+   "text": "写",
+   "start": 52.639,
+   "end": 52.746
+  },
+  {
+   "line": 9,
+   "text": "得",
+   "start": 52.746,
+   "end": 52.817
+  },
+  {
+   "line": 9,
+   "text": "太",
+   "start": 52.829,
+   "end": 53.067
+  },
+  {
+   "line": 9,
+   "text": "严",
+   "start": 53.067,
+   "end": 53.341
+  },
+  {
+   "line": 9,
+   "text": "叫",
+   "start": 53.532,
+   "end": 53.758
+  },
+  {
+   "line": 9,
+   "text": "过度",
+   "start": 53.782,
+   "end": 54.091
+  },
+  {
+   "line": 9,
+   "text": "约束",
+   "start": 54.103,
+   "end": 54.52
+  },
+  {
+   "line": 10,
+   "text": "合法",
+   "start": 55.69,
+   "end": 56.047
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 56.047,
+   "end": 56.118
+  },
+  {
+   "line": 10,
+   "text": "输入",
+   "start": 56.13,
+   "end": 56.642
+  },
+  {
+   "line": 10,
+   "text": "也",
+   "start": 56.749,
+   "end": 56.868
+  },
+  {
+   "line": 10,
+   "text": "无法",
+   "start": 56.88,
+   "end": 57.13
+  },
+  {
+   "line": 10,
+   "text": "生成",
+   "start": 57.142,
+   "end": 57.428
+  },
+  {
+   "line": 10,
+   "text": "证明",
+   "start": 57.44,
+   "end": 57.88
+  },
+  {
+   "line": 10,
+   "text": "结果",
+   "start": 58.178,
+   "end": 58.475
+  },
+  {
+   "line": 10,
+   "text": "是",
+   "start": 58.487,
+   "end": 58.832
+  },
+  {
+   "line": 10,
+   "text": "拒绝",
+   "start": 58.94,
+   "end": 59.392
+  },
+  {
+   "line": 10,
+   "text": "服务",
+   "start": 59.404,
+   "end": 59.856
+  },
+  {
+   "line": 10,
+   "text": "资金",
+   "start": 60.19,
+   "end": 60.582
+  },
+  {
+   "line": 10,
+   "text": "可能",
+   "start": 60.606,
+   "end": 60.832
+  },
+  {
+   "line": 10,
+   "text": "被",
+   "start": 60.844,
+   "end": 60.951
+  },
+  {
+   "line": 10,
+   "text": "锁住",
+   "start": 60.952,
+   "end": 61.332
+  },
+  {
+   "line": 11,
+   "text": "真实",
+   "start": 62.486,
+   "end": 62.867
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 62.867,
+   "end": 62.95
+  },
+  {
+   "line": 11,
+   "text": "例子",
+   "start": 62.962,
+   "end": 63.414
+  },
+  {
+   "line": 11,
+   "text": "在",
+   "start": 63.533,
+   "end": 63.688
+  },
+  {
+   "line": 11,
+   "text": "2019",
+   "start": 63.7,
+   "end": 64.188
+  },
+  {
+   "line": 11,
+   "text": "年",
+   "start": 64.188,
+   "end": 64.486
+  },
+  {
+   "line": 12,
+   "text": "按",
+   "start": 65.634,
+   "end": 65.848
+  },
+  {
+   "line": 12,
+   "text": "Trail",
+   "start": 65.848,
+   "end": 66.11
+  },
+  {
+   "line": 12,
+   "text": "of",
+   "start": 66.122,
+   "end": 66.276
+  },
+  {
+   "line": 12,
+   "text": "Bits",
+   "start": 66.3,
+   "end": 66.538
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 66.538,
+   "end": 66.634
+  },
+  {
+   "line": 12,
+   "text": "介绍",
+   "start": 66.646,
+   "end": 67.074
+  },
+  {
+   "line": 12,
+   "text": "Tornado",
+   "start": 67.324,
+   "end": 67.848
+  },
+  {
+   "line": 12,
+   "text": "Cash",
+   "start": 67.86,
+   "end": 68.36
+  },
+  {
+   "line": 12,
+   "text": "用",
+   "start": 68.455,
+   "end": 68.61
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 68.61,
+   "end": 68.681
+  },
+  {
+   "line": 12,
+   "text": "一个",
+   "start": 68.693,
+   "end": 68.836
+  },
+  {
+   "line": 12,
+   "text": "哈希",
+   "start": 68.86,
+   "end": 69.169
+  },
+  {
+   "line": 12,
+   "text": "实现",
+   "start": 69.181,
+   "end": 69.467
+  },
+  {
+   "line": 12,
+   "text": "里",
+   "start": 69.467,
+   "end": 69.669
+  },
+  {
+   "line": 12,
+   "text": "有",
+   "start": 69.919,
+   "end": 70.05
+  },
+  {
+   "line": 12,
+   "text": "一个",
+   "start": 70.05,
+   "end": 70.181
+  },
+  {
+   "line": 12,
+   "text": "输出",
+   "start": 70.193,
+   "end": 70.598
+  },
+  {
+   "line": 12,
+   "text": "只",
+   "start": 70.622,
+   "end": 70.753
+  },
+  {
+   "line": 12,
+   "text": "被",
+   "start": 70.753,
+   "end": 70.848
+  },
+  {
+   "line": 12,
+   "text": "赋值",
+   "start": 70.86,
+   "end": 71.3
+  },
+  {
+   "line": 12,
+   "text": "没有",
+   "start": 71.479,
+   "end": 71.705
+  },
+  {
+   "line": 12,
+   "text": "被",
+   "start": 71.717,
+   "end": 71.824
+  },
+  {
+   "line": 12,
+   "text": "约束",
+   "start": 71.824,
+   "end": 72.193
+  },
+  {
+   "line": 13,
+   "text": "攻击者",
+   "start": 73.342,
+   "end": 73.901
+  },
+  {
+   "line": 13,
+   "text": "本",
+   "start": 73.925,
+   "end": 74.068
+  },
+  {
+   "line": 13,
+   "text": "可以",
+   "start": 74.068,
+   "end": 74.246
+  },
+  {
+   "line": 13,
+   "text": "伪造",
+   "start": 74.258,
+   "end": 74.699
+  },
+  {
+   "line": 13,
+   "text": "Merkle",
+   "start": 74.794,
+   "end": 75.234
+  },
+  {
+   "line": 13,
+   "text": "根",
+   "start": 75.234,
+   "end": 75.532
+  },
+  {
+   "line": 13,
+   "text": "取",
+   "start": 75.711,
+   "end": 75.937
+  },
+  {
+   "line": 13,
+   "text": "走",
+   "start": 75.937,
+   "end": 76.08
+  },
+  {
+   "line": 13,
+   "text": "别人",
+   "start": 76.104,
+   "end": 76.342
+  },
+  {
+   "line": 13,
+   "text": "的",
+   "start": 76.342,
+   "end": 76.413
+  },
+  {
+   "line": 13,
+   "text": "资金",
+   "start": 76.425,
+   "end": 76.818
+  },
+  {
+   "line": 14,
+   "text": "团队",
+   "start": 77.978,
+   "end": 78.275
+  },
+  {
+   "line": 14,
+   "text": "发现",
+   "start": 78.287,
+   "end": 78.585
+  },
+  {
+   "line": 14,
+   "text": "后",
+   "start": 78.585,
+   "end": 78.918
+  },
+  {
+   "line": 14,
+   "text": "抢先",
+   "start": 79.24,
+   "end": 79.704
+  },
+  {
+   "line": 14,
+   "text": "利用",
+   "start": 79.716,
+   "end": 79.93
+  },
+  {
+   "line": 14,
+   "text": "这个",
+   "start": 79.954,
+   "end": 80.085
+  },
+  {
+   "line": 14,
+   "text": "漏洞",
+   "start": 80.097,
+   "end": 80.501
+  },
+  {
+   "line": 14,
+   "text": "把",
+   "start": 80.704,
+   "end": 80.859
+  },
+  {
+   "line": 14,
+   "text": "资金",
+   "start": 80.87,
+   "end": 81.228
+  },
+  {
+   "line": 14,
+   "text": "转走",
+   "start": 81.24,
+   "end": 81.585
+  },
+  {
+   "line": 14,
+   "text": "保护",
+   "start": 81.609,
+   "end": 81.87
+  },
+  {
+   "line": 14,
+   "text": "起来",
+   "start": 81.882,
+   "end": 82.216
+  },
+  {
+   "line": 14,
+   "text": "再",
+   "start": 82.478,
+   "end": 82.644
+  },
+  {
+   "line": 14,
+   "text": "修复",
+   "start": 82.644,
+   "end": 83.073
+  },
+  {
+   "line": 15,
+   "text": "没有",
+   "start": 84.222,
+   "end": 84.579
+  },
+  {
+   "line": 15,
+   "text": "资金",
+   "start": 84.591,
+   "end": 84.912
+  },
+  {
+   "line": 15,
+   "text": "被",
+   "start": 84.924,
+   "end": 85.079
+  },
+  {
+   "line": 15,
+   "text": "盗",
+   "start": 85.079,
+   "end": 85.353
+  },
+  {
+   "line": 16,
+   "text": "同类",
+   "start": 86.506,
+   "end": 86.827
+  },
+  {
+   "line": 16,
+   "text": "问题",
+   "start": 86.839,
+   "end": 87.101
+  },
+  {
+   "line": 16,
+   "text": "很多",
+   "start": 87.113,
+   "end": 87.589
+  },
+  {
+   "line": 16,
+   "text": "0",
+   "start": 88.134,
+   "end": 88.432
+  },
+  {
+   "line": 16,
+   "text": "xPARC",
+   "start": 88.432,
+   "end": 89.217
+  },
+  {
+   "line": 16,
+   "text": "维护",
+   "start": 89.229,
+   "end": 89.503
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 89.503,
+   "end": 89.646
+  },
+  {
+   "line": 16,
+   "text": "公开",
+   "start": 89.67,
+   "end": 89.979
+  },
+  {
+   "line": 16,
+   "text": "漏洞",
+   "start": 89.991,
+   "end": 90.253
+  },
+  {
+   "line": 16,
+   "text": "清单",
+   "start": 90.265,
+   "end": 90.598
+  },
+  {
+   "line": 16,
+   "text": "里",
+   "start": 90.598,
+   "end": 90.813
+  },
+  {
+   "line": 16,
+   "text": "收录",
+   "start": 90.968,
+   "end": 91.337
+  },
+  {
+   "line": 16,
+   "text": "了",
+   "start": 91.337,
+   "end": 91.444
+  },
+  {
+   "line": 16,
+   "text": "大量",
+   "start": 91.468,
+   "end": 91.789
+  },
+  {
+   "line": 16,
+   "text": "这样",
+   "start": 91.813,
+   "end": 91.979
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 91.979,
+   "end": 92.039
+  },
+  {
+   "line": 16,
+   "text": "例子",
+   "start": 92.051,
+   "end": 92.325
+  },
+  {
+   "line": 17,
+   "text": "防御",
+   "start": 93.494,
+   "end": 93.922
+  },
+  {
+   "line": 17,
+   "text": "有",
+   "start": 93.922,
+   "end": 94.017
+  },
+  {
+   "line": 17,
+   "text": "三",
+   "start": 94.029,
+   "end": 94.267
+  },
+  {
+   "line": 17,
+   "text": "条",
+   "start": 94.267,
+   "end": 94.625
+  },
+  {
+   "line": 18,
+   "text": "用",
+   "start": 95.778,
+   "end": 96.04
+  },
+  {
+   "line": 18,
+   "text": "静态",
+   "start": 96.063,
+   "end": 96.373
+  },
+  {
+   "line": 18,
+   "text": "分析",
+   "start": 96.385,
+   "end": 96.623
+  },
+  {
+   "line": 18,
+   "text": "工具",
+   "start": 96.635,
+   "end": 97.075
+  },
+  {
+   "line": 18,
+   "text": "找出",
+   "start": 97.23,
+   "end": 97.587
+  },
+  {
+   "line": 18,
+   "text": "没有",
+   "start": 97.611,
+   "end": 97.849
+  },
+  {
+   "line": 18,
+   "text": "约束",
+   "start": 97.861,
+   "end": 98.147
+  },
+  {
+   "line": 18,
+   "text": "的",
+   "start": 98.147,
+   "end": 98.218
+  },
+  {
+   "line": 18,
+   "text": "信号",
+   "start": 98.23,
+   "end": 98.623
+  },
+  {
+   "line": 19,
+   "text": "关键",
+   "start": 99.79,
+   "end": 100.194
+  },
+  {
+   "line": 19,
+   "text": "电路",
+   "start": 100.206,
+   "end": 100.611
+  },
+  {
+   "line": 19,
+   "text": "做",
+   "start": 100.885,
+   "end": 101.063
+  },
+  {
+   "line": 19,
+   "text": "形式",
+   "start": 101.075,
+   "end": 101.516
+  },
+  {
+   "line": 19,
+   "text": "化验",
+   "start": 101.528,
+   "end": 101.861
+  },
+  {
+   "line": 19,
+   "text": "证",
+   "start": 101.861,
+   "end": 102.075
+  },
+  {
+   "line": 20,
+   "text": "每",
+   "start": 103.226,
+   "end": 103.464
+  },
+  {
+   "line": 20,
+   "text": "条",
+   "start": 103.464,
+   "end": 103.63
+  },
+  {
+   "line": 20,
+   "text": "约束",
+   "start": 103.642,
+   "end": 103.964
+  },
+  {
+   "line": 20,
+   "text": "写",
+   "start": 103.988,
+   "end": 104.154
+  },
+  {
+   "line": 20,
+   "text": "正反",
+   "start": 104.154,
+   "end": 104.476
+  },
+  {
+   "line": 20,
+   "text": "两种",
+   "start": 104.488,
+   "end": 104.809
+  },
+  {
+   "line": 20,
+   "text": "测试",
+   "start": 104.821,
+   "end": 105.273
+  },
+  {
+   "line": 20,
+   "text": "恶意",
+   "start": 105.595,
+   "end": 105.88
+  },
+  {
+   "line": 20,
+   "text": "的",
+   "start": 105.88,
+   "end": 105.964
+  },
+  {
+   "line": 20,
+   "text": "输入",
+   "start": 105.976,
+   "end": 106.214
+  },
+  {
+   "line": 20,
+   "text": "也",
+   "start": 106.238,
+   "end": 106.321
+  },
+  {
+   "line": 20,
+   "text": "要",
+   "start": 106.321,
+   "end": 106.428
+  },
+  {
+   "line": 20,
+   "text": "测",
+   "start": 106.428,
+   "end": 106.726
+  }
+ ],
+ "captions": [
+  {
+   "text": "电路最常见的漏洞",
+   "start": 1.648,
+   "end": 3.294,
+   "id": "c0"
+  },
+  {
+   "text": "叫约束不足",
+   "start": 3.41,
+   "end": 4.841,
+   "id": "c1"
+  },
+  {
+   "text": "某个值被算出来了",
+   "start": 5.828,
+   "end": 7.2,
+   "id": "c2"
+  },
+  {
+   "text": "却没有被约束",
+   "start": 7.375,
+   "end": 8.414,
+   "id": "c3"
+  },
+  {
+   "text": "在 Circom 语言里",
+   "start": 9.384,
+   "end": 10.792,
+   "id": "c4"
+  },
+  {
+   "text": "有一种写法只赋值 不约束",
+   "start": 10.943,
+   "end": 13.268,
+   "id": "c5"
+  },
+  {
+   "text": "另一种写法",
+   "start": 13.631,
+   "end": 14.694,
+   "id": "c6"
+  },
+  {
+   "text": "赋值的同时加上约束",
+   "start": 14.798,
+   "end": 16.48,
+   "id": "c7"
+  },
+  {
+   "text": "只用了前一种写法的信号",
+   "start": 17.476,
+   "end": 19.3,
+   "id": "c8"
+  },
+  {
+   "text": "恶意证明者可以填任何值",
+   "start": 19.488,
+   "end": 21.86,
+   "id": "c9"
+  },
+  {
+   "text": "看一个玩具例子",
+   "start": 22.832,
+   "end": 24.037,
+   "id": "c10"
+  },
+  {
+   "text": "账户余额是 20",
+   "start": 24.413,
+   "end": 25.987,
+   "id": "c11"
+  },
+  {
+   "text": "有人要提款 25",
+   "start": 26.091,
+   "end": 27.487,
+   "id": "c12"
+  },
+  {
+   "text": "电路要求",
+   "start": 28.476,
+   "end": 29.443,
+   "id": "c13"
+  },
+  {
+   "text": "新余额拆成 5 个二进制位",
+   "start": 29.63,
+   "end": 31.681,
+   "id": "c14"
+  },
+  {
+   "text": "每一位只能是 0 或 1",
+   "start": 31.809,
+   "end": 33.598,
+   "id": "c15"
+  },
+  {
+   "text": "只去掉最高位的这一条",
+   "start": 34.576,
+   "end": 36.246,
+   "id": "c16"
+  },
+  {
+   "text": "恶意证明者就把最高位填成 30",
+   "start": 36.397,
+   "end": 38.984,
+   "id": "c17"
+  },
+  {
+   "text": "电路里的数",
+   "start": 39.98,
+   "end": 41.007,
+   "id": "c18"
+  },
+  {
+   "text": "算到一个上限就绕回去",
+   "start": 41.134,
+   "end": 43.138,
+   "id": "c19"
+  },
+  {
+   "text": "填 30 之后",
+   "start": 43.501,
+   "end": 44.659,
+   "id": "c20"
+  },
+  {
+   "text": "等式照样成立",
+   "start": 44.739,
+   "end": 45.992,
+   "id": "c21"
+  },
+  {
+   "text": "余额检查被绕过",
+   "start": 46.992,
+   "end": 48.376,
+   "id": "c22"
+  },
+  {
+   "text": "提款 25 通过了验证",
+   "start": 48.539,
+   "end": 50.233,
+   "id": "c23"
+  },
+  {
+   "text": "反过来 约束写得太严",
+   "start": 51.22,
+   "end": 53.461,
+   "id": "c24"
+  },
+  {
+   "text": "叫过度约束",
+   "start": 53.482,
+   "end": 54.64,
+   "id": "c25"
+  },
+  {
+   "text": "合法的输入也无法生成证明",
+   "start": 55.64,
+   "end": 58.0,
+   "id": "c26"
+  },
+  {
+   "text": "结果是拒绝服务",
+   "start": 58.128,
+   "end": 59.976,
+   "id": "c27"
+  },
+  {
+   "text": "资金可能被锁住",
+   "start": 60.14,
+   "end": 61.452,
+   "id": "c28"
+  },
+  {
+   "text": "真实的例子在 2019 年",
+   "start": 62.436,
+   "end": 64.606,
+   "id": "c29"
+  },
+  {
+   "text": "按 Trail of Bits 的介绍",
+   "start": 65.584,
+   "end": 67.194,
+   "id": "c30"
+  },
+  {
+   "text": "Tornado Cash 用的一个哈希实现里",
+   "start": 67.274,
+   "end": 69.789,
+   "id": "c31"
+  },
+  {
+   "text": "有一个输出只被赋值",
+   "start": 69.869,
+   "end": 71.409,
+   "id": "c32"
+  },
+  {
+   "text": "没有被约束",
+   "start": 71.429,
+   "end": 72.313,
+   "id": "c33"
+  },
+  {
+   "text": "攻击者本可以伪造 Merkle 根",
+   "start": 73.292,
+   "end": 75.641,
+   "id": "c34"
+  },
+  {
+   "text": "取走别人的资金",
+   "start": 75.661,
+   "end": 76.938,
+   "id": "c35"
+  },
+  {
+   "text": "团队发现后",
+   "start": 77.928,
+   "end": 79.038,
+   "id": "c36"
+  },
+  {
+   "text": "抢先利用这个漏洞",
+   "start": 79.19,
+   "end": 80.621,
+   "id": "c37"
+  },
+  {
+   "text": "把资金转走保护起来 再修复",
+   "start": 80.654,
+   "end": 83.193,
+   "id": "c38"
+  },
+  {
+   "text": "没有资金被盗",
+   "start": 84.172,
+   "end": 85.473,
+   "id": "c39"
+  },
+  {
+   "text": "同类问题很多",
+   "start": 86.456,
+   "end": 87.709,
+   "id": "c40"
+  },
+  {
+   "text": "0xPARC 维护的公开漏洞清单里",
+   "start": 88.084,
+   "end": 90.898,
+   "id": "c41"
+  },
+  {
+   "text": "收录了大量这样的例子",
+   "start": 90.918,
+   "end": 92.445,
+   "id": "c42"
+  },
+  {
+   "text": "防御有三条",
+   "start": 93.444,
+   "end": 94.745,
+   "id": "c43"
+  },
+  {
+   "text": "用静态分析工具",
+   "start": 95.728,
+   "end": 97.16,
+   "id": "c44"
+  },
+  {
+   "text": "找出没有约束的信号",
+   "start": 97.18,
+   "end": 98.743,
+   "id": "c45"
+  },
+  {
+   "text": "关键电路",
+   "start": 99.74,
+   "end": 100.731,
+   "id": "c46"
+  },
+  {
+   "text": "做形式化验证",
+   "start": 100.835,
+   "end": 102.195,
+   "id": "c47"
+  },
+  {
+   "text": "每条约束写正反两种测试",
+   "start": 103.176,
+   "end": 105.393,
+   "id": "c48"
+  },
+  {
+   "text": "恶意的输入也要测",
+   "start": 105.545,
+   "end": 106.846,
+   "id": "c49"
+  }
+ ]
+}

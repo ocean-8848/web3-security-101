@@ -1,0 +1,2104 @@
+{
+ "id": "seg5a",
+ "title": "授权风险",
+ "pill": 5,
+ "total": 119.13,
+ "lines": [
+  {
+   "id": "seg5a-00",
+   "text": "最后一类风险，是授权。",
+   "spoken": "最后一类风险，是授权。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-00.mp3",
+   "start": 1.6,
+   "dur": 2.904,
+   "speechStart": 1.698,
+   "speechEnd": 3.65
+  },
+  {
+   "id": "seg5a-01",
+   "text": "approve 允许另一个地址，代你转出代币。",
+   "spoken": "approve 允许另一个地址，代你转出代币。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-01.mp3",
+   "start": 4.724,
+   "dur": 3.888,
+   "speechStart": 4.822,
+   "speechEnd": 7.798
+  },
+  {
+   "id": "seg5a-02",
+   "text": "最后一道题。Alice 授权了 Bob 100 枚，现在想改成 50 枚。",
+   "spoken": "最后一道题。Alice 授权了 Bob 100 枚，现在想改成 50 枚。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-02.mp3",
+   "start": 8.832,
+   "dur": 6.336,
+   "speechStart": 8.93,
+   "speechEnd": 14.344
+  },
+  {
+   "id": "seg5a-03",
+   "text": "Bob 能抢先打包自己的交易。他最多能拿走多少？",
+   "spoken": "Bob 能抢先打包自己的交易。他最多能拿走多少？",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-03.mp3",
+   "start": 15.388,
+   "dur": 4.824,
+   "speechStart": 15.486,
+   "speechEnd": 19.364
+  },
+  {
+   "id": "seg5a-04",
+   "text": "150 枚。他先花掉旧的 100 枚。",
+   "spoken": "150 枚。他先花掉旧的 100 枚。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-04.mp3",
+   "start": 20.712,
+   "dur": 3.816,
+   "speechStart": 20.81,
+   "speechEnd": 23.7
+  },
+  {
+   "id": "seg5a-05",
+   "text": "等新额度生效，再花 50 枚。",
+   "spoken": "等新额度生效，再花 50 枚。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-05.mp3",
+   "start": 24.748,
+   "dur": 3.312,
+   "speechStart": 24.846,
+   "speechEnd": 27.238
+  },
+  {
+   "id": "seg5a-06",
+   "text": "这叫 approve 竞态。",
+   "spoken": "这叫 approve 竞态。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-06.mp3",
+   "start": 28.28,
+   "dur": 2.328,
+   "speechStart": 28.378,
+   "speechEnd": 29.77
+  },
+  {
+   "id": "seg5a-07",
+   "text": "缓解办法之一：先设成 0，看旧额度有没有被花掉，再设新值。",
+   "spoken": "缓解办法之一：先设成 0，看旧额度有没有被花掉，再设新值。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-07.mp3",
+   "start": 30.828,
+   "dur": 6.024,
+   "speechStart": 30.926,
+   "speechEnd": 36.033
+  },
+  {
+   "id": "seg5a-08",
+   "text": "之二：用 safeDecreaseAllowance 相对减少。额度已被抢先花掉，交易就回滚。",
+   "spoken": "之二：用 safeDecreaseAllowance 相对减少。额度已被抢先花掉，交易就回滚。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-08.mp3",
+   "start": 37.072,
+   "dur": 7.104,
+   "speechStart": 37.17,
+   "speechEnd": 43.346
+  },
+  {
+   "id": "seg5a-09",
+   "text": "forceApprove 只解决兼容问题，不解决竞态。",
+   "spoken": "forceApprove 只解决兼容问题，不解决竞态。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-09.mp3",
+   "start": 44.396,
+   "dur": 4.008,
+   "speechStart": 44.494,
+   "speechEnd": 47.565
+  },
+  {
+   "id": "seg5a-10",
+   "text": "比竞态更大的风险，是无限授权。",
+   "spoken": "比竞态更大的风险，是无限授权。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-10.mp3",
+   "start": 48.624,
+   "dur": 3.672,
+   "speechStart": 48.722,
+   "speechEnd": 51.46
+  },
+  {
+   "id": "seg5a-11",
+   "text": "协议一旦被攻破，攻击者能转走你钱包里全部的这种代币。",
+   "spoken": "协议一旦被攻破，攻击者能转走你钱包里全部的这种代币。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-11.mp3",
+   "start": 52.516,
+   "dur": 5.16,
+   "speechStart": 52.614,
+   "speechEnd": 56.84
+  },
+  {
+   "id": "seg5a-12",
+   "text": "即使你从没把它存进协议。",
+   "spoken": "即使你从没把它存进协议。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-12.mp3",
+   "start": 57.896,
+   "dur": 2.688,
+   "speechStart": 57.994,
+   "speechEnd": 59.744
+  },
+  {
+   "id": "seg5a-13",
+   "text": "钓鱼网站也盯着授权，诱导你签 approve，或者链下签名的 permit。",
+   "spoken": "钓鱼网站也盯着授权，诱导你签 approve，或者链下签名的 permit。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-13.mp3",
+   "start": 60.804,
+   "dur": 5.928,
+   "speechStart": 60.902,
+   "speechEnd": 65.878
+  },
+  {
+   "id": "seg5a-14",
+   "text": "最危险的组合，是任意调用加授权。",
+   "spoken": "最危险的组合，是任意掉用加授权。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-14.mp3",
+   "start": 66.952,
+   "dur": 3.792,
+   "speechStart": 67.05,
+   "speechEnd": 69.907
+  },
+  {
+   "id": "seg5a-15",
+   "text": "路由合约持有用户的授权，",
+   "spoken": "路由合约持有用户的授权，",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-15.mp3",
+   "start": 70.964,
+   "dur": 2.808,
+   "speechStart": 71.062,
+   "speechEnd": 72.919
+  },
+  {
+   "id": "seg5a-16",
+   "text": "又允许用户指定任意目标，和任意 calldata。",
+   "spoken": "又允许用户指定任意目标，和任意 calldata。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-16.mp3",
+   "start": 73.992,
+   "dur": 4.416,
+   "speechStart": 74.09,
+   "speechEnd": 77.554
+  },
+  {
+   "id": "seg5a-17",
+   "text": "攻击者就能让它，调用代币的 transferFrom，从受害者转给自己。",
+   "spoken": "攻击者就能让它，掉用代币的 transferFrom，从受害者转给自己。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-17.mp3",
+   "start": 78.628,
+   "dur": 5.4,
+   "speechStart": 78.726,
+   "speechEnd": 83.19
+  },
+  {
+   "id": "seg5a-18",
+   "text": "2023 年 4 月，Sushi 的 RouteProcessor2。",
+   "spoken": "2023 年 4 月，Sushi 的 RouteProcessor2。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-18.mp3",
+   "start": 84.248,
+   "dur": 4.032,
+   "speechStart": 84.346,
+   "speechEnd": 87.441
+  },
+  {
+   "id": "seg5a-19",
+   "text": "路由里的池子地址，由用户填写。",
+   "spoken": "路由里的池子地址，由用户填写。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-19.mp3",
+   "start": 88.5,
+   "dur": 3.672,
+   "speechStart": 88.598,
+   "speechEnd": 91.324
+  },
+  {
+   "id": "seg5a-20",
+   "text": "攻击者填入自己的池子，在回调里，把任意授权过的用户设成付款人。",
+   "spoken": "攻击者填入自己的池子，在回掉里，把任意授权过的用户设成付款人。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-20.mp3",
+   "start": 92.392,
+   "dur": 6.648,
+   "speechStart": 92.49,
+   "speechEnd": 98.216
+  },
+  {
+   "id": "seg5a-21",
+   "text": "回调校验只问：是不是刚才调用的地址？",
+   "spoken": "回掉较验只问：是不是刚才掉用的地址？",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-21.mp3",
+   "start": 99.26,
+   "dur": 3.984,
+   "speechStart": 99.358,
+   "speechEnd": 102.405
+  },
+  {
+   "id": "seg5a-22",
+   "text": "没有问：它是不是真实的池子？",
+   "spoken": "没有问：它是不是真实的池子？",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-22.mp3",
+   "start": 103.744,
+   "dur": 3.36,
+   "speechStart": 103.842,
+   "speechEnd": 106.27
+  },
+  {
+   "id": "seg5a-23",
+   "text": "按公开分析，约 330 万美元被盗。",
+   "spoken": "按公开分析，约 330 万美元被盗。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-23.mp3",
+   "start": 107.604,
+   "dur": 3.936,
+   "speechStart": 107.702,
+   "speechEnd": 110.714
+  },
+  {
+   "id": "seg5a-24",
+   "text": "规则是：持有授权的合约，必须禁止任意调用目标和任意 calldata。",
+   "spoken": "规则是：持有授权的合约，必须禁止任意掉用目标和任意 calldata。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/handbook/video/skeuo/ep07/audio/lines/seg5a-24.mp3",
+   "start": 111.76,
+   "dur": 6.168,
+   "speechStart": 111.858,
+   "speechEnd": 117.096
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "最后",
+   "start": 1.698,
+   "end": 2.055
+  },
+  {
+   "line": 0,
+   "text": "一类",
+   "start": 2.067,
+   "end": 2.221
+  },
+  {
+   "line": 0,
+   "text": "风险",
+   "start": 2.233,
+   "end": 2.674
+  },
+  {
+   "line": 0,
+   "text": "是",
+   "start": 2.936,
+   "end": 3.114
+  },
+  {
+   "line": 0,
+   "text": "授权",
+   "start": 3.126,
+   "end": 3.65
+  },
+  {
+   "line": 1,
+   "text": "approve",
+   "start": 4.822,
+   "end": 5.524
+  },
+  {
+   "line": 1,
+   "text": "允许",
+   "start": 5.619,
+   "end": 6.012
+  },
+  {
+   "line": 1,
+   "text": "另",
+   "start": 6.036,
+   "end": 6.155
+  },
+  {
+   "line": 1,
+   "text": "一个",
+   "start": 6.155,
+   "end": 6.298
+  },
+  {
+   "line": 1,
+   "text": "地址",
+   "start": 6.31,
+   "end": 6.726
+  },
+  {
+   "line": 1,
+   "text": "代",
+   "start": 6.929,
+   "end": 7.06
+  },
+  {
+   "line": 1,
+   "text": "你",
+   "start": 7.06,
+   "end": 7.155
+  },
+  {
+   "line": 1,
+   "text": "转出",
+   "start": 7.167,
+   "end": 7.441
+  },
+  {
+   "line": 1,
+   "text": "代币",
+   "start": 7.441,
+   "end": 7.798
+  },
+  {
+   "line": 2,
+   "text": "最后",
+   "start": 8.93,
+   "end": 9.334
+  },
+  {
+   "line": 2,
+   "text": "一",
+   "start": 9.346,
+   "end": 9.418
+  },
+  {
+   "line": 2,
+   "text": "道",
+   "start": 9.418,
+   "end": 9.549
+  },
+  {
+   "line": 2,
+   "text": "题",
+   "start": 9.549,
+   "end": 9.953
+  },
+  {
+   "line": 2,
+   "text": "Alice",
+   "start": 10.487,
+   "end": 11.011
+  },
+  {
+   "line": 2,
+   "text": "授权",
+   "start": 11.034,
+   "end": 11.38
+  },
+  {
+   "line": 2,
+   "text": "了",
+   "start": 11.38,
+   "end": 11.594
+  },
+  {
+   "line": 2,
+   "text": "Bob",
+   "start": 11.689,
+   "end": 11.999
+  },
+  {
+   "line": 2,
+   "text": "100",
+   "start": 12.022,
+   "end": 12.296
+  },
+  {
+   "line": 2,
+   "text": "枚",
+   "start": 12.296,
+   "end": 12.57
+  },
+  {
+   "line": 2,
+   "text": "现在",
+   "start": 12.856,
+   "end": 13.296
+  },
+  {
+   "line": 2,
+   "text": "想",
+   "start": 13.308,
+   "end": 13.499
+  },
+  {
+   "line": 2,
+   "text": "改成",
+   "start": 13.499,
+   "end": 13.796
+  },
+  {
+   "line": 2,
+   "text": "50",
+   "start": 13.82,
+   "end": 14.118
+  },
+  {
+   "line": 2,
+   "text": "枚",
+   "start": 14.118,
+   "end": 14.344
+  },
+  {
+   "line": 3,
+   "text": "Bob",
+   "start": 15.486,
+   "end": 15.878
+  },
+  {
+   "line": 3,
+   "text": "能",
+   "start": 15.878,
+   "end": 16.105
+  },
+  {
+   "line": 3,
+   "text": "抢先",
+   "start": 16.117,
+   "end": 16.462
+  },
+  {
+   "line": 3,
+   "text": "打包",
+   "start": 16.474,
+   "end": 16.759
+  },
+  {
+   "line": 3,
+   "text": "自己",
+   "start": 16.783,
+   "end": 16.986
+  },
+  {
+   "line": 3,
+   "text": "的",
+   "start": 16.986,
+   "end": 17.057
+  },
+  {
+   "line": 3,
+   "text": "交易",
+   "start": 17.069,
+   "end": 17.402
+  },
+  {
+   "line": 3,
+   "text": "他",
+   "start": 17.948,
+   "end": 18.245
+  },
+  {
+   "line": 3,
+   "text": "最多",
+   "start": 18.257,
+   "end": 18.507
+  },
+  {
+   "line": 3,
+   "text": "能",
+   "start": 18.519,
+   "end": 18.626
+  },
+  {
+   "line": 3,
+   "text": "拿走",
+   "start": 18.638,
+   "end": 18.876
+  },
+  {
+   "line": 3,
+   "text": "多少",
+   "start": 18.888,
+   "end": 19.364
+  },
+  {
+   "line": 4,
+   "text": "150",
+   "start": 20.81,
+   "end": 21.393
+  },
+  {
+   "line": 4,
+   "text": "枚",
+   "start": 21.393,
+   "end": 21.714
+  },
+  {
+   "line": 4,
+   "text": "他",
+   "start": 22.248,
+   "end": 22.414
+  },
+  {
+   "line": 4,
+   "text": "先",
+   "start": 22.414,
+   "end": 22.605
+  },
+  {
+   "line": 4,
+   "text": "花",
+   "start": 22.605,
+   "end": 22.76
+  },
+  {
+   "line": 4,
+   "text": "掉旧",
+   "start": 22.772,
+   "end": 23.033
+  },
+  {
+   "line": 4,
+   "text": "的",
+   "start": 23.033,
+   "end": 23.093
+  },
+  {
+   "line": 4,
+   "text": "100",
+   "start": 23.105,
+   "end": 23.414
+  },
+  {
+   "line": 4,
+   "text": "枚",
+   "start": 23.414,
+   "end": 23.7
+  },
+  {
+   "line": 5,
+   "text": "等",
+   "start": 24.846,
+   "end": 25.048
+  },
+  {
+   "line": 5,
+   "text": "新",
+   "start": 25.048,
+   "end": 25.262
+  },
+  {
+   "line": 5,
+   "text": "额度",
+   "start": 25.262,
+   "end": 25.524
+  },
+  {
+   "line": 5,
+   "text": "生效",
+   "start": 25.536,
+   "end": 26.036
+  },
+  {
+   "line": 5,
+   "text": "再",
+   "start": 26.215,
+   "end": 26.453
+  },
+  {
+   "line": 5,
+   "text": "花",
+   "start": 26.453,
+   "end": 26.643
+  },
+  {
+   "line": 5,
+   "text": "50",
+   "start": 26.667,
+   "end": 26.988
+  },
+  {
+   "line": 5,
+   "text": "枚",
+   "start": 26.988,
+   "end": 27.238
+  },
+  {
+   "line": 6,
+   "text": "这",
+   "start": 28.378,
+   "end": 28.544
+  },
+  {
+   "line": 6,
+   "text": "叫",
+   "start": 28.544,
+   "end": 28.77
+  },
+  {
+   "line": 6,
+   "text": "approve",
+   "start": 28.794,
+   "end": 29.342
+  },
+  {
+   "line": 6,
+   "text": "竞态",
+   "start": 29.354,
+   "end": 29.77
+  },
+  {
+   "line": 7,
+   "text": "缓解",
+   "start": 30.926,
+   "end": 31.247
+  },
+  {
+   "line": 7,
+   "text": "办法",
+   "start": 31.259,
+   "end": 31.485
+  },
+  {
+   "line": 7,
+   "text": "之一",
+   "start": 31.497,
+   "end": 31.878
+  },
+  {
+   "line": 7,
+   "text": "先",
+   "start": 32.283,
+   "end": 32.568
+  },
+  {
+   "line": 7,
+   "text": "设成",
+   "start": 32.568,
+   "end": 32.902
+  },
+  {
+   "line": 7,
+   "text": "0",
+   "start": 32.902,
+   "end": 33.235
+  },
+  {
+   "line": 7,
+   "text": "看旧",
+   "start": 33.414,
+   "end": 33.747
+  },
+  {
+   "line": 7,
+   "text": "额度",
+   "start": 33.759,
+   "end": 34.009
+  },
+  {
+   "line": 7,
+   "text": "有没有",
+   "start": 34.033,
+   "end": 34.366
+  },
+  {
+   "line": 7,
+   "text": "被",
+   "start": 34.378,
+   "end": 34.473
+  },
+  {
+   "line": 7,
+   "text": "花掉",
+   "start": 34.485,
+   "end": 34.914
+  },
+  {
+   "line": 7,
+   "text": "再",
+   "start": 35.164,
+   "end": 35.378
+  },
+  {
+   "line": 7,
+   "text": "设",
+   "start": 35.378,
+   "end": 35.521
+  },
+  {
+   "line": 7,
+   "text": "新",
+   "start": 35.533,
+   "end": 35.735
+  },
+  {
+   "line": 7,
+   "text": "值",
+   "start": 35.735,
+   "end": 36.033
+  },
+  {
+   "line": 8,
+   "text": "之",
+   "start": 37.17,
+   "end": 37.36
+  },
+  {
+   "line": 8,
+   "text": "二",
+   "start": 37.36,
+   "end": 37.634
+  },
+  {
+   "line": 8,
+   "text": "用",
+   "start": 37.824,
+   "end": 38.074
+  },
+  {
+   "line": 8,
+   "text": "safeDecreaseAllowance",
+   "start": 38.098,
+   "end": 39.36
+  },
+  {
+   "line": 8,
+   "text": "相对",
+   "start": 39.455,
+   "end": 39.812
+  },
+  {
+   "line": 8,
+   "text": "减少",
+   "start": 39.824,
+   "end": 40.217
+  },
+  {
+   "line": 8,
+   "text": "额度",
+   "start": 40.762,
+   "end": 41.143
+  },
+  {
+   "line": 8,
+   "text": "已",
+   "start": 41.155,
+   "end": 41.262
+  },
+  {
+   "line": 8,
+   "text": "被",
+   "start": 41.262,
+   "end": 41.393
+  },
+  {
+   "line": 8,
+   "text": "抢先",
+   "start": 41.417,
+   "end": 41.739
+  },
+  {
+   "line": 8,
+   "text": "花掉",
+   "start": 41.751,
+   "end": 42.179
+  },
+  {
+   "line": 8,
+   "text": "交易",
+   "start": 42.489,
+   "end": 42.786
+  },
+  {
+   "line": 8,
+   "text": "就",
+   "start": 42.798,
+   "end": 42.905
+  },
+  {
+   "line": 8,
+   "text": "回滚",
+   "start": 42.905,
+   "end": 43.346
+  },
+  {
+   "line": 9,
+   "text": "forceApprove",
+   "start": 44.494,
+   "end": 45.398
+  },
+  {
+   "line": 9,
+   "text": "只",
+   "start": 45.398,
+   "end": 45.577
+  },
+  {
+   "line": 9,
+   "text": "解决",
+   "start": 45.589,
+   "end": 45.875
+  },
+  {
+   "line": 9,
+   "text": "兼容",
+   "start": 45.898,
+   "end": 46.16
+  },
+  {
+   "line": 9,
+   "text": "问题",
+   "start": 46.172,
+   "end": 46.613
+  },
+  {
+   "line": 9,
+   "text": "不",
+   "start": 46.791,
+   "end": 46.922
+  },
+  {
+   "line": 9,
+   "text": "解决",
+   "start": 46.922,
+   "end": 47.148
+  },
+  {
+   "line": 9,
+   "text": "竞态",
+   "start": 47.16,
+   "end": 47.565
+  },
+  {
+   "line": 10,
+   "text": "比",
+   "start": 48.722,
+   "end": 48.888
+  },
+  {
+   "line": 10,
+   "text": "竞态",
+   "start": 48.9,
+   "end": 49.281
+  },
+  {
+   "line": 10,
+   "text": "更",
+   "start": 49.305,
+   "end": 49.472
+  },
+  {
+   "line": 10,
+   "text": "大",
+   "start": 49.472,
+   "end": 49.591
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 49.591,
+   "end": 49.65
+  },
+  {
+   "line": 10,
+   "text": "风险",
+   "start": 49.662,
+   "end": 50.103
+  },
+  {
+   "line": 10,
+   "text": "是",
+   "start": 50.341,
+   "end": 50.555
+  },
+  {
+   "line": 10,
+   "text": "无限",
+   "start": 50.567,
+   "end": 50.948
+  },
+  {
+   "line": 10,
+   "text": "授权",
+   "start": 50.96,
+   "end": 51.46
+  },
+  {
+   "line": 11,
+   "text": "协议",
+   "start": 52.614,
+   "end": 53.114
+  },
+  {
+   "line": 11,
+   "text": "一旦",
+   "start": 53.137,
+   "end": 53.411
+  },
+  {
+   "line": 11,
+   "text": "被",
+   "start": 53.423,
+   "end": 53.506
+  },
+  {
+   "line": 11,
+   "text": "攻破",
+   "start": 53.518,
+   "end": 54.078
+  },
+  {
+   "line": 11,
+   "text": "攻击者",
+   "start": 54.518,
+   "end": 54.995
+  },
+  {
+   "line": 11,
+   "text": "能",
+   "start": 54.995,
+   "end": 55.126
+  },
+  {
+   "line": 11,
+   "text": "转走",
+   "start": 55.137,
+   "end": 55.447
+  },
+  {
+   "line": 11,
+   "text": "你",
+   "start": 55.447,
+   "end": 55.53
+  },
+  {
+   "line": 11,
+   "text": "钱包",
+   "start": 55.542,
+   "end": 55.852
+  },
+  {
+   "line": 11,
+   "text": "里",
+   "start": 55.852,
+   "end": 55.935
+  },
+  {
+   "line": 11,
+   "text": "全部",
+   "start": 55.959,
+   "end": 56.245
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 56.245,
+   "end": 56.304
+  },
+  {
+   "line": 11,
+   "text": "这种",
+   "start": 56.328,
+   "end": 56.506
+  },
+  {
+   "line": 11,
+   "text": "代币",
+   "start": 56.518,
+   "end": 56.84
+  },
+  {
+   "line": 12,
+   "text": "即使",
+   "start": 57.994,
+   "end": 58.303
+  },
+  {
+   "line": 12,
+   "text": "你",
+   "start": 58.315,
+   "end": 58.422
+  },
+  {
+   "line": 12,
+   "text": "从没",
+   "start": 58.422,
+   "end": 58.732
+  },
+  {
+   "line": 12,
+   "text": "把",
+   "start": 58.744,
+   "end": 58.851
+  },
+  {
+   "line": 12,
+   "text": "它",
+   "start": 58.851,
+   "end": 58.934
+  },
+  {
+   "line": 12,
+   "text": "存进",
+   "start": 58.958,
+   "end": 59.291
+  },
+  {
+   "line": 12,
+   "text": "协议",
+   "start": 59.303,
+   "end": 59.744
+  },
+  {
+   "line": 13,
+   "text": "钓鱼",
+   "start": 60.902,
+   "end": 61.152
+  },
+  {
+   "line": 13,
+   "text": "网站",
+   "start": 61.164,
+   "end": 61.604
+  },
+  {
+   "line": 13,
+   "text": "也",
+   "start": 61.628,
+   "end": 61.759
+  },
+  {
+   "line": 13,
+   "text": "盯",
+   "start": 61.759,
+   "end": 61.89
+  },
+  {
+   "line": 13,
+   "text": "着",
+   "start": 61.89,
+   "end": 61.949
+  },
+  {
+   "line": 13,
+   "text": "授权",
+   "start": 61.961,
+   "end": 62.497
+  },
+  {
+   "line": 13,
+   "text": "诱导",
+   "start": 62.818,
+   "end": 63.104
+  },
+  {
+   "line": 13,
+   "text": "你",
+   "start": 63.116,
+   "end": 63.306
+  },
+  {
+   "line": 13,
+   "text": "签",
+   "start": 63.306,
+   "end": 63.58
+  },
+  {
+   "line": 13,
+   "text": "approve",
+   "start": 63.604,
+   "end": 64.128
+  },
+  {
+   "line": 13,
+   "text": "或者",
+   "start": 64.283,
+   "end": 64.544
+  },
+  {
+   "line": 13,
+   "text": "链下",
+   "start": 64.568,
+   "end": 64.866
+  },
+  {
+   "line": 13,
+   "text": "签名",
+   "start": 64.878,
+   "end": 65.211
+  },
+  {
+   "line": 13,
+   "text": "的",
+   "start": 65.211,
+   "end": 65.33
+  },
+  {
+   "line": 13,
+   "text": "permit",
+   "start": 65.354,
+   "end": 65.878
+  },
+  {
+   "line": 14,
+   "text": "最",
+   "start": 67.05,
+   "end": 67.276
+  },
+  {
+   "line": 14,
+   "text": "危险",
+   "start": 67.276,
+   "end": 67.585
+  },
+  {
+   "line": 14,
+   "text": "的",
+   "start": 67.585,
+   "end": 67.681
+  },
+  {
+   "line": 14,
+   "text": "组合",
+   "start": 67.692,
+   "end": 68.181
+  },
+  {
+   "line": 14,
+   "text": "是",
+   "start": 68.347,
+   "end": 68.55
+  },
+  {
+   "line": 14,
+   "text": "任意",
+   "start": 68.562,
+   "end": 68.871
+  },
+  {
+   "line": 14,
+   "text": "调用",
+   "start": 68.883,
+   "end": 69.204
+  },
+  {
+   "line": 14,
+   "text": "加",
+   "start": 69.228,
+   "end": 69.383
+  },
+  {
+   "line": 14,
+   "text": "授权",
+   "start": 69.395,
+   "end": 69.907
+  },
+  {
+   "line": 15,
+   "text": "路由",
+   "start": 71.062,
+   "end": 71.395
+  },
+  {
+   "line": 15,
+   "text": "合约",
+   "start": 71.407,
+   "end": 71.752
+  },
+  {
+   "line": 15,
+   "text": "持有",
+   "start": 71.776,
+   "end": 72.05
+  },
+  {
+   "line": 15,
+   "text": "用户",
+   "start": 72.062,
+   "end": 72.324
+  },
+  {
+   "line": 15,
+   "text": "的",
+   "start": 72.324,
+   "end": 72.383
+  },
+  {
+   "line": 15,
+   "text": "授权",
+   "start": 72.395,
+   "end": 72.919
+  },
+  {
+   "line": 16,
+   "text": "又",
+   "start": 74.09,
+   "end": 74.292
+  },
+  {
+   "line": 16,
+   "text": "允许",
+   "start": 74.292,
+   "end": 74.613
+  },
+  {
+   "line": 16,
+   "text": "用户",
+   "start": 74.625,
+   "end": 75.066
+  },
+  {
+   "line": 16,
+   "text": "指定",
+   "start": 75.173,
+   "end": 75.554
+  },
+  {
+   "line": 16,
+   "text": "任意",
+   "start": 75.578,
+   "end": 75.828
+  },
+  {
+   "line": 16,
+   "text": "目标",
+   "start": 75.84,
+   "end": 76.256
+  },
+  {
+   "line": 16,
+   "text": "和",
+   "start": 76.423,
+   "end": 76.637
+  },
+  {
+   "line": 16,
+   "text": "任意",
+   "start": 76.649,
+   "end": 76.947
+  },
+  {
+   "line": 16,
+   "text": "calldata",
+   "start": 76.971,
+   "end": 77.554
+  },
+  {
+   "line": 17,
+   "text": "攻击者",
+   "start": 78.726,
+   "end": 79.19
+  },
+  {
+   "line": 17,
+   "text": "就",
+   "start": 79.214,
+   "end": 79.309
+  },
+  {
+   "line": 17,
+   "text": "能",
+   "start": 79.309,
+   "end": 79.404
+  },
+  {
+   "line": 17,
+   "text": "让",
+   "start": 79.416,
+   "end": 79.547
+  },
+  {
+   "line": 17,
+   "text": "它",
+   "start": 79.547,
+   "end": 79.88
+  },
+  {
+   "line": 17,
+   "text": "调",
+   "start": 80.095,
+   "end": 80.249
+  },
+  {
+   "line": 17,
+   "text": "用",
+   "start": 80.249,
+   "end": 80.38
+  },
+  {
+   "line": 17,
+   "text": "代币",
+   "start": 80.392,
+   "end": 80.702
+  },
+  {
+   "line": 17,
+   "text": "的",
+   "start": 80.702,
+   "end": 80.833
+  },
+  {
+   "line": 17,
+   "text": "transferFrom",
+   "start": 80.857,
+   "end": 81.69
+  },
+  {
+   "line": 17,
+   "text": "从",
+   "start": 81.916,
+   "end": 82.13
+  },
+  {
+   "line": 17,
+   "text": "受害者",
+   "start": 82.142,
+   "end": 82.583
+  },
+  {
+   "line": 17,
+   "text": "转给",
+   "start": 82.607,
+   "end": 82.868
+  },
+  {
+   "line": 17,
+   "text": "自己",
+   "start": 82.88,
+   "end": 83.19
+  },
+  {
+   "line": 18,
+   "text": "2023",
+   "start": 84.346,
+   "end": 84.905
+  },
+  {
+   "line": 18,
+   "text": "年",
+   "start": 84.905,
+   "end": 85.06
+  },
+  {
+   "line": 18,
+   "text": "4 月",
+   "start": 85.072,
+   "end": 85.524
+  },
+  {
+   "line": 18,
+   "text": "Sushi",
+   "start": 85.667,
+   "end": 86.119
+  },
+  {
+   "line": 18,
+   "text": "的",
+   "start": 86.119,
+   "end": 86.322
+  },
+  {
+   "line": 18,
+   "text": "RouteProcessor",
+   "start": 86.334,
+   "end": 87.179
+  },
+  {
+   "line": 18,
+   "text": "2",
+   "start": 87.179,
+   "end": 87.441
+  },
+  {
+   "line": 19,
+   "text": "路由",
+   "start": 88.598,
+   "end": 88.943
+  },
+  {
+   "line": 19,
+   "text": "里",
+   "start": 88.943,
+   "end": 89.05
+  },
+  {
+   "line": 19,
+   "text": "的",
+   "start": 89.05,
+   "end": 89.145
+  },
+  {
+   "line": 19,
+   "text": "池子",
+   "start": 89.169,
+   "end": 89.49
+  },
+  {
+   "line": 19,
+   "text": "地址",
+   "start": 89.502,
+   "end": 90.014
+  },
+  {
+   "line": 19,
+   "text": "由",
+   "start": 90.24,
+   "end": 90.467
+  },
+  {
+   "line": 19,
+   "text": "用户",
+   "start": 90.479,
+   "end": 90.788
+  },
+  {
+   "line": 19,
+   "text": "填写",
+   "start": 90.8,
+   "end": 91.324
+  },
+  {
+   "line": 20,
+   "text": "攻击者",
+   "start": 92.49,
+   "end": 93.097
+  },
+  {
+   "line": 20,
+   "text": "填入",
+   "start": 93.121,
+   "end": 93.406
+  },
+  {
+   "line": 20,
+   "text": "自己",
+   "start": 93.43,
+   "end": 93.656
+  },
+  {
+   "line": 20,
+   "text": "的",
+   "start": 93.656,
+   "end": 93.728
+  },
+  {
+   "line": 20,
+   "text": "池子",
+   "start": 93.74,
+   "end": 94.263
+  },
+  {
+   "line": 20,
+   "text": "在",
+   "start": 94.585,
+   "end": 94.728
+  },
+  {
+   "line": 20,
+   "text": "回调",
+   "start": 94.74,
+   "end": 95.085
+  },
+  {
+   "line": 20,
+   "text": "里",
+   "start": 95.085,
+   "end": 95.311
+  },
+  {
+   "line": 20,
+   "text": "把",
+   "start": 95.609,
+   "end": 95.763
+  },
+  {
+   "line": 20,
+   "text": "任意",
+   "start": 95.775,
+   "end": 96.025
+  },
+  {
+   "line": 20,
+   "text": "授权",
+   "start": 96.037,
+   "end": 96.394
+  },
+  {
+   "line": 20,
+   "text": "过",
+   "start": 96.394,
+   "end": 96.49
+  },
+  {
+   "line": 20,
+   "text": "的",
+   "start": 96.49,
+   "end": 96.573
+  },
+  {
+   "line": 20,
+   "text": "用户",
+   "start": 96.585,
+   "end": 97.061
+  },
+  {
+   "line": 20,
+   "text": "设成",
+   "start": 97.168,
+   "end": 97.537
+  },
+  {
+   "line": 20,
+   "text": "付款",
+   "start": 97.561,
+   "end": 97.918
+  },
+  {
+   "line": 20,
+   "text": "人",
+   "start": 97.918,
+   "end": 98.216
+  },
+  {
+   "line": 21,
+   "text": "回调",
+   "start": 99.358,
+   "end": 99.655
+  },
+  {
+   "line": 21,
+   "text": "校",
+   "start": 99.667,
+   "end": 99.81
+  },
+  {
+   "line": 21,
+   "text": "验",
+   "start": 99.81,
+   "end": 99.977
+  },
+  {
+   "line": 21,
+   "text": "只",
+   "start": 99.989,
+   "end": 100.131
+  },
+  {
+   "line": 21,
+   "text": "问",
+   "start": 100.131,
+   "end": 100.477
+  },
+  {
+   "line": 21,
+   "text": "是不是",
+   "start": 100.929,
+   "end": 101.286
+  },
+  {
+   "line": 21,
+   "text": "刚才",
+   "start": 101.298,
+   "end": 101.596
+  },
+  {
+   "line": 21,
+   "text": "调用",
+   "start": 101.62,
+   "end": 101.834
+  },
+  {
+   "line": 21,
+   "text": "的",
+   "start": 101.834,
+   "end": 101.905
+  },
+  {
+   "line": 21,
+   "text": "地址",
+   "start": 101.917,
+   "end": 102.405
+  },
+  {
+   "line": 22,
+   "text": "没有",
+   "start": 103.842,
+   "end": 104.139
+  },
+  {
+   "line": 22,
+   "text": "问",
+   "start": 104.151,
+   "end": 104.544
+  },
+  {
+   "line": 22,
+   "text": "它",
+   "start": 104.877,
+   "end": 105.044
+  },
+  {
+   "line": 22,
+   "text": "是不是",
+   "start": 105.056,
+   "end": 105.365
+  },
+  {
+   "line": 22,
+   "text": "真实",
+   "start": 105.389,
+   "end": 105.723
+  },
+  {
+   "line": 22,
+   "text": "的",
+   "start": 105.723,
+   "end": 105.794
+  },
+  {
+   "line": 22,
+   "text": "池子",
+   "start": 105.806,
+   "end": 106.27
+  },
+  {
+   "line": 23,
+   "text": "按",
+   "start": 107.702,
+   "end": 107.916
+  },
+  {
+   "line": 23,
+   "text": "公开",
+   "start": 107.94,
+   "end": 108.213
+  },
+  {
+   "line": 23,
+   "text": "分析",
+   "start": 108.225,
+   "end": 108.713
+  },
+  {
+   "line": 23,
+   "text": "约",
+   "start": 109.106,
+   "end": 109.297
+  },
+  {
+   "line": 23,
+   "text": "330 万",
+   "start": 109.309,
+   "end": 110.047
+  },
+  {
+   "line": 23,
+   "text": "美元",
+   "start": 110.059,
+   "end": 110.309
+  },
+  {
+   "line": 23,
+   "text": "被",
+   "start": 110.321,
+   "end": 110.487
+  },
+  {
+   "line": 23,
+   "text": "盗",
+   "start": 110.487,
+   "end": 110.714
+  },
+  {
+   "line": 24,
+   "text": "规则",
+   "start": 111.858,
+   "end": 112.155
+  },
+  {
+   "line": 24,
+   "text": "是",
+   "start": 112.155,
+   "end": 112.512
+  },
+  {
+   "line": 24,
+   "text": "持有",
+   "start": 112.81,
+   "end": 113.179
+  },
+  {
+   "line": 24,
+   "text": "授权",
+   "start": 113.203,
+   "end": 113.512
+  },
+  {
+   "line": 24,
+   "text": "的",
+   "start": 113.512,
+   "end": 113.572
+  },
+  {
+   "line": 24,
+   "text": "合约",
+   "start": 113.584,
+   "end": 113.965
+  },
+  {
+   "line": 24,
+   "text": "必须",
+   "start": 114.143,
+   "end": 114.489
+  },
+  {
+   "line": 24,
+   "text": "禁止",
+   "start": 114.5,
+   "end": 114.917
+  },
+  {
+   "line": 24,
+   "text": "任意",
+   "start": 114.941,
+   "end": 115.239
+  },
+  {
+   "line": 24,
+   "text": "调用",
+   "start": 115.25,
+   "end": 115.465
+  },
+  {
+   "line": 24,
+   "text": "目标",
+   "start": 115.477,
+   "end": 115.893
+  },
+  {
+   "line": 24,
+   "text": "和",
+   "start": 116.0,
+   "end": 116.227
+  },
+  {
+   "line": 24,
+   "text": "任意",
+   "start": 116.239,
+   "end": 116.536
+  },
+  {
+   "line": 24,
+   "text": "calldata",
+   "start": 116.56,
+   "end": 117.096
+  }
+ ],
+ "captions": [
+  {
+   "text": "最后一类风险 是授权",
+   "start": 1.648,
+   "end": 3.77,
+   "id": "c0"
+  },
+  {
+   "text": "approve 允许另一个地址",
+   "start": 4.772,
+   "end": 6.846,
+   "id": "c1"
+  },
+  {
+   "text": "代你转出代币",
+   "start": 6.879,
+   "end": 7.918,
+   "id": "c2"
+  },
+  {
+   "text": "最后一道题",
+   "start": 8.88,
+   "end": 10.073,
+   "id": "c3"
+  },
+  {
+   "text": "Alice 授权了 Bob 100 枚",
+   "start": 10.437,
+   "end": 12.69,
+   "id": "c4"
+  },
+  {
+   "text": "现在想改成 50 枚",
+   "start": 12.806,
+   "end": 14.464,
+   "id": "c5"
+  },
+  {
+   "text": "Bob 能抢先打包自己的交易",
+   "start": 15.436,
+   "end": 17.522,
+   "id": "c6"
+  },
+  {
+   "text": "他最多能拿走多少",
+   "start": 17.898,
+   "end": 19.484,
+   "id": "c7"
+  },
+  {
+   "text": "150 枚",
+   "start": 20.76,
+   "end": 21.834,
+   "id": "c8"
+  },
+  {
+   "text": "他先花掉旧的 100 枚",
+   "start": 22.198,
+   "end": 23.82,
+   "id": "c9"
+  },
+  {
+   "text": "等新额度生效",
+   "start": 24.796,
+   "end": 26.145,
+   "id": "c10"
+  },
+  {
+   "text": "再花 50 枚",
+   "start": 26.165,
+   "end": 27.358,
+   "id": "c11"
+  },
+  {
+   "text": "这叫 approve 竞态",
+   "start": 28.328,
+   "end": 29.89,
+   "id": "c12"
+  },
+  {
+   "text": "缓解办法之一",
+   "start": 30.876,
+   "end": 31.998,
+   "id": "c13"
+  },
+  {
+   "text": "先设成 0",
+   "start": 32.233,
+   "end": 33.344,
+   "id": "c14"
+  },
+  {
+   "text": "看旧额度有没有被花掉",
+   "start": 33.364,
+   "end": 35.034,
+   "id": "c15"
+  },
+  {
+   "text": "再设新值",
+   "start": 35.114,
+   "end": 36.153,
+   "id": "c16"
+  },
+  {
+   "text": "之二",
+   "start": 37.12,
+   "end": 37.754,
+   "id": "c17"
+  },
+  {
+   "text": "用 safeDecreaseAllowance",
+   "start": 37.774,
+   "end": 39.385,
+   "id": "c18"
+  },
+  {
+   "text": "相对减少",
+   "start": 39.405,
+   "end": 40.337,
+   "id": "c19"
+  },
+  {
+   "text": "额度已被抢先花掉",
+   "start": 40.712,
+   "end": 42.299,
+   "id": "c20"
+  },
+  {
+   "text": "交易就回滚",
+   "start": 42.439,
+   "end": 43.466,
+   "id": "c21"
+  },
+  {
+   "text": "forceApprove 只解决兼容问题",
+   "start": 44.444,
+   "end": 46.721,
+   "id": "c22"
+  },
+  {
+   "text": "不解决竞态",
+   "start": 46.741,
+   "end": 47.685,
+   "id": "c23"
+  },
+  {
+   "text": "比竞态更大的风险",
+   "start": 48.672,
+   "end": 50.223,
+   "id": "c24"
+  },
+  {
+   "text": "是无限授权",
+   "start": 50.291,
+   "end": 51.58,
+   "id": "c25"
+  },
+  {
+   "text": "协议一旦被攻破",
+   "start": 52.564,
+   "end": 54.198,
+   "id": "c26"
+  },
+  {
+   "text": "攻击者能转走你钱包里全部的这种代币",
+   "start": 54.468,
+   "end": 56.96,
+   "id": "c27"
+  },
+  {
+   "text": "即使你从没把它存进协议",
+   "start": 57.944,
+   "end": 59.864,
+   "id": "c28"
+  },
+  {
+   "text": "钓鱼网站也盯着授权",
+   "start": 60.852,
+   "end": 62.617,
+   "id": "c29"
+  },
+  {
+   "text": "诱导你签 approve",
+   "start": 62.768,
+   "end": 64.213,
+   "id": "c30"
+  },
+  {
+   "text": "或者链下签名的 permit",
+   "start": 64.233,
+   "end": 65.998,
+   "id": "c31"
+  },
+  {
+   "text": "最危险的组合",
+   "start": 67.0,
+   "end": 68.277,
+   "id": "c32"
+  },
+  {
+   "text": "是任意调用加授权",
+   "start": 68.297,
+   "end": 70.027,
+   "id": "c33"
+  },
+  {
+   "text": "路由合约持有用户的授权",
+   "start": 71.012,
+   "end": 73.039,
+   "id": "c34"
+  },
+  {
+   "text": "又允许用户指定任意目标",
+   "start": 74.04,
+   "end": 76.353,
+   "id": "c35"
+  },
+  {
+   "text": "和任意 calldata",
+   "start": 76.373,
+   "end": 77.674,
+   "id": "c36"
+  },
+  {
+   "text": "攻击者就能让它",
+   "start": 78.676,
+   "end": 80.0,
+   "id": "c37"
+  },
+  {
+   "text": "调用代币的 transferFrom",
+   "start": 80.045,
+   "end": 81.81,
+   "id": "c38"
+  },
+  {
+   "text": "从受害者转给自己",
+   "start": 81.866,
+   "end": 83.31,
+   "id": "c39"
+  },
+  {
+   "text": "2023 年 4 月",
+   "start": 84.296,
+   "end": 85.597,
+   "id": "c40"
+  },
+  {
+   "text": "Sushi 的 RouteProcessor2",
+   "start": 85.617,
+   "end": 87.561,
+   "id": "c41"
+  },
+  {
+   "text": "路由里的池子地址",
+   "start": 88.548,
+   "end": 90.134,
+   "id": "c42"
+  },
+  {
+   "text": "由用户填写",
+   "start": 90.19,
+   "end": 91.444,
+   "id": "c43"
+  },
+  {
+   "text": "攻击者填入自己的池子",
+   "start": 92.44,
+   "end": 94.383,
+   "id": "c44"
+  },
+  {
+   "text": "在回调里",
+   "start": 94.535,
+   "end": 95.431,
+   "id": "c45"
+  },
+  {
+   "text": "把任意授权过的用户设成付款人",
+   "start": 95.559,
+   "end": 98.336,
+   "id": "c46"
+  },
+  {
+   "text": "回调校验只问",
+   "start": 99.308,
+   "end": 100.597,
+   "id": "c47"
+  },
+  {
+   "text": "是不是刚才调用的地址",
+   "start": 100.879,
+   "end": 102.525,
+   "id": "c48"
+  },
+  {
+   "text": "没有问 它是不是真实的池子",
+   "start": 103.792,
+   "end": 106.39,
+   "id": "c49"
+  },
+  {
+   "text": "按公开分析",
+   "start": 107.652,
+   "end": 108.833,
+   "id": "c50"
+  },
+  {
+   "text": "约 330 万美元被盗",
+   "start": 109.056,
+   "end": 110.834,
+   "id": "c51"
+  },
+  {
+   "text": "规则是 持有授权的合约",
+   "start": 111.808,
+   "end": 114.073,
+   "id": "c52"
+  },
+  {
+   "text": "必须禁止任意调用目标和任意 calldata",
+   "start": 114.093,
+   "end": 117.216,
+   "id": "c53"
+  }
+ ]
+}

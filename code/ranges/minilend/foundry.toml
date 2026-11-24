@@ -1,0 +1,17 @@
+# MiniLend 审计靶场：只跑本地玩具合约。lib/forge-std 由 code/setup.sh 链接到 foundry-demos 的那一份。
+[profile.default]
+src = "src"
+test = "test"
+out = "out"
+libs = ["lib"]
+solc = "0.8.30"
+evm_version = "prague"
+remappings = ["forge-std/=lib/forge-std/src/"]
+
+[fuzz]
+runs = 256
+
+[invariant]
+runs = 128
+depth = 64
+fail_on_revert = false
