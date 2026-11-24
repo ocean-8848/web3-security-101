@@ -34,6 +34,8 @@
   }
   addEventListener('resize', fit); fit();
 
+  // Embedded in the episode player (../index.html): report each step to the parent and accept go / next / prev commands.
+  const embedded = window.parent !== window;
   let cur = 0;
   function apply(si, st) {
     scenes.forEach((el, i) => el.classList.toggle('active', i === si));
@@ -51,6 +53,7 @@
     hud.textContent = `${si + 1}.${st} / ${scenes.length} 场景 · ${meta[si].title}`;
     notes.textContent = meta[si].steps[st];
     if (!render) history.replaceState(null, '', '#s' + (si + 1) + '-' + st);
+    if (embedded && !render) parent.postMessage({ deckStep: [si, st] }, '*');
   }
   function goFlat(i) { cur = Math.max(0, Math.min(flat.length - 1, i)); apply(...flat[cur]); }
 
@@ -70,6 +73,13 @@
     caption(text) { caption.textContent = text || ''; caption.classList.toggle('on', !!text); },
     settleMs: 700,
   };
+
+  if (embedded && !render) addEventListener('message', e => {
+    const d = e.data || {};
+    if (d.deckCmd === 'next') goFlat(cur + 1);
+    else if (d.deckCmd === 'prev') goFlat(cur - 1);
+    else if (d.deckCmd === 'go') { const i = flat.findIndex(([a, b]) => a === d.si && b === d.st); if (i >= 0) goFlat(i); }
+  });
 
   const m = location.hash.match(/^#s(\d+)-(\d+)$/);
   const start = m ? flat.findIndex(([a, b]) => a === +m[1] - 1 && b === +m[2]) : 0;

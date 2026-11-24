@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Web3 安全视频</title>
+<!-- 由 tools/make-player.mjs 生成，不要手改；改 tools/player.tpl.html 后重跑脚本。 -->
+<style>
+:root {
+  --ground: #f4f1ea; --paper: #fffdf8; --side: #ece7dc; --ink: #1d1c19; --ink-2: #6a665c; --rule: #ddd6c8;
+  --gold: #a87900; --gold-soft: #f6e9c4; --accent: #1d7fa3; --hit: rgba(168, 121, 0, .14);
+  --f-body: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --f-display: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --ground: #141412; --paper: #1d1c19; --side: #191816; --ink: #ebe8e0; --ink-2: #a19d92; --rule: #33312c;
+    --gold: #f0b90b; --gold-soft: #3a3010; --accent: #6cc7e0; --hit: rgba(240, 185, 11, .14); color-scheme: dark; }
+}
+:root[data-theme="dark"] { --ground: #141412; --paper: #1d1c19; --side: #191816; --ink: #ebe8e0; --ink-2: #a19d92; --rule: #33312c;
+  --gold: #f0b90b; --gold-soft: #3a3010; --accent: #6cc7e0; --hit: rgba(240, 185, 11, .14); color-scheme: dark; }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--ground); color: var(--ink); font: 14px/1.6 var(--f-body); display: flex; }
+button, select, a.btn { font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 5px 12px; cursor: pointer; text-decoration: none; white-space: nowrap; }
+button:hover, a.btn:hover { border-color: var(--gold); }
+button:disabled { opacity: .35; cursor: default; border-color: var(--rule); }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+
+/* 侧栏：目录 */
+#side { width: 340px; flex: none; background: var(--side); border-right: 1px solid var(--rule); display: flex; flex-direction: column; min-height: 0; }
+#side header { padding: 16px 16px 10px; }
+#side h1 { font: 600 19px/1.3 var(--f-display); margin: 0 0 2px; }
+#side .sub { color: var(--ink-2); font-size: 12px; margin: 0 0 10px; }
+#q { width: 100%; font: inherit; padding: 6px 10px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); color: var(--ink); }
+#side label { display: flex; gap: 6px; align-items: center; color: var(--ink-2); font-size: 12px; margin-top: 8px; cursor: pointer; }
+#list { overflow: auto; flex: 1; padding: 0 8px 24px; }
+details.g { margin-top: 4px; }
+details.g > summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 8px; padding: 7px 8px; font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--ink-2); border-radius: 6px; }
+details.g > summary::-webkit-details-marker { display: none; }
+details.g > summary::before { content: "▸"; margin-right: 4px; }
+details.g[open] > summary::before { content: "▾"; }
+details.g > summary span { flex: 1; }
+details.g > summary:hover { color: var(--ink); }
+.it { display: grid; grid-template-columns: 38px minmax(0, 1fr) auto; gap: 6px; align-items: baseline; width: 100%; text-align: left; border: 0; border-radius: 8px; background: none; padding: 6px 8px; }
+.it:hover { background: var(--hit); border: 0; }
+.it[aria-current] { background: var(--paper); box-shadow: inset 3px 0 0 var(--gold); }
+.it b { font: 600 12px var(--f-mono); color: var(--gold); }
+.it .t { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.it .k { font-size: 11px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.it.none { opacity: .45; }
+
+/* 主区 */
+#main { flex: 1; min-width: 0; overflow: auto; padding: 18px 22px 40px; }
+#head { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; margin-bottom: 10px; }
+#head h2 { font: 600 22px/1.35 var(--f-display); margin: 0; flex: 1; min-width: 260px; }
+#head h2 small { font: 600 14px var(--f-mono); color: var(--gold); margin-right: 10px; }
+#views { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 12px; align-items: center; }
+.seg { display: inline-flex; align-items: center; gap: 0; }
+.seg > span { font-size: 12px; color: var(--ink-2); margin-right: 8px; }
+.seg button { border-radius: 0; margin-left: -1px; }
+.seg button:first-of-type { border-radius: 8px 0 0 8px; margin-left: 0; }
+.seg button:last-of-type { border-radius: 0 8px 8px 0; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--ground); border-color: var(--ink); position: relative; z-index: 1; }
+#stage { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 70vh; background: #000; border-radius: 12px; overflow: hidden; }
+#stage video, #stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+#stage iframe { background: var(--paper); }
+#empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; color: var(--ink-2); background: var(--paper); }
+#bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 12px 0; }
+#bar .sp { flex: 1; }
+#bar .mut, .mut { color: var(--ink-2); font-size: 12px; }
+#auto[aria-pressed="true"] { background: var(--gold-soft); border-color: var(--gold); }
+
+/* 讲稿 */
+#script { border: 1px solid var(--rule); border-radius: 12px; background: var(--paper); padding: 6px 16px 12px; max-height: 46vh; overflow: auto; }
+#script h4 { margin: 14px 0 4px; font-size: 13px; color: var(--gold); }
+#script h4 i { font: 500 11px var(--f-mono); color: var(--ink-2); font-style: normal; margin-right: 8px; }
+#script p { margin: 1px 0; padding: 3px 8px; border-radius: 6px; }
+#script.click p { cursor: pointer; }
+#script.click p:hover { background: var(--hit); }
+#script p.now { background: var(--gold-soft); }
+#script p i { font: 11px var(--f-mono); color: var(--ink-2); font-style: normal; margin-right: 8px; }
+#script .note { color: var(--ink-2); font-size: 12px; margin: 8px 0 0; }
+
+@media (max-width: 860px) {
+  body { flex-direction: column; height: auto; }
+  #side { width: auto; border-right: 0; border-bottom: 1px solid var(--rule); order: 2; }
+  #list { max-height: 50vh; }
+  #main { padding: 12px 16px 24px; overflow: visible; }
+  #bar .keys { display: none; }
+}
+</style>
+</head>
+<body>
+<aside id="side">
+  <header>
+    <h1>Web3 安全视频</h1>
+    <p class="sub">配套《Web3 安全学习手册》· 主线 30 章 · 评估篇 · 链专题</p>
+    <input id="q" type="search" placeholder="搜索标题或编号（如 04、重入）" aria-label="搜索">
+    <label><input type="checkbox" id="only"> 只看有成片视频的章节</label>
+  </header>
+  <nav id="list" aria-label="章节目录"></nav>
+</aside>
+<main id="main">
+  <div id="head"><h2 id="title"></h2><a class="btn" id="md" target="_blank" rel="noopener">正文 ↗</a></div>
+  <div id="views" role="toolbar" aria-label="观看方式"></div>
+  <div id="stage">
+    <video id="v" controls preload="metadata" hidden></video>
+    <iframe id="f" title="幻灯片" allow="fullscreen" hidden></iframe>
+    <div id="empty" hidden>这一章还没有视频或幻灯片，可以先读正文。</div>
+  </div>
+  <div id="bar">
+    <button id="prev" title="上一章（P）">◀ 上一章</button>
+    <button id="next" title="下一章（N）">下一章 ▶</button>
+    <select id="rate" aria-label="播放速度" title="播放速度"><option>0.75</option><option selected>1</option><option>1.25</option><option>1.5</option><option>2</option></select>
+    <button id="auto" aria-pressed="false" title="按讲稿时长自动翻页">⏵ 自动翻页</button>
+    <button id="fs" title="全屏（F）">⛶ 全屏</button>
+    <button id="bs" aria-pressed="true" title="显示 / 隐藏讲稿（S）">讲稿</button>
+    <span class="sp"></span>
+    <span class="mut keys">N / P 换章 · ← / → 快退快进或翻页 · 空格 播放 · 1–6 换观看方式</span>
+  </div>
+  <div id="script"></div>
+</main>
+<script>
+const GROUPS = /*DATA*/[];
+const VIEWS = [
+  ['vs', '视频', '拟物化'], ['v3', '视频', '3b1b'], ['vt', '视频', '讲解页'],
+  ['talk', '幻灯', '讲解页'], ['deck', '幻灯', '拟物化'], ['d3b', '幻灯', '3b1b'],
+];
+const isVideo = k => k[0] === 'v';
+const ALL = GROUPS.flatMap(g => g.items);
+const $ = id => document.getElementById(id);
+const v = $('v'), f = $('f'), script = $('script');
+const store = { get(k) { try { return localStorage.getItem('w3sec-player-' + k); } catch (e) { return null; } }, set(k, x) { try { localStorage.setItem('w3sec-player-' + k, x); } catch (e) {} } };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const fmt = s => { s = Math.max(0, Math.round(s)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+
+let cur = null, view = null, step = [0, 0], autoTimer = 0;
+
+// ---------- 目录 ----------
+function renderList() {
+  const q = $('q').value.trim().toLowerCase(), only = $('only').checked;
+  $('list').innerHTML = GROUPS.map((g, gi) => {
+    const items = g.items.filter(e => (!q || (e.id + ' ' + e.title).toLowerCase().includes(q)) && (!only || VIEWS.some(([k]) => isVideo(k) && e.v[k])));
+    if (!items.length) return '';
+    const nv = g.items.filter(e => VIEWS.some(([k]) => isVideo(k) && e.v[k])).length;
+    return `<details class="g" open><summary><span>${esc(g.name)}</span><small>${nv ? '▶ ' + nv + ' / ' : ''}${g.items.length}</small></summary>` +
+      items.map(e => {
+        const nV = VIEWS.filter(([k]) => isVideo(k) && e.v[k]).length, nS = VIEWS.filter(([k]) => !isVideo(k) && e.v[k]).length;
+        const k = [nV ? '▶' + nV : '', nS ? '▤' + nS : ''].filter(Boolean).join(' ');
+        return `<button class="it${nV + nS ? '' : ' none'}" data-id="${e.id}"${cur && cur.id === e.id ? ' aria-current="true"' : ''} title="${esc(e.title)}"><b>${e.id}</b><span class="t">${esc(e.title)}</span><span class="k">${k}</span></button>`;
+      }).join('') + '</details>';
+  }).join('') || '<p class="mut" style="padding:8px">没有匹配的章节。</p>';
+}
+$('list').addEventListener('click', e => { const b = e.target.closest('.it'); if (b) open(b.dataset.id); });
+$('q').addEventListener('input', renderList);
+$('only').addEventListener('change', () => { store.set('only', $('only').checked ? '1' : ''); renderList(); });
+
+// ---------- 打开一章 ----------
+function open(id, want) {
+  const e = ALL.find(x => x.id === id) || ALL[0];
+  cur = e;
+  $('title').innerHTML = `<small>${e.id}</small>${esc(e.title)}`;
+  $('md').href = e.md;
+  document.title = e.id + ' ' + e.title + ' · Web3 安全视频';
+  store.set('id', e.id);
+  const pref = [want, store.get('view'), ...VIEWS.map(x => x[0])];
+  renderList();
+  const cb = $('list').querySelector('[aria-current]'); if (cb) cb.scrollIntoView({ block: 'nearest' });
+  show(pref.find(k => k && e.v[k]) || null, false);
+}
+
+function renderViews() {
+  const groups = {};
+  VIEWS.forEach(([k, grp, label], i) => (groups[grp] = groups[grp] || []).push(
+    `<button data-k="${k}" aria-pressed="${k === view}" ${cur.v[k] ? '' : 'disabled title="这一章没有这种版本"'}>${label}<span class="mut" style="margin-left:4px">${i + 1}</span></button>`));
+  $('views').innerHTML = Object.entries(groups).map(([g, bs]) => `<div class="seg" role="group" aria-label="${g}"><span>${g}</span>${bs.join('')}</div>`).join('');
+}
+$('views').addEventListener('click', e => { const b = e.target.closest('button[data-k]'); if (b && !b.disabled) { store.set('view', b.dataset.k); show(b.dataset.k, true); } });
+
+function show(k, keepTime) {
+  stopAuto();
+  const t = keepTime && view && isVideo(view) && k && isVideo(k) ? v.currentTime : 0;
+  view = k; renderViews();
+  const d = k && cur.v[k];
+  v.hidden = f.hidden = true; $('empty').hidden = !!d;
+  v.pause();
+  $('rate').hidden = !(k && isVideo(k));
+  $('auto').hidden = k !== 'talk';
+  location.hash = cur.id + (k ? '/' + k : '');
+  if (!d) { v.removeAttribute('src'); f.removeAttribute('src'); script.innerHTML = '<p class="note">这一章暂时没有视频或幻灯片。</p>'; return; }
+  if (isVideo(k)) {
+    f.removeAttribute('src');
+    v.hidden = false; v.src = d.src; v.playbackRate = +$('rate').value;
+    if (t) v.addEventListener('loadedmetadata', () => { v.currentTime = Math.min(t, v.duration - 1); }, { once: true });
+  } else {
+    v.removeAttribute('src'); v.load();
+    f.hidden = false; step = [0, 0]; f.src = d.src;
+  }
+  renderScript();
+}
+
+// ---------- 讲稿 ----------
+function renderScript() {
+  const d = cur.v[view];
+  script.classList.toggle('click', view !== 'deck' && view !== 'd3b');
+  if (isVideo(view)) {
+    if (!d.cues.length) { script.innerHTML = '<p class="note">这个视频没有字幕文件。</p>'; return; }
+    const ch = d.ch || []; let ci = 0, html = '';
+    d.cues.forEach(([a, b, txt], i) => {
+      while (ci < ch.length && ch[ci][0] <= a + .01) { html += `<h4><i>${fmt(ch[ci][0])}</i>${esc(ch[ci][1])}</h4>`; ci++; }
+      html += `<p data-i="${i}" data-t="${a}"><i>${fmt(a)}</i>${esc(txt)}</p>`;
+    });
+    script.innerHTML = html;
+  } else if (view === 'talk') {
+    script.innerHTML = d.scenes.map(([t, lines], si) => `<h4><i>${si + 1}</i>${esc(t)}</h4>` + lines.map((l, st) => `<p data-si="${si}" data-st="${st}">${esc(l)}</p>`).join('')).join('');
+    markStep();
+  } else {
+    script.innerHTML = '<p class="note">在画面里用 ← / → 或画面下方按钮翻页，画面右侧也有本页讲稿。</p>' +
+      d.scenes.map(([t, lines], i) => `<h4><i>${i + 1}</i>${esc(t)}</h4>` + lines.map(l => `<p>${esc(l)}</p>`).join('')).join('');
+  }
+}
+script.addEventListener('click', e => {
+  const p = e.target.closest('p'); if (!p) return;
+  if (p.dataset.t !== undefined) { v.currentTime = +p.dataset.t; v.play().catch(() => {}); }
+  else if (p.dataset.si !== undefined) send({ deckCmd: 'go', si: +p.dataset.si, st: +p.dataset.st });
+});
+function highlight(p) {
+  script.querySelectorAll('p.now').forEach(x => x !== p && x.classList.remove('now'));
+  if (p && !p.classList.contains('now')) {
+    p.classList.add('now');
+    const r = p.getBoundingClientRect(), s = script.getBoundingClientRect();
+    if (r.top < s.top || r.bottom > s.bottom) script.scrollTop += r.top - s.top - s.height / 3;
+  }
+}
+v.addEventListener('timeupdate', () => {
+  if (!isVideo(view)) return;
+  const cues = cur.v[view].cues, t = v.currentTime; let i = -1;
+  for (let j = 0; j < cues.length && cues[j][0] <= t; j++) i = j;
+  highlight(i >= 0 ? script.querySelector(`p[data-i="${i}"]`) : null);
+});
+v.addEventListener('ended', () => { const i = ALL.indexOf(cur); if (i < ALL.length - 1 && ALL[i + 1].v[view]) open(ALL[i + 1].id, view); });
+
+// ---------- 讲解页幻灯：与 iframe 内的 player.js 通信 ----------
+const send = m => { if (f.contentWindow) f.contentWindow.postMessage(m, '*'); };
+function markStep() { highlight(script.querySelector(`p[data-si="${step[0]}"][data-st="${step[1]}"]`)); }
+addEventListener('message', e => {
+  if (e.source !== f.contentWindow || !e.data || !e.data.deckStep) return;
+  step = e.data.deckStep;
+  if (view === 'talk') { markStep(); if (autoTimer) scheduleAuto(); }
+});
+// 自动翻页：按讲稿字数估算口播时长（约 290 字 / 分钟，与渲染脚本一致）
+function lineAt() { const s = cur.v.talk.scenes[step[0]]; return s ? s[1][step[1]] || '' : ''; }
+function isLast() { const sc = cur.v.talk.scenes; return step[0] === sc.length - 1 && step[1] === sc[sc.length - 1][1].length - 1; }
+function scheduleAuto() {
+  clearTimeout(autoTimer);
+  autoTimer = setTimeout(() => { if (isLast()) stopAuto(); else send({ deckCmd: 'next' }); }, Math.max(2, lineAt().length / 290 * 60 + .8) * 1000);
+}
+function stopAuto() { clearTimeout(autoTimer); autoTimer = 0; $('auto').setAttribute('aria-pressed', 'false'); $('auto').textContent = '⏵ 自动翻页'; }
+$('auto').addEventListener('click', () => {
+  if (autoTimer || view !== 'talk') return stopAuto();
+  $('auto').setAttribute('aria-pressed', 'true'); $('auto').textContent = '⏸ 停止翻页'; scheduleAuto();
+});
+
+// ---------- 控件与快捷键 ----------
+function go(d) { const i = ALL.indexOf(cur) + d; if (i >= 0 && i < ALL.length) open(ALL[i].id, view); }
+$('prev').onclick = () => go(-1);
+$('next').onclick = () => go(1);
+$('rate').onchange = () => { v.playbackRate = +$('rate').value; };
+$('fs').onclick = () => { const el = $('stage'); (document.fullscreenElement ? document.exitFullscreen() : el.requestFullscreen()).catch(() => {}); };
+$('bs').onclick = () => { script.hidden = !script.hidden; $('bs').setAttribute('aria-pressed', String(!script.hidden)); };
+addEventListener('keydown', e => {
+  if (e.metaKey || e.ctrlKey || e.altKey || /^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
+  const k = e.key;
+  if (k === 'n' || k === 'N') go(1);
+  else if (k === 'p' || k === 'P') go(-1);
+  else if (k === 's' || k === 'S') $('bs').click();
+  else if (k === 'f' || k === 'F') $('fs').click();
+  else if (/^[1-6]$/.test(k)) { const x = VIEWS[+k - 1][0]; if (cur.v[x]) { store.set('view', x); show(x, true); } }
+  else if (view && isVideo(view)) {
+    if (k === ' ' && e.target !== v) { e.preventDefault(); v.paused ? v.play() : v.pause(); }
+    else if (k === 'ArrowRight' && e.target !== v) { e.preventDefault(); v.currentTime += 5; }
+    else if (k === 'ArrowLeft' && e.target !== v) { e.preventDefault(); v.currentTime -= 5; }
+  } else if (view === 'talk') {
+    if (k === 'ArrowRight' || k === ' ') { e.preventDefault(); send({ deckCmd: 'next' }); }
+    else if (k === 'ArrowLeft') { e.preventDefault(); send({ deckCmd: 'prev' }); }
+  }
+});
+
+// ---------- 启动 ----------
+$('only').checked = !!store.get('only');
+const fromHash = () => decodeURIComponent(location.hash.slice(1)).split('/');
+const [hid, hview] = fromHash();
+open(ALL.some(e => e.id === hid) ? hid : (store.get('id') || ALL[0].id), hview);
+// 地址栏改了 #章/方式（或浏览器前进后退）时跟着切换；自己写入的 hash 不会触发重开
+addEventListener('hashchange', () => {
+  const [id, k] = fromHash();
+  if (!ALL.some(e => e.id === id)) return;
+  if (id !== cur.id) open(id, k);
+  else if (k && k !== view && cur.v[k]) show(k, true);
+});
+</script>
+</body>
+</html>

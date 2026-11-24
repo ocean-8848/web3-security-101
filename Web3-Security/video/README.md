@@ -1,9 +1,19 @@
-# 视频系列：智能合约安全技术讲解（评估篇 10 集 + 主线 13 集 + 链专题 4 集）
+# 视频系列：Web3 安全学习视频（三套风格）
 
-> 来源：《智能合约安全学习手册》评估篇 A01–A10、主线 01–13 章、链专题 C00–C03。每集约 9–15 分钟，技术教学风格。
-> 形式：每集一个动画讲解页（`slides/*.html`），口播写在页面里；渲染脚本自动合成配音、字幕和章节，输出 MP4。
-> **观看**：用浏览器打开 [index.html](index.html)（选集播放器）。成片在 `output/`，口播稿在 [scripts/](scripts/README.md)。
-> 姊妹篇：[CEX 交易所系统讲解视频](../../CEX/video/README.md)。讲解页播放器、样式和渲染流程与之相同。
+> 来源：《Web3 安全学习手册》主线 01–30 章、评估篇 A01–A11、链专题 C00–C03。
+> **观看**：用浏览器打开 [index.html](index.html)（选集播放器，`tools/make-player.mjs` 生成）。左侧按篇目选章，每章可在下面几种方式之间切换：
+>
+> | 方式 | 内容 | 位置 | 覆盖 |
+> |---|---|---|---|
+> | 视频 · 拟物化 | 等距实物世界，8–12 分钟 | 源工程 [skeuo/](skeuo/PIPELINE.md)，成片 `skeuo/epNN/out/epNN-full.mp4` | 主线 30 集 |
+> | 视频 · 3b1b | 深色图形推演，5–8 分钟 | 源工程 [3b1b/](3b1b/README.md)，成片 `3b1b/output/EPNN-*.mp4` | 主线 30 集 |
+> | 视频 · 讲解页 | 讲师白板课，9–15 分钟 | 讲解页 `slides/`，成片 `output/` | 主线 13 集 + 评估篇 10 集 + 链专题 4 集（尚未渲染） |
+> | 幻灯 · 讲解页 | 上面讲解页的可翻页版，讲稿逐句同步、可自动翻页 | `slides/*.html` | 同上 |
+> | 幻灯 · 拟物化 / 3b1b | 两套知识讲解幻灯 | `../deck/chNN/`、`../deck3b/chNN.html` | 主线 30 章 |
+>
+> MP4 / 字幕 / 字体不进 git（见仓库根目录 `.gitignore`），放在主 checkout 的同一路径下。新出片或新增幻灯后，运行 `node tools/make-player.mjs` 刷新 index.html，播放器会自动识别哪些成片存在。双击 `index.html` 即可离线打开；用本地服务器打开时，服务器需要支持 HTTP Range，视频才能拖动进度。
+>
+> 编号：所有系列都用手册现行章号。讲解页主线原为 EP01–EP13（旧手册编号），已改为 EP01、EP03–EP12、EP27、EP28，与章号一致（例如 EP04 = 第 04 章 重入）。
 
 ## 1. 剧集表
 
@@ -22,23 +32,23 @@
 | A09 | 应急响应：评估之后，出事了怎么办 | assessment/A09 | T04 |
 | A10 | 实例分析：钱包里的 Audit 页是怎么来的 | assessment/A10 | listing-scorecard |
 
-### 主线（EP 系列，13 集）：漏洞机制与防御
+### 主线（EP 系列，13 集，EP 号 = 手册章号）：漏洞机制与防御
 
 | 集 | 标题 | 来源 | 交互实验 |
 |---|---|---|---|
 | EP01 | 合约安全全景：为什么代码就是金库 | 01 | incident-explorer |
-| EP02 | EVM 与 Solidity 安全基础：先看懂这台机器 | 02 | storage-proxy-lab |
-| EP03 | 重入攻击：在你记账之前再取一次钱 | 03 | reentrancy-lab |
-| EP04 | 访问控制与权限：谁有权按这个按钮 | 04 | storage-proxy-lab |
-| EP05 | 算术与精度：差一个 wei，丢一个金库 | 05 | vault-inflation-lab |
-| EP06 | 外部调用与代币兼容性：对方未必按标准出牌 | 06 | chain-porting-lab |
-| EP07 | 预言机与闪电贷：一笔交易就能改写的价格 | 07 | oracle-manipulation-lab |
-| EP08 | MEV 与签名安全：顺序可以被买，签名可以被重放 | 08 | signature-replay-lab |
-| EP09 | 可升级合约与代理：维修门的两面 | 09 | storage-proxy-lab |
-| EP10 | DeFi 经济安全：代码没错，规则错了 | 10 | oracle-manipulation-lab |
-| EP11 | 跨链桥安全：两条链之间的那条缝 | 11 | signature-replay-lab |
-| EP12 | 审计、测试与开发流程：把安全写进流水线 | 12 | chain-porting-lab |
-| EP13 | 事故案例库：同样的错误，换个名字再来一次 | 13 | incident-explorer |
+| EP03 | EVM 与 Solidity 安全基础：先看懂这台机器 | 03 | storage-proxy-lab |
+| EP04 | 重入攻击：在你记账之前再取一次钱 | 04 | reentrancy-lab |
+| EP05 | 访问控制与权限：谁有权按这个按钮 | 05 | storage-proxy-lab |
+| EP06 | 算术与精度：差一个 wei，丢一个金库 | 06 | vault-inflation-lab |
+| EP07 | 外部调用与代币兼容性：对方未必按标准出牌 | 07 | chain-porting-lab |
+| EP08 | 预言机与闪电贷：一笔交易就能改写的价格 | 08 | oracle-manipulation-lab |
+| EP09 | MEV 与签名安全：顺序可以被买，签名可以被重放 | 09 | signature-replay-lab |
+| EP10 | 可升级合约与代理：维修门的两面 | 10 | storage-proxy-lab |
+| EP11 | DeFi 经济安全：代码没错，规则错了 | 11 | oracle-manipulation-lab |
+| EP12 | 跨链桥安全：两条链之间的那条缝 | 12 | signature-replay-lab |
+| EP27 | 审计、测试与开发流程：把安全写进流水线 | 27 | chain-porting-lab |
+| EP28 | 事故案例库：同样的错误，换个名字再来一次 | 28 | incident-explorer |
 
 ### 链专题（C 系列，4 集）
 
@@ -49,7 +59,7 @@
 | C02 | TRON 专题：能跑 Solidity，但 TVM 不是 EVM | chains/C02 | chain-porting-lab |
 | C03 | Mantle 专题：以太坊 L2 视角 | chains/C03 | chain-porting-lab |
 
-推荐观看顺序（安全评估负责人）：EP01 → EP03–EP11 → A01 → A02 → 按对象选 A03 / A04 / A05 → A06–A10 → C00–C03。
+推荐观看顺序（安全评估负责人）：EP01 → EP04–EP12 → A01 → A02 → 按对象选 A03 / A04 / A05 → A06–A10 → C00–C03。
 
 ## 2. 讲解风格（技术教学）
 
@@ -76,7 +86,7 @@
 **不需要 key 的做法（推荐）**：微软免费"云希"语音（edge-tts，和 CEX 系列同一个声音），用 CEX 样音 `voice-samples/D-yunxi-lively.mp3` 的设定（语速 +5%、音调 +3Hz），再逐句变化语速、音调、音量。改基准：`EDGE_RATE=+0% EDGE_PITCH=+0Hz ./render-edge.sh`；关掉逐句变化：`EDGE_PROSODY=0`。**最简单：在访达里双击 `video/渲染视频.command`**（会打开终端窗口，自动安装缺的依赖并渲染全部 27 集，约 3 小时；中途关掉，再次双击会跳过已完成的集）。也可以在终端执行：
 
 ```bash
-cd ~/Workon/Learning/web3/Contract-Security/video/tools && ./render-edge.sh EP03   # 先渲染一集试听（约 10 分钟）
+cd Web3-Security/video/tools && ./render-edge.sh EP04   # 先渲染一集试听（约 10 分钟）
 ./render-edge.sh                                                        # 全部 27 集，3 集并行
 ```
 
@@ -117,7 +127,7 @@ export AZURE_SPEECH_KEY=<你的 key>  AZURE_SPEECH_REGION=southeastasia   # HD F
 | `say` | macOS 自带，如 `Tingting` | macOS | 离线备选 |
 
 ```bash
-node render.mjs ../slides/EP03-reentrancy.html --engine edge     # 单集，任意引擎
+node render.mjs ../slides/EP04-reentrancy.html --engine edge     # 单集，任意引擎
 ./render-all.sh "" --engine kokoro                                # 全部，任意引擎
 ```
 
