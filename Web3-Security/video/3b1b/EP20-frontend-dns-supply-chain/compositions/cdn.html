@@ -1,0 +1,113 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="cdn" data-duration="42.96" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="n-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="n-all">
+        <text id="n-title" class="h" x="960" y="110" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">CDN 与边缘脚本 · BadgerDAO</text>
+        <g id="n-org" class="h">
+          <rect x="120" y="400" width="300" height="200" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+          <text x="270" y="495" font-size="30" fill="#e8e6df" text-anchor="middle">源站</text>
+          <text x="270" y="545" font-size="28" fill="#8a8f99" text-anchor="middle">干净的页面</text>
+        </g>
+        <g id="n-cdn" class="h">
+          <rect id="n-cdnr" x="720" y="380" width="380" height="240" rx="18" fill="#1a1524" stroke="#B48EF0" stroke-width="3" />
+          <text x="910" y="470" font-size="32" fill="#e8e6df" text-anchor="middle">CDN 边缘节点</text>
+          <text x="910" y="520" font-size="28" fill="#8a8f99" text-anchor="middle">可在半路改写响应</text>
+        </g>
+        <path id="n-a1" class="dr" pathLength="1" d="M430 500 L 710 500" stroke="#8a8f99" stroke-width="3" fill="none" />
+        <g id="n-users"></g>
+        <!-- API Key -->
+        <g id="n-key" class="h">
+          <rect x="760" y="760" width="300" height="80" rx="40" fill="#1a1524" stroke="#B48EF0" stroke-width="3" />
+          <text x="910" y="811" font-size="28" fill="#e8e6df" text-anchor="middle">账号 API Key</text>
+        </g>
+        <g id="n-atk" class="h"><circle cx="420" cy="800" r="44" fill="#2a1416" stroke="#FC6255" stroke-width="4" /><text x="420" y="810" font-size="28" fill="#FC6255" text-anchor="middle">攻击者</text></g>
+        <path id="n-take" class="dr h" pathLength="1" d="M470 800 L 750 800" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#n-ahr)" />
+        <text id="n-flaw" class="h" x="610" y="770" font-size="28" fill="#FC6255" text-anchor="middle">注册流程漏洞</text>
+        <path id="n-inj" class="dr h" pathLength="1" d="M910 750 L 910 630" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#n-ahr)" />
+        <text id="n-injt" class="h" x="890" y="695" font-size="28" fill="#FC6255" text-anchor="end">注入边缘脚本（11 月起）</text>
+        <text id="n-part" class="h" x="1560" y="900" font-size="30" fill="#FC6255" text-anchor="middle">只对部分用户弹出授权</text>
+        <text id="n-loss" class="h" x="960" y="1000" font-size="56" fill="#FC6255" text-anchor="middle" font-weight="800">12 月 2 日 · ≈ 1.2 亿美元</text>
+      </g>
+      <g id="n-def">
+        <text id="n-root" class="h" x="960" y="360" font-size="52" fill="#e8e6df" text-anchor="middle" font-weight="800">CDN 账号 = 前端的<tspan fill="#FF9F43">信任根</tspan></text>
+        <g class="n-df h"><rect x="340" y="480" width="360" height="100" rx="50" fill="#141e14" stroke="#83C167" stroke-width="3" /><text x="520" y="542" font-size="34" fill="#83C167" text-anchor="middle">有清单</text></g>
+        <g class="n-df h"><rect x="780" y="480" width="360" height="100" rx="50" fill="#141e14" stroke="#83C167" stroke-width="3" /><text x="960" y="542" font-size="34" fill="#83C167" text-anchor="middle">有告警</text></g>
+        <g class="n-df h"><rect x="1220" y="480" width="360" height="100" rx="50" fill="#141e14" stroke="#83C167" stroke-width="3" /><text x="1400" y="542" font-size="34" fill="#83C167" text-anchor="middle">能审计</text></g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 42.96, "L": [[0.6, 7.37], [7.82, 16.7], [17.15, 25.4], [25.85, 31.69], [32.14, 41.86]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.8) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      const DRAWA = (s, t, d = 0.5) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // 8 个用户，其中 3 个被注入（下标 1、4、6）
+      const NS = "http://www.w3.org/2000/svg", uh = document.querySelector("#n-users"), U = [];
+      const hit = [1, 4, 6];
+      for (let i = 0; i < 8; i++) {
+        const y = 230 + i * 80, x = 1500;
+        const p = document.createElementNS(NS, "path");
+        p.setAttribute("d", `M1110 500 C 1250 500, 1300 ${y}, ${x - 40} ${y}`); p.setAttribute("pathLength", "1"); p.setAttribute("class", "dr");
+        p.setAttribute("fill", "none"); p.setAttribute("stroke", "#8a8f99"); p.setAttribute("stroke-width", "2");
+        uh.appendChild(p);
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", x.toString()); c.setAttribute("cy", y.toString()); c.setAttribute("r", "26"); c.setAttribute("fill", "#2a2f3a"); c.setAttribute("stroke", "#e8e6df"); c.setAttribute("stroke-width", "2"); c.setAttribute("opacity", "0");
+        uh.appendChild(c);
+        const pop = document.createElementNS(NS, "rect");
+        pop.setAttribute("x", (x + 50).toString()); pop.setAttribute("y", (y - 22).toString()); pop.setAttribute("width", "150"); pop.setAttribute("height", "44"); pop.setAttribute("rx", "8");
+        pop.setAttribute("fill", "#2a1416"); pop.setAttribute("stroke", "#FC6255"); pop.setAttribute("stroke-width", "3"); pop.setAttribute("opacity", "0");
+        uh.appendChild(pop);
+        U.push({ p, c, pop });
+      }
+
+      // L0 CDN 在半路
+      IN("#n-title", at(0, 0.0), 0.5);
+      IN("#n-org", at(0, 0.15), 0.4);
+      DRAW("#n-a1", at(0, 0.3), 0.4);
+      IN("#n-cdn", at(0, 0.35), 0.5);
+      U.forEach((u, i) => { DRAW(u.p, at(0, 0.55) + i * 0.05, 0.5); IN(u.c, at(0, 0.6) + i * 0.05, 0.3); });
+      // L1 API Key 被拿走
+      IN("#n-key", at(1, 0.1), 0.5);
+      IN("#n-atk", at(1, 0.3), 0.4);
+      DRAWA("#n-take", at(1, 0.45), 0.5);
+      IN("#n-flaw", at(1, 0.45), 0.4);
+      tl.to("#n-key rect", { stroke: "#FC6255", duration: 0.3 }, at(1, 0.75));
+      // L2 周期性注入，只对部分用户
+      DRAWA("#n-inj", at(2, 0.05), 0.4);
+      IN("#n-injt", at(2, 0.1), 0.4);
+      tl.to("#n-cdnr", { stroke: "#FC6255", duration: 0.3 }, at(2, 0.3));
+      hit.forEach((k, j) => {
+        tl.to(U[k].p, { stroke: "#FC6255", strokeWidth: 3, duration: 0.3 }, at(2, 0.4) + j * 0.3);
+        IN(U[k].pop, at(2, 0.45) + j * 0.3, 0.3);
+      });
+      tl.to(hit.map((k) => U[k].pop), { opacity: 0.3, duration: 0.3, yoyo: true, repeat: 3 }, at(2, 0.8));
+      IN("#n-part", at(2, 0.6), 0.4);
+      // L3 12 月 2 日转走
+      hit.forEach((k) => tl.to(U[k].c, { fill: "#FC6255", duration: 0.3 }, at(3, 0.1)));
+      IN("#n-loss", at(3, 0.25), 0.5, { scale: 0.8, svgOrigin: "960 985" }, { scale: 1 });
+      // L4 信任根
+      tl.to("#n-all", { opacity: 0, duration: 0.4 }, at(4, 0));
+      IN("#n-root", at(4, 0.05), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      gsap.utils.toArray("#root .n-df").forEach((g, i) => IN(g, at(4, 0.45) + i * 0.12 * (L[4][1] - L[4][0]), 0.4, { y: 20 }, { y: 0 }));
+
+      tl.to(["#n-all", "#n-def"], { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["cdn"] = tl;
+    })();
+  </script>
+</template>

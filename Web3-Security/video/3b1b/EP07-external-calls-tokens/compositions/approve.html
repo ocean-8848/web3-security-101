@@ -1,0 +1,123 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="approve" data-duration="56.58" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="p-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#F0B90B" /></marker>
+        <marker id="p-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="p-all">
+        <g id="p-al" class="h"><circle cx="220" cy="260" r="62" fill="#161a22" stroke="#e8e6df" stroke-width="4" /><text x="220" y="272" font-size="32" fill="#e8e6df" text-anchor="middle">Alice</text></g>
+        <g id="p-bob" class="h"><circle cx="1700" cy="260" r="62" fill="#2a1414" stroke="#FC6255" stroke-width="4" /><text x="1700" y="272" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">Bob</text></g>
+        <g id="p-meter" class="h">
+          <text x="960" y="210" font-size="32" fill="#8a8f99" text-anchor="middle">Bob 可花的额度</text>
+          <rect x="560" y="240" width="800" height="60" rx="8" fill="none" stroke="#2a2f3a" stroke-width="2" />
+        </g>
+        <rect id="p-bar" class="h" x="560" y="240" width="800" height="60" rx="8" fill="#F0B90B" />
+        <text id="p-num" class="h" x="960" y="282" font-size="34" fill="#1a1708" text-anchor="middle" font-weight="800">100</text>
+        <text id="p-num0" class="h" x="960" y="282" font-size="34" fill="#8a8f99" text-anchor="middle" font-weight="800">0</text>
+        <text id="p-taken" class="h" x="1700" y="400" font-size="34" fill="#e8e6df" text-anchor="middle">已拿走：<tspan id="p-tk" fill="#FC6255" font-weight="800">0</tspan></text>
+        <!-- 交易顺序 -->
+        <text id="p-q" class="h" x="960" y="560" font-size="30" fill="#8a8f99" text-anchor="middle">打包顺序 →</text>
+        <g id="p-t2" class="h"><rect x="760" y="600" width="400" height="110" rx="14" fill="#161a22" stroke="#e8e6df" stroke-width="3" /><text x="960" y="640" font-size="28" fill="#8a8f99" text-anchor="middle">Alice</text><text x="960" y="685" font-size="32" fill="#e8e6df" text-anchor="middle" class="mono">approve(50)</text></g>
+        <g id="p-t1" class="h"><rect x="300" y="600" width="400" height="110" rx="14" fill="#2a1414" stroke="#FC6255" stroke-width="3" /><text x="500" y="640" font-size="28" fill="#FC6255" text-anchor="middle">Bob 抢先</text><text x="500" y="685" font-size="32" fill="#e8e6df" text-anchor="middle" class="mono">花 100</text></g>
+        <g id="p-t3" class="h"><rect x="1220" y="600" width="400" height="110" rx="14" fill="#2a1414" stroke="#FC6255" stroke-width="3" /><text x="1420" y="640" font-size="28" fill="#FC6255" text-anchor="middle">Bob</text><text x="1420" y="685" font-size="32" fill="#e8e6df" text-anchor="middle" class="mono">再花 50</text></g>
+        <text id="p-total" class="h" x="960" y="830" font-size="52" fill="#FC6255" text-anchor="middle" font-weight="800">100 + 50 = 150 枚</text>
+      </g>
+      <g id="p-fix" class="h">
+        <text x="960" y="400" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700">先改成 0，确认旧额度有没有被花掉，再设新值</text>
+        <text id="p-f2" x="960" y="490" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700">或：相对减少额度；被抢先花掉就回滚</text>
+        <text id="p-f3" x="960" y="570" font-size="30" fill="#8a8f99" text-anchor="middle" class="mono">safeDecreaseAllowance(token, bob, 50)</text>
+      </g>
+      <!-- 路由合约 -->
+      <g id="p-rt">
+        <g id="p-users" class="h" font-size="28" fill="#e8e6df" text-anchor="middle">
+          <circle cx="220" cy="300" r="58" fill="#161a22" stroke="#e8e6df" stroke-width="3" /><text x="220" y="310">用户</text>
+          <circle cx="220" cy="520" r="58" fill="#161a22" stroke="#e8e6df" stroke-width="3" /><text x="220" y="530">用户</text>
+          <circle id="p-vic" cx="220" cy="740" r="58" fill="#161a22" stroke="#e8e6df" stroke-width="3" /><text x="220" y="750">受害者</text>
+        </g>
+        <g id="p-appr" class="h" stroke="#F0B90B" stroke-width="3" stroke-dasharray="8 6" fill="none">
+          <path d="M270 300 L 760 480" /><path d="M270 520 L 760 520" /><path d="M270 740 L 760 560" />
+        </g>
+        <text id="p-apprt" class="h" x="500" y="450" font-size="28" fill="#F0B90B" text-anchor="middle">授权</text>
+        <g id="p-router" class="h"><rect x="770" y="420" width="380" height="200" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="5" /><text x="960" y="530" font-size="38" fill="#58C4DD" text-anchor="middle" font-weight="700">路由合约</text></g>
+        <g id="p-att" class="h"><circle cx="1700" cy="300" r="60" fill="#2a1414" stroke="#FC6255" stroke-width="4" /><text x="1700" y="311" font-size="30" fill="#FC6255" text-anchor="middle" font-weight="700">攻击者</text></g>
+        <path id="p-cmd" class="dr h" pathLength="1" d="M1640 330 L 1160 460" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#p-ahr)" />
+        <text id="p-cmdt" class="h" x="1170" y="345" font-size="28" fill="#FC6255">任意调用目标 + 任意数据</text>
+        <text id="p-call" class="h mono" x="960" y="700" font-size="30" fill="#FC6255" text-anchor="middle">token.transferFrom(受害者, 攻击者, 金额)</text>
+        <path id="p-steal" class="dr h" pathLength="1" d="M270 760 C 800 900, 1300 900, 1650 360" fill="none" stroke="#F0B90B" stroke-width="5" marker-end="url(#p-ah)" />
+        <g id="p-sushi" class="h">
+          <text x="1340" y="900" font-size="30" fill="#6b6f7a" text-anchor="middle">2023 年 4 月 · Sushi RouteProcessor2</text>
+          <text id="p-s2" x="1340" y="950" font-size="30" fill="#e8e6df" text-anchor="middle">池子地址由用户填写；回调只检查"是不是刚才调用的地址"</text>
+          <text id="p-s3" x="1340" y="1005" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">损失 ≈ 330 万美元</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 56.58, "L": [[0.6, 7.99], [8.44, 14.03], [14.48, 23.0], [23.45, 33.22], [33.67, 43.85], [44.3, 55.48]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      const tk = { v: 0 }, tkt = document.querySelector("#p-tk");
+      const setTk = (from, to, t) => tl.fromTo(tk, { v: from }, { v: to, duration: 0.6, immediateRender: false, onUpdate: () => { tkt.textContent = Math.round(tk.v); } }, t);
+      // L0 授权 100，Alice 想改成 50
+      IN(["#p-al", "#p-bob"], at(0, 0.0), 0.5);
+      IN("#p-meter", at(0, 0.15), 0.4);
+      tl.fromTo("#p-bar", { opacity: 0, attr: { width: 0 } }, { opacity: 1, attr: { width: 800 }, duration: 0.7 }, at(0, 0.2));
+      IN("#p-num", at(0, 0.35), 0.3);
+      IN("#p-q", at(0, 0.6), 0.4);
+      IN("#p-t2", at(0, 0.65), 0.5, { y: 30 }, { y: 0 });
+      // L1 Bob 抢先花掉 100
+      IN("#p-t1", at(1, 0.1), 0.5, { x: 600, y: -300 }, { x: 0, y: 0, ease: "power3.out" });
+      IN("#p-taken", at(1, 0.4), 0.3);
+      tl.to("#p-bar", { attr: { width: 0 }, duration: 0.6 }, at(1, 0.5));
+      OUT("#p-num", at(1, 0.5), 0.2);
+      IN("#p-num0", at(1, 0.6), 0.2);
+      setTk(0, 100, at(1, 0.5));
+      tl.to("#p-t1", { opacity: 0.35, duration: 0.3 }, at(1, 0.9));
+      // L2 Alice 的修改生效 → 50 → Bob 再花 50
+      OUT("#p-num0", at(2, 0.05), 0.2);
+      tl.to("#p-bar", { attr: { width: 400 }, duration: 0.5 }, at(2, 0.05));
+      tl.to("#p-t2", { opacity: 0.35, duration: 0.3 }, at(2, 0.3));
+      IN("#p-t3", at(2, 0.35), 0.4, { y: 30 }, { y: 0 });
+      tl.to("#p-bar", { attr: { width: 0 }, duration: 0.5 }, at(2, 0.55));
+      setTk(100, 150, at(2, 0.55));
+      IN("#p-total", at(2, 0.75), 0.5, { scale: 1.2, transformOrigin: "50% 50%" }, { scale: 1 });
+      // L3 缓解
+      tl.to("#p-all", { opacity: 0.1, duration: 0.4 }, at(3, 0));
+      IN("#p-fix", at(3, 0.05), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      IN("#p-f2", at(3, 0.5), 0.5);
+      IN("#p-f3", at(3, 0.75), 0.5);
+      // L4 路由合约 + 任意调用
+      tl.to("#p-all", { opacity: 0, duration: 0.3 }, at(4, 0));
+      OUT("#p-fix", at(4, 0), 0.3);
+      IN("#p-users", at(4, 0.05), 0.4);
+      IN("#p-router", at(4, 0.1), 0.4);
+      IN(["#p-appr", "#p-apprt"], at(4, 0.18), 0.4);
+      IN("#p-att", at(4, 0.4), 0.4);
+      DRAW("#p-cmd", at(4, 0.45), 0.5);
+      IN("#p-cmdt", at(4, 0.5), 0.4);
+      IN("#p-call", at(4, 0.65), 0.4);
+      DRAW("#p-steal", at(4, 0.78), 0.8);
+      // L5 Sushi
+      IN("#p-sushi", at(5, 0.05), 0.6);
+      IN("#p-s2", at(5, 0.3), 0.5);
+      IN("#p-s3", at(5, 0.8), 0.5);
+      tl.to("#p-rt", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["approve"] = tl;
+    })();
+  </script>
+</template>

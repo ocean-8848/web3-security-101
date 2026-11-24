@@ -1,0 +1,167 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="mpc" data-duration="53.44" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="m-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="m-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#F0B90B" /></marker>
+      </defs>
+      <g id="m-all">
+        <g id="m-tech">
+          <text id="m-title" class="h" x="960" y="130" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">MPC 热钱包怎样签名</text>
+
+          <!-- 完整私钥 → 拆成三片 -->
+          <g id="m-key" class="h">
+            <circle cx="900" cy="300" r="34" fill="none" stroke="#B48EF0" stroke-width="7" />
+            <path d="M934 300 H 1040 M 1010 300 V 330 M 1035 300 V 322" stroke="#B48EF0" stroke-width="7" fill="none" stroke-linecap="round" />
+          </g>
+          <text id="m-keyt" class="h" x="960" y="380" font-size="30" fill="#B48EF0" text-anchor="middle">完整私钥</text>
+
+          <!-- 三个节点 -->
+          <g id="m-nodes">
+            <g class="m-node h"><rect x="500" y="460" width="260" height="170" rx="18" fill="#18141f" stroke="#B48EF0" stroke-width="3" /><text x="630" y="510" font-size="30" fill="#e8e6df" text-anchor="middle">节点 1</text></g>
+            <g class="m-node h"><rect x="830" y="460" width="260" height="170" rx="18" fill="#18141f" stroke="#B48EF0" stroke-width="3" /><text x="960" y="510" font-size="30" fill="#e8e6df" text-anchor="middle">节点 2</text></g>
+            <g class="m-node h"><rect x="1160" y="460" width="260" height="170" rx="18" fill="#18141f" stroke="#B48EF0" stroke-width="3" /><text x="1290" y="510" font-size="30" fill="#e8e6df" text-anchor="middle">节点 3</text></g>
+          </g>
+          <!-- 分片 -->
+          <rect id="m-sh1" class="h" x="908" y="282" width="44" height="36" rx="6" fill="#B48EF0" />
+          <rect id="m-sh2" class="h" x="938" y="282" width="44" height="36" rx="6" fill="#B48EF0" />
+          <rect id="m-sh3" class="h" x="968" y="282" width="44" height="36" rx="6" fill="#B48EF0" />
+          <text id="m-shardt" class="h" x="960" y="700" font-size="30" fill="#8a8f99" text-anchor="middle">每个节点只有一个分片</text>
+
+          <!-- 合成签名 -->
+          <g fill="none" stroke="#B48EF0" stroke-width="3">
+            <path id="m-c1" class="dr" pathLength="1" d="M630 640 C 640 760, 860 780, 940 800" />
+            <path id="m-c2" class="dr" pathLength="1" d="M960 640 L 960 790" />
+            <path id="m-c3" class="dr" pathLength="1" d="M1290 640 C 1280 760, 1060 780, 980 800" />
+          </g>
+          <g id="m-sig" class="h">
+            <rect x="820" y="800" width="280" height="90" rx="14" fill="#161a22" stroke="#e8e6df" stroke-width="3" />
+            <path d="M860 855 C 890 820, 905 885, 935 850 S 985 825, 1005 860 L 1060 848" stroke="#e8e6df" stroke-width="4" fill="none" stroke-linecap="round" />
+          </g>
+          <text id="m-sigt" class="h" x="1130" y="858" font-size="30" fill="#e8e6df">有效签名</text>
+          <g id="m-nokey" class="h">
+            <text x="1500" y="320" font-size="32" fill="#6b6f7a" text-anchor="middle">完整私钥：从不出现</text>
+          </g>
+          <g id="m-guar" class="h">
+            <rect x="300" y="930" width="1320" height="80" rx="14" fill="none" stroke="#83C167" stroke-width="3" />
+            <text x="960" y="983" font-size="36" fill="#83C167" text-anchor="middle" font-weight="700">MPC 保证：没有人拿到完整私钥</text>
+          </g>
+
+          <!-- 请求进入 -->
+          <g id="m-req" class="h">
+            <rect x="90" y="490" width="230" height="110" rx="14" fill="#1a1708" stroke="#F0B90B" stroke-width="3" />
+            <text x="205" y="535" font-size="30" fill="#F0B90B" text-anchor="middle" font-weight="700">签名请求</text>
+            <text x="205" y="577" font-size="28" fill="#8a8f99" text-anchor="middle">格式正确</text>
+          </g>
+          <path id="m-reqa" class="dr h" pathLength="1" d="M325 545 L 490 545" stroke="#F0B90B" stroke-width="4" fill="none" marker-end="url(#m-ahg)" />
+          <text id="m-pass" class="h" x="405" y="520" font-size="28" fill="#83C167" text-anchor="middle">校验 ✓</text>
+          <g id="m-ask" class="h">
+            <text x="1600" y="540" font-size="40" fill="#FF9F43" text-anchor="middle" font-weight="700">该不该签？</text>
+            <text x="1600" y="590" font-size="30" fill="#6b6f7a" text-anchor="middle">MPC 不回答</text>
+          </g>
+        </g>
+
+        <!-- 比方：公章与审批单 -->
+        <g id="m-meta">
+          <g id="m-safe" class="h">
+            <rect x="200" y="300" width="380" height="380" rx="22" fill="#18141f" stroke="#B48EF0" stroke-width="4" />
+            <circle cx="390" cy="470" r="70" fill="none" stroke="#B48EF0" stroke-width="6" />
+            <text x="390" y="484" font-size="40" fill="#B48EF0" text-anchor="middle" font-weight="700">公章</text>
+            <text x="390" y="630" font-size="30" fill="#8a8f99" text-anchor="middle">锁在保险柜里</text>
+          </g>
+          <g id="m-inbox" class="h">
+            <path d="M1180 640 L 1240 720 H 1600 L 1660 640" fill="none" stroke="#8a8f99" stroke-width="4" />
+            <text x="1420" y="780" font-size="30" fill="#8a8f99" text-anchor="middle">用印员的待办箱</text>
+          </g>
+          <g id="m-sheet" class="h">
+            <rect x="1270" y="300" width="300" height="380" rx="10" fill="#e8e6df" fill-opacity=".08" stroke="#e8e6df" stroke-width="3" />
+            <text x="1420" y="360" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">审批单</text>
+            <line x1="1310" y1="410" x2="1530" y2="410" stroke="#8a8f99" stroke-width="4" /><line x1="1310" y1="450" x2="1500" y2="450" stroke="#8a8f99" stroke-width="4" /><line x1="1310" y1="490" x2="1520" y2="490" stroke="#8a8f99" stroke-width="4" />
+            <text id="m-fake" class="h" x="1420" y="270" font-size="30" fill="#FC6255" text-anchor="middle" font-weight="700">伪造的</text>
+          </g>
+          <g id="m-stamp" class="h">
+            <circle cx="1460" cy="590" r="54" fill="none" stroke="#FC6255" stroke-width="6" />
+            <text x="1460" y="602" font-size="30" fill="#FC6255" text-anchor="middle" font-weight="700">已盖章</text>
+          </g>
+          <text id="m-flow" class="h" x="890" y="500" font-size="32" fill="#e8e6df" text-anchor="middle">按流程盖章</text>
+          <path id="m-flowa" class="dr h" pathLength="1" d="M590 540 L 1180 540" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#m-ah)" />
+          <g id="m-limit" class="h">
+            <text x="960" y="880" font-size="36" fill="#8a8f99" text-anchor="middle">合同：法院可以撤销</text>
+          </g>
+          <line id="m-limx" class="h" x1="790" y1="868" x2="1130" y2="868" stroke="#FF9F43" stroke-width="5" />
+          <text id="m-lim2" class="h" x="960" y="960" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="700">链上交易：一旦确认，多数撤不回</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 53.44, "L": [[0.6, 8.98], [9.43, 18.23], [18.68, 23.7], [24.15, 31.88], [32.33, 43.39], [43.84, 52.34]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 私钥拆成三片，进入三个节点
+      IN("#m-title", at(0, 0), 0.5);
+      IN("#m-key", at(0, 0.1), 0.6, { scale: 0.6, svgOrigin: "960 300" }, { scale: 1 });
+      IN("#m-keyt", at(0, 0.15), 0.5);
+      gsap.utils.toArray("#root .m-node").forEach((g, i) => IN(g, at(0, 0.45) + i * 0.15, 0.5, { y: 20 }, { y: 0 }));
+      OUT(["#m-key", "#m-keyt"], at(0, 0.62), 0.3);
+      [["#m-sh1", -300], ["#m-sh2", 0], ["#m-sh3", 300]].forEach(([s, dx], i) => {
+        IN(s, at(0, 0.62), 0.2);
+        tl.to(s, { x: dx, y: 270, duration: 0.8, ease: "power3.inOut" }, at(0, 0.66) + i * 0.08);
+      });
+      IN("#m-shardt", at(0, 0.85), 0.4);
+
+      // L1 各自计算，合成签名；私钥不出现
+      OUT("#m-shardt", at(1, 0.25), 0.3);
+      DRAW("#m-c1", at(1, 0.08), 0.7); DRAW("#m-c2", at(1, 0.12), 0.6); DRAW("#m-c3", at(1, 0.16), 0.7);
+      IN("#m-sig", at(1, 0.3), 0.5, { scale: 0.8, svgOrigin: "960 845" }, { scale: 1, ease: "back.out(2)" });
+      IN("#m-sigt", at(1, 0.38), 0.4);
+      IN("#m-nokey", at(1, 0.65), 0.5);
+
+      // L2 MPC 保证了什么
+      IN("#m-guar", at(2, 0.1), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+
+      // L3 它不判断该不该签：请求过了校验就签
+      OUT("#m-guar", at(3, 0), 0.3);
+      IN("#m-ask", at(3, 0.05), 0.5);
+      IN("#m-req", at(3, 0.3), 0.5, { x: -40 }, { x: 0 });
+      DRAW("#m-reqa", at(3, 0.5), 0.5);
+      IN("#m-pass", at(3, 0.55), 0.3);
+      tl.fromTo("#root .m-node rect", { strokeWidth: 3 }, { strokeWidth: 7, duration: 0.25, yoyo: true, repeat: 1 }, at(3, 0.72));
+      tl.fromTo("#m-sig rect", { strokeWidth: 3 }, { stroke: "#FC6255", strokeWidth: 6, duration: 0.3 }, at(3, 0.82));
+
+      // L4 比方：公章
+      tl.to("#m-tech", { opacity: 0, filter: "blur(6px)", duration: 0.5, ease: "power2.in" }, at(4, 0));
+      IN("#m-safe", at(4, 0.08), 0.6, { y: 20 }, { y: 0 });
+      IN("#m-inbox", at(4, 0.4), 0.5);
+      IN("#m-sheet", at(4, 0.45), 0.7, { y: -160 }, { y: 0, ease: "power2.out" });
+      IN("#m-fake", at(4, 0.5), 0.4);
+      DRAW("#m-flowa", at(4, 0.72), 0.6);
+      IN("#m-flow", at(4, 0.75), 0.4);
+      IN("#m-stamp", at(4, 0.88), 0.35, { scale: 1.8, svgOrigin: "1460 590" }, { scale: 1, ease: "power4.in" });
+
+      // L5 比方的局限
+      IN("#m-limit", at(5, 0.05), 0.6);
+      IN("#m-limx", at(5, 0.4), 0.1);
+      tl.fromTo("#m-limx", { attr: { x2: 790 } }, { attr: { x2: 1130 }, duration: 0.4, ease: "power2.out" }, at(5, 0.4));
+      tl.to("#m-sheet", { opacity: 0.4, duration: 0.4 }, at(5, 0.45));
+      IN("#m-lim2", at(5, 0.6), 0.5, { y: 10 }, { y: 0 });
+      tl.fromTo("#m-stamp circle", { strokeWidth: 6 }, { strokeWidth: 10, duration: 0.3, yoyo: true, repeat: 1 }, at(5, 0.85));
+
+      tl.to("#m-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["mpc"] = tl;
+    })();
+  </script>
+</template>

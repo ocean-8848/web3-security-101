@@ -1,0 +1,84 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="call" data-duration="41.71" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="c-all">
+        <!-- 来电者 -->
+        <g id="c-caller" class="h">
+          <rect x="160" y="260" width="300" height="520" rx="40" fill="#161a22" stroke="#8a8f99" stroke-width="4" />
+          <circle cx="310" cy="420" r="60" fill="#2a2f3a" stroke="#8a8f99" stroke-width="4" />
+          <text x="310" y="440" font-size="48" fill="#8a8f99" text-anchor="middle">?</text>
+          <text x="310" y="560" font-size="32" fill="#e8e6df" text-anchor="middle">“交易所客服”</text>
+          <text x="310" y="610" font-size="28" fill="#6b6f7a" text-anchor="middle">来电中…</text>
+        </g>
+        <!-- 对话气泡 -->
+        <g font-size="32">
+          <g class="c-b h"><rect x="540" y="270" width="620" height="80" rx="40" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><text x="580" y="322" fill="#e8e6df">叫出了你的名字 <tspan fill="#83C167">✓ 对</tspan></text></g>
+          <g class="c-b h"><rect x="540" y="380" width="620" height="80" rx="40" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><text x="580" y="432" fill="#e8e6df">说出了你的余额 <tspan fill="#83C167">✓ 对</tspan></text></g>
+          <g class="c-b h"><rect x="540" y="490" width="620" height="80" rx="40" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><text x="580" y="542" fill="#e8e6df">提到你上周的工单 <tspan fill="#83C167">✓ 对</tspan></text></g>
+          <g id="c-ask" class="h"><rect x="540" y="620" width="620" height="90" rx="45" fill="#1d1214" stroke="#FC6255" stroke-width="4" /><text x="580" y="677" fill="#FC6255" font-weight="700">“请把资产转到安全钱包”</text></g>
+        </g>
+        <!-- 信任条 -->
+        <g id="c-meter" class="h">
+          <rect x="1320" y="260" width="80" height="460" rx="16" fill="none" stroke="#8a8f99" stroke-width="3" />
+          <text x="1360" y="770" font-size="30" fill="#e8e6df" text-anchor="middle">你的信任</text>
+        </g>
+        <rect id="c-fill" x="1326" y="714" width="68" height="0" rx="12" fill="#B48EF0" fill-opacity=".7" />
+        <circle id="c-coin" class="h" cx="1360" cy="500" r="26" fill="#F0B90B" />
+        <!-- 规则 -->
+        <g id="c-rule" class="h">
+          <rect x="300" y="240" width="1320" height="240" rx="20" fill="#13200f" stroke="#83C167" stroke-width="4" />
+          <text x="960" y="310" font-size="38" fill="#83C167" text-anchor="middle" font-weight="800">交易所和钱包厂商永远不会</text>
+          <text class="c-rl" x="960" y="380" font-size="34" fill="#e8e6df" text-anchor="middle">让你把资产转到“安全地址”</text>
+          <text class="c-rl" x="960" y="440" font-size="34" fill="#e8e6df" text-anchor="middle">索要你的助记词</text>
+        </g>
+        <text id="c-eq" class="h" x="960" y="620" font-size="52" fill="#e8e6df" text-anchor="middle" font-weight="800">说得出细节 <tspan fill="#FF9F43">≠</tspan> 真客服</text>
+        <text id="c-do" class="h" x="960" y="720" font-size="36" fill="#83C167" text-anchor="middle">挂断 → 从官方 App 里联系客服</text>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 41.71, "L": [[0.6, 5.47], [5.92, 12.31], [12.76, 21.32], [21.77, 30.89], [31.34, 40.61]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      IN("#c-caller", at(0, 0.05), 0.6, { y: 20 }, { y: 0 });
+      tl.to("#c-caller rect", { x: 6, duration: 0.06, yoyo: true, repeat: 7 }, at(0, 0.3));
+      IN("#c-meter", at(0, 0.6), 0.5);
+      // L1 三个细节，信任一格格上涨
+      const Bb = gsap.utils.toArray("#root .c-b");
+      [0.05, 0.38, 0.7].forEach((f, i) => {
+        IN(Bb[i], at(1, f), 0.4, { x: -20 }, { x: 0 });
+        tl.to("#c-fill", { attr: { y: 714 - (i + 1) * 130, height: (i + 1) * 130 }, duration: 0.5, ease: "power2.out" }, at(1, f) + 0.2);
+      });
+      tl.to("#c-caller circle", { stroke: "#B48EF0", duration: 0.4 }, at(1, 0.8));
+      // L2 转到安全钱包
+      tl.to("#c-fill", { attr: { y: 274, height: 440 }, duration: 0.5 }, at(2, 0.2));
+      IN("#c-ask", at(2, 0.55), 0.4, { x: -20 }, { x: 0 });
+      IN("#c-coin", at(2, 0.7), 0.3);
+      tl.to("#c-coin", { attr: { cx: 2000, cy: 680 }, fill: "#FC6255", duration: 1.0, ease: "power2.in" }, at(2, 0.78));
+      // L3 规则
+      OUT(["#c-caller", "#c-meter", "#c-fill", "#root .c-b", "#c-ask"], at(3, 0), 0.4);
+      IN("#c-rule", at(3, 0.1), 0.6, { y: 20 }, { y: 0 });
+      gsap.utils.toArray("#root .c-rl").forEach((e, i) => IN(e, at(3, 0.4 + i * 0.25), 0.4, { x: -15 }, { x: 0 }));
+      // L4 细节 ≠ 真客服
+      IN("#c-eq", at(4, 0.05), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      IN("#c-do", at(4, 0.6), 0.5);
+      tl.to("#c-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["call"] = tl;
+    })();
+  </script>
+</template>

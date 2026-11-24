@@ -1,0 +1,2596 @@
+{
+ "id": "seg3",
+ "title": "借出的权限",
+ "pill": 3,
+ "total": 150.14,
+ "lines": [
+  {
+   "id": "seg3-00",
+   "text": "其实，Parity 在同一年出过两次事。",
+   "spoken": "其实，Parity 在同一年出过两次事。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-00.mp3",
+   "start": 1.6,
+   "dur": 3.84,
+   "speechStart": 1.698,
+   "speechEnd": 4.614
+  },
+  {
+   "id": "seg3-01",
+   "text": "2017 年 7 月那次，钱包合约把不认识的调用，用 delegatecall 转给了库合约。",
+   "spoken": "2017 年 7 月那次，钱包合约把不认识的掉用，用 delegatecall 转给了库合约。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-01.mp3",
+   "start": 5.66,
+   "dur": 6.624,
+   "speechStart": 5.758,
+   "speechEnd": 11.448
+  },
+  {
+   "id": "seg3-02",
+   "text": "库里的 initWallet 没有保护。攻击者通过钱包调用它，把自己设成了 owner。",
+   "spoken": "库里的 initWallet 没有保护。攻击者通过钱包掉用它，把自己设成了 owner。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-02.mp3",
+   "start": 12.504,
+   "dur": 7.176,
+   "speechStart": 12.602,
+   "speechEnd": 18.837
+  },
+  {
+   "id": "seg3-03",
+   "text": "约 15.3 万 ETH 被转走，约合 3000 万美元。",
+   "spoken": "约 15.3 万 ETH 被转走，约合 3000 万美元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-03.mp3",
+   "start": 19.9,
+   "dur": 4.512,
+   "speechStart": 19.998,
+   "speechEnd": 23.557
+  },
+  {
+   "id": "seg3-04",
+   "text": "11 月那次不同。被接管的是库合约自己，然后它被销毁了。",
+   "spoken": "11 月那次不同。被接管的是库合约自己，然后它被销毁了。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-04.mp3",
+   "start": 24.632,
+   "dur": 5.832,
+   "speechStart": 24.73,
+   "speechEnd": 29.644
+  },
+  {
+   "id": "seg3-05",
+   "text": "两次的教训相同：实现合约本身，也要初始化或者锁死。",
+   "spoken": "两次的教训相同：实现合约本身，也要初始化或者锁死。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-05.mp3",
+   "start": 30.684,
+   "dur": 5.88,
+   "speechStart": 30.782,
+   "speechEnd": 35.734
+  },
+  {
+   "id": "seg3-06",
+   "text": "这就引出第四种缺陷：任意外部调用，和任意 delegatecall。",
+   "spoken": "这就引出第四种缺陷：任意外部掉用，和任意 delegatecall。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-06.mp3",
+   "start": 36.784,
+   "dur": 5.304,
+   "speechStart": 36.882,
+   "speechEnd": 41.251
+  },
+  {
+   "id": "seg3-07",
+   "text": "一个合约公开了 execute 函数。目标地址和调用数据，全由调用者决定。",
+   "spoken": "一个合约公开了 execute 函数。目标地址和掉用数据，全由掉用者决定。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-07.mp3",
+   "start": 42.308,
+   "dur": 6.888,
+   "speechStart": 42.406,
+   "speechEnd": 48.356
+  },
+  {
+   "id": "seg3-08",
+   "text": "假设这个合约，持有受害者对某个代币的授权。",
+   "spoken": "假设这个合约，持有受害者对某个代币的授权。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-08.mp3",
+   "start": 49.416,
+   "dur": 4.296,
+   "speechStart": 49.514,
+   "speechEnd": 52.859
+  },
+  {
+   "id": "seg3-09",
+   "text": "攻击者不需要受害者的私钥。",
+   "spoken": "攻击者不需要受害者的私钥。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-09.mp3",
+   "start": 53.932,
+   "dur": 2.64,
+   "speechStart": 54.03,
+   "speechEnd": 55.732
+  },
+  {
+   "id": "seg3-10",
+   "text": "他让这个合约去调用代币的 transferFrom，把受害者的币转给自己。",
+   "spoken": "他让这个合约去掉用代币的 transferFrom，把受害者的币转给自己。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-10.mp3",
+   "start": 56.792,
+   "dur": 5.28,
+   "speechStart": 56.89,
+   "speechEnd": 61.235
+  },
+  {
+   "id": "seg3-11",
+   "text": "代币合约看到的调用方，是被授权的合约。额度检查，通过。",
+   "spoken": "代币合约看到的掉用方，是被授权的合约。额度检查，通过。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-11.mp3",
+   "start": 62.292,
+   "dur": 6.456,
+   "speechStart": 62.39,
+   "speechEnd": 67.899
+  },
+  {
+   "id": "seg3-12",
+   "text": "如果这里用的是 delegatecall，攻击者的代码，会直接改写这个合约的存储。",
+   "spoken": "如果这里用的是 delegatecall，攻击者的代码，会直接改写这个合约的存储。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-12.mp3",
+   "start": 68.968,
+   "dur": 5.736,
+   "speechStart": 69.066,
+   "speechEnd": 73.851
+  },
+  {
+   "id": "seg3-13",
+   "text": "权限没有被偷，是被借走了。",
+   "spoken": "权限没有被偷，是被借走了。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-13.mp3",
+   "start": 74.924,
+   "dur": 3.312,
+   "speechStart": 75.022,
+   "speechEnd": 77.414
+  },
+  {
+   "id": "seg3-14",
+   "text": "第五种，单步所有权转移。",
+   "spoken": "第五种，单步所有权转移。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-14.mp3",
+   "start": 78.456,
+   "dur": 3.336,
+   "speechStart": 78.554,
+   "speechEnd": 80.946
+  },
+  {
+   "id": "seg3-15",
+   "text": "owner 填入新地址，一步就生效。地址输错，权限就永久丢失。",
+   "spoken": "owner 填入新地址，一步就生效。地址输错，权限就永久丢失。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-15.mp3",
+   "start": 82.012,
+   "dur": 6.744,
+   "speechStart": 82.11,
+   "speechEnd": 87.917
+  },
+  {
+   "id": "seg3-16",
+   "text": "修复是两步转移。新 owner 必须自己调用 acceptOwnership，证明这个地址真的能用。",
+   "spoken": "修复是两步转移。新 owner 必须自己掉用 acceptOwnership，证明这个地址真的能用。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-16.mp3",
+   "start": 88.976,
+   "dur": 7.872,
+   "speechStart": 89.074,
+   "speechEnd": 96.012
+  },
+  {
+   "id": "seg3-17",
+   "text": "第六种，签名鉴权写错。",
+   "spoken": "第六种，签名鉴权写错。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-17.mp3",
+   "start": 97.068,
+   "dur": 3.024,
+   "speechStart": 97.166,
+   "speechEnd": 99.249
+  },
+  {
+   "id": "seg3-18",
+   "text": "用签名代替 msg.sender 时，ecrecover 遇到无效签名，会返回零地址。",
+   "spoken": "用签名代替 msg.sender 时，ecrecover 遇到无效签名，会返回零地址。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-18.mp3",
+   "start": 100.312,
+   "dur": 7.032,
+   "speechStart": 100.41,
+   "speechEnd": 106.517
+  },
+  {
+   "id": "seg3-19",
+   "text": "如果被比较的签名人变量没有设置，它的默认值也是零。两边相等，检查就通过了。",
+   "spoken": "如果被比较的签名人变量没有设置，它的默认值也是零。两边相等，检查就通过了。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-19.mp3",
+   "start": 107.564,
+   "dur": 7.344,
+   "speechStart": 107.662,
+   "speechEnd": 114.076
+  },
+  {
+   "id": "seg3-20",
+   "text": "所以比对前，先排除零地址。",
+   "spoken": "所以比对前，先排除零地址。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-20.mp3",
+   "start": 115.128,
+   "dur": 3.336,
+   "speechStart": 115.226,
+   "speechEnd": 117.642
+  },
+  {
+   "id": "seg3-21",
+   "text": "最后，还有三个容易漏掉的判断。",
+   "spoken": "最后，还有三个容易漏掉的判断。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-21.mp3",
+   "start": 118.684,
+   "dur": 3.528,
+   "speechStart": 118.782,
+   "speechEnd": 121.365
+  },
+  {
+   "id": "seg3-22",
+   "text": "一，代码长度是零，不能证明对方是外部账户。构造函数里发起调用的合约，代码长度也是零。",
+   "spoken": "一，代码常度是零，不能证明对方是外部账户。构造函数里发起掉用的合约，代码常度也是零。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-22.mp3",
+   "start": 122.432,
+   "dur": 9.336,
+   "speechStart": 122.53,
+   "speechEnd": 130.932
+  },
+  {
+   "id": "seg3-23",
+   "text": "二，renounceOwnership 之后，owner 权限无法恢复。先确认没有函数还依赖它。",
+   "spoken": "二，renounceOwnership 之后，owner 权限无法恢复。先确认没有函数还依赖它。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-23.mp3",
+   "start": 131.988,
+   "dur": 7.56,
+   "speechStart": 132.086,
+   "speechEnd": 138.738
+  },
+  {
+   "id": "seg3-24",
+   "text": "三，Solidity 0.4 时期，构造函数和合约同名。合约一改名，旧构造函数就成了公共函数。",
+   "spoken": "三，Solidity 0.4 时期，构造函数和合约同名。合约一改名，旧构造函数就成了公共函数。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep05/audio/lines/seg3-24.mp3",
+   "start": 139.768,
+   "dur": 9.168,
+   "speechStart": 139.866,
+   "speechEnd": 148.089
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "其实",
+   "start": 1.698,
+   "end": 2.233
+  },
+  {
+   "line": 0,
+   "text": "Parity",
+   "start": 2.614,
+   "end": 3.114
+  },
+  {
+   "line": 0,
+   "text": "在",
+   "start": 3.114,
+   "end": 3.245
+  },
+  {
+   "line": 0,
+   "text": "同",
+   "start": 3.257,
+   "end": 3.46
+  },
+  {
+   "line": 0,
+   "text": "一",
+   "start": 3.46,
+   "end": 3.543
+  },
+  {
+   "line": 0,
+   "text": "年",
+   "start": 3.543,
+   "end": 3.757
+  },
+  {
+   "line": 0,
+   "text": "出",
+   "start": 3.781,
+   "end": 3.936
+  },
+  {
+   "line": 0,
+   "text": "过",
+   "start": 3.936,
+   "end": 4.019
+  },
+  {
+   "line": 0,
+   "text": "两",
+   "start": 4.031,
+   "end": 4.21
+  },
+  {
+   "line": 0,
+   "text": "次",
+   "start": 4.21,
+   "end": 4.376
+  },
+  {
+   "line": 0,
+   "text": "事",
+   "start": 4.376,
+   "end": 4.614
+  },
+  {
+   "line": 1,
+   "text": "2017",
+   "start": 5.758,
+   "end": 6.222
+  },
+  {
+   "line": 1,
+   "text": "年",
+   "start": 6.222,
+   "end": 6.436
+  },
+  {
+   "line": 1,
+   "text": "7 月",
+   "start": 6.46,
+   "end": 6.746
+  },
+  {
+   "line": 1,
+   "text": "那次",
+   "start": 6.758,
+   "end": 7.198
+  },
+  {
+   "line": 1,
+   "text": "钱包",
+   "start": 7.472,
+   "end": 7.77
+  },
+  {
+   "line": 1,
+   "text": "合约",
+   "start": 7.781,
+   "end": 8.115
+  },
+  {
+   "line": 1,
+   "text": "把",
+   "start": 8.139,
+   "end": 8.281
+  },
+  {
+   "line": 1,
+   "text": "不",
+   "start": 8.293,
+   "end": 8.424
+  },
+  {
+   "line": 1,
+   "text": "认识",
+   "start": 8.424,
+   "end": 8.674
+  },
+  {
+   "line": 1,
+   "text": "的",
+   "start": 8.674,
+   "end": 8.758
+  },
+  {
+   "line": 1,
+   "text": "调用",
+   "start": 8.77,
+   "end": 9.139
+  },
+  {
+   "line": 1,
+   "text": "用",
+   "start": 9.281,
+   "end": 9.555
+  },
+  {
+   "line": 1,
+   "text": "delegatecall",
+   "start": 9.579,
+   "end": 10.353
+  },
+  {
+   "line": 1,
+   "text": "转给",
+   "start": 10.46,
+   "end": 10.793
+  },
+  {
+   "line": 1,
+   "text": "了",
+   "start": 10.793,
+   "end": 10.889
+  },
+  {
+   "line": 1,
+   "text": "库",
+   "start": 10.912,
+   "end": 11.103
+  },
+  {
+   "line": 1,
+   "text": "合约",
+   "start": 11.103,
+   "end": 11.448
+  },
+  {
+   "line": 2,
+   "text": "库里",
+   "start": 12.602,
+   "end": 12.887
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 12.887,
+   "end": 13.054
+  },
+  {
+   "line": 2,
+   "text": "initWallet",
+   "start": 13.078,
+   "end": 14.078
+  },
+  {
+   "line": 2,
+   "text": "没有",
+   "start": 14.185,
+   "end": 14.459
+  },
+  {
+   "line": 2,
+   "text": "保护",
+   "start": 14.471,
+   "end": 14.852
+  },
+  {
+   "line": 2,
+   "text": "攻击者",
+   "start": 15.397,
+   "end": 15.944
+  },
+  {
+   "line": 2,
+   "text": "通过",
+   "start": 15.968,
+   "end": 16.206
+  },
+  {
+   "line": 2,
+   "text": "钱包",
+   "start": 16.218,
+   "end": 16.54
+  },
+  {
+   "line": 2,
+   "text": "调",
+   "start": 16.564,
+   "end": 16.671
+  },
+  {
+   "line": 2,
+   "text": "用",
+   "start": 16.671,
+   "end": 16.802
+  },
+  {
+   "line": 2,
+   "text": "它",
+   "start": 16.802,
+   "end": 17.111
+  },
+  {
+   "line": 2,
+   "text": "把",
+   "start": 17.337,
+   "end": 17.504
+  },
+  {
+   "line": 2,
+   "text": "自己",
+   "start": 17.516,
+   "end": 17.778
+  },
+  {
+   "line": 2,
+   "text": "设成",
+   "start": 17.802,
+   "end": 18.075
+  },
+  {
+   "line": 2,
+   "text": "了",
+   "start": 18.075,
+   "end": 18.254
+  },
+  {
+   "line": 2,
+   "text": "owner",
+   "start": 18.361,
+   "end": 18.837
+  },
+  {
+   "line": 3,
+   "text": "约",
+   "start": 19.998,
+   "end": 20.224
+  },
+  {
+   "line": 3,
+   "text": "15.3 万",
+   "start": 20.248,
+   "end": 21.129
+  },
+  {
+   "line": 3,
+   "text": "ETH",
+   "start": 21.129,
+   "end": 21.426
+  },
+  {
+   "line": 3,
+   "text": "被",
+   "start": 21.438,
+   "end": 21.605
+  },
+  {
+   "line": 3,
+   "text": "转走",
+   "start": 21.605,
+   "end": 21.998
+  },
+  {
+   "line": 3,
+   "text": "约合",
+   "start": 22.248,
+   "end": 22.605
+  },
+  {
+   "line": 3,
+   "text": "3000 万",
+   "start": 22.629,
+   "end": 23.117
+  },
+  {
+   "line": 3,
+   "text": "美元",
+   "start": 23.129,
+   "end": 23.557
+  },
+  {
+   "line": 4,
+   "text": "11 月",
+   "start": 24.73,
+   "end": 25.301
+  },
+  {
+   "line": 4,
+   "text": "那",
+   "start": 25.313,
+   "end": 25.42
+  },
+  {
+   "line": 4,
+   "text": "次",
+   "start": 25.42,
+   "end": 25.515
+  },
+  {
+   "line": 4,
+   "text": "不同",
+   "start": 25.527,
+   "end": 25.992
+  },
+  {
+   "line": 4,
+   "text": "被",
+   "start": 26.537,
+   "end": 26.739
+  },
+  {
+   "line": 4,
+   "text": "接管",
+   "start": 26.751,
+   "end": 27.072
+  },
+  {
+   "line": 4,
+   "text": "的",
+   "start": 27.072,
+   "end": 27.144
+  },
+  {
+   "line": 4,
+   "text": "是",
+   "start": 27.144,
+   "end": 27.251
+  },
+  {
+   "line": 4,
+   "text": "库",
+   "start": 27.263,
+   "end": 27.465
+  },
+  {
+   "line": 4,
+   "text": "合约",
+   "start": 27.465,
+   "end": 27.739
+  },
+  {
+   "line": 4,
+   "text": "自己",
+   "start": 27.751,
+   "end": 28.203
+  },
+  {
+   "line": 4,
+   "text": "然后",
+   "start": 28.572,
+   "end": 28.811
+  },
+  {
+   "line": 4,
+   "text": "它",
+   "start": 28.834,
+   "end": 28.941
+  },
+  {
+   "line": 4,
+   "text": "被",
+   "start": 28.942,
+   "end": 29.013
+  },
+  {
+   "line": 4,
+   "text": "销毁",
+   "start": 29.025,
+   "end": 29.43
+  },
+  {
+   "line": 4,
+   "text": "了",
+   "start": 29.43,
+   "end": 29.644
+  },
+  {
+   "line": 5,
+   "text": "两次",
+   "start": 30.782,
+   "end": 31.186
+  },
+  {
+   "line": 5,
+   "text": "的",
+   "start": 31.186,
+   "end": 31.293
+  },
+  {
+   "line": 5,
+   "text": "教训",
+   "start": 31.305,
+   "end": 31.603
+  },
+  {
+   "line": 5,
+   "text": "相同",
+   "start": 31.615,
+   "end": 32.163
+  },
+  {
+   "line": 5,
+   "text": "实现",
+   "start": 32.544,
+   "end": 32.996
+  },
+  {
+   "line": 5,
+   "text": "合约",
+   "start": 33.02,
+   "end": 33.293
+  },
+  {
+   "line": 5,
+   "text": "本身",
+   "start": 33.305,
+   "end": 33.805
+  },
+  {
+   "line": 5,
+   "text": "也",
+   "start": 33.984,
+   "end": 34.103
+  },
+  {
+   "line": 5,
+   "text": "要",
+   "start": 34.103,
+   "end": 34.234
+  },
+  {
+   "line": 5,
+   "text": "初始化",
+   "start": 34.258,
+   "end": 34.853
+  },
+  {
+   "line": 5,
+   "text": "或者",
+   "start": 34.948,
+   "end": 35.21
+  },
+  {
+   "line": 5,
+   "text": "锁",
+   "start": 35.222,
+   "end": 35.436
+  },
+  {
+   "line": 5,
+   "text": "死",
+   "start": 35.436,
+   "end": 35.734
+  },
+  {
+   "line": 6,
+   "text": "这",
+   "start": 36.882,
+   "end": 37.06
+  },
+  {
+   "line": 6,
+   "text": "就",
+   "start": 37.06,
+   "end": 37.144
+  },
+  {
+   "line": 6,
+   "text": "引出",
+   "start": 37.155,
+   "end": 37.524
+  },
+  {
+   "line": 6,
+   "text": "第四",
+   "start": 37.548,
+   "end": 37.846
+  },
+  {
+   "line": 6,
+   "text": "种",
+   "start": 37.846,
+   "end": 37.977
+  },
+  {
+   "line": 6,
+   "text": "缺陷",
+   "start": 37.989,
+   "end": 38.405
+  },
+  {
+   "line": 6,
+   "text": "任意",
+   "start": 38.715,
+   "end": 39.024
+  },
+  {
+   "line": 6,
+   "text": "外部",
+   "start": 39.036,
+   "end": 39.322
+  },
+  {
+   "line": 6,
+   "text": "调用",
+   "start": 39.334,
+   "end": 39.739
+  },
+  {
+   "line": 6,
+   "text": "和",
+   "start": 39.905,
+   "end": 40.108
+  },
+  {
+   "line": 6,
+   "text": "任意",
+   "start": 40.12,
+   "end": 40.513
+  },
+  {
+   "line": 6,
+   "text": "delegatecall",
+   "start": 40.536,
+   "end": 41.251
+  },
+  {
+   "line": 7,
+   "text": "一个",
+   "start": 42.406,
+   "end": 42.62
+  },
+  {
+   "line": 7,
+   "text": "合约",
+   "start": 42.632,
+   "end": 43.013
+  },
+  {
+   "line": 7,
+   "text": "公开",
+   "start": 43.037,
+   "end": 43.346
+  },
+  {
+   "line": 7,
+   "text": "了",
+   "start": 43.346,
+   "end": 43.489
+  },
+  {
+   "line": 7,
+   "text": "execute",
+   "start": 43.501,
+   "end": 44.084
+  },
+  {
+   "line": 7,
+   "text": "函数",
+   "start": 44.096,
+   "end": 44.608
+  },
+  {
+   "line": 7,
+   "text": "目标",
+   "start": 45.153,
+   "end": 45.487
+  },
+  {
+   "line": 7,
+   "text": "地址",
+   "start": 45.498,
+   "end": 45.927
+  },
+  {
+   "line": 7,
+   "text": "和",
+   "start": 45.951,
+   "end": 46.106
+  },
+  {
+   "line": 7,
+   "text": "调用",
+   "start": 46.118,
+   "end": 46.379
+  },
+  {
+   "line": 7,
+   "text": "数据",
+   "start": 46.391,
+   "end": 46.891
+  },
+  {
+   "line": 7,
+   "text": "全",
+   "start": 47.058,
+   "end": 47.296
+  },
+  {
+   "line": 7,
+   "text": "由",
+   "start": 47.296,
+   "end": 47.451
+  },
+  {
+   "line": 7,
+   "text": "调用者",
+   "start": 47.475,
+   "end": 47.927
+  },
+  {
+   "line": 7,
+   "text": "决定",
+   "start": 47.939,
+   "end": 48.356
+  },
+  {
+   "line": 8,
+   "text": "假设",
+   "start": 49.514,
+   "end": 49.883
+  },
+  {
+   "line": 8,
+   "text": "这个",
+   "start": 49.906,
+   "end": 50.049
+  },
+  {
+   "line": 8,
+   "text": "合约",
+   "start": 50.061,
+   "end": 50.514
+  },
+  {
+   "line": 8,
+   "text": "持有",
+   "start": 50.74,
+   "end": 51.037
+  },
+  {
+   "line": 8,
+   "text": "受害者",
+   "start": 51.049,
+   "end": 51.68
+  },
+  {
+   "line": 8,
+   "text": "对",
+   "start": 51.704,
+   "end": 51.799
+  },
+  {
+   "line": 8,
+   "text": "某个",
+   "start": 51.811,
+   "end": 52.026
+  },
+  {
+   "line": 8,
+   "text": "代币",
+   "start": 52.037,
+   "end": 52.275
+  },
+  {
+   "line": 8,
+   "text": "的",
+   "start": 52.276,
+   "end": 52.335
+  },
+  {
+   "line": 8,
+   "text": "授权",
+   "start": 52.347,
+   "end": 52.859
+  },
+  {
+   "line": 9,
+   "text": "攻击者",
+   "start": 54.03,
+   "end": 54.506
+  },
+  {
+   "line": 9,
+   "text": "不",
+   "start": 54.506,
+   "end": 54.637
+  },
+  {
+   "line": 9,
+   "text": "需要",
+   "start": 54.637,
+   "end": 54.863
+  },
+  {
+   "line": 9,
+   "text": "受害者",
+   "start": 54.887,
+   "end": 55.256
+  },
+  {
+   "line": 9,
+   "text": "的",
+   "start": 55.256,
+   "end": 55.315
+  },
+  {
+   "line": 9,
+   "text": "私钥",
+   "start": 55.327,
+   "end": 55.732
+  },
+  {
+   "line": 10,
+   "text": "他",
+   "start": 56.89,
+   "end": 57.021
+  },
+  {
+   "line": 10,
+   "text": "让",
+   "start": 57.021,
+   "end": 57.14
+  },
+  {
+   "line": 10,
+   "text": "这个",
+   "start": 57.152,
+   "end": 57.306
+  },
+  {
+   "line": 10,
+   "text": "合约",
+   "start": 57.318,
+   "end": 57.735
+  },
+  {
+   "line": 10,
+   "text": "去调",
+   "start": 57.83,
+   "end": 58.128
+  },
+  {
+   "line": 10,
+   "text": "用",
+   "start": 58.152,
+   "end": 58.271
+  },
+  {
+   "line": 10,
+   "text": "代币",
+   "start": 58.282,
+   "end": 58.604
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 58.604,
+   "end": 58.735
+  },
+  {
+   "line": 10,
+   "text": "transferFrom",
+   "start": 58.759,
+   "end": 59.568
+  },
+  {
+   "line": 10,
+   "text": "把",
+   "start": 59.794,
+   "end": 59.925
+  },
+  {
+   "line": 10,
+   "text": "受害者",
+   "start": 59.937,
+   "end": 60.354
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 60.354,
+   "end": 60.473
+  },
+  {
+   "line": 10,
+   "text": "币",
+   "start": 60.485,
+   "end": 60.652
+  },
+  {
+   "line": 10,
+   "text": "转给",
+   "start": 60.675,
+   "end": 60.913
+  },
+  {
+   "line": 10,
+   "text": "自己",
+   "start": 60.925,
+   "end": 61.235
+  },
+  {
+   "line": 11,
+   "text": "代币",
+   "start": 62.39,
+   "end": 62.735
+  },
+  {
+   "line": 11,
+   "text": "合约",
+   "start": 62.747,
+   "end": 63.068
+  },
+  {
+   "line": 11,
+   "text": "看到",
+   "start": 63.092,
+   "end": 63.402
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 63.402,
+   "end": 63.544
+  },
+  {
+   "line": 11,
+   "text": "调",
+   "start": 63.568,
+   "end": 63.782
+  },
+  {
+   "line": 11,
+   "text": "用方",
+   "start": 63.782,
+   "end": 64.282
+  },
+  {
+   "line": 11,
+   "text": "是",
+   "start": 64.568,
+   "end": 64.771
+  },
+  {
+   "line": 11,
+   "text": "被",
+   "start": 64.771,
+   "end": 64.902
+  },
+  {
+   "line": 11,
+   "text": "授权",
+   "start": 64.925,
+   "end": 65.294
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 65.294,
+   "end": 65.366
+  },
+  {
+   "line": 11,
+   "text": "合约",
+   "start": 65.378,
+   "end": 65.794
+  },
+  {
+   "line": 11,
+   "text": "额度",
+   "start": 66.34,
+   "end": 66.661
+  },
+  {
+   "line": 11,
+   "text": "检查",
+   "start": 66.673,
+   "end": 67.197
+  },
+  {
+   "line": 11,
+   "text": "通过",
+   "start": 67.494,
+   "end": 67.899
+  },
+  {
+   "line": 12,
+   "text": "如果",
+   "start": 69.066,
+   "end": 69.292
+  },
+  {
+   "line": 12,
+   "text": "这里",
+   "start": 69.316,
+   "end": 69.506
+  },
+  {
+   "line": 12,
+   "text": "用",
+   "start": 69.518,
+   "end": 69.637
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 69.637,
+   "end": 69.72
+  },
+  {
+   "line": 12,
+   "text": "是",
+   "start": 69.72,
+   "end": 70.077
+  },
+  {
+   "line": 12,
+   "text": "delegatecall",
+   "start": 70.185,
+   "end": 70.97
+  },
+  {
+   "line": 12,
+   "text": "攻击者",
+   "start": 71.197,
+   "end": 71.589
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 71.589,
+   "end": 71.661
+  },
+  {
+   "line": 12,
+   "text": "代码",
+   "start": 71.673,
+   "end": 72.066
+  },
+  {
+   "line": 12,
+   "text": "会",
+   "start": 72.22,
+   "end": 72.375
+  },
+  {
+   "line": 12,
+   "text": "直接",
+   "start": 72.387,
+   "end": 72.673
+  },
+  {
+   "line": 12,
+   "text": "改写",
+   "start": 72.685,
+   "end": 72.947
+  },
+  {
+   "line": 12,
+   "text": "这个",
+   "start": 72.97,
+   "end": 73.125
+  },
+  {
+   "line": 12,
+   "text": "合约",
+   "start": 73.137,
+   "end": 73.387
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 73.387,
+   "end": 73.447
+  },
+  {
+   "line": 12,
+   "text": "存储",
+   "start": 73.458,
+   "end": 73.851
+  },
+  {
+   "line": 13,
+   "text": "权限",
+   "start": 75.022,
+   "end": 75.462
+  },
+  {
+   "line": 13,
+   "text": "没有",
+   "start": 75.486,
+   "end": 75.676
+  },
+  {
+   "line": 13,
+   "text": "被",
+   "start": 75.688,
+   "end": 75.855
+  },
+  {
+   "line": 13,
+   "text": "偷",
+   "start": 75.855,
+   "end": 76.224
+  },
+  {
+   "line": 13,
+   "text": "是",
+   "start": 76.522,
+   "end": 76.712
+  },
+  {
+   "line": 13,
+   "text": "被",
+   "start": 76.712,
+   "end": 76.819
+  },
+  {
+   "line": 13,
+   "text": "借走",
+   "start": 76.831,
+   "end": 77.236
+  },
+  {
+   "line": 13,
+   "text": "了",
+   "start": 77.236,
+   "end": 77.414
+  },
+  {
+   "line": 14,
+   "text": "第五",
+   "start": 78.554,
+   "end": 78.887
+  },
+  {
+   "line": 14,
+   "text": "种",
+   "start": 78.887,
+   "end": 79.137
+  },
+  {
+   "line": 14,
+   "text": "单步",
+   "start": 79.458,
+   "end": 79.827
+  },
+  {
+   "line": 14,
+   "text": "所有权",
+   "start": 79.839,
+   "end": 80.458
+  },
+  {
+   "line": 14,
+   "text": "转移",
+   "start": 80.47,
+   "end": 80.946
+  },
+  {
+   "line": 15,
+   "text": "owner",
+   "start": 82.11,
+   "end": 82.622
+  },
+  {
+   "line": 15,
+   "text": "填入",
+   "start": 82.717,
+   "end": 83.074
+  },
+  {
+   "line": 15,
+   "text": "新",
+   "start": 83.086,
+   "end": 83.336
+  },
+  {
+   "line": 15,
+   "text": "地址",
+   "start": 83.336,
+   "end": 83.717
+  },
+  {
+   "line": 15,
+   "text": "一",
+   "start": 84.002,
+   "end": 84.181
+  },
+  {
+   "line": 15,
+   "text": "步",
+   "start": 84.181,
+   "end": 84.312
+  },
+  {
+   "line": 15,
+   "text": "就",
+   "start": 84.324,
+   "end": 84.419
+  },
+  {
+   "line": 15,
+   "text": "生效",
+   "start": 84.419,
+   "end": 84.836
+  },
+  {
+   "line": 15,
+   "text": "地址",
+   "start": 85.369,
+   "end": 85.679
+  },
+  {
+   "line": 15,
+   "text": "输错",
+   "start": 85.691,
+   "end": 86.191
+  },
+  {
+   "line": 15,
+   "text": "权限",
+   "start": 86.417,
+   "end": 86.964
+  },
+  {
+   "line": 15,
+   "text": "就",
+   "start": 86.988,
+   "end": 87.083
+  },
+  {
+   "line": 15,
+   "text": "永久",
+   "start": 87.095,
+   "end": 87.441
+  },
+  {
+   "line": 15,
+   "text": "丢失",
+   "start": 87.452,
+   "end": 87.917
+  },
+  {
+   "line": 16,
+   "text": "修复",
+   "start": 89.074,
+   "end": 89.538
+  },
+  {
+   "line": 16,
+   "text": "是",
+   "start": 89.562,
+   "end": 89.693
+  },
+  {
+   "line": 16,
+   "text": "两步",
+   "start": 89.705,
+   "end": 89.99
+  },
+  {
+   "line": 16,
+   "text": "转移",
+   "start": 90.002,
+   "end": 90.514
+  },
+  {
+   "line": 16,
+   "text": "新",
+   "start": 91.059,
+   "end": 91.381
+  },
+  {
+   "line": 16,
+   "text": "owner",
+   "start": 91.381,
+   "end": 91.833
+  },
+  {
+   "line": 16,
+   "text": "必须",
+   "start": 91.928,
+   "end": 92.226
+  },
+  {
+   "line": 16,
+   "text": "自己",
+   "start": 92.238,
+   "end": 92.464
+  },
+  {
+   "line": 16,
+   "text": "调用",
+   "start": 92.476,
+   "end": 92.881
+  },
+  {
+   "line": 16,
+   "text": "acceptOwnership",
+   "start": 92.976,
+   "end": 94.214
+  },
+  {
+   "line": 16,
+   "text": "证明",
+   "start": 94.476,
+   "end": 94.809
+  },
+  {
+   "line": 16,
+   "text": "这个",
+   "start": 94.833,
+   "end": 94.988
+  },
+  {
+   "line": 16,
+   "text": "地址",
+   "start": 95.0,
+   "end": 95.381
+  },
+  {
+   "line": 16,
+   "text": "真的",
+   "start": 95.405,
+   "end": 95.678
+  },
+  {
+   "line": 16,
+   "text": "能用",
+   "start": 95.69,
+   "end": 96.012
+  },
+  {
+   "line": 17,
+   "text": "第六",
+   "start": 97.166,
+   "end": 97.511
+  },
+  {
+   "line": 17,
+   "text": "种",
+   "start": 97.511,
+   "end": 97.773
+  },
+  {
+   "line": 17,
+   "text": "签名",
+   "start": 97.963,
+   "end": 98.416
+  },
+  {
+   "line": 17,
+   "text": "鉴权",
+   "start": 98.428,
+   "end": 98.808
+  },
+  {
+   "line": 17,
+   "text": "写错",
+   "start": 98.82,
+   "end": 99.249
+  },
+  {
+   "line": 18,
+   "text": "用",
+   "start": 100.41,
+   "end": 100.672
+  },
+  {
+   "line": 18,
+   "text": "签名",
+   "start": 100.683,
+   "end": 101.052
+  },
+  {
+   "line": 18,
+   "text": "代替",
+   "start": 101.064,
+   "end": 101.433
+  },
+  {
+   "line": 18,
+   "text": "msg",
+   "start": 101.457,
+   "end": 102.052
+  },
+  {
+   "line": 18,
+   "text": "sender",
+   "start": 102.172,
+   "end": 102.624
+  },
+  {
+   "line": 18,
+   "text": "时",
+   "start": 102.624,
+   "end": 103.005
+  },
+  {
+   "line": 18,
+   "text": "ecrecover",
+   "start": 103.279,
+   "end": 104.1
+  },
+  {
+   "line": 18,
+   "text": "遇到",
+   "start": 104.195,
+   "end": 104.493
+  },
+  {
+   "line": 18,
+   "text": "无效",
+   "start": 104.517,
+   "end": 104.826
+  },
+  {
+   "line": 18,
+   "text": "签名",
+   "start": 104.838,
+   "end": 105.279
+  },
+  {
+   "line": 18,
+   "text": "会",
+   "start": 105.433,
+   "end": 105.612
+  },
+  {
+   "line": 18,
+   "text": "返回",
+   "start": 105.624,
+   "end": 105.957
+  },
+  {
+   "line": 18,
+   "text": "零",
+   "start": 105.981,
+   "end": 106.148
+  },
+  {
+   "line": 18,
+   "text": "地址",
+   "start": 106.148,
+   "end": 106.517
+  },
+  {
+   "line": 19,
+   "text": "如果",
+   "start": 107.662,
+   "end": 107.912
+  },
+  {
+   "line": 19,
+   "text": "被",
+   "start": 107.935,
+   "end": 108.043
+  },
+  {
+   "line": 19,
+   "text": "比较",
+   "start": 108.054,
+   "end": 108.245
+  },
+  {
+   "line": 19,
+   "text": "的",
+   "start": 108.245,
+   "end": 108.316
+  },
+  {
+   "line": 19,
+   "text": "签名",
+   "start": 108.328,
+   "end": 108.638
+  },
+  {
+   "line": 19,
+   "text": "人",
+   "start": 108.638,
+   "end": 108.769
+  },
+  {
+   "line": 19,
+   "text": "变量",
+   "start": 108.781,
+   "end": 109.09
+  },
+  {
+   "line": 19,
+   "text": "没有",
+   "start": 109.114,
+   "end": 109.34
+  },
+  {
+   "line": 19,
+   "text": "设置",
+   "start": 109.352,
+   "end": 109.793
+  },
+  {
+   "line": 19,
+   "text": "它",
+   "start": 110.197,
+   "end": 110.364
+  },
+  {
+   "line": 19,
+   "text": "的",
+   "start": 110.364,
+   "end": 110.435
+  },
+  {
+   "line": 19,
+   "text": "默认值",
+   "start": 110.447,
+   "end": 110.876
+  },
+  {
+   "line": 19,
+   "text": "也",
+   "start": 110.9,
+   "end": 111.031
+  },
+  {
+   "line": 19,
+   "text": "是",
+   "start": 111.031,
+   "end": 111.185
+  },
+  {
+   "line": 19,
+   "text": "零",
+   "start": 111.185,
+   "end": 111.435
+  },
+  {
+   "line": 19,
+   "text": "两边",
+   "start": 111.969,
+   "end": 112.314
+  },
+  {
+   "line": 19,
+   "text": "相等",
+   "start": 112.326,
+   "end": 112.778
+  },
+  {
+   "line": 19,
+   "text": "检查",
+   "start": 113.135,
+   "end": 113.516
+  },
+  {
+   "line": 19,
+   "text": "就",
+   "start": 113.528,
+   "end": 113.6
+  },
+  {
+   "line": 19,
+   "text": "通过",
+   "start": 113.612,
+   "end": 113.921
+  },
+  {
+   "line": 19,
+   "text": "了",
+   "start": 113.921,
+   "end": 114.076
+  },
+  {
+   "line": 20,
+   "text": "所以",
+   "start": 115.226,
+   "end": 115.559
+  },
+  {
+   "line": 20,
+   "text": "比对",
+   "start": 115.583,
+   "end": 115.868
+  },
+  {
+   "line": 20,
+   "text": "前",
+   "start": 115.868,
+   "end": 116.237
+  },
+  {
+   "line": 20,
+   "text": "先排",
+   "start": 116.392,
+   "end": 116.785
+  },
+  {
+   "line": 20,
+   "text": "除",
+   "start": 116.785,
+   "end": 116.999
+  },
+  {
+   "line": 20,
+   "text": "零",
+   "start": 117.023,
+   "end": 117.214
+  },
+  {
+   "line": 20,
+   "text": "地址",
+   "start": 117.214,
+   "end": 117.642
+  },
+  {
+   "line": 21,
+   "text": "最后",
+   "start": 118.782,
+   "end": 119.353
+  },
+  {
+   "line": 21,
+   "text": "还有",
+   "start": 119.805,
+   "end": 120.043
+  },
+  {
+   "line": 21,
+   "text": "三",
+   "start": 120.055,
+   "end": 120.305
+  },
+  {
+   "line": 21,
+   "text": "个",
+   "start": 120.305,
+   "end": 120.365
+  },
+  {
+   "line": 21,
+   "text": "容易",
+   "start": 120.389,
+   "end": 120.603
+  },
+  {
+   "line": 21,
+   "text": "漏掉",
+   "start": 120.615,
+   "end": 120.877
+  },
+  {
+   "line": 21,
+   "text": "的",
+   "start": 120.877,
+   "end": 120.936
+  },
+  {
+   "line": 21,
+   "text": "判断",
+   "start": 120.948,
+   "end": 121.365
+  },
+  {
+   "line": 22,
+   "text": "一",
+   "start": 122.53,
+   "end": 122.839
+  },
+  {
+   "line": 22,
+   "text": "代码",
+   "start": 123.351,
+   "end": 123.625
+  },
+  {
+   "line": 22,
+   "text": "长度",
+   "start": 123.637,
+   "end": 123.946
+  },
+  {
+   "line": 22,
+   "text": "是",
+   "start": 123.958,
+   "end": 124.101
+  },
+  {
+   "line": 22,
+   "text": "零",
+   "start": 124.101,
+   "end": 124.446
+  },
+  {
+   "line": 22,
+   "text": "不能",
+   "start": 124.708,
+   "end": 124.97
+  },
+  {
+   "line": 22,
+   "text": "证明",
+   "start": 124.982,
+   "end": 125.244
+  },
+  {
+   "line": 22,
+   "text": "对方",
+   "start": 125.268,
+   "end": 125.565
+  },
+  {
+   "line": 22,
+   "text": "是",
+   "start": 125.565,
+   "end": 125.708
+  },
+  {
+   "line": 22,
+   "text": "外部",
+   "start": 125.72,
+   "end": 126.006
+  },
+  {
+   "line": 22,
+   "text": "账户",
+   "start": 126.018,
+   "end": 126.399
+  },
+  {
+   "line": 22,
+   "text": "构造",
+   "start": 126.944,
+   "end": 127.301
+  },
+  {
+   "line": 22,
+   "text": "函数",
+   "start": 127.313,
+   "end": 127.73
+  },
+  {
+   "line": 22,
+   "text": "里",
+   "start": 127.73,
+   "end": 128.003
+  },
+  {
+   "line": 22,
+   "text": "发起",
+   "start": 128.111,
+   "end": 128.515
+  },
+  {
+   "line": 22,
+   "text": "调用",
+   "start": 128.539,
+   "end": 128.813
+  },
+  {
+   "line": 22,
+   "text": "的",
+   "start": 128.813,
+   "end": 128.872
+  },
+  {
+   "line": 22,
+   "text": "合约",
+   "start": 128.884,
+   "end": 129.277
+  },
+  {
+   "line": 22,
+   "text": "代码",
+   "start": 129.551,
+   "end": 129.849
+  },
+  {
+   "line": 22,
+   "text": "长度",
+   "start": 129.861,
+   "end": 130.349
+  },
+  {
+   "line": 22,
+   "text": "也",
+   "start": 130.372,
+   "end": 130.515
+  },
+  {
+   "line": 22,
+   "text": "是",
+   "start": 130.515,
+   "end": 130.658
+  },
+  {
+   "line": 22,
+   "text": "零",
+   "start": 130.658,
+   "end": 130.932
+  },
+  {
+   "line": 23,
+   "text": "二",
+   "start": 132.086,
+   "end": 132.467
+  },
+  {
+   "line": 23,
+   "text": "renounceOwnership",
+   "start": 132.812,
+   "end": 133.812
+  },
+  {
+   "line": 23,
+   "text": "之后",
+   "start": 133.824,
+   "end": 134.276
+  },
+  {
+   "line": 23,
+   "text": "owner",
+   "start": 134.538,
+   "end": 134.931
+  },
+  {
+   "line": 23,
+   "text": "权限",
+   "start": 134.943,
+   "end": 135.407
+  },
+  {
+   "line": 23,
+   "text": "无法",
+   "start": 135.431,
+   "end": 135.717
+  },
+  {
+   "line": 23,
+   "text": "恢复",
+   "start": 135.728,
+   "end": 136.109
+  },
+  {
+   "line": 23,
+   "text": "先",
+   "start": 136.655,
+   "end": 136.905
+  },
+  {
+   "line": 23,
+   "text": "确认",
+   "start": 136.905,
+   "end": 137.155
+  },
+  {
+   "line": 23,
+   "text": "没有",
+   "start": 137.178,
+   "end": 137.357
+  },
+  {
+   "line": 23,
+   "text": "函数",
+   "start": 137.369,
+   "end": 137.905
+  },
+  {
+   "line": 23,
+   "text": "还",
+   "start": 138.0,
+   "end": 138.19
+  },
+  {
+   "line": 23,
+   "text": "依赖",
+   "start": 138.202,
+   "end": 138.488
+  },
+  {
+   "line": 23,
+   "text": "它",
+   "start": 138.488,
+   "end": 138.738
+  },
+  {
+   "line": 24,
+   "text": "三",
+   "start": 139.866,
+   "end": 140.306
+  },
+  {
+   "line": 24,
+   "text": "Solidity",
+   "start": 140.687,
+   "end": 141.33
+  },
+  {
+   "line": 24,
+   "text": "0.4 时",
+   "start": 141.354,
+   "end": 141.877
+  },
+  {
+   "line": 24,
+   "text": "期",
+   "start": 141.878,
+   "end": 142.211
+  },
+  {
+   "line": 24,
+   "text": "构造",
+   "start": 142.437,
+   "end": 142.747
+  },
+  {
+   "line": 24,
+   "text": "函数",
+   "start": 142.758,
+   "end": 143.294
+  },
+  {
+   "line": 24,
+   "text": "和",
+   "start": 143.318,
+   "end": 143.449
+  },
+  {
+   "line": 24,
+   "text": "合约",
+   "start": 143.461,
+   "end": 143.723
+  },
+  {
+   "line": 24,
+   "text": "同名",
+   "start": 143.735,
+   "end": 144.163
+  },
+  {
+   "line": 24,
+   "text": "合约",
+   "start": 144.708,
+   "end": 145.006
+  },
+  {
+   "line": 24,
+   "text": "一",
+   "start": 145.018,
+   "end": 145.125
+  },
+  {
+   "line": 24,
+   "text": "改名",
+   "start": 145.125,
+   "end": 145.685
+  },
+  {
+   "line": 24,
+   "text": "旧",
+   "start": 145.887,
+   "end": 146.066
+  },
+  {
+   "line": 24,
+   "text": "构造",
+   "start": 146.066,
+   "end": 146.328
+  },
+  {
+   "line": 24,
+   "text": "函数",
+   "start": 146.339,
+   "end": 146.875
+  },
+  {
+   "line": 24,
+   "text": "就",
+   "start": 146.982,
+   "end": 147.125
+  },
+  {
+   "line": 24,
+   "text": "成",
+   "start": 147.125,
+   "end": 147.244
+  },
+  {
+   "line": 24,
+   "text": "了",
+   "start": 147.244,
+   "end": 147.328
+  },
+  {
+   "line": 24,
+   "text": "公共",
+   "start": 147.351,
+   "end": 147.673
+  },
+  {
+   "line": 24,
+   "text": "函数",
+   "start": 147.685,
+   "end": 148.089
+  }
+ ],
+ "captions": [
+  {
+   "text": "其实 Parity 在同一年出过两次事",
+   "start": 1.648,
+   "end": 4.734,
+   "id": "c0"
+  },
+  {
+   "text": "2017 年 7 月那次",
+   "start": 5.708,
+   "end": 7.318,
+   "id": "c1"
+  },
+  {
+   "text": "钱包合约把不认识的调用",
+   "start": 7.422,
+   "end": 9.211,
+   "id": "c2"
+  },
+  {
+   "text": "用 delegatecall 转给了库合约",
+   "start": 9.231,
+   "end": 11.568,
+   "id": "c3"
+  },
+  {
+   "text": "库里的 initWallet 没有保护",
+   "start": 12.552,
+   "end": 14.972,
+   "id": "c4"
+  },
+  {
+   "text": "攻击者通过钱包调用它",
+   "start": 15.347,
+   "end": 17.231,
+   "id": "c5"
+  },
+  {
+   "text": "把自己设成了 owner",
+   "start": 17.287,
+   "end": 18.957,
+   "id": "c6"
+  },
+  {
+   "text": "约 15.3 万 ETH 被转走",
+   "start": 19.948,
+   "end": 22.118,
+   "id": "c7"
+  },
+  {
+   "text": "约合 3000 万美元",
+   "start": 22.198,
+   "end": 23.677,
+   "id": "c8"
+  },
+  {
+   "text": "11 月那次不同",
+   "start": 24.68,
+   "end": 26.112,
+   "id": "c9"
+  },
+  {
+   "text": "被接管的是库合约自己",
+   "start": 26.487,
+   "end": 28.323,
+   "id": "c10"
+  },
+  {
+   "text": "然后它被销毁了",
+   "start": 28.522,
+   "end": 29.764,
+   "id": "c11"
+  },
+  {
+   "text": "两次的教训相同",
+   "start": 30.732,
+   "end": 32.283,
+   "id": "c12"
+  },
+  {
+   "text": "实现合约本身",
+   "start": 32.494,
+   "end": 33.914,
+   "id": "c13"
+  },
+  {
+   "text": "也要初始化或者锁死",
+   "start": 33.934,
+   "end": 35.854,
+   "id": "c14"
+  },
+  {
+   "text": "这就引出第四种缺陷",
+   "start": 36.832,
+   "end": 38.525,
+   "id": "c15"
+  },
+  {
+   "text": "任意外部调用",
+   "start": 38.665,
+   "end": 39.835,
+   "id": "c16"
+  },
+  {
+   "text": "和任意 delegatecall",
+   "start": 39.855,
+   "end": 41.371,
+   "id": "c17"
+  },
+  {
+   "text": "一个合约公开了 execute 函数",
+   "start": 42.356,
+   "end": 44.728,
+   "id": "c18"
+  },
+  {
+   "text": "目标地址和调用数据",
+   "start": 45.103,
+   "end": 46.988,
+   "id": "c19"
+  },
+  {
+   "text": "全由调用者决定",
+   "start": 47.008,
+   "end": 48.476,
+   "id": "c20"
+  },
+  {
+   "text": "假设这个合约",
+   "start": 49.464,
+   "end": 50.634,
+   "id": "c21"
+  },
+  {
+   "text": "持有受害者对某个代币的授权",
+   "start": 50.69,
+   "end": 52.979,
+   "id": "c22"
+  },
+  {
+   "text": "攻击者不需要受害者的私钥",
+   "start": 53.98,
+   "end": 55.852,
+   "id": "c23"
+  },
+  {
+   "text": "他让这个合约去调用代币的",
+   "start": 56.84,
+   "end": 58.689,
+   "id": "c24"
+  },
+  {
+   "text": "transferFrom",
+   "start": 58.709,
+   "end": 59.688,
+   "id": "c25"
+  },
+  {
+   "text": "把受害者的币转给自己",
+   "start": 59.744,
+   "end": 61.355,
+   "id": "c26"
+  },
+  {
+   "text": "代币合约看到的调用方",
+   "start": 62.34,
+   "end": 64.402,
+   "id": "c27"
+  },
+  {
+   "text": "是被授权的合约",
+   "start": 64.518,
+   "end": 65.914,
+   "id": "c28"
+  },
+  {
+   "text": "额度检查 通过",
+   "start": 66.29,
+   "end": 68.019,
+   "id": "c29"
+  },
+  {
+   "text": "如果这里用的是 delegatecall",
+   "start": 69.016,
+   "end": 71.09,
+   "id": "c30"
+  },
+  {
+   "text": "攻击者的代码",
+   "start": 71.147,
+   "end": 72.15,
+   "id": "c31"
+  },
+  {
+   "text": "会直接改写这个合约的存储",
+   "start": 72.17,
+   "end": 73.971,
+   "id": "c32"
+  },
+  {
+   "text": "权限没有被偷",
+   "start": 74.972,
+   "end": 76.344,
+   "id": "c33"
+  },
+  {
+   "text": "是被借走了",
+   "start": 76.472,
+   "end": 77.534,
+   "id": "c34"
+  },
+  {
+   "text": "第五种 单步所有权转移",
+   "start": 78.504,
+   "end": 81.066,
+   "id": "c35"
+  },
+  {
+   "text": "owner 填入新地址",
+   "start": 82.06,
+   "end": 83.837,
+   "id": "c36"
+  },
+  {
+   "text": "一步就生效",
+   "start": 83.952,
+   "end": 84.956,
+   "id": "c37"
+  },
+  {
+   "text": "地址输错",
+   "start": 85.319,
+   "end": 86.311,
+   "id": "c38"
+  },
+  {
+   "text": "权限就永久丢失",
+   "start": 86.367,
+   "end": 88.037,
+   "id": "c39"
+  },
+  {
+   "text": "修复是两步转移",
+   "start": 89.024,
+   "end": 90.634,
+   "id": "c40"
+  },
+  {
+   "text": "新 owner 必须自己调用",
+   "start": 91.009,
+   "end": 92.906,
+   "id": "c41"
+  },
+  {
+   "text": "acceptOwnership",
+   "start": 92.926,
+   "end": 94.334,
+   "id": "c42"
+  },
+  {
+   "text": "证明这个地址真的能用",
+   "start": 94.426,
+   "end": 96.132,
+   "id": "c43"
+  },
+  {
+   "text": "第六种 签名鉴权写错",
+   "start": 97.116,
+   "end": 99.369,
+   "id": "c44"
+  },
+  {
+   "text": "用签名代替 msg.sender 时",
+   "start": 100.36,
+   "end": 103.125,
+   "id": "c45"
+  },
+  {
+   "text": "ecrecover 遇到无效签名",
+   "start": 103.229,
+   "end": 105.363,
+   "id": "c46"
+  },
+  {
+   "text": "会返回零地址",
+   "start": 105.383,
+   "end": 106.637,
+   "id": "c47"
+  },
+  {
+   "text": "如果被比较的签名人变量没有设置",
+   "start": 107.612,
+   "end": 109.913,
+   "id": "c48"
+  },
+  {
+   "text": "它的默认值也是零",
+   "start": 110.147,
+   "end": 111.555,
+   "id": "c49"
+  },
+  {
+   "text": "两边相等",
+   "start": 111.919,
+   "end": 112.898,
+   "id": "c50"
+  },
+  {
+   "text": "检查就通过了",
+   "start": 113.085,
+   "end": 114.196,
+   "id": "c51"
+  },
+  {
+   "text": "所以比对前",
+   "start": 115.176,
+   "end": 116.322,
+   "id": "c52"
+  },
+  {
+   "text": "先排除零地址",
+   "start": 116.342,
+   "end": 117.762,
+   "id": "c53"
+  },
+  {
+   "text": "最后 还有三个容易漏掉的判断",
+   "start": 118.732,
+   "end": 121.485,
+   "id": "c54"
+  },
+  {
+   "text": "一 代码长度是零",
+   "start": 122.48,
+   "end": 124.566,
+   "id": "c55"
+  },
+  {
+   "text": "不能证明对方是外部账户",
+   "start": 124.658,
+   "end": 126.519,
+   "id": "c56"
+  },
+  {
+   "text": "构造函数里发起调用的合约",
+   "start": 126.894,
+   "end": 129.397,
+   "id": "c57"
+  },
+  {
+   "text": "代码长度也是零",
+   "start": 129.501,
+   "end": 131.052,
+   "id": "c58"
+  },
+  {
+   "text": "二 renounceOwnership 之后",
+   "start": 132.036,
+   "end": 134.396,
+   "id": "c59"
+  },
+  {
+   "text": "owner 权限无法恢复",
+   "start": 134.488,
+   "end": 136.229,
+   "id": "c60"
+  },
+  {
+   "text": "先确认没有函数还依赖它",
+   "start": 136.605,
+   "end": 138.858,
+   "id": "c61"
+  },
+  {
+   "text": "三 Solidity 0.4 时期",
+   "start": 139.816,
+   "end": 142.331,
+   "id": "c62"
+  },
+  {
+   "text": "构造函数和合约同名",
+   "start": 142.387,
+   "end": 144.283,
+   "id": "c63"
+  },
+  {
+   "text": "合约一改名",
+   "start": 144.658,
+   "end": 145.805,
+   "id": "c64"
+  },
+  {
+   "text": "旧构造函数就成了公共函数",
+   "start": 145.837,
+   "end": 148.209,
+   "id": "c65"
+  }
+ ]
+}

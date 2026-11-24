@@ -1,0 +1,588 @@
+// Generates compositions/story.html for ep03/seg4「④ 八个误解」.
+// Run: node src/build-story.mjs
+// One isometric world: a serpentine road with eight signboards (row A: 1–4, row B: 5–8) and a
+// storage/memory corner (station 9). Each board has its own vignette to its right.
+import fs from "node:fs";
+import { G, at, f, Wp, M, camAt, toScreen, gridSvg, worldSvg, wlab, wpin, dashCurve, kitCss, runtimeJs, faceTop, pts, CE } from "../../../kit/iso.mjs";
+import * as O from "../../../kit/objects.mjs";
+import * as X from "../../kit-ext/objects-ext.mjs";
+import { pills } from "../../../kit/pills.mjs";
+import { loadTiming, wordAt, lineAt } from "../../../kit/timing.mjs";
+import { wordAt as _wa } from "../../../kit/timing.mjs";
+import { termCss, termHtml, termJs } from "../../kit-ext/termcards.mjs";
+import { wrap, coin, jar, button, counter, arch, token, slab, strip, lockPanel, sheet } from "./props.mjs";
+
+const T = loadTiming(new URL("../timing.json", import.meta.url));
+// 术语卡（RETROFIT-deps 第 2 节）
+const TERMS = [
+  { id: 'tm1', top: 72, term: '`receive` / `fallback`', def: '合约收到 ETH 时会执行的函数', at: _wa(T, 'receive', { line: 3 }).start },
+  { id: 'tm2', top: 72, term: '`unchecked` 块', def: '块内算术不检查溢出 · 会回绕', at: _wa(T, 'unchecked', { line: 11 }).start },
+  { id: 'tm3', top: 72, term: '排序器', def: 'L2 上负责排序和打包交易的节点', at: _wa(T, '排序器', { line: 13 }).start },
+];
+const SCRIPT = JSON.parse(fs.readFileSync(new URL("../../script.json", import.meta.url), "utf8"));
+const TOTAL = T.total;
+const w = (term, line, o = {}) => wordAt(T, term, { line, ...o }).start;
+const we = (term, line, o = {}) => wordAt(T, term, { line, ...o }).end;
+const L = (i) => lineAt(T, i);
+
+// ---------------------------------------------------------------- stations
+const BU = [null, { u: 0, v: 0 }, { u: 1500, v: 0 }, { u: 3000, v: 0 }, { u: 4500, v: 0 },
+  { u: 4500, v: 2400 }, { u: 3000, v: 2400 }, { u: 1500, v: 2400 }, { u: 0, v: 2400 }, { u: -2300, v: 2400 }];
+const BC = BU.map((b) => (b ? Wp(b.u, b.v, 0) : null));        // canvas ground point of each board
+const P = (i, h, d) => G(BC[i][0] + h, BC[i][1] + d);           // vignette ground point: canvas offset from board i
+const K = 1.4;
+const stCam = (i, dx = 0, dy = 0, k = K) => camAt([BC[i][0] + 350 + dx, BC[i][1] - 175 + dy], 960, 520, k);
+
+const BOARDS = [null,
+  { name: "private", myth: "别人看不到", fact: "存储完全公开", impact: "不能存秘密" },
+  { name: "receive / fallback", myth: "转账只是改余额", fact: "转 ETH 会执行代码", impact: "重入入口" },
+  { name: "selfdestruct", myth: "可以删除合约", fact: "只删同一交易内创建的", impact: "强制转入 ETH 仍可发生" },
+  { name: "合约余额", myth: "只能通过我的函数增加", fact: "任何人都能强制转入", impact: "余额记账会被打乱" },
+  { name: "检查型算术", myth: "0.8 以后不会出错", fact: "三种写法不报错", impact: "结果悄悄算错" },
+  { name: "block.timestamp", myth: "精确时间", fact: "出块者可小范围调整", impact: "不做随机数 · 不做秒级判断" },
+  { name: "block.number", myth: "每块固定时间", fact: "BSC：3 秒 → 0.45 秒", impact: "按区块数算利息会错" },
+  { name: "函数选择器", myth: "函数名唯一", fact: "选择器只有前 4 字节", impact: "不同签名可能碰撞" },
+];
+
+// ---------------------------------------------------------------- objects
+const items = [];
+const add = (o, svg, dy = 0) => items.push({ y: at(o)[1] + dy, svg });
+const A = {};
+const put = (name, r, o, dy = 0) => { A[name] = r.anchors; add(o, r.svg, dy); return r; };
+
+for (let i = 1; i <= 8; i++) put("sb" + i, X.signboard(BU[i], { id: "sb" + i, n: String(i), ...BOARDS[i], blank: true }), BU[i]);
+
+// ---- 1 private: glass cabinet with a "private" drawer, a contract that is refused, a person who reads anyway
+const o1 = { cab: P(1, 600, -40), mB: P(1, 300, 70), ps: P(1, 905, 10) };
+const cab1Opts = { id: "cab1", n: 4, cell: 7, glass: true, tags: { 1: "private" },
+  fill: { 0: [{ bytes: 20, color: "teal" }], 1: [{ bytes: 32, color: "red" }], 2: [{ bytes: 12, color: "ink" }], 3: [{ bytes: 32, color: "gray" }] } };
+put("cab1", X.slotCabinet(o1.cab, cab1Opts), o1.cab);
+put("mB1", X.contractMachine(o1.mB, { id: "mB1", name: "B", tone: "gray" }), o1.mB);
+put("ps1", O.person(o1.ps, { id: "ps1", role: "signer" }), o1.ps);
+const env1 = O.envelope(o1.mB, { id: "env1" });
+items.push({ y: 1e6, svg: `<g id="env1-mv" opacity="0" transform="translate(0,${f(-120 * CE)})">${env1.svg}</g>` });
+const mag1 = O.magnifier(P(1, 760, 70), { id: "mag1", z: 120 }); A.mag1 = mag1.anchors;
+items.push({ y: 1e6 + 1, svg: `<g id="mag1-mv">${mag1.svg}</g>` });
+
+// ---- 2 receive/fallback: caller → coin → target machine runs code → envelope back to the caller
+const o2 = { caller: P(2, 300, 60), tgt: P(2, 760, -20) };
+put("mC2", X.contractMachine(o2.caller, { id: "mC2", name: "B", tone: "gray" }), o2.caller);
+put("mT2", X.contractMachine(o2.tgt, { id: "mT2", name: "A", screen2: undefined }), o2.tgt);
+const coin2 = coin(o2.caller, { id: "coin2", z: 230, op: 0 }); items.push({ y: 1e6, svg: coin2.svg }); A.coin2 = coin2.anchors;
+const env2 = O.envelope(o2.tgt, { id: "env2" });
+items.push({ y: 1e6, svg: `<g id="env2-mv" opacity="0" transform="translate(0,${f(-120 * CE)})">${env2.svg}</g>` });
+
+// ---- 3 selfdestruct: button, a machine created in this tx (deleted), an old machine (only pays out)
+const o3 = { btn: P(3, 250, 70), mN: P(3, 560, -30), mO: P(3, 860, 30) };
+put("btn3", button(o3.btn, { id: "btn3" }), o3.btn);
+put("mN3", X.contractMachine(o3.mN, { id: "mN3", name: "新" }), o3.mN);
+put("mO3", X.contractMachine(o3.mO, { id: "mO3", name: "旧" }), o3.mO);
+const coins3 = [0, 1, 2].map((k) => coin(G(at(o3.mO)[0] + 70, at(o3.mO)[1] + 60), { id: "c3-" + k, z: 20 + k * 9, op: 0 }));
+coins3.forEach((c) => items.push({ y: 1e6, svg: c.svg }));
+
+// ---- 4 contract balance: machine + jar; two side sources pour directly into the jar
+const o4 = { m: P(4, 260, 40), jar: P(4, 520, -10), sd: P(4, 790, -120), bk: P(4, 820, 110) };
+put("m4", X.contractMachine(o4.m, { id: "m4", name: "A" }), o4.m);
+put("jar4", jar(o4.jar, { id: "jar4", n: 4 }), o4.jar);
+put("sd4", X.contractMachine(o4.sd, { id: "sd4", name: "X", tone: "gray" }), o4.sd);
+{ const b = o4.bk; const s = wrap("bk4", b, O.chain(b, { id: "bk4c", n: 1 }).svg); A.bk4 = { top: at(b, 0, 0, 200) }; add(b, s); }
+const c4src = [[o4.m, 160], [o4.m, 160], [o4.sd, 230], [o4.bk, 140]];
+const coins4 = c4src.map(([o, z], k) => coin(o, { id: "c4-" + k, z, op: 0 }));
+coins4.forEach((c) => items.push({ y: 1e6, svg: c.svg }));
+
+// ---- 5 checked arithmetic: counter overflows → reverts; three archways let numbers through silently
+const o5 = { ctr: P(5, 300, 20), g: [P(5, 600, -30), P(5, 760, 10), P(5, 920, 50)] };
+put("ctr5", counter(o5.ctr, { id: "ctr5", states: [{ text: "MAX" }, { text: "+1", fill: "#ffffff", bg: "#e0453a" }, { text: "MAX", fill: "#86d6a8" }] }), o5.ctr);
+o5.g.forEach((o, k) => put("ar5-" + k, arch(o, { id: "ar5-" + k }), o));
+const tok5 = o5.g.map((o, k) => token({ u: o.u - 110, v: o.v }, { id: "tk5-" + k, z: 10 }));
+tok5.forEach((s, k) => add(o5.g[k], `<g id="tk5-${k}-mv" opacity="0">${s}</g>`, 1));
+
+// ---- 6 block.timestamp: a block producer nudges the clock; on L2 a sequencer drives it
+const o6 = { clk: P(6, 520, -10), ps: P(6, 270, 50), seq: P(6, 880, -20) };
+{ const c = O.clock(o6.clk, { id: "clk6", h: 10, m: 10 }); const [x, y] = at(o6.clk); const sc = 2.0;
+  A.clk6 = { top: [x, y - 120 * sc], c: [x, y - 60 * sc] };
+  add(o6.clk, `<g id="clk6-w" data-ox="${f(x)}" data-oy="${f(y)}"><g transform="translate(${f(x)},${f(y)}) scale(${sc}) translate(${f(-x)},${f(-y)})">${c.svg}</g></g>`); }
+put("ps6", O.person(o6.ps, { id: "ps6", role: "signer" }), o6.ps);
+put("seq6", O.rack(o6.seq, { id: "seq6", tag: "SEQ" }), o6.seq);
+
+// ---- 7 block.number: blocks on a time axis get packed; a lock-up hourglass drains early
+const o7 = { ax: P(7, 260, 20), hg: P(7, 900, 0) };
+const ax7 = { u: o7.ax.u, v: o7.ax.v };
+add(ax7, strip(ax7, { id: "ax7", u0: -40, u1: 640 }), -2);
+const SP0 = 270, SP1 = 40, NB = 15;
+for (let k = 0; k < NB; k++) {
+  const base = { u: ax7.u + (k < 3 ? k * SP0 : k * SP1), v: ax7.v };
+  add(base, slab(base, { id: "bl7-" + k, op: k < 3 ? 1 : 0 }));
+}
+{ const h = O.hourglass(o7.hg, { id: "hg7" }); const [x, y] = at(o7.hg); const sc = 1.35; A.hg7 = { top: [x, y - 130 * sc] };
+  add(o7.hg, `<g id="hg7-w" data-ox="${f(x)}" data-oy="${f(y)}"><g transform="translate(${f(x)},${f(y)}) scale(${sc}) translate(${f(-x)},${f(-y)})">${h.svg}</g></g>`); }
+
+// ---- 8 function selectors: two keys, same 4 teeth, different names → one lock; then the red constructed key
+const o8 = { lock: P(8, 830, -30) };
+put("lk8", lockPanel(o8.lock, { id: "lk8" }), o8.lock);
+const SEL = "5e1f9a3c";
+const kO = (dv) => ({ u: o8.lock.u - 330, v: o8.lock.v + dv });
+const keys = [["k1", "funcA(…)", 0, -70, "normal"], ["k2", "funcB(…)", 0, 80, "normal"], ["k3", "f_x(…)", 0, -70, "attacker"]];
+keys.forEach(([id, name, , dv, st]) => {
+  const r = X.selectorKey(kO(dv), { id, name, selector: SEL, z: 130, nameSize: 20, state: st }); A[id] = r.anchors;
+  items.push({ y: 1e6 + (dv > 0 ? 2 : 1), svg: `<g id="${id}-mv">${r.svg}</g>` });
+});
+
+// ---- 9 storage vs memory
+const o9 = { cab: P(9, 200, -10), sh: P(9, 700, 40), ps: P(9, 900, 0), slips: [P(9, 1020, 60), P(9, 1170, 0), P(9, 1320, -60)] };
+const cab9Opts = { id: "cab9", n: 4, cell: 7, fill: { 0: [{ bytes: 20, color: "teal" }], 1: [{ bytes: 16, color: "teal" }], 2: [{ bytes: 16, color: "teal" }], 3: [{ bytes: 32, color: "gray" }] } };
+put("cab9", X.slotCabinet(o9.cab, cab9Opts), o9.cab);
+{ const r = sheet(o9.cab, { id: "sh9" }); A.sh9 = r.anchors; items.push({ y: 1e6, svg: `<g id="sh9-mv" opacity="0">${r.svg}</g>` }); }
+put("ps9", O.person(o9.ps, { id: "ps9", role: "signer" }), o9.ps);
+o9.slips.forEach((o, k) => put("sl9-" + k, O.doc(o, { id: "sl9-" + k, title: "领取单", stamp: true }), o));
+
+items.sort((a, b) => a.y - b.y);
+
+// ---------------------------------------------------------------- road (serpentine, behind the boards)
+const RV = -360, RVB = 2400 - 360, RU1 = 5300, RU0 = -3200;
+const roadPts = [[-700, RV], [RU1, RV], [RU1, RVB], [RU0, RVB]];
+const rd = roadPts.map(([u, v]) => Wp(u, v, 0));
+let rlen = 0; for (let i = 1; i < rd.length; i++) rlen += Math.hypot(rd[i][0] - rd[i - 1][0], rd[i][1] - rd[i - 1][1]);
+rlen = Math.ceil(rlen);
+const rdD = "M" + rd.map((p) => pts([p])).join("L");
+const TOPM = `matrix(${Math.cos(35 * Math.PI / 180)},${-Math.sin(35 * Math.PI / 180) * 0.5},${Math.sin(35 * Math.PI / 180)},${Math.cos(35 * Math.PI / 180) * 0.5},0,0)`;
+const roadSvg = `<defs><mask id="rd-mask" maskUnits="userSpaceOnUse" x="-20000" y="-20000" width="40000" height="40000">
+  <path id="rd-mask-p" d="${rdD}" stroke="#fff" stroke-width="260" fill="none" stroke-linejoin="round" stroke-dasharray="${rlen} ${rlen}" stroke-dashoffset="${rlen}"/></mask></defs>
+  <g mask="url(#rd-mask)"><g transform="${TOPM}"><path d="M${roadPts.map((p) => p.join(" ")).join("L")}" fill="none" stroke="#d6cfc1" stroke-width="250" stroke-linejoin="round"/>
+  <path d="M${roadPts.map((p) => p.join(" ")).join("L")}" fill="none" stroke="#f8f6f1" stroke-width="238" stroke-linejoin="round"/>
+  <path d="M${roadPts.map((p) => p.join(" ")).join("L")}" fill="none" stroke="#cfc7b8" stroke-width="8" stroke-dasharray="70 60" stroke-linejoin="round"/></g></g>`;
+
+const dc6 = dashCurve("dc6", [A.seq6.center[0] - 60, A.seq6.center[1] - 40], [A.clk6.c[0] + 90, A.clk6.c[1]], { color: "#1d93ba", c1: [A.seq6.center[0] - 140, A.seq6.center[1] - 160], c2: [A.clk6.c[0] + 200, A.clk6.c[1] - 120] });
+const world = worldSvg("wsvg", gridSvg({ u0: -3600, u1: 7200, v0: -2400, v1: 5200 }) + roadSvg + items.map((x) => x.svg).join("\n") + dc6.svg, [-3200, -3600, 9600, 6000]);
+
+// ---------------------------------------------------------------- labels
+let labels = "";
+for (let i = 1; i <= 8; i++) {
+  labels += wlab("lb-sb" + i, A["sb" + i].top, `<span class="num">${i}</span>${BOARDS[i].name}`, "lab-ink lab-name hide");
+}
+const up = (p, dy) => [p[0], p[1] - dy];
+const rt = (p, dx, dy = 0) => [p[0] + dx, p[1] + dy];
+// 1
+labels += wlab("lb-1rej", up(A.cab1.drawers[1], 0), "调用被拒", "lab-rs hide", "r");
+labels += wlab("lb-1pub", up(A.cab1.top, 0), "存储完全公开", "lab-cs hide");
+labels += wlab("lb-1sec", rt(A.ps1.head, 0, -70), "不能存秘密", "lab-rs hide");
+labels += wlab("lb-1B", up(A.mB1.top, 0), "其他合约", "lab-g lab-sm hide");
+// 2
+labels += wlab("lb-2c", A.mC2.top, "调用方", "lab-g lab-sm hide");
+labels += wlab("lb-2t", A.mT2.top, "收款合约", "lab-sm hide");
+labels += wlab("lb-2eth", up(A.coin2.top, 0), "转 ETH", "lab-cs lab-sm hide");
+labels += wlab("lb-2run", up(A.mT2.top, 64), "执行它的代码", "lab-cs hide");
+labels += wlab("lb-2re", up(A.mC2.top, 64), "回调 · 重入入口", "lab-rs hide");
+// 3
+labels += wlab("lb-3btn", A.btn3.top, "selfdestruct", "lab-sm hide");
+labels += wlab("lb-3new", A.mN3.top, "同一笔交易里创建", "lab-sm hide");
+labels += wlab("lb-3old", A.mO3.top, "早已部署", "lab-g lab-sm hide");
+labels += wlab("lb-3del", up(A.mN3.top, 62), "被删除", "lab-rs hide");
+labels += wlab("lb-3pay", up(A.mO3.top, 62), "只转走余额", "lab-cs hide");
+labels += wpin("tc3", [BC[3][0] + 420, BC[3][1] - 420], `<div class="tcard hide" id="tc3i"><b>2024</b><span>Cancun 升级</span><span class="chip">EIP-6780</span></div>`, "c");
+// 4
+labels += wlab("lb-4jar", A.jar4.top, "合约余额", "lab-sm hide");
+labels += wlab("lb-4fn", A.m4.top, "我的函数", "lab-sm hide");
+labels += wlab("lb-4sd", A.sd4.top, "selfdestruct", "lab-r lab-sm hide");
+labels += wlab("lb-4bk", at(o4.bk, -70, 0, 60), "出块奖励地址", "lab-r lab-sm hide", "r");
+const dots = (id, n, cls = "") => Array.from({ length: n }, (_, k) => `<i class="d ${cls}" id="${id}-${k}"></i>`).join("");
+labels += wpin("led4", [BC[4][0] + 400, BC[4][1] - 400], `<div class="ledger hide" id="led4i">
+  <div class="lr"><span class="lk">函数记账</span><span class="dd">${dots("d4a", 2)}</span></div>
+  <div class="lr" id="led4-r2"><span class="lk">实际余额</span><span class="dd">${dots("d4b", 2)}${dots("d4c", 2, "red hide")}</span></div>
+  <div class="mis hide" id="led4-mis">对不上</div></div>`, "c");
+labels += wlab("lb-4mess", [BC[4][0] + 640, BC[4][1] - 470], "余额记账会被捐赠打乱", "lab-rs hide", "l");
+// 5
+labels += wlab("lb-5ovf", A.ctr5.top, "0.8 以后 · 溢出 → 回滚 ✓", "lab-gs hide");
+["unchecked", "类型转换", "除法截断"].forEach((t, k) => { labels += wlab("lb-5g" + k, A["ar5-" + k].top, t, "lab-sm hide"); });
+labels += wlab("lb-5quiet", [BC[5][0] + 780, BC[5][1] - 230], "都不会报错", "lab-rs hide");
+// 6
+labels += wlab("lb-6ps", A.ps6.top, "出块者", "lab-g lab-sm hide");
+labels += wlab("lb-6nudge", up(A.clk6.top, 110), "小范围改动", "lab-r hide");
+labels += wlab("lb-6seq", A.seq6.top, "L2 · 排序器决定", "hide");
+labels += wlab("lb-6r", [BC[6][0] + 360, BC[6][1] - 440], "✗ 随机数", "lab-r hide");
+labels += wlab("lb-6s", [BC[6][0] + 360, BC[6][1] - 375], "✗ 秒级判断", "lab-r hide");
+// 7
+const bl = (k, sp) => at({ u: ax7.u + k * sp, v: ax7.v }, 0, 0, 72);
+labels += wlab("lb-7gap0", up([(bl(0, SP0)[0] + bl(1, SP0)[0]) / 2, (bl(0, SP0)[1] + bl(1, SP0)[1]) / 2], 20), "3 秒", "lab-sm hide");
+labels += wlab("lb-7gap1", up([(bl(1, SP0)[0] + bl(2, SP0)[0]) / 2, (bl(1, SP0)[1] + bl(2, SP0)[1]) / 2], 20), "3 秒", "lab-sm hide");
+labels += wlab("lb-7gapN", up(bl(7, SP1), 70), "0.45 秒 / 块", "lab-cs hide");
+labels += wlab("lb-7bsc", [BC[7][0] + 560, BC[7][1] - 400], "BSC · 2026 年 1 月 Fermi", "hide");
+labels += wlab("lb-7asof", [BC[7][0] + 560, BC[7][1] - 392], "截至 2026 年 11 月", "lab-g lab-sm hide", "t");
+labels += wlab("lb-7l2", [bl(14, SP1)[0] - 40, bl(14, SP1)[1] + 70], "L2 · 因链而异", "lab-g lab-sm hide", "t");
+labels += wlab("lb-7lock", A.hg7.top, "锁定期 = 100 块", "hide");
+labels += wlab("lb-7early", up(A.hg7.top, 66), "提前到期 · 算错", "lab-rs hide");
+// 8
+labels += wlab("lb-8k1", rt(A.k1.bow, -80), "函数名 A", "lab-sm hide", "r");
+labels += wlab("lb-8k2", rt(A.k2.bow, -80), "函数名 B", "lab-sm hide", "r");
+labels += wlab("lb-8teeth", [A.k1.teeth[0] + 10, A.k1.teeth[1] - 160], "只看前 4 字节", "lab-cs hide");
+labels += wlab("lb-8same", [A.lk8.top[0] - 300, A.lk8.top[1] + 70], "名字不同 · 齿形相同", "lab-cs hide");
+labels += wlab("lb-8plate", A.lk8.top, "同一个函数入口", "lab-g lab-sm hide");
+labels += wlab("lb-8plate2", A.lk8.top, "替换验证者公钥", "lab-rs hide");
+labels += wlab("lb-8k3", up(A.k3.bow, 70), "构造出来的函数名", "lab-rs hide");
+const ev8 = (`<div class="evcard hide" id="ev8i"><div class="eh"><b>Poly Network</b><span class="src">项目方复盘 · CertiK 分析</span></div><div class="eb">2021 年 8 月 · 损失约 6.1 亿美元</div></div>`);
+// 9
+labels += wlab("lb-9d1", rt(A.cab9.drawersOpen[1], 40), "余额", "lab-cs lab-sm hide", "l");
+labels += wlab("lb-9d1b", rt(A.cab9.drawersOpen[1], 40), "余额 · 已更新 ✓", "lab-gs lab-sm hide", "l");
+labels += wlab("lb-9d2", rt(A.cab9.drawersOpen[2], 40), "余额", "lab-cs lab-sm hide", "l");
+labels += wlab("lb-9d2b", rt(A.cab9.drawersOpen[2], 40), "余额 · 没变", "lab-r lab-sm hide", "l");
+labels += wlab("lb-9copy", [0, 0], "副本 · 改了", "lab-sm hide", "t");
+labels += wlab("lb-9rep", at(o9.slips[1], 0, 0, 200), "余额没扣 → 重复领取", "lab-rs hide");
+
+// ---------------------------------------------------------------- cameras
+const fit = () => {
+  const ps = [];
+  for (let i = 1; i <= 8; i++) { ps.push(at(BU[i], -260, 0, 0), at(BU[i], 260, 0, 420), at(BU[i], 0, 0, 0)); }
+  const xs = ps.map((p) => p[0]), ys = ps.map((p) => p[1]);
+  const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+  const k = Math.min(1640 / (x1 - x0), 700 / (y1 - y0));
+  return camAt([(x0 + x1) / 2, (y0 + y1) / 2], 960, 520, +k.toFixed(3));
+};
+const CAMS = { over: fit() };
+for (let i = 1; i <= 8; i++) CAMS["s" + i] = stCam(i);
+CAMS.s8b = stCam(8, 0, -40);
+CAMS.s9 = camAt([BC[9][0] + 760, BC[9][1] - 200], 960, 560, 1.05);
+CAMS.s9b = camAt([BC[9][0] + 760, BC[9][1] - 200], 960, 560, 1.05);
+
+// sheet / copy label positions (sheet flies out of drawer 2 to its spot)
+const sheetFrom = A.cab9.drawersOpen[2], sheetTo = at(o9.sh, 0, 0, 0);
+const shDX = sheetTo[0] - at(o9.cab)[0], shDY = sheetTo[1] - at(o9.cab)[1];
+labels = labels.replace(/id="lb-9copy-pin" style="left:0px;top:0px"/, `id="lb-9copy-pin" style="left:${f(sheetTo[0])}px;top:${f(sheetTo[1] + 24)}px"`);
+
+// code card D anchors (screen) → world targets under CAMS.s9
+const cardX = 70, cardY = 40, rowY = (r) => cardY + 24 + 56 + r * 50 + 25;
+const sc9 = (p) => toScreen(CAMS.s9, p);
+const dc1 = dashCurve("dc1", [cardX + 790, rowY(0)], sc9(A.cab9.drawersOpen[1]), { c1: [cardX + 900, rowY(0) + 40], c2: [sc9(A.cab9.drawersOpen[1])[0] + 40, sc9(A.cab9.drawersOpen[1])[1] - 200] });
+const dc2 = dashCurve("dc2", [cardX + 790, rowY(1)], toScreen(CAMS.s9, [sheetTo[0], sheetTo[1] - 150]), { c1: [cardX + 1000, rowY(1) + 20], c2: [toScreen(CAMS.s9, sheetTo)[0], toScreen(CAMS.s9, sheetTo)[1] - 320] });
+
+// key insert offsets (canvas): tip → hole
+const holeIn = (id) => { const tip = A[id].tip, h = A.lk8.hole; return [h[0] - tip[0] + 6, h[1] - tip[1] - 2]; };
+const KI = { k1: holeIn("k1"), k2: holeIn("k2"), k3: holeIn("k3") };
+
+// ---------------------------------------------------------------- times
+const TM = {
+  // L0
+  l0: L(0).start, myth0: w("误解", 0), fact0: w("事实", 0), imp0: w("影响", 0),
+  // 1
+  s1: L(1).start, m1: w("误解", 1), f1: w("事实", 2), other1: w("其他合约", 2), pub1: w("存储完全公开", 2), sec1: w("不能存秘密", 2),
+  // 2
+  s2: L(3).start, m2: w("误解", 3), tr2: w("转账", 3), f2: w("事实", 4), eth2: w("ETH", 4), run2: w("执行", 4), re2: w("重入", 4),
+  // 3
+  s3: L(5).start, m3: w("误解", 5), y3: w("2024", 6), only3: w("只有", 6), same3: w("同一笔", 6), del3: w("删除", 6), pay3: w("转走", 6),
+  // 4
+  s4: L(7).start, m4: w("误解", 7), fn4: w("函数", 7), f4: w("事实", 8), sd4: w("selfdestruct", 8), bk4: w("出块", 8), acc4: w("记账", 9), mess4: w("打乱", 9),
+  // 5
+  s5: L(10).start, m5: w("检查型", 10), ovf5: w("溢出", 10), rb5: w("回滚", 10), but5: w("但", 11), g5: [w("unchecked", 11), w("类型转换", 11), w("除法截断", 11)], quiet5: w("不会报错", 11),
+  // 6
+  s6: L(12).start, m6: w("block", 12), not6: w("不是", 12), prod6: w("出块者", 13), chg6: w("改动", 13), l2_6: w("L2", 13), rnd6: w("随机数", 13), sec6: w("秒级", 13),
+  // 7
+  s7: L(14).start, m7: w("误解", 14), fix7: w("固定", 14), bsc7: w("BSC", 15), fermi7: w("Fermi", 15), shrink7: w("缩到", 15), f45: w("0.45", 15), l2_7: w("L2", 15), int7: w("利息", 16), err7: w("出错", 16),
+  // 8
+  s8: L(17).start, m8: w("误解", 17), name8: w("函数名", 17), f8: w("事实", 18), b4: w("4 字节", 18), diff8: w("不同的", 18), hit8: w("撞在", 18),
+  y8: w("2021", 19), key8: w("关键", 19), loss8: w("损失", 19), book8: w("公开复盘", 20), cons8: w("构造", 20), hit8b: w("撞上", 20), rep8: w("替换", 20),
+  // 9
+  s21: L(21).start, st21: w("storage", 21), s22: L(22).start, ref22: w("引用", 22), wb22: w("写回", 22), mem22: w("memory", 22), cp22: w("副本", 22), nwb22: w("不写回", 22),
+  s23: L(23).start, word23: w("写错", 23), upd23: w("没更新", 23), rep23: w("反复领取", 23),
+};
+const LE = (i) => L(i).end;
+
+const html = `<template>
+  <style>
+${kitCss()}
+    #root { position: absolute; inset: 0; overflow: hidden; background: #efebe3; font-family: "Noto Sans SC", sans-serif; color: #1c1c1c; }
+    .lab-name { font-size: 32px; font-weight: 900; }
+    .lab-name .num { display: inline-block; min-width: 40px; text-align: center; background: #ffffff; color: #1c1c1c; border-radius: 8px; margin-right: 6px; padding: 0 6px; }
+    #ttl-card { left: 460px; top: 300px; min-height: 0; padding: 56px 40px 50px; }
+    #legend { position: absolute; left: 110px; top: 150px; display: flex; gap: 22px; align-items: center; }
+    #legend .lg { font-size: 40px; font-weight: 900; padding: 8px 30px 12px; border-radius: 16px; background: #fffdf8; box-shadow: 0 10px 24px rgba(70,60,40,0.12); white-space: nowrap; }
+    #legend .lg-m { color: #3b3e44; text-decoration: line-through; text-decoration-color: #e0453a; text-decoration-thickness: 6px; }
+    #legend .lg-i { background: #1d93ba; color: #ffffff; }
+    #legend .ar { font-size: 40px; font-weight: 900; color: #6d685e; }
+    .tcard { display: flex; align-items: center; gap: 14px; background: #fffdf8; border-radius: 16px; padding: 12px 22px 14px; box-shadow: 0 12px 26px rgba(70,60,40,0.12); white-space: nowrap; font-size: 32px; font-weight: 700; }
+    .tcard b { font-family: "JetBrains Mono", monospace; font-size: 36px; font-weight: 800; }
+    .tcard .chip { background: #1d93ba; color: #fff; border-radius: 10px; padding: 2px 14px 4px; font-weight: 900; }
+    .ledger { width: 380px; background: #fffdf8; border-radius: 16px; padding: 12px 20px 14px; box-shadow: 0 12px 26px rgba(70,60,40,0.12); position: relative; }
+    .ledger .lr { display: flex; align-items: center; height: 54px; border-radius: 10px; padding: 0 8px; }
+    .ledger .lk { width: 140px; font-size: 30px; font-weight: 800; color: #1c1c1c; }
+    .ledger .dd { display: flex; gap: 10px; }
+    .ledger .d { width: 30px; height: 30px; border-radius: 50%; background: #1d93ba; display: inline-block; }
+    .ledger .d.red { background: #e0453a; }
+    .ledger .mis { position: absolute; right: -14px; top: -22px; background: #e0453a; color: #fff; font-size: 28px; font-weight: 900; border-radius: 10px; padding: 2px 12px 4px; }
+    .evcard { width: 640px; background: #fffdf8; border-radius: 18px; padding: 16px 24px 18px; box-shadow: 0 14px 30px rgba(70,60,40,0.14); border-left: 10px solid #e0453a; }
+    .evcard .eh { display: flex; align-items: center; gap: 14px; font-size: 40px; font-weight: 900; white-space: nowrap; }
+    .evcard .src { margin-left: auto; font-size: 28px; font-weight: 700; color: #6d685e; border: 2px solid #cfc7b8; border-radius: 10px; padding: 0 10px 2px; }
+    .evcard .eb { margin-top: 6px; font-size: 32px; font-weight: 700; color: #1c1c1c; white-space: nowrap; }
+    #ev8i { position: absolute; left: 760px; top: 130px; width: 700px; }
+    #codeD { left: ${cardX}px; top: ${cardY}px; width: 860px; }
+    #codeD .c-row { font-size: 29px; }
+    .scr-layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
+${termCss}
+  </style>
+  <div id="root" data-composition-id="story" data-width="1920" data-height="1080">
+    <div class="k-stage" id="stage">
+      <div id="cam" data-layout-allow-overflow data-layout-ignore>
+        ${world}
+        <div class="k-layer" id="labels">${labels}</div>
+      </div>
+      <div id="legend"><div class="lg lg-m hide" id="lg0">误解</div><div class="ar hide" id="lga0">→</div><div class="lg hide" id="lg1">事实</div><div class="ar hide" id="lga1">→</div><div class="lg lg-i hide" id="lg2">影响</div></div>
+      ${ev8}
+      <svg class="scr-layer" id="scr" data-layout-ignore viewBox="0 0 1920 1080" width="1920" height="1080">${dc1.svg}${dc2.svg}</svg>
+      <div class="k-code hide" id="codeD"><div class="c-head">审计时盯住一对词<span class="c-tag">Solidity</span></div>
+        <div class="c-row" id="cdr0"><span class="c-bar" id="cdb0" style="opacity:0"></span>User <b>storage</b> u = users[id]; <span class="c-cm">// 引用 · 写回</span></div>
+        <div class="c-row" id="cdr1"><span class="c-bar" id="cdb1" style="opacity:0"></span>User <b>memory</b>&nbsp; u = users[id]; <span class="c-cm">// 副本 · 不写回</span></div></div>
+      ${termHtml(TERMS)}
+      ${pills(4, { sections: SCRIPT.sections })}
+      <div class="k-title" id="ttl-card"><div class="t-main">④ 八个误解</div><div class="t-sub">误解 · 事实 · 影响</div></div>
+    </div>
+  </div>
+  <script>
+${runtimeJs()}
+${X.runtimeExtJs()}
+    (function () {
+      const CAMS = ${JSON.stringify(CAMS)};
+      const KI = ${JSON.stringify(KI)};
+      const tl = gsap.timeline({ paused: true });
+      const $ = (id) => document.getElementById(id);
+      const fadeIn = (sel, t, d) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d || 0.25, ease: "power1.out", immediateRender: false }, t);
+      const out = (sel, t, d) => tl.to(sel, { opacity: 0, duration: d || 0.2, ease: "power2.in" }, t);
+      const grown = new Set();
+      const grow = (id, t, d) => { if (!grown.has(id)) { grown.add(id); const g = $(id); tl.set("#" + id, { scaleY: 0, svgOrigin: g.getAttribute("data-ox") + " " + g.getAttribute("data-oy") }, 0); } KIT.grow(tl, id, t, d); };
+      const shrink = (id, t, d) => { const g = $(id); tl.to("#" + id, { scaleY: 0, svgOrigin: g.getAttribute("data-ox") + " " + g.getAttribute("data-oy"), duration: d || 0.35, ease: "power2.in" }, t); };
+      const pop = (sel, t, d) => KIT.pop(tl, sel, t, d);
+      const SIGN = (i, step, t) => KITX.sign(tl, "sb" + i, t, step);
+      // the inner groups of every vignette start hidden (grown on cue)
+      KIT.camSet(tl, CAMS.over);
+
+      // ===== 0–1.6 title card → flies into the pill
+      tl.fromTo("#ttl-card", { x: 0, y: 0, scale: 1, opacity: 1 }, { x: 560, y: -330, scale: 0.32, opacity: 0, duration: 0.45, ease: "power3.in", immediateRender: false }, 1.25);
+      // ===== L0 road draws, eight blank boards rise one by one, legend 误解 → 事实 → 影响
+      tl.fromTo("#rd-mask-p", { attr: { "stroke-dashoffset": ${rlen} } }, { attr: { "stroke-dashoffset": 0 }, duration: 2.4, ease: "power1.inOut", immediateRender: false }, 0.9);
+      for (let i = 1; i <= 8; i++) { grow("sb" + i, 1.5 + (i - 1) * 0.3, 0.5); pop("#lb-sb" + i, 1.75 + (i - 1) * 0.3); }
+      ["lg0", "lga0"].forEach((id, k) => pop("#" + id, ${f(TM.myth0)} + k * 0.15));
+      ["lg1", "lga1"].forEach((id, k) => pop("#" + id, ${f(TM.fact0)} + k * 0.15));
+      pop("#lg2", ${f(TM.imp0)});
+      // hide vignette objects until their station
+      const V = { 1: ["cab1", "mB1", "ps1"], 2: ["mC2", "mT2"], 3: ["btn3", "mN3", "mO3"], 4: ["m4", "jar4", "sd4", "bk4"], 5: ["ctr5", "ar5-0", "ar5-1", "ar5-2"],
+        6: ["clk6-w", "ps6", "seq6"], 7: ["ax7", "bl7-0", "bl7-1", "bl7-2", "hg7-w"], 8: ["lk8"], 9: ["cab9", "ps9", "sl9-0", "sl9-1", "sl9-2"] };
+      const hidden = ["seq6", "sd4", "bk4"];
+      Object.values(V).flat().forEach((id) => { const g = $(id); tl.set("#" + id, { scaleY: 0, svgOrigin: g.getAttribute("data-ox") + " " + g.getAttribute("data-oy") }, 0); grown.add(id); });
+      ["k1-mv", "k2-mv", "k3-mv", "mag1-mv"].forEach((id) => tl.set("#" + id, { opacity: 0 }, 0));
+      const station = (i, t0, dur) => {
+        KIT.cam(tl, t0, CAMS["s" + i], dur || 1.1);
+        V[i].filter((id) => !hidden.includes(id)).forEach((id, k) => grow(id, t0 + 0.5 + k * 0.12, 0.45));
+      };
+      const lampOut = (i, t) => { SIGN(i, "lamp", t); };
+      const clear = (sel, t) => out(sel, t, 0.25);
+
+      // ===== 1 private (L1–L2)
+      out("#lg0, #lga0, #lg1, #lga1, #lg2", ${f(TM.s1 - 0.5)}, 0.3);
+      station(1, ${f(TM.s1 - 0.45)}, 1.2);
+      pop("#lb-1B", ${f(TM.s1 + 0.9)});
+      SIGN(1, "myth", ${f(TM.m1)});
+      SIGN(1, "strike", ${f(TM.f1)}); SIGN(1, "fact", ${f(TM.f1 + 0.35)});
+      // another contract tries to call → refused at the private drawer
+      { const a = ${JSON.stringify(at(o1.mB, 0, 0, 0))}, b = ${JSON.stringify(A.cab1.drawers[1])};
+        fadeIn("#env1-mv", ${f(TM.other1 - 0.3)}, 0.15);
+        KITX.fly(tl, "env1-mv", ${f(TM.other1 - 0.25)}, b[0] - a[0] - 70, b[1] - a[1] + 120 * ${CE} - 20, 0.6, 50);
+        KITX.mark(tl, "cab1", 1, ${f(TM.other1 + 0.35)}, "red");
+        pop("#lb-1rej", ${f(TM.other1 + 0.35)});
+        KITX.fly(tl, "env1-mv", ${f(TM.other1 + 0.5)}, b[0] - a[0] - 140, b[1] - a[1] + 120 * ${CE} + 30, 0.4, 0);
+        out("#env1-mv", ${f(TM.other1 + 0.8)}, 0.25); }
+      // but a person outside reads the storage through the glass
+      grow("ps1", ${f(TM.s1 + 0.6)});
+      fadeIn("#mag1-mv", ${f(TM.pub1 - 0.4)}, 0.25);
+      tl.fromTo("#mag1-mv", { x: 0, y: 10 }, { x: -50, y: -10, duration: 1.0, ease: "power1.inOut", immediateRender: false }, ${f(TM.pub1 - 0.3)});
+      KITX.drawer(tl, "cab1", 1, ${f(TM.pub1 - 0.2)}, true, 0.6);
+      KITX.mark(tl, "cab1", 1, ${f(TM.pub1)}, "teal");
+      clear("#lb-1rej", ${f(TM.pub1 - 0.2)});
+      pop("#lb-1pub", ${f(TM.pub1 + 0.1)});
+      SIGN(1, "impact", ${f(TM.sec1)}); pop("#lb-1sec", ${f(TM.sec1 + 0.1)});
+      lampOut(1, ${f(LE(2) - 0.3)});
+
+      // ===== 2 receive / fallback (L3–L4)
+      clear("#lb-1pub, #lb-1sec, #lb-1B", ${f(TM.s2 - 0.5)});
+      station(2, ${f(TM.s2 - 0.45)}, 1.1);
+      pop("#lb-2c", ${f(TM.s2 + 0.8)}); pop("#lb-2t", ${f(TM.s2 + 1.0)});
+      SIGN(2, "myth", ${f(TM.m2)});
+      fadeIn("#coin2", ${f(TM.tr2)}, 0.2); pop("#lb-2eth", ${f(TM.tr2 + 0.1)});
+      SIGN(2, "strike", ${f(TM.f2)}); SIGN(2, "fact", ${f(TM.f2 + 0.35)});
+      { const a = ${JSON.stringify(coin2.anchors.c)}, b = ${JSON.stringify(A.mT2.slot)};
+        clear("#lb-2eth", ${f(TM.eth2 - 0.3)});
+        KITX.fly(tl, "coin2", ${f(TM.eth2 - 0.3)}, b[0] - a[0], b[1] - a[1], 0.7, 90);
+        out("#coin2", ${f(TM.eth2 + 0.35)}, 0.12);
+        KITX.slot(tl, "mT2", ${f(TM.eth2 + 0.35)}, true); }
+      KITX.spin(tl, "mT2", ${f(TM.run2 - 0.1)}, 3.2, 3);
+      pop("#lb-2run", ${f(TM.run2)});
+      { const a = ${JSON.stringify(at(o2.tgt, 0, 0, 0))}, b = ${JSON.stringify(A.mC2.slot)};
+        fadeIn("#env2-mv", ${f(TM.re2 - 0.5)}, 0.15);
+        KITX.fly(tl, "env2-mv", ${f(TM.re2 - 0.45)}, b[0] - a[0], b[1] - a[1] + 120 * ${CE} - 10, 0.8, 110);
+        out("#env2-mv", ${f(TM.re2 + 0.4)}, 0.15);
+        KITX.slot(tl, "mC2", ${f(TM.re2 + 0.35)}, true);
+        KITX.spin(tl, "mC2", ${f(TM.re2 + 0.35)}, 1.6, 1.5); }
+      clear("#lb-2run", ${f(TM.re2 + 0.2)});
+      pop("#lb-2re", ${f(TM.re2 + 0.3)});
+      SIGN(2, "impact", ${f(TM.re2 + 0.2)});
+      lampOut(2, ${f(LE(4) - 0.3)});
+
+      // ===== 3 selfdestruct (L5–L6)
+      clear("#lb-2c, #lb-2t, #lb-2re", ${f(TM.s3 - 0.5)});
+      station(3, ${f(TM.s3 - 0.45)}, 1.1);
+      pop("#lb-3btn", ${f(TM.s3 + 0.9)});
+      SIGN(3, "myth", ${f(TM.m3)});
+      pop("#tc3i", ${f(TM.y3)}, 0.3);
+      SIGN(3, "strike", ${f(TM.only3 - 0.4)}); SIGN(3, "fact", ${f(TM.only3)});
+      pop("#lb-3new", ${f(TM.same3)}); pop("#lb-3old", ${f(TM.same3 + 0.3)});
+      tl.fromTo("#btn3-btn", { y: 0 }, { y: 8, duration: 0.12, ease: "power2.in", immediateRender: false }, ${f(TM.del3 - 0.45)});
+      tl.to("#btn3-btn", { y: 0, duration: 0.2 }, ${f(TM.del3 - 0.2)});
+      KIT.broke(tl, "mN3", ${f(TM.del3 - 0.2)});
+      clear("#tc3i", ${f(TM.del3 - 0.4)});
+      clear("#lb-3new", ${f(TM.del3 - 0.2)});
+      pop("#lb-3del", ${f(TM.del3)});
+      tl.fromTo("#btn3-btn", { y: 0 }, { y: 8, duration: 0.12, ease: "power2.in", immediateRender: false }, ${f(TM.pay3 - 0.7)});
+      tl.to("#btn3-btn", { y: 0, duration: 0.2 }, ${f(TM.pay3 - 0.45)});
+      [0, 1, 2].forEach((k) => { const t = ${f(TM.pay3 - 0.35)} + k * 0.18; fadeIn("#c3-" + k, t, 0.1); KITX.fly(tl, "c3-" + k, t, 150 + k * 40, 50 + k * 18, 0.6, 70); });
+      pop("#lb-3pay", ${f(TM.pay3)});
+      SIGN(3, "impact", ${f(LE(6) - 1.4)});
+      lampOut(3, ${f(LE(6) - 0.3)});
+
+      // ===== 4 contract balance (L7–L9)
+      clear("#lb-3btn, #lb-3old, #lb-3del, #lb-3pay, #tc3i", ${f(TM.s4 - 0.5)});
+      station(4, ${f(TM.s4 - 0.45)}, 1.1);
+      pop("#lb-4jar", ${f(TM.s4 + 0.8)});
+      SIGN(4, "myth", ${f(TM.m4)});
+      pop("#lb-4fn", ${f(TM.fn4 - 0.2)}); pop("#led4i", ${f(TM.fn4)}, 0.3);
+      const into = (k, t, srcSlot) => { const c = ${JSON.stringify(coins4.map((c) => c.anchors.c))}[k], j = ${JSON.stringify(A.jar4.mouth)};
+        fadeIn("#c4-" + k, t, 0.12); KITX.fly(tl, "c4-" + k, t, j[0] - c[0], j[1] - c[1] - 20, 0.6, 90); out("#c4-" + k, t + 0.55, 0.1); fadeIn("#jar4-c" + k, t + 0.6, 0.1); };
+      into(0, ${f(TM.fn4 + 0.2)}); into(1, ${f(TM.fn4 + 0.8)});
+      KITX.spin(tl, "m4", ${f(TM.fn4)}, 1.4, 1);
+      SIGN(4, "strike", ${f(TM.f4)}); SIGN(4, "fact", ${f(TM.f4 + 0.35)});
+      grow("sd4", ${f(TM.sd4 - 0.4)}); pop("#lb-4sd", ${f(TM.sd4)}); into(2, ${f(TM.sd4 + 0.1)}); pop("#d4c-0", ${f(TM.sd4 + 0.7)});
+      grow("bk4", ${f(TM.bk4 - 0.4)}); pop("#lb-4bk", ${f(TM.bk4)}); into(3, ${f(TM.bk4 + 0.1)}); pop("#d4c-1", ${f(TM.bk4 + 0.7)});
+      tl.to("#led4-r2", { backgroundColor: "#fdeae7", duration: 0.25 }, ${f(TM.acc4)});
+      pop("#led4-mis", ${f(TM.acc4 + 0.2)});
+      SIGN(4, "impact", ${f(TM.mess4 - 0.3)}); pop("#lb-4mess", ${f(TM.mess4)});
+      lampOut(4, ${f(LE(9) - 0.3)});
+
+      // ===== 5 checked arithmetic (L10–L11)
+      clear("#lb-4jar, #lb-4fn, #lb-4sd, #lb-4bk, #led4i, #lb-4mess", ${f(TM.s5 - 0.5)});
+      KIT.cam(tl, ${f(TM.s5 - 0.45)}, CAMS.s5, 1.1);
+      V[5].forEach((id, k) => grow(id, ${f(TM.s5 + 0.05)} + k * 0.12, 0.45));
+      SIGN(5, "myth", ${f(TM.m5)});
+      KIT.swap(tl, "#ctr5-s0", "#ctr5-s1", ${f(TM.ovf5)}, 0.15);
+      KIT.swap(tl, "#ctr5-s1", "#ctr5-s2", ${f(TM.rb5)}, 0.2);
+      pop("#lb-5ovf", ${f(TM.rb5 + 0.1)});
+      SIGN(5, "strike", ${f(TM.but5)}); SIGN(5, "fact", ${f(TM.but5 + 0.35)});
+      ${JSON.stringify(TM.g5)}.forEach((t, k) => { pop("#lb-5g" + k, t); fadeIn("#tk5-" + k + "-mv", t, 0.15);
+        tl.fromTo("#tk5-" + k, { x: 0, y: 0 }, { x: 170, y: -60, duration: 0.9, ease: "power1.inOut", immediateRender: false }, t + 0.1); });
+      clear("#lb-5ovf", ${f(TM.quiet5 - 0.3)});
+      pop("#lb-5quiet", ${f(TM.quiet5)});
+      SIGN(5, "impact", ${f(TM.quiet5 + 0.5)});
+      lampOut(5, ${f(LE(11) - 0.3)});
+
+      // ===== 6 block.timestamp (L12–L13)
+      clear("#lb-5g0, #lb-5g1, #lb-5g2, #lb-5quiet", ${f(TM.s6 - 0.5)});
+      station(6, ${f(TM.s6 - 0.45)}, 1.1);
+      SIGN(6, "myth", ${f(TM.m6)});
+      SIGN(6, "strike", ${f(TM.not6)});
+      pop("#lb-6ps", ${f(TM.prod6)}); SIGN(6, "fact", ${f(TM.prod6 + 0.2)});
+      KIT.clock(tl, "clk6", ${f(TM.chg6 - 0.4)}, 0.4, 4); KIT.clock(tl, "clk6", ${f(TM.chg6 + 0.1)}, 0.4, -7); KIT.clock(tl, "clk6", ${f(TM.chg6 + 0.6)}, 0.4, 5);
+      pop("#lb-6nudge", ${f(TM.chg6)});
+      grow("seq6", ${f(TM.l2_6 - 0.2)}); pop("#lb-6seq", ${f(TM.l2_6 + 0.2)});
+      KIT.draw(tl, "dc6", ${f(TM.l2_6 + 0.2)}, 0.5);
+      KIT.clock(tl, "clk6", ${f(TM.l2_6 + 0.5)}, 0.5, -6);
+      SIGN(6, "impact", ${f(TM.rnd6 - 0.3)});
+      clear("#lb-6nudge", ${f(TM.rnd6 - 0.3)}); pop("#lb-6r", ${f(TM.rnd6)}); pop("#lb-6s", ${f(TM.sec6)});
+      lampOut(6, ${f(LE(13) - 0.3)});
+
+      // ===== 7 block.number (L14–L16)
+      clear("#lb-6ps, #lb-6nudge, #lb-6seq, #lb-6r, #lb-6s", ${f(TM.s7 - 0.5)});
+      station(7, ${f(TM.s7 - 0.45)}, 1.1);
+      SIGN(7, "myth", ${f(TM.m7)});
+      pop("#lb-7gap0", ${f(TM.fix7)}); pop("#lb-7gap1", ${f(TM.fix7 + 0.15)});
+      SIGN(7, "strike", ${f(TM.bsc7)});
+      pop("#lb-7bsc", ${f(TM.bsc7 + 0.1)}); pop("#lb-7asof", ${f(TM.fermi7)});
+      clear("#lb-7gap0, #lb-7gap1", ${f(TM.shrink7 - 0.2)});
+      KITX.moveUV(tl, "bl7-1", ${f(TM.shrink7)}, ${SP1 - SP0}, 0, 0, 0.7);
+      KITX.moveUV(tl, "bl7-2", ${f(TM.shrink7)}, ${2 * SP1 - 2 * SP0}, 0, 0, 0.7);
+      for (let k = 3; k < ${NB}; k++) pop("#bl7-" + k, ${f(TM.shrink7 + 0.6)} + (k - 3) * 0.07, 0.2);
+      SIGN(7, "fact", ${f(TM.f45)}); pop("#lb-7gapN", ${f(TM.f45)});
+      pop("#lb-7l2", ${f(TM.l2_7)});
+      pop("#lb-7lock", ${f(L(16).start)});
+      KIT.sand(tl, "hg7", ${f(TM.int7 - 0.4)}, 1.2);
+      pop("#lb-7early", ${f(TM.err7)});
+      SIGN(7, "impact", ${f(TM.err7 + 0.1)});
+      lampOut(7, ${f(LE(16) - 0.3)});
+
+      // ===== 8 function selectors (L17–L20)
+      clear("#lb-7gapN, #lb-7bsc, #lb-7asof, #lb-7l2, #lb-7lock, #lb-7early", ${f(TM.s8 - 0.5)});
+      station(8, ${f(TM.s8 - 0.45)}, 1.1);
+      fadeIn("#k1-mv", ${f(TM.s8 + 0.4)}, 0.3); fadeIn("#k2-mv", ${f(TM.s8 + 0.55)}, 0.3);
+      pop("#lb-8plate", ${f(TM.s8 + 0.9)});
+      SIGN(8, "myth", ${f(TM.m8)});
+      pop("#lb-8k1", ${f(TM.name8)}); pop("#lb-8k2", ${f(TM.name8 + 0.2)});
+      SIGN(8, "strike", ${f(TM.f8)}); SIGN(8, "fact", ${f(TM.f8 + 0.35)});
+      KITX.fade(tl, "#k1-teeth-hl", ${f(TM.b4 - 0.2)}, 1, 0.2); KITX.fade(tl, "#k2-teeth-hl", ${f(TM.b4 - 0.2)}, 1, 0.2);
+      pop("#lb-8teeth", ${f(TM.b4)});
+      // key A in → green, out; key B in → green
+      KITX.fly(tl, "k1-mv", ${f(TM.diff8 - 0.3)}, KI.k1[0], KI.k1[1], 0.6);
+      KIT.led(tl, "lk8-led", ${f(TM.diff8 + 0.3)}, "green");
+      KITX.fly(tl, "k1-mv", ${f(TM.diff8 + 0.8)}, 0, 0, 0.5);
+      KIT.led(tl, "lk8-led", ${f(TM.diff8 + 0.8)}, "off");
+      clear("#lb-8teeth", ${f(TM.diff8 + 0.6)});
+      KITX.fade(tl, "#k1-mv", ${f(TM.hit8 - 0.5)}, 0.35, 0.2);
+      KITX.fly(tl, "k2-mv", ${f(TM.hit8 - 0.4)}, KI.k2[0], KI.k2[1], 0.6);
+      KIT.led(tl, "lk8-led", ${f(TM.hit8 + 0.2)}, "green");
+      pop("#lb-8same", ${f(TM.hit8 + 0.3)});
+      SIGN(8, "impact", ${f(TM.hit8 + 0.6)});
+      // Poly Network
+      KIT.cam(tl, ${f(TM.y8 - 0.4)}, CAMS.s8b, 0.8);
+      KITX.fly(tl, "k2-mv", ${f(TM.key8 - 0.7)}, 0, 0, 0.5);
+      KIT.led(tl, "lk8-led", ${f(TM.key8 - 0.7)}, "off");
+      clear("#lb-8same, #lb-8k1, #lb-8k2", ${f(TM.key8 - 0.7)});
+      pop("#ev8i", ${f(TM.y8)}, 0.3);
+      out("#k2-mv", ${f(TM.key8 - 0.3)}, 0.3); KITX.fade(tl, "#k1-mv", ${f(TM.key8 - 0.3)}, 0, 0.3);
+      fadeIn("#k3-mv", ${f(TM.key8)}, 0.3);
+      pop("#lb-8k3", ${f(TM.cons8)});
+      KITX.fly(tl, "k3-mv", ${f(TM.hit8b - 0.4)}, KI.k3[0], KI.k3[1], 0.6);
+      KIT.led(tl, "lk8-led", ${f(TM.hit8b + 0.2)}, "red");
+      KIT.swap(tl, "#lb-8plate", "#lb-8plate2", ${f(TM.rep8)}, 0.25);
+      lampOut(8, ${f(LE(20) - 0.3)});
+
+      // ===== L21 overview: all eight lamps lit; code card D slides in
+      clear("#lb-8k3, #ev8i, #lb-8plate2", ${f(TM.s21 - 0.4)});
+      KIT.cam(tl, ${f(TM.s21 - 0.4)}, CAMS.over, 1.4);
+      tl.fromTo("#codeD", { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out", immediateRender: false }, ${f(TM.st21 - 0.2)});
+      // ===== L22 storage vs memory
+      KIT.cam(tl, ${f(TM.s22 - 0.5)}, CAMS.s9, 1.1);
+      V[9].slice(0, 1).forEach((id) => grow(id, ${f(TM.s22 - 0.1)}, 0.45));
+      tl.to("#cdb0", { opacity: 1, duration: 0.2 }, ${f(TM.ref22 - 0.4)});
+      KITX.drawer(tl, "cab9", 1, ${f(TM.ref22 - 0.3)}, true, 0.5);
+      pop("#lb-9d1", ${f(TM.ref22)});
+      KIT.draw(tl, "dc1", ${f(TM.ref22)}, 0.5);
+      KITX.mark(tl, "cab9", 1, ${f(TM.wb22)}, "green");
+      KIT.swap(tl, "#lb-9d1", "#lb-9d1b", ${f(TM.wb22)}, 0.2);
+      tl.to("#cdb0", { opacity: 0, duration: 0.2 }, ${f(TM.mem22 - 0.4)});
+      tl.to("#cdb1", { opacity: 1, duration: 0.2 }, ${f(TM.mem22 - 0.4)});
+      KITX.drawer(tl, "cab9", 2, ${f(TM.mem22 - 0.4)}, true, 0.5);
+      pop("#lb-9d2", ${f(TM.mem22 - 0.1)});
+      fadeIn("#sh9-mv", ${f(TM.cp22 - 0.3)}, 0.15);
+      tl.fromTo("#sh9-mv", { x: 0, y: -40 }, { x: ${f(shDX)}, y: ${f(shDY)}, duration: 0.6, ease: "power2.out", immediateRender: false }, ${f(TM.cp22 - 0.3)});
+      KIT.draw(tl, "dc2", ${f(TM.cp22 + 0.3)}, 0.5);
+      pop("#lb-9copy", ${f(TM.nwb22 - 0.3)});
+      KIT.swap(tl, "#lb-9d2", "#lb-9d2b", ${f(TM.nwb22)}, 0.2);
+      KITX.mark(tl, "cab9", 2, ${f(TM.nwb22)}, "red");
+      // ===== L23 one wrong word → claimed again and again
+      tl.to("#cdr1", { backgroundColor: "#fdeae7", duration: 0.25 }, ${f(TM.word23)});
+      out("#dc1", ${f(TM.word23)}, 0.3);
+            ["ps9", "sl9-0", "sl9-1", "sl9-2"].forEach((id, k) => grow(id, ${f(TM.upd23 - 0.5)} + k * 0.1, 0.4));
+      [0, 1, 2].forEach((k) => tl.set("#sl9-" + k + "-stampmark", { opacity: 0 }, 0));
+      [0, 1, 2].forEach((k) => tl.fromTo("#sl9-" + k + "-stampmark", { opacity: 0, scale: 1.3, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out", immediateRender: false }, ${f(TM.rep23 - 0.6)} + k * 0.32));
+      pop("#lb-9rep", ${f(TM.rep23 + 0.3)});
+      tl.set({}, {}, ${f(TOTAL)});
+${termJs(TERMS)}
+      window.__timelines["story"] = tl;
+    })();
+  </script>
+</template>
+`;
+fs.writeFileSync(new URL("../compositions/story.html", import.meta.url), html);
+console.log("wrote compositions/story.html", html.length, "bytes; total", TOTAL, "over k", CAMS.over.scale);

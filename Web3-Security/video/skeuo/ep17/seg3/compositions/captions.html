@@ -1,0 +1,159 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .cap-g { position: absolute; left: 0; right: 0; bottom: var(--cap-bottom, 84px); text-align: center; opacity: 0; visibility: hidden; }
+    .cap-t { display: inline-block; font-family: var(--cap-font, "Noto Sans SC"), sans-serif; font-weight: var(--cap-weight, 700);
+      font-size: var(--cap-size, 46px); line-height: 1.25; color: var(--cap-ink, #111); letter-spacing: 0.02em;
+      padding: var(--cap-pad, 0); background: var(--cap-bg, transparent); border-radius: var(--cap-radius, 0);
+      text-shadow: var(--cap-shadow, none); }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-c0" class="cap-g"><span class="cap-t">前面是你问节点</span></div>
+    <div id="cap-c1" class="cap-g"><span class="cap-t">节点答错</span></div>
+    <div id="cap-c2" class="cap-g"><span class="cap-t">另一种情况</span></div>
+    <div id="cap-c3" class="cap-g"><span class="cap-t">是节点自己看到的网络</span></div>
+    <div id="cap-c4" class="cap-g"><span class="cap-t">被人操纵</span></div>
+    <div id="cap-c5" class="cap-g"><span class="cap-t">节点之间直接交换区块和交易</span></div>
+    <div id="cap-c6" class="cap-g"><span class="cap-t">这叫 P2P 网络</span></div>
+    <div id="cap-c7" class="cap-g"><span class="cap-t">日蚀攻击</span></div>
+    <div id="cap-c8" class="cap-g"><span class="cap-t">是攻击者占满受害节点的全部对等连接</span></div>
+    <div id="cap-c9" class="cap-g"><span class="cap-t">节点只看到攻击者给的区块和交易</span></div>
+    <div id="cap-c10" class="cap-g"><span class="cap-t">最关键的一步</span></div>
+    <div id="cap-c11" class="cap-g"><span class="cap-t">在节点重启</span></div>
+    <div id="cap-c12" class="cap-g"><span class="cap-t">重启时 节点会从地址表里挑选对等节点</span></div>
+    <div id="cap-c13" class="cap-g"><span class="cap-t">地址表如果已经被攻击者填满</span></div>
+    <div id="cap-c14" class="cap-g"><span class="cap-t">它连上的就全是攻击者</span></div>
+    <div id="cap-c15" class="cap-g"><span class="cap-t">2018 年的一篇论文显示</span></div>
+    <div id="cap-c16" class="cap-g"><span class="cap-t">两台主机</span></div>
+    <div id="cap-c17" class="cap-g"><span class="cap-t">各一个 IP</span></div>
+    <div id="cap-c18" class="cap-g"><span class="cap-t">就能日蚀一个以太坊节点</span></div>
+    <div id="cap-c19" class="cap-g"><span class="cap-t">Geth 1.8.0 随后限制了同一网段的节点数</span></div>
+    <div id="cap-c20" class="cap-g"><span class="cap-t">比特币加了锚点连接</span></div>
+    <div id="cap-c21" class="cap-g"><span class="cap-t">重启时优先恢复上次的出站连接</span></div>
+    <div id="cap-c22" class="cap-g"><span class="cap-t">被日蚀的节点</span></div>
+    <div id="cap-c23" class="cap-g"><span class="cap-t">同步状态看起来正常</span></div>
+    <div id="cap-c24" class="cap-g"><span class="cap-t">它有连接</span></div>
+    <div id="cap-c25" class="cap-g"><span class="cap-t">也有新块</span></div>
+    <div id="cap-c26" class="cap-g"><span class="cap-t">只是落后</span></div>
+    <div id="cap-c27" class="cap-g"><span class="cap-t">或者在错误的分支上</span></div>
+    <div id="cap-c28" class="cap-g"><span class="cap-t">对等节点数只说明有连接</span></div>
+    <div id="cap-c29" class="cap-g"><span class="cap-t">不说明连接来自独立的运营方</span></div>
+    <div id="cap-c30" class="cap-g"><span class="cap-t">节点崩溃</span></div>
+    <div id="cap-c31" class="cap-g"><span class="cap-t">也可能是攻击的第一步</span></div>
+    <div id="cap-c32" class="cap-g"><span class="cap-t">切换逻辑如果把流量转到不可信的备用节点</span></div>
+    <div id="cap-c33" class="cap-g"><span class="cap-t">DoS 就成了数据污染的前置步骤</span></div>
+    <div id="cap-c34" class="cap-g"><span class="cap-t">开头的事件正是这样</span></div>
+    <div id="cap-c35" class="cap-g"><span class="cap-t">另一类事故</span></div>
+    <div id="cap-c36" class="cap-g"><span class="cap-t">来自节点自己的配置</span></div>
+    <div id="cap-c37" class="cap-g"><span class="cap-t">2018 年</span></div>
+    <div id="cap-c38" class="cap-g"><span class="cap-t">一个团伙扫描暴露 JSON-RPC 的以太坊节点</span></div>
+    <div id="cap-c39" class="cap-g"><span class="cap-t">盗走约 3.8 万个 ETH</span></div>
+    <div id="cap-c40" class="cap-g"><span class="cap-t">Geth 默认只监听本机</span></div>
+    <div id="cap-c41" class="cap-g"><span class="cap-t">接口是运营者自己打开的</span></div>
+    <div id="cap-c42" class="cap-g"><span class="cap-t">RPC 接口只绑内网或本机</span></div>
+    <div id="cap-c43" class="cap-g"><span class="cap-t">对外必须经过认证网关</span></div>
+    <div id="cap-c44" class="cap-g"><span class="cap-t">给执行客户端下指令的 Engine API</span></div>
+    <div id="cap-c45" class="cap-g"><span class="cap-t">只对共识客户端开放</span></div>
+    <div id="cap-c46" class="cap-g"><span class="cap-t">并用 JWT 认证</span></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      tl.set("#cap-c0", {opacity: 1, visibility: "visible"}, 1.550);
+      tl.set("#cap-c0", {opacity: 0, visibility: "hidden"}, 3.141);
+      tl.set("#cap-c1", {opacity: 1, visibility: "visible"}, 3.361);
+      tl.set("#cap-c1", {opacity: 0, visibility: "hidden"}, 4.382);
+      tl.set("#cap-c2", {opacity: 1, visibility: "visible"}, 4.743);
+      tl.set("#cap-c2", {opacity: 0, visibility: "hidden"}, 5.677);
+      tl.set("#cap-c3", {opacity: 1, visibility: "visible"}, 5.925);
+      tl.set("#cap-c3", {opacity: 0, visibility: "hidden"}, 7.879);
+      tl.set("#cap-c4", {opacity: 1, visibility: "visible"}, 7.954);
+      tl.set("#cap-c4", {opacity: 0, visibility: "hidden"}, 8.750);
+      tl.set("#cap-c5", {opacity: 1, visibility: "visible"}, 9.030);
+      tl.set("#cap-c5", {opacity: 0, visibility: "hidden"}, 11.760);
+      tl.set("#cap-c6", {opacity: 1, visibility: "visible"}, 11.829);
+      tl.set("#cap-c6", {opacity: 0, visibility: "hidden"}, 13.153);
+      tl.set("#cap-c7", {opacity: 1, visibility: "visible"}, 13.505);
+      tl.set("#cap-c7", {opacity: 0, visibility: "hidden"}, 14.503);
+      tl.set("#cap-c8", {opacity: 1, visibility: "visible"}, 14.692);
+      tl.set("#cap-c8", {opacity: 0, visibility: "hidden"}, 18.151);
+      tl.set("#cap-c9", {opacity: 1, visibility: "visible"}, 18.430);
+      tl.set("#cap-c9", {opacity: 0, visibility: "hidden"}, 21.378);
+      tl.set("#cap-c10", {opacity: 1, visibility: "visible"}, 21.690);
+      tl.set("#cap-c10", {opacity: 0, visibility: "hidden"}, 22.814);
+      tl.set("#cap-c11", {opacity: 1, visibility: "visible"}, 22.911);
+      tl.set("#cap-c11", {opacity: 0, visibility: "hidden"}, 24.364);
+      tl.set("#cap-c12", {opacity: 1, visibility: "visible"}, 24.630);
+      tl.set("#cap-c12", {opacity: 0, visibility: "hidden"}, 29.117);
+      tl.set("#cap-c13", {opacity: 1, visibility: "visible"}, 29.410);
+      tl.set("#cap-c13", {opacity: 0, visibility: "hidden"}, 31.987);
+      tl.set("#cap-c14", {opacity: 1, visibility: "visible"}, 32.123);
+      tl.set("#cap-c14", {opacity: 0, visibility: "hidden"}, 34.366);
+      tl.set("#cap-c15", {opacity: 1, visibility: "visible"}, 34.697);
+      tl.set("#cap-c15", {opacity: 0, visibility: "hidden"}, 36.701);
+      tl.set("#cap-c16", {opacity: 1, visibility: "visible"}, 37.125);
+      tl.set("#cap-c16", {opacity: 0, visibility: "hidden"}, 38.070);
+      tl.set("#cap-c17", {opacity: 1, visibility: "visible"}, 38.184);
+      tl.set("#cap-c17", {opacity: 0, visibility: "hidden"}, 39.101);
+      tl.set("#cap-c18", {opacity: 1, visibility: "visible"}, 39.245);
+      tl.set("#cap-c18", {opacity: 0, visibility: "hidden"}, 41.376);
+      tl.set("#cap-c19", {opacity: 1, visibility: "visible"}, 41.705);
+      tl.set("#cap-c19", {opacity: 0, visibility: "hidden"}, 45.938);
+      tl.set("#cap-c20", {opacity: 1, visibility: "visible"}, 46.250);
+      tl.set("#cap-c20", {opacity: 0, visibility: "hidden"}, 48.087);
+      tl.set("#cap-c21", {opacity: 1, visibility: "visible"}, 48.450);
+      tl.set("#cap-c21", {opacity: 0, visibility: "hidden"}, 51.507);
+      tl.set("#cap-c22", {opacity: 1, visibility: "visible"}, 51.838);
+      tl.set("#cap-c22", {opacity: 0, visibility: "hidden"}, 53.222);
+      tl.set("#cap-c23", {opacity: 1, visibility: "visible"}, 53.405);
+      tl.set("#cap-c23", {opacity: 0, visibility: "hidden"}, 55.207);
+      tl.set("#cap-c24", {opacity: 1, visibility: "visible"}, 55.470);
+      tl.set("#cap-c24", {opacity: 0, visibility: "hidden"}, 56.519);
+      tl.set("#cap-c25", {opacity: 1, visibility: "visible"}, 56.579);
+      tl.set("#cap-c25", {opacity: 0, visibility: "hidden"}, 57.440);
+      tl.set("#cap-c26", {opacity: 1, visibility: "visible"}, 57.538);
+      tl.set("#cap-c26", {opacity: 0, visibility: "hidden"}, 58.389);
+      tl.set("#cap-c27", {opacity: 1, visibility: "visible"}, 58.522);
+      tl.set("#cap-c27", {opacity: 0, visibility: "hidden"}, 60.039);
+      tl.set("#cap-c28", {opacity: 1, visibility: "visible"}, 60.354);
+      tl.set("#cap-c28", {opacity: 0, visibility: "hidden"}, 62.671);
+      tl.set("#cap-c29", {opacity: 1, visibility: "visible"}, 62.814);
+      tl.set("#cap-c29", {opacity: 0, visibility: "hidden"}, 65.250);
+      tl.set("#cap-c30", {opacity: 1, visibility: "visible"}, 65.605);
+      tl.set("#cap-c30", {opacity: 0, visibility: "hidden"}, 66.580);
+      tl.set("#cap-c31", {opacity: 1, visibility: "visible"}, 66.718);
+      tl.set("#cap-c31", {opacity: 0, visibility: "hidden"}, 68.390);
+      tl.set("#cap-c32", {opacity: 1, visibility: "visible"}, 68.610);
+      tl.set("#cap-c32", {opacity: 0, visibility: "hidden"}, 72.638);
+      tl.set("#cap-c33", {opacity: 1, visibility: "visible"}, 72.848);
+      tl.set("#cap-c33", {opacity: 0, visibility: "hidden"}, 76.194);
+      tl.set("#cap-c34", {opacity: 1, visibility: "visible"}, 76.527);
+      tl.set("#cap-c34", {opacity: 0, visibility: "hidden"}, 78.092);
+      tl.set("#cap-c35", {opacity: 1, visibility: "visible"}, 78.423);
+      tl.set("#cap-c35", {opacity: 0, visibility: "hidden"}, 79.392);
+      tl.set("#cap-c36", {opacity: 1, visibility: "visible"}, 79.544);
+      tl.set("#cap-c36", {opacity: 0, visibility: "hidden"}, 81.338);
+      tl.set("#cap-c37", {opacity: 1, visibility: "visible"}, 81.684);
+      tl.set("#cap-c37", {opacity: 0, visibility: "hidden"}, 82.495);
+      tl.set("#cap-c38", {opacity: 1, visibility: "visible"}, 82.722);
+      tl.set("#cap-c38", {opacity: 0, visibility: "hidden"}, 86.504);
+      tl.set("#cap-c39", {opacity: 1, visibility: "visible"}, 86.628);
+      tl.set("#cap-c39", {opacity: 0, visibility: "hidden"}, 88.861);
+      tl.set("#cap-c40", {opacity: 1, visibility: "visible"}, 89.090);
+      tl.set("#cap-c40", {opacity: 0, visibility: "hidden"}, 91.155);
+      tl.set("#cap-c41", {opacity: 1, visibility: "visible"}, 91.415);
+      tl.set("#cap-c41", {opacity: 0, visibility: "hidden"}, 93.488);
+      tl.set("#cap-c42", {opacity: 1, visibility: "visible"}, 93.801);
+      tl.set("#cap-c42", {opacity: 0, visibility: "hidden"}, 96.193);
+      tl.set("#cap-c43", {opacity: 1, visibility: "visible"}, 96.357);
+      tl.set("#cap-c43", {opacity: 0, visibility: "hidden"}, 98.336);
+      tl.set("#cap-c44", {opacity: 1, visibility: "visible"}, 98.663);
+      tl.set("#cap-c44", {opacity: 0, visibility: "hidden"}, 102.306);
+      tl.set("#cap-c45", {opacity: 1, visibility: "visible"}, 102.326);
+      tl.set("#cap-c45", {opacity: 0, visibility: "hidden"}, 104.328);
+      tl.set("#cap-c46", {opacity: 1, visibility: "visible"}, 104.348);
+      tl.set("#cap-c46", {opacity: 0, visibility: "hidden"}, 105.473);
+      window.__timelines["captions"] = tl;
+    })();
+  </script>
+</template>

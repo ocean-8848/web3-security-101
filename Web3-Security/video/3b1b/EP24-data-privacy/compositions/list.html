@@ -1,0 +1,85 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="list" data-duration="37.89" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="l-all">
+        <text id="l-title" class="h" x="960" y="140" font-size="52" fill="#e8e6df" text-anchor="middle" font-weight="800">数据泄露 = 下一次诈骗的<tspan fill="#FF9F43">名单</tspan></text>
+        <g id="l-book" class="h">
+          <rect x="300" y="240" width="720" height="560" rx="18" fill="#1d1710" stroke="#FF9F43" stroke-width="4" />
+          <line x1="350" y1="240" x2="350" y2="800" stroke="#FF9F43" stroke-opacity=".4" stroke-width="3" />
+          <text x="660" y="310" font-size="38" fill="#FF9F43" text-anchor="middle" font-weight="800">肥羊通讯录</text>
+        </g>
+        <g font-size="32" fill="#e8e6df">
+          <text class="l-e h" x="390" y="400">姓名：用户 A（示例）</text>
+          <text class="l-e h" x="390" y="470">电话：138 **** 0000</text>
+          <g class="l-e h"><text x="390" y="540">存款：</text><rect x="490" y="514" width="200" height="30" rx="6" fill="#F0B90B" /></g>
+          <text class="l-e h" x="390" y="610">交易所：某交易所</text>
+        </g>
+        <g id="l-note" class="h">
+          <rect x="390" y="660" width="560" height="80" rx="10" fill="#2a2240" stroke="#B48EF0" stroke-width="3" />
+          <text x="670" y="712" font-size="30" fill="#B48EF0" text-anchor="middle">“他上周刚联系过客服”</text>
+        </g>
+        <!-- 银行流水 vs 链上 -->
+        <g id="l-bank" class="h">
+          <rect x="1180" y="260" width="500" height="200" rx="16" fill="#161a22" stroke="#8a8f99" stroke-width="3" />
+          <text x="1430" y="330" font-size="34" fill="#8a8f99" text-anchor="middle">银行流水</text>
+          <text x="1430" y="400" font-size="30" fill="#8a8f99" text-anchor="middle">私密</text>
+        </g>
+        <g id="l-chain" class="h">
+          <rect x="1180" y="520" width="500" height="280" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="1430" y="590" font-size="34" fill="#58C4DD" text-anchor="middle">链上交易</text>
+          <text x="1430" y="650" font-size="30" fill="#58C4DD" text-anchor="middle">公开</text>
+        </g>
+        <!-- 一个地址展开成全部历史 -->
+        <g id="l-addr" class="h">
+          <rect x="390" y="510" width="300" height="56" rx="10" fill="#121a22" stroke="#58C4DD" stroke-width="3" />
+          <text x="540" y="548" font-size="30" fill="#58C4DD" text-anchor="middle">地址 0x7a…3f</text>
+        </g>
+        <g id="l-graph" stroke="#58C4DD" stroke-width="2" fill="#58C4DD"></g>
+        <text id="l-bal" class="h" x="1430" y="760" font-size="36" fill="#F0B90B" text-anchor="middle" font-weight="800">当前余额：一查便知</text>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 37.89, "L": [[0.6, 5.38], [5.83, 11.78], [12.23, 23.1], [23.55, 29.12], [29.57, 36.79]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      IN("#l-title", at(0, 0.1), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      IN("#l-book", at(1, 0.3), 0.6, { y: 20 }, { y: 0 });
+      gsap.utils.toArray("#root .l-e").forEach((e, i) => IN(e, at(2, 0.0 + i * 0.12), 0.4, { x: -10 }, { x: 0 }));
+      IN("#l-note", at(2, 0.5), 0.5);
+      // L3 银行 vs 链上
+      IN("#l-bank", at(3, 0.05), 0.5);
+      IN("#l-chain", at(3, 0.5), 0.5);
+      // L4 一个地址 → 全部历史
+      tl.to(gsap.utils.toArray("#root .l-e")[2], { opacity: 0, duration: 0.3 }, at(4, 0.0));
+      IN("#l-addr", at(4, 0.05), 0.4);
+      let seed = 5; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      const g = document.querySelector("#l-graph"), NS = "http://www.w3.org/2000/svg";
+      for (let i = 0; i < 14; i++) {
+        const x = 1230 + rnd() * 400, y = 665 + rnd() * 40;
+        const ln = document.createElementNS(NS, "line"); ln.setAttribute("x1", 690); ln.setAttribute("y1", 538); ln.setAttribute("x2", x.toFixed(1)); ln.setAttribute("y2", y.toFixed(1)); ln.setAttribute("opacity", "0"); ln.setAttribute("stroke-opacity", ".35"); g.appendChild(ln);
+        const c = document.createElementNS(NS, "circle"); c.setAttribute("cx", x.toFixed(1)); c.setAttribute("cy", y.toFixed(1)); c.setAttribute("r", "7"); c.setAttribute("opacity", "0"); g.appendChild(c);
+        tl.fromTo([ln, c], { opacity: 0 }, { opacity: 1, duration: 0.25 }, at(4, 0.2) + i * 0.08);
+      }
+      tl.to("#l-chain text:nth-of-type(2)", { opacity: 0, duration: 0.2 }, at(4, 0.2));
+      IN("#l-bal", at(4, 0.7), 0.5);
+      tl.to("#l-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["list"] = tl;
+    })();
+  </script>
+</template>

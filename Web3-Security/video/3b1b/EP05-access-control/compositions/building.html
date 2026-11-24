@@ -1,0 +1,93 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="building" data-duration="49.24" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="b-all">
+        <g id="b-rule">
+          <g id="b-fn" class="h"><rect x="760" y="380" width="400" height="120" rx="60" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="960" y="452" font-size="34" fill="#58C4DD" text-anchor="middle">修改状态的函数</text></g>
+          <text id="b-q" class="h" x="960" y="300" font-size="60" fill="#FF9F43" text-anchor="middle" font-weight="800">谁可以调用我？</text>
+          <text id="b-any" class="h" x="960" y="640" font-size="40" fill="#e8e6df" text-anchor="middle">答案是「任何人」→ 必须证明：<tspan fill="#83C167">任何人调用都安全</tspan></text>
+        </g>
+
+        <!-- 写字楼 -->
+        <g id="b-bld">
+          <rect id="b-out" class="h" x="640" y="200" width="640" height="760" rx="8" fill="#13161d" stroke="#8a8f99" stroke-width="4" />
+          <g id="b-floors" class="h" stroke="#3a3f4a" stroke-width="3"><line x1="640" y1="460" x2="1280" y2="460" /><line x1="640" y1="710" x2="1280" y2="710" /><line x1="960" y1="200" x2="960" y2="460" /></g>
+          <!-- 大堂 -->
+          <g id="b-lobby" class="h">
+            <rect x="900" y="830" width="120" height="130" fill="#1c2029" stroke="#83C167" stroke-width="3" />
+            <text x="960" y="800" font-size="28" fill="#e8e6df" text-anchor="middle">大堂</text>
+            <rect id="b-desk" x="700" y="900" width="150" height="50" rx="6" fill="#2a2f3a" />
+            <text x="775" y="885" font-size="28" fill="#8a8f99" text-anchor="middle">前台</text>
+          </g>
+          <!-- 机房 -->
+          <g id="b-srv" class="h">
+            <text x="800" y="250" font-size="28" fill="#e8e6df" text-anchor="middle">机房</text>
+            <rect x="760" y="320" width="90" height="140" fill="#1c2029" stroke="#58C4DD" stroke-width="3" />
+            <rect id="b-reader" x="866" y="370" width="30" height="44" rx="4" fill="#FF9F43" />
+          </g>
+          <!-- 物业办公室 -->
+          <g id="b-prop" class="h"><text x="1120" y="250" font-size="28" fill="#e8e6df" text-anchor="middle">物业办公室</text><rect x="1075" y="320" width="90" height="140" fill="#1c2029" stroke="#8a8f99" stroke-width="3" /></g>
+          <text id="b-pub" class="h" x="1320" y="900" font-size="30" fill="#83C167">public：大堂的门，谁都能进</text>
+          <text id="b-own" class="h" x="600" y="390" font-size="30" fill="#FF9F43" text-anchor="end">onlyOwner：机房的门，要刷卡</text>
+        </g>
+
+        <!-- 四种漏洞 -->
+        <g id="b-gaps">
+          <g id="b-g1" class="h"><circle cx="880" cy="300" r="24" fill="#FC6255" /><text x="880" y="310" font-size="28" fill="#0f1117" text-anchor="middle" font-weight="800">1</text><text x="600" y="480" font-size="30" fill="#FC6255" text-anchor="end">① 机房门忘了装刷卡器</text></g>
+          <g id="b-g2" class="h"><circle cx="920" cy="392" r="24" fill="#FC6255" /><text x="920" y="402" font-size="28" fill="#0f1117" text-anchor="middle" font-weight="800">2</text><text x="600" y="560" font-size="30" fill="#FC6255" text-anchor="end">② 刷卡器查错了人</text></g>
+          <g id="b-g3" class="h"><circle cx="1210" cy="300" r="24" fill="#FC6255" /><text x="1210" y="310" font-size="28" fill="#0f1117" text-anchor="middle" font-weight="800">3</text><text x="1320" y="320" font-size="30" fill="#FC6255">③ 谁先进门，谁当经理</text></g>
+          <g id="b-g4" class="h"><rect x="740" y="912" width="70" height="26" rx="4" fill="#B48EF0" /><circle cx="680" cy="925" r="24" fill="#FC6255" /><text x="680" y="935" font-size="28" fill="#0f1117" text-anchor="middle" font-weight="800">4</text><text x="600" y="1000" font-size="30" fill="#FC6255" text-anchor="end">④ 门卡放在前台抽屉</text></g>
+        </g>
+        <text id="b-lim" class="h" x="1320" y="600" font-size="32" fill="#FF9F43">写字楼可以换锁</text>
+        <text id="b-lim2" class="h" x="1320" y="650" font-size="32" fill="#FF9F43">不能升级的合约：锁装错，就永远错</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 49.24, "L": [[0.6, 7.75], [8.2, 13.72], [14.17, 24.42], [24.87, 39.37], [39.82, 48.14]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const POP = (s, t) => IN(s, t, 0.4, { x: -12 }, { x: 0 });
+
+      // L0 谁可以调用我？
+      IN("#b-fn", at(0, 0.05), 0.5);
+      IN("#b-q", at(0, 0.5), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      // L1 任何人 → 要证明安全
+      IN("#b-any", at(1, 0.1), 0.5);
+      // L2 写字楼
+      tl.to("#b-rule", { opacity: 0, duration: 0.4 }, at(2, 0.0));
+      IN("#b-out", at(2, 0.05), 0.6);
+      IN("#b-floors", at(2, 0.1), 0.5);
+      IN("#b-lobby", at(2, 0.3), 0.5);
+      IN("#b-pub", at(2, 0.35), 0.4);
+      IN("#b-srv", at(2, 0.6), 0.5);
+      IN("#b-own", at(2, 0.65), 0.4);
+      // L3 四种漏洞
+      IN("#b-prop", at(3, 0.0), 0.4);
+      tl.to("#b-reader", { opacity: 0.15, duration: 0.3 }, at(3, 0.08));
+      POP("#b-g1", at(3, 0.08));
+      tl.to("#b-reader", { opacity: 1, fill: "#FC6255", duration: 0.3 }, at(3, 0.3));
+      POP("#b-g2", at(3, 0.3));
+      POP("#b-g3", at(3, 0.5));
+      POP("#b-g4", at(3, 0.8));
+      // L4 比方的局限
+      IN("#b-lim", at(4, 0.05), 0.4);
+      IN("#b-lim2", at(4, 0.45), 0.5);
+
+      tl.to("#b-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["building"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,204 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="life" data-duration="60.73" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <g id="l-keyshape">
+          <circle cx="-34" cy="0" r="20" fill="none" stroke="#B48EF0" stroke-width="7" />
+          <path d="M-14 0 H 46 M 30 0 V 16 M 44 0 V 13" stroke="#B48EF0" stroke-width="7" stroke-linecap="round" fill="none" />
+        </g>
+        <marker id="l-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="l-all">
+        <!-- 生命周期条 -->
+        <g id="l-bar">
+          <line id="l-line" class="h" x1="360" y1="120" x2="1560" y2="120" stroke="#2a2f3a" stroke-width="4" />
+          <g font-size="30" text-anchor="middle">
+            <g class="l-n h"><circle cx="360" cy="120" r="20" fill="#B48EF0" /><text x="360" y="185" fill="#e8e6df">生成</text></g>
+            <g class="l-n h"><circle cx="660" cy="120" r="20" fill="#B48EF0" /><text x="660" y="185" fill="#e8e6df">存储</text></g>
+            <g class="l-n h"><circle cx="960" cy="120" r="20" fill="#B48EF0" /><text x="960" y="185" fill="#e8e6df">使用</text></g>
+            <g class="l-n h"><circle cx="1260" cy="120" r="20" fill="#B48EF0" /><text x="1260" y="185" fill="#e8e6df">备份</text></g>
+            <g class="l-n h"><circle cx="1560" cy="120" r="20" fill="#B48EF0" /><text x="1560" y="185" fill="#e8e6df">轮换</text></g>
+          </g>
+          <g fill="#FC6255">
+            <circle class="l-x h" cx="360" cy="70" r="9" /><circle class="l-x h" cx="660" cy="70" r="9" /><circle class="l-x h" cx="960" cy="70" r="9" /><circle class="l-x h" cx="1260" cy="70" r="9" /><circle class="l-x h" cx="1560" cy="70" r="9" />
+          </g>
+          <rect id="l-focus" class="h" x="300" y="85" width="120" height="120" rx="16" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 6" />
+          <rect id="l-focus2" class="h" x="1500" y="85" width="120" height="120" rx="16" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 6" />
+        </g>
+
+        <!-- 生成：Profanity，32 位种子 -->
+        <g id="l-gen">
+          <text id="l-prof" class="h" x="960" y="290" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">Profanity 靶号生成器 · 随机种子 <tspan fill="#FF9F43">32 位</tspan></text>
+          <g id="l-bits"></g>
+          <text id="l-c1" class="h" x="960" y="520" font-size="60" fill="#e8e6df" text-anchor="middle" font-family="JetBrains Mono">2³²</text>
+          <text id="l-c2" class="h" x="960" y="520" font-size="60" fill="#e8e6df" text-anchor="middle" font-family="JetBrains Mono">= 4,294,967,296</text>
+          <text id="l-c3" class="h" x="960" y="610" font-size="48" fill="#FF9F43" text-anchor="middle" font-weight="800">≈ 43 亿种</text>
+          <g id="l-gpu" class="h">
+            <rect x="560" y="680" width="800" height="40" rx="8" fill="none" stroke="#6b6f7a" stroke-width="2" />
+            <rect id="l-gpuf" x="562" y="682" width="0" height="36" rx="6" fill="#FC6255" />
+            <text x="540" y="711" font-size="30" fill="#8a8f99" text-anchor="end">GPU</text>
+          </g>
+          <text id="l-gpur" class="h" x="1390" y="711" font-size="32" fill="#FC6255" font-weight="700">私钥被反推</text>
+          <text id="l-full" class="h" x="960" y="820" font-size="30" fill="#6b6f7a" text-anchor="middle">对照：完整私钥空间 2²⁵⁶ ≈ 1.2 × 10⁷⁷</text>
+        </g>
+
+        <!-- 生成 → 轮换：Wintermute -->
+        <g id="l-wm">
+          <g id="l-adm" class="h">
+            <circle cx="520" cy="560" r="110" fill="#1a1524" stroke="#B48EF0" stroke-width="4" />
+            <use href="#l-keyshape" x="526" y="540" />
+            <text x="520" y="610" font-size="28" fill="#B48EF0" text-anchor="middle">靶号地址</text>
+            <text x="520" y="720" font-size="30" fill="#e8e6df" text-anchor="middle">Wintermute 金库管理员</text>
+          </g>
+          <g id="l-eth" class="h" fill="#F0B90B"><circle cx="490" cy="400" r="18" /><circle cx="550" cy="400" r="18" /></g>
+          <text id="l-ethm" class="h" x="520" y="340" font-size="30" fill="#83C167" text-anchor="middle">✓ 转走了 ETH</text>
+          <g id="l-vault" class="h">
+            <rect x="1180" y="430" width="380" height="260" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+            <text x="1370" y="490" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">金库合约</text>
+            <g fill="#F0B90B"><circle class="l-vc" cx="1290" cy="580" r="22" /><circle class="l-vc" cx="1345" cy="580" r="22" /><circle class="l-vc" cx="1400" cy="580" r="22" /><circle class="l-vc" cx="1455" cy="580" r="22" /><circle class="l-vc" cx="1317" cy="635" r="22" /><circle class="l-vc" cx="1372" cy="635" r="22" /><circle class="l-vc" cx="1427" cy="635" r="22" /></g>
+          </g>
+          <path id="l-perm" class="dr" pathLength="1" d="M635 560 L 1170 560" stroke="#FF9F43" stroke-width="5" stroke-dasharray="1" fill="none" />
+          <text id="l-permt" class="h" x="900" y="535" font-size="32" fill="#FF9F43" text-anchor="middle" font-weight="700">管理员权限：未撤销</text>
+          <text id="l-days" class="h" x="900" y="640" font-size="30" fill="#8a8f99" text-anchor="middle">约 5 天后</text>
+          <text id="l-wml" class="h" x="1370" y="770" font-size="56" fill="#FC6255" text-anchor="middle" font-weight="800">≈ 1.6 亿美元</text>
+          <text id="l-wmr" class="h" x="960" y="890" font-size="36" fill="#e8e6df" text-anchor="middle">转走余额 ≠ 撤销权限</text>
+        </g>
+
+        <!-- 存储：Slope，助记词进了日志 -->
+        <g id="l-sl">
+          <g id="l-phone" class="h">
+            <rect x="380" y="380" width="170" height="300" rx="24" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+            <text x="465" y="740" font-size="30" fill="#e8e6df" text-anchor="middle">Slope 钱包</text>
+          </g>
+          <g id="l-log" class="h">
+            <rect x="1280" y="400" width="300" height="260" rx="14" fill="#14171e" stroke="#8a8f99" stroke-width="3" />
+            <g stroke="#6b6f7a" stroke-width="5" stroke-linecap="round"><line x1="1320" y1="460" x2="1520" y2="460" /><line x1="1320" y1="500" x2="1480" y2="500" /><line x1="1320" y1="540" x2="1540" y2="540" /><line x1="1320" y1="580" x2="1450" y2="580" /></g>
+            <text x="1430" y="720" font-size="30" fill="#e8e6df" text-anchor="middle">日志服务器</text>
+          </g>
+          <path id="l-sla" class="dr h" pathLength="1" d="M560 530 L 1270 530" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#l-ah)" />
+          <g id="l-pills"></g>
+          <text id="l-plain" class="h" x="915" y="490" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">助记词 · 明文</text>
+          <text id="l-sln" class="h" x="960" y="860" font-size="40" fill="#e8e6df" text-anchor="middle">约 9,231 个钱包 · <tspan fill="#FC6255" font-weight="800">≈ 410 万美元</tspan></text>
+        </g>
+
+        <!-- 存储：Trust Wallet 扩展恶意版本 -->
+        <g id="l-tw">
+          <g id="l-store" class="h">
+            <rect x="330" y="400" width="300" height="240" rx="18" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+            <text x="480" y="500" font-size="32" fill="#e8e6df" text-anchor="middle">扩展商店</text>
+            <text id="l-ver" x="480" y="570" font-size="36" fill="#FC6255" text-anchor="middle" font-family="JetBrains Mono" font-weight="700">v2.68</text>
+            <text x="480" y="700" font-size="30" fill="#8a8f99" text-anchor="middle">恶意版本上架</text>
+          </g>
+          <g id="l-ext" class="h">
+            <rect x="820" y="420" width="280" height="200" rx="16" fill="#161a22" stroke="#FC6255" stroke-width="4" />
+            <text x="960" y="530" font-size="30" fill="#e8e6df" text-anchor="middle">Trust Wallet 扩展</text>
+          </g>
+          <path id="l-twa" class="dr h" pathLength="1" d="M640 520 L 810 520" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#l-ah)" />
+          <path id="l-twb" class="dr h" pathLength="1" d="M1110 520 L 1400 520" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#l-ah)" />
+          <text id="l-twx" class="h" x="1560" y="510" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">导出助记词</text>
+          <text id="l-twn" class="h" x="960" y="860" font-size="40" fill="#e8e6df" text-anchor="middle">2,520 个地址 · <tspan fill="#FC6255" font-weight="800">≈ 850 万美元</tspan></text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 60.73, "L": [[0.6, 9.77], [10.22, 17.03], [17.48, 24.8], [25.25, 37.61], [38.06, 49.01], [49.46, 59.63]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.8) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      const DRAWA = (s, t, d = 0.5) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 32 位种子：32 个小格
+      const bits = document.querySelector("#l-bits"), bitEls = [];
+      for (let i = 0; i < 32; i++) {
+        const r = document.createElementNS(NS, "rect");
+        r.setAttribute("x", (560 + i * 25).toString()); r.setAttribute("y", "340"); r.setAttribute("width", "19"); r.setAttribute("height", "40"); r.setAttribute("rx", "3");
+        r.setAttribute("fill", "#FF9F43"); r.setAttribute("opacity", "0");
+        bits.appendChild(r); bitEls.push(r);
+      }
+      // 助记词格子（不写词）
+      const pl = document.querySelector("#l-pills"), pills = [];
+      for (let i = 0; i < 4; i++) {
+        const r = document.createElementNS(NS, "rect");
+        r.setAttribute("x", "430"); r.setAttribute("y", (440 + i * 50).toString()); r.setAttribute("width", "70"); r.setAttribute("height", "30"); r.setAttribute("rx", "15");
+        r.setAttribute("fill", "#B48EF0"); r.setAttribute("opacity", "0");
+        pl.appendChild(r); pills.push(r);
+      }
+
+      // L0 生命周期五步，每步一个事故点
+      IN("#l-line", at(0, 0.05), 0.6);
+      gsap.utils.toArray("#root .l-n").forEach((n, i) => IN(n, at(0, 0.1) + i * 0.4, 0.4, { scale: 0.5, transformOrigin: "50% 30%" }, { scale: 1, ease: "back.out(2)" }));
+      gsap.utils.toArray("#root .l-x").forEach((n, i) => IN(n, at(0, 0.7) + i * 0.15, 0.3, { scale: 2, transformOrigin: "50% 50%" }, { scale: 1 }));
+
+      // L1 生成：Profanity 32 位种子
+      IN("#l-focus", at(1, 0), 0.4);
+      IN("#l-prof", at(1, 0.15), 0.5);
+      bitEls.forEach((b, i) => IN(b, at(1, 0.45) + i * 0.03, 0.2));
+
+      // L2 2^32 一步步算
+      IN("#l-c1", at(2, 0.0), 0.4);
+      OUT("#l-c1", at(2, 0.18), 0.2);
+      IN("#l-c2", at(2, 0.2), 0.4);
+      IN("#l-c3", at(2, 0.35), 0.5, { scale: 0.7, svgOrigin: "960 595" }, { scale: 1 });
+      IN("#l-gpu", at(2, 0.55), 0.3);
+      tl.fromTo("#l-gpuf", { attr: { width: 0 } }, { attr: { width: 796 }, duration: 1.0, ease: "power1.in" }, at(2, 0.6));
+      IN("#l-gpur", at(2, 0.6) + 1.0, 0.3);
+      IN("#l-full", at(2, 0.62), 0.5);
+
+      // L3 Wintermute：转走 ETH，没撤销权限，约 5 天后被盗
+      OUT("#l-gen", at(3, 0), 0.4);
+      IN("#l-focus2", at(3, 0.02), 0.4);
+      IN("#l-adm", at(3, 0.05), 0.5);
+      IN("#l-eth", at(3, 0.1), 0.3);
+      IN("#l-vault", at(3, 0.12), 0.5);
+      DRAW("#l-perm", at(3, 0.15), 0.6);
+      tl.to("#l-eth", { y: -200, opacity: 0, duration: 0.8, ease: "power2.in" }, at(3, 0.36));
+      IN("#l-ethm", at(3, 0.4), 0.4);
+      IN("#l-permt", at(3, 0.55), 0.4);
+      tl.to("#l-perm", { strokeWidth: 9, duration: 0.25, yoyo: true, repeat: 1 }, at(3, 0.58));
+      IN("#l-days", at(3, 0.72), 0.4);
+      tl.to("#l-perm", { stroke: "#FC6255", duration: 0.3 }, at(3, 0.8));
+      gsap.utils.toArray("#root .l-vc").forEach((c, i) => tl.to(c, { x: 360, y: -60 + (i % 3) * 40, fill: "#FC6255", opacity: 0, duration: 0.7, ease: "power3.in" }, at(3, 0.82) + i * 0.06));
+      IN("#l-wml", at(3, 0.85), 0.4);
+      IN("#l-wmr", at(3, 0.86), 0.4);
+
+      // L4 存储：Slope 助记词进了日志
+      OUT("#l-wm", at(4, 0), 0.4);
+      OUT(["#l-focus2"], at(4, 0), 0.3);
+      tl.to("#l-focus", { attr: { x: 600 }, duration: 0.5, ease: "power2.inOut" }, at(4, 0.0));
+      IN("#l-phone", at(4, 0.05), 0.5);
+      IN("#l-log", at(4, 0.12), 0.5);
+      DRAWA("#l-sla", at(4, 0.2), 0.5);
+      IN("#l-plain", at(4, 0.3), 0.4);
+      pills.forEach((p, i) => {
+        tl.fromTo(p, { opacity: 0, x: 0, y: 0 }, { opacity: 1, duration: 0.15 }, at(4, 0.28) + i * 0.25);
+        tl.to(p, { x: 900, y: 75 - i * 50, duration: 0.8, ease: "power2.inOut" }, at(4, 0.28) + i * 0.25 + 0.15);
+      });
+      IN("#l-sln", at(4, 0.62), 0.5);
+
+      // L5 存储：恶意版本
+      OUT("#l-sl", at(5, 0), 0.4);
+      IN("#l-store", at(5, 0.12), 0.5);
+      DRAWA("#l-twa", at(5, 0.3), 0.4);
+      IN("#l-ext", at(5, 0.33), 0.5);
+      DRAWA("#l-twb", at(5, 0.55), 0.5);
+      IN("#l-twx", at(5, 0.6), 0.4);
+      IN("#l-twn", at(5, 0.78), 0.5);
+
+      tl.to("#l-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["life"] = tl;
+    })();
+  </script>
+</template>

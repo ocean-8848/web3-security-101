@@ -1,0 +1,98 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="travel" data-duration="51.5" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="t-all">
+        <g id="t-rule">
+          <text id="t-title" class="h" x="960" y="120" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="800">Travel Rule：门槛在哪</text>
+          <g id="t-axis" class="h">
+            <line x1="200" y1="560" x2="1720" y2="560" stroke="#6b6f7a" stroke-width="4" />
+            <g font-size="28" fill="#6b6f7a" text-anchor="middle">
+              <text x="200" y="605">0</text><text x="500" y="605">500</text><text x="800" y="605">1,000</text><text x="1100" y="605">1,500</text><text x="1400" y="605">2,000</text><text x="1700" y="605">欧元</text>
+            </g>
+          </g>
+          <g id="t-fatf" class="h">
+            <line x1="800" y1="300" x2="800" y2="560" stroke="#8a8f99" stroke-width="4" stroke-dasharray="10 8" />
+            <text x="820" y="320" font-size="30" fill="#8a8f99">FATF 建议门槛：1,000 美元 / 欧元</text>
+          </g>
+          <g id="t-eu" class="h">
+            <rect x="200" y="640" width="1500" height="30" rx="8" fill="#FF9F43" fill-opacity=".5" />
+            <text x="210" y="720" font-size="30" fill="#FF9F43" font-weight="700">欧盟 TFR：服务商之间，不设最低门槛（2024-12-30 起）</text>
+          </g>
+          <!-- 两笔转账 -->
+          <g id="t-c1" class="h">
+            <circle cx="500" cy="520" r="26" fill="#F0B90B" />
+            <text x="500" y="420" font-size="30" fill="#e8e6df" text-anchor="middle">500 欧元</text>
+            <text x="500" y="460" font-size="28" fill="#8a8f99" text-anchor="middle">→ 另一家服务商</text>
+          </g>
+          <text id="t-c1a" class="h" x="380" y="800" font-size="30" fill="#FC6255" text-anchor="middle">按 1,000 设计：放过 ✕</text>
+          <text id="t-c1b" class="h" x="380" y="850" font-size="30" fill="#83C167" text-anchor="middle">欧盟：仍要带双方信息 ✓</text>
+          <g id="t-c2" class="h">
+            <circle cx="1400" cy="520" r="26" fill="#F0B90B" />
+            <text x="1400" y="420" font-size="30" fill="#e8e6df" text-anchor="middle">2,000 欧元</text>
+            <text x="1400" y="460" font-size="28" fill="#8a8f99" text-anchor="middle">→ 自己的自托管钱包</text>
+          </g>
+          <text id="t-c2a" class="h" x="1400" y="800" font-size="30" fill="#83C167" text-anchor="middle">超过 1,000 欧元：核验钱包归属</text>
+        </g>
+        <!-- 执法 -->
+        <g id="t-fine">
+          <text id="t-ft" class="h" x="960" y="140" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">检查站失守的代价（亿美元）</text>
+          <line id="t-fax" class="h" x1="400" y1="860" x2="1520" y2="860" stroke="#6b6f7a" stroke-width="3" />
+          <g id="t-bars"></g>
+        </g>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 51.5, "L": [[0.6, 5.95], [6.4, 17.15], [17.6, 28.21], [28.66, 37.81], [38.26, 50.4]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      IN("#t-title", at(0, 0.05), 0.5);
+      IN("#t-axis", at(0, 0.4), 0.5);
+      // L1 两个门槛
+      IN("#t-fatf", at(1, 0.05), 0.5);
+      IN("#t-eu", at(1, 0.55), 0.6);
+      tl.fromTo("#t-eu rect", { attr: { width: 0 } }, { attr: { width: 1500 }, duration: 1.0, ease: "power2.out" }, at(1, 0.55));
+      // L2 500 欧元
+      IN("#t-c1", at(2, 0.05), 0.4, { y: -20 }, { y: 0 });
+      IN("#t-c1a", at(2, 0.4), 0.4);
+      IN("#t-c1b", at(2, 0.7), 0.4);
+      // L3 2000 欧元
+      IN("#t-c2", at(3, 0.05), 0.4, { y: -20 }, { y: 0 });
+      IN("#t-c2a", at(3, 0.5), 0.4);
+      // L4 执法
+      tl.to("#t-rule", { opacity: 0, duration: 0.4 }, at(4, 0));
+      IN("#t-ft", at(4, 0.05), 0.4); IN("#t-fax", at(4, 0.1), 0.4);
+      const D = [{ n: "Binance", y: "2023-11", v: 43, a: "43" }, { n: "KuCoin", y: "2025-01", v: 2.97, a: "2.97+" }, { n: "OKX", y: "2025-02", v: 5.04, a: "5.04+" }];
+      const PX = 560 / 43, host = document.querySelector("#t-bars");
+      D.forEach((d, i) => {
+        const x = 620 + i * 340, h = d.v * PX, g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        g.setAttribute("opacity", "0");
+        g.innerHTML = `<rect class="bar" x="${x - 60}" y="${860 - h}" width="120" height="${h}" fill="#FC6255" />` +
+          `<text x="${x}" y="${860 - h - 16}" font-size="36" fill="#FC6255" text-anchor="middle" font-weight="700">${d.a}</text>` +
+          `<text x="${x}" y="905" font-size="30" fill="#e8e6df" text-anchor="middle">${d.n}</text>` +
+          `<text x="${x}" y="945" font-size="28" fill="#6b6f7a" text-anchor="middle">${d.y}</text>`;
+        host.appendChild(g);
+        const t = at(4, [0.15, 0.6, 0.72][i]);
+        tl.fromTo(g, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t);
+        tl.fromTo(g.querySelector(".bar"), { scaleY: 0, transformOrigin: "50% 100%" }, { scaleY: 1, duration: 0.8, ease: "expo.out" }, t);
+      });
+      tl.to("#t-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["travel"] = tl;
+    })();
+  </script>
+</template>

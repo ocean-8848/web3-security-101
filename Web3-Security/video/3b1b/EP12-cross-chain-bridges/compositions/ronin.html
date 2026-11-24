@@ -1,0 +1,85 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="ronin" data-duration="44.15" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="o-all">
+        <text id="o-title" class="h" x="960" y="170" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="700">Ronin 门限：9 个里要 <tspan fill="#FF9F43">5</tspan> 个</text>
+        <g id="o-keys"></g>
+        <rect id="o-sky" class="h" x="225" y="320" width="645" height="170" rx="22" fill="none" stroke="#B48EF0" stroke-width="4" />
+        <text id="o-skyt" class="h" x="547" y="290" font-size="32" fill="#B48EF0" text-anchor="middle" font-weight="700">Sky Mavis（同一家机构）</text>
+        <text id="o-axie" class="h" x="960" y="540" font-size="30" fill="#FF9F43" text-anchor="middle">Axie DAO 授权</text>
+        <text id="o-axie2" class="h" x="960" y="580" font-size="28" fill="#FF9F43" text-anchor="middle">本应早已撤销</text>
+
+        <!-- 一步步算 -->
+        <g id="o-calc" class="h">
+          <text x="300" y="720" font-size="36" fill="#e8e6df">攻破 Sky Mavis</text>
+          <text x="300" y="790" font-size="36" fill="#e8e6df">再走 Axie DAO 授权</text>
+        </g>
+        <text id="o-c4" class="h" x="760" y="720" font-size="36" fill="#FC6255" font-weight="800">+4 个签名</text>
+        <text id="o-c5" class="h" x="760" y="790" font-size="36" fill="#FC6255" font-weight="800">+1 = 5 ≥ 5 → 放行</text>
+
+        <!-- 门限 vs 独立防线 -->
+        <g id="o-cmp" class="h">
+          <text x="1200" y="700" font-size="34" fill="#8a8f99">门限写的</text>
+          <text x="1480" y="710" font-size="64" fill="#e8e6df" font-weight="800">5/9</text>
+          <text x="1200" y="820" font-size="34" fill="#8a8f99">独立防线</text>
+          <text x="1480" y="830" font-size="64" fill="#FC6255" font-weight="800">2</text>
+        </g>
+        <text id="o-se" class="h" x="960" y="920" font-size="30" fill="#6b6f7a" text-anchor="middle">公开报道称：私钥通过社会工程获得</text>
+        <text id="o-one" class="h" x="547" y="560" font-size="34" fill="#B48EF0" text-anchor="middle" font-weight="700">4 把钥匙在同一处 = 1 把</text>
+        <text id="o-les" class="h" x="960" y="1010" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700">阈值的意义，取决于签名人的独立性</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 44.15, "L": [[0.6, 5.57], [6.02, 10.94], [11.39, 18.28], [18.73, 26.0], [26.45, 34.92], [35.37, 43.05]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      // 9 把钥匙（验证者）
+      const NS = "http://www.w3.org/2000/svg", host = document.querySelector("#o-keys"), K = [];
+      for (let i = 0; i < 9; i++) {
+        const x = 300 + i * 165, g = document.createElementNS(NS, "g");
+        g.setAttribute("opacity", "0");
+        g.innerHTML = `<circle cx="${x}" cy="405" r="44" fill="#1b1f28" stroke="#e8e6df" stroke-width="3" /><g stroke="#e8e6df" stroke-width="5" fill="none" stroke-linecap="round"><circle cx="${x - 14}" cy="405" r="10" /><path d="M${x - 4} 405 H ${x + 22} M${x + 14} 405 V ${x ? 415 : 415}" /></g>`;
+        host.appendChild(g); K.push({ g, x });
+      }
+
+      IN("#o-title", at(0, 0.05), 0.5);
+      K.forEach((k, i) => IN(k.g, at(0, 0.3) + i * 0.05, 0.3, { scale: 0.5, svgOrigin: `${k.x} 405` }, { scale: 1 }));
+      // L1 Sky Mavis
+      IN(["#o-sky", "#o-skyt"], at(1, 0.4), 0.5);
+      // L2 Axie DAO
+      tl.to(K[4].g.querySelector("circle"), { stroke: "#FF9F43", strokeWidth: 5, duration: 0.3 }, at(2, 0.1));
+      IN(["#o-axie", "#o-axie2"], at(2, 0.15), 0.5);
+      // L3 算一下
+      IN("#o-calc", at(3, 0.02), 0.4);
+      K.slice(0, 4).forEach((k, i) => tl.to(k.g.querySelector("circle"), { fill: "#3a1716", stroke: "#FC6255", duration: 0.2 }, at(3, 0.1) + i * 0.1));
+      IN("#o-c4", at(3, 0.2), 0.4);
+      tl.to(K[4].g.querySelector("circle"), { fill: "#3a1716", stroke: "#FC6255", duration: 0.2 }, at(3, 0.65));
+      IN("#o-c5", at(3, 0.68), 0.4);
+      // L4 5/9 vs 2
+      IN("#o-cmp", at(4, 0.05), 0.6);
+      IN("#o-se", at(4, 0.6), 0.5);
+      // L5 4 把 = 1 把
+      OUT(["#o-calc", "#o-c4", "#o-c5", "#o-axie", "#o-axie2"], at(5, 0), 0.3);
+      K.slice(0, 4).forEach((k, i) => tl.to(k.g, { x: 547 - k.x, duration: 0.8, ease: "power2.inOut" }, at(5, 0.15)));
+      IN("#o-one", at(5, 0.3), 0.5);
+      IN("#o-les", at(5, 0.55), 0.5);
+
+      tl.to("#o-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["ronin"] = tl;
+    })();
+  </script>
+</template>

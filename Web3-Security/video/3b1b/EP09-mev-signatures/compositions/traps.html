@@ -1,0 +1,75 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="traps" data-duration="49.03" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="t-all">
+        <text id="t-tt" class="h" x="960" y="130" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="800">验证签名的三个经典陷阱</text>
+        <!-- ① ecrecover -->
+        <text id="t-1" class="h" x="120" y="250" font-size="34" fill="#FF9F43" font-weight="700">① ecrecover</text>
+        <g id="t-1a" class="h"><rect x="420" y="200" width="420" height="80" rx="12" fill="#161a22" stroke="#8a8f99" stroke-width="2" /><text x="630" y="250" font-size="28" fill="#8a8f99" text-anchor="middle">垃圾签名 → 返回 <tspan class="mono" fill="#FC6255">0x0</tspan></text></g>
+        <text id="t-1eq" class="h" x="900" y="255" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="800">==</text>
+        <g id="t-1b" class="h"><rect x="960" y="200" width="460" height="80" rx="12" fill="#161a22" stroke="#8a8f99" stroke-width="2" /><text x="1190" y="250" font-size="28" fill="#8a8f99" text-anchor="middle">管理员未初始化：<tspan class="mono" fill="#FC6255">0x0</tspan></text></g>
+        <text id="t-1r" class="h" x="1460" y="252" font-size="32" fill="#FC6255" font-weight="700">✓ 通过</text>
+        <!-- ② 可塑性 -->
+        <text id="t-2" class="h" x="120" y="420" font-size="34" fill="#FF9F43" font-weight="700">② 签名可塑性</text>
+        <g id="t-2a" class="h"><rect x="420" y="370" width="260" height="80" rx="12" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><text x="550" y="420" font-size="32" fill="#e8e6df" text-anchor="middle" class="mono">(r, s)</text></g>
+        <g id="t-2b" class="h"><rect x="740" y="370" width="300" height="80" rx="12" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><text x="890" y="420" font-size="32" fill="#e8e6df" text-anchor="middle" class="mono">(r, n − s)</text></g>
+        <text id="t-2v" class="h" x="1080" y="422" font-size="30" fill="#e8e6df">同一条消息，两个都有效</text>
+        <g id="t-2m" class="h"><rect x="420" y="490" width="620" height="70" rx="10" fill="#161a22" stroke="#8a8f99" stroke-width="2" /><text x="440" y="536" font-size="28" fill="#8a8f99">已使用标记 = 签名字节：只记了 <tspan class="mono" fill="#e8e6df">(r, s)</tspan></text></g>
+        <text id="t-2r" class="h" x="1080" y="536" font-size="30" fill="#FC6255" font-weight="700">翻转 s → "新"签名再用一次</text>
+        <text id="t-2f" class="h" x="420" y="620" font-size="30" fill="#83C167">修法：标记用 nonce 或消息哈希；用拒绝高 s 值的库</text>
+        <!-- ③ encodePacked -->
+        <text id="t-3" class="h" x="120" y="770" font-size="34" fill="#FF9F43" font-weight="700">③ encodePacked</text>
+        <text id="t-3a" class="h mono" x="420" y="770" font-size="32" fill="#58C4DD">encodePacked("ab", "c")</text>
+        <text id="t-3b" class="h mono" x="420" y="840" font-size="32" fill="#58C4DD">encodePacked("a", "bc")</text>
+        <path id="t-3br" class="h" d="M900 750 h 20 v 80 h -20" fill="none" stroke="#FC6255" stroke-width="3" />
+        <text id="t-3r" class="h" x="950" y="805" font-size="32" fill="#FC6255" font-weight="700">都是 <tspan class="mono">"abc"</tspan>：碰撞</text>
+        <text id="t-3f" class="h" x="420" y="930" font-size="30" fill="#83C167">修法：多个动态类型时用 <tspan class="mono">abi.encode</tspan></text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 49.03, "L": [[0.6, 4.15], [4.6, 16.0], [16.45, 29.72], [30.17, 36.29], [36.74, 47.93]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      // L0
+      IN("#t-tt", at(0, 0.1), 0.5);
+      // L1 ecrecover
+      IN("#t-1", at(1, 0.0), 0.4);
+      IN("#t-1a", at(1, 0.1), 0.4);
+      IN("#t-1b", at(1, 0.45), 0.4);
+      IN("#t-1eq", at(1, 0.6), 0.3);
+      IN("#t-1r", at(1, 0.75), 0.4, { scale: 1.3, svgOrigin: "1520 240" }, { scale: 1 });
+      // L2 可塑性
+      IN("#t-2", at(2, 0.0), 0.4);
+      IN("#t-2a", at(2, 0.1), 0.4);
+      IN("#t-2b", at(2, 0.22), 0.4, { x: -320 }, { x: 0 });
+      IN("#t-2v", at(2, 0.32), 0.4);
+      IN("#t-2m", at(2, 0.55), 0.4);
+      IN("#t-2r", at(2, 0.75), 0.4);
+      // L3 修法
+      IN("#t-2f", at(3, 0.05), 0.5);
+      // L4 encodePacked
+      IN("#t-3", at(4, 0.0), 0.4);
+      IN("#t-3a", at(4, 0.08), 0.4);
+      IN("#t-3b", at(4, 0.2), 0.4);
+      IN(["#t-3br", "#t-3r"], at(4, 0.4), 0.4);
+      IN("#t-3f", at(4, 0.7), 0.4);
+      tl.to("#t-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["traps"] = tl;
+    })();
+  </script>
+</template>

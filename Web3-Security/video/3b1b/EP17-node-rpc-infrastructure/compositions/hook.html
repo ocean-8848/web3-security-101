@@ -1,0 +1,104 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="hook" data-duration="35.04" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="h-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+        <marker id="h-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#83C167" /></marker>
+      </defs>
+      <g id="h-all">
+        <text id="h-date" class="h" x="120" y="110" font-size="34" fill="#6b6f7a" letter-spacing="2">2026 年 4 月 · LayerZero 验证者（DVN）</text>
+        <!-- 验证者 -->
+        <g id="h-ver" class="h">
+          <rect x="1440" y="480" width="360" height="160" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+          <text x="1620" y="555" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">验证者</text>
+          <text x="1620" y="600" font-size="28" fill="#8a8f99" text-anchor="middle">据此放行跨链消息</text>
+        </g>
+        <!-- 干净的 RPC（上） -->
+        <g id="h-c1" class="h"><rect x="620" y="170" width="300" height="110" rx="16" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><text x="770" y="237" font-size="30" fill="#e8e6df" text-anchor="middle">干净的 RPC</text></g>
+        <g id="h-c2" class="h"><rect x="1000" y="170" width="300" height="110" rx="16" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><text x="1150" y="237" font-size="30" fill="#e8e6df" text-anchor="middle">干净的 RPC</text></g>
+        <!-- 被替换的两个节点（中） -->
+        <g id="h-p1" class="h"><rect id="h-p1r" x="620" y="500" width="300" height="120" rx="16" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><text x="770" y="570" font-size="30" fill="#e8e6df" text-anchor="middle">RPC 节点 1</text></g>
+        <g id="h-p2" class="h"><rect id="h-p2r" x="1000" y="500" width="300" height="120" rx="16" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><text x="1150" y="570" font-size="30" fill="#e8e6df" text-anchor="middle">RPC 节点 2</text></g>
+        <text id="h-rep" class="h" x="960" y="470" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">程序被替换</text>
+        <!-- 连接 -->
+        <path id="h-lc" class="dr h" pathLength="1" d="M1300 250 C 1400 280, 1480 380, 1560 470" fill="none" stroke="#B48EF0" stroke-width="4" />
+        <path id="h-lf" class="dr h" pathLength="1" d="M1305 560 L 1430 560" fill="none" stroke="#FC6255" stroke-width="5" marker-end="url(#h-ahr)" />
+        <text id="h-lft" class="h" x="1370" y="535" font-size="28" fill="#FC6255" text-anchor="middle">伪造数据</text>
+        <!-- 其他 IP（左） -->
+        <g id="h-ips" class="h">
+          <circle cx="220" cy="480" r="22" fill="#2a2f3a" stroke="#8a8f99" stroke-width="3" /><circle cx="220" cy="560" r="22" fill="#2a2f3a" stroke="#8a8f99" stroke-width="3" /><circle cx="220" cy="640" r="22" fill="#2a2f3a" stroke="#8a8f99" stroke-width="3" />
+          <text x="220" y="420" font-size="28" fill="#8a8f99" text-anchor="middle">其他 IP</text>
+        </g>
+        <path id="h-lt" class="dr h" pathLength="1" d="M610 560 L 260 560" fill="none" stroke="#83C167" stroke-width="4" marker-end="url(#h-ahg)" />
+        <text id="h-ltt" class="h" x="430" y="535" font-size="28" fill="#83C167" text-anchor="middle">真实数据</text>
+        <!-- DDoS -->
+        <g id="h-dd" class="h" fill="#FC6255" font-size="44" font-weight="800" text-anchor="middle"><text x="905" y="190">✕</text><text x="1285" y="190">✕</text></g>
+        <text id="h-ddt" class="h" x="960" y="330" font-size="30" fill="#FC6255" text-anchor="middle">DDoS → 自动切换到被污染的节点</text>
+        <text id="h-loss" class="h" x="1620" y="760" font-size="64" fill="#F0B90B" text-anchor="middle" font-weight="800">≈ 2.9 亿美元</text>
+        <!-- 监控 -->
+        <g id="h-mon" class="h">
+          <rect x="120" y="760" width="420" height="120" rx="16" fill="#12200f" stroke="#83C167" stroke-width="3" />
+          <text x="330" y="832" font-size="32" fill="#83C167" text-anchor="middle">监控：一切正常 ✓</text>
+        </g>
+        <path id="h-lm" class="dr h" pathLength="1" d="M620 600 C 560 660, 520 700, 470 750" fill="none" stroke="#83C167" stroke-width="3" />
+        <g id="h-q" class="h"><text x="960" y="1000" font-size="56" fill="#e8e6df" text-anchor="middle" font-weight="700">你的系统读到的，到底是<tspan fill="#FF9F43">谁的链</tspan>？</text></g>
+      </g>
+      <g id="h-pin" class="h">
+        <rect x="80" y="70" width="560" height="84" rx="14" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="360" y="125" font-size="34" fill="#e8e6df" text-anchor="middle">你读到的是<tspan fill="#FF9F43">谁的链</tspan>？</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 35.04, "L": [[0.6, 7.66], [8.11, 14.73], [15.18, 23.82], [24.27, 28.97], [29.42, 33.94]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      // L0 验证者、RPC、两个节点被替换
+      IN("#h-date", at(0, 0.0), 0.5);
+      NODE("#h-ver", at(0, 0.1));
+      NODE("#h-c1", at(0, 0.2)); NODE("#h-c2", at(0, 0.25));
+      DRAW("#h-lc", at(0, 0.3), 0.5);
+      NODE("#h-p1", at(0, 0.45)); NODE("#h-p2", at(0, 0.5));
+      tl.to(["#h-p1r", "#h-p2r"], { stroke: "#FC6255", fill: "#2a1416", duration: 0.4 }, at(0, 0.7));
+      IN("#h-rep", at(0, 0.72), 0.4);
+      // L1 区别对待
+      DRAW("#h-lf", at(1, 0.1), 0.5); IN("#h-lft", at(1, 0.2), 0.3);
+      IN("#h-ips", at(1, 0.5), 0.4);
+      DRAW("#h-lt", at(1, 0.6), 0.5); IN("#h-ltt", at(1, 0.65), 0.3);
+      // L2 DDoS 干净 RPC → 切换；损失
+      POP("#h-dd", at(2, 0.05));
+      tl.to(["#h-c1", "#h-c2"], { opacity: 0.3, duration: 0.4 }, at(2, 0.15));
+      tl.to("#h-lc", { opacity: 0, duration: 0.3 }, at(2, 0.25));
+      IN("#h-ddt", at(2, 0.25), 0.4);
+      tl.to("#h-lf", { strokeWidth: 9, duration: 0.25, yoyo: true, repeat: 3 }, at(2, 0.4));
+      IN("#h-loss", at(2, 0.72), 0.5, { scale: 1.3, svgOrigin: "1620 740" }, { scale: 1 });
+      // L3 监控看到真实数据
+      IN("#h-mon", at(3, 0.05), 0.5);
+      DRAW("#h-lm", at(3, 0.1), 0.5);
+      // L4 问题
+      tl.to(["#h-date", "#h-ver", "#h-c1", "#h-c2", "#h-p1", "#h-p2", "#h-rep", "#h-lf", "#h-lft", "#h-ips", "#h-lt", "#h-ltt", "#h-dd", "#h-ddt", "#h-loss", "#h-mon", "#h-lm"], { opacity: 0.2, duration: 0.5 }, at(4, 0));
+      IN("#h-q", at(4, 0.1), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      tl.to("#h-all", { opacity: 0, filter: "blur(6px)", duration: 0.5, ease: "power2.in" }, at(4, 0.72));
+      IN("#h-pin", at(4, 0.76), 0.5, { scale: 1.5, svgOrigin: "360 112" }, { scale: 1 });
+      OUT("#h-pin", C.d - 0.35, 0.3);
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>

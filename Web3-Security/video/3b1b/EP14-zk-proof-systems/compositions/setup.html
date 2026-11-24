@@ -1,0 +1,139 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="setup" data-duration="46.0" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="s-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="s-all">
+        <text id="s-title" class="h" x="960" y="110" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">可信设置（Groth16 等方案）</text>
+
+        <g id="s-cer">
+          <circle id="s-ring" class="h" cx="620" cy="560" r="250" fill="none" stroke="#2a2f3a" stroke-width="3" stroke-dasharray="8 8" />
+          <g id="s-ppl"></g>
+          <g id="s-param" class="h">
+            <rect x="500" y="500" width="240" height="120" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+            <text x="620" y="573" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">证明参数</text>
+          </g>
+          <g id="s-waste" class="h">
+            <circle cx="620" cy="690" r="46" fill="#2a1416" stroke="#FC6255" stroke-width="4" />
+            <text x="620" y="702" font-size="30" fill="#FC6255" text-anchor="middle" font-weight="700">秘密</text>
+          </g>
+          <text id="s-wastet" class="h" x="620" y="795" font-size="30" fill="#FC6255" text-anchor="middle">有毒废料</text>
+        </g>
+        <path id="s-forge" class="dr h" pathLength="1" d="M670 680 C 900 690, 1080 600, 1210 540" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#s-ah)" />
+        <g id="s-fakes" class="h">
+          <rect x="1220" y="430" width="110" height="150" rx="12" fill="#2a1416" stroke="#FC6255" stroke-width="3" />
+          <rect x="1350" y="430" width="110" height="150" rx="12" fill="#2a1416" stroke="#FC6255" stroke-width="3" />
+          <rect x="1480" y="430" width="110" height="150" rx="12" fill="#2a1416" stroke="#FC6255" stroke-width="3" />
+          <text x="1405" y="640" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">伪造任意证明</text>
+        </g>
+        <text id="s-one" class="h" x="1405" y="780" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700">只要 1 人诚实销毁</text>
+        <text id="s-one2" class="h" x="1405" y="835" font-size="30" fill="#8a8f99" text-anchor="middle">秘密就拼不回来</text>
+
+        <!-- Zcash：仪式记录里的多余元素 -->
+        <g id="s-tr" class="h">
+          <rect x="220" y="230" width="560" height="620" rx="18" fill="#161a22" stroke="#e8e6df" stroke-opacity=".5" stroke-width="3" />
+          <text x="500" y="290" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">仪式记录</text>
+          <g stroke="#8a8f99" stroke-width="8" stroke-linecap="round">
+            <line x1="270" y1="350" x2="690" y2="350" /><line x1="270" y1="400" x2="620" y2="400" /><line x1="270" y1="450" x2="720" y2="450" />
+            <line x1="270" y1="500" x2="660" y2="500" /><line x1="270" y1="650" x2="700" y2="650" /><line x1="270" y1="700" x2="600" y2="700" /><line x1="270" y1="750" x2="680" y2="750" />
+          </g>
+        </g>
+        <g id="s-extra" class="h" stroke="#FF9F43" stroke-width="8" stroke-linecap="round">
+          <line x1="270" y1="550" x2="640" y2="550" /><line x1="270" y1="600" x2="560" y2="600" />
+        </g>
+        <text id="s-extrat" class="h" x="820" y="585" font-size="32" fill="#FF9F43">← 证明者用不到的多余元素</text>
+        <text id="s-zc" class="h" x="500" y="910" font-size="30" fill="#8a8f99" text-anchor="middle">Zcash 早期方案（BCTV14）</text>
+
+        <!-- 时间线 -->
+        <line id="s-tl" class="h" x1="900" y1="760" x2="1760" y2="760" stroke="#6b6f7a" stroke-width="3" />
+        <g font-size="30" text-anchor="middle">
+          <g id="s-e1" class="h"><circle cx="980" cy="760" r="12" fill="#e8e6df" /><text x="980" y="730" fill="#e8e6df">2018-03</text><text x="980" y="810" fill="#8a8f99">内部发现</text></g>
+          <g id="s-e2" class="h"><circle cx="1330" cy="760" r="12" fill="#83C167" /><text x="1330" y="730" fill="#83C167">2018-10</text><text x="1330" y="810" fill="#8a8f99">换参数修复</text></g>
+          <g id="s-e3" class="h"><circle cx="1680" cy="760" r="12" fill="#e8e6df" /><text x="1680" y="730" fill="#e8e6df">2019-02</text><text x="1680" y="810" fill="#8a8f99">公开</text></g>
+        </g>
+        <text id="s-mint" class="h" x="1330" y="470" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="700">可凭空增发 ZEC</text>
+        <text id="s-noex" class="h" x="1330" y="900" font-size="30" fill="#8a8f99" text-anchor="middle">团队称：未发现被利用的证据</text>
+        <g id="s-mintc" fill="#F0B90B"></g>
+
+        <g id="s-lesson" class="h">
+          <rect x="200" y="200" width="600" height="670" rx="24" fill="none" stroke="#83C167" stroke-width="5" />
+          <text x="500" y="1000" font-size="42" fill="#83C167" text-anchor="middle" font-weight="700">设置的全部产物，也要审计</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 46.0, "L": [[0.6, 7.49], [7.94, 15.31], [15.76, 22.43], [22.88, 29.89], [30.34, 40.2], [40.65, 44.9]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 六名参与者 + 各自手里的一份秘密（橙色碎片）
+      const host = document.querySelector("#s-ppl"), P = [];
+      for (let i = 0; i < 6; i++) {
+        const a = (i / 6) * Math.PI * 2, x = 620 + Math.cos(a) * 250, y = 560 + Math.sin(a) * 250;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        g.innerHTML = `<circle cx="${x}" cy="${y}" r="30" fill="#161a22" stroke="#e8e6df" stroke-width="3" />` +
+          `<rect class="shard" x="${x + 26}" y="${y - 40}" width="22" height="22" rx="4" fill="#FF9F43" opacity="0" />`;
+        host.appendChild(g); P.push({ g, s: g.querySelector(".shard"), x, y });
+      }
+      // 增发的币（固定位置）
+      const mc = document.querySelector("#s-mintc"), MC = [];
+      for (let i = 0; i < 7; i++) {
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", 1130 + i * 66); c.setAttribute("cy", 560); c.setAttribute("r", 22); c.setAttribute("opacity", 0);
+        mc.appendChild(c); MC.push(c);
+      }
+
+      // L0 仪式
+      IN("#s-title", at(0, 0.0), 0.5);
+      IN("#s-ring", at(0, 0.3), 0.5);
+      P.forEach((p, i) => IN(p.g, at(0, 0.35) + i * 0.1, 0.4, { scale: 0.5, svgOrigin: `${p.x} ${p.y}` }, { scale: 1, ease: "back.out(2)" }));
+      IN("#s-param", at(0, 0.7), 0.6, { scale: 0.7, svgOrigin: "620 560" }, { scale: 1, ease: "expo.out" });
+      // L1 有毒废料 → 伪造
+      IN("#s-waste", at(1, 0.05), 0.5, { scale: 0.4, svgOrigin: "620 690" }, { scale: 1, ease: "back.out(2)" });
+      IN("#s-wastet", at(1, 0.15), 0.4);
+      DRAW("#s-forge", at(1, 0.55), 0.6);
+      IN("#s-fakes", at(1, 0.7), 0.5, { x: -20 }, { x: 0 });
+      // L2 每人一份，只要一人销毁
+      P.forEach((p, i) => tl.to(p.s, { opacity: 1, duration: 0.25 }, at(2, 0.05) + i * 0.06));
+      OUT("#s-fakes", at(2, 0.3), 0.3); OUT("#s-forge", at(2, 0.3), 0.3);
+      tl.to(P[2].s, { fill: "#83C167", scale: 2, opacity: 0, transformOrigin: "50% 50%", duration: 0.6, ease: "power2.in" }, at(2, 0.55));
+      tl.to("#s-waste", { opacity: 0.2, duration: 0.6 }, at(2, 0.7));
+      tl.to("#s-wastet", { opacity: 0.2, duration: 0.6 }, at(2, 0.7));
+      IN("#s-one", at(2, 0.6), 0.5);
+      IN("#s-one2", at(2, 0.75), 0.4);
+      // L3 Zcash：多余元素
+      OUT(["#s-cer", "#s-one", "#s-one2", "#s-title"], at(3, 0.0), 0.4);
+      IN("#s-tr", at(3, 0.1), 0.6, { y: 20 }, { y: 0 });
+      IN("#s-zc", at(3, 0.2), 0.4);
+      IN("#s-extra", at(3, 0.55), 0.4);
+      IN("#s-extrat", at(3, 0.62), 0.5, { x: 20 }, { x: 0 });
+      // L4 增发 + 时间线
+      OUT("#s-extrat", at(4, 0.0), 0.3);
+      IN("#s-mint", at(4, 0.05), 0.4);
+      MC.forEach((c, i) => tl.fromTo(c, { opacity: 0, scale: 0, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, at(4, 0.08) + i * 0.08));
+      IN("#s-tl", at(4, 0.3), 0.4);
+      IN("#s-e1", at(4, 0.35), 0.4); IN("#s-e2", at(4, 0.5), 0.4); IN("#s-e3", at(4, 0.65), 0.4);
+      IN("#s-noex", at(4, 0.82), 0.4);
+      // L5 教训
+      IN("#s-lesson", at(5, 0.05), 0.6, { scale: 1.05, svgOrigin: "500 540" }, { scale: 1 });
+
+      tl.to("#s-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["setup"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,138 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="euler" data-duration="59.43" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="e-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="e-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="e-all">
+        <text id="e-title" class="h" x="960" y="120" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="700">Euler：一笔交易里的四步</text>
+        <g id="e-steps" font-size="30">
+          <text class="e-st h" x="200" y="190" fill="#8a8f99">① 闪电贷 + 杠杆</text>
+          <text class="e-st h" x="580" y="190" fill="#8a8f99">② 捐赠</text>
+          <text class="e-st h" x="820" y="190" fill="#8a8f99">③ 另一个账户清算</text>
+          <text class="e-st h" x="1220" y="190" fill="#8a8f99">④ 归还闪电贷</text>
+        </g>
+
+        <g id="e-pool" class="h">
+          <rect x="100" y="300" width="300" height="160" rx="18" fill="#1a1708" stroke="#F0B90B" stroke-width="4" />
+          <text x="250" y="370" font-size="34" fill="#F0B90B" text-anchor="middle" font-weight="700">闪电贷</text>
+          <text x="250" y="420" font-size="30" fill="#e8e6df" text-anchor="middle">借入 DAI</text>
+        </g>
+        <g id="e-a" class="h">
+          <rect x="560" y="250" width="460" height="560" rx="22" fill="#14171e" stroke="#FC6255" stroke-width="3" />
+          <text x="790" y="310" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">账户 A</text>
+          <line x1="610" y1="740" x2="970" y2="740" stroke="#6b6f7a" stroke-width="3" />
+          <text x="700" y="785" font-size="28" fill="#F0B90B" text-anchor="middle">抵押品</text>
+          <text x="880" y="785" font-size="28" fill="#e8e6df" text-anchor="middle">债务</text>
+        </g>
+        <rect id="e-ac" class="h" x="640" y="740" width="120" height="0" fill="#F0B90B" />
+        <rect id="e-ad" class="h" x="820" y="740" width="120" height="0" fill="#e8e6df" opacity=".85" />
+        <path id="e-in" class="dr h" pathLength="1" d="M405 380 L 550 380" stroke="#F0B90B" stroke-width="4" fill="none" marker-end="url(#e-ah)" />
+        <text id="e-lev" class="h" x="790" y="860" font-size="30" fill="#e8e6df" text-anchor="middle">存入，再用杠杆铸造放大</text>
+        <rect id="e-chunk" class="h" x="640" y="340" width="120" height="250" fill="#F0B90B" />
+        <text id="e-don" class="h" x="790" y="860" font-size="30" fill="#FF9F43" text-anchor="middle">捐出大量存款凭证 · 债务不变</text>
+        <rect id="e-gap" class="h" x="640" y="410" width="120" height="180" fill="#FC6255" fill-opacity=".2" stroke="#FC6255" stroke-width="4" stroke-dasharray="10 6" />
+        <text id="e-insol" class="h" x="790" y="375" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="800">严重资不抵债</text>
+
+        <g id="e-b" class="h">
+          <rect x="1300" y="250" width="460" height="560" rx="22" fill="#14171e" stroke="#FC6255" stroke-width="3" />
+          <text x="1530" y="310" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">账户 B（清算人）</text>
+          <line x1="1350" y1="740" x2="1710" y2="740" stroke="#6b6f7a" stroke-width="3" />
+        </g>
+        <path id="e-liq" class="dr h" pathLength="1" d="M1030 500 L 1290 500" stroke="#FC6255" stroke-width="5" fill="none" marker-end="url(#e-ahr)" />
+        <rect id="e-bc" class="h" x="1470" y="590" width="120" height="150" fill="#F0B90B" />
+        <text id="e-disc" class="h" x="1530" y="860" font-size="30" fill="#FF9F43" text-anchor="middle">折扣随资不抵债程度变大</text>
+        <path id="e-repay" class="dr h" pathLength="1" d="M1520 820 C 1300 980, 500 980, 260 470" stroke="#F0B90B" stroke-width="4" fill="none" marker-end="url(#e-ah)" />
+        <g id="e-profit" class="h">
+          <text x="1530" y="440" font-size="40" fill="#F0B90B" text-anchor="middle" font-weight="800">获利 ≈ 1.97 亿美元</text>
+          <text x="1530" y="490" font-size="28" fill="#8a8f99" text-anchor="middle">后来归还了大部分资金</text>
+        </g>
+
+        <!-- 入口 × 健康检查 -->
+        <g id="e-tab" class="h">
+          <text x="560" y="300" font-size="34" fill="#8a8f99">减少抵押品或增加债务的入口</text>
+          <text x="1420" y="300" font-size="34" fill="#8a8f99" text-anchor="middle">结束时检查健康因子？</text>
+          <line x1="540" y1="330" x2="1640" y2="330" stroke="#2a2f3a" stroke-width="3" />
+        </g>
+        <g font-size="38">
+          <g class="e-row h"><text x="560" y="410" fill="#e8e6df">取款</text><text x="1420" y="410" fill="#83C167" text-anchor="middle">✓</text></g>
+          <g class="e-row h"><text x="560" y="500" fill="#e8e6df">借款</text><text x="1420" y="500" fill="#83C167" text-anchor="middle">✓</text></g>
+          <g class="e-row h"><text x="560" y="590" fill="#e8e6df">杠杆铸造</text><text x="1420" y="590" fill="#83C167" text-anchor="middle">✓</text></g>
+          <g class="e-row h"><rect x="540" y="630" width="1100" height="80" rx="10" fill="#1f1214" stroke="#FC6255" stroke-width="4" /><text x="560" y="683" fill="#FC6255" font-weight="700">捐赠（新加的函数）</text><text x="1420" y="683" fill="#FC6255" text-anchor="middle" font-weight="800">✕</text></g>
+        </g>
+        <text id="e-rule" class="h" x="960" y="860" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700">任何减少抵押品或增加债务的路径</text>
+        <text id="e-rule2" class="h" x="960" y="930" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700">都必须在结束时检查健康因子</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 59.43, "L": [[0.6, 3.24], [3.69, 10.27], [10.72, 19.86], [20.31, 29.67], [30.12, 37.54], [37.99, 50.37], [50.82, 58.33]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const BAR = (s, y, hgt, t, d = 0.8) => tl.to(s, { attr: { y, height: hgt }, duration: d, ease: "power2.inOut" }, t);
+      const st = gsap.utils.toArray("#root .e-st");
+      const STEP = (i, t) => { tl.to(st, { fill: "#6b6f7a", duration: 0.2 }, t); tl.to(st[i], { fill: "#FF9F43", duration: 0.2 }, t); };
+
+      // L0
+      IN("#e-title", at(0, 0.05), 0.5);
+      st.forEach((s, i) => IN(s, at(0, 0.3) + i * 0.1, 0.4));
+      IN("#e-a", at(0, 0.5), 0.5);
+      // L1 闪电贷 + 杠杆
+      STEP(0, at(1, 0));
+      IN("#e-pool", at(1, 0.05), 0.5);
+      DRAW("#e-in", at(1, 0.2), 0.5);
+      IN(["#e-ac", "#e-ad"], at(1, 0.25), 0.1);
+      BAR("#e-ac", 590, 150, at(1, 0.3));
+      IN("#e-lev", at(1, 0.5), 0.4);
+      BAR("#e-ac", 340, 400, at(1, 0.6), 1.0);
+      BAR("#e-ad", 410, 330, at(1, 0.6), 1.0);
+      // L2 捐赠：抵押品减少，债务不变
+      STEP(1, at(2, 0));
+      OUT("#e-lev", at(2, 0), 0.2);
+      IN("#e-don", at(2, 0.1), 0.4);
+      tl.set("#e-chunk", { opacity: 1 }, at(2, 0.2));
+      tl.set("#e-ac", { attr: { y: 590, height: 150 } }, at(2, 0.2));
+      tl.to("#e-chunk", { y: -200, opacity: 0, duration: 0.9, ease: "power2.in" }, at(2, 0.22));
+      IN("#e-gap", at(2, 0.55), 0.4);
+      IN("#e-insol", at(2, 0.6), 0.4);
+      // L3 另一个账户清算
+      STEP(2, at(3, 0));
+      OUT("#e-don", at(3, 0), 0.2);
+      IN("#e-b", at(3, 0.05), 0.5);
+      DRAW("#e-liq", at(3, 0.25), 0.5);
+      BAR("#e-ac", 740, 0, at(3, 0.45), 0.6);
+      IN("#e-bc", at(3, 0.5), 0.6, { scaleY: 0, svgOrigin: "1530 740" }, { scaleY: 1 });
+      IN("#e-disc", at(3, 0.35), 0.4);
+      // L4 归还闪电贷，获利
+      STEP(3, at(4, 0));
+      OUT("#e-disc", at(4, 0), 0.3);
+      DRAW("#e-repay", at(4, 0.05), 0.9);
+      IN("#e-profit", at(4, 0.35), 0.5);
+      // L5 入口 × 健康检查
+      OUT(["#e-pool", "#e-a", "#e-ac", "#e-ad", "#e-in", "#e-gap", "#e-insol", "#e-b", "#e-liq", "#e-bc", "#e-disc", "#e-repay", "#e-profit", "#e-steps", "#e-title"], at(5, 0), 0.4);
+      IN("#e-tab", at(5, 0.08), 0.5);
+      const rows = gsap.utils.toArray("#root .e-row");
+      [0.18, 0.28, 0.4, 0.75].forEach((f, i) => IN(rows[i], at(5, f), 0.4, { x: -20 }, { x: 0 }));
+      // L6 规则
+      IN("#e-rule", at(6, 0.05), 0.5, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      IN("#e-rule2", at(6, 0.4), 0.5, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+
+      tl.to("#e-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["euler"] = tl;
+    })();
+  </script>
+</template>

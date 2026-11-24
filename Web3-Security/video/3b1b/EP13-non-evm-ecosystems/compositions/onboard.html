@@ -1,0 +1,72 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="onboard" data-duration="62.53" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="n-all">
+        <text id="n-title" class="h" x="960" y="120" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="700">交易所接入新链：检查清单</text>
+        <g id="n-grid"></g>
+        <g id="n-sdk" class="h">
+          <text x="960" y="880" font-size="32" fill="#6b6f7a" text-anchor="middle">2024 年 12 月 · Solana 官方 JavaScript SDK 被植入窃取私钥的版本，约 5 小时后撤下</text>
+          <text x="960" y="940" font-size="34" fill="#83C167" text-anchor="middle">签名服务不和业务代码共用依赖</text>
+        </g>
+        <g id="n-warn" class="h">
+          <rect x="360" y="840" width="1200" height="140" rx="20" fill="#1f1214" stroke="#FC6255" stroke-width="4" />
+          <text x="960" y="900" font-size="36" fill="#e8e6df" text-anchor="middle">照搬以太坊的接入逻辑</text>
+          <text x="960" y="955" font-size="36" fill="#FC6255" text-anchor="middle" font-weight="700">→ 假充值 · 错账 · 资金丢失</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 62.53, "L": [[0.6, 5.76], [6.21, 18.69], [19.14, 28.81], [29.26, 40.88], [41.33, 54.41], [54.86, 61.43]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      const D = [
+        ["交易模型", "失败交易会上链吗？结果字段？"],
+        ["资产识别", "合约地址 / mint / 对象类型 / denom"],
+        ["账户模型", "要预先创建吗？要租金吗？"],
+        ["最终性", "多久不可回滚？停过链吗？"],
+        ["节点", "两个独立来源"],
+        ["签名", "曲线：HSM / MPC 支持吗？"],
+        ["元协议", "用哪个索引器？哪个版本？"],
+        ["治理", "验证者能冻结 / 回滚吗？"],
+        ["SDK 供应链", "版本锁定？与签名服务隔离？"],
+      ];
+      const NS = "http://www.w3.org/2000/svg", gh = document.querySelector("#n-grid");
+      const G = D.map((d, i) => {
+        const x = 160 + (i % 3) * 540, y = 190 + Math.floor(i / 3) * 210, g = document.createElementNS(NS, "g");
+        g.setAttribute("opacity", "0");
+        g.innerHTML = `<rect x="${x}" y="${y}" width="500" height="180" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="3" />` +
+          `<text x="${x + 30}" y="${y + 70}" font-size="36" fill="#58C4DD" font-weight="700">${d[0]}</text>` +
+          `<text x="${x + 30}" y="${y + 130}" font-size="28" fill="#e8e6df">${d[1]}</text>`;
+        gh.appendChild(g); return g;
+      });
+
+      IN("#n-title", at(0, 0.05), 0.6);
+      const P = [[1, 0.05], [1, 0.55], [2, 0.05], [2, 0.55], [3, 0.03], [3, 0.25], [3, 0.55], [3, 0.75], [4, 0.05]];
+      G.forEach((g, i) => IN(g, at(P[i][0], P[i][1]), 0.4, { y: 15 }, { y: 0 }));
+      // L4 SDK 供应链
+      tl.to(G[8].querySelector("rect"), { stroke: "#FC6255", strokeWidth: 5, duration: 0.3 }, at(4, 0.15));
+      tl.set("#n-sdk", { opacity: 1 }, at(4, 0.2)); Array.from(document.querySelector("#n-sdk").children).forEach((c, k) => IN(c, at(4, [0.2, 0.75][k]), 0.5));
+      // L5 照搬以太坊
+      OUT("#n-sdk", at(5, 0), 0.3);
+      IN("#n-warn", at(5, 0.1), 0.6, { scale: 0.95, svgOrigin: "960 910" }, { scale: 1 });
+      tl.to(G.map((g) => g.querySelector("rect")), { stroke: "#FF9F43", duration: 0.4, stagger: 0.04 }, at(5, 0.3));
+
+      tl.to("#n-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["onboard"] = tl;
+    })();
+  </script>
+</template>

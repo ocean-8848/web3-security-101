@@ -1,0 +1,111 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="checkpoint" data-duration="57.69" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="k-all">
+        <line id="k-line" class="h" x1="100" y1="460" x2="1820" y2="460" stroke="#2a2f3a" stroke-width="6" />
+        <g font-size="32" text-anchor="middle" font-weight="700">
+          <g class="k-g h"><rect x="390" y="330" width="60" height="260" rx="10" fill="#1d1710" stroke="#FF9F43" stroke-width="4" /><text x="420" y="300" fill="#FF9F43">制裁筛查</text></g>
+          <g class="k-g h"><rect x="730" y="330" width="60" height="260" rx="10" fill="#1d1710" stroke="#FF9F43" stroke-width="4" /><text x="760" y="300" fill="#FF9F43">链上风险评分</text></g>
+          <g class="k-g h"><rect x="1070" y="330" width="60" height="260" rx="10" fill="#1d1710" stroke="#FF9F43" stroke-width="4" /><text x="1100" y="300" fill="#FF9F43">Travel Rule</text></g>
+          <g class="k-g h"><rect x="1410" y="330" width="60" height="260" rx="10" fill="#1d1710" stroke="#FF9F43" stroke-width="4" /><text x="1440" y="300" fill="#FF9F43">AML 监控</text></g>
+        </g>
+        <g id="k-outs" class="h" font-size="28" text-anchor="middle">
+          <text x="1700" y="410" fill="#83C167">放行</text><text x="1700" y="470" fill="#58C4DD">冻结</text><text x="1700" y="530" fill="#FF9F43">上报</text>
+        </g>
+        <text id="k-req" class="h" x="160" y="410" font-size="28" fill="#e8e6df" text-anchor="middle">充值 / 提币</text>
+        <!-- L1 制裁命中 -->
+        <circle id="k-c1" class="h" cx="160" cy="460" r="26" fill="#F0B90B" />
+        <text id="k-c1t" class="h" x="300" y="680" font-size="28" fill="#FC6255" text-anchor="middle">名单上的地址 → 命中即拦</text>
+        <text id="k-x1" class="h" x="420" y="470" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="800">✕</text>
+        <!-- L2 风险评分 -->
+        <path id="k-hops" class="dr" pathLength="1" d="M160 820 L 300 760 L 450 830 L 600 770 L 700 470" fill="none" stroke="#FC6255" stroke-width="4" stroke-dasharray="1" />
+        <g id="k-src" class="h"><circle cx="160" cy="820" r="16" fill="#FC6255" /><text x="160" y="880" font-size="28" fill="#FC6255" text-anchor="middle">被盗资金 / 混币器</text></g>
+        <circle id="k-c2" class="h" cx="700" cy="470" r="26" fill="#F0B90B" stroke="#FC6255" stroke-width="5" />
+        <text id="k-c2t" class="h" x="760" y="680" font-size="28" fill="#83C167" text-anchor="middle">往往是冻结追回的最后机会</text>
+        <!-- L3 Travel Rule + AML -->
+        <g id="k-env" class="h">
+          <rect x="960" y="190" width="280" height="60" rx="8" fill="#161a22" stroke="#e8e6df" stroke-width="3" />
+          <text x="1100" y="230" font-size="28" fill="#e8e6df" text-anchor="middle">发起人 · 受益人</text>
+        </g>
+        <g id="k-split" fill="#F0B90B"></g>
+        <text id="k-splitt" class="h" x="1440" y="680" font-size="28" fill="#FF9F43" text-anchor="middle">拆分 · 快进快出</text>
+        <!-- L4 规则漏洞 -->
+        <path id="k-gap" class="dr" pathLength="1" d="M160 460 C 300 600, 520 620, 620 500 S 900 300, 960 380 S 1300 620, 1360 470 S 1560 380, 1620 460" fill="none" stroke="#FC6255" stroke-width="5" stroke-dasharray="1" />
+        <text id="k-gapt" class="h" x="960" y="780" font-size="36" fill="#FC6255" text-anchor="middle" font-weight="700">不攻破系统，只钻规则的漏洞</text>
+        <text id="k-tc" class="h" x="960" y="850" font-size="28" fill="#8a8f99" text-anchor="middle">Binance 事件前一天：攻击者操作钱包收到 3 笔 Tornado Cash 提款（TRM）</text>
+        <!-- L5 误伤 -->
+        <circle id="k-good" class="h" cx="160" cy="460" r="26" fill="#83C167" />
+        <text id="k-x2" class="h" x="760" y="470" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="800">✕</text>
+        <text id="k-fp" class="h" x="760" y="680" font-size="28" fill="#FC6255" text-anchor="middle">误报：正常用户被冻结</text>
+        <g id="k-rev" class="h">
+          <rect x="560" y="760" width="400" height="90" rx="14" fill="#13200f" stroke="#83C167" stroke-width="4" />
+          <text x="760" y="817" font-size="32" fill="#83C167" text-anchor="middle" font-weight="700">人工复核 · 申诉</text>
+        </g>
+        <text id="k-both" class="h" x="960" y="960" font-size="36" fill="#e8e6df" text-anchor="middle" font-weight="700">放过赃款、误伤用户：<tspan fill="#FF9F43">两种失效都要算</tspan></text>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 57.69, "L": [[0.6, 5.9], [6.35, 12.81], [13.26, 24.83], [25.28, 34.95], [35.4, 46.97], [47.42, 56.59]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      // L0 四道关
+      IN("#k-line", at(0, 0.0), 0.4);
+      IN("#k-req", at(0, 0.05), 0.4);
+      gsap.utils.toArray("#root .k-g").forEach((g, i) => IN(g, at(0, 0.2 + i * 0.13), 0.4, { y: -20 }, { y: 0 }));
+      IN("#k-outs", at(0, 0.8), 0.4);
+      // L1 制裁
+      IN("#k-c1", at(1, 0.05), 0.3);
+      tl.to("#k-c1", { attr: { cx: 350 }, duration: 0.8, ease: "power2.in" }, at(1, 0.15));
+      tl.to("#k-c1", { fill: "#FC6255", duration: 0.2 }, at(1, 0.15) + 0.8);
+      IN("#k-x1", at(1, 0.3), 0.3, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1 });
+      IN("#k-c1t", at(1, 0.4), 0.4);
+      // L2 风险评分
+      OUT(["#k-c1", "#k-x1", "#k-c1t"], at(2, 0), 0.3);
+      IN("#k-src", at(2, 0.05), 0.4);
+      tl.fromTo("#k-hops", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.4, ease: "power1.inOut" }, at(2, 0.1));
+      IN("#k-c2", at(2, 0.35), 0.3);
+      tl.to("#k-c2", { attr: { r: 32 }, duration: 0.25, yoyo: true, repeat: 3 }, at(2, 0.45));
+      IN("#k-c2t", at(2, 0.6), 0.4);
+      // L3 Travel Rule + AML
+      OUT(["#k-src", "#k-hops", "#k-c2", "#k-c2t"], at(3, 0), 0.3);
+      IN("#k-env", at(3, 0.08), 0.4, { y: -20 }, { y: 0 });
+      const host = document.querySelector("#k-split"), sp = [];
+      for (let i = 0; i < 9; i++) { const c = document.createElementNS("http://www.w3.org/2000/svg", "circle"); c.setAttribute("cx", 1250); c.setAttribute("cy", 380 + i * 20); c.setAttribute("r", "9"); c.setAttribute("opacity", "0"); host.appendChild(c); sp.push(c); }
+      sp.forEach((c, i) => { tl.fromTo(c, { opacity: 0 }, { opacity: 1, duration: 0.2 }, at(3, 0.55) + i * 0.08); tl.to(c, { attr: { cx: 1390 }, fill: "#FF9F43", duration: 0.5 }, at(3, 0.6) + i * 0.08); });
+      IN("#k-splitt", at(3, 0.75), 0.4);
+      // L4 规则漏洞
+      OUT(["#k-env", "#k-split", "#k-splitt"], at(4, 0), 0.3);
+      tl.fromTo("#k-gap", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.6, ease: "power1.inOut" }, at(4, 0.05));
+      IN("#k-gapt", at(4, 0.3), 0.4);
+      IN("#k-tc", at(4, 0.55), 0.5);
+      // L5 误伤
+      OUT(["#k-gap", "#k-gapt", "#k-tc"], at(5, 0), 0.3);
+      IN("#k-good", at(5, 0.05), 0.3);
+      tl.to("#k-good", { attr: { cx: 690 }, duration: 0.8, ease: "power2.in" }, at(5, 0.1));
+      IN("#k-x2", at(5, 0.25), 0.3, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1 });
+      IN("#k-fp", at(5, 0.3), 0.4);
+      IN("#k-rev", at(5, 0.5), 0.4, { y: 20 }, { y: 0 });
+      OUT("#k-x2", at(5, 0.62), 0.2);
+      tl.to("#k-good", { attr: { cx: 1580 }, duration: 1.2, ease: "power2.inOut" }, at(5, 0.64));
+      IN("#k-both", at(5, 0.75), 0.5);
+      tl.to("#k-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["checkpoint"] = tl;
+    })();
+  </script>
+</template>

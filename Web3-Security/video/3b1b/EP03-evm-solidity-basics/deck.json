@@ -1,0 +1,257 @@
+{
+ "chapter": "s03",
+ "title": "EVM 与 Solidity 基础：一次调用里谁是 msg.sender",
+ "sections": {
+  "hook": "开场 · 一个问题",
+  "machine": "EVM 是什么",
+  "hall": "一个比方",
+  "context": "调用链上的变量",
+  "calls": "三种调用",
+  "slots": "存储槽位",
+  "risk": "槽位错位",
+  "traps": "语言陷阱",
+  "answer": "回到问题"
+ },
+ "slides": [
+  {
+   "scene": "hook",
+   "lines": [
+    0,
+    2
+   ],
+   "title": "示例场景：管理员被钓鱼",
+   "points": [
+    "不是某一起真实事故",
+    "管理员访问钓鱼页面，调用了攻击者的合约",
+    "攻击者的合约随后调用了你的金库"
+   ]
+  },
+  {
+   "scene": "hook",
+   "lines": [
+    3,
+    4
+   ],
+   "title": "问题：tx.origin 等于 owner，能通过吗",
+   "points": [
+    "取款函数要求 tx.origin 等于 owner",
+    "先搞清楚：一次调用里，谁是 msg.sender？"
+   ],
+   "frame_line": 3
+  },
+  {
+   "scene": "machine",
+   "lines": [
+    0,
+    1
+   ],
+   "title": "EVM：单线程的栈式计算机",
+   "points": [
+    "每个合约有自己的代码和存储"
+   ]
+  },
+  {
+   "scene": "machine",
+   "lines": [
+    2,
+    4
+   ],
+   "title": "两类账户，调用会交出控制权",
+   "points": [
+    "外部账户：私钥控制，能主动发起交易",
+    "合约账户：代码控制，只能被调用",
+    "EIP-7702（2025 年 5 月）：外部账户可委托执行合约代码"
+   ]
+  },
+  {
+   "scene": "hall",
+   "lines": [
+    0,
+    2
+   ],
+   "title": "比方：只有一个窗口的政务大厅",
+   "points": [
+    "每个合约是一个科室：档案柜是存储，办事规程是代码",
+    "A 找 B 办事：带材料去 B 的窗口，B 办完回到 A"
+   ]
+  },
+  {
+   "scene": "hall",
+   "lines": [
+    3,
+    4
+   ],
+   "title": "比方不成立处：B 办到一半可以回头找 A",
+   "points": [
+    "真实大厅里，离开窗口后不能插队回来",
+    "EVM 里 B 可以反过来再找 A，A 的上一件事还没办完",
+    "这就是重入，下一集的主题"
+   ]
+  },
+  {
+   "scene": "context",
+   "lines": [
+    0,
+    5
+   ],
+   "title": "msg.sender 每站都变，tx.origin 不变",
+   "points": [
+    "tx.origin：发起整笔交易的外部账户；msg.sender：直接调用者",
+    "A、B、C 三站：msg.sender 依次是用户、A、B",
+    "tx.origin 从头到尾都是用户"
+   ]
+  },
+  {
+   "scene": "calls",
+   "lines": [
+    0,
+    1
+   ],
+   "title": "call：执行 B 的代码，改 B 的存储",
+   "points": [
+    "合约调用合约有三种方式",
+    "call 最常见"
+   ]
+  },
+  {
+   "scene": "calls",
+   "lines": [
+    2,
+    3
+   ],
+   "title": "delegatecall：借 B 的代码，改 A 的存储",
+   "points": [
+    "msg.sender 和 msg.value 也保持不变",
+    "比方：借来 B 的手册，清空的是 A 的第 0 号抽屉"
+   ]
+  },
+  {
+   "scene": "calls",
+   "lines": [
+    4,
+    5
+   ],
+   "title": "staticcall 只读；低级 call 失败不回滚",
+   "points": [
+    "staticcall：任何写存储的操作都会回滚",
+    "低级 call 失败只返回 false，不自动回滚",
+    "忘记检查返回值，是常见的错误"
+   ]
+  },
+  {
+   "scene": "slots",
+   "lines": [
+    0,
+    3
+   ],
+   "title": "存储槽位：每格 32 字节，按声明顺序打包",
+   "points": [
+    "相邻的小变量，能放下就打包进同一个槽",
+    "owner 20 字节 + paused 1 字节 = 21，放进 0 号槽",
+    "fee 是 uint96：21 + 12 = 33，放不下，从 1 号槽开始"
+   ]
+  },
+  {
+   "scene": "slots",
+   "lines": [
+    4,
+    5
+   ],
+   "title": "改一个类型，后面的变量全挪位",
+   "points": [
+    "mapping 占 3 号槽，元素在由键和槽号算出的哈希位置",
+    "fee 改成 uint88：20 + 1 + 11 = 32，三个变量挤进 0 号槽",
+    "total 跟着挪到 1 号槽"
+   ]
+  },
+  {
+   "scene": "risk",
+   "lines": [
+    0,
+    2
+   ],
+   "title": "代理用 delegatecall：变量顺序必须一致",
+   "points": [
+    "代理把实现合约的代码跑在自己的存储上",
+    "不一致时，实现以为在写 owner，改写的可能是存放实现地址的槽"
+   ]
+  },
+  {
+   "scene": "risk",
+   "lines": [
+    3,
+    4
+   ],
+   "title": "升级插入变量会错位；private 不是秘密",
+   "points": [
+    "中间插入新变量，后面全部错位，余额可能被当成地址",
+    "存储公开：private 变量任何人都能从链上读出",
+    "不能存密码或种子"
+   ]
+  },
+  {
+   "scene": "traps",
+   "lines": [
+    0,
+    2
+   ],
+   "title": "转 ETH 会执行代码；余额能被强制转入",
+   "points": [
+    "转 ETH 会执行对方的 receive 或 fallback，这是重入的入口",
+    "别人可以强制转进来，用 address(this).balance 记账会被操纵"
+   ]
+  },
+  {
+   "scene": "traps",
+   "lines": [
+    3,
+    4
+   ],
+   "title": "时间戳不精确；选择器只有 4 字节",
+   "points": [
+    "block.timestamp 出块者可小范围调整，不能做随机数",
+    "函数签名可能撞选择器；2021 年 Poly Network 的关键一步与之有关"
+   ]
+  },
+  {
+   "scene": "answer",
+   "lines": [
+    0,
+    2
+   ],
+   "title": "答案：msg.sender 是攻击者的合约，能通过",
+   "points": [
+    "msg.sender 是直接调用你的那个地址",
+    "金库看到的 msg.sender 是攻击者的合约",
+    "tx.origin 是被骗的管理员，所以检查能通过"
+   ]
+  },
+  {
+   "scene": "answer",
+   "lines": [
+    3,
+    4
+   ],
+   "title": "权限看 msg.sender，并看清每一跳",
+   "points": [
+    "权限检查要看 msg.sender，不看 tx.origin",
+    "前提：清楚每一跳是 call 还是 delegatecall",
+    "EIP-7702 之后，msg.sender 等于 tx.origin 也不能证明是普通用户"
+   ]
+  }
+ ],
+ "quiz": [
+  {
+   "q": "一次调用里，谁是 msg.sender？示例场景里 tx.origin 检查能通过吗？",
+   "a": "msg.sender 是直接调用当前函数的那个地址，示例里金库看到的是攻击者的合约。tx.origin 是被骗的管理员，中间经过多少合约都不变，所以 tx.origin 等于 owner，这次调用能通过。"
+  },
+  {
+   "q": "delegatecall 与 call 有什么不同？为什么会造成存储槽位风险？",
+   "a": "call 执行 B 的代码、改 B 的存储；delegatecall 执行 B 的代码，改的却是 A 自己的存储，msg.sender 和 msg.value 也不变。代理合约用 delegatecall，两边变量顺序必须一致，否则实现合约会改写代理里存放实现地址等的槽。"
+  },
+  {
+   "q": "权限检查为什么要看 msg.sender？这个做法有什么前提和例外？",
+   "a": "因为 tx.origin 从头到尾是发起交易的账户，会被钓鱼调用骗过。前提是你清楚每一跳是 call 还是 delegatecall，delegatecall 会把 msg.sender 原样带过去；另外 EIP-7702 之后，msg.sender 等于 tx.origin 也不能证明调用者是普通用户。"
+  }
+ ]
+}

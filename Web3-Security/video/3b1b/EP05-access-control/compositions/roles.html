@@ -1,0 +1,80 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="roles" data-duration="39.64" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="o-all">
+        <g id="o-key" class="h">
+          <circle cx="760" cy="150" r="30" fill="none" stroke="#B48EF0" stroke-width="7" />
+          <path d="M790 150 H 880 M850 150 v 24 M872 150 v 16" stroke="#B48EF0" stroke-width="7" fill="none" stroke-linecap="round" />
+          <text x="920" y="165" font-size="48" fill="#e8e6df" font-weight="700">这把钥匙，交给谁？</text>
+        </g>
+        <g id="o-own" class="h"><circle cx="960" cy="560" r="110" fill="#1b1626" stroke="#B48EF0" stroke-width="5" /><text x="960" y="550" font-size="34" fill="#B48EF0" text-anchor="middle" font-weight="700">全能 owner</text><text x="960" y="595" font-size="28" fill="#8a8f99" text-anchor="middle">什么都能做</text></g>
+        <g id="o-roles"></g>
+        <g id="o-d1" class="h"><text x="600" y="315" font-size="30" fill="#e8e6df">升级合约 → <tspan fill="#83C167">多签 + 时间锁</tspan> · 延迟 48 小时（示例）</text></g>
+        <g id="o-d2" class="h"><text x="600" y="425" font-size="30" fill="#e8e6df">调整费率、抵押率 → <tspan fill="#83C167">多签 + 时间锁</tspan> · 延迟 24 小时（示例）</text></g>
+        <g id="o-d3" class="h"><text x="600" y="535" font-size="30" fill="#e8e6df">紧急暂停 → 小型多签或监控机器人 · <tspan fill="#FF9F43">可以没有延迟</tspan></text></g>
+        <g id="o-d4" class="h"><text x="600" y="645" font-size="30" fill="#e8e6df">增发 → <tspan fill="#58C4DD">只授予特定合约</tspan></text></g>
+        <!-- 延迟轴 -->
+        <g id="o-axis" class="h">
+          <line x1="300" y1="830" x2="1700" y2="830" stroke="#6b6f7a" stroke-width="3" />
+          <text x="300" y="880" font-size="28" fill="#8a8f99" text-anchor="middle">0</text>
+          <text x="1000" y="880" font-size="28" fill="#8a8f99" text-anchor="middle">24 小时</text>
+          <text x="1700" y="880" font-size="28" fill="#8a8f99" text-anchor="middle">48 小时</text>
+          <text x="1780" y="838" font-size="28" fill="#6b6f7a">延迟</text>
+        </g>
+        <g id="o-m1" class="h"><circle cx="300" cy="830" r="16" fill="#FF9F43" /><text class="mono" x="300" y="790" font-size="28" fill="#FF9F43" text-anchor="middle">PAUSER</text></g>
+        <g id="o-m2" class="h"><circle cx="1000" cy="830" r="16" fill="#83C167" /><text class="mono" x="1000" y="790" font-size="28" fill="#83C167" text-anchor="middle">PARAM_ADMIN</text></g>
+        <g id="o-m3" class="h"><circle cx="1700" cy="830" r="16" fill="#83C167" /><text class="mono" x="1700" y="790" font-size="28" fill="#83C167" text-anchor="middle">UPGRADER</text></g>
+        <text id="o-fast" class="h" x="300" y="960" font-size="34" fill="#FF9F43">暂停要快：只能止损，不能转走资金</text>
+        <text id="o-slow" class="h" x="1700" y="1020" font-size="34" fill="#FC6255" text-anchor="end">升级要慢：可以做任何事</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 39.64, "L": [[0.6, 5.16], [5.61, 12.38], [12.83, 23.12], [23.57, 29.77], [30.22, 38.54]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      const names = ["UPGRADER", "PARAM_ADMIN", "PAUSER", "MINTER"], R = [];
+      const host = document.querySelector("#o-roles");
+      names.forEach((n, i) => {
+        const y = 270 + i * 110;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        g.innerHTML = `<rect x="140" y="${y}" width="400" height="70" rx="35" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text class="mono" x="340" y="${y + 46}" font-size="32" fill="#58C4DD" text-anchor="middle">${n}</text>`;
+        host.appendChild(g); R.push({ g, y });
+      });
+
+      // L0 钥匙交给谁
+      IN("#o-key", at(0, 0.05), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      // L1 全能 owner 拆成四个角色
+      IN("#o-own", at(1, 0.0), 0.5, { scale: 0.6, svgOrigin: "960 560" }, { scale: 1 });
+      tl.to("#o-own", { opacity: 0, scale: 0.5, svgOrigin: "960 560", duration: 0.5, ease: "power2.in" }, at(1, 0.5));
+      R.forEach((r, i) => tl.fromTo(r.g, { opacity: 0, x: 620, y: 560 - r.y - 35 }, { opacity: 1, x: 0, y: 0, duration: 0.8, ease: "power3.out" }, at(1, 0.55) + i * 0.1));
+      // L2 升级、调参
+      IN("#o-d1", at(2, 0.05), 0.5, { x: 20 }, { x: 0 });
+      IN("#o-d2", at(2, 0.55), 0.5, { x: 20 }, { x: 0 });
+      // L3 暂停、增发
+      IN("#o-d3", at(3, 0.05), 0.5, { x: 20 }, { x: 0 });
+      IN("#o-d4", at(3, 0.6), 0.5, { x: 20 }, { x: 0 });
+      // L4 暂停要快，升级要慢
+      IN("#o-axis", at(4, 0.0), 0.5);
+      IN("#o-m1", at(4, 0.08), 0.4); IN("#o-m2", at(4, 0.14), 0.4); IN("#o-m3", at(4, 0.2), 0.4);
+      IN("#o-fast", at(4, 0.3), 0.5);
+      IN("#o-slow", at(4, 0.6), 0.5);
+
+      tl.to("#o-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["roles"] = tl;
+    })();
+  </script>
+</template>

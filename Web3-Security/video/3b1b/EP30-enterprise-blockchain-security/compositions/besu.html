@@ -1,0 +1,140 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root text.mono, #root tspan.mono { font-family: "JetBrains Mono", "NotoSC", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="besu" data-duration="65.89" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="b-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="b-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="b-all">
+        <!-- Corda -->
+        <g id="b-corda">
+          <text id="b-ct" class="h" x="960" y="130" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">Corda：点对点分发，公证人防重复使用</text>
+          <g id="b-pa" class="h"><rect x="200" y="250" width="280" height="110" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="340" y="316" font-size="32" fill="#e8e6df" text-anchor="middle">参与方 A</text></g>
+          <g id="b-pb" class="h"><rect x="1440" y="250" width="280" height="110" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="1580" y="316" font-size="32" fill="#e8e6df" text-anchor="middle">参与方 B</text></g>
+          <path id="b-p2p" class="dr h" pathLength="1" d="M485 305 L 1432 305" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#b-ah)" />
+          <text id="b-p2pt" class="h" x="960" y="285" font-size="28" fill="#8a8f99" text-anchor="middle">只发给需要知道的参与方</text>
+          <circle id="b-st" class="h" cx="960" cy="430" r="34" fill="#F0B90B" />
+          <text id="b-stt" class="h" x="1010" y="440" font-size="28" fill="#F0B90B">状态 S</text>
+          <g id="b-no" class="h"><rect id="b-nor" x="800" y="540" width="320" height="120" rx="16" fill="#18141f" stroke="#B48EF0" stroke-width="4" /><text x="960" y="595" font-size="32" fill="#B48EF0" text-anchor="middle" font-weight="700">公证人</text><text x="960" y="638" font-size="28" fill="#8a8f99" text-anchor="middle">这个状态用过吗？</text></g>
+          <g id="b-tx1" class="h"><rect x="360" y="760" width="300" height="90" rx="12" fill="#1a1708" stroke="#F0B90B" stroke-width="3" /><text x="510" y="815" font-size="30" fill="#F0B90B" text-anchor="middle">交易 1：S → B</text></g>
+          <g id="b-tx2" class="h"><rect x="1260" y="760" width="300" height="90" rx="12" fill="#1a1708" stroke="#F0B90B" stroke-width="3" /><text x="1410" y="815" font-size="30" fill="#F0B90B" text-anchor="middle">交易 2：S → C</text></g>
+          <g fill="none" stroke="#FC6255" stroke-width="5"><circle id="b-sg1" class="h" cx="640" cy="760" r="30" /><circle id="b-sg2" class="h" cx="1540" cy="760" r="30" /></g>
+          <text id="b-ds" class="h" x="960" y="830" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="800">双花</text>
+          <g id="b-cl" class="h">
+            <circle cx="860" cy="600" r="44" fill="#18141f" stroke="#58C4DD" stroke-width="5" /><circle cx="960" cy="600" r="44" fill="#18141f" stroke="#F0B90B" stroke-width="5" /><circle cx="1060" cy="600" r="44" fill="#18141f" stroke="#83C167" stroke-width="5" />
+            <text x="960" y="700" font-size="30" fill="#83C167" text-anchor="middle">公证人集群 · 分开运营方</text>
+          </g>
+        </g>
+        <!-- Besu QBFT -->
+        <g id="b-besu">
+          <text id="b-bt" class="h" x="960" y="130" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">Besu：验证者投票（QBFT）</text>
+          <text id="b-bs" class="h" x="960" y="190" font-size="28" fill="#6b6f7a" text-anchor="middle">2026 年 9 月公告 · 影响 24.5.2 起 · 26.8.1 修复</text>
+          <g id="b-vals"></g>
+          <g id="b-wd" class="h"><rect x="560" y="520" width="160" height="80" rx="10" fill="#2a1414" stroke="#FC6255" stroke-width="3" /><text x="640" y="570" font-size="28" fill="#FC6255" text-anchor="middle">未授权提款</text></g>
+          <text id="b-fin" class="h" x="640" y="880" font-size="32" fill="#83C167" text-anchor="middle">诚实验证者：照常执行、最终确定</text>
+          <!-- 原生币供应 -->
+          <g id="b-sup" class="h">
+            <line x1="1150" y1="800" x2="1450" y2="800" stroke="#6b6f7a" stroke-width="3" />
+            <rect x="1240" y="560" width="120" height="240" fill="#F0B90B" fill-opacity=".8" />
+            <text x="1300" y="850" font-size="28" fill="#8a8f99" text-anchor="middle">原生币总量</text>
+          </g>
+          <rect id="b-grow" class="h" x="1240" y="440" width="120" height="120" fill="#FC6255" fill-opacity=".85" />
+          <text id="b-growt" class="h" x="1380" y="500" font-size="30" fill="#FC6255" font-weight="700">凭空增加</text>
+          <g font-size="34" fill="#e8e6df">
+            <text class="b-k h mono" x="1150" y="300">n = 3f + 1</text>
+            <text class="b-k h" x="1150" y="360"><tspan class="mono">4 = 3 × 1 + 1</tspan> → 能容忍 1 个</text>
+          </g>
+          <g id="b-rule" class="h">
+            <rect x="1100" y="420" width="640" height="300" rx="16" fill="#121a14" stroke="#83C167" stroke-width="3" />
+            <text x="1140" y="470" font-size="30" fill="#83C167" font-weight="700">诚实节点的验证规则</text>
+            <text x="1140" y="530" font-size="30" fill="#e8e6df">✓ 规则一</text><text x="1140" y="585" font-size="30" fill="#e8e6df">✓ 规则二</text>
+            <rect x="1130" y="610" width="560" height="56" rx="8" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+            <text x="1410" y="648" font-size="28" fill="#FF9F43" text-anchor="middle">少了一项</text>
+          </g>
+          <text id="b-law" class="h" x="1420" y="800" font-size="32" fill="#e8e6df" text-anchor="middle">合同：事后追责 ≠ 挡住写错</text>
+        </g>
+        <!-- 维护状态 -->
+        <g id="b-mt">
+          <g class="b-m h"><rect x="200" y="330" width="420" height="200" rx="16" fill="none" stroke="#6b6f7a" stroke-width="3" stroke-dasharray="12 8" /><text x="410" y="410" font-size="36" fill="#8a8f99" text-anchor="middle" font-weight="700">GoQuorum</text><text x="410" y="470" font-size="30" fill="#6b6f7a" text-anchor="middle">仓库已归档</text></g>
+          <g class="b-m h"><rect x="750" y="330" width="420" height="200" rx="16" fill="none" stroke="#6b6f7a" stroke-width="3" stroke-dasharray="12 8" /><text x="960" y="410" font-size="36" fill="#8a8f99" text-anchor="middle" font-weight="700">Tessera</text><text x="960" y="470" font-size="30" fill="#6b6f7a" text-anchor="middle">2026-06-01 归档</text></g>
+          <g class="b-m h"><rect x="1300" y="330" width="420" height="200" rx="16" fill="#121a14" stroke="#83C167" stroke-width="3" /><text x="1510" y="410" font-size="36" fill="#83C167" text-anchor="middle" font-weight="700">Besu</text><text x="1510" y="470" font-size="30" fill="#e8e6df" text-anchor="middle">活跃 · 已移除 Tessera 隐私</text></g>
+          <text id="b-nofix" class="h" x="685" y="620" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">没有上游安全修复</text>
+          <text id="b-aud" class="h" x="960" y="780" font-size="38" fill="#83C167" text-anchor="middle" font-weight="700">审计客户端实现 · 盘点维护状态</text>
+          <text id="b-src" class="h" x="960" y="1030" font-size="28" fill="#6b6f7a" text-anchor="middle">版本状态按第 30 章 2026-11-10 核对</text>
+        </g>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 65.89, "L": [[0.6, 8.45], [8.9, 19.05], [19.5, 29.87], [30.32, 40.81], [41.26, 53.16], [53.61, 64.79]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, ox, oy, d = 0.4) => IN(s, t, d, { scale: 0.4, svgOrigin: `${ox} ${oy}` }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      const vh = document.querySelector("#b-vals"), V = [];
+      for (let i = 0; i < 4; i++) {
+        const a = (i / 4) * Math.PI * 2 - Math.PI / 4, x = 640 + Math.cos(a) * 200, y = 560 + Math.sin(a) * 200;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        g.innerHTML = `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="56" fill="#161a22" stroke="#e8e6df" stroke-width="4" /><text x="${x.toFixed(1)}" y="${(y + 10).toFixed(1)}" font-size="28" fill="#e8e6df" text-anchor="middle">银行 ${i + 1}</text>`;
+        vh.appendChild(g); V.push({ g, x, y });
+      }
+      // L0 Corda
+      IN("#b-ct", at(0, 0.0), 0.5);
+      IN("#b-pa", at(0, 0.15), 0.4); IN("#b-pb", at(0, 0.2), 0.4);
+      DRAW("#b-p2p", at(0, 0.3), 0.6); IN("#b-p2pt", at(0, 0.35), 0.4);
+      IN("#b-st", at(0, 0.6), 0.3); IN("#b-stt", at(0, 0.6), 0.3);
+      IN("#b-no", at(0, 0.7), 0.5, { y: 20 }, { y: 0 });
+      // L1 单节点公证人作恶：同一状态签两次 → 双花；修复：集群
+      tl.to("#b-nor", { stroke: "#FC6255", duration: 0.3 }, at(1, 0.0));
+      IN("#b-tx1", at(1, 0.08), 0.4); IN("#b-tx2", at(1, 0.14), 0.4);
+      POP("#b-sg1", at(1, 0.3), 640, 760); POP("#b-sg2", at(1, 0.36), 1540, 760);
+      IN("#b-ds", at(1, 0.42), 0.4, { scale: 1.3, svgOrigin: "960 815" }, { scale: 1, ease: "back.out(2)" });
+      OUT("#b-no", at(1, 0.68), 0.3);
+      IN("#b-cl", at(1, 0.72), 0.5, { scale: 0.6, svgOrigin: "960 600" }, { scale: 1, ease: "back.out(1.6)" });
+      // L2 Besu QBFT：一名验证者注入提款
+      tl.to("#b-corda", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(2, 0));
+      IN("#b-bt", at(2, 0.05), 0.5); IN("#b-bs", at(2, 0.15), 0.4);
+      V.forEach((v, i) => IN(v.g, at(2, 0.2) + i * 0.08, 0.35, { scale: 0.5, svgOrigin: `${v.x} ${v.y}` }, { scale: 1 }));
+      tl.to(V[0].g.querySelector("circle"), { stroke: "#FC6255", fill: "#2a1414", duration: 0.3 }, at(2, 0.55));
+      IN("#b-wd", at(2, 0.65), 0.3);
+      tl.fromTo("#b-wd", { x: 140, y: -140 }, { x: 0, y: 0, duration: 0.7, ease: "power2.inOut" }, at(2, 0.65));
+      // L3 诚实验证者照常最终确定；原生币增加；3f+1
+      [1, 2, 3].forEach((j, n) => tl.to(V[j].g.querySelector("circle"), { stroke: "#83C167", duration: 0.25 }, at(3, 0.05) + n * 0.15));
+      IN("#b-fin", at(3, 0.15), 0.4);
+      IN("#b-sup", at(3, 0.3), 0.4);
+      IN("#b-grow", at(3, 0.4), 0.2);
+      tl.fromTo("#b-grow", { scaleY: 0, svgOrigin: "1300 560" }, { scaleY: 1, duration: 0.8, ease: "power2.out" }, at(3, 0.4));
+      IN("#b-growt", at(3, 0.5), 0.3);
+      gsap.utils.toArray("#root .b-k").forEach((s, i) => IN(s, at(3, 0.7) + i * 0.4, 0.4));
+      // L4 规则少了一项；合同挡不住
+      OUT(["#b-sup", "#b-grow", "#b-growt"], at(4, 0), 0.3);
+      IN("#b-rule", at(4, 0.2), 0.5);
+      tl.fromTo("#b-rule rect[stroke-dasharray]", { strokeWidth: 3 }, { strokeWidth: 6, duration: 0.3, yoyo: true, repeat: 1 }, at(4, 0.45));
+      IN("#b-law", at(4, 0.62), 0.4);
+      tl.to(V[0].g.querySelector("circle"), { strokeWidth: 9, duration: 0.3, yoyo: true, repeat: 1 }, at(4, 0.85));
+      // L5 维护状态
+      tl.to("#b-besu", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(5, 0));
+      gsap.utils.toArray("#root .b-m").forEach((g, i) => IN(g, at(5, 0.05) + i * 0.1, 0.4, { y: 20 }, { y: 0 }));
+      IN("#b-nofix", at(5, 0.3), 0.4);
+      IN("#b-aud", at(5, 0.65), 0.5);
+      IN("#b-src", at(5, 0.4), 0.4);
+      tl.to("#b-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["besu"] = tl;
+    })();
+  </script>
+</template>

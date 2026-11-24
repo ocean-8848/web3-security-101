@@ -1,0 +1,89 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="fail" data-duration="35.85" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="f-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="f-all">
+        <line id="f-div" class="h" x1="1080" y1="160" x2="1080" y2="940" stroke="#2a2f3a" stroke-width="4" stroke-dasharray="14 10" />
+        <text id="f-off" class="h" x="560" y="140" font-size="30" fill="#6b6f7a" text-anchor="middle">链下</text>
+        <text id="f-on" class="h" x="1500" y="140" font-size="30" fill="#6b6f7a" text-anchor="middle">链上</text>
+
+        <g fill="none" stroke="#8a8f99" stroke-width="3" marker-end="url(#f-ah)">
+          <path id="f-a1" class="dr h" pathLength="1" d="M440 360 L 575 470" />
+          <path id="f-a2" class="dr h" pathLength="1" d="M440 720 L 575 610" />
+          <path id="f-a3" class="dr h" pathLength="1" d="M900 540 L 1140 540" />
+          <path id="f-a4" class="dr h" pathLength="1" d="M1440 540 L 1530 540" />
+        </g>
+        <text id="f-a3t" class="h" x="1020" y="515" font-size="28" fill="#8a8f99" text-anchor="middle">证明 + 公开输入</text>
+
+        <g id="f-n1" class="h"><rect x="120" y="260" width="320" height="170" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="280" y="335" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">电路</text><text x="280" y="385" font-size="28" fill="#8a8f99" text-anchor="middle">约束 = 规则</text></g>
+        <g id="f-n2" class="h"><rect x="120" y="650" width="320" height="170" rx="18" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="280" y="725" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">可信设置</text><text x="280" y="775" font-size="28" fill="#8a8f99" text-anchor="middle">部分方案需要</text></g>
+        <g id="f-n3" class="h"><rect x="580" y="455" width="320" height="170" rx="18" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="740" y="550" font-size="36" fill="#e8e6df" text-anchor="middle" font-weight="700">证明器</text></g>
+        <g id="f-n4" class="h"><rect id="f-n4r" x="1140" y="455" width="300" height="170" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="5" /><text x="1290" y="550" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">验证器合约</text></g>
+        <g id="f-n5" class="h"><rect x="1540" y="455" width="300" height="170" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="1690" y="530" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">业务合约</text><text x="1690" y="580" font-size="28" fill="#8a8f99" text-anchor="middle">按公开输入结算</text></g>
+
+        <!-- 四个失败点 -->
+        <g font-weight="800" text-anchor="middle">
+          <g id="f-x1" class="h"><circle cx="440" cy="260" r="30" fill="#2a1416" stroke="#FC6255" stroke-width="4" /><text x="440" y="274" font-size="38" fill="#FC6255">✕</text></g>
+          <g id="f-x2" class="h"><circle cx="440" cy="650" r="30" fill="#2a1416" stroke="#FC6255" stroke-width="4" /><text x="440" y="664" font-size="38" fill="#FC6255">✕</text></g>
+          <g id="f-x3" class="h"><circle cx="1440" cy="455" r="30" fill="#2a1416" stroke="#FC6255" stroke-width="4" /><text x="1440" y="469" font-size="38" fill="#FC6255">✕</text></g>
+          <g id="f-x4" class="h"><circle cx="1815" cy="455" r="30" fill="#2a1416" stroke="#FC6255" stroke-width="4" /><text x="1815" y="469" font-size="38" fill="#FC6255">✕</text></g>
+        </g>
+        <g font-size="30" fill="#FC6255">
+          <text id="f-t1" class="h" x="120" y="212">约束不足：错误结论也能被证明</text>
+          <text id="f-t2" class="h" x="120" y="870">秘密没销毁：可伪造任意证明</text>
+          <text id="f-t3" class="h" x="1290" y="400" text-anchor="middle">未检查输入范围</text>
+          <text id="f-t4" class="h" x="1690" y="680" text-anchor="middle">公开输入</text>
+          <text id="f-t4b" class="h" x="1690" y="720" text-anchor="middle">没有全部用上</text>
+        </g>
+
+        <!-- 验证器能看到的范围 -->
+        <rect id="f-scope" class="h" x="1120" y="340" width="340" height="305" rx="24" fill="none" stroke="#58C4DD" stroke-width="3" stroke-dasharray="10 8" />
+        <text id="f-sum" class="h" x="960" y="1000" font-size="42" fill="#e8e6df" text-anchor="middle" font-weight="700">4 处里，只有 <tspan fill="#58C4DD">1 处</tspan>在验证器代码里</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 35.85, "L": [[0.6, 6.26], [6.71, 11.18], [11.63, 17.0], [17.45, 23.09], [23.54, 27.5], [27.95, 34.75]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const DRAW = (s, t, d = 0.5) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t) => IN(s, t, 0.5, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const X = (s, t) => IN(s, t, 0.4, { scale: 1.8, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+
+      // L0 整条链路
+      IN(["#f-div", "#f-off", "#f-on"], at(0, 0.0), 0.5);
+      NODE("#f-n1", at(0, 0.1)); NODE("#f-n2", at(0, 0.2));
+      DRAW("#f-a1", at(0, 0.3)); DRAW("#f-a2", at(0, 0.32));
+      NODE("#f-n3", at(0, 0.4));
+      DRAW("#f-a3", at(0, 0.55)); IN("#f-a3t", at(0, 0.6), 0.4);
+      NODE("#f-n4", at(0, 0.65));
+      DRAW("#f-a4", at(0, 0.78));
+      NODE("#f-n5", at(0, 0.85));
+      // L1–L4 四个失败点
+      X("#f-x1", at(1, 0.1)); IN("#f-t1", at(1, 0.25), 0.4);
+      X("#f-x2", at(2, 0.1)); IN("#f-t2", at(2, 0.25), 0.4);
+      X("#f-x3", at(3, 0.1)); IN("#f-t3", at(3, 0.25), 0.4);
+      X("#f-x4", at(4, 0.1)); IN("#f-t4", at(4, 0.25), 0.4); IN("#f-t4b", at(4, 0.35), 0.4);
+      // L5 只有一处在验证器代码里
+      IN("#f-scope", at(5, 0.05), 0.5, { scale: 1.1, svgOrigin: "1290 492" }, { scale: 1 });
+      tl.to(["#f-x1", "#f-x2", "#f-x4", "#f-t1", "#f-t2", "#f-t4", "#f-t4b"], { opacity: 0.55, duration: 0.4 }, at(5, 0.3));
+      tl.to(["#f-n1", "#f-n2", "#f-n3", "#f-n5"], { opacity: 0.35, duration: 0.4 }, at(5, 0.3));
+      IN("#f-sum", at(5, 0.4), 0.5);
+
+      tl.to("#f-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["fail"] = tl;
+    })();
+  </script>
+</template>

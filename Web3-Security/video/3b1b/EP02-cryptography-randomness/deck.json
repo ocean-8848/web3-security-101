@@ -1,0 +1,384 @@
+{
+ "chapter": "s02",
+ "title": "密码学基础与实现风险：私钥的随机性从哪里来",
+ "sections": {
+  "hook": "开场 · 一个问题",
+  "chain": "私钥的链路",
+  "space": "第一处：熵 · 密钥空间",
+  "safe": "第一处：熵 · 一个比方",
+  "entropy": "第一处：熵 · 不是孤例",
+  "nonce": "第二处：nonce",
+  "mpc": "延伸 · 门限签名",
+  "pq": "延伸 · 后量子",
+  "migrate": "修复之后",
+  "answer": "回到问题"
+ },
+ "slides": [
+  {
+   "scene": "hook",
+   "lines": [
+    0,
+    1
+   ],
+   "title": "一个靶号地址，丢了约 1.6 亿美元",
+   "points": [
+    "2022 年 9 月，Wintermute 金库被盗",
+    "地址由 Profanity 靶号工具生成",
+    "靶号地址：开头或结尾长成指定样子"
+   ]
+  },
+  {
+   "scene": "hook",
+   "lines": [
+    2,
+    4
+   ],
+   "title": "算法没被破解，私钥却被算了出来",
+   "points": [
+    "1inch 披露：随机数只用 32 位种子",
+    "5 天后，金库被盗",
+    "问题：私钥的随机性从哪里来？"
+   ],
+   "frame_line": 3,
+   "sources": [
+    {
+     "t": "1inch 披露",
+     "u": "https://blog.1inch.com/a-vulnerability-disclosed-in-profanity-an-ethereum-vanity-address-tool"
+    }
+   ]
+  },
+  {
+   "scene": "chain",
+   "lines": [
+    0,
+    3
+   ],
+   "title": "种子一旦泄露，所有地址一起泄露",
+   "points": [
+    "熵 → 助记词 → 种子 → 私钥 → 地址",
+    "派生是确定性的：同一个种子，同一组地址"
+   ]
+  },
+  {
+   "scene": "chain",
+   "lines": [
+    4,
+    5
+   ],
+   "title": "整条链路，有两处需要随机性",
+   "points": [
+    "① 生成私钥时的熵",
+    "② 签名时的 nonce",
+    "任何一处出错，私钥都能被算出"
+   ]
+  },
+  {
+   "scene": "space",
+   "lines": [
+    0,
+    1
+   ],
+   "title": "256 位私钥：约 10⁷⁷ 种可能",
+   "points": [
+    "熵：随机性的度量，单位是位",
+    "2²⁵⁶ ≈ 10⁷⁷"
+   ]
+  },
+  {
+   "scene": "space",
+   "lines": [
+    2,
+    5
+   ],
+   "title": "32 位种子：几分钟就能试完",
+   "points": [
+    "2³² ≈ 43 亿种",
+    "示例：每秒 10 亿个 → 约 4.3 秒",
+    "私钥强度 ≤ 生成它的熵"
+   ]
+  },
+  {
+   "scene": "safe",
+   "lines": [
+    0,
+    2
+   ],
+   "title": "77 位的密码，用生日来设",
+   "points": [
+    "密码再长，也只有设密码的方式那么强",
+    "小偷只要试几万个生日"
+   ]
+  },
+  {
+   "scene": "safe",
+   "lines": [
+    3,
+    4
+   ],
+   "title": "链上更糟：离线、并行、无限次地试",
+   "points": [
+    "比方不成立处：公钥和地址全部公开",
+    "试多少次都不会触发告警"
+   ]
+  },
+  {
+   "scene": "entropy",
+   "lines": [
+    0,
+    2
+   ],
+   "title": "熵不足不是孤例",
+   "points": [
+    "Trust Wallet 扩展（2022.11）：32 位种子",
+    "Libbitcoin Explorer（2023）：32 位时间值，至少约 90 万美元"
+   ]
+  },
+  {
+   "scene": "entropy",
+   "lines": [
+    3,
+    3
+   ],
+   "title": "穷举种子，和有余额的地址比对",
+   "points": [
+    "算出全部种子对应的地址",
+    "和链上有余额的地址比对",
+    "命中就转走"
+   ]
+  },
+  {
+   "scene": "entropy",
+   "lines": [
+    4,
+    4
+   ],
+   "title": "私钥必须来自 CSPRNG，满 256 位熵",
+   "points": [
+    "看起来随机 ≠ 安全",
+    "用操作系统或硬件提供的 CSPRNG"
+   ]
+  },
+  {
+   "scene": "nonce",
+   "lines": [
+    0,
+    1
+   ],
+   "title": "同一个 k 用两次，解方程就得到私钥",
+   "points": [
+    "签名 = ECDSA(私钥, 消息, k)",
+    "k = (z₁ − z₂) / (s₁ − s₂)，再解出私钥",
+    "2013 年安卓随机数缺陷"
+   ]
+  },
+  {
+   "scene": "nonce",
+   "lines": [
+    2,
+    2
+   ],
+   "title": "r 值重复，是 k 被用了两次的痕迹",
+   "points": [
+    "同一个 k → 同一个 r",
+    "防御：监控自家地址的重复 r 值"
+   ]
+  },
+  {
+   "scene": "nonce",
+   "lines": [
+    3,
+    5
+   ],
+   "title": "k 有偏置或能被算出，也会泄露私钥",
+   "points": [
+    "有偏置：很多签名 + 格方法（2019）",
+    "能由公开数据算出：1 个签名就够",
+    "SecondFi（2026.6）：374 个钱包，约 1,600 万 ADA"
+   ],
+   "sources": [
+    {
+     "t": "rekt.news",
+     "u": "https://rekt.news/secondfi-rekt"
+    },
+    {
+     "t": "Halborn",
+     "u": "https://www.halborn.com/blog/post/explained-the-secondfi-hack-june-2026"
+    }
+   ]
+  },
+  {
+   "scene": "nonce",
+   "lines": [
+    6,
+    6
+   ],
+   "title": "解法：RFC 6979 确定性 nonce",
+   "points": [
+    "k 由私钥和消息派生",
+    "风险来自偏离标准的实现"
+   ]
+  },
+  {
+   "scene": "mpc",
+   "lines": [
+    0,
+    2
+   ],
+   "title": "门限签名：每一步证明都不能省",
+   "points": [
+    "私钥拆成几片，各方各持一片",
+    "零知识证明：证明对方没有作弊",
+    "重复次数 128 → 1：作弊方能猜中"
+   ]
+  },
+  {
+   "scene": "mpc",
+   "lines": [
+    3,
+    4
+   ],
+   "title": "恶意参与方一点点提取别人的分片",
+   "points": [
+    "BitForge、TSSHOCK（2023.8）：影响多家服务商和开源库",
+    "未报告实际资金损失",
+    "门限签名库不能按论文随意简化"
+   ],
+   "sources": [
+    {
+     "t": "Fireblocks",
+     "u": "https://www.fireblocks.com/blog/bitforge-fireblocks-researchers-uncover-vulnerabilities-in-over-15-major-wallet-providers"
+    },
+    {
+     "t": "Verichains",
+     "u": "https://verichains.io/tsshock/"
+    }
+   ]
+  },
+  {
+   "scene": "pq",
+   "lines": [
+    0,
+    1
+   ],
+   "title": "量子计算：从公开的公钥算出私钥",
+   "points": [
+    "影响 ECDSA、EdDSA",
+    "公钥在第一次签名后才公开",
+    "没签过名的地址更安全"
+   ]
+  },
+  {
+   "scene": "pq",
+   "lines": [
+    2,
+    2
+   ],
+   "title": "后量子迁移：整条链升级，以年计",
+   "points": [
+    "NIST 2024 年 8 月发布后量子标准",
+    "比特币 BIP-360 仍是草案；以太坊目标约 2029（规划）"
+   ],
+   "sources": [
+    {
+     "t": "NIST",
+     "u": "https://csrc.nist.gov/news/2024/postquantum-cryptography-fips-approved"
+    },
+    {
+     "t": "BIP-360",
+     "u": "https://github.com/bitcoin/bips/blob/master/bip-0360.mediawiki"
+    }
+   ]
+  },
+  {
+   "scene": "pq",
+   "lines": [
+    3,
+    3
+   ],
+   "title": "现在能做的：盘点、标记、不重用",
+   "points": [
+    "盘点资产",
+    "标出公钥已暴露的地址",
+    "不重复使用地址"
+   ]
+  },
+  {
+   "scene": "migrate",
+   "lines": [
+    0,
+    2
+   ],
+   "title": "修好代码，修不好已经生成的弱私钥",
+   "points": [
+    "Trust Wallet：2022.11.14–23 新建的钱包",
+    "修复后，私钥仍只来自 32 位种子",
+    "部分被盗，约 17 万美元"
+   ]
+  },
+  {
+   "scene": "migrate",
+   "lines": [
+    3,
+    3
+   ],
+   "title": "修复之后：强制迁移到新地址",
+   "points": [
+    "资产搬到新钱包生成的新地址",
+    "只修代码不迁移，弱私钥一直可被算出"
+   ]
+  },
+  {
+   "scene": "migrate",
+   "lines": [
+    4,
+    4
+   ],
+   "title": "防御沿链路摆：生成、地址、签名、监控",
+   "points": [
+    "生成：CSPRNG；金库地址：不用靶号工具",
+    "签名：确定性 nonce",
+    "监控：自家地址的重复 r 值"
+   ]
+  },
+  {
+   "scene": "answer",
+   "lines": [
+    0,
+    2
+   ],
+   "title": "答案：从生成它的那一刻来",
+   "points": [
+    "签名算法没错，生成工具只有 32 位种子",
+    "被攻破的是实现，不是算法"
+   ],
+   "frame_line": 2
+  },
+  {
+   "scene": "answer",
+   "lines": [
+    3,
+    4
+   ],
+   "title": "两处随机性都对，也挡不住误签",
+   "points": [
+    "私钥安全上限 = 生成和使用过程",
+    "用户签下攻击者的交易，签名算法拦不住"
+   ],
+   "frame_line": 3
+  }
+ ],
+ "quiz": [
+  {
+   "q": "整条私钥链路有哪两处需要随机性？Wintermute 出错的是哪一处？",
+   "a": "生成私钥时的熵，和签名时的 nonce。Wintermute 出在第一处：Profanity 只用 32 位种子生成私钥，只有约 43 亿种，攻击者能穷举出来。签名算法本身没有错。"
+  },
+  {
+   "q": "监控发现自家同一个地址有两笔签名的 r 值相同。这说明什么？下一步做什么？",
+   "a": "说明两次签名用了同一个 nonce k，任何人都能用这两个签名解出私钥。要立刻把这个地址的资产转到新密钥生成的新地址，排查签名实现是否偏离 RFC 6979，并检查其他地址有没有同样的问题。"
+  },
+  {
+   "q": "某钱包版本有一段时间用弱随机数生成助记词，修复版已经上线。还要做什么？",
+   "a": "修代码修不好已经生成的弱私钥。要找出受影响时间段内新建的钱包，通知并强制用户把资产迁移到新钱包生成的新地址，同时盯住这些旧地址的异常转出。"
+  }
+ ]
+}

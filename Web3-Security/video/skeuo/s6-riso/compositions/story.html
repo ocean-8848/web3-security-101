@@ -1,0 +1,392 @@
+<template>
+  <style>
+    #root {
+      position: absolute; inset: 0; overflow: hidden;
+      --paper: #f2ede3; --a: #1f3fb8; --b: #ff4f8b;
+      font-family: "Noto Sans SC", sans-serif; color: var(--a);
+    }
+    #st-paper { position: absolute; inset: 0; background: var(--paper); }
+    #st-fibre { position: absolute; inset: 0; width: 1920px; height: 1080px; mix-blend-mode: multiply; z-index: 50; pointer-events: none; }
+    .sc { position: absolute; inset: 0; }
+    .abs { position: absolute; }
+    .disp { font-family: "Smiley Sans", sans-serif; font-weight: 400; line-height: 1; white-space: nowrap; }
+    .cn9 { font-family: "Noto Sans SC", sans-serif; font-weight: 900; line-height: 1.15; white-space: nowrap; }
+    .cn7 { font-family: "Noto Sans SC", sans-serif; font-weight: 700; line-height: 1.2; white-space: nowrap; }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; line-height: 1.2; white-space: nowrap; }
+    .inkB { color: var(--b); mix-blend-mode: multiply; }
+    .dotsA { background: radial-gradient(circle, var(--a) 38%, transparent 41%) 0 0 / 11px 11px;
+      -webkit-background-clip: text; background-clip: text; color: transparent; }
+    svg.ht { position: absolute; overflow: visible; }
+
+    /* wipe slab: solid ink A with halftone edges on both sides */
+    #st-slab { position: absolute; top: 0; left: -200px; width: 2320px; height: 1080px; z-index: 40; }
+    #st-slab .solid { position: absolute; left: 200px; top: 0; width: 1920px; height: 1080px; background: var(--a); }
+
+    /* ---------- S1 date + 15亿 ---------- */
+    #s1-date { left: 104px; top: 40px; font-size: 350px; letter-spacing: -6px; }
+    #s1-bybit { left: 1290px; top: 420px; font-size: 72px; }
+    #s1-wallet { left: 1290px; top: 510px; font-size: 72px; }
+    #s1-rule { left: 1290px; top: 618px; width: 520px; height: 10px; background: var(--a); }
+    #s1-usd { left: 1290px; top: 650px; font-size: 120px; }
+    #s1-fbi { left: 1290px; top: 812px; font-size: 32px; }
+    #s1-big { left: 96px; top: 300px; font-size: 600px; letter-spacing: -10px; }
+    #s1-bigA { left: 96px; top: 300px; font-size: 600px; letter-spacing: -10px; }
+
+    /* ---------- S2 key ---------- */
+    #s2-key { left: 70px; top: 150px; width: 1000px; height: 640px; }
+    #s2-pk { left: 1100px; top: 110px; font-size: 230px; }
+    #s2-safe { left: 1100px; top: 360px; font-size: 150px; }
+    #s2-signers { left: 1104px; top: 556px; font-size: 32px; }
+    .stamp { position: absolute; top: 620px; width: 210px; height: 210px; mix-blend-mode: multiply; }
+    #s2-st1 { left: 1090px; } #s2-st2 { left: 1330px; } #s2-st3 { left: 1570px; }
+
+    /* ---------- S3 screen ---------- */
+    #s3-screen { left: 300px; top: 70px; width: 1320px; height: 640px; background: var(--a); border-radius: 22px; }
+    #s3-neck { left: 880px; top: 710px; width: 160px; height: 120px; background: var(--a); }
+    #s3-base { left: 700px; top: 826px; width: 520px; height: 34px; background: var(--a); border-radius: 6px 6px 0 0; }
+    #s3-head { left: 370px; top: 120px; font-size: 34px; color: var(--paper); }
+    #s3-hrule { left: 370px; top: 180px; width: 1180px; height: 4px; background: var(--paper); }
+    #s3-word { left: 370px; top: 250px; font-size: 300px; color: var(--paper); }
+    #s3-btn { left: 1270px; top: 580px; width: 280px; height: 84px; border: 6px solid var(--paper); color: var(--paper);
+      font-size: 40px; display: flex; align-items: center; justify-content: center; }
+
+    /* ---------- S4 operation ---------- */
+    #s4-title { left: 160px; top: 110px; font-size: 64px; }
+    #s4-table { left: 160px; top: 230px; width: 1200px; }
+    .row { position: relative; height: 112px; border-top: 6px solid var(--a); display: flex; align-items: center; font-size: 60px; }
+    .row .k { width: 460px; padding-left: 20px; position: relative; z-index: 2; }
+    .row .v { position: relative; z-index: 2; }
+    #s4-hl { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: var(--a); }
+    #s4-rowop.on .k, #s4-rowop.on .v { color: var(--paper); }
+    #s4-tbot { height: 6px; background: var(--a); }
+    #s4-op { left: 110px; top: 70px; font-size: 330px; letter-spacing: -6px; }
+    #s4-eq { left: 130px; top: 470px; font-size: 330px; }
+    #s4-zero { left: 560px; top: 330px; font-size: 600px; }
+    #s4-ghost { left: 560px; top: 330px; font-size: 600px; }
+    #s4-oneA { left: 610px; top: 250px; font-size: 720px; }
+    #s4-oneB { left: 613px; top: 253px; font-size: 720px; }
+    .dotsA2 { background: radial-gradient(circle, var(--a) 20%, transparent 23%) 0 0 / 11px 11px;
+      -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .dotsA3 { background: radial-gradient(circle, var(--a) 26%, transparent 29%) 0 0 / 9px 9px;
+      -webkit-background-clip: text; background-clip: text; color: transparent; }
+    #s4-burst { left: 0; top: 0; width: 1920px; height: 1080px; mix-blend-mode: multiply; }
+    #s4-note { left: 1330px; top: 640px; font-size: 40px; }
+    #s4-note2 { left: 1330px; top: 700px; font-size: 40px; }
+
+    /* ---------- S5 DELEGATECALL ---------- */
+    #s5-bar { left: 0; top: 70px; width: 1920px; height: 250px; background: var(--a); }
+    #s5-barsmall { left: 120px; top: 92px; font-size: 34px; color: var(--paper); }
+    #s5-dc { left: 112px; top: 140px; font-size: 150px; color: var(--paper); letter-spacing: -2px; }
+    #s5-exec { left: 120px; top: 380px; font-size: 76px; }
+    #s5-exec2 { left: 124px; top: 480px; font-size: 34px; }
+    #s5-slot { left: 120px; top: 600px; width: 520px; height: 220px; background: var(--a); color: var(--paper);
+      font-size: 72px; display: flex; align-items: center; justify-content: center; }
+    #s5-cell { left: 640px; top: 600px; width: 1160px; height: 220px; border: 8px solid var(--a); }
+    #s5-old { left: 690px; top: 640px; font-size: 110px; }
+    #s5-slash { left: 670px; top: 700px; width: 520px; height: 26px; background: var(--b); mix-blend-mode: multiply; transform-origin: 0 50%; }
+    #s5-arrow { left: 1210px; top: 650px; font-size: 96px; }
+    #s5-new { left: 1320px; top: 646px; font-size: 104px; }
+
+    /* ---------- S6 keys vs file ---------- */
+    #s6-left { left: 0; top: 0; width: 960px; height: 1080px; background: var(--a); }
+    #s6-key { left: 120px; top: 200px; font-size: 260px; color: var(--paper); }
+    #s6-check { left: 520px; top: 150px; width: 300px; height: 300px; }
+    #s6-lsub { left: 128px; top: 560px; font-size: 40px; color: var(--paper); }
+    #s6-right { left: 960px; top: 0; width: 960px; height: 1080px; }
+    #s6-doc { left: 1080px; top: 90px; width: 700px; height: 760px; }
+    #s6-file { left: 1170px; top: 200px; font-size: 260px; }
+    #s6-rsub { left: 1176px; top: 560px; font-size: 40px; }
+    #s6-cross { left: 1430px; top: 470px; width: 340px; height: 340px; mix-blend-mode: multiply; }
+
+    /* ---------- S7 path ---------- */
+    #s7-tx { left: 120px; top: 92px; font-size: 40px; padding: 6px 20px; border: 5px solid var(--a); }
+    .strip { position: absolute; top: 200px; width: 234px; height: 640px; background: var(--a); color: var(--paper); }
+    .strip .n { position: absolute; left: 22px; top: 26px; font-family: "Smiley Sans", sans-serif; font-size: 150px; line-height: 1; }
+    .strip .l { position: absolute; left: 22px; bottom: 34px; font-family: "Noto Sans SC", sans-serif; font-weight: 900; font-size: 42px; line-height: 1.2; }
+    .strip.pink { background: var(--b); color: var(--a); mix-blend-mode: multiply; }
+    #s7-note { left: 860px; top: 104px; font-size: 36px; }
+
+    /* ---------- End card ---------- */
+    #e-title { left: 150px; top: 300px; font-size: 200px; letter-spacing: -2px; }
+    #e-sub { left: 156px; top: 600px; font-size: 64px; }
+    #e-pink { left: 140px; top: 588px; width: 330px; height: 104px; background: var(--b); mix-blend-mode: multiply; }
+    #e-rule { left: 150px; top: 560px; width: 1500px; height: 10px; background: var(--a); }
+  </style>
+
+  <div id="root" data-composition-id="story" data-width="1920" data-height="1080">
+    <div id="st-paper"></div>
+
+    <!-- S1 · 0–7.10 -->
+    <div id="sc1" class="sc clip" data-start="0" data-duration="7.1" data-layout-allow-overlap>
+      <div id="s1-date" class="abs disp">2025.02.21</div>
+      <div id="s1-bybit" class="abs mono">BYBIT</div>
+      <div id="s1-wallet" class="abs cn9">以太坊冷钱包</div>
+      <div id="s1-rule" class="abs"></div>
+      <div id="s1-usd" class="abs cn9">美元</div>
+      <div id="s1-fbi" class="abs mono">FBI 口径 · 事发时估值</div>
+      <div id="s1-bigA" class="abs disp dotsA">15亿</div>
+      <div id="s1-big" class="abs disp inkB">15亿</div>
+    </div>
+
+    <!-- S2 · 7.10–13.80 -->
+    <div id="sc2" class="sc clip" data-start="7.1" data-duration="6.7">
+      <svg id="s2-key" class="ht" viewBox="0 0 1000 640"></svg>
+      <div id="s2-pk" class="abs disp">私钥</div>
+      <div id="s2-safe" class="abs disp">未泄露</div>
+      <div id="s2-signers" class="abs mono">签名人 · 逐个确认</div>
+      <svg id="s2-st1" class="stamp" viewBox="0 0 210 210"><g transform="rotate(-9 105 105)"><rect x="14" y="14" width="182" height="182" rx="18" fill="none" stroke="#ff4f8b" stroke-width="14"/><path d="M52 108 L90 146 L160 66" fill="none" stroke="#ff4f8b" stroke-width="24" stroke-linecap="square"/></g></svg>
+      <svg id="s2-st2" class="stamp" viewBox="0 0 210 210"><g transform="rotate(6 105 105)"><rect x="14" y="14" width="182" height="182" rx="18" fill="none" stroke="#ff4f8b" stroke-width="14"/><path d="M52 108 L90 146 L160 66" fill="none" stroke="#ff4f8b" stroke-width="24" stroke-linecap="square"/></g></svg>
+      <svg id="s2-st3" class="stamp" viewBox="0 0 210 210"><g transform="rotate(-3 105 105)"><rect x="14" y="14" width="182" height="182" rx="18" fill="none" stroke="#ff4f8b" stroke-width="14"/><path d="M52 108 L90 146 L160 66" fill="none" stroke="#ff4f8b" stroke-width="24" stroke-linecap="square"/></g></svg>
+    </div>
+
+    <!-- S3 · 13.80–17.60 -->
+    <div id="sc3" class="sc clip" data-start="13.8" data-duration="3.8">
+      <div id="s3-scr" class="abs" style="inset:0">
+        <div id="s3-screen" class="abs"></div>
+        <div id="s3-neck" class="abs"></div>
+        <div id="s3-base" class="abs"></div>
+      </div>
+      <div id="s3-head" class="abs mono">SAFE{WALLET} · 待签名</div>
+      <div id="s3-hrule" class="abs"></div>
+      <div id="s3-word" class="abs disp">普通转账</div>
+      <div id="s3-btn" class="abs cn9">确认</div>
+    </div>
+
+    <!-- S4 · 17.60–23.65 -->
+    <div id="sc4" class="sc clip" data-start="17.6" data-duration="6.05" data-layout-allow-overlap>
+      <div id="s4-tab" class="abs" style="inset:0">
+        <div id="s4-title" class="abs cn9">实际签下的交易</div>
+        <div id="s4-table" class="abs mono">
+          <div class="row" id="s4-r1"><span class="k">to</span><span class="v">…</span></div>
+          <div class="row" id="s4-r2"><span class="k">value</span><span class="v">…</span></div>
+          <div class="row" id="s4-r3"><span class="k">data</span><span class="v">…</span></div>
+          <div class="row" id="s4-rowop"><div id="s4-hl"></div><span class="k">operation</span><span class="v">?</span></div>
+          <div id="s4-tbot"></div>
+        </div>
+      </div>
+      <div id="s4-big" class="abs" style="inset:0">
+        <div id="s4-op" class="abs disp">operation</div>
+        <div id="s4-eq" class="abs disp">=</div>
+        <div id="s4-zero" class="abs disp">0</div>
+        <div id="s4-ghost" class="abs disp dotsA3">0</div>
+        <svg id="s4-burst" class="ht" viewBox="0 0 1920 1080"></svg>
+        <div id="s4-oneA" class="abs disp dotsA2">1</div>
+        <div id="s4-oneB" class="abs disp inkB">1</div>
+        <div id="s4-note" class="abs mono">正常转账：0 = CALL</div>
+        <div id="s4-note2" class="abs mono">这一笔：&nbsp;1</div>
+      </div>
+    </div>
+
+    <!-- S5 · 23.65–30.525 -->
+    <div id="sc5" class="sc clip" data-start="23.65" data-duration="6.875">
+      <div id="s5-bar" class="abs"></div>
+      <div id="s5-barsmall" class="abs mono">operation = 1</div>
+      <div id="s5-dc" class="abs mono">DELEGATECALL</div>
+      <div id="s5-exec" class="abs cn9">执行：攻击者合约的代码</div>
+      <div id="s5-exec2" class="abs mono">代码跑在 Safe 自己的存储上</div>
+      <div id="s5-slot" class="abs mono">slot 0</div>
+      <div id="s5-cell" class="abs"></div>
+      <div id="s5-old" class="abs cn9">实现合约</div>
+      <div id="s5-slash" class="abs"></div>
+      <div id="s5-arrow" class="abs cn9">→</div>
+      <div id="s5-new" class="abs disp">攻击者合约</div>
+    </div>
+
+    <!-- S6 · 30.525–37.225 -->
+    <div id="sc6" class="sc clip" data-start="30.525" data-duration="6.7">
+      <div id="s6-L" class="abs" style="inset:0">
+        <div id="s6-left" class="abs"></div>
+        <div id="s6-key" class="abs disp">钥匙</div>
+        <svg id="s6-check" class="ht" viewBox="0 0 300 300"><path d="M50 160 L120 230 L255 70" fill="none" stroke="#f2ede3" stroke-width="40" stroke-linecap="square"/></svg>
+        <div id="s6-lsub" class="abs mono">私钥 · 一直安全</div>
+      </div>
+      <div id="s6-R" class="abs" style="inset:0">
+        <svg id="s6-doc" class="ht" viewBox="0 0 700 760"><path d="M8 8 H560 L692 140 V752 H8 Z" fill="#f2ede3" stroke="#1f3fb8" stroke-width="16"/><path d="M560 8 V140 H692" fill="none" stroke="#1f3fb8" stroke-width="16"/><g id="s6-doclines"></g></svg>
+        <div id="s6-file" class="abs disp">文件</div>
+        <div id="s6-rsub" class="abs mono">签下的内容 · 被换了</div>
+      </div>
+      <svg id="s6-cross" class="ht" viewBox="0 0 340 340"><path d="M50 50 L290 290 M290 50 L50 290" fill="none" stroke="#ff4f8b" stroke-width="54" stroke-linecap="square"/></svg>
+    </div>
+
+    <!-- S7 · 37.225–43.225 -->
+    <div id="sc7" class="sc clip" data-start="37.225" data-duration="6.0">
+      <div id="s7-tx" class="abs mono">一笔交易 →</div>
+      <div id="s7-note" class="abs mono">Bybit 断在这一关 ↓</div>
+      <div id="s7-p1" class="strip" style="left:120px"><div class="n">①</div><div class="l">业务<br>意图</div></div>
+      <div id="s7-p2" class="strip" style="left:360px"><div class="n">②</div><div class="l">请求<br>构造</div></div>
+      <div id="s7-p3" class="strip" style="left:600px"><div class="n">③</div><div class="l">风控<br>与审批</div></div>
+      <div id="s7-p4" class="strip pink" style="left:840px"><div class="n">④</div><div class="l">显示<br>与解码</div></div>
+      <div id="s7-p5" class="strip" style="left:1080px"><div class="n">⑤</div><div class="l">签名</div></div>
+      <div id="s7-p6" class="strip" style="left:1320px"><div class="n">⑥</div><div class="l">广播</div></div>
+      <div id="s7-p7" class="strip" style="left:1560px"><div class="n">⑦</div><div class="l">链上<br>状态</div></div>
+    </div>
+
+    <!-- End card · 43.225–47.16 -->
+    <div id="sc8" class="sc clip" data-start="43.225" data-duration="3.935">
+      <div id="e-title" class="abs disp">攻击者不再偷私钥</div>
+      <div id="e-rule" class="abs"></div>
+      <div id="e-pink" class="abs"></div>
+      <div id="e-sub" class="abs cn9">第 29 章 · 签名路径</div>
+    </div>
+
+    <div id="st-slab" data-layout-ignore><div class="solid"></div><svg id="st-slabL" class="ht" style="left:0;top:0" width="200" height="1080" viewBox="0 0 200 1080"></svg><svg id="st-slabR" class="ht" style="left:2120px;top:0" width="200" height="1080" viewBox="0 0 200 1080"></svg></div>
+    <img id="st-fibre" src="assets/paper-fibre.png" alt="" data-layout-ignore />
+  </div>
+
+  <script>
+    (function () {
+      const A = "#1f3fb8", B = "#ff4f8b";
+      // ---- halftone: dots on a rotated grid, radius from a density function (0..1)
+      function halftone(el, w, h, step, angle, dens, fill) {
+        const c = Math.cos(angle * Math.PI / 180), s = Math.sin(angle * Math.PI / 180);
+        const R = Math.ceil(Math.hypot(w, h) / step) + 2;
+        let out = "";
+        for (let i = -R; i <= R; i++) for (let j = -R; j <= R; j++) {
+          const u = i * step, v = j * step;
+          const x = w / 2 + u * c - v * s, y = h / 2 + u * s + v * c;
+          if (x < -step || y < -step || x > w + step || y > h + step) continue;
+          const d = dens(x, y);
+          if (d <= 0.04) continue;
+          const r = Math.min(1, d) * step * 0.62;
+          out += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + r.toFixed(2) + '"/>';
+        }
+        el.innerHTML = '<g fill="' + fill + '">' + out + '</g>';
+      }
+      // slab edges: dots shrink away from the solid
+      halftone(document.getElementById("st-slabL"), 200, 1080, 16, 15, (x) => x / 200, A);
+      halftone(document.getElementById("st-slabR"), 200, 1080, 16, 15, (x) => 1 - x / 200, A);
+      // key silhouette, density darker toward the bow
+      function inKey(x, y) {
+        const bx = 230, by = 320;
+        const d = Math.hypot(x - bx, y - by);
+        if (d < 200 && d > 78) return true;
+        if (x > 410 && x < 960 && y > 280 && y < 362) return true;
+        if (x > 760 && x < 820 && y >= 362 && y < 470) return true;
+        if (x > 860 && x < 920 && y >= 362 && y < 520) return true;
+        if (x > 940 && x < 960 && y >= 362 && y < 420) return true;
+        return false;
+      }
+      halftone(document.getElementById("s2-key"), 1000, 640, 14, 15,
+        (x, y) => inKey(x, y) ? 1.05 - 0.55 * (x / 1000) : 0, A);
+      // climax burst around the "1": radial falloff
+      halftone(document.getElementById("s4-burst"), 1920, 1080, 22, 45,
+        (x, y) => { const e = Math.hypot((x - 740) / 330, (y - 590) / 400); return e < 1 ? 0 : 0.8 - (e - 1) * 0.55; }, B);
+      // document text lines (halftone grey = ink A dots)
+      halftone(document.getElementById("s6-doclines"), 700, 760, 10, 15,
+        (x, y) => (x > 110 && x < 600 && y > 600 && y < 700 && (Math.floor((y - 600) / 34) % 1 === 0) && ((y - 600) % 34) < 18) ? 0.6 : 0, A);
+
+      const tl = gsap.timeline({ paused: true });
+      const WIPE = "inset(0 100% 0 0)", FULL = "inset(0 0% 0 0)";
+      // print a plate: clip-path brushes across from the left
+      function print(sel, t, dur) {
+        tl.fromTo(sel, { clipPath: WIPE }, { clipPath: FULL, duration: dur || 0.2, ease: "power2.out" }, t);
+      }
+      function printDown(sel, t, dur) {
+        tl.fromTo(sel, { clipPath: "inset(0 0 100% 0)" }, { clipPath: "inset(0 0 0% 0)", duration: dur || 0.22, ease: "power2.out" }, t);
+      }
+      // stamp: lands from 1.35x in 0.12 s, no bounce
+      function stamp(sel, t, from) {
+        tl.fromTo(sel, { scale: from || 1.35, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.12, ease: "power4.in" }, t);
+      }
+      // the press slab: in 0.35 s, out 0.35 s, power3.inOut
+      function slab(tIn) {
+        tl.fromTo("#st-slab", { x: -2120 }, { x: 0, duration: 0.35, ease: "power3.inOut", immediateRender: false }, tIn);
+        tl.fromTo("#st-slab", { x: 0 }, { x: 2120, duration: 0.35, ease: "power3.inOut", immediateRender: false }, tIn + 0.35);
+      }
+      tl.set("#st-slab", { x: -2120 }, 0);
+
+      // ---------- S1 ----------
+      print("#s1-bybit", 2.46, 0.2);
+      print("#s1-wallet", 3.6, 0.22);
+      print("#s1-rule", 3.85, 0.18);
+      // 15亿: B plate first (pink, +3px off register), then A halftone underlay
+      tl.fromTo("#s1-big", { clipPath: WIPE, x: 3, y: 3 }, { clipPath: FULL, duration: 0.1, ease: "none" }, 5.23);
+      print("#s1-bigA", 5.33, 0.1);
+      print("#s1-usd", 5.73, 0.2);
+      print("#s1-fbi", 6.0, 0.2);
+      slab(6.75);
+
+      // ---------- S2 ----------
+      tl.fromTo("#s2-key", { clipPath: WIPE }, { clipPath: FULL, duration: 0.25, ease: "power2.out" }, 7.53);
+      print("#s2-pk", 7.6, 0.22);
+      print("#s2-safe", 8.68, 0.22);
+      print("#s2-signers", 9.55, 0.2);
+      stamp("#s2-st1", 9.92);
+      stamp("#s2-st2", 11.15);
+      stamp("#s2-st3", 12.48);
+      slab(13.45);
+
+      // ---------- S3 ----------
+      printDown("#s3-scr", 14.22, 0.25);
+      print("#s3-head", 14.69, 0.2);
+      print("#s3-hrule", 14.75, 0.18);
+      print("#s3-word", 16.09, 0.25);
+      print("#s3-btn", 16.53, 0.18);
+      slab(17.25);
+
+      // ---------- S4 ----------
+      print("#s4-title", 18.3, 0.2);
+      printDown("#s4-table", 18.67, 0.25);
+      tl.fromTo("#s4-hl", { clipPath: WIPE }, { clipPath: FULL, duration: 0.18, ease: "power2.out" }, 20.08);
+      tl.fromTo("#s4-rowop .k, #s4-rowop .v", { color: A }, { color: "#f2ede3", duration: 0.01 }, 20.12);
+      // hard cut to the giant line on "operation"
+      tl.set("#s4-tab", { opacity: 0 }, 20.82);
+      tl.fromTo("#s4-big", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 20.81);
+      print("#s4-op", 20.82, 0.22);
+      print("#s4-eq", 21.0, 0.12);
+      print("#s4-zero", 21.06, 0.14);
+      print("#s4-note", 21.12, 0.2);
+      // hold 0.55 s, then the pink 1 stamps over the 0
+      tl.set("#s4-ghost", { opacity: 0 }, 0);
+      tl.set("#s4-zero", { opacity: 0 }, 21.9);
+      tl.set("#s4-ghost", { opacity: 1 }, 21.9);
+      tl.fromTo("#s4-oneA", { scale: 1.5, opacity: 0, transformOrigin: "50% 60%" }, { scale: 1, opacity: 1, duration: 0.1, ease: "power4.in" }, 21.8);
+      tl.fromTo("#s4-oneB", { scale: 1.5, opacity: 0, transformOrigin: "50% 60%" }, { scale: 1, opacity: 1, duration: 0.1, ease: "power4.in" }, 21.8);
+      tl.fromTo("#s4-burst", { clipPath: "circle(0px at 740px 590px)" }, { clipPath: "circle(1100px at 740px 590px)", duration: 0.5, ease: "expo.out" }, 21.9);
+      print("#s4-note2", 22.1, 0.18);
+
+      // ---------- S5: slab lands and contracts into the DELEGATECALL bar ----------
+      tl.fromTo("#st-slab", { x: -2120 }, { x: 0, duration: 0.35, ease: "power3.inOut", immediateRender: false }, 23.3);
+      tl.set("#st-slab", { x: -2120 }, 23.65);
+      tl.fromTo("#s5-bar", { clipPath: "inset(-70px 0 -760px 0)" }, { clipPath: "inset(0px 0 0px 0)", duration: 0.35, ease: "power3.inOut" }, 23.65);
+      print("#s5-barsmall", 23.95, 0.18);
+      print("#s5-dc", 23.95, 0.25);
+      print("#s5-exec", 26.07, 0.25);
+      print("#s5-exec2", 26.44, 0.2);
+      print("#s5-slot", 27.3, 0.2);
+      print("#s5-cell", 27.4, 0.2);
+      print("#s5-old", 27.77, 0.22);
+      tl.fromTo("#s5-slash", { scaleX: 0, rotation: -8 }, { scaleX: 1, rotation: -8, duration: 0.2, ease: "power3.in" }, 28.63);
+      print("#s5-arrow", 28.9, 0.12);
+      print("#s5-new", 29.03, 0.25);
+      slab(30.175);
+
+      // ---------- S6: two pages collide at the gutter ----------
+      tl.fromTo("#s6-L", { x: -980 }, { x: 0, duration: 0.3, ease: "power3.in" }, 31.25);
+      printDown("#s6-check", 32.53, 0.2);
+      print("#s6-lsub", 32.76, 0.2);
+      tl.fromTo("#s6-R", { x: 980 }, { x: 0, duration: 0.3, ease: "power3.in" }, 33.6);
+      tl.fromTo("#s6-L", { x: 0 }, { x: -14, duration: 0.06, ease: "power2.out", immediateRender: false }, 33.9);
+      tl.to("#s6-L", { x: 0, duration: 0.14, ease: "power2.inOut" }, 33.96);
+      print("#s6-rsub", 34.33, 0.2);
+      stamp("#s6-cross", 35.43, 1.5);
+      slab(36.875);
+
+      // ---------- S7 ----------
+      print("#s7-tx", 39.58, 0.2);
+      ["#s7-p1", "#s7-p2", "#s7-p3", "#s7-p4", "#s7-p5", "#s7-p6", "#s7-p7"].forEach((s, i) => {
+        printDown(s, 40.9 + i * 0.18, 0.2);
+      });
+      print("#s7-note", 42.36, 0.25);
+      slab(42.875);
+
+      // ---------- End card: B plate, then A plate; dead still from 44.5 ----------
+      print("#e-pink", 43.75, 0.1);
+      print("#e-title", 43.85, 0.25);
+      print("#e-rule", 44.05, 0.18);
+      print("#e-sub", 44.2, 0.22);
+
+      window.__timelines["story"] = tl;
+    })();
+  </script>
+</template>

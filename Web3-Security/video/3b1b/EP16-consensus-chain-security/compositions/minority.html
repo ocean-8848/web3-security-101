@@ -1,0 +1,126 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="minority" data-duration="50.58" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="n-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="n-all">
+        <text id="n-title" class="h" x="960" y="100" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">不到半数算力，也能重组</text>
+        <!-- 自私挖矿 -->
+        <g id="n-self">
+          <g id="n-hon"></g>
+          <g id="n-hold"></g>
+          <text id="n-holdt" class="h" x="140" y="415" font-size="30" fill="#FC6255">扣着不放的块</text>
+          <text id="n-hont" class="h" x="140" y="200" font-size="30" fill="#8a8f99">诚实矿工</text>
+          <text id="n-orph" class="h" x="1250" y="200" font-size="30" fill="#8a8f99">← 这些工作作废</text>
+        </g>
+        <!-- 门槛公式 -->
+        <g id="n-f">
+          <text id="n-f0" class="h mono" x="960" y="640" font-size="46" fill="#e8e6df" text-anchor="middle">α &gt; (1 − γ) / (3 − 2γ)</text>
+          <text id="n-fl" class="h" x="960" y="700" font-size="28" fill="#8a8f99" text-anchor="middle">α：攻击者算力份额　γ：平局时跟随攻击者的诚实矿工比例</text>
+          <text id="n-f1" class="h mono" x="560" y="800" font-size="40" fill="#e8e6df" text-anchor="middle">γ = 0 → <tspan fill="#FF9F43">1/3</tspan></text>
+          <text id="n-f2" class="h mono" x="1360" y="800" font-size="40" fill="#e8e6df" text-anchor="middle">γ = 1/2 → 0.5 / 2 = <tspan fill="#FF9F43">1/4</tspan></text>
+        </g>
+        <!-- Monero 18 块 -->
+        <g id="n-mon">
+          <text id="n-mt" class="h" x="960" y="220" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">2025-09 · Monero：史上最深的 18 块重组</text>
+          <g id="n-18"></g>
+          <text id="n-q" class="h" x="960" y="520" font-size="32" fill="#8a8f99" text-anchor="middle">矿池 Qubic 宣称用自私挖矿；研究者认为它日均算力未到 51%</text>
+        </g>
+        <!-- Vector76 -->
+        <g id="n-v">
+          <g id="n-net" class="h">
+            <circle cx="1400" cy="760" r="120" fill="#161a22" stroke="#8a8f99" stroke-width="3" />
+            <text x="1400" y="755" font-size="32" fill="#e8e6df" text-anchor="middle">全网</text>
+            <text x="1400" y="800" font-size="28" fill="#8a8f99" text-anchor="middle">接受另一条链</text>
+          </g>
+          <g id="n-vic" class="h">
+            <circle cx="520" cy="760" r="125" fill="#1f1608" stroke="#FF9F43" stroke-width="3" />
+            <text x="520" y="755" font-size="30" fill="#e8e6df" text-anchor="middle">受害节点</text>
+            <text x="520" y="800" font-size="28" fill="#FF9F43" text-anchor="middle">看到“1 确认”</text>
+          </g>
+          <g id="n-blk" class="h"><rect x="900" y="620" width="90" height="90" rx="10" fill="#2a1416" stroke="#FC6255" stroke-width="3" /></g>
+          <path id="n-only" class="dr h" pathLength="1" d="M900 665 C 800 665, 720 690, 650 720" fill="none" stroke="#FC6255" stroke-width="4" stroke-dasharray="1" marker-end="url(#n-ah)" />
+          <text id="n-vt" class="h" x="760" y="610" font-size="28" fill="#FC6255" text-anchor="middle">只发给它</text>
+        </g>
+        <g id="n-rule" class="h">
+          <rect x="260" y="930" width="1400" height="100" rx="18" fill="#12200f" stroke="#83C167" stroke-width="3" />
+          <text x="960" y="992" font-size="34" fill="#83C167" text-anchor="middle" font-weight="700">不按 0 / 1 确认入账；确认数 &gt; 历史最大重组深度</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 50.58, "L": [[0.6, 4.1], [4.55, 11.13], [11.58, 21.06], [21.51, 33.75], [34.2, 42.07], [42.52, 49.48]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      const MK = (host, n, y, col, fill, x0, dash) => {
+        const h = document.querySelector(host), out = [];
+        for (let i = 0; i < n; i++) {
+          const x = x0 + i * 120, g = document.createElementNS(NS, "g"); g.setAttribute("opacity", 0);
+          g.innerHTML = `<rect x="${x}" y="${y}" width="90" height="90" rx="10" fill="${fill}" stroke="${col}" stroke-width="3" ${dash ? 'stroke-dasharray="8 6"' : ""}/>`;
+          h.appendChild(g); out.push(g);
+        }
+        return out;
+      };
+      const HON = MK("#n-hon", 9, 230, "#8a8f99", "#161a22", 140, false);
+      const HOLD = MK("#n-hold", 6, 360, "#FC6255", "#2a1416", 140 + 4 * 120, true);
+      // 18 块
+      const m18 = document.querySelector("#n-18"), M = [];
+      for (let i = 0; i < 18; i++) {
+        const r = document.createElementNS(NS, "rect");
+        r.setAttribute("x", 150 + i * 90); r.setAttribute("y", 300); r.setAttribute("width", 70); r.setAttribute("height", 140); r.setAttribute("rx", 8);
+        r.setAttribute("fill", "#2a1416"); r.setAttribute("stroke", "#FC6255"); r.setAttribute("stroke-width", 3); r.setAttribute("opacity", 0);
+        m18.appendChild(r); M.push(r);
+      }
+      IN("#n-title", at(0, 0.05), 0.5);
+      // L1 自私挖矿
+      IN("#n-hont", at(1, 0.0), 0.3);
+      HON.slice(0, 4).forEach((g, i) => IN(g, at(1, 0.0) + i * 0.06, 0.25));
+      IN("#n-holdt", at(1, 0.15), 0.3);
+      HOLD.forEach((g, i) => IN(g, at(1, 0.2) + i * 0.08, 0.25));
+      HON.slice(4).forEach((g, i) => IN(g, at(1, 0.35) + i * 0.08, 0.25));
+      tl.to(HOLD.map((g) => g.querySelector("rect")), { strokeDasharray: "none", duration: 0.2 }, at(1, 0.7));
+      tl.to(HON.slice(4), { opacity: 0.15, duration: 0.4 }, at(1, 0.75));
+      IN("#n-orph", at(1, 0.78), 0.4);
+      // L2 门槛
+      IN("#n-f0", at(2, 0.0), 0.5);
+      IN("#n-fl", at(2, 0.1), 0.4);
+      IN("#n-f1", at(2, 0.4), 0.4);
+      IN("#n-f2", at(2, 0.7), 0.4);
+      // L3 Monero
+      OUT(["#n-self", "#n-f"], at(3, 0.0), 0.35);
+      IN("#n-mt", at(3, 0.08), 0.4);
+      M.forEach((r, i) => tl.to(r, { opacity: 1, duration: 0.12 }, at(3, 0.15) + i * 0.05));
+      IN("#n-q", at(3, 0.6), 0.5);
+      // L4 Vector76
+      tl.to("#n-mon", { opacity: 0.2, duration: 0.4 }, at(4, 0.0));
+      NODE("#n-net", at(4, 0.05));
+      NODE("#n-vic", at(4, 0.15));
+      POP("#n-blk", at(4, 0.3));
+      DRAW("#n-only", at(4, 0.4), 0.6);
+      IN("#n-vt", at(4, 0.45), 0.4);
+      // L5 规则
+      IN("#n-rule", at(5, 0.1), 0.5, { y: 20 }, { y: 0 });
+      tl.to("#n-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["minority"] = tl;
+    })();
+  </script>
+</template>

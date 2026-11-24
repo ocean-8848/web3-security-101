@@ -1,0 +1,61 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="46.1" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="r-all">
+        <g id="r-pin" class="h">
+          <rect x="460" y="70" width="1000" height="110" rx="18" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="960" y="142" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="700">换一种账户模型，换<tspan fill="#FF9F43">哪些检查</tspan>？</text>
+        </g>
+        <text id="r-q1" class="h" x="960" y="460" font-size="56" fill="#e8e6df" text-anchor="middle" font-weight="800">这条链上，谁决定<tspan fill="#FF9F43">输入可信</tspan>？</text>
+        <text id="r-q2" class="h" x="960" y="560" font-size="40" fill="#8a8f99" text-anchor="middle">这里的输入，长什么样？</text>
+
+        <g font-size="34">
+          <g class="r-row h"><text x="420" y="330" fill="#58C4DD" text-anchor="end" font-weight="700">Solana</text><text x="470" y="330" fill="#e8e6df">每个账户：所有者 · 签名 · 类型 · 地址；校验链锚定可信根</text></g>
+          <g class="r-row h"><text x="420" y="450" fill="#58C4DD" text-anchor="end" font-weight="700">Move</text><text x="470" y="450" fill="#e8e6df">数学依赖库 · 能力与权限对象分配 · 升级权限</text></g>
+          <g class="r-row h"><text x="420" y="570" fill="#58C4DD" text-anchor="end" font-weight="700">比特币生态</text><text x="470" y="570" fill="#e8e6df">索引器与版本 · 链下软件 · 储备独立对账</text></g>
+          <g class="r-row h"><text x="420" y="690" fill="#58C4DD" text-anchor="end" font-weight="700">Cosmos</text><text x="470" y="690" fill="#e8e6df">证明验证 · 确定性 · 区块钩子不 panic</text></g>
+        </g>
+
+        <g>
+          <text class="r-cl h" x="960" y="330" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700">成立条件</text>
+          <text class="r-cl h" x="960" y="430" font-size="36" fill="#e8e6df" text-anchor="middle">EVM 清单里有几项到这里完全失效：<tspan fill="#FF9F43">要重写</tspan></text>
+          <text class="r-cl h" x="960" y="510" font-size="36" fill="#e8e6df" text-anchor="middle">语言和共识的保证，只在<tspan fill="#58C4DD">验证器和实现正确</tspan>时成立</text>
+        </g>
+        <text id="r-next" class="h" x="960" y="900" font-size="36" fill="#6b6f7a" text-anchor="middle">下一集 · 14 ZK 与证明系统：证明对了，电路错了</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 46.1, "L": [[0.6, 5.81], [6.26, 13.63], [14.08, 29.22], [29.67, 39.61], [40.06, 45.0]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      IN("#r-pin", at(0, 0.05), 0.8, { scale: 0.5, x: -540, y: -10, svgOrigin: "960 125" }, { scale: 1, x: 0, y: 0, ease: "expo.out" });
+      // L1 同一个问题
+      IN("#r-q1", at(1, 0.05), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      IN("#r-q2", at(1, 0.6), 0.5);
+      // L2 四种生态的检查
+      OUT(["#r-q1", "#r-q2"], at(2, 0), 0.35);
+      gsap.utils.toArray("#root .r-row").forEach((g, i) => IN(g, at(2, [0.03, 0.4, 0.62, 0.82][i]), 0.4, { x: -20 }, { x: 0 }));
+      // L3 成立条件
+      OUT("#root .r-row", at(3, 0), 0.35);
+      gsap.utils.toArray("#root .r-cl").forEach((t, i) => IN(t, at(3, [0.03, 0.08, 0.55][i]), 0.5, { filter: "blur(6px)" }, { filter: "blur(0px)" }));
+      // L4 预告
+      IN("#r-next", at(4, 0.1), 0.5);
+      tl.to("#r-all", { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

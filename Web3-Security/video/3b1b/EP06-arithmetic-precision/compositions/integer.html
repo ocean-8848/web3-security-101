@@ -1,0 +1,152 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="integer" data-duration="44.27" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="n-all">
+        <text id="n-title" class="h" x="960" y="170" font-size="56" fill="#e8e6df" text-anchor="middle" font-weight="800">EVM：只有<tspan fill="#58C4DD">整数</tspan></text>
+
+        <!-- 数轴：只有整数点 -->
+        <g id="n-line" class="h">
+          <line x1="300" y1="560" x2="1620" y2="560" stroke="#6b6f7a" stroke-width="3" />
+          <g fill="#58C4DD"><circle cx="360" cy="560" r="12" /><circle cx="660" cy="560" r="12" /><circle cx="960" cy="560" r="12" /><circle cx="1260" cy="560" r="12" /><circle cx="1560" cy="560" r="12" /></g>
+          <g font-size="34" fill="#e8e6df" text-anchor="middle"><text x="360" y="620">0</text><text x="660" y="620">1</text><text x="960" y="620">2</text><text x="1260" y="620">3</text><text x="1560" y="620">4</text></g>
+        </g>
+        <g id="n-half" class="h">
+          <circle cx="1410" cy="560" r="10" fill="none" stroke="#8a8f99" stroke-width="3" stroke-dasharray="4 4" />
+          <text x="1410" y="510" font-size="32" fill="#8a8f99" text-anchor="middle">3.5</text>
+          <line id="n-hx" x1="1380" y1="470" x2="1440" y2="530" stroke="#FC6255" stroke-width="4" />
+        </g>
+
+        <!-- 7 ÷ 2 -->
+        <text id="n-eq" class="h" x="960" y="300" font-size="64" fill="#e8e6df" text-anchor="middle" font-weight="700">7 ÷ 2 = <tspan fill="#58C4DD">3</tspan></text>
+        <g id="n-blocks" fill="#e8e6df"></g>
+        <g fill="none" stroke="#58C4DD" stroke-width="3">
+          <rect id="n-ga" class="h" x="475" y="395" width="340" height="130" rx="14" />
+          <rect id="n-gb" class="h" x="845" y="395" width="340" height="130" rx="14" />
+        </g>
+        <text id="n-rem" class="h" x="1420" y="695" font-size="36" fill="#FF9F43">余 1 → 直接丢掉</text>
+        <text id="n-who" class="h" x="960" y="900" font-size="64" fill="#FF9F43" text-anchor="middle" font-weight="800">丢掉的余数，归谁？</text>
+
+        <!-- 披萨 -->
+        <g id="n-pizza" class="h">
+          <circle cx="600" cy="560" r="240" fill="#1b1a17" stroke="#8a8f99" stroke-width="4" />
+          <g id="n-slices"></g>
+          <g id="n-cuts" stroke="#8a8f99" stroke-width="3"></g>
+        </g>
+        <text id="n-pay" class="h" x="1000" y="380" font-size="44" fill="#e8e6df">付了 <tspan fill="#F0B90B">1/3 张</tspan> 的钱</text>
+        <text id="n-calc" class="h" x="1000" y="460" font-size="38" fill="#8a8f99">8 块 ÷ 3 = 2.67 块</text>
+        <text id="n-ask" class="h" x="1000" y="540" font-size="40" fill="#FF9F43" font-weight="700">给 2 块，还是 3 块？</text>
+
+        <!-- 每次多拿一点 -->
+        <g id="n-rep" class="h">
+          <text x="1000" y="660" font-size="36" fill="#e8e6df">每次多拿 <tspan fill="#FF9F43">0.33 块</tspan> × <tspan id="n-cnt">1</tspan></text>
+          <rect x="1000" y="690" width="700" height="34" rx="8" fill="none" stroke="#2a2f3a" stroke-width="2" />
+        </g>
+        <rect id="n-bar" x="1000" y="690" width="0" height="34" rx="8" fill="#FF9F43" />
+
+        <!-- 比方的局限 -->
+        <g id="n-shop" class="h">
+          <text x="1000" y="810" font-size="36" fill="#8a8f99">披萨店：会被投诉</text>
+          <line id="n-shopx" x1="995" y1="798" x2="995" y2="798" stroke="#FF9F43" stroke-width="5" />
+        </g>
+        <text id="n-chain" class="h" x="1000" y="880" font-size="40" fill="#FC6255" font-weight="700">合约：多拿 1 wei，一笔交易重复几千次</text>
+        <g id="n-dots" fill="#FC6255"></g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 44.27, "L": [[0.6, 5.76], [6.21, 11.47], [11.92, 18.76], [19.21, 27.03], [27.48, 33.79], [34.24, 43.17]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 7 个单位方块
+      const bl = document.querySelector("#n-blocks"), blocks = [];
+      for (let i = 0; i < 7; i++) {
+        const r = document.createElementNS(NS, "rect");
+        const x = i < 3 ? 490 + i * 110 : i < 6 ? 860 + (i - 3) * 110 : 1300;
+        r.setAttribute("x", x); r.setAttribute("y", "410"); r.setAttribute("width", "90"); r.setAttribute("height", "100"); r.setAttribute("rx", "10"); r.setAttribute("opacity", "0");
+        bl.appendChild(r); blocks.push(r);
+      }
+      // 披萨 8 块
+      const sl = document.querySelector("#n-slices"), cuts = document.querySelector("#n-cuts"), slices = [];
+      for (let i = 0; i < 8; i++) {
+        const a0 = (-90 + i * 45) * Math.PI / 180, a1 = (-90 + (i + 1) * 45) * Math.PI / 180, R = 228;
+        const p = document.createElementNS(NS, "path");
+        p.setAttribute("d", `M600 560 L ${(600 + R * Math.cos(a0)).toFixed(1)} ${(560 + R * Math.sin(a0)).toFixed(1)} A ${R} ${R} 0 0 1 ${(600 + R * Math.cos(a1)).toFixed(1)} ${(560 + R * Math.sin(a1)).toFixed(1)} Z`);
+        p.setAttribute("fill", "#F0B90B"); p.setAttribute("fill-opacity", "0");
+        sl.appendChild(p); slices.push(p);
+        const ln = document.createElementNS(NS, "line");
+        ln.setAttribute("x1", "600"); ln.setAttribute("y1", "560");
+        ln.setAttribute("x2", (600 + 240 * Math.cos(a0)).toFixed(1)); ln.setAttribute("y2", (560 + 240 * Math.sin(a0)).toFixed(1));
+        cuts.appendChild(ln);
+      }
+      // 几千次：密集红点
+      const dg = document.querySelector("#n-dots"), dots = [];
+      for (let i = 0; i < 120; i++) {
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", 1005 + (i % 40) * 17.5); c.setAttribute("cy", 925 + Math.floor(i / 40) * 18); c.setAttribute("r", "5"); c.setAttribute("opacity", "0");
+        dg.appendChild(c); dots.push(c);
+      }
+
+      // L0 只有整数
+      IN("#n-title", at(0, 0), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      IN("#n-line", at(0, 0.25), 0.6);
+      IN("#n-half", at(0, 0.6), 0.4);
+      tl.fromTo("#n-hx", { attr: { x2: 1380, y2: 470 } }, { attr: { x2: 1440, y2: 530 }, duration: 0.3 }, at(0, 0.75));
+
+      // L1 7 ÷ 2 = 3，余数丢掉
+      OUT(["#n-line", "#n-half", "#n-title"], at(1, 0), 0.3);
+      IN("#n-eq", at(1, 0.05), 0.5);
+      blocks.forEach((b, i) => IN(b, at(1, 0.1) + i * 0.08, 0.3, { y: -30 }, { y: 0 }));
+      IN("#n-ga", at(1, 0.45), 0.4);
+      IN("#n-gb", at(1, 0.55), 0.4);
+      tl.to(blocks[6], { fill: "#FF9F43", duration: 0.3 }, at(1, 0.65));
+      tl.to(blocks[6], { y: 220, opacity: 0.35, duration: 0.6, ease: "power2.in" }, at(1, 0.75));
+      IN("#n-rem", at(1, 0.75), 0.4);
+
+      // L2 余数归谁
+      tl.to(blocks[6], { opacity: 1, x: -390, y: 280, duration: 0.6, ease: "power2.inOut" }, at(2, 0.3));
+      tl.to(["#n-eq", "#n-ga", "#n-gb", ...blocks.slice(0, 6)], { opacity: 0.25, duration: 0.4 }, at(2, 0.3));
+      OUT("#n-rem", at(2, 0.3), 0.3);
+      IN("#n-who", at(2, 0.45), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+
+      // L3 披萨
+      OUT(["#n-eq", "#n-ga", "#n-gb", "#n-who", ...blocks], at(3, 0), 0.35);
+      IN("#n-pizza", at(3, 0.08), 0.7, { scale: 0.6, svgOrigin: "600 560" }, { scale: 1, ease: "expo.out" });
+      IN("#n-pay", at(3, 0.3), 0.5);
+      IN("#n-calc", at(3, 0.45), 0.5);
+      tl.to(slices.slice(0, 2), { fillOpacity: 0.85, duration: 0.4, stagger: 0.2 }, at(3, 0.55));
+      tl.fromTo(slices[2], { fillOpacity: 0 }, { fillOpacity: 0.45, fill: "#FF9F43", duration: 0.3, yoyo: true, repeat: 3 }, at(3, 0.72));
+      IN("#n-ask", at(3, 0.72), 0.4);
+
+      // L4 总往多了给：反复买，每次多拿 0.33 块
+      tl.to(slices[2], { fillOpacity: 0.85, fill: "#FF9F43", duration: 0.3 }, at(4, 0.05));
+      IN("#n-rep", at(4, 0.1), 0.4);
+      const k = { v: 1 }, cnt = document.querySelector("#n-cnt");
+      tl.fromTo(k, { v: 1 }, { v: 12, duration: at(4, 0.95) - at(4, 0.2), ease: "none", onUpdate: () => { cnt.textContent = Math.round(k.v); } }, at(4, 0.2));
+      tl.fromTo("#n-bar", { attr: { width: 0 } }, { attr: { width: 380 }, duration: at(4, 0.95) - at(4, 0.2), ease: "none" }, at(4, 0.2));
+
+      // L5 比方的局限
+      IN("#n-shop", at(5, 0.05), 0.4);
+      tl.fromTo("#n-shopx", { attr: { x2: 995 } }, { attr: { x2: 1290 }, duration: 0.4 }, at(5, 0.22));
+      IN("#n-chain", at(5, 0.35), 0.5);
+      dots.forEach((d, i) => tl.fromTo(d, { opacity: 0 }, { opacity: 0.9, duration: 0.08 }, at(5, 0.5) + i * 0.025));
+      tl.to("#n-bar", { attr: { width: 700 }, fill: "#FC6255", duration: 2.5, ease: "power2.in" }, at(5, 0.5));
+      tl.fromTo(k, { v: 12 }, { v: 3000, duration: 2.5, ease: "power2.in", immediateRender: false, onUpdate: () => { cnt.textContent = Math.round(k.v).toLocaleString("en-US"); } }, at(5, 0.5));
+
+      tl.to("#n-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["integer"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,117 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="monitor" data-duration="52.62" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="m-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="m-all">
+        <g id="m-p1">
+          <text id="m-t" class="h" x="160" y="130" font-size="40" fill="#e8e6df" font-weight="700">⑧ 监控：合约锁定的资金（示例）</text>
+          <!-- 图表 -->
+          <g id="m-axes" class="h" stroke="#2a2f3a" stroke-width="3">
+            <line x1="160" y1="620" x2="1100" y2="620" /><line x1="160" y1="200" x2="160" y2="620" />
+          </g>
+          <path id="m-curve" class="dr h" pathLength="1" d="M160 260 L 300 255 L 440 262 L 580 258 L 720 260 L 860 265 L 960 300 L 1060 320" fill="none" stroke="#F0B90B" stroke-width="5" />
+          <line id="m-thr" class="h" x1="160" y1="296" x2="1100" y2="296" stroke="#FF9F43" stroke-width="3" stroke-dasharray="12 8" />
+          <text id="m-thrt" class="h" x="1110" y="304" font-size="28" fill="#FF9F43">阈值：10 分钟内下降 10%</text>
+          <g id="m-win" class="h"><rect x="760" y="200" width="300" height="420" fill="#FF9F43" opacity=".08" /><text x="910" y="660" font-size="28" fill="#8a8f99" text-anchor="middle">最近 10 分钟</text></g>
+
+          <!-- 一步步算 -->
+          <g font-size="36">
+            <text id="m-c1" class="h" x="1200" y="420" fill="#e8e6df">10 分钟前：<tspan fill="#F0B90B" font-weight="700">2,000 万</tspan></text>
+            <text id="m-c2" class="h" x="1200" y="480" fill="#e8e6df">现在：<tspan fill="#F0B90B" font-weight="700">1,700 万</tspan></text>
+            <text id="m-c3" class="h" x="1200" y="540" fill="#e8e6df">下降 300 万 ÷ 2,000 万 = <tspan fill="#FC6255" font-weight="800">15%</tspan></text>
+            <text id="m-c4" class="h" x="1200" y="600" fill="#FC6255" font-weight="800">15% &gt; 10% → 告警</text>
+          </g>
+        </g>
+
+        <!-- 应急流程 -->
+        <g id="m-flow" font-size="30" text-anchor="middle"></g>
+        <text id="m-guard" class="h" x="560" y="900" font-size="28" fill="#8a8f99" text-anchor="middle">守护者权限，无延迟</text>
+
+        <!-- mETH -->
+        <g id="m-p3">
+          <text id="m-mt" class="h" x="960" y="150" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">Bybit 事故中，mETH 协议追回 cmETH 靠的是</text>
+          <g id="m-i1" class="h"><rect x="200" y="260" width="460" height="140" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="430" y="342" font-size="34" fill="#58C4DD" text-anchor="middle">协议有提款延迟</text></g>
+          <g id="m-i2" class="h"><rect x="730" y="260" width="460" height="140" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="960" y="342" font-size="34" fill="#58C4DD" text-anchor="middle">团队有暂停权限</text></g>
+          <g id="m-i3" class="h"><rect x="1260" y="260" width="460" height="140" rx="16" fill="#161a22" stroke="#B48EF0" stroke-width="3" /><text x="1490" y="342" font-size="34" fill="#B48EF0" text-anchor="middle">外部安全社区牵线</text></g>
+          <text id="m-src" class="h" x="960" y="460" font-size="28" fill="#6b6f7a" text-anchor="middle">来源：The Block 报道（手册第 27 章 3.7 节）</text>
+          <g id="m-box" class="h">
+            <rect x="560" y="560" width="800" height="380" rx="24" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+            <text x="960" y="620" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">合约（上线之前就设计进来）</text>
+            <text class="m-bl h" x="960" y="720" font-size="32" fill="#e8e6df" text-anchor="middle">提款延迟</text>
+            <text class="m-bl h" x="960" y="790" font-size="32" fill="#e8e6df" text-anchor="middle">暂停权限</text>
+            <text class="m-bl h" x="960" y="860" font-size="32" fill="#B48EF0" text-anchor="middle">事先约好的外部联络渠道</text>
+          </g>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 52.62, "L": [[0.6, 5.4], [5.85, 13.63], [14.08, 24.23], [24.68, 34.88], [35.33, 46.75], [47.2, 51.52]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 应急流程：六步
+      const ST = ["值班确认", "暂停", "作战室", "白帽救援", "冻结资金", "公告复盘"];
+      const fh = document.querySelector("#m-flow"), FS = [];
+      ST.forEach((s, i) => {
+        const x = 240 + i * 290;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        const col = i === 1 ? "#83C167" : "#e8e6df";
+        g.innerHTML = `<rect x="${x - 120}" y="770" width="240" height="90" rx="14" fill="#161a22" stroke="${col}" stroke-width="3" /><text x="${x}" y="825" fill="${col}">${s}</text>` +
+          (i < 5 ? `<line x1="${x + 125}" y1="815" x2="${x + 162}" y2="815" stroke="#8a8f99" stroke-width="3" marker-end="url(#m-ah)" />` : "");
+        fh.appendChild(g); FS.push(g);
+      });
+
+      // L0 标题 + 图表
+      IN("#m-t", at(0, 0.0), 0.5);
+      IN("#m-axes", at(0, 0.2), 0.4);
+      DRAW("#m-curve", at(0, 0.3), 1.2);
+      // L1 阈值规则
+      IN("#m-thr", at(1, 0.1), 0.4, { scaleX: 0, svgOrigin: "160 296" }, { scaleX: 1 });
+      IN("#m-thrt", at(1, 0.3), 0.4);
+      IN("#m-win", at(1, 0.6), 0.4);
+      // L2 一步步算
+      IN("#m-c1", at(2, 0.05), 0.4);
+      IN("#m-c2", at(2, 0.25), 0.4);
+      IN("#m-c3", at(2, 0.5), 0.4);
+      IN("#m-c4", at(2, 0.8), 0.4, { scale: 1.2, svgOrigin: "1200 590" }, { scale: 1 });
+      tl.to("#m-curve", { stroke: "#FC6255", duration: 0.3 }, at(2, 0.8));
+      // L3 应急流程
+      tl.to("#m-p1", { opacity: 0.35, duration: 0.4 }, at(3, 0.0));
+      FS.forEach((g, i) => IN(g, at(3, 0.05) + i * 0.14 * (L[3][1] - L[3][0]) / 1, 0.4, { y: 20 }, { y: 0 }));
+      IN("#m-guard", at(3, 0.25), 0.4);
+      // L4 mETH
+      tl.to(["#m-p1", "#m-flow", "#m-guard"], { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(4, 0.0));
+      IN("#m-mt", at(4, 0.05), 0.5);
+      IN("#m-i1", at(4, 0.3), 0.4, { y: 20 }, { y: 0 });
+      IN("#m-i2", at(4, 0.5), 0.4, { y: 20 }, { y: 0 });
+      IN("#m-i3", at(4, 0.7), 0.4, { y: 20 }, { y: 0 });
+      IN("#m-src", at(4, 0.85), 0.4);
+      // L5 设计进合约
+      OUT("#m-src", at(5, 0.15), 0.3);
+      IN("#m-box", at(5, 0.05), 0.4);
+      gsap.utils.toArray("#root .m-bl").forEach((t, i) => {
+        tl.to(["#m-i1", "#m-i2", "#m-i3"][i], { y: 120, opacity: 0, duration: 0.5, ease: "power2.in" }, at(5, 0.2 + i * 0.12));
+        IN(t, at(5, 0.3 + i * 0.12), 0.4, { y: -20 }, { y: 0 });
+      });
+
+      tl.to("#m-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["monitor"] = tl;
+    })();
+  </script>
+</template>

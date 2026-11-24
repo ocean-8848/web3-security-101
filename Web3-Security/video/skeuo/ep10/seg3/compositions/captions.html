@@ -1,0 +1,213 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .cap-g { position: absolute; left: 0; right: 0; bottom: var(--cap-bottom, 84px); text-align: center; opacity: 0; visibility: hidden; }
+    .cap-t { display: inline-block; font-family: var(--cap-font, "Noto Sans SC"), sans-serif; font-weight: var(--cap-weight, 700);
+      font-size: var(--cap-size, 46px); line-height: 1.25; color: var(--cap-ink, #111); letter-spacing: 0.02em;
+      padding: var(--cap-pad, 0); background: var(--cap-bg, transparent); border-radius: var(--cap-radius, 0);
+      text-shadow: var(--cap-shadow, none); }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-c0" class="cap-g"><span class="cap-t">代理的存储</span></div>
+    <div id="cap-c1" class="cap-g"><span class="cap-t">是一排编了号的格子 叫槽位</span></div>
+    <div id="cap-c2" class="cap-g"><span class="cap-t">代码不认变量名</span></div>
+    <div id="cap-c3" class="cap-g"><span class="cap-t">只认格子的编号</span></div>
+    <div id="cap-c4" class="cap-g"><span class="cap-t">第一种冲突</span></div>
+    <div id="cap-c5" class="cap-g"><span class="cap-t">代理自己的变量</span></div>
+    <div id="cap-c6" class="cap-g"><span class="cap-t">和实现的变量</span></div>
+    <div id="cap-c7" class="cap-g"><span class="cap-t">撞进同一个格子</span></div>
+    <div id="cap-c8" class="cap-g"><span class="cap-t">一个朴素的代理</span></div>
+    <div id="cap-c9" class="cap-g"><span class="cap-t">把实现地址放在 0 号槽位</span></div>
+    <div id="cap-c10" class="cap-g"><span class="cap-t">实现合约的第一个变量是管理员</span></div>
+    <div id="cap-c11" class="cap-g"><span class="cap-t">也在 0 号槽位</span></div>
+    <div id="cap-c12" class="cap-g"><span class="cap-t">于是 写管理员</span></div>
+    <div id="cap-c13" class="cap-g"><span class="cap-t">就是改写实现地址</span></div>
+    <div id="cap-c14" class="cap-g"><span class="cap-t">修复是 EIP-1967</span></div>
+    <div id="cap-c15" class="cap-g"><span class="cap-t">它用一个哈希算出的固定槽位</span></div>
+    <div id="cap-c16" class="cap-g"><span class="cap-t">存放实现地址和管理员地址</span></div>
+    <div id="cap-c17" class="cap-g"><span class="cap-t">这个位置远离普通变量</span></div>
+    <div id="cap-c18" class="cap-g"><span class="cap-t">算法里还减去 1</span></div>
+    <div id="cap-c19" class="cap-g"><span class="cap-t">让映射和数组的派生位置</span></div>
+    <div id="cap-c20" class="cap-g"><span class="cap-t">碰不到它</span></div>
+    <div id="cap-c21" class="cap-g"><span class="cap-t">第二种冲突</span></div>
+    <div id="cap-c22" class="cap-g"><span class="cap-t">升级前后</span></div>
+    <div id="cap-c23" class="cap-g"><span class="cap-t">变量的顺序变了</span></div>
+    <div id="cap-c24" class="cap-g"><span class="cap-t">先猜一道题</span></div>
+    <div id="cap-c25" class="cap-g"><span class="cap-t">旧版本里</span></div>
+    <div id="cap-c26" class="cap-g"><span class="cap-t">0 号槽位是管理员</span></div>
+    <div id="cap-c27" class="cap-g"><span class="cap-t">1 号是存款总额</span></div>
+    <div id="cap-c28" class="cap-g"><span class="cap-t">新版本在最前面</span></div>
+    <div id="cap-c29" class="cap-g"><span class="cap-t">插入了一个手续费变量</span></div>
+    <div id="cap-c30" class="cap-g"><span class="cap-t">升级以后读管理员</span></div>
+    <div id="cap-c31" class="cap-g"><span class="cap-t">读到的是什么</span></div>
+    <div id="cap-c32" class="cap-g"><span class="cap-t">读到的是旧的存款总额</span></div>
+    <div id="cap-c33" class="cap-g"><span class="cap-t">截掉一部分</span></div>
+    <div id="cap-c34" class="cap-g"><span class="cap-t">被解释成一个地址</span></div>
+    <div id="cap-c35" class="cap-g"><span class="cap-t">因为新代码把管理员挪到了 1 号</span></div>
+    <div id="cap-c36" class="cap-g"><span class="cap-t">而 1 号里还是旧数据</span></div>
+    <div id="cap-c37" class="cap-g"><span class="cap-t">后面每一格都错开一位</span></div>
+    <div id="cap-c38" class="cap-g"><span class="cap-t">映射的基址变了</span></div>
+    <div id="cap-c39" class="cap-g"><span class="cap-t">所有余额看上去都消失了</span></div>
+    <div id="cap-c40" class="cap-g"><span class="cap-t">规则有四条</span></div>
+    <div id="cap-c41" class="cap-g"><span class="cap-t">只在末尾追加变量</span></div>
+    <div id="cap-c42" class="cap-g"><span class="cap-t">不删除 不重新排序</span></div>
+    <div id="cap-c43" class="cap-g"><span class="cap-t">不改类型</span></div>
+    <div id="cap-c44" class="cap-g"><span class="cap-t">父合约预留一段空槽位</span></div>
+    <div id="cap-c45" class="cap-g"><span class="cap-t">或者用 ERC-7201 的命名空间存储</span></div>
+    <div id="cap-c46" class="cap-g"><span class="cap-t">用工具比对新旧布局</span></div>
+    <div id="cap-c47" class="cap-g"><span class="cap-t">比如 OpenZeppelin 的升级插件</span></div>
+    <div id="cap-c48" class="cap-g"><span class="cap-t">或者 forge inspect</span></div>
+    <div id="cap-c49" class="cap-g"><span class="cap-t">不要靠肉眼核对</span></div>
+    <div id="cap-c50" class="cap-g"><span class="cap-t">还有一种撞车</span></div>
+    <div id="cap-c51" class="cap-g"><span class="cap-t">不在存储里</span></div>
+    <div id="cap-c52" class="cap-g"><span class="cap-t">而在函数选择器上</span></div>
+    <div id="cap-c53" class="cap-g"><span class="cap-t">选择器是函数签名哈希的前 4 个字节</span></div>
+    <div id="cap-c54" class="cap-g"><span class="cap-t">两个名字完全不同的函数</span></div>
+    <div id="cap-c55" class="cap-g"><span class="cap-t">可能算出同一个选择器</span></div>
+    <div id="cap-c56" class="cap-g"><span class="cap-t">代理自己有这个函数时</span></div>
+    <div id="cap-c57" class="cap-g"><span class="cap-t">调用会被代理截下</span></div>
+    <div id="cap-c58" class="cap-g"><span class="cap-t">不会转给实现</span></div>
+    <div id="cap-c59" class="cap-g"><span class="cap-t">编译器只检查同一个合约内部的冲突</span></div>
+    <div id="cap-c60" class="cap-g"><span class="cap-t">代理和实现之间</span></div>
+    <div id="cap-c61" class="cap-g"><span class="cap-t">要在部署前用工具比对</span></div>
+    <div id="cap-c62" class="cap-g"><span class="cap-t">透明代理靠管理员不转发</span></div>
+    <div id="cap-c63" class="cap-g"><span class="cap-t">其他人只转发</span></div>
+    <div id="cap-c64" class="cap-g"><span class="cap-t">绕开了这个问题</span></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      tl.set("#cap-c0", {opacity: 1, visibility: "visible"}, 1.642);
+      tl.set("#cap-c0", {opacity: 0, visibility: "hidden"}, 2.703);
+      tl.set("#cap-c1", {opacity: 1, visibility: "visible"}, 2.738);
+      tl.set("#cap-c1", {opacity: 0, visibility: "hidden"}, 5.529);
+      tl.set("#cap-c2", {opacity: 1, visibility: "visible"}, 5.862);
+      tl.set("#cap-c2", {opacity: 0, visibility: "hidden"}, 7.622);
+      tl.set("#cap-c3", {opacity: 1, visibility: "visible"}, 7.742);
+      tl.set("#cap-c3", {opacity: 0, visibility: "hidden"}, 9.251);
+      tl.set("#cap-c4", {opacity: 1, visibility: "visible"}, 9.603);
+      tl.set("#cap-c4", {opacity: 0, visibility: "hidden"}, 10.441);
+      tl.set("#cap-c5", {opacity: 1, visibility: "visible"}, 10.642);
+      tl.set("#cap-c5", {opacity: 0, visibility: "hidden"}, 12.081);
+      tl.set("#cap-c6", {opacity: 1, visibility: "visible"}, 12.217);
+      tl.set("#cap-c6", {opacity: 0, visibility: "hidden"}, 13.441);
+      tl.set("#cap-c7", {opacity: 1, visibility: "visible"}, 13.544);
+      tl.set("#cap-c7", {opacity: 0, visibility: "hidden"}, 15.072);
+      tl.set("#cap-c8", {opacity: 1, visibility: "visible"}, 15.330);
+      tl.set("#cap-c8", {opacity: 0, visibility: "hidden"}, 16.758);
+      tl.set("#cap-c9", {opacity: 1, visibility: "visible"}, 16.847);
+      tl.set("#cap-c9", {opacity: 0, visibility: "hidden"}, 19.247);
+      tl.set("#cap-c10", {opacity: 1, visibility: "visible"}, 19.550);
+      tl.set("#cap-c10", {opacity: 0, visibility: "hidden"}, 22.430);
+      tl.set("#cap-c11", {opacity: 1, visibility: "visible"}, 22.530);
+      tl.set("#cap-c11", {opacity: 0, visibility: "hidden"}, 23.793);
+      tl.set("#cap-c12", {opacity: 1, visibility: "visible"}, 24.010);
+      tl.set("#cap-c12", {opacity: 0, visibility: "hidden"}, 25.634);
+      tl.set("#cap-c13", {opacity: 1, visibility: "visible"}, 25.746);
+      tl.set("#cap-c13", {opacity: 0, visibility: "hidden"}, 27.489);
+      tl.set("#cap-c14", {opacity: 1, visibility: "visible"}, 27.750);
+      tl.set("#cap-c14", {opacity: 0, visibility: "hidden"}, 29.235);
+      tl.set("#cap-c15", {opacity: 1, visibility: "visible"}, 29.255);
+      tl.set("#cap-c15", {opacity: 0, visibility: "hidden"}, 32.572);
+      tl.set("#cap-c16", {opacity: 1, visibility: "visible"}, 32.692);
+      tl.set("#cap-c16", {opacity: 0, visibility: "hidden"}, 35.219);
+      tl.set("#cap-c17", {opacity: 1, visibility: "visible"}, 35.587);
+      tl.set("#cap-c17", {opacity: 0, visibility: "hidden"}, 37.565);
+      tl.set("#cap-c18", {opacity: 1, visibility: "visible"}, 37.872);
+      tl.set("#cap-c18", {opacity: 0, visibility: "hidden"}, 39.480);
+      tl.set("#cap-c19", {opacity: 1, visibility: "visible"}, 39.811);
+      tl.set("#cap-c19", {opacity: 0, visibility: "hidden"}, 42.179);
+      tl.set("#cap-c20", {opacity: 1, visibility: "visible"}, 42.199);
+      tl.set("#cap-c20", {opacity: 0, visibility: "hidden"}, 42.975);
+      tl.set("#cap-c21", {opacity: 1, visibility: "visible"}, 43.327);
+      tl.set("#cap-c21", {opacity: 0, visibility: "hidden"}, 44.252);
+      tl.set("#cap-c22", {opacity: 1, visibility: "visible"}, 44.590);
+      tl.set("#cap-c22", {opacity: 0, visibility: "hidden"}, 45.567);
+      tl.set("#cap-c23", {opacity: 1, visibility: "visible"}, 45.587);
+      tl.set("#cap-c23", {opacity: 0, visibility: "hidden"}, 46.784);
+      tl.set("#cap-c24", {opacity: 1, visibility: "visible"}, 47.050);
+      tl.set("#cap-c24", {opacity: 0, visibility: "hidden"}, 48.028);
+      tl.set("#cap-c25", {opacity: 1, visibility: "visible"}, 48.310);
+      tl.set("#cap-c25", {opacity: 0, visibility: "hidden"}, 49.222);
+      tl.set("#cap-c26", {opacity: 1, visibility: "visible"}, 49.284);
+      tl.set("#cap-c26", {opacity: 0, visibility: "hidden"}, 50.839);
+      tl.set("#cap-c27", {opacity: 1, visibility: "visible"}, 50.991);
+      tl.set("#cap-c27", {opacity: 0, visibility: "hidden"}, 52.534);
+      tl.set("#cap-c28", {opacity: 1, visibility: "visible"}, 52.770);
+      tl.set("#cap-c28", {opacity: 0, visibility: "hidden"}, 54.575);
+      tl.set("#cap-c29", {opacity: 1, visibility: "visible"}, 54.635);
+      tl.set("#cap-c29", {opacity: 0, visibility: "hidden"}, 56.490);
+      tl.set("#cap-c30", {opacity: 1, visibility: "visible"}, 57.052);
+      tl.set("#cap-c30", {opacity: 0, visibility: "hidden"}, 58.743);
+      tl.set("#cap-c31", {opacity: 1, visibility: "visible"}, 58.875);
+      tl.set("#cap-c31", {opacity: 0, visibility: "hidden"}, 59.910);
+      tl.set("#cap-c32", {opacity: 1, visibility: "visible"}, 60.567);
+      tl.set("#cap-c32", {opacity: 0, visibility: "hidden"}, 62.834);
+      tl.set("#cap-c33", {opacity: 1, visibility: "visible"}, 63.052);
+      tl.set("#cap-c33", {opacity: 0, visibility: "hidden"}, 64.081);
+      tl.set("#cap-c34", {opacity: 1, visibility: "visible"}, 64.286);
+      tl.set("#cap-c34", {opacity: 0, visibility: "hidden"}, 66.121);
+      tl.set("#cap-c35", {opacity: 1, visibility: "visible"}, 66.370);
+      tl.set("#cap-c35", {opacity: 0, visibility: "hidden"}, 69.193);
+      tl.set("#cap-c36", {opacity: 1, visibility: "visible"}, 69.463);
+      tl.set("#cap-c36", {opacity: 0, visibility: "hidden"}, 71.251);
+      tl.set("#cap-c37", {opacity: 1, visibility: "visible"}, 71.470);
+      tl.set("#cap-c37", {opacity: 0, visibility: "hidden"}, 73.691);
+      tl.set("#cap-c38", {opacity: 1, visibility: "visible"}, 74.258);
+      tl.set("#cap-c38", {opacity: 0, visibility: "hidden"}, 75.615);
+      tl.set("#cap-c39", {opacity: 1, visibility: "visible"}, 75.837);
+      tl.set("#cap-c39", {opacity: 0, visibility: "hidden"}, 78.013);
+      tl.set("#cap-c40", {opacity: 1, visibility: "visible"}, 78.347);
+      tl.set("#cap-c40", {opacity: 0, visibility: "hidden"}, 79.531);
+      tl.set("#cap-c41", {opacity: 1, visibility: "visible"}, 79.830);
+      tl.set("#cap-c41", {opacity: 0, visibility: "hidden"}, 81.572);
+      tl.set("#cap-c42", {opacity: 1, visibility: "visible"}, 81.907);
+      tl.set("#cap-c42", {opacity: 0, visibility: "hidden"}, 83.813);
+      tl.set("#cap-c43", {opacity: 1, visibility: "visible"}, 83.882);
+      tl.set("#cap-c43", {opacity: 0, visibility: "hidden"}, 84.634);
+      tl.set("#cap-c44", {opacity: 1, visibility: "visible"}, 84.910);
+      tl.set("#cap-c44", {opacity: 0, visibility: "hidden"}, 87.223);
+      tl.set("#cap-c45", {opacity: 1, visibility: "visible"}, 87.361);
+      tl.set("#cap-c45", {opacity: 0, visibility: "hidden"}, 90.813);
+      tl.set("#cap-c46", {opacity: 1, visibility: "visible"}, 91.050);
+      tl.set("#cap-c46", {opacity: 0, visibility: "hidden"}, 93.289);
+      tl.set("#cap-c47", {opacity: 1, visibility: "visible"}, 93.587);
+      tl.set("#cap-c47", {opacity: 0, visibility: "hidden"}, 95.823);
+      tl.set("#cap-c48", {opacity: 1, visibility: "visible"}, 96.100);
+      tl.set("#cap-c48", {opacity: 0, visibility: "hidden"}, 98.019);
+      tl.set("#cap-c49", {opacity: 1, visibility: "visible"}, 98.266);
+      tl.set("#cap-c49", {opacity: 0, visibility: "hidden"}, 99.574);
+      tl.set("#cap-c50", {opacity: 1, visibility: "visible"}, 99.830);
+      tl.set("#cap-c50", {opacity: 0, visibility: "hidden"}, 101.032);
+      tl.set("#cap-c51", {opacity: 1, visibility: "visible"}, 101.052);
+      tl.set("#cap-c51", {opacity: 0, visibility: "hidden"}, 102.043);
+      tl.set("#cap-c52", {opacity: 1, visibility: "visible"}, 102.191);
+      tl.set("#cap-c52", {opacity: 0, visibility: "hidden"}, 103.929);
+      tl.set("#cap-c53", {opacity: 1, visibility: "visible"}, 104.210);
+      tl.set("#cap-c53", {opacity: 0, visibility: "hidden"}, 107.989);
+      tl.set("#cap-c54", {opacity: 1, visibility: "visible"}, 108.686);
+      tl.set("#cap-c54", {opacity: 0, visibility: "hidden"}, 110.820);
+      tl.set("#cap-c55", {opacity: 1, visibility: "visible"}, 110.903);
+      tl.set("#cap-c55", {opacity: 0, visibility: "hidden"}, 112.908);
+      tl.set("#cap-c56", {opacity: 1, visibility: "visible"}, 113.242);
+      tl.set("#cap-c56", {opacity: 0, visibility: "hidden"}, 115.022);
+      tl.set("#cap-c57", {opacity: 1, visibility: "visible"}, 115.115);
+      tl.set("#cap-c57", {opacity: 0, visibility: "hidden"}, 116.754);
+      tl.set("#cap-c58", {opacity: 1, visibility: "visible"}, 116.885);
+      tl.set("#cap-c58", {opacity: 0, visibility: "hidden"}, 117.971);
+      tl.set("#cap-c59", {opacity: 1, visibility: "visible"}, 118.170);
+      tl.set("#cap-c59", {opacity: 0, visibility: "hidden"}, 121.476);
+      tl.set("#cap-c60", {opacity: 1, visibility: "visible"}, 121.996);
+      tl.set("#cap-c60", {opacity: 0, visibility: "hidden"}, 123.523);
+      tl.set("#cap-c61", {opacity: 1, visibility: "visible"}, 123.755);
+      tl.set("#cap-c61", {opacity: 0, visibility: "hidden"}, 125.932);
+      tl.set("#cap-c62", {opacity: 1, visibility: "visible"}, 126.321);
+      tl.set("#cap-c62", {opacity: 0, visibility: "hidden"}, 128.623);
+      tl.set("#cap-c63", {opacity: 1, visibility: "visible"}, 128.771);
+      tl.set("#cap-c63", {opacity: 0, visibility: "hidden"}, 130.138);
+      tl.set("#cap-c64", {opacity: 1, visibility: "visible"}, 130.245);
+      tl.set("#cap-c64", {opacity: 0, visibility: "hidden"}, 131.552);
+      window.__timelines["captions"] = tl;
+    })();
+  </script>
+</template>

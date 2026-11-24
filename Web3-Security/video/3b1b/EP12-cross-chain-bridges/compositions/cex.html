@@ -1,0 +1,61 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="cex" data-duration="47.23" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="c-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker></defs>
+      <g id="c-all">
+        <g id="c-top" class="h">
+          <rect x="160" y="140" width="460" height="130" rx="18" fill="#161a22" stroke="#F0B90B" stroke-width="3" />
+          <text x="390" y="220" font-size="34" fill="#F0B90B" text-anchor="middle">链上的一笔转账</text>
+          <rect x="740" y="140" width="440" height="130" rx="18" fill="#1f1a12" stroke="#FF9F43" stroke-width="4" />
+          <text x="960" y="200" font-size="34" fill="#FF9F43" text-anchor="middle" font-weight="700">充值系统</text>
+          <text x="960" y="245" font-size="28" fill="#e8e6df" text-anchor="middle">= 一座桥</text>
+          <rect x="1300" y="140" width="460" height="130" rx="18" fill="#161a22" stroke="#8a8f99" stroke-width="3" />
+          <text x="1530" y="220" font-size="34" fill="#e8e6df" text-anchor="middle">交易所内部账本</text>
+          <path d="M625 205 L 730 205 M1185 205 L 1290 205" stroke="#8a8f99" stroke-width="4" marker-end="url(#c-ah)" />
+        </g>
+        <text id="c-sub" class="h" x="960" y="330" font-size="30" fill="#8a8f99" text-anchor="middle">相信链上发生了一笔转账 → 在内部账本上记账</text>
+
+        <g font-size="32">
+          <g class="c-r h"><text x="160" y="440" fill="#FC6255">假币合约发出同名的转账事件</text><text x="1060" y="440" fill="#83C167">→ 校验代币合约地址，不看名字</text></g>
+          <g class="c-r h"><text x="160" y="550" fill="#FC6255">执行失败的交易（如 TRON 能量不足回滚）</text><text x="160" y="595" font-size="28" fill="#8a8f99">照样上链、有哈希</text><text x="1060" y="550" fill="#83C167">→ 先检查执行结果，再看事件</text></g>
+          <g class="c-r h"><text x="160" y="690" fill="#FC6255">同一笔交易被重复入账</text><text x="1060" y="690" fill="#83C167">→ <tspan class="mono">(txHash, logIndex)</tspan> 幂等键</text></g>
+          <g class="c-r h"><text x="160" y="790" fill="#FC6255">入账后区块被回滚</text><text x="1060" y="790" fill="#83C167">→ 等足够确认或最终性</text></g>
+          <g class="c-r h"><text x="160" y="890" fill="#FC6255">收税 / 变基代币：入账 ≠ 实收</text><text x="1060" y="890" fill="#83C167">→ 以余额变化为准</text></g>
+        </g>
+        <text id="c-src" class="h" x="1760" y="1010" font-size="28" fill="#6b6f7a" text-anchor="end">对应关系：手册第 12 章 §5</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 47.23, "L": [[0.6, 8.14], [8.59, 17.73], [18.18, 29.12], [29.57, 39.97], [40.42, 46.13]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+
+      IN("#c-top", at(0, 0.05), 0.7);
+      IN("#c-sub", at(0, 0.5), 0.5);
+      const r = gsap.utils.toArray("#root .c-r");
+      // 每行：风险先出现，修复随后（拆成两步）
+      const two = (g, t1, t2) => { const ts = g.querySelectorAll("text"); ts.forEach((t, k) => { const green = t.getAttribute("fill") === "#83C167"; const gray = t.getAttribute("fill") === "#8a8f99"; IN(t, green ? t2 : gray ? (t1 + t2) / 2 : t1, 0.4, { x: -15 }, { x: 0 }); }); tl.set(g, { opacity: 1 }, t1); };
+      two(r[0], at(1, 0.15), at(1, 0.6));
+      two(r[1], at(2, 0.05), at(2, 0.75));
+      two(r[2], at(3, 0.02), at(3, 0.3));
+      two(r[3], at(3, 0.55), at(3, 0.8));
+      two(r[4], at(4, 0.05), at(4, 0.6));
+      IN("#c-src", at(4, 0.7), 0.4);
+
+      tl.to("#c-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["cex"] = tl;
+    })();
+  </script>
+</template>

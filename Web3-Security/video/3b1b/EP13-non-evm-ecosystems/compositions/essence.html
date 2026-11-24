@@ -1,0 +1,81 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="essence" data-duration="51.02" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="e-all">
+        <text id="e-big" class="h" x="960" y="540" font-size="64" fill="#e8e6df" text-anchor="middle" font-weight="800">程序相信了一个不该相信的<tspan fill="#FF9F43">输入</tspan></text>
+
+        <g font-size="36">
+          <g class="e-row h"><text x="560" y="470" fill="#58C4DD" text-anchor="end" font-weight="700">EVM</text><text x="620" y="470" fill="#FF9F43">参数和外部调用</text></g>
+          <g class="e-row h"><text x="560" y="560" fill="#58C4DD" text-anchor="end" font-weight="700">Solana</text><text x="620" y="560" fill="#FF9F43">调用者传进来的账户</text></g>
+          <g class="e-row h"><text x="560" y="650" fill="#58C4DD" text-anchor="end" font-weight="700">Move</text><text x="620" y="650" fill="#FF9F43">对象和数学库</text></g>
+          <g class="e-row h"><text x="560" y="740" fill="#58C4DD" text-anchor="end" font-weight="700">比特币生态</text><text x="620" y="740" fill="#FF9F43">链下索引器的解释</text></g>
+        </g>
+        <text id="e-head" class="h" x="960" y="380" font-size="34" fill="#8a8f99" text-anchor="middle">变的是：输入长什么样</text>
+
+        <!-- 五国海关 -->
+        <g id="e-gates"></g>
+        <circle id="e-smug" class="h" cx="120" cy="760" r="22" fill="#FC6255" />
+        <text id="e-smugt" class="h" x="120" y="830" font-size="30" fill="#FC6255" text-anchor="middle">走私者</text>
+        <text id="e-weak" class="h" x="960" y="930" font-size="38" fill="#FC6255" text-anchor="middle" font-weight="700">在每个国家，都找最薄弱的那一环</text>
+
+        <circle id="e-coin" class="h" cx="120" cy="760" r="20" fill="#F0B90B" />
+        <text id="e-path" class="h" x="960" y="930" font-size="36" fill="#e8e6df" text-anchor="middle">同一笔资产经过好几个国家 · <tspan fill="#FF9F43">每多一种模型，多一组检查</tspan></text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 51.02, "L": [[0.6, 6.36], [6.81, 19.91], [20.36, 34.09], [34.54, 38.67], [39.12, 49.92]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      // 五个海关
+      const D = [["A 国", "查行李", "EVM"], ["B 国", "查护照", "Solana"], ["C 国", "防伪芯片", "Move"], ["D 国", "只查封条", "比特币"], ["E 国", "互认海关章", "Cosmos IBC"]];
+      const NS = "http://www.w3.org/2000/svg", gh = document.querySelector("#e-gates");
+      const G = D.map((d, i) => {
+        const x = 280 + i * 340, g = document.createElementNS(NS, "g");
+        g.setAttribute("opacity", "0");
+        g.innerHTML = `<rect class="e-gr" x="${x - 130}" y="320" width="260" height="300" rx="18" fill="#14171e" stroke="#8a8f99" stroke-width="3" />` +
+          `<text x="${x}" y="390" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">${d[0]}</text>` +
+          `<text x="${x}" y="470" font-size="32" fill="#FF9F43" text-anchor="middle">${d[1]}</text>` +
+          `<text x="${x}" y="570" font-size="30" fill="#58C4DD" text-anchor="middle">${d[2]}</text>`;
+        gh.appendChild(g); return { g, x };
+      });
+
+      IN("#e-big", at(0, 0.05), 0.7, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      // L1 输入长什么样
+      tl.to("#e-big", { y: -430, scale: 0.7, svgOrigin: "960 540", duration: 0.6, ease: "power2.inOut" }, at(1, 0));
+      IN("#e-head", at(1, 0.05), 0.4);
+      gsap.utils.toArray("#root .e-row").forEach((g, i) => IN(g, at(1, [0.12, 0.3, 0.55, 0.75][i]), 0.4, { x: -20 }, { x: 0 }));
+      // L2 五国海关
+      OUT(["#root .e-row", "#e-head"], at(2, 0), 0.35);
+      G.forEach((o, i) => IN(o.g, at(2, 0.1 + i * 0.17), 0.4, { y: 20 }, { y: 0 }));
+      // L3 走私者找最薄弱的一环
+      IN(["#e-smug", "#e-smugt"], at(3, 0), 0.3);
+      tl.to("#e-smug", { attr: { cx: 1800 }, duration: Math.max(1.5, (L[3][1] - L[3][0]) * 0.8), ease: "none" }, at(3, 0.05));
+      OUT("#e-smugt", at(3, 0.1), 0.2);
+      G.forEach((o, i) => tl.to(o.g.querySelector(".e-gr"), { stroke: "#FC6255", strokeWidth: 5, duration: 0.2, yoyo: true, repeat: 1 }, at(3, 0.05) + (o.x - 120) / 1680 * Math.max(1.5, (L[3][1] - L[3][0]) * 0.8)));
+      IN("#e-weak", at(3, 0.3), 0.5);
+      // L4 同一笔资产经过好几个国家
+      OUT(["#e-smug", "#e-weak"], at(4, 0), 0.3);
+      IN("#e-coin", at(4, 0.05), 0.3);
+      tl.to("#e-coin", { attr: { cx: 1800 }, duration: 4.5, ease: "power1.inOut" }, at(4, 0.1));
+      G.forEach((o, i) => tl.to(o.g.querySelector(".e-gr"), { stroke: "#FF9F43", strokeWidth: 5, duration: 0.3 }, at(4, 0.1) + (o.x - 120) / 1680 * 4.5));
+      IN("#e-path", at(4, 0.6), 0.5);
+
+      tl.to("#e-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["essence"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,140 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="idea" data-duration="40.1" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <g id="i-keyshape">
+          <circle cx="-34" cy="0" r="20" fill="none" stroke="#B48EF0" stroke-width="7" />
+          <path d="M-14 0 H 46 M 30 0 V 16 M 44 0 V 13" stroke="#B48EF0" stroke-width="7" stroke-linecap="round" fill="none" />
+        </g>
+        <marker id="i-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+        <marker id="i-aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FF9F43" /></marker>
+      </defs>
+      <g id="i-all">
+        <!-- 中央：用户 -->
+        <g id="i-user" class="h">
+          <circle cx="960" cy="540" r="64" fill="#2a2f3a" stroke="#e8e6df" stroke-width="3" />
+          <text x="960" y="552" font-size="32" fill="#e8e6df" text-anchor="middle">你</text>
+        </g>
+        <!-- 私钥：不被碰 -->
+        <g id="i-key" class="h"><use href="#i-keyshape" x="966" y="330" /></g>
+        <path id="i-steal" class="dr h" pathLength="1" d="M1500 220 L 1040 320" stroke="#FC6255" stroke-width="4" stroke-dasharray="1" fill="none" marker-end="url(#i-ahr)" />
+        <g id="i-nox" class="h"><line x1="1240" y1="230" x2="1300" y2="290" stroke="#FC6255" stroke-width="6" /><line x1="1300" y1="230" x2="1240" y2="290" stroke="#FC6255" stroke-width="6" /></g>
+        <text id="i-nost" class="h" x="1520" y="210" font-size="30" fill="#FC6255">不碰私钥</text>
+
+        <!-- 两条路：自己签授权 / 自己转错 -->
+        <path id="i-p1" class="dr h" pathLength="1" d="M900 590 C 760 700, 620 760, 470 770" stroke="#FF9F43" stroke-width="5" fill="none" marker-end="url(#i-aho)" />
+        <g id="i-sign" class="h">
+          <rect x="160" y="700" width="300" height="150" rx="14" fill="#161a22" stroke="#FF9F43" stroke-width="3" />
+          <text x="310" y="760" font-size="32" fill="#FF9F43" text-anchor="middle" font-weight="700">自己签下</text>
+          <text x="310" y="810" font-size="32" fill="#FF9F43" text-anchor="middle" font-weight="700">一个授权</text>
+        </g>
+        <path id="i-p2" class="dr h" pathLength="1" d="M1020 590 C 1160 700, 1300 760, 1450 770" stroke="#F0B90B" stroke-width="5" fill="none" marker-end="url(#i-ahr)" />
+        <g id="i-send" class="h">
+          <rect x="1460" y="700" width="300" height="150" rx="14" fill="#2a1416" stroke="#FC6255" stroke-width="3" />
+          <text x="1610" y="760" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">自己转到</text>
+          <text x="1610" y="810" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">错误地址</text>
+        </g>
+
+        <!-- 三个状态 -->
+        <g id="i-st" class="h" font-size="32" text-anchor="middle">
+          <text x="660" y="980" fill="#83C167">私钥 ✓ 完好</text>
+          <text x="960" y="980" fill="#83C167">签名 ✓ 真的</text>
+          <text x="1260" y="980" fill="#FC6255" font-weight="700">资产 → 0</text>
+        </g>
+      </g>
+
+      <!-- 比方：快递签收单 -->
+      <g id="i-meta">
+        <g id="i-front" class="h">
+          <rect x="560" y="260" width="800" height="440" rx="18" fill="#e8e6df" />
+          <text x="960" y="350" font-size="44" fill="#0f1117" text-anchor="middle" font-weight="800">快递签收单</text>
+          <line x1="660" y1="430" x2="1260" y2="430" stroke="#8a8f99" stroke-width="3" />
+          <line x1="660" y1="500" x2="1260" y2="500" stroke="#8a8f99" stroke-width="3" />
+          <text x="660" y="610" font-size="32" fill="#0f1117">签名：</text>
+          <path id="i-sig" class="dr" pathLength="1" d="M770 605 C 800 570, 820 630, 860 595 S 920 580, 940 610 L 1040 600" fill="none" stroke="#0f1117" stroke-width="4" stroke-linecap="round" />
+        </g>
+        <g id="i-back" class="h">
+          <rect x="560" y="260" width="800" height="440" rx="18" fill="#2a1416" stroke="#FC6255" stroke-width="4" />
+          <text x="960" y="360" font-size="32" fill="#8a8f99" text-anchor="middle">背面</text>
+          <text x="960" y="470" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="700">本人同意把房屋钥匙</text>
+          <text x="960" y="530" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="700">交给持单人</text>
+        </g>
+        <!-- 比方不成立：钱包里只有十六进制 -->
+        <g id="i-req" class="h">
+          <rect x="240" y="300" width="700" height="360" rx="18" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+          <text x="590" y="360" font-size="32" fill="#e8e6df" text-anchor="middle">钱包：签名请求</text>
+          <text id="i-hex1" x="290" y="440" font-size="30" fill="#8a8f99"></text>
+          <text id="i-hex2" x="290" y="490" font-size="30" fill="#8a8f99"></text>
+          <text id="i-hex3" x="290" y="540" font-size="30" fill="#8a8f99"></text>
+          <text x="590" y="620" font-size="28" fill="#6b6f7a" text-anchor="middle">（示意）</text>
+        </g>
+        <path id="i-dec" class="dr h" pathLength="1" d="M950 480 L 1080 480" stroke="#83C167" stroke-width="4" fill="none" />
+        <g id="i-tool" class="h">
+          <rect x="1090" y="300" width="620" height="360" rx="18" fill="#141e14" stroke="#83C167" stroke-width="4" />
+          <text x="1400" y="360" font-size="32" fill="#83C167" text-anchor="middle" font-weight="700">解码之后</text>
+          <text x="1140" y="450" font-size="32" fill="#e8e6df">授权给：陌生地址</text>
+          <text x="1140" y="510" font-size="32" fill="#e8e6df">数额：<tspan fill="#FC6255" font-weight="700">无限</tspan></text>
+          <text x="1140" y="570" font-size="32" fill="#e8e6df">期限：<tspan fill="#FC6255" font-weight="700">不过期</tspan></text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 40.1, "L": [[0.6, 6.1], [6.55, 13.22], [13.67, 18.35], [18.8, 28.57], [29.02, 39.0]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.8) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      const DRAWA = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // 十六进制（固定种子，示意）
+      let seed = 19; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      const hx = (n) => { let s = ""; for (let i = 0; i < n; i++) s += "0123456789abcdef"[Math.floor(rnd() * 16)]; return s; };
+      document.querySelector("#i-hex1").textContent = "0x" + hx(30);
+      document.querySelector("#i-hex2").textContent = hx(32);
+      document.querySelector("#i-hex3").textContent = hx(24) + "…";
+
+      // L0 不碰私钥
+      IN("#i-user", at(0, 0.0), 0.5, { scale: 0.3, svgOrigin: "960 540" }, { scale: 1 });
+      IN("#i-key", at(0, 0.15), 0.5);
+      DRAWA("#i-steal", at(0, 0.4), 0.6);
+      IN("#i-nox", at(0, 0.6), 0.3, { scale: 1.5, svgOrigin: "1270 260" }, { scale: 1 });
+      IN("#i-nost", at(0, 0.62), 0.4);
+      // L1 两条路
+      DRAWA("#i-p1", at(1, 0.15), 0.6);
+      IN("#i-sign", at(1, 0.25), 0.5);
+      DRAWA("#i-p2", at(1, 0.6), 0.6);
+      IN("#i-send", at(1, 0.7), 0.5);
+      // L2 私钥完好，签名是真的，资产没了
+      IN("#i-st", at(2, 0.05), 0.6);
+      tl.to("#i-st text:nth-child(3)", { scale: 1.15, svgOrigin: "1260 970", duration: 0.25, yoyo: true, repeat: 1 }, at(2, 0.65));
+
+      // L3 快递签收单 → 背面
+      tl.to("#i-all", { opacity: 0, duration: 0.4 }, at(3, 0));
+      IN("#i-front", at(3, 0.08), 0.5, { y: 30 }, { y: 0 });
+      DRAW("#i-sig", at(3, 0.3), 0.7);
+      tl.to("#i-front", { scaleX: 0, svgOrigin: "960 480", duration: 0.35, ease: "power2.in" }, at(3, 0.62));
+      IN("#i-back", at(3, 0.62) + 0.35, 0.05);
+      tl.fromTo("#i-back", { scaleX: 0 }, { scaleX: 1, svgOrigin: "960 480", duration: 0.35, ease: "power2.out" }, at(3, 0.62) + 0.35);
+
+      // L4 比方不成立：只看见十六进制，要解码才看得懂
+      OUT("#i-back", at(4, 0), 0.3);
+      IN("#i-req", at(4, 0.1), 0.5);
+      DRAW("#i-dec", at(4, 0.55), 0.4);
+      IN("#i-tool", at(4, 0.6), 0.6, { x: -30 }, { x: 0 });
+
+      tl.to(["#i-all", "#i-meta"], { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["idea"] = tl;
+    })();
+  </script>
+</template>

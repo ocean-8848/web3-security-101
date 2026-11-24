@@ -1,0 +1,113 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="slash" data-duration="67.81" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="s-all">
+        <g id="s-a">
+          <g id="s-val" class="h">
+            <rect x="760" y="160" width="400" height="120" rx="18" fill="#1a1524" stroke="#B48EF0" stroke-width="4" />
+            <text x="960" y="232" font-size="34" fill="#B48EF0" text-anchor="middle" font-weight="700">验证者 · 一把密钥</text>
+          </g>
+          <text id="s-rule" class="h" x="700" y="350" font-size="32" fill="#e8e6df" text-anchor="middle">同一位置签两个不同结果</text>
+          <text id="s-rule2" class="h" x="1250" y="350" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">→ 罚没：扣质押 + 强制退出</text>
+          <!-- A / B -->
+          <g id="s-A" class="h"><rect id="s-Ar" x="260" y="440" width="460" height="220" rx="18" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="490" y="510" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">主机 A</text><text id="s-Ad" x="490" y="570" font-size="30" fill="#8a8f99" text-anchor="middle">看起来宕机了？</text></g>
+          <text id="s-Arun" class="h" x="490" y="570" font-size="30" fill="#FF9F43" text-anchor="middle">其实还在运行</text>
+          <g id="s-B" class="h"><rect x="1200" y="440" width="460" height="220" rx="18" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="1430" y="510" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">备用机 B</text><text x="1430" y="570" font-size="30" fill="#8a8f99" text-anchor="middle">启动同一把密钥</text></g>
+          <g id="s-k1" class="h"><circle cx="490" cy="620" r="22" fill="#B48EF0" /></g>
+          <g id="s-k2" class="h"><circle cx="1430" cy="620" r="22" fill="#B48EF0" /></g>
+          <g id="s-v1" class="h"><rect x="400" y="720" width="180" height="80" rx="12" fill="#2a1416" stroke="#FC6255" stroke-width="3" /><text x="490" y="770" font-size="28" fill="#e8e6df" text-anchor="middle">slot S：票 1</text></g>
+          <g id="s-v2" class="h"><rect x="1340" y="720" width="180" height="80" rx="12" fill="#2a1416" stroke="#FC6255" stroke-width="3" /><text x="1430" y="770" font-size="28" fill="#e8e6df" text-anchor="middle">slot S：票 2</text></g>
+          <text id="s-dbl" class="h" x="960" y="780" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="800">双签</text>
+        </g>
+        <!-- 案例柱 -->
+        <g id="s-cases">
+          <line id="s-axis" class="h" x1="300" y1="880" x2="1620" y2="880" stroke="#6b6f7a" stroke-width="3" />
+          <text id="s-unit" class="h" x="300" y="300" font-size="30" fill="#8a8f99">被罚没的验证者（个）</text>
+        </g>
+        <!-- 公章 -->
+        <g id="s-seal" class="h">
+          <rect x="300" y="330" width="420" height="300" rx="14" fill="#161a22" stroke="#6b6f7a" stroke-width="3" />
+          <rect x="1200" y="330" width="420" height="300" rx="14" fill="#161a22" stroke="#6b6f7a" stroke-width="3" />
+          <text x="510" y="300" font-size="30" fill="#8a8f99" text-anchor="middle">抽屉 1</text>
+          <text x="1410" y="300" font-size="30" fill="#8a8f99" text-anchor="middle">抽屉 2</text>
+          <circle cx="510" cy="480" r="70" fill="none" stroke="#FC6255" stroke-width="5" /><text x="510" y="492" font-size="32" fill="#FC6255" text-anchor="middle">公章</text>
+          <circle cx="1410" cy="480" r="70" fill="none" stroke="#FC6255" stroke-width="5" stroke-dasharray="10 8" /><text x="1410" y="492" font-size="32" fill="#FC6255" text-anchor="middle">公章</text>
+          <text x="960" y="720" font-size="32" fill="#e8e6df" text-anchor="middle">一枚公章，同一时刻只能在一个抽屉里</text>
+          <text x="960" y="790" font-size="30" fill="#8a8f99" text-anchor="middle">不同在于：协议不问原因，检测到双签就罚没</text>
+        </g>
+        <!-- 流程 -->
+        <g id="s-steps" font-size="32"></g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 67.81, "L": [[0.6, 6.55], [7.0, 15.26], [15.71, 28.09], [28.54, 41.98], [42.43, 54.7], [55.15, 66.71]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      // 案例：2021-02 75，2023-10 20，2025-09 39
+      const D = [{ n: "2021-02", v: 75, s: "质押服务商重启出错" }, { n: "2023-10", v: 20, s: "Lido 一家运营商" }, { n: "2025-09", v: 39, s: "SSV 上一个集群" }];
+      const ch = document.querySelector("#s-cases"), G = [];
+      D.forEach((d, i) => {
+        const x = 520 + i * 440, h = d.v * 6.4;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", 0);
+        g.innerHTML = `<rect class="bar" x="${x - 70}" y="${880 - h}" width="140" height="${h}" fill="#FC6255" />` +
+          `<text x="${x}" y="${880 - h - 16}" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="700">${d.v}</text>` +
+          `<text x="${x}" y="925" font-size="30" fill="#e8e6df" text-anchor="middle">${d.n}</text>` +
+          `<text x="${x}" y="965" font-size="28" fill="#8a8f99" text-anchor="middle">${d.s}</text>`;
+        ch.appendChild(g); G.push({ g, x });
+      });
+      const BAR = (i, t) => { tl.to(G[i].g, { opacity: 1, duration: 0.3 }, t); tl.fromTo(G[i].g.querySelector(".bar"), { scaleY: 0, svgOrigin: `${G[i].x} 880` }, { scaleY: 1, duration: 0.7, ease: "expo.out" }, t); };
+      const STEPS = ["① 迁移前导出防罚没数据（EIP-3076）", "② 确认旧实例已停止", "③ 再等至少 2 个 epoch", "④ 故障切换不自动化", "⑤ 分身检测：最后一道防线"];
+      const sh = document.querySelector("#s-steps"), SS = [];
+      STEPS.forEach((t, i) => {
+        const e = document.createElementNS(NS, "text");
+        e.setAttribute("x", 520); e.setAttribute("y", 300 + i * 120); e.setAttribute("fill", i === 4 ? "#8a8f99" : "#83C167"); e.setAttribute("opacity", 0);
+        e.textContent = t; sh.appendChild(e); SS.push(e);
+      });
+      // L0
+      NODE("#s-val", at(0, 0.1));
+      // L1 规则
+      IN("#s-rule", at(1, 0.1), 0.5);
+      IN("#s-rule2", at(1, 0.55), 0.5, { x: -20 }, { x: 0 });
+      // L2 A / B
+      IN("#s-A", at(2, 0.0), 0.4);
+      IN("#s-B", at(2, 0.15), 0.4);
+      POP("#s-k1", at(2, 0.05)); POP("#s-k2", at(2, 0.25));
+      tl.to("#s-Ad", { opacity: 0, duration: 0.2 }, at(2, 0.45));
+      IN("#s-Arun", at(2, 0.47), 0.3);
+      tl.to("#s-Ar", { stroke: "#FF9F43", duration: 0.3 }, at(2, 0.47));
+      IN("#s-v1", at(2, 0.65), 0.3, { y: -20 }, { y: 0 });
+      IN("#s-v2", at(2, 0.7), 0.3, { y: -20 }, { y: 0 });
+      POP("#s-dbl", at(2, 0.82));
+      // L3 案例
+      OUT("#s-a", at(3, 0.0), 0.35);
+      IN(["#s-axis", "#s-unit"], at(3, 0.05), 0.4);
+      BAR(0, at(3, 0.1)); BAR(1, at(3, 0.55)); BAR(2, at(3, 0.75));
+      // L4 公章
+      OUT("#s-cases", at(4, 0.0), 0.35);
+      IN("#s-seal", at(4, 0.1), 0.6);
+      // L5 流程
+      OUT("#s-seal", at(5, 0.0), 0.35);
+      SS.forEach((e, i) => IN(e, at(5, 0.05 + i * 0.17), 0.4, { x: -20 }, { x: 0 }));
+      tl.to("#s-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["slash"] = tl;
+    })();
+  </script>
+</template>

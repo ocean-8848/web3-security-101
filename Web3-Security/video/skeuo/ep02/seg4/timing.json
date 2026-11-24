@@ -1,0 +1,3496 @@
+{
+ "id": "seg4",
+ "title": "nonce泄密",
+ "pill": 4,
+ "total": 130.32,
+ "lines": [
+  {
+   "id": "seg4-00",
+   "text": "第二处随机性，在签名里。",
+   "spoken": "第二处随机性，在签名里。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep02/audio/lines/seg4-00.wav",
+   "start": 1.6,
+   "dur": 2.8,
+   "speechStart": 1.6,
+   "speechEnd": 4.154
+  },
+  {
+   "id": "seg4-01",
+   "text": "ECDSA 每次签名，都需要一个一次性的数，叫 k，也就是 nonce。",
+   "spoken": "ECDSA 每次签名，都需要一个一次性的数，叫 k，也就是 nonce。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep02/audio/lines/seg4-01.wav",
+   "start": 4.62,
+   "dur": 6.08,
+   "speechStart": 4.719,
+   "speechEnd": 10.527
+  },
+  {
+   "id": "seg4-02",
+   "text": "k 出错有三种情况。第一种，两次签名用了同一个 k。",
+   "spoken": "k 出错有三种情况。第一种，两次签名用了同一个 k。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep02/audio/lines/seg4-02.wav",
+   "start": 10.92,
+   "dur": 4.64,
+   "speechStart": 11.015,
+   "speechEnd": 15.366
+  },
+  {
+   "id": "seg4-03",
+   "text": "攻击者还需要别的东西吗？",
+   "spoken": "攻击者还需要别的东西吗？",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep02/audio/lines/seg4-03.wav",
+   "start": 15.78,
+   "dur": 2.0,
+   "speechStart": 15.78,
+   "speechEnd": 17.571
+  },
+  {
+   "id": "seg4-04",
+   "text": "不需要。两个签名和两个消息哈希都是公开的，直接解方程，就得到私钥。",
+   "spoken": "不需要。两个签名和两个消息哈希都是公开的，直接解方程，就得到私钥。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep02/audio/lines/seg4-04.wav",
+   "start": 18.28,
+   "dur": 6.32,
+   "speechStart": 18.382,
+   "speechEnd": 24.36
+  },
+  {
+   "id": "seg4-05",
+   "text": "打个比方。nonce 像一块每次都换的遮布，盖在私钥上面。",
+   "spoken": "打个比方。nonce 像一块每次都换的遮布，盖在私钥上面。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep02/audio/lines/seg4-05.wav",
+   "start": 24.82,
+   "dur": 5.28,
+   "speechStart": 24.916,
+   "speechEnd": 29.896
+  },
+  {
+   "id": "seg4-06",
+   "text": "同一块布用了两次，两次结果一对比，布就被消掉，私钥就显出来了。",
+   "spoken": "同一块布用了两次，两次结果一对比，布就被消掉，私钥就显出来了。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep02/audio/lines/seg4-06.wav",
+   "start": 30.32,
+   "dur": 6.24,
+   "speechStart": 30.416,
+   "speechEnd": 36.329
+  },
+  {
+   "id": "seg4-07",
+   "text": "比方的局限是，真实过程是解方程。而且下面两种情况，一次对比无法解决。",
+   "spoken": "比方的局限是，真实过程是解方程。而且下面两种情况，一次对比无法解决。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep02/audio/lines/seg4-07.wav",
+   "start": 36.78,
+   "dur": 7.44,
+   "speechStart": 36.888,
+   "speechEnd": 43.981
+  },
+  {
+   "id": "seg4-08",
+   "text": "第二种，k 有偏置，比如高几位总是 0。收集足够多签名，用格方法就能恢复私钥。",
+   "spoken": "第二种，k 有偏置，比如高几位总是 0。收集足够多签名，用格方法就能恢复私钥。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep02/audio/lines/seg4-08.wav",
+   "start": 44.44,
+   "dur": 8.24,
+   "speechStart": 44.44,
+   "speechEnd": 52.457
+  },
+  {
+   "id": "seg4-09",
+   "text": "第三种最糟。k 可以由公开数据算出，那么单个签名就能反推私钥。",
+   "spoken": "第三种最糟。k 可以由公开数据算出，那么单个签名就能反推私钥。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep02/audio/lines/seg4-09.wav",
+   "start": 52.9,
+   "dur": 6.48,
+   "speechStart": 52.9,
+   "speechEnd": 59.152
+  },
+  {
+   "id": "seg4-10",
+   "text": "标准早有解法，叫 RFC 6979。它用私钥和消息，确定性地派生 k，可以消除前两种风险。",
+   "spoken": "标准早有解法，叫 RFC 六九七九。它用私钥和消息，确定性的派生 k，可以消除前两种风险。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep02/audio/lines/seg4-10.wav",
+   "start": 59.6,
+   "dur": 8.88,
+   "speechStart": 59.695,
+   "speechEnd": 68.267
+  },
+  {
+   "id": "seg4-11",
+   "text": "EdDSA 标准也要求，nonce 由私钥的秘密部分派生。风险来自偏离标准的实现。",
+   "spoken": "EdDSA 标准也要求，nonce 由私钥的秘密部分派生。风险来自偏离标准的实现。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep02/audio/lines/seg4-11.wav",
+   "start": 68.7,
+   "dur": 7.2,
+   "speechStart": 68.8,
+   "speechEnd": 75.706
+  },
+  {
+   "id": "seg4-12",
+   "text": "三个案例。2013 年 8 月，Android 的随机数缺陷，让不同签名用了相同的 nonce，多款比特币钱包受影响。",
+   "spoken": "三个案例。2013 年 8 月，Android 的随机数缺陷，让不同签名用了相同的 nonce，多款比特币钱包受影响。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep02/audio/lines/seg4-12.wav",
+   "start": 76.12,
+   "dur": 9.2,
+   "speechStart": 76.12,
+   "speechEnd": 85.146
+  },
+  {
+   "id": "seg4-13",
+   "text": "2019 年，一项研究用格方法，恢复出数百个比特币私钥，和数十个以太坊私钥。",
+   "spoken": "2019 年，一项研究用格方法，恢复出数百个比特币私钥，和数十个以太坊私钥。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep02/audio/lines/seg4-13.wav",
+   "start": 85.54,
+   "dur": 8.08,
+   "speechStart": 85.644,
+   "speechEnd": 93.39
+  },
+  {
+   "id": "seg4-14",
+   "text": "2026 年 6 月，Cardano 钱包 SecondFi 的 Android 版，用公开交易数据派生 nonce，漏掉了秘密部分。",
+   "spoken": "2026 年 6 月，Cardano 钱包 SecondFi 的 Android 版，用公开交易数据派生 nonce，漏掉了秘密部分。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep02/audio/lines/seg4-14.wav",
+   "start": 93.84,
+   "dur": 8.64,
+   "speechStart": 93.947,
+   "speechEnd": 102.319
+  },
+  {
+   "id": "seg4-15",
+   "text": "nonce 人人可算，单个签名就能反推私钥。",
+   "spoken": "nonce 人人可算，单个签名就能反推私钥。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep02/audio/lines/seg4-15.wav",
+   "start": 102.7,
+   "dur": 4.08,
+   "speechStart": 102.802,
+   "speechEnd": 106.595
+  },
+  {
+   "id": "seg4-16",
+   "text": "374 个钱包被盗，约 1600 万 ADA，约 240 万美元。这是官方口径，SlowMist 的估计更高。",
+   "spoken": "374 个钱包被盗，约 1600 万 ADA，约 240 万美元。这是官方口径，SlowMist 的估计更高。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep02/audio/lines/seg4-16.wav",
+   "start": 107.0,
+   "dur": 9.28,
+   "speechStart": 107.0,
+   "speechEnd": 116.077
+  },
+  {
+   "id": "seg4-17",
+   "text": "硬件钱包签名走另一条路径，不受影响。",
+   "spoken": "硬件钱包签名走另一条路径，不受影响。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep02/audio/lines/seg4-17.wav",
+   "start": 116.5,
+   "dur": 3.28,
+   "speechStart": 116.5,
+   "speechEnd": 119.545
+  },
+  {
+   "id": "seg4-18",
+   "text": "教训是，nonce 必须确定性派生，并包含私钥的秘密材料。封装层要做已知答案测试，不能只信任底层库。",
+   "spoken": "教训是，nonce 必须确定性派生，并包含私钥的秘密材料。封装层要做已知答案测试，不能只信任底层库。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep02/audio/lines/seg4-18.wav",
+   "start": 120.0,
+   "dur": 9.12,
+   "speechStart": 120.09,
+   "speechEnd": 128.954
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "第",
+   "start": 1.6,
+   "end": 1.828
+  },
+  {
+   "line": 0,
+   "text": "二",
+   "start": 1.828,
+   "end": 2.056
+  },
+  {
+   "line": 0,
+   "text": "处",
+   "start": 2.056,
+   "end": 2.284
+  },
+  {
+   "line": 0,
+   "text": "随",
+   "start": 2.284,
+   "end": 2.512
+  },
+  {
+   "line": 0,
+   "text": "机",
+   "start": 2.512,
+   "end": 2.741
+  },
+  {
+   "line": 0,
+   "text": "性",
+   "start": 2.741,
+   "end": 2.969
+  },
+  {
+   "line": 0,
+   "text": "在",
+   "start": 3.287,
+   "end": 3.504
+  },
+  {
+   "line": 0,
+   "text": "签",
+   "start": 3.504,
+   "end": 3.72
+  },
+  {
+   "line": 0,
+   "text": "名",
+   "start": 3.72,
+   "end": 3.937
+  },
+  {
+   "line": 0,
+   "text": "里",
+   "start": 3.937,
+   "end": 4.154
+  },
+  {
+   "line": 1,
+   "text": "ECDSA",
+   "start": 4.719,
+   "end": 5.353
+  },
+  {
+   "line": 1,
+   "text": "每",
+   "start": 5.353,
+   "end": 5.654
+  },
+  {
+   "line": 1,
+   "text": "次",
+   "start": 5.654,
+   "end": 5.956
+  },
+  {
+   "line": 1,
+   "text": "签",
+   "start": 5.956,
+   "end": 6.257
+  },
+  {
+   "line": 1,
+   "text": "名",
+   "start": 6.257,
+   "end": 6.559
+  },
+  {
+   "line": 1,
+   "text": "都",
+   "start": 6.757,
+   "end": 6.916
+  },
+  {
+   "line": 1,
+   "text": "需",
+   "start": 6.916,
+   "end": 7.075
+  },
+  {
+   "line": 1,
+   "text": "要",
+   "start": 7.075,
+   "end": 7.234
+  },
+  {
+   "line": 1,
+   "text": "一",
+   "start": 7.234,
+   "end": 7.393
+  },
+  {
+   "line": 1,
+   "text": "个",
+   "start": 7.393,
+   "end": 7.552
+  },
+  {
+   "line": 1,
+   "text": "一",
+   "start": 7.552,
+   "end": 7.711
+  },
+  {
+   "line": 1,
+   "text": "次",
+   "start": 7.711,
+   "end": 7.87
+  },
+  {
+   "line": 1,
+   "text": "性",
+   "start": 7.87,
+   "end": 8.029
+  },
+  {
+   "line": 1,
+   "text": "的",
+   "start": 8.029,
+   "end": 8.188
+  },
+  {
+   "line": 1,
+   "text": "数",
+   "start": 8.188,
+   "end": 8.348
+  },
+  {
+   "line": 1,
+   "text": "叫",
+   "start": 8.618,
+   "end": 8.873
+  },
+  {
+   "line": 1,
+   "text": "k",
+   "start": 8.873,
+   "end": 9.077
+  },
+  {
+   "line": 1,
+   "text": "也",
+   "start": 9.449,
+   "end": 9.66
+  },
+  {
+   "line": 1,
+   "text": "就",
+   "start": 9.66,
+   "end": 9.872
+  },
+  {
+   "line": 1,
+   "text": "是",
+   "start": 9.872,
+   "end": 10.083
+  },
+  {
+   "line": 1,
+   "text": "nonce",
+   "start": 10.083,
+   "end": 10.527
+  },
+  {
+   "line": 2,
+   "text": "k",
+   "start": 11.015,
+   "end": 11.172
+  },
+  {
+   "line": 2,
+   "text": "出",
+   "start": 11.172,
+   "end": 11.368
+  },
+  {
+   "line": 2,
+   "text": "错",
+   "start": 11.368,
+   "end": 11.564
+  },
+  {
+   "line": 2,
+   "text": "有",
+   "start": 11.564,
+   "end": 11.76
+  },
+  {
+   "line": 2,
+   "text": "三",
+   "start": 11.76,
+   "end": 11.956
+  },
+  {
+   "line": 2,
+   "text": "种",
+   "start": 11.956,
+   "end": 12.152
+  },
+  {
+   "line": 2,
+   "text": "情",
+   "start": 12.152,
+   "end": 12.348
+  },
+  {
+   "line": 2,
+   "text": "况",
+   "start": 12.348,
+   "end": 12.545
+  },
+  {
+   "line": 2,
+   "text": "第",
+   "start": 12.898,
+   "end": 13.05
+  },
+  {
+   "line": 2,
+   "text": "一",
+   "start": 13.05,
+   "end": 13.202
+  },
+  {
+   "line": 2,
+   "text": "种",
+   "start": 13.202,
+   "end": 13.354
+  },
+  {
+   "line": 2,
+   "text": "两",
+   "start": 13.6,
+   "end": 13.78
+  },
+  {
+   "line": 2,
+   "text": "次",
+   "start": 13.78,
+   "end": 13.96
+  },
+  {
+   "line": 2,
+   "text": "签",
+   "start": 13.96,
+   "end": 14.141
+  },
+  {
+   "line": 2,
+   "text": "名",
+   "start": 14.141,
+   "end": 14.321
+  },
+  {
+   "line": 2,
+   "text": "用",
+   "start": 14.321,
+   "end": 14.501
+  },
+  {
+   "line": 2,
+   "text": "了",
+   "start": 14.501,
+   "end": 14.681
+  },
+  {
+   "line": 2,
+   "text": "同",
+   "start": 14.681,
+   "end": 14.861
+  },
+  {
+   "line": 2,
+   "text": "一",
+   "start": 14.861,
+   "end": 15.042
+  },
+  {
+   "line": 2,
+   "text": "个",
+   "start": 15.042,
+   "end": 15.222
+  },
+  {
+   "line": 2,
+   "text": "k",
+   "start": 15.222,
+   "end": 15.366
+  },
+  {
+   "line": 3,
+   "text": "攻",
+   "start": 15.78,
+   "end": 15.943
+  },
+  {
+   "line": 3,
+   "text": "击",
+   "start": 15.943,
+   "end": 16.106
+  },
+  {
+   "line": 3,
+   "text": "者",
+   "start": 16.106,
+   "end": 16.268
+  },
+  {
+   "line": 3,
+   "text": "还",
+   "start": 16.268,
+   "end": 16.431
+  },
+  {
+   "line": 3,
+   "text": "需",
+   "start": 16.431,
+   "end": 16.594
+  },
+  {
+   "line": 3,
+   "text": "要",
+   "start": 16.594,
+   "end": 16.757
+  },
+  {
+   "line": 3,
+   "text": "别",
+   "start": 16.757,
+   "end": 16.92
+  },
+  {
+   "line": 3,
+   "text": "的",
+   "start": 16.92,
+   "end": 17.082
+  },
+  {
+   "line": 3,
+   "text": "东",
+   "start": 17.082,
+   "end": 17.245
+  },
+  {
+   "line": 3,
+   "text": "西",
+   "start": 17.245,
+   "end": 17.408
+  },
+  {
+   "line": 3,
+   "text": "吗",
+   "start": 17.408,
+   "end": 17.571
+  },
+  {
+   "line": 4,
+   "text": "不",
+   "start": 18.382,
+   "end": 18.525
+  },
+  {
+   "line": 4,
+   "text": "需",
+   "start": 18.525,
+   "end": 18.668
+  },
+  {
+   "line": 4,
+   "text": "要",
+   "start": 18.668,
+   "end": 18.811
+  },
+  {
+   "line": 4,
+   "text": "两",
+   "start": 19.238,
+   "end": 19.423
+  },
+  {
+   "line": 4,
+   "text": "个",
+   "start": 19.423,
+   "end": 19.608
+  },
+  {
+   "line": 4,
+   "text": "签",
+   "start": 19.608,
+   "end": 19.794
+  },
+  {
+   "line": 4,
+   "text": "名",
+   "start": 19.794,
+   "end": 19.979
+  },
+  {
+   "line": 4,
+   "text": "和",
+   "start": 19.979,
+   "end": 20.164
+  },
+  {
+   "line": 4,
+   "text": "两",
+   "start": 20.164,
+   "end": 20.35
+  },
+  {
+   "line": 4,
+   "text": "个",
+   "start": 20.35,
+   "end": 20.535
+  },
+  {
+   "line": 4,
+   "text": "消",
+   "start": 20.535,
+   "end": 20.72
+  },
+  {
+   "line": 4,
+   "text": "息",
+   "start": 20.72,
+   "end": 20.905
+  },
+  {
+   "line": 4,
+   "text": "哈",
+   "start": 20.905,
+   "end": 21.091
+  },
+  {
+   "line": 4,
+   "text": "希",
+   "start": 21.091,
+   "end": 21.276
+  },
+  {
+   "line": 4,
+   "text": "都",
+   "start": 21.276,
+   "end": 21.461
+  },
+  {
+   "line": 4,
+   "text": "是",
+   "start": 21.461,
+   "end": 21.646
+  },
+  {
+   "line": 4,
+   "text": "公",
+   "start": 21.646,
+   "end": 21.832
+  },
+  {
+   "line": 4,
+   "text": "开",
+   "start": 21.832,
+   "end": 22.017
+  },
+  {
+   "line": 4,
+   "text": "的",
+   "start": 22.017,
+   "end": 22.202
+  },
+  {
+   "line": 4,
+   "text": "直",
+   "start": 22.573,
+   "end": 22.754
+  },
+  {
+   "line": 4,
+   "text": "接",
+   "start": 22.754,
+   "end": 22.936
+  },
+  {
+   "line": 4,
+   "text": "解",
+   "start": 22.936,
+   "end": 23.117
+  },
+  {
+   "line": 4,
+   "text": "方",
+   "start": 23.117,
+   "end": 23.299
+  },
+  {
+   "line": 4,
+   "text": "程",
+   "start": 23.299,
+   "end": 23.48
+  },
+  {
+   "line": 4,
+   "text": "就",
+   "start": 23.639,
+   "end": 23.783
+  },
+  {
+   "line": 4,
+   "text": "得",
+   "start": 23.783,
+   "end": 23.927
+  },
+  {
+   "line": 4,
+   "text": "到",
+   "start": 23.927,
+   "end": 24.071
+  },
+  {
+   "line": 4,
+   "text": "私",
+   "start": 24.071,
+   "end": 24.216
+  },
+  {
+   "line": 4,
+   "text": "钥",
+   "start": 24.216,
+   "end": 24.36
+  },
+  {
+   "line": 5,
+   "text": "打",
+   "start": 24.916,
+   "end": 25.037
+  },
+  {
+   "line": 5,
+   "text": "个",
+   "start": 25.037,
+   "end": 25.158
+  },
+  {
+   "line": 5,
+   "text": "比",
+   "start": 25.158,
+   "end": 25.278
+  },
+  {
+   "line": 5,
+   "text": "方",
+   "start": 25.278,
+   "end": 25.399
+  },
+  {
+   "line": 5,
+   "text": "nonce",
+   "start": 25.777,
+   "end": 26.279
+  },
+  {
+   "line": 5,
+   "text": "像",
+   "start": 26.279,
+   "end": 26.517
+  },
+  {
+   "line": 5,
+   "text": "一",
+   "start": 26.517,
+   "end": 26.756
+  },
+  {
+   "line": 5,
+   "text": "块",
+   "start": 26.756,
+   "end": 26.995
+  },
+  {
+   "line": 5,
+   "text": "每",
+   "start": 26.995,
+   "end": 27.233
+  },
+  {
+   "line": 5,
+   "text": "次",
+   "start": 27.233,
+   "end": 27.472
+  },
+  {
+   "line": 5,
+   "text": "都",
+   "start": 27.472,
+   "end": 27.711
+  },
+  {
+   "line": 5,
+   "text": "换",
+   "start": 27.711,
+   "end": 27.949
+  },
+  {
+   "line": 5,
+   "text": "的",
+   "start": 27.949,
+   "end": 28.188
+  },
+  {
+   "line": 5,
+   "text": "遮",
+   "start": 28.188,
+   "end": 28.427
+  },
+  {
+   "line": 5,
+   "text": "布",
+   "start": 28.427,
+   "end": 28.666
+  },
+  {
+   "line": 5,
+   "text": "盖",
+   "start": 28.888,
+   "end": 29.056
+  },
+  {
+   "line": 5,
+   "text": "在",
+   "start": 29.056,
+   "end": 29.224
+  },
+  {
+   "line": 5,
+   "text": "私",
+   "start": 29.224,
+   "end": 29.392
+  },
+  {
+   "line": 5,
+   "text": "钥",
+   "start": 29.392,
+   "end": 29.56
+  },
+  {
+   "line": 5,
+   "text": "上",
+   "start": 29.56,
+   "end": 29.728
+  },
+  {
+   "line": 5,
+   "text": "面",
+   "start": 29.728,
+   "end": 29.896
+  },
+  {
+   "line": 6,
+   "text": "同",
+   "start": 30.416,
+   "end": 30.609
+  },
+  {
+   "line": 6,
+   "text": "一",
+   "start": 30.609,
+   "end": 30.803
+  },
+  {
+   "line": 6,
+   "text": "块",
+   "start": 30.803,
+   "end": 30.997
+  },
+  {
+   "line": 6,
+   "text": "布",
+   "start": 30.997,
+   "end": 31.191
+  },
+  {
+   "line": 6,
+   "text": "用",
+   "start": 31.191,
+   "end": 31.385
+  },
+  {
+   "line": 6,
+   "text": "了",
+   "start": 31.385,
+   "end": 31.579
+  },
+  {
+   "line": 6,
+   "text": "两",
+   "start": 31.579,
+   "end": 31.773
+  },
+  {
+   "line": 6,
+   "text": "次",
+   "start": 31.773,
+   "end": 31.966
+  },
+  {
+   "line": 6,
+   "text": "两",
+   "start": 32.564,
+   "end": 32.731
+  },
+  {
+   "line": 6,
+   "text": "次",
+   "start": 32.731,
+   "end": 32.898
+  },
+  {
+   "line": 6,
+   "text": "结",
+   "start": 32.898,
+   "end": 33.065
+  },
+  {
+   "line": 6,
+   "text": "果",
+   "start": 33.065,
+   "end": 33.232
+  },
+  {
+   "line": 6,
+   "text": "一",
+   "start": 33.232,
+   "end": 33.399
+  },
+  {
+   "line": 6,
+   "text": "对",
+   "start": 33.399,
+   "end": 33.566
+  },
+  {
+   "line": 6,
+   "text": "比",
+   "start": 33.566,
+   "end": 33.733
+  },
+  {
+   "line": 6,
+   "text": "布",
+   "start": 34.069,
+   "end": 34.255
+  },
+  {
+   "line": 6,
+   "text": "就",
+   "start": 34.255,
+   "end": 34.44
+  },
+  {
+   "line": 6,
+   "text": "被",
+   "start": 34.44,
+   "end": 34.626
+  },
+  {
+   "line": 6,
+   "text": "消",
+   "start": 34.626,
+   "end": 34.811
+  },
+  {
+   "line": 6,
+   "text": "掉",
+   "start": 34.811,
+   "end": 34.997
+  },
+  {
+   "line": 6,
+   "text": "私",
+   "start": 35.219,
+   "end": 35.377
+  },
+  {
+   "line": 6,
+   "text": "钥",
+   "start": 35.377,
+   "end": 35.536
+  },
+  {
+   "line": 6,
+   "text": "就",
+   "start": 35.536,
+   "end": 35.695
+  },
+  {
+   "line": 6,
+   "text": "显",
+   "start": 35.695,
+   "end": 35.853
+  },
+  {
+   "line": 6,
+   "text": "出",
+   "start": 35.853,
+   "end": 36.012
+  },
+  {
+   "line": 6,
+   "text": "来",
+   "start": 36.012,
+   "end": 36.17
+  },
+  {
+   "line": 6,
+   "text": "了",
+   "start": 36.17,
+   "end": 36.329
+  },
+  {
+   "line": 7,
+   "text": "比",
+   "start": 36.888,
+   "end": 37.065
+  },
+  {
+   "line": 7,
+   "text": "方",
+   "start": 37.065,
+   "end": 37.242
+  },
+  {
+   "line": 7,
+   "text": "的",
+   "start": 37.242,
+   "end": 37.42
+  },
+  {
+   "line": 7,
+   "text": "局",
+   "start": 37.42,
+   "end": 37.597
+  },
+  {
+   "line": 7,
+   "text": "限",
+   "start": 37.597,
+   "end": 37.774
+  },
+  {
+   "line": 7,
+   "text": "是",
+   "start": 37.774,
+   "end": 37.951
+  },
+  {
+   "line": 7,
+   "text": "真",
+   "start": 38.33,
+   "end": 38.561
+  },
+  {
+   "line": 7,
+   "text": "实",
+   "start": 38.561,
+   "end": 38.792
+  },
+  {
+   "line": 7,
+   "text": "过",
+   "start": 38.792,
+   "end": 39.023
+  },
+  {
+   "line": 7,
+   "text": "程",
+   "start": 39.023,
+   "end": 39.253
+  },
+  {
+   "line": 7,
+   "text": "是",
+   "start": 39.253,
+   "end": 39.484
+  },
+  {
+   "line": 7,
+   "text": "解",
+   "start": 39.484,
+   "end": 39.715
+  },
+  {
+   "line": 7,
+   "text": "方",
+   "start": 39.715,
+   "end": 39.946
+  },
+  {
+   "line": 7,
+   "text": "程",
+   "start": 39.946,
+   "end": 40.177
+  },
+  {
+   "line": 7,
+   "text": "而",
+   "start": 40.541,
+   "end": 40.742
+  },
+  {
+   "line": 7,
+   "text": "且",
+   "start": 40.742,
+   "end": 40.942
+  },
+  {
+   "line": 7,
+   "text": "下",
+   "start": 40.942,
+   "end": 41.143
+  },
+  {
+   "line": 7,
+   "text": "面",
+   "start": 41.143,
+   "end": 41.344
+  },
+  {
+   "line": 7,
+   "text": "两",
+   "start": 41.344,
+   "end": 41.545
+  },
+  {
+   "line": 7,
+   "text": "种",
+   "start": 41.545,
+   "end": 41.746
+  },
+  {
+   "line": 7,
+   "text": "情",
+   "start": 41.746,
+   "end": 41.947
+  },
+  {
+   "line": 7,
+   "text": "况",
+   "start": 41.947,
+   "end": 42.148
+  },
+  {
+   "line": 7,
+   "text": "一",
+   "start": 42.383,
+   "end": 42.583
+  },
+  {
+   "line": 7,
+   "text": "次",
+   "start": 42.583,
+   "end": 42.783
+  },
+  {
+   "line": 7,
+   "text": "对",
+   "start": 42.783,
+   "end": 42.982
+  },
+  {
+   "line": 7,
+   "text": "比",
+   "start": 42.982,
+   "end": 43.182
+  },
+  {
+   "line": 7,
+   "text": "无",
+   "start": 43.182,
+   "end": 43.382
+  },
+  {
+   "line": 7,
+   "text": "法",
+   "start": 43.382,
+   "end": 43.581
+  },
+  {
+   "line": 7,
+   "text": "解",
+   "start": 43.581,
+   "end": 43.781
+  },
+  {
+   "line": 7,
+   "text": "决",
+   "start": 43.781,
+   "end": 43.981
+  },
+  {
+   "line": 8,
+   "text": "第",
+   "start": 44.44,
+   "end": 44.63
+  },
+  {
+   "line": 8,
+   "text": "二",
+   "start": 44.63,
+   "end": 44.821
+  },
+  {
+   "line": 8,
+   "text": "种",
+   "start": 44.821,
+   "end": 45.011
+  },
+  {
+   "line": 8,
+   "text": "k",
+   "start": 45.284,
+   "end": 45.506
+  },
+  {
+   "line": 8,
+   "text": "有",
+   "start": 45.506,
+   "end": 45.784
+  },
+  {
+   "line": 8,
+   "text": "偏",
+   "start": 45.784,
+   "end": 46.063
+  },
+  {
+   "line": 8,
+   "text": "置",
+   "start": 46.063,
+   "end": 46.341
+  },
+  {
+   "line": 8,
+   "text": "比",
+   "start": 46.982,
+   "end": 47.098
+  },
+  {
+   "line": 8,
+   "text": "如",
+   "start": 47.098,
+   "end": 47.214
+  },
+  {
+   "line": 8,
+   "text": "高",
+   "start": 47.214,
+   "end": 47.331
+  },
+  {
+   "line": 8,
+   "text": "几",
+   "start": 47.331,
+   "end": 47.447
+  },
+  {
+   "line": 8,
+   "text": "位",
+   "start": 47.447,
+   "end": 47.563
+  },
+  {
+   "line": 8,
+   "text": "总",
+   "start": 47.563,
+   "end": 47.679
+  },
+  {
+   "line": 8,
+   "text": "是",
+   "start": 47.679,
+   "end": 47.796
+  },
+  {
+   "line": 8,
+   "text": "0",
+   "start": 47.796,
+   "end": 47.929
+  },
+  {
+   "line": 8,
+   "text": "收",
+   "start": 48.069,
+   "end": 48.417
+  },
+  {
+   "line": 8,
+   "text": "集",
+   "start": 48.417,
+   "end": 48.764
+  },
+  {
+   "line": 8,
+   "text": "足",
+   "start": 48.764,
+   "end": 49.112
+  },
+  {
+   "line": 8,
+   "text": "够",
+   "start": 49.112,
+   "end": 49.46
+  },
+  {
+   "line": 8,
+   "text": "多",
+   "start": 49.46,
+   "end": 49.807
+  },
+  {
+   "line": 8,
+   "text": "签",
+   "start": 49.807,
+   "end": 50.155
+  },
+  {
+   "line": 8,
+   "text": "名",
+   "start": 50.155,
+   "end": 50.502
+  },
+  {
+   "line": 8,
+   "text": "用",
+   "start": 50.746,
+   "end": 50.918
+  },
+  {
+   "line": 8,
+   "text": "格",
+   "start": 50.918,
+   "end": 51.089
+  },
+  {
+   "line": 8,
+   "text": "方",
+   "start": 51.089,
+   "end": 51.26
+  },
+  {
+   "line": 8,
+   "text": "法",
+   "start": 51.26,
+   "end": 51.431
+  },
+  {
+   "line": 8,
+   "text": "就",
+   "start": 51.431,
+   "end": 51.602
+  },
+  {
+   "line": 8,
+   "text": "能",
+   "start": 51.602,
+   "end": 51.773
+  },
+  {
+   "line": 8,
+   "text": "恢",
+   "start": 51.773,
+   "end": 51.944
+  },
+  {
+   "line": 8,
+   "text": "复",
+   "start": 51.944,
+   "end": 52.115
+  },
+  {
+   "line": 8,
+   "text": "私",
+   "start": 52.115,
+   "end": 52.286
+  },
+  {
+   "line": 8,
+   "text": "钥",
+   "start": 52.286,
+   "end": 52.457
+  },
+  {
+   "line": 9,
+   "text": "第",
+   "start": 52.9,
+   "end": 53.109
+  },
+  {
+   "line": 9,
+   "text": "三",
+   "start": 53.109,
+   "end": 53.317
+  },
+  {
+   "line": 9,
+   "text": "种",
+   "start": 53.317,
+   "end": 53.526
+  },
+  {
+   "line": 9,
+   "text": "最",
+   "start": 53.526,
+   "end": 53.735
+  },
+  {
+   "line": 9,
+   "text": "糟",
+   "start": 53.735,
+   "end": 53.943
+  },
+  {
+   "line": 9,
+   "text": "k",
+   "start": 54.633,
+   "end": 54.783
+  },
+  {
+   "line": 9,
+   "text": "可",
+   "start": 54.783,
+   "end": 54.971
+  },
+  {
+   "line": 9,
+   "text": "以",
+   "start": 54.971,
+   "end": 55.158
+  },
+  {
+   "line": 9,
+   "text": "由",
+   "start": 55.158,
+   "end": 55.345
+  },
+  {
+   "line": 9,
+   "text": "公",
+   "start": 55.345,
+   "end": 55.533
+  },
+  {
+   "line": 9,
+   "text": "开",
+   "start": 55.533,
+   "end": 55.72
+  },
+  {
+   "line": 9,
+   "text": "数",
+   "start": 55.72,
+   "end": 55.908
+  },
+  {
+   "line": 9,
+   "text": "据",
+   "start": 55.908,
+   "end": 56.095
+  },
+  {
+   "line": 9,
+   "text": "算",
+   "start": 56.095,
+   "end": 56.282
+  },
+  {
+   "line": 9,
+   "text": "出",
+   "start": 56.282,
+   "end": 56.47
+  },
+  {
+   "line": 9,
+   "text": "那",
+   "start": 56.839,
+   "end": 57.032
+  },
+  {
+   "line": 9,
+   "text": "么",
+   "start": 57.032,
+   "end": 57.224
+  },
+  {
+   "line": 9,
+   "text": "单",
+   "start": 57.224,
+   "end": 57.417
+  },
+  {
+   "line": 9,
+   "text": "个",
+   "start": 57.417,
+   "end": 57.61
+  },
+  {
+   "line": 9,
+   "text": "签",
+   "start": 57.61,
+   "end": 57.802
+  },
+  {
+   "line": 9,
+   "text": "名",
+   "start": 57.802,
+   "end": 57.995
+  },
+  {
+   "line": 9,
+   "text": "就",
+   "start": 57.995,
+   "end": 58.188
+  },
+  {
+   "line": 9,
+   "text": "能",
+   "start": 58.188,
+   "end": 58.381
+  },
+  {
+   "line": 9,
+   "text": "反",
+   "start": 58.381,
+   "end": 58.573
+  },
+  {
+   "line": 9,
+   "text": "推",
+   "start": 58.573,
+   "end": 58.766
+  },
+  {
+   "line": 9,
+   "text": "私",
+   "start": 58.766,
+   "end": 58.959
+  },
+  {
+   "line": 9,
+   "text": "钥",
+   "start": 58.959,
+   "end": 59.152
+  },
+  {
+   "line": 10,
+   "text": "标",
+   "start": 59.695,
+   "end": 59.878
+  },
+  {
+   "line": 10,
+   "text": "准",
+   "start": 59.878,
+   "end": 60.061
+  },
+  {
+   "line": 10,
+   "text": "早",
+   "start": 60.061,
+   "end": 60.245
+  },
+  {
+   "line": 10,
+   "text": "有",
+   "start": 60.245,
+   "end": 60.428
+  },
+  {
+   "line": 10,
+   "text": "解",
+   "start": 60.428,
+   "end": 60.611
+  },
+  {
+   "line": 10,
+   "text": "法",
+   "start": 60.611,
+   "end": 60.794
+  },
+  {
+   "line": 10,
+   "text": "叫",
+   "start": 61.198,
+   "end": 61.356
+  },
+  {
+   "line": 10,
+   "text": "RFC",
+   "start": 61.356,
+   "end": 61.555
+  },
+  {
+   "line": 10,
+   "text": "6",
+   "start": 61.555,
+   "end": 61.713
+  },
+  {
+   "line": 10,
+   "text": "9",
+   "start": 61.713,
+   "end": 61.871
+  },
+  {
+   "line": 10,
+   "text": "7",
+   "start": 61.871,
+   "end": 62.028
+  },
+  {
+   "line": 10,
+   "text": "9",
+   "start": 62.028,
+   "end": 62.186
+  },
+  {
+   "line": 10,
+   "text": "它",
+   "start": 62.329,
+   "end": 62.676
+  },
+  {
+   "line": 10,
+   "text": "用",
+   "start": 62.676,
+   "end": 63.024
+  },
+  {
+   "line": 10,
+   "text": "私",
+   "start": 63.024,
+   "end": 63.371
+  },
+  {
+   "line": 10,
+   "text": "钥",
+   "start": 63.371,
+   "end": 63.718
+  },
+  {
+   "line": 10,
+   "text": "和",
+   "start": 63.718,
+   "end": 64.065
+  },
+  {
+   "line": 10,
+   "text": "消",
+   "start": 64.065,
+   "end": 64.413
+  },
+  {
+   "line": 10,
+   "text": "息",
+   "start": 64.413,
+   "end": 64.76
+  },
+  {
+   "line": 10,
+   "text": "确",
+   "start": 65.11,
+   "end": 65.209
+  },
+  {
+   "line": 10,
+   "text": "定",
+   "start": 65.209,
+   "end": 65.309
+  },
+  {
+   "line": 10,
+   "text": "性",
+   "start": 65.309,
+   "end": 65.408
+  },
+  {
+   "line": 10,
+   "text": "地",
+   "start": 65.408,
+   "end": 65.508
+  },
+  {
+   "line": 10,
+   "text": "派",
+   "start": 65.508,
+   "end": 65.607
+  },
+  {
+   "line": 10,
+   "text": "生",
+   "start": 65.607,
+   "end": 65.707
+  },
+  {
+   "line": 10,
+   "text": "k",
+   "start": 65.707,
+   "end": 65.786
+  },
+  {
+   "line": 10,
+   "text": "可",
+   "start": 65.912,
+   "end": 66.174
+  },
+  {
+   "line": 10,
+   "text": "以",
+   "start": 66.174,
+   "end": 66.436
+  },
+  {
+   "line": 10,
+   "text": "消",
+   "start": 66.436,
+   "end": 66.697
+  },
+  {
+   "line": 10,
+   "text": "除",
+   "start": 66.697,
+   "end": 66.959
+  },
+  {
+   "line": 10,
+   "text": "前",
+   "start": 66.959,
+   "end": 67.221
+  },
+  {
+   "line": 10,
+   "text": "两",
+   "start": 67.221,
+   "end": 67.482
+  },
+  {
+   "line": 10,
+   "text": "种",
+   "start": 67.482,
+   "end": 67.744
+  },
+  {
+   "line": 10,
+   "text": "风",
+   "start": 67.744,
+   "end": 68.005
+  },
+  {
+   "line": 10,
+   "text": "险",
+   "start": 68.005,
+   "end": 68.267
+  },
+  {
+   "line": 11,
+   "text": "EdDSA",
+   "start": 68.8,
+   "end": 69.291
+  },
+  {
+   "line": 11,
+   "text": "标",
+   "start": 69.291,
+   "end": 69.525
+  },
+  {
+   "line": 11,
+   "text": "准",
+   "start": 69.525,
+   "end": 69.759
+  },
+  {
+   "line": 11,
+   "text": "也",
+   "start": 69.759,
+   "end": 69.993
+  },
+  {
+   "line": 11,
+   "text": "要",
+   "start": 69.993,
+   "end": 70.227
+  },
+  {
+   "line": 11,
+   "text": "求",
+   "start": 70.227,
+   "end": 70.461
+  },
+  {
+   "line": 11,
+   "text": "nonce",
+   "start": 70.691,
+   "end": 71.116
+  },
+  {
+   "line": 11,
+   "text": "由",
+   "start": 71.116,
+   "end": 71.318
+  },
+  {
+   "line": 11,
+   "text": "私",
+   "start": 71.318,
+   "end": 71.521
+  },
+  {
+   "line": 11,
+   "text": "钥",
+   "start": 71.521,
+   "end": 71.724
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 71.724,
+   "end": 71.926
+  },
+  {
+   "line": 11,
+   "text": "秘",
+   "start": 71.926,
+   "end": 72.129
+  },
+  {
+   "line": 11,
+   "text": "密",
+   "start": 72.129,
+   "end": 72.331
+  },
+  {
+   "line": 11,
+   "text": "部",
+   "start": 72.331,
+   "end": 72.534
+  },
+  {
+   "line": 11,
+   "text": "分",
+   "start": 72.534,
+   "end": 72.736
+  },
+  {
+   "line": 11,
+   "text": "派",
+   "start": 72.736,
+   "end": 72.939
+  },
+  {
+   "line": 11,
+   "text": "生",
+   "start": 72.939,
+   "end": 73.141
+  },
+  {
+   "line": 11,
+   "text": "风",
+   "start": 73.677,
+   "end": 73.862
+  },
+  {
+   "line": 11,
+   "text": "险",
+   "start": 73.862,
+   "end": 74.046
+  },
+  {
+   "line": 11,
+   "text": "来",
+   "start": 74.046,
+   "end": 74.231
+  },
+  {
+   "line": 11,
+   "text": "自",
+   "start": 74.231,
+   "end": 74.415
+  },
+  {
+   "line": 11,
+   "text": "偏",
+   "start": 74.415,
+   "end": 74.6
+  },
+  {
+   "line": 11,
+   "text": "离",
+   "start": 74.6,
+   "end": 74.784
+  },
+  {
+   "line": 11,
+   "text": "标",
+   "start": 74.784,
+   "end": 74.969
+  },
+  {
+   "line": 11,
+   "text": "准",
+   "start": 74.969,
+   "end": 75.153
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 75.153,
+   "end": 75.338
+  },
+  {
+   "line": 11,
+   "text": "实",
+   "start": 75.338,
+   "end": 75.522
+  },
+  {
+   "line": 11,
+   "text": "现",
+   "start": 75.522,
+   "end": 75.706
+  },
+  {
+   "line": 12,
+   "text": "三",
+   "start": 76.12,
+   "end": 76.299
+  },
+  {
+   "line": 12,
+   "text": "个",
+   "start": 76.299,
+   "end": 76.477
+  },
+  {
+   "line": 12,
+   "text": "案",
+   "start": 76.477,
+   "end": 76.656
+  },
+  {
+   "line": 12,
+   "text": "例",
+   "start": 76.656,
+   "end": 76.835
+  },
+  {
+   "line": 12,
+   "text": "2013",
+   "start": 77.437,
+   "end": 78.023
+  },
+  {
+   "line": 12,
+   "text": "年",
+   "start": 78.023,
+   "end": 78.181
+  },
+  {
+   "line": 12,
+   "text": "8",
+   "start": 78.181,
+   "end": 78.363
+  },
+  {
+   "line": 12,
+   "text": "月",
+   "start": 78.363,
+   "end": 78.521
+  },
+  {
+   "line": 12,
+   "text": "Android",
+   "start": 78.802,
+   "end": 79.352
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 79.352,
+   "end": 79.539
+  },
+  {
+   "line": 12,
+   "text": "随",
+   "start": 79.539,
+   "end": 79.726
+  },
+  {
+   "line": 12,
+   "text": "机",
+   "start": 79.726,
+   "end": 79.913
+  },
+  {
+   "line": 12,
+   "text": "数",
+   "start": 79.913,
+   "end": 80.1
+  },
+  {
+   "line": 12,
+   "text": "缺",
+   "start": 80.1,
+   "end": 80.287
+  },
+  {
+   "line": 12,
+   "text": "陷",
+   "start": 80.287,
+   "end": 80.474
+  },
+  {
+   "line": 12,
+   "text": "让",
+   "start": 80.8,
+   "end": 80.987
+  },
+  {
+   "line": 12,
+   "text": "不",
+   "start": 80.987,
+   "end": 81.174
+  },
+  {
+   "line": 12,
+   "text": "同",
+   "start": 81.174,
+   "end": 81.361
+  },
+  {
+   "line": 12,
+   "text": "签",
+   "start": 81.361,
+   "end": 81.548
+  },
+  {
+   "line": 12,
+   "text": "名",
+   "start": 81.548,
+   "end": 81.735
+  },
+  {
+   "line": 12,
+   "text": "用",
+   "start": 81.735,
+   "end": 81.922
+  },
+  {
+   "line": 12,
+   "text": "了",
+   "start": 81.922,
+   "end": 82.109
+  },
+  {
+   "line": 12,
+   "text": "相",
+   "start": 82.109,
+   "end": 82.296
+  },
+  {
+   "line": 12,
+   "text": "同",
+   "start": 82.296,
+   "end": 82.483
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 82.483,
+   "end": 82.67
+  },
+  {
+   "line": 12,
+   "text": "nonce",
+   "start": 82.67,
+   "end": 83.062
+  },
+  {
+   "line": 12,
+   "text": "多",
+   "start": 83.392,
+   "end": 83.568
+  },
+  {
+   "line": 12,
+   "text": "款",
+   "start": 83.568,
+   "end": 83.743
+  },
+  {
+   "line": 12,
+   "text": "比",
+   "start": 83.743,
+   "end": 83.918
+  },
+  {
+   "line": 12,
+   "text": "特",
+   "start": 83.918,
+   "end": 84.094
+  },
+  {
+   "line": 12,
+   "text": "币",
+   "start": 84.094,
+   "end": 84.269
+  },
+  {
+   "line": 12,
+   "text": "钱",
+   "start": 84.269,
+   "end": 84.444
+  },
+  {
+   "line": 12,
+   "text": "包",
+   "start": 84.444,
+   "end": 84.62
+  },
+  {
+   "line": 12,
+   "text": "受",
+   "start": 84.62,
+   "end": 84.795
+  },
+  {
+   "line": 12,
+   "text": "影",
+   "start": 84.795,
+   "end": 84.971
+  },
+  {
+   "line": 12,
+   "text": "响",
+   "start": 84.971,
+   "end": 85.146
+  },
+  {
+   "line": 13,
+   "text": "2019",
+   "start": 85.644,
+   "end": 86.306
+  },
+  {
+   "line": 13,
+   "text": "年",
+   "start": 86.306,
+   "end": 86.486
+  },
+  {
+   "line": 13,
+   "text": "一",
+   "start": 86.788,
+   "end": 87.016
+  },
+  {
+   "line": 13,
+   "text": "项",
+   "start": 87.016,
+   "end": 87.243
+  },
+  {
+   "line": 13,
+   "text": "研",
+   "start": 87.243,
+   "end": 87.471
+  },
+  {
+   "line": 13,
+   "text": "究",
+   "start": 87.471,
+   "end": 87.699
+  },
+  {
+   "line": 13,
+   "text": "用",
+   "start": 87.699,
+   "end": 87.926
+  },
+  {
+   "line": 13,
+   "text": "格",
+   "start": 87.926,
+   "end": 88.154
+  },
+  {
+   "line": 13,
+   "text": "方",
+   "start": 88.154,
+   "end": 88.382
+  },
+  {
+   "line": 13,
+   "text": "法",
+   "start": 88.382,
+   "end": 88.61
+  },
+  {
+   "line": 13,
+   "text": "恢",
+   "start": 89.023,
+   "end": 89.215
+  },
+  {
+   "line": 13,
+   "text": "复",
+   "start": 89.215,
+   "end": 89.407
+  },
+  {
+   "line": 13,
+   "text": "出",
+   "start": 89.407,
+   "end": 89.599
+  },
+  {
+   "line": 13,
+   "text": "数",
+   "start": 89.599,
+   "end": 89.791
+  },
+  {
+   "line": 13,
+   "text": "百",
+   "start": 89.791,
+   "end": 89.982
+  },
+  {
+   "line": 13,
+   "text": "个",
+   "start": 89.982,
+   "end": 90.174
+  },
+  {
+   "line": 13,
+   "text": "比",
+   "start": 90.174,
+   "end": 90.366
+  },
+  {
+   "line": 13,
+   "text": "特",
+   "start": 90.366,
+   "end": 90.558
+  },
+  {
+   "line": 13,
+   "text": "币",
+   "start": 90.558,
+   "end": 90.75
+  },
+  {
+   "line": 13,
+   "text": "私",
+   "start": 90.75,
+   "end": 90.942
+  },
+  {
+   "line": 13,
+   "text": "钥",
+   "start": 90.942,
+   "end": 91.134
+  },
+  {
+   "line": 13,
+   "text": "和",
+   "start": 91.489,
+   "end": 91.7
+  },
+  {
+   "line": 13,
+   "text": "数",
+   "start": 91.7,
+   "end": 91.911
+  },
+  {
+   "line": 13,
+   "text": "十",
+   "start": 91.911,
+   "end": 92.123
+  },
+  {
+   "line": 13,
+   "text": "个",
+   "start": 92.123,
+   "end": 92.334
+  },
+  {
+   "line": 13,
+   "text": "以",
+   "start": 92.334,
+   "end": 92.545
+  },
+  {
+   "line": 13,
+   "text": "太",
+   "start": 92.545,
+   "end": 92.756
+  },
+  {
+   "line": 13,
+   "text": "坊",
+   "start": 92.756,
+   "end": 92.968
+  },
+  {
+   "line": 13,
+   "text": "私",
+   "start": 92.968,
+   "end": 93.179
+  },
+  {
+   "line": 13,
+   "text": "钥",
+   "start": 93.179,
+   "end": 93.39
+  },
+  {
+   "line": 14,
+   "text": "2026",
+   "start": 93.947,
+   "end": 94.562
+  },
+  {
+   "line": 14,
+   "text": "年",
+   "start": 94.562,
+   "end": 94.728
+  },
+  {
+   "line": 14,
+   "text": "6",
+   "start": 94.728,
+   "end": 94.919
+  },
+  {
+   "line": 14,
+   "text": "月",
+   "start": 94.919,
+   "end": 95.085
+  },
+  {
+   "line": 14,
+   "text": "Cardano",
+   "start": 95.492,
+   "end": 96.104
+  },
+  {
+   "line": 14,
+   "text": "钱",
+   "start": 96.104,
+   "end": 96.312
+  },
+  {
+   "line": 14,
+   "text": "包",
+   "start": 96.312,
+   "end": 96.521
+  },
+  {
+   "line": 14,
+   "text": "SecondFi",
+   "start": 96.521,
+   "end": 97.22
+  },
+  {
+   "line": 14,
+   "text": "的",
+   "start": 97.22,
+   "end": 97.428
+  },
+  {
+   "line": 14,
+   "text": "Android",
+   "start": 97.428,
+   "end": 98.04
+  },
+  {
+   "line": 14,
+   "text": "版",
+   "start": 98.04,
+   "end": 98.249
+  },
+  {
+   "line": 14,
+   "text": "用",
+   "start": 98.643,
+   "end": 98.833
+  },
+  {
+   "line": 14,
+   "text": "公",
+   "start": 98.833,
+   "end": 99.024
+  },
+  {
+   "line": 14,
+   "text": "开",
+   "start": 99.024,
+   "end": 99.214
+  },
+  {
+   "line": 14,
+   "text": "交",
+   "start": 99.214,
+   "end": 99.405
+  },
+  {
+   "line": 14,
+   "text": "易",
+   "start": 99.405,
+   "end": 99.595
+  },
+  {
+   "line": 14,
+   "text": "数",
+   "start": 99.595,
+   "end": 99.786
+  },
+  {
+   "line": 14,
+   "text": "据",
+   "start": 99.786,
+   "end": 99.976
+  },
+  {
+   "line": 14,
+   "text": "派",
+   "start": 99.976,
+   "end": 100.167
+  },
+  {
+   "line": 14,
+   "text": "生",
+   "start": 100.167,
+   "end": 100.357
+  },
+  {
+   "line": 14,
+   "text": "nonce",
+   "start": 100.357,
+   "end": 100.757
+  },
+  {
+   "line": 14,
+   "text": "漏",
+   "start": 101.023,
+   "end": 101.208
+  },
+  {
+   "line": 14,
+   "text": "掉",
+   "start": 101.208,
+   "end": 101.393
+  },
+  {
+   "line": 14,
+   "text": "了",
+   "start": 101.393,
+   "end": 101.578
+  },
+  {
+   "line": 14,
+   "text": "秘",
+   "start": 101.578,
+   "end": 101.763
+  },
+  {
+   "line": 14,
+   "text": "密",
+   "start": 101.763,
+   "end": 101.949
+  },
+  {
+   "line": 14,
+   "text": "部",
+   "start": 101.949,
+   "end": 102.134
+  },
+  {
+   "line": 14,
+   "text": "分",
+   "start": 102.134,
+   "end": 102.319
+  },
+  {
+   "line": 15,
+   "text": "nonce",
+   "start": 102.802,
+   "end": 103.282
+  },
+  {
+   "line": 15,
+   "text": "人",
+   "start": 103.282,
+   "end": 103.511
+  },
+  {
+   "line": 15,
+   "text": "人",
+   "start": 103.511,
+   "end": 103.74
+  },
+  {
+   "line": 15,
+   "text": "可",
+   "start": 103.74,
+   "end": 103.969
+  },
+  {
+   "line": 15,
+   "text": "算",
+   "start": 103.969,
+   "end": 104.198
+  },
+  {
+   "line": 15,
+   "text": "单",
+   "start": 104.749,
+   "end": 104.934
+  },
+  {
+   "line": 15,
+   "text": "个",
+   "start": 104.934,
+   "end": 105.118
+  },
+  {
+   "line": 15,
+   "text": "签",
+   "start": 105.118,
+   "end": 105.303
+  },
+  {
+   "line": 15,
+   "text": "名",
+   "start": 105.303,
+   "end": 105.488
+  },
+  {
+   "line": 15,
+   "text": "就",
+   "start": 105.488,
+   "end": 105.672
+  },
+  {
+   "line": 15,
+   "text": "能",
+   "start": 105.672,
+   "end": 105.857
+  },
+  {
+   "line": 15,
+   "text": "反",
+   "start": 105.857,
+   "end": 106.041
+  },
+  {
+   "line": 15,
+   "text": "推",
+   "start": 106.041,
+   "end": 106.226
+  },
+  {
+   "line": 15,
+   "text": "私",
+   "start": 106.226,
+   "end": 106.411
+  },
+  {
+   "line": 15,
+   "text": "钥",
+   "start": 106.411,
+   "end": 106.595
+  },
+  {
+   "line": 16,
+   "text": "374",
+   "start": 107.0,
+   "end": 107.688
+  },
+  {
+   "line": 16,
+   "text": "个",
+   "start": 107.688,
+   "end": 107.929
+  },
+  {
+   "line": 16,
+   "text": "钱",
+   "start": 107.929,
+   "end": 108.171
+  },
+  {
+   "line": 16,
+   "text": "包",
+   "start": 108.171,
+   "end": 108.412
+  },
+  {
+   "line": 16,
+   "text": "被",
+   "start": 108.412,
+   "end": 108.654
+  },
+  {
+   "line": 16,
+   "text": "盗",
+   "start": 108.654,
+   "end": 108.895
+  },
+  {
+   "line": 16,
+   "text": "约",
+   "start": 109.253,
+   "end": 109.463
+  },
+  {
+   "line": 16,
+   "text": "1600",
+   "start": 109.463,
+   "end": 110.239
+  },
+  {
+   "line": 16,
+   "text": "万",
+   "start": 110.239,
+   "end": 110.449
+  },
+  {
+   "line": 16,
+   "text": "ADA",
+   "start": 110.449,
+   "end": 110.713
+  },
+  {
+   "line": 16,
+   "text": "约",
+   "start": 111.14,
+   "end": 111.362
+  },
+  {
+   "line": 16,
+   "text": "240",
+   "start": 111.362,
+   "end": 111.996
+  },
+  {
+   "line": 16,
+   "text": "万",
+   "start": 111.996,
+   "end": 112.218
+  },
+  {
+   "line": 16,
+   "text": "美",
+   "start": 112.218,
+   "end": 112.441
+  },
+  {
+   "line": 16,
+   "text": "元",
+   "start": 112.441,
+   "end": 112.663
+  },
+  {
+   "line": 16,
+   "text": "这",
+   "start": 113.013,
+   "end": 113.186
+  },
+  {
+   "line": 16,
+   "text": "是",
+   "start": 113.186,
+   "end": 113.359
+  },
+  {
+   "line": 16,
+   "text": "官",
+   "start": 113.359,
+   "end": 113.531
+  },
+  {
+   "line": 16,
+   "text": "方",
+   "start": 113.531,
+   "end": 113.704
+  },
+  {
+   "line": 16,
+   "text": "口",
+   "start": 113.704,
+   "end": 113.877
+  },
+  {
+   "line": 16,
+   "text": "径",
+   "start": 113.877,
+   "end": 114.049
+  },
+  {
+   "line": 16,
+   "text": "SlowMist",
+   "start": 114.395,
+   "end": 115.071
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 115.071,
+   "end": 115.272
+  },
+  {
+   "line": 16,
+   "text": "估",
+   "start": 115.272,
+   "end": 115.474
+  },
+  {
+   "line": 16,
+   "text": "计",
+   "start": 115.474,
+   "end": 115.675
+  },
+  {
+   "line": 16,
+   "text": "更",
+   "start": 115.675,
+   "end": 115.876
+  },
+  {
+   "line": 16,
+   "text": "高",
+   "start": 115.876,
+   "end": 116.077
+  },
+  {
+   "line": 17,
+   "text": "硬",
+   "start": 116.5,
+   "end": 116.679
+  },
+  {
+   "line": 17,
+   "text": "件",
+   "start": 116.679,
+   "end": 116.859
+  },
+  {
+   "line": 17,
+   "text": "钱",
+   "start": 116.859,
+   "end": 117.038
+  },
+  {
+   "line": 17,
+   "text": "包",
+   "start": 117.038,
+   "end": 117.218
+  },
+  {
+   "line": 17,
+   "text": "签",
+   "start": 117.218,
+   "end": 117.397
+  },
+  {
+   "line": 17,
+   "text": "名",
+   "start": 117.397,
+   "end": 117.576
+  },
+  {
+   "line": 17,
+   "text": "走",
+   "start": 117.576,
+   "end": 117.756
+  },
+  {
+   "line": 17,
+   "text": "另",
+   "start": 117.756,
+   "end": 117.935
+  },
+  {
+   "line": 17,
+   "text": "一",
+   "start": 117.935,
+   "end": 118.114
+  },
+  {
+   "line": 17,
+   "text": "条",
+   "start": 118.114,
+   "end": 118.294
+  },
+  {
+   "line": 17,
+   "text": "路",
+   "start": 118.294,
+   "end": 118.473
+  },
+  {
+   "line": 17,
+   "text": "径",
+   "start": 118.473,
+   "end": 118.653
+  },
+  {
+   "line": 17,
+   "text": "不",
+   "start": 118.916,
+   "end": 119.073
+  },
+  {
+   "line": 17,
+   "text": "受",
+   "start": 119.073,
+   "end": 119.231
+  },
+  {
+   "line": 17,
+   "text": "影",
+   "start": 119.231,
+   "end": 119.388
+  },
+  {
+   "line": 17,
+   "text": "响",
+   "start": 119.388,
+   "end": 119.545
+  },
+  {
+   "line": 18,
+   "text": "教",
+   "start": 120.09,
+   "end": 120.249
+  },
+  {
+   "line": 18,
+   "text": "训",
+   "start": 120.249,
+   "end": 120.407
+  },
+  {
+   "line": 18,
+   "text": "是",
+   "start": 120.407,
+   "end": 120.566
+  },
+  {
+   "line": 18,
+   "text": "nonce",
+   "start": 120.841,
+   "end": 121.273
+  },
+  {
+   "line": 18,
+   "text": "必",
+   "start": 121.273,
+   "end": 121.479
+  },
+  {
+   "line": 18,
+   "text": "须",
+   "start": 121.479,
+   "end": 121.685
+  },
+  {
+   "line": 18,
+   "text": "确",
+   "start": 121.685,
+   "end": 121.891
+  },
+  {
+   "line": 18,
+   "text": "定",
+   "start": 121.891,
+   "end": 122.097
+  },
+  {
+   "line": 18,
+   "text": "性",
+   "start": 122.097,
+   "end": 122.303
+  },
+  {
+   "line": 18,
+   "text": "派",
+   "start": 122.303,
+   "end": 122.509
+  },
+  {
+   "line": 18,
+   "text": "生",
+   "start": 122.509,
+   "end": 122.715
+  },
+  {
+   "line": 18,
+   "text": "并",
+   "start": 122.878,
+   "end": 123.055
+  },
+  {
+   "line": 18,
+   "text": "包",
+   "start": 123.055,
+   "end": 123.233
+  },
+  {
+   "line": 18,
+   "text": "含",
+   "start": 123.233,
+   "end": 123.41
+  },
+  {
+   "line": 18,
+   "text": "私",
+   "start": 123.41,
+   "end": 123.588
+  },
+  {
+   "line": 18,
+   "text": "钥",
+   "start": 123.588,
+   "end": 123.765
+  },
+  {
+   "line": 18,
+   "text": "的",
+   "start": 123.765,
+   "end": 123.943
+  },
+  {
+   "line": 18,
+   "text": "秘",
+   "start": 123.943,
+   "end": 124.12
+  },
+  {
+   "line": 18,
+   "text": "密",
+   "start": 124.12,
+   "end": 124.297
+  },
+  {
+   "line": 18,
+   "text": "材",
+   "start": 124.297,
+   "end": 124.475
+  },
+  {
+   "line": 18,
+   "text": "料",
+   "start": 124.475,
+   "end": 124.652
+  },
+  {
+   "line": 18,
+   "text": "封",
+   "start": 125.086,
+   "end": 125.28
+  },
+  {
+   "line": 18,
+   "text": "装",
+   "start": 125.28,
+   "end": 125.474
+  },
+  {
+   "line": 18,
+   "text": "层",
+   "start": 125.474,
+   "end": 125.669
+  },
+  {
+   "line": 18,
+   "text": "要",
+   "start": 125.669,
+   "end": 125.863
+  },
+  {
+   "line": 18,
+   "text": "做",
+   "start": 125.863,
+   "end": 126.057
+  },
+  {
+   "line": 18,
+   "text": "已",
+   "start": 126.057,
+   "end": 126.252
+  },
+  {
+   "line": 18,
+   "text": "知",
+   "start": 126.252,
+   "end": 126.446
+  },
+  {
+   "line": 18,
+   "text": "答",
+   "start": 126.446,
+   "end": 126.64
+  },
+  {
+   "line": 18,
+   "text": "案",
+   "start": 126.64,
+   "end": 126.835
+  },
+  {
+   "line": 18,
+   "text": "测",
+   "start": 126.835,
+   "end": 127.029
+  },
+  {
+   "line": 18,
+   "text": "试",
+   "start": 127.029,
+   "end": 127.223
+  },
+  {
+   "line": 18,
+   "text": "不",
+   "start": 127.507,
+   "end": 127.688
+  },
+  {
+   "line": 18,
+   "text": "能",
+   "start": 127.688,
+   "end": 127.869
+  },
+  {
+   "line": 18,
+   "text": "只",
+   "start": 127.869,
+   "end": 128.05
+  },
+  {
+   "line": 18,
+   "text": "信",
+   "start": 128.05,
+   "end": 128.231
+  },
+  {
+   "line": 18,
+   "text": "任",
+   "start": 128.231,
+   "end": 128.412
+  },
+  {
+   "line": 18,
+   "text": "底",
+   "start": 128.412,
+   "end": 128.593
+  },
+  {
+   "line": 18,
+   "text": "层",
+   "start": 128.593,
+   "end": 128.774
+  },
+  {
+   "line": 18,
+   "text": "库",
+   "start": 128.774,
+   "end": 128.954
+  }
+ ],
+ "captions": [
+  {
+   "text": "第二处随机性",
+   "start": 1.55,
+   "end": 3.089,
+   "id": "c0"
+  },
+  {
+   "text": "在签名里",
+   "start": 3.237,
+   "end": 4.274,
+   "id": "c1"
+  },
+  {
+   "text": "ECDSA 每次签名",
+   "start": 4.669,
+   "end": 6.679,
+   "id": "c2"
+  },
+  {
+   "text": "都需要一个一次性的数 叫 k",
+   "start": 6.707,
+   "end": 9.197,
+   "id": "c3"
+  },
+  {
+   "text": "也就是 nonce",
+   "start": 9.399,
+   "end": 10.647,
+   "id": "c4"
+  },
+  {
+   "text": "k 出错有三种情况",
+   "start": 10.965,
+   "end": 12.665,
+   "id": "c5"
+  },
+  {
+   "text": "第一种 两次签名用了同一个 k",
+   "start": 12.848,
+   "end": 15.486,
+   "id": "c6"
+  },
+  {
+   "text": "攻击者还需要别的东西吗",
+   "start": 15.73,
+   "end": 17.691,
+   "id": "c7"
+  },
+  {
+   "text": "不需要",
+   "start": 18.332,
+   "end": 18.931,
+   "id": "c8"
+  },
+  {
+   "text": "两个签名和两个消息哈希都是公开的",
+   "start": 19.188,
+   "end": 22.322,
+   "id": "c9"
+  },
+  {
+   "text": "直接解方程",
+   "start": 22.523,
+   "end": 23.569,
+   "id": "c10"
+  },
+  {
+   "text": "就得到私钥",
+   "start": 23.589,
+   "end": 24.48,
+   "id": "c11"
+  },
+  {
+   "text": "打个比方",
+   "start": 24.866,
+   "end": 25.519,
+   "id": "c12"
+  },
+  {
+   "text": "nonce 像一块每次都换的遮布",
+   "start": 25.727,
+   "end": 28.786,
+   "id": "c13"
+  },
+  {
+   "text": "盖在私钥上面",
+   "start": 28.838,
+   "end": 30.016,
+   "id": "c14"
+  },
+  {
+   "text": "同一块布用了两次",
+   "start": 30.366,
+   "end": 32.086,
+   "id": "c15"
+  },
+  {
+   "text": "两次结果一对比",
+   "start": 32.514,
+   "end": 33.853,
+   "id": "c16"
+  },
+  {
+   "text": "布就被消掉",
+   "start": 34.019,
+   "end": 35.117,
+   "id": "c17"
+  },
+  {
+   "text": "私钥就显出来了",
+   "start": 35.169,
+   "end": 36.449,
+   "id": "c18"
+  },
+  {
+   "text": "比方的局限是",
+   "start": 36.838,
+   "end": 38.071,
+   "id": "c19"
+  },
+  {
+   "text": "真实过程是解方程",
+   "start": 38.28,
+   "end": 40.297,
+   "id": "c20"
+  },
+  {
+   "text": "而且下面两种情况",
+   "start": 40.491,
+   "end": 42.268,
+   "id": "c21"
+  },
+  {
+   "text": "一次对比无法解决",
+   "start": 42.333,
+   "end": 44.101,
+   "id": "c22"
+  },
+  {
+   "text": "第二种 k 有偏置",
+   "start": 44.39,
+   "end": 46.461,
+   "id": "c23"
+  },
+  {
+   "text": "比如高几位总是 0",
+   "start": 46.932,
+   "end": 47.999,
+   "id": "c24"
+  },
+  {
+   "text": "收集足够多签名",
+   "start": 48.019,
+   "end": 50.622,
+   "id": "c25"
+  },
+  {
+   "text": "用格方法就能恢复私钥",
+   "start": 50.696,
+   "end": 52.577,
+   "id": "c26"
+  },
+  {
+   "text": "第三种最糟",
+   "start": 52.85,
+   "end": 54.063,
+   "id": "c27"
+  },
+  {
+   "text": "k 可以由公开数据算出",
+   "start": 54.583,
+   "end": 56.59,
+   "id": "c28"
+  },
+  {
+   "text": "那么单个签名就能反推私钥",
+   "start": 56.789,
+   "end": 59.272,
+   "id": "c29"
+  },
+  {
+   "text": "标准早有解法",
+   "start": 59.645,
+   "end": 60.914,
+   "id": "c30"
+  },
+  {
+   "text": "叫 RFC 6979",
+   "start": 61.148,
+   "end": 62.259,
+   "id": "c31"
+  },
+  {
+   "text": "它用私钥和消息",
+   "start": 62.279,
+   "end": 64.88,
+   "id": "c32"
+  },
+  {
+   "text": "确定性地派生 k",
+   "start": 65.06,
+   "end": 65.842,
+   "id": "c33"
+  },
+  {
+   "text": "可以消除前两种风险",
+   "start": 65.862,
+   "end": 68.387,
+   "id": "c34"
+  },
+  {
+   "text": "EdDSA 标准也要求",
+   "start": 68.75,
+   "end": 70.581,
+   "id": "c35"
+  },
+  {
+   "text": "nonce 由私钥的秘密部分派生",
+   "start": 70.641,
+   "end": 73.261,
+   "id": "c36"
+  },
+  {
+   "text": "风险来自偏离标准的实现",
+   "start": 73.627,
+   "end": 75.826,
+   "id": "c37"
+  },
+  {
+   "text": "三个案例",
+   "start": 76.07,
+   "end": 76.955,
+   "id": "c38"
+  },
+  {
+   "text": "2013 年 8 月",
+   "start": 77.387,
+   "end": 78.641,
+   "id": "c39"
+  },
+  {
+   "text": "Android 的随机数缺陷",
+   "start": 78.752,
+   "end": 80.594,
+   "id": "c40"
+  },
+  {
+   "text": "让不同签名用了相同的 nonce",
+   "start": 80.75,
+   "end": 83.182,
+   "id": "c41"
+  },
+  {
+   "text": "多款比特币钱包受影响",
+   "start": 83.342,
+   "end": 85.266,
+   "id": "c42"
+  },
+  {
+   "text": "2019 年",
+   "start": 85.594,
+   "end": 86.606,
+   "id": "c43"
+  },
+  {
+   "text": "一项研究用格方法",
+   "start": 86.738,
+   "end": 88.73,
+   "id": "c44"
+  },
+  {
+   "text": "恢复出数百个比特币私钥",
+   "start": 88.973,
+   "end": 91.254,
+   "id": "c45"
+  },
+  {
+   "text": "和数十个以太坊私钥",
+   "start": 91.439,
+   "end": 93.51,
+   "id": "c46"
+  },
+  {
+   "text": "2026 年 6 月",
+   "start": 93.897,
+   "end": 95.205,
+   "id": "c47"
+  },
+  {
+   "text": "Cardano 钱包 SecondFi",
+   "start": 95.442,
+   "end": 97.15,
+   "id": "c48"
+  },
+  {
+   "text": "的 Android 版",
+   "start": 97.17,
+   "end": 98.369,
+   "id": "c49"
+  },
+  {
+   "text": "用公开交易数据派生 nonce",
+   "start": 98.593,
+   "end": 100.877,
+   "id": "c50"
+  },
+  {
+   "text": "漏掉了秘密部分",
+   "start": 100.973,
+   "end": 102.439,
+   "id": "c51"
+  },
+  {
+   "text": "nonce 人人可算",
+   "start": 102.752,
+   "end": 104.318,
+   "id": "c52"
+  },
+  {
+   "text": "单个签名就能反推私钥",
+   "start": 104.699,
+   "end": 106.715,
+   "id": "c53"
+  },
+  {
+   "text": "374 个钱包被盗",
+   "start": 106.95,
+   "end": 109.015,
+   "id": "c54"
+  },
+  {
+   "text": "约 1600 万 ADA",
+   "start": 109.203,
+   "end": 110.833,
+   "id": "c55"
+  },
+  {
+   "text": "约 240 万美元",
+   "start": 111.09,
+   "end": 112.783,
+   "id": "c56"
+  },
+  {
+   "text": "这是官方口径",
+   "start": 112.963,
+   "end": 114.169,
+   "id": "c57"
+  },
+  {
+   "text": "SlowMist 的估计更高",
+   "start": 114.345,
+   "end": 116.197,
+   "id": "c58"
+  },
+  {
+   "text": "硬件钱包签名走另一条路径",
+   "start": 116.45,
+   "end": 118.773,
+   "id": "c59"
+  },
+  {
+   "text": "不受影响",
+   "start": 118.866,
+   "end": 119.665,
+   "id": "c60"
+  },
+  {
+   "text": "教训是 nonce 必须确定性派生",
+   "start": 120.04,
+   "end": 122.808,
+   "id": "c61"
+  },
+  {
+   "text": "并包含私钥的秘密材料",
+   "start": 122.828,
+   "end": 124.772,
+   "id": "c62"
+  },
+  {
+   "text": "封装层要做已知答案测试",
+   "start": 125.036,
+   "end": 127.343,
+   "id": "c63"
+  },
+  {
+   "text": "不能只信任底层库",
+   "start": 127.457,
+   "end": 129.074,
+   "id": "c64"
+  }
+ ]
+}

@@ -1,0 +1,413 @@
+<template>
+  <!-- Source template: edit this file, then run `node src/build-story.mjs` to regenerate compositions/story.html -->
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; background: #efebe3; font-family: "Noto Sans SC", sans-serif; color: #1c1c1c; }
+    #stage { position: absolute; inset: 0; }
+    #cam { position: absolute; left: 0; top: 0; width: 10px; height: 10px; transform-origin: 0 0; }
+    .wsvg { position: absolute; overflow: visible; }
+    #gatelayer, #objlayer, #objpins, #gatepins { position: absolute; left: 0; top: 0; width: 10px; height: 10px; }
+    .pin { position: absolute; width: 0; height: 0; }
+    .wl { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+    .ctr { position: absolute; left: 0; top: 0; white-space: nowrap; }
+    .a-b { transform: translate(-50%, -100%); }
+    .a-t { transform: translate(-50%, 0); }
+    .a-l { transform: translate(0, -50%); }
+    .a-r { transform: translate(-100%, -50%); }
+    .a-c { transform: translate(-50%, -50%); }
+    .hide { opacity: 0; }
+
+    /* labels */
+    .lab { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; font-weight: 700; font-size: 32px; line-height: 1.2;
+      padding: 5px 18px 7px; border-radius: 12px; background: #ffffff; border: 3px solid #2aa3c9; color: #17809f;
+      box-shadow: 0 6px 14px rgba(70, 60, 40, 0.10); }
+    .lab-cs { background: #1d93ba; border-color: #1d93ba; color: #ffffff; }
+    .lab-gs { background: #1f9d55; border-color: #1f9d55; color: #ffffff; }
+    .lab-r { border-color: #e0453a; color: #c3352b; }
+    .lab-rs { background: #e0453a; border-color: #e0453a; color: #ffffff; }
+    .stk1 { margin-bottom: 60px; }
+    .stk2 { margin-bottom: 120px; }
+    .lab-g { border-color: #cfc7b8; color: #1c1c1c; font-size: 30px; }
+    .gn { margin-right: 2px; }
+    .badge { border-radius: 50%; background: #e0453a; display: flex; align-items: center; justify-content: center;
+      border: 4px solid #ffffff; box-shadow: 0 6px 14px rgba(160, 40, 30, 0.28); }
+    .env { position: relative; width: 64px; height: 44px; }
+    .env svg { display: block; }
+    .env-red { position: absolute; left: 0; top: 0; }
+    .lock { position: relative; width: 72px; height: 58px; }
+    .lk-ck { position: absolute; left: 28px; top: -4px; width: 30px; height: 30px; border-radius: 50%; background: #1f9d55; border: 3px solid #ffffff;
+      display: flex; align-items: center; justify-content: center; }
+
+    /* top-left date / amount */
+    #tl { position: absolute; left: 56px; top: 40px; }
+    #tl-date { font-size: 32px; }
+    #tl-amt { margin-top: 14px; font-size: 92px; font-weight: 900; line-height: 1.08; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    #tl-fbi { margin-top: 4px; font-size: 30px; font-weight: 700; color: #6d685e; }
+
+    /* chapter pills */
+    #pills { position: absolute; right: 56px; top: 34px; display: flex; gap: 14px; }
+    .pill { font-size: 30px; font-weight: 700; padding: 7px 24px 9px; border-radius: 999px; background: #ffffff; color: #1c1c1c;
+      border: 2px solid #e2ddd3; box-shadow: 0 4px 12px rgba(70, 60, 40, 0.08); white-space: nowrap; }
+
+    /* dot matrix */
+    #mx { position: absolute; left: 1340px; top: 150px; width: 530px; height: 640px; }
+    #mx-title { font-size: 40px; font-weight: 900; white-space: nowrap; }
+    #mx-legend { position: absolute; left: 0; top: 64px; display: flex; gap: 12px; }
+    .lg { display: inline-flex; align-items: center; gap: 8px; font-size: 28px; font-weight: 700; padding: 3px 16px 5px; background: #ffffff;
+      border-radius: 999px; box-shadow: 0 3px 10px rgba(70, 60, 40, 0.08); white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .lgd { width: 20px; height: 20px; border-radius: 50%; }
+    #lg-red { opacity: 0.45; }
+    .mx-t { position: absolute; left: 0; font-size: 28px; font-weight: 700; white-space: nowrap; }
+    #mx-t0 { top: 162px; color: #6d685e; }
+    #mx-t1 { top: 371px; color: #17809f; }
+    #mx-line { position: absolute; left: 142px; top: 391px; width: 388px; height: 0; border-top: 3px dashed #2aa3c9; }
+    .slot { position: absolute; width: 56px; height: 56px; border-radius: 50%; border: 3px dashed #d3ccbf; }
+    .dot { position: absolute; width: 56px; height: 56px; border-radius: 50%; background: #1f9d55; }
+
+    /* code card */
+    #code { position: absolute; left: 56px; top: 136px; width: 800px; background: #ffffff; border-radius: 18px; padding: 24px 34px;
+      box-shadow: 0 14px 30px rgba(70, 60, 40, 0.12); }
+    .c-head { height: 56px; display: flex; align-items: center; gap: 12px; font-size: 34px; font-weight: 900; white-space: nowrap; }
+    .c-tag { margin-left: auto; font-size: 28px; font-weight: 700; color: #7d776b; background: #f1ede5; border-radius: 8px; padding: 2px 12px 4px; }
+    .c-row { position: relative; height: 50px; line-height: 50px; font-family: "JetBrains Mono", "Noto Sans SC", monospace; font-size: 30px;
+      font-weight: 500; white-space: pre; }
+    .c-cm { color: #8a8478; font-family: "JetBrains Mono", "Noto Sans SC", monospace; }
+    #cr-op { font-weight: 700; margin: 0 -16px; padding: 0 16px; border-radius: 10px; background: rgba(253, 234, 231, 0); }
+    #op0 { position: relative; display: inline-block; }
+    #op-strike { position: absolute; left: -6px; right: -6px; top: 24px; height: 4px; background: #e0453a; transform-origin: 0 50%; }
+    #op1 { display: inline-block; margin-left: 14px; color: #e0453a; font-weight: 800; font-size: 42px; line-height: 40px; }
+    #op-tag { display: inline-block; margin-left: 16px; font-family: "JetBrains Mono", monospace; font-size: 28px; font-weight: 800; color: #ffffff;
+      background: #e0453a; border-radius: 8px; padding: 0 12px; line-height: 38px; vertical-align: 3px; }
+    #op-bar { position: absolute; left: -4px; top: 8px; width: 6px; height: 34px; background: #2aa3c9; border-radius: 3px; transform-origin: 50% 100%; }
+
+    #curve { position: absolute; left: 0; top: 0; }
+    #fly-env { position: absolute; left: 0; top: 0; }
+
+    #veil { position: absolute; inset: 0; background: #efebe3; }
+    #end-card { position: absolute; left: 460px; top: 290px; width: 1000px; height: 320px; background: #fffdf8; border-radius: 28px;
+      box-shadow: 0 18px 40px rgba(70, 60, 40, 0.14); text-align: center; padding-top: 70px; }
+    #end-title { font-size: 96px; font-weight: 900; line-height: 1.1; white-space: nowrap; }
+    #end-sub { margin-top: 22px; font-size: 40px; font-weight: 700; color: #1d93ba; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="story" data-width="1920" data-height="1080">
+    <div id="stage">
+      <div id="cam" data-layout-allow-overflow data-layout-ignore>
+        <svg id="grid-svg" class="wsvg" width="6000" height="3600" viewBox="-1500 -1600 6000 3600" style="left:-1500px;top:-1600px"><path d="M-4112.6,-147.2L-212.3,2637.9M-4047.1,-170.1L-146.7,2615M-3981.5,-193.1L-81.2,2592.1M-3916,-216L-15.7,2569.1M-3850.5,-238.9L49.9,2546.2M-3784.9,-261.9L115.4,2523.2M-3719.4,-284.8L180.9,2500.3M-3653.9,-307.8L246.5,2477.3M-3588.3,-330.7L312,2454.4M-3522.8,-353.7L377.5,2431.5M-3457.3,-376.6L443.1,2408.5M-3391.7,-399.5L508.6,2385.6M-3326.2,-422.5L574.1,2362.6M-3260.7,-445.4L639.7,2339.7M-3195.1,-468.4L705.2,2316.7M-3129.6,-491.3L770.7,2293.8M-3064.1,-514.3L836.2,2270.9M-2998.5,-537.2L901.8,2247.9M-2933,-560.2L967.3,2225M-2867.5,-583.1L1032.8,2202M-2801.9,-606L1098.4,2179.1M-2736.4,-629L1163.9,2156.1M-2670.9,-651.9L1229.4,2133.2M-2605.3,-674.9L1295,2110.3M-2539.8,-697.8L1360.5,2087.3M-2474.3,-720.8L1426,2064.4M-2408.7,-743.7L1491.6,2041.4M-2343.2,-766.6L1557.1,2018.5M-2277.7,-789.6L1622.6,1995.5M-2212.2,-812.5L1688.2,1972.6M-2146.6,-835.5L1753.7,1949.6M-2081.1,-858.4L1819.2,1926.7M-2015.6,-881.4L1884.8,1903.8M-1950,-904.3L1950.3,1880.8M-1884.5,-927.2L2015.8,1857.9M-1819,-950.2L2081.4,1834.9M-1753.4,-973.1L2146.9,1812M-1687.9,-996.1L2212.4,1789M-1622.4,-1019L2278,1766.1M-1556.8,-1042L2343.5,1743.2M-1491.3,-1064.9L2409,1720.2M-1425.8,-1087.8L2474.6,1697.3M-1360.2,-1110.8L2540.1,1674.3M-1294.7,-1133.7L2605.6,1651.4M-1229.2,-1156.7L2671.1,1628.4M-1163.6,-1179.6L2736.7,1605.5M-1098.1,-1202.6L2802.2,1582.6M-1032.6,-1225.5L2867.7,1559.6M-967,-1248.4L2933.3,1536.7M-901.5,-1271.4L2998.8,1513.7M-836,-1294.3L3064.3,1490.8M-770.4,-1317.3L3129.9,1467.8M-704.9,-1340.2L3195.4,1444.9M-639.4,-1363.2L3260.9,1422M-573.8,-1386.1L3326.5,1399M-508.3,-1409L3392,1376.1M-442.8,-1432L3457.5,1353.1M-377.3,-1454.9L3523.1,1330.2M-311.7,-1477.9L3588.6,1307.2M-246.2,-1500.8L3654.1,1284.3M-180.7,-1523.8L3719.7,1261.4M-115.1,-1546.7L3785.2,1238.4M-49.6,-1569.6L3850.7,1215.5M15.9,-1592.6L3916.3,1192.5M81.5,-1615.5L3981.8,1169.6M147,-1638.5L4047.3,1146.6M212.5,-1661.4L4112.9,1123.7M278.1,-1684.4L4178.4,1100.8M343.6,-1707.3L4243.9,1077.8M409.1,-1730.2L4309.5,1054.9M474.7,-1753.2L4375,1031.9M540.2,-1776.1L4440.5,1009M605.7,-1799.1L4506.1,986M671.3,-1822L4571.6,963.1M736.8,-1845L4637.1,940.2M802.3,-1867.9L4702.6,917.2M867.9,-1890.8L4768.2,894.3M933.4,-1913.8L4833.7,871.3M998.9,-1936.7L4899.2,848.4M1064.5,-1959.7L4964.8,825.4M1130,-1982.6L5030.3,802.5M1195.5,-2005.6L5095.8,779.6M1261.1,-2028.5L5161.4,756.6M1326.6,-2051.4L5226.9,733.7M1392.1,-2074.4L5292.4,710.7M1457.6,-2097.3L5358,687.8M1523.2,-2120.3L5423.5,664.8M1588.7,-2143.2L5489,641.9M1654.2,-2166.2L5554.6,619M1719.8,-2189.1L5620.1,596M1785.3,-2212.1L5685.6,573.1M1850.8,-2235L5751.2,550.1M1916.4,-2257.9L5816.7,527.2M1981.9,-2280.9L5882.2,504.2M2047.4,-2303.8L5947.8,481.3M2113,-2326.8L6013.3,458.4M2178.5,-2349.7L6078.8,435.4M2244,-2372.7L6144.4,412.5M2309.6,-2395.6L6209.9,389.5M2375.1,-2418.5L6275.4,366.6M2440.6,-2441.5L6341,343.6M-4253.5,-73.4L2463.6,-2425.1M-4207.6,-40.7L2509.5,-2392.3M-4161.7,-7.9L2555.3,-2359.6M-4115.8,24.9L2601.2,-2326.8M-4069.9,57.6L2647.1,-2294M-4024,90.4L2693,-2261.3M-3978.2,123.2L2738.9,-2228.5M-3932.3,155.9L2784.8,-2195.7M-3886.4,188.7L2830.7,-2163M-3840.5,221.5L2876.5,-2130.2M-3794.6,254.2L2922.4,-2097.4M-3748.7,287L2968.3,-2064.7M-3702.8,319.8L3014.2,-2031.9M-3657,352.5L3060.1,-1999.1M-3611.1,385.3L3106,-1966.4M-3565.2,418.1L3151.9,-1933.6M-3519.3,450.8L3197.8,-1900.8M-3473.4,483.6L3243.6,-1868.1M-3427.5,516.4L3289.5,-1835.3M-3381.6,549.1L3335.4,-1802.5M-3335.8,581.9L3381.3,-1769.8M-3289.9,614.7L3427.2,-1737M-3244,647.4L3473.1,-1704.2M-3198.1,680.2L3519,-1671.5M-3152.2,713L3564.8,-1638.7M-3106.3,745.7L3610.7,-1605.9M-3060.4,778.5L3656.6,-1573.2M-3014.5,811.2L3702.5,-1540.4M-2968.7,844L3748.4,-1507.6M-2922.8,876.8L3794.3,-1474.9M-2876.9,909.5L3840.2,-1442.1M-2831,942.3L3886,-1409.3M-2785.1,975.1L3931.9,-1376.6M-2739.2,1007.8L3977.8,-1343.8M-2693.3,1040.6L4023.7,-1311.1M-2647.5,1073.4L4069.6,-1278.3M-2601.6,1106.1L4115.5,-1245.5M-2555.7,1138.9L4161.4,-1212.8M-2509.8,1171.7L4207.2,-1180M-2463.9,1204.4L4253.1,-1147.2M-2418,1237.2L4299,-1114.5M-2372.1,1270L4344.9,-1081.7M-2326.3,1302.7L4390.8,-1048.9M-2280.4,1335.5L4436.7,-1016.2M-2234.5,1368.3L4482.6,-983.4M-2188.6,1401L4528.4,-950.6M-2142.7,1433.8L4574.3,-917.9M-2096.8,1466.6L4620.2,-885.1M-2050.9,1499.3L4666.1,-852.3M-2005.1,1532.1L4712,-819.6M-1959.2,1564.9L4757.9,-786.8M-1913.3,1597.6L4803.8,-754M-1867.4,1630.4L4849.7,-721.3M-1821.5,1663.2L4895.5,-688.5M-1775.6,1695.9L4941.4,-655.7M-1729.7,1728.7L4987.3,-623M-1683.9,1761.5L5033.2,-590.2M-1638,1794.2L5079.1,-557.4M-1592.1,1827L5125,-524.7M-1546.2,1859.8L5170.9,-491.9M-1500.3,1892.5L5216.7,-459.1M-1454.4,1925.3L5262.6,-426.4M-1408.5,1958.1L5308.5,-393.6M-1362.6,1990.8L5354.4,-360.8M-1316.8,2023.6L5400.3,-328.1M-1270.9,2056.4L5446.2,-295.3M-1225,2089.1L5492.1,-262.5M-1179.1,2121.9L5537.9,-229.8M-1133.2,2154.7L5583.8,-197M-1087.3,2187.4L5629.7,-164.2M-1041.4,2220.2L5675.6,-131.5M-995.6,2253L5721.5,-98.7M-949.7,2285.7L5767.4,-65.9M-903.8,2318.5L5813.3,-33.2M-857.9,2351.3L5859.1,-0.4M-812,2384L5905,32.4M-766.1,2416.8L5950.9,65.1M-720.2,2449.6L5996.8,97.9M-674.4,2482.3L6042.7,130.7M-628.5,2515.1L6088.6,163.4M-582.6,2547.9L6134.5,196.2M-536.7,2580.6L6180.3,229M-490.8,2613.4L6226.2,261.7M-444.9,2646.2L6272.1,294.5M-399,2678.9L6318,327.3" stroke="#e2ddd3" stroke-width="2" fill="none"/></svg>
+        <div id="gatelayer">
+          <svg id="gate-svg" class="wsvg" width="6000" height="3600" viewBox="-1500 -1600 6000 3600" style="left:-1500px;top:-1600px"><defs><radialGradient id="gglow"><stop offset="0" stop-color="#1f9d55" stop-opacity="0.42"/><stop offset="0.55" stop-color="#1f9d55" stop-opacity="0.16"/><stop offset="1" stop-color="#1f9d55" stop-opacity="0"/></radialGradient></defs><g id="road-g" opacity="0"><polygon id="road" points="685.4,1036.9 2798.8,297 2936.5,395.3 823.1,1135.2" fill="#f8f6f1" stroke="#dcd5c8" stroke-width="2"/></g><g id="gate-6" data-ox="2621.9" data-oy="432.2"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,2621.9,432.2)"><circle id="gg-6" class="" cx="0" cy="0" r="150" fill="url(#gglow)"/></g><g id="gate-solid-6"><polygon points="2528.2,384.4 2548.8,399.1 2548.8,200 2528.2,185.2" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2548.8,399.1 2584.9,386.5 2584.9,187.3 2548.8,200" fill="#2fae6a" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2528.2,185.2 2564.2,172.6 2584.9,187.3 2548.8,200" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2659,477.8 2679.6,492.5 2679.6,293.3 2659,278.6" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2679.6,492.5 2715.7,479.9 2715.7,280.7 2679.6,293.3" fill="#e3ddd1" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2659,278.6 2695,266 2715.7,280.7 2679.6,293.3" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2515.2,181.2 2682.7,300.8 2682.7,264.4 2515.2,144.8" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2682.7,300.8 2728.6,284.7 2728.6,248.4 2682.7,264.4" fill="#e3ddd1" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2515.2,144.8 2561.1,128.8 2728.6,248.4 2682.7,264.4" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/></g>
+    <path id="gate-wire-6" class="hide" d="M2528.2,384.4L2564.2,371.8L2584.9,386.5L2548.8,399.1ZM2528.2,185.2L2564.2,172.6L2584.9,187.3L2548.8,200ZM2528.2,384.4L2528.2,185.2M2564.2,371.8L2564.2,172.6M2584.9,386.5L2584.9,187.3M2548.8,399.1L2548.8,200M2659,477.8L2695,465.2L2715.7,479.9L2679.6,492.5ZM2659,278.6L2695,266L2715.7,280.7L2679.6,293.3ZM2659,477.8L2659,278.6M2695,465.2L2695,266M2715.7,479.9L2715.7,280.7M2679.6,492.5L2679.6,293.3M2515.2,181.2L2561.1,165.1L2728.6,284.7L2682.7,300.8ZM2515.2,144.8L2561.1,128.8L2728.6,248.4L2682.7,264.4ZM2515.2,181.2L2515.2,144.8M2561.1,165.1L2561.1,128.8M2728.6,284.7L2728.6,248.4M2682.7,300.8L2682.7,264.4" fill="none" stroke="#e0453a" stroke-width="3" stroke-dasharray="10 7"/></g><g id="gate-5" data-ox="2351.6" data-oy="526.8"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,2351.6,526.8)"><circle id="gg-5" class="" cx="0" cy="0" r="150" fill="url(#gglow)"/></g><g id="gate-solid-5"><polygon points="2257.9,479 2278.5,493.8 2278.5,294.6 2257.9,279.9" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2278.5,493.8 2314.6,481.2 2314.6,282 2278.5,294.6" fill="#2fae6a" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2257.9,279.9 2293.9,267.2 2314.6,282 2278.5,294.6" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2388.6,572.4 2409.3,587.2 2409.3,388 2388.6,373.2" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2409.3,587.2 2445.3,574.6 2445.3,375.4 2409.3,388" fill="#e3ddd1" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2388.6,373.2 2424.7,360.6 2445.3,375.4 2409.3,388" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2244.9,275.8 2412.4,395.4 2412.4,359.1 2244.9,239.5" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2412.4,395.4 2458.3,379.4 2458.3,343 2412.4,359.1" fill="#e3ddd1" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2244.9,239.5 2290.8,223.4 2458.3,343 2412.4,359.1" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/></g>
+    <path id="gate-wire-5" class="hide" d="M2257.9,479L2293.9,466.4L2314.6,481.2L2278.5,493.8ZM2257.9,279.9L2293.9,267.2L2314.6,282L2278.5,294.6ZM2257.9,479L2257.9,279.9M2293.9,466.4L2293.9,267.2M2314.6,481.2L2314.6,282M2278.5,493.8L2278.5,294.6M2388.6,572.4L2424.7,559.8L2445.3,574.6L2409.3,587.2ZM2388.6,373.2L2424.7,360.6L2445.3,375.4L2409.3,388ZM2388.6,572.4L2388.6,373.2M2424.7,559.8L2424.7,360.6M2445.3,574.6L2445.3,375.4M2409.3,587.2L2409.3,388M2244.9,275.8L2290.8,259.8L2458.3,379.4L2412.4,395.4ZM2244.9,239.5L2290.8,223.4L2458.3,343L2412.4,359.1ZM2244.9,275.8L2244.9,239.5M2290.8,259.8L2290.8,223.4M2458.3,379.4L2458.3,343M2412.4,395.4L2412.4,359.1" fill="none" stroke="#e0453a" stroke-width="3" stroke-dasharray="10 7"/></g><g id="gate-4" data-ox="2081.3" data-oy="621.4"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,2081.3,621.4)"><circle id="gg-4" class="" cx="0" cy="0" r="150" fill="url(#gglow)"/></g><g id="gate-solid-4"><polygon points="1987.5,573.7 2008.2,588.4 2008.2,389.2 1987.5,374.5" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2008.2,588.4 2044.2,575.8 2044.2,376.6 2008.2,389.2" fill="#2fae6a" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1987.5,374.5 2023.6,361.9 2044.2,376.6 2008.2,389.2" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2118.3,667.1 2139,681.8 2139,482.6 2118.3,467.9" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2139,681.8 2175,669.2 2175,470 2139,482.6" fill="#e3ddd1" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2118.3,467.9 2154.4,455.3 2175,470 2139,482.6" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1974.6,370.5 2142.1,490.1 2142.1,453.7 1974.6,334.1" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2142.1,490.1 2188,474 2188,437.6 2142.1,453.7" fill="#e3ddd1" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1974.6,334.1 2020.5,318.1 2188,437.6 2142.1,453.7" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/></g>
+    <path id="gate-wire-4" class="hide" d="M1987.5,573.7L2023.6,561.1L2044.2,575.8L2008.2,588.4ZM1987.5,374.5L2023.6,361.9L2044.2,376.6L2008.2,389.2ZM1987.5,573.7L1987.5,374.5M2023.6,561.1L2023.6,361.9M2044.2,575.8L2044.2,376.6M2008.2,588.4L2008.2,389.2M2118.3,667.1L2154.4,654.4L2175,669.2L2139,681.8ZM2118.3,467.9L2154.4,455.3L2175,470L2139,482.6ZM2118.3,667.1L2118.3,467.9M2154.4,654.4L2154.4,455.3M2175,669.2L2175,470M2139,681.8L2139,482.6M1974.6,370.5L2020.5,354.4L2188,474L2142.1,490.1ZM1974.6,334.1L2020.5,318.1L2188,437.6L2142.1,453.7ZM1974.6,370.5L1974.6,334.1M2020.5,354.4L2020.5,318.1M2188,474L2188,437.6M2142.1,490.1L2142.1,453.7" fill="none" stroke="#e0453a" stroke-width="3" stroke-dasharray="10 7"/></g><g id="gate-3" data-ox="1811" data-oy="716.1"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,1811,716.1)"><circle id="gg-3" class="" cx="0" cy="0" r="150" fill="url(#gglow)"/></g><g id="gate-solid-3"><polygon points="1717.2,668.3 1737.9,683.1 1737.9,483.9 1717.2,469.1" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1737.9,683.1 1773.9,670.5 1773.9,471.3 1737.9,483.9" fill="#2fae6a" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1717.2,469.1 1753.3,456.5 1773.9,471.3 1737.9,483.9" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1848,761.7 1868.7,776.5 1868.7,577.3 1848,562.5" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1868.7,776.5 1904.7,763.8 1904.7,564.6 1868.7,577.3" fill="#e3ddd1" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1848,562.5 1884,549.9 1904.7,564.6 1868.7,577.3" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1704.3,465.1 1871.8,584.7 1871.8,548.3 1704.3,428.8" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1871.8,584.7 1917.6,568.7 1917.6,532.3 1871.8,548.3" fill="#e3ddd1" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1704.3,428.8 1750.2,412.7 1917.6,532.3 1871.8,548.3" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/></g>
+    <path id="gate-wire-3" class="hide" d="M1717.2,668.3L1753.3,655.7L1773.9,670.5L1737.9,683.1ZM1717.2,469.1L1753.3,456.5L1773.9,471.3L1737.9,483.9ZM1717.2,668.3L1717.2,469.1M1753.3,655.7L1753.3,456.5M1773.9,670.5L1773.9,471.3M1737.9,683.1L1737.9,483.9M1848,761.7L1884,749.1L1904.7,763.8L1868.7,776.5ZM1848,562.5L1884,549.9L1904.7,564.6L1868.7,577.3ZM1848,761.7L1848,562.5M1884,749.1L1884,549.9M1904.7,763.8L1904.7,564.6M1868.7,776.5L1868.7,577.3M1704.3,465.1L1750.2,449.1L1917.6,568.7L1871.8,584.7ZM1704.3,428.8L1750.2,412.7L1917.6,532.3L1871.8,548.3ZM1704.3,465.1L1704.3,428.8M1750.2,449.1L1750.2,412.7M1917.6,568.7L1917.6,532.3M1871.8,584.7L1871.8,548.3" fill="none" stroke="#e0453a" stroke-width="3" stroke-dasharray="10 7"/></g><g id="gate-2" data-ox="1540.6" data-oy="810.7"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,1540.6,810.7)"><circle id="gg-2" class="" cx="0" cy="0" r="150" fill="url(#gglow)"/></g><g id="gate-solid-2"><polygon points="1446.9,763 1467.6,777.7 1467.6,578.5 1446.9,563.8" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1467.6,777.7 1503.6,765.1 1503.6,565.9 1467.6,578.5" fill="#2fae6a" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1446.9,563.8 1482.9,551.2 1503.6,565.9 1467.6,578.5" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1577.7,856.3 1598.3,871.1 1598.3,671.9 1577.7,657.2" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1598.3,871.1 1634.4,858.5 1634.4,659.3 1598.3,671.9" fill="#e3ddd1" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1577.7,657.2 1613.7,644.5 1634.4,659.3 1598.3,671.9" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1434,559.8 1601.4,679.4 1601.4,643 1434,523.4" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1601.4,679.4 1647.3,663.3 1647.3,626.9 1601.4,643" fill="#e3ddd1" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1434,523.4 1479.8,507.3 1647.3,626.9 1601.4,643" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/></g>
+    <path id="gate-wire-2" class="hide" d="M1446.9,763L1482.9,750.3L1503.6,765.1L1467.6,777.7ZM1446.9,563.8L1482.9,551.2L1503.6,565.9L1467.6,578.5ZM1446.9,763L1446.9,563.8M1482.9,750.3L1482.9,551.2M1503.6,765.1L1503.6,565.9M1467.6,777.7L1467.6,578.5M1577.7,856.3L1613.7,843.7L1634.4,858.5L1598.3,871.1ZM1577.7,657.2L1613.7,644.5L1634.4,659.3L1598.3,671.9ZM1577.7,856.3L1577.7,657.2M1613.7,843.7L1613.7,644.5M1634.4,858.5L1634.4,659.3M1598.3,871.1L1598.3,671.9M1434,559.8L1479.8,543.7L1647.3,663.3L1601.4,679.4ZM1434,523.4L1479.8,507.3L1647.3,626.9L1601.4,643ZM1434,559.8L1434,523.4M1479.8,543.7L1479.8,507.3M1647.3,663.3L1647.3,626.9M1601.4,679.4L1601.4,643" fill="none" stroke="#e0453a" stroke-width="3" stroke-dasharray="10 7"/></g><g id="gate-1" data-ox="1270.3" data-oy="905.4"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,1270.3,905.4)"><circle id="gg-1" class="" cx="0" cy="0" r="150" fill="url(#gglow)"/></g><g id="gate-solid-1"><polygon points="1176.6,857.6 1197.2,872.3 1197.2,673.2 1176.6,658.4" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1197.2,872.3 1233.3,859.7 1233.3,660.5 1197.2,673.2" fill="#2fae6a" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1176.6,658.4 1212.6,645.8 1233.3,660.5 1197.2,673.2" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1307.4,951 1328,965.7 1328,766.5 1307.4,751.8" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1328,965.7 1364.1,953.1 1364.1,753.9 1328,766.5" fill="#e3ddd1" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1307.4,751.8 1343.4,739.2 1364.1,753.9 1328,766.5" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1163.6,654.4 1331.1,774 1331.1,737.6 1163.6,618" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1331.1,774 1377,757.9 1377,721.6 1331.1,737.6" fill="#e3ddd1" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1163.6,618 1209.5,602 1377,721.6 1331.1,737.6" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/></g>
+    <path id="gate-wire-1" class="hide" d="M1176.6,857.6L1212.6,845L1233.3,859.7L1197.2,872.3ZM1176.6,658.4L1212.6,645.8L1233.3,660.5L1197.2,673.2ZM1176.6,857.6L1176.6,658.4M1212.6,845L1212.6,645.8M1233.3,859.7L1233.3,660.5M1197.2,872.3L1197.2,673.2M1307.4,951L1343.4,938.4L1364.1,953.1L1328,965.7ZM1307.4,751.8L1343.4,739.2L1364.1,753.9L1328,766.5ZM1307.4,951L1307.4,751.8M1343.4,938.4L1343.4,739.2M1364.1,953.1L1364.1,753.9M1328,965.7L1328,766.5M1163.6,654.4L1209.5,638.3L1377,757.9L1331.1,774ZM1163.6,618L1209.5,602L1377,721.6L1331.1,737.6ZM1163.6,654.4L1163.6,618M1209.5,638.3L1209.5,602M1377,757.9L1377,721.6M1331.1,774L1331.1,737.6" fill="none" stroke="#e0453a" stroke-width="3" stroke-dasharray="10 7"/></g><g id="gate-0" data-ox="1000" data-oy="1000"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,1000,1000)"><circle id="gg-0" class="" cx="0" cy="0" r="150" fill="url(#gglow)"/></g><g id="gate-solid-0"><polygon points="906.3,952.2 926.9,967 926.9,767.8 906.3,753.1" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="926.9,967 963,954.4 963,755.2 926.9,767.8" fill="#2fae6a" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="906.3,753.1 942.3,740.4 963,755.2 926.9,767.8" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1037,1045.6 1057.7,1060.4 1057.7,861.2 1037,846.4" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1057.7,1060.4 1093.7,1047.8 1093.7,848.6 1057.7,861.2" fill="#e3ddd1" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1037,846.4 1073.1,833.8 1093.7,848.6 1057.7,861.2" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="893.3,749 1060.8,868.6 1060.8,832.3 893.3,712.7" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1060.8,868.6 1106.7,852.6 1106.7,816.2 1060.8,832.3" fill="#e3ddd1" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="893.3,712.7 939.2,696.6 1106.7,816.2 1060.8,832.3" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/></g>
+    <path id="gate-wire-0" class="hide" d="M906.3,952.2L942.3,939.6L963,954.4L926.9,967ZM906.3,753.1L942.3,740.4L963,755.2L926.9,767.8ZM906.3,952.2L906.3,753.1M942.3,939.6L942.3,740.4M963,954.4L963,755.2M926.9,967L926.9,767.8M1037,1045.6L1073.1,1033L1093.7,1047.8L1057.7,1060.4ZM1037,846.4L1073.1,833.8L1093.7,848.6L1057.7,861.2ZM1037,1045.6L1037,846.4M1073.1,1033L1073.1,833.8M1093.7,1047.8L1093.7,848.6M1057.7,1060.4L1057.7,861.2M893.3,749L939.2,733L1106.7,852.6L1060.8,868.6ZM893.3,712.7L939.2,696.6L1106.7,816.2L1060.8,832.3ZM893.3,749L893.3,712.7M939.2,733L939.2,696.6M1106.7,852.6L1106.7,816.2M1060.8,868.6L1060.8,832.3" fill="none" stroke="#e0453a" stroke-width="3" stroke-dasharray="10 7"/></g></svg>
+          <div id="gatepins"><div class="pin " id="l-g0-pin" style="left:1000px;top:740.2px"><div class="wl"><div class="ctr a-b"><div class="lab lab-g hide" id="l-g0"><span class="gn">①</span>业务意图</div></div></div></div><div class="pin " id="l-g1-pin" style="left:1270.3px;top:645.6px"><div class="wl"><div class="ctr a-b"><div class="lab lab-g hide" id="l-g1"><span class="gn">②</span>请求构造</div></div></div></div><div class="pin " id="l-g2-pin" style="left:1540.6px;top:550.9px"><div class="wl"><div class="ctr a-b"><div class="lab lab-g hide" id="l-g2"><span class="gn">③</span>风控与审批</div></div></div></div><div class="pin " id="l-g3-pin" style="left:1811px;top:456.3px"><div class="wl"><div class="ctr a-b"><div class="lab lab-g hide" id="l-g3"><span class="gn">④</span>显示与解码</div></div></div></div><div class="pin " id="l-g4-pin" style="left:2081.3px;top:361.6px"><div class="wl"><div class="ctr a-b"><div class="lab lab-g hide" id="l-g4"><span class="gn">⑤</span>签名</div></div></div></div><div class="pin " id="l-g5-pin" style="left:2351.6px;top:267px"><div class="wl"><div class="ctr a-b"><div class="lab lab-g hide" id="l-g5"><span class="gn">⑥</span>广播</div></div></div></div><div class="pin " id="l-g6-pin" style="left:2621.9px;top:172.4px"><div class="wl"><div class="ctr a-b"><div class="lab lab-g hide" id="l-g6"><span class="gn">⑦</span>链上状态</div></div></div></div><div class="pin " id="bdg-g3-pin" style="left:1811px;top:603.5px"><div class="ctr a-c"><div class="badge hide" id="bdg-g3" style="width:64px;height:64px"><svg width="32" height="32" viewBox="0 0 20 20"><path d="M4 4L16 16M16 4L4 16" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/></svg></div></div></div><div class="pin " id="genv-pin" style="left:787px;top:1039.9px"><div class="ctr a-c"><div class="env hide" id="genv"><svg width="64" height="44" viewBox="0 0 64 44"><rect x="2" y="2" width="60" height="40" rx="5" fill="#ffffff" stroke="#6b665c" stroke-width="3"/><path d="M4 5L32 26L60 5" fill="none" stroke="#6b665c" stroke-width="3" stroke-linejoin="round"/></svg></div></div></div></div>
+        </div>
+        <div id="objlayer">
+          <svg id="obj-svg" class="wsvg" width="6000" height="3600" viewBox="-1500 -1600 6000 3600" style="left:-1500px;top:-1600px"><defs><radialGradient id="gglow"><stop offset="0" stop-color="#1f9d55" stop-opacity="0.42"/><stop offset="0.55" stop-color="#1f9d55" stop-opacity="0.16"/><stop offset="1" stop-color="#1f9d55" stop-opacity="0"/></radialGradient></defs><g id="brw-solid"><polygon points="559.3,679.7 616.7,720.7 616.7,708.6 559.3,667.6" fill="#efebe3" stroke="#c3bbac" stroke-width="1.6" stroke-linejoin="round"/><polygon points="616.7,720.7 960.7,600.3 960.7,588.1 616.7,708.6" fill="#ddd7cb" stroke="#c3bbac" stroke-width="1.6" stroke-linejoin="round"/><polygon points="559.3,667.6 903.3,547.2 960.7,588.1 616.7,708.6" fill="#f8f6f1" stroke="#c3bbac" stroke-width="1.6" stroke-linejoin="round"/><polygon points="596.3,676.6 612.4,688.1 612.4,428.3 596.3,416.8" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="612.4,688.1 923.7,579.1 923.7,319.3 612.4,428.3" fill="#e3ddd1" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="596.3,416.8 907.6,307.8 923.7,319.3 612.4,428.3" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><g transform="matrix(0.8192,-0.2868,0,0.866,612.4,428.3)">
+  <rect x="0" y="0" width="380" height="300" rx="10" fill="#ffffff" stroke="#b8b0a1" stroke-width="2"/>
+  <path d="M0 10a10 10 0 0 1 10-10h360a10 10 0 0 1 10 10v32H0z" fill="#ece7dd"/>
+  <circle cx="20" cy="21" r="6" fill="#e0453a"/><circle cx="40" cy="21" r="6" fill="#e6b84a"/><circle cx="60" cy="21" r="6" fill="#1f9d55"/>
+  <rect x="84" y="10" width="280" height="22" rx="11" fill="#ffffff"/>
+  <text x="100" y="27" font-family="Inter, sans-serif" font-size="16" font-weight="700" fill="#5f5a50">Safe{Wallet}</text>
+  <rect x="12" y="54" width="70" height="234" rx="8" fill="#e8f3f7"/>
+  <rect x="24" y="70" width="46" height="10" rx="5" fill="#9fd3e5"/><rect x="24" y="92" width="46" height="10" rx="5" fill="#c9e6f0"/><rect x="24" y="114" width="46" height="10" rx="5" fill="#c9e6f0"/>
+  <rect x="96" y="56" width="270" height="134" rx="10" fill="#faf8f4" stroke="#ddd6c9" stroke-width="2"/>
+  <text x="112" y="92" font-family="Noto Sans SC, sans-serif" font-size="26" font-weight="900" fill="#1c1c1c">新交易</text>
+  <rect x="112" y="110" width="200" height="12" rx="6" fill="#ddd6c9"/><rect x="112" y="134" width="160" height="12" rx="6" fill="#ddd6c9"/><rect x="112" y="158" width="220" height="12" rx="6" fill="#ddd6c9"/>
+  <rect x="96" y="206" width="270" height="62" rx="12" fill="#1d93ba"/>
+  <text x="231" y="247" text-anchor="middle" font-family="Noto Sans SC, sans-serif" font-size="28" font-weight="900" fill="#ffffff">发起签名</text>
+</g></g>
+  <path id="brw-hint" class="hide" d="M588,681.1L909.1,568.7L932,585.1L610.9,697.5ZM588,410.9L909.1,298.5L932,314.9L610.9,427.3ZM588,681.1L588,410.9M909.1,568.7L909.1,298.5M932,585.1L932,314.9M610.9,697.5L610.9,427.3" fill="none" stroke="#e0453a" stroke-width="2.5" stroke-dasharray="10 8"/>
+  <path id="brw-wire" class="hide" d="M596.3,676.6L907.6,567.7L923.7,579.1L612.4,688.1ZM596.3,416.8L907.6,307.8L923.7,319.3L612.4,428.3ZM596.3,676.6L596.3,416.8M907.6,567.7L907.6,307.8M923.7,579.1L923.7,319.3M612.4,688.1L612.4,428.3M559.3,679.7L903.3,559.3L960.7,600.3L616.7,720.7ZM559.3,667.6L903.3,547.2L960.7,588.1L616.7,708.6ZM559.3,679.7L559.3,667.6M903.3,559.3L903.3,547.2M960.7,600.3L960.7,588.1M616.7,720.7L616.7,708.6" fill="rgba(224,69,58,0.04)" stroke="#e0453a" stroke-width="3.5" stroke-dasharray="12 9" stroke-linejoin="round"/><g id="vault"><polygon points="2191.5,735.4 2420.9,899.3 2420.9,885.4 2191.5,721.6" fill="#efebe3" stroke="#c3bbac" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2420.9,899.3 2748.5,784.6 2748.5,770.7 2420.9,885.4" fill="#ddd7cb" stroke="#c3bbac" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2191.5,721.6 2519.1,606.9 2748.5,770.7 2420.9,885.4" fill="#f8f6f1" stroke="#c3bbac" stroke-width="1.6" stroke-linejoin="round"/>
+  <path d="M2511.7,627.8L2511.7,342M2511.7,627.8L2233.2,725.3M2511.7,627.8L2706.8,767" stroke="rgba(42,163,201,0.45)" stroke-width="1.6" fill="none"/>
+  <g id="gold-0"><polygon points="2416.7,673.2 2432.8,684.7 2432.8,669.1 2416.7,657.6" fill="#f0c04a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2432.8,684.7 2478.7,668.6 2478.7,653.1 2432.8,669.1" fill="#cf9520" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2416.7,657.6 2462.6,641.6 2478.7,653.1 2432.8,669.1" fill="#ffe08a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/></g><g id="gold-1"><polygon points="2435.1,686.3 2451.1,697.8 2451.1,682.2 2435.1,670.8" fill="#f0c04a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2451.1,697.8 2497,681.8 2497,666.2 2451.1,682.2" fill="#cf9520" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2435.1,670.8 2481,654.7 2497,666.2 2451.1,682.2" fill="#ffe08a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/></g><g id="gold-2"><polygon points="2465.9,656 2481.9,667.5 2481.9,651.9 2465.9,640.4" fill="#f0c04a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2481.9,667.5 2527.8,651.4 2527.8,635.8 2481.9,651.9" fill="#cf9520" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2465.9,640.4 2511.8,624.4 2527.8,635.8 2481.9,651.9" fill="#ffe08a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/></g><g id="gold-3"><polygon points="2484.2,669.1 2500.3,680.6 2500.3,665 2484.2,653.5" fill="#f0c04a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2500.3,680.6 2546.2,664.5 2546.2,649 2500.3,665" fill="#cf9520" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2484.2,653.5 2530.1,637.5 2546.2,649 2500.3,665" fill="#ffe08a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/></g><g id="gold-4"><polygon points="2438.8,656 2454.9,667.5 2454.9,651.9 2438.8,640.4" fill="#f0c04a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2454.9,667.5 2500.8,651.4 2500.8,635.8 2454.9,651.9" fill="#cf9520" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2438.8,640.4 2484.7,624.4 2500.8,635.8 2454.9,651.9" fill="#ffe08a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/></g><g id="gold-5"><polygon points="2457.2,669.1 2473.3,680.6 2473.3,665 2457.2,653.5" fill="#f0c04a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2473.3,680.6 2519.1,664.5 2519.1,648.9 2473.3,665" fill="#cf9520" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2457.2,653.5 2503.1,637.5 2519.1,648.9 2473.3,665" fill="#ffe08a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/></g>
+  <g id="v-impl"><polygon points="2326.6,765.8 2395.5,815 2395.5,711 2326.6,661.9" fill="#5cc0e0" stroke="#2a87a8" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2395.5,815 2493.8,780.5 2493.8,676.6 2395.5,711" fill="#3a9ec2" stroke="#2a87a8" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2326.6,661.9 2424.9,627.5 2493.8,676.6 2395.5,711" fill="#9ad9ee" stroke="#2a87a8" stroke-width="1.6" stroke-linejoin="round"/></g>
+  <path id="v-impl-wire" class="hide" d="M2326.6,765.8L2424.9,731.4L2493.8,780.5L2395.5,815ZM2326.6,661.9L2424.9,627.5L2493.8,676.6L2395.5,711ZM2326.6,765.8L2326.6,661.9M2424.9,731.4L2424.9,627.5M2493.8,780.5L2493.8,676.6M2395.5,815L2395.5,711" fill="rgba(224,69,58,0.05)" stroke="#e0453a" stroke-width="3" stroke-dasharray="10 7"/>
+  <g id="v-atk" class="hide"><polygon points="2480.6,736.3 2549.5,785.5 2549.5,690.2 2480.6,641" fill="#e8574c" stroke="#a8322a" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2549.5,785.5 2647.8,751 2647.8,655.8 2549.5,690.2" fill="#c23a30" stroke="#a8322a" stroke-width="1.6" stroke-linejoin="round"/><polygon points="2480.6,641 2578.9,606.6 2647.8,655.8 2549.5,690.2" fill="#f08a80" stroke="#a8322a" stroke-width="1.6" stroke-linejoin="round"/></g>
+  <g id="gold-6"><polygon points="2404.5,830.1 2420.5,841.6 2420.5,826 2404.5,814.5" fill="#f0c04a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2420.5,841.6 2466.4,825.5 2466.4,809.9 2420.5,826" fill="#cf9520" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2404.5,814.5 2450.4,798.5 2466.4,809.9 2420.5,826" fill="#ffe08a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/></g><g id="gold-7"><polygon points="2422.8,843.2 2438.9,854.7 2438.9,839.1 2422.8,827.6" fill="#f0c04a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2438.9,854.7 2484.8,838.6 2484.8,823 2438.9,839.1" fill="#cf9520" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2422.8,827.6 2468.7,811.6 2484.8,823 2438.9,839.1" fill="#ffe08a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/></g><g id="gold-8"><polygon points="2453.6,812.9 2469.7,824.4 2469.7,808.8 2453.6,797.3" fill="#f0c04a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2469.7,824.4 2515.6,808.3 2515.6,792.7 2469.7,808.8" fill="#cf9520" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2453.6,797.3 2499.5,781.3 2515.6,792.7 2469.7,808.8" fill="#ffe08a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/></g><g id="gold-9"><polygon points="2472,826 2488,837.5 2488,821.9 2472,810.4" fill="#f0c04a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2488,837.5 2533.9,821.4 2533.9,805.8 2488,821.9" fill="#cf9520" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2472,810.4 2517.9,794.4 2533.9,805.8 2488,821.9" fill="#ffe08a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/></g><g id="gold-10"><polygon points="2427.8,813.7 2443.8,825.2 2443.8,809.6 2427.8,798.1" fill="#f0c04a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2443.8,825.2 2489.7,809.1 2489.7,793.5 2443.8,809.6" fill="#cf9520" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/><polygon points="2427.8,798.1 2473.6,782.1 2489.7,793.5 2443.8,809.6" fill="#ffe08a" stroke="#a87612" stroke-width="1.2" stroke-linejoin="round"/></g>
+  <g id="v-glass"><polygon points="2233.2,725.3 2428.3,864.5 2428.3,578.7 2233.2,439.5" fill="rgba(208,234,244,0.30)" stroke="rgba(42,163,201,0.75)" stroke-width="2" stroke-linejoin="round"/><polygon points="2428.3,864.5 2706.8,767 2706.8,481.2 2428.3,578.7" fill="rgba(190,224,237,0.38)" stroke="rgba(42,163,201,0.75)" stroke-width="2" stroke-linejoin="round"/><polygon points="2233.2,439.5 2511.7,342 2706.8,481.2 2428.3,578.7" fill="rgba(236,248,252,0.50)" stroke="rgba(42,163,201,0.75)" stroke-width="2" stroke-linejoin="round"/></g></g><g id="st-0"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,1040,770)"><circle id="sg-0" class="hide" cx="0" cy="0" r="190" fill="url(#gglow)"/></g>
+    <polygon points="1148.9,725.8 1184.5,751.1 1184.5,732.1 1148.9,706.7" fill="#45433f" stroke="#24231f" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1184.5,751.1 1233.7,733.9 1233.7,714.9 1184.5,732.1" fill="#2e2d2a" stroke="#24231f" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1148.9,706.7 1198.1,689.5 1233.7,714.9 1184.5,732.1" fill="#5a5852" stroke="#24231f" stroke-width="1.6" stroke-linejoin="round"/>
+    <g transform="matrix(0.8192,-0.2868,0.5736,0.4096,1162.9,707.9)"><rect x="0" y="0" width="40" height="30" rx="3" fill="#9ad9ee"/></g>
+    <polygon points="895.8,771.6 987.6,837.2 987.6,826.8 895.8,761.3" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="987.6,837.2 1184.2,768.4 1184.2,758 987.6,826.8" fill="#e3ddd1" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="895.8,761.3 1092.4,692.4 1184.2,758 987.6,826.8" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,929.4,766.1)"><rect x="0" y="0" width="200" height="80" rx="6" fill="#e3ddd1"/><rect x="60" y="92" width="80" height="26" rx="4" fill="#ece7dd"/></g>
+    <polygon points="895.8,761.3 901.6,765.4 901.6,609.5 895.8,605.4" fill="#45433f" stroke="#24231f" stroke-width="1.2" stroke-linejoin="round"/><polygon points="901.6,765.4 1098.1,696.5 1098.1,540.6 901.6,609.5" fill="#2e2d2a" stroke="#24231f" stroke-width="1.2" stroke-linejoin="round"/><polygon points="895.8,605.4 1092.4,536.5 1098.1,540.6 901.6,609.5" fill="#5a5852" stroke="#24231f" stroke-width="1.2" stroke-linejoin="round"/><g transform="matrix(0.8192,-0.2868,0,0.866,901.6,609.5)">
+    <rect x="0" y="0" width="240" height="180" rx="10" fill="#2b2a27"/>
+    <rect x="9" y="9" width="222" height="162" rx="5" fill="#cfc9be"/>
+    <rect id="scr-on-0" class="hide" x="9" y="9" width="222" height="162" rx="5" fill="#ffffff"/>
+    <g id="ui-0" class="hide">
+      <rect x="9" y="9" width="222" height="30" fill="#ece7dd"/>
+      <text x="20" y="31" font-family="Inter, sans-serif" font-size="16" font-weight="700" fill="#5f5a50">Safe{Wallet}</text>
+      <rect id="btn-0" x="120" y="126" width="98" height="36" rx="8" fill="#c9c3b7"/>
+      <text x="169" y="152" text-anchor="middle" font-family="Noto Sans SC, sans-serif" font-size="22" font-weight="900" fill="#ffffff">确认</text>
+    </g>
+    <g id="ui2-0" class="hide"><text x="20" y="74" font-family="Noto Sans SC, sans-serif" font-size="25" font-weight="900" fill="#1c1c1c">操作：转账</text></g>
+    <g id="ui3-0" class="hide"><rect x="16" y="86" width="150" height="32" rx="7" fill="#e3f4ea"/>
+      <text x="26" y="110" font-family="Noto Sans SC, sans-serif" font-size="21" font-weight="900" fill="#1f9d55">✓ 看起来正常</text></g>
+  </g></g><g id="st-1"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,1390,830)"><circle id="sg-1" class="hide" cx="0" cy="0" r="190" fill="url(#gglow)"/></g>
+    <polygon points="1498.9,785.8 1534.5,811.1 1534.5,792.1 1498.9,766.7" fill="#45433f" stroke="#24231f" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1534.5,811.1 1583.7,793.9 1583.7,774.9 1534.5,792.1" fill="#2e2d2a" stroke="#24231f" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1498.9,766.7 1548.1,749.5 1583.7,774.9 1534.5,792.1" fill="#5a5852" stroke="#24231f" stroke-width="1.6" stroke-linejoin="round"/>
+    <g transform="matrix(0.8192,-0.2868,0.5736,0.4096,1512.9,767.9)"><rect x="0" y="0" width="40" height="30" rx="3" fill="#9ad9ee"/></g>
+    <polygon points="1245.8,831.6 1337.6,897.2 1337.6,886.8 1245.8,821.3" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1337.6,897.2 1534.2,828.4 1534.2,818 1337.6,886.8" fill="#e3ddd1" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1245.8,821.3 1442.4,752.4 1534.2,818 1337.6,886.8" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,1279.4,826.1)"><rect x="0" y="0" width="200" height="80" rx="6" fill="#e3ddd1"/><rect x="60" y="92" width="80" height="26" rx="4" fill="#ece7dd"/></g>
+    <polygon points="1245.8,821.3 1251.6,825.4 1251.6,669.5 1245.8,665.4" fill="#45433f" stroke="#24231f" stroke-width="1.2" stroke-linejoin="round"/><polygon points="1251.6,825.4 1448.1,756.5 1448.1,600.6 1251.6,669.5" fill="#2e2d2a" stroke="#24231f" stroke-width="1.2" stroke-linejoin="round"/><polygon points="1245.8,665.4 1442.4,596.5 1448.1,600.6 1251.6,669.5" fill="#5a5852" stroke="#24231f" stroke-width="1.2" stroke-linejoin="round"/><g transform="matrix(0.8192,-0.2868,0,0.866,1251.6,669.5)">
+    <rect x="0" y="0" width="240" height="180" rx="10" fill="#2b2a27"/>
+    <rect x="9" y="9" width="222" height="162" rx="5" fill="#cfc9be"/>
+    <rect id="scr-on-1" class="hide" x="9" y="9" width="222" height="162" rx="5" fill="#ffffff"/>
+    <g id="ui-1" class="hide">
+      <rect x="9" y="9" width="222" height="30" fill="#ece7dd"/>
+      <text x="20" y="31" font-family="Inter, sans-serif" font-size="16" font-weight="700" fill="#5f5a50">Safe{Wallet}</text>
+      <rect id="btn-1" x="120" y="126" width="98" height="36" rx="8" fill="#c9c3b7"/>
+      <text x="169" y="152" text-anchor="middle" font-family="Noto Sans SC, sans-serif" font-size="22" font-weight="900" fill="#ffffff">确认</text>
+    </g>
+    <g id="ui2-1" class="hide"><text x="20" y="74" font-family="Noto Sans SC, sans-serif" font-size="25" font-weight="900" fill="#1c1c1c">操作：转账</text></g>
+    <g id="ui3-1" class="hide"><rect x="16" y="86" width="150" height="32" rx="7" fill="#e3f4ea"/>
+      <text x="26" y="110" font-family="Noto Sans SC, sans-serif" font-size="21" font-weight="900" fill="#1f9d55">✓ 看起来正常</text></g>
+  </g></g><g id="st-2"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,1740,890)"><circle id="sg-2" class="hide" cx="0" cy="0" r="190" fill="url(#gglow)"/></g>
+    <polygon points="1848.9,845.8 1884.5,871.1 1884.5,852.1 1848.9,826.7" fill="#45433f" stroke="#24231f" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1884.5,871.1 1933.7,853.9 1933.7,834.9 1884.5,852.1" fill="#2e2d2a" stroke="#24231f" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1848.9,826.7 1898.1,809.5 1933.7,834.9 1884.5,852.1" fill="#5a5852" stroke="#24231f" stroke-width="1.6" stroke-linejoin="round"/>
+    <g transform="matrix(0.8192,-0.2868,0.5736,0.4096,1862.9,827.9)"><rect x="0" y="0" width="40" height="30" rx="3" fill="#9ad9ee"/></g>
+    <polygon points="1595.8,891.6 1687.6,957.2 1687.6,946.8 1595.8,881.3" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1687.6,957.2 1884.2,888.4 1884.2,878 1687.6,946.8" fill="#e3ddd1" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><polygon points="1595.8,881.3 1792.4,812.4 1884.2,878 1687.6,946.8" fill="#fdfcf9" stroke="#b8b0a1" stroke-width="1.6" stroke-linejoin="round"/><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,1629.4,886.1)"><rect x="0" y="0" width="200" height="80" rx="6" fill="#e3ddd1"/><rect x="60" y="92" width="80" height="26" rx="4" fill="#ece7dd"/></g>
+    <polygon points="1595.8,881.3 1601.6,885.4 1601.6,729.5 1595.8,725.4" fill="#45433f" stroke="#24231f" stroke-width="1.2" stroke-linejoin="round"/><polygon points="1601.6,885.4 1798.1,816.5 1798.1,660.6 1601.6,729.5" fill="#2e2d2a" stroke="#24231f" stroke-width="1.2" stroke-linejoin="round"/><polygon points="1595.8,725.4 1792.4,656.5 1798.1,660.6 1601.6,729.5" fill="#5a5852" stroke="#24231f" stroke-width="1.2" stroke-linejoin="round"/><g transform="matrix(0.8192,-0.2868,0,0.866,1601.6,729.5)">
+    <rect x="0" y="0" width="240" height="180" rx="10" fill="#2b2a27"/>
+    <rect x="9" y="9" width="222" height="162" rx="5" fill="#cfc9be"/>
+    <rect id="scr-on-2" class="hide" x="9" y="9" width="222" height="162" rx="5" fill="#ffffff"/>
+    <g id="ui-2" class="hide">
+      <rect x="9" y="9" width="222" height="30" fill="#ece7dd"/>
+      <text x="20" y="31" font-family="Inter, sans-serif" font-size="16" font-weight="700" fill="#5f5a50">Safe{Wallet}</text>
+      <rect id="btn-2" x="120" y="126" width="98" height="36" rx="8" fill="#c9c3b7"/>
+      <text x="169" y="152" text-anchor="middle" font-family="Noto Sans SC, sans-serif" font-size="22" font-weight="900" fill="#ffffff">确认</text>
+    </g>
+    <g id="ui2-2" class="hide"><text x="20" y="74" font-family="Noto Sans SC, sans-serif" font-size="25" font-weight="900" fill="#1c1c1c">操作：转账</text></g>
+    <g id="ui3-2" class="hide"><rect x="16" y="86" width="150" height="32" rx="7" fill="#e3f4ea"/>
+      <text x="26" y="110" font-family="Noto Sans SC, sans-serif" font-size="21" font-weight="900" fill="#1f9d55">✓ 看起来正常</text></g>
+  </g></g></svg>
+          <div id="objpins"><div class="pin " id="l-brw-pin" style="left:768px;top:340.9px"><div class="wl"><div class="ctr a-b"><div class="lab lab-c hide" id="l-brw">Safe{Wallet} 网页</div></div></div></div><div class="pin " id="l-s3-pin" style="left:768px;top:340.9px"><div class="wl"><div class="ctr a-b"><div class="lab lab-c stk1 hide" id="l-s3"><svg width="40" height="34" viewBox="0 0 40 34"><path d="M8 10C12 4 28 4 32 10" fill="none" stroke="#2aa3c9" stroke-width="3"/><ellipse cx="20" cy="11" rx="15" ry="5" fill="#d9eff6" stroke="#2aa3c9" stroke-width="3"/><path d="M5 11L9 30Q20 34 31 30L35 11" fill="#d9eff6" stroke="#2aa3c9" stroke-width="3" stroke-linejoin="round"/></svg><span>前端 JS · 托管在 AWS S3</span></div></div></div></div><div class="pin " id="bdg-brw-pin" style="left:760px;top:492.8px"><div class="ctr a-c"><div class="badge hide" id="bdg-brw" style="width:76px;height:76px"><svg width="38" height="38" viewBox="0 0 20 20"><path d="M4 4L16 16M16 4L4 16" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/></svg></div></div></div><div class="pin " id="l-js-pin" style="left:768px;top:340.9px"><div class="wl"><div class="ctr a-b"><div class="lab lab-r stk2 hide" id="l-js">篡改的 JS 只针对 Bybit 冷钱包</div></div></div></div><div class="pin " id="l-vault-pin" style="left:2470px;top:396.3px"><div class="wl"><div class="ctr a-b"><div class="lab lab-c hide" id="l-vault">Bybit 冷钱包 · Safe 多签</div></div></div></div><div class="pin " id="l-impl-pin" style="left:2411px;top:762.2px"><div class="wl"><div class="ctr a-r"><div class="lab lab-c hide" id="l-impl">实现合约</div></div></div></div><div class="pin " id="bdg-impl-pin" style="left:2410.2px;top:721.2px"><div class="ctr a-c"><div class="badge hide" id="bdg-impl" style="width:60px;height:60px"><svg width="30" height="30" viewBox="0 0 20 20"><path d="M4 4L16 16M16 4L4 16" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/></svg></div></div></div><div class="pin " id="l-atk-pin" style="left:2682.2px;top:737.5px"><div class="wl"><div class="ctr a-l"><div class="lab lab-rs hide" id="l-atk">攻击者合约</div></div></div></div><div class="pin " id="l-slot-pin" style="left:2552.8px;top:836.8px"><div class="wl"><div class="ctr a-t"><div class="lab lab-c hide" id="l-slot">Safe 存储 slot 0 = 实现合约地址</div></div></div></div><div class="pin " id="l-sign-pin" style="left:1344.1px;top:580.7px"><div class="wl"><div class="ctr a-b"><div class="lab lab-c hide" id="l-sign">签名人（示意）</div></div></div></div><div class="pin " id="lk-pin-0" style="left:1190.7px;top:703.5px"><div class="ctr a-b"><div class="lock hide" id="lk-0"><svg width="72" height="58" viewBox="0 0 92 74">
+  <path d="M16 32V22a14 14 0 0 1 28 0v10" fill="none" stroke="#1c1c1c" stroke-width="5"/>
+  <rect x="6" y="30" width="48" height="38" rx="7" fill="#ffffff" stroke="#1c1c1c" stroke-width="4"/>
+  <circle cx="30" cy="49" r="5" fill="#1c1c1c"/><path d="M30 49H70" stroke="#1c1c1c" stroke-width="4"/>
+  <circle cx="78" cy="49" r="8" fill="#ffffff" stroke="#1c1c1c" stroke-width="4"/></svg>
+  <div class="lk-ck hide" id="lk-ck-0"><svg width="22" height="18" viewBox="0 0 34 28"><path d="M3 15l9 9L31 4" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div></div><div class="pin " id="lk-pin-1" style="left:1540.7px;top:763.5px"><div class="ctr a-b"><div class="lock hide" id="lk-1"><svg width="72" height="58" viewBox="0 0 92 74">
+  <path d="M16 32V22a14 14 0 0 1 28 0v10" fill="none" stroke="#1c1c1c" stroke-width="5"/>
+  <rect x="6" y="30" width="48" height="38" rx="7" fill="#ffffff" stroke="#1c1c1c" stroke-width="4"/>
+  <circle cx="30" cy="49" r="5" fill="#1c1c1c"/><path d="M30 49H70" stroke="#1c1c1c" stroke-width="4"/>
+  <circle cx="78" cy="49" r="8" fill="#ffffff" stroke="#1c1c1c" stroke-width="4"/></svg>
+  <div class="lk-ck hide" id="lk-ck-1"><svg width="22" height="18" viewBox="0 0 34 28"><path d="M3 15l9 9L31 4" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div></div><div class="pin " id="lk-pin-2" style="left:1890.7px;top:823.5px"><div class="ctr a-b"><div class="lock hide" id="lk-2"><svg width="72" height="58" viewBox="0 0 92 74">
+  <path d="M16 32V22a14 14 0 0 1 28 0v10" fill="none" stroke="#1c1c1c" stroke-width="5"/>
+  <rect x="6" y="30" width="48" height="38" rx="7" fill="#ffffff" stroke="#1c1c1c" stroke-width="4"/>
+  <circle cx="30" cy="49" r="5" fill="#1c1c1c"/><path d="M30 49H70" stroke="#1c1c1c" stroke-width="4"/>
+  <circle cx="78" cy="49" r="8" fill="#ffffff" stroke="#1c1c1c" stroke-width="4"/></svg>
+  <div class="lk-ck hide" id="lk-ck-2"><svg width="22" height="18" viewBox="0 0 34 28"><path d="M3 15l9 9L31 4" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div></div><div class="pin " id="l-key-pin" style="left:985.1px;top:809.5px"><div class="wl"><div class="ctr a-r"><div class="lab lab-gs hide" id="l-key">私钥 · 未泄露</div></div></div></div><div class="pin " id="l-key2-pin" style="left:1476px;top:891.4px"><div class="wl"><div class="ctr a-t"><div class="lab lab-gs hide" id="l-key2">钥匙 ✓ 一直安全</div></div></div></div><div class="pin " id="env-pin-0" style="left:997px;top:540.1px"><div class="ctr a-c"><div class="env hide" id="env-0"><svg width="64" height="44" viewBox="0 0 64 44"><rect x="2" y="2" width="60" height="40" rx="5" fill="#ffffff" stroke="#6b665c" stroke-width="3"/><path d="M4 5L32 26L60 5" fill="none" stroke="#6b665c" stroke-width="3" stroke-linejoin="round"/></svg><div class="env-red hide"><svg width="64" height="44" viewBox="0 0 64 44"><rect x="2" y="2" width="60" height="40" rx="5" fill="#fde6e3" stroke="#e0453a" stroke-width="3"/><path d="M4 5L32 26L60 5" fill="none" stroke="#e0453a" stroke-width="3" stroke-linejoin="round"/></svg></div></div></div></div><div class="pin " id="env-pin-1" style="left:1347px;top:600.1px"><div class="ctr a-c"><div class="env hide" id="env-1"><svg width="64" height="44" viewBox="0 0 64 44"><rect x="2" y="2" width="60" height="40" rx="5" fill="#ffffff" stroke="#6b665c" stroke-width="3"/><path d="M4 5L32 26L60 5" fill="none" stroke="#6b665c" stroke-width="3" stroke-linejoin="round"/></svg><div class="env-red hide"><svg width="64" height="44" viewBox="0 0 64 44"><rect x="2" y="2" width="60" height="40" rx="5" fill="#fde6e3" stroke="#e0453a" stroke-width="3"/><path d="M4 5L32 26L60 5" fill="none" stroke="#e0453a" stroke-width="3" stroke-linejoin="round"/></svg></div></div></div></div><div class="pin " id="env-pin-2" style="left:1697px;top:660.1px"><div class="ctr a-c"><div class="env hide" id="env-2"><svg width="64" height="44" viewBox="0 0 64 44"><rect x="2" y="2" width="60" height="40" rx="5" fill="#ffffff" stroke="#6b665c" stroke-width="3"/><path d="M4 5L32 26L60 5" fill="none" stroke="#6b665c" stroke-width="3" stroke-linejoin="round"/></svg><div class="env-red hide"><svg width="64" height="44" viewBox="0 0 64 44"><rect x="2" y="2" width="60" height="40" rx="5" fill="#fde6e3" stroke="#e0453a" stroke-width="3"/><path d="M4 5L32 26L60 5" fill="none" stroke="#e0453a" stroke-width="3" stroke-linejoin="round"/></svg></div></div></div></div><div class="pin " id="hubx-pin" style="left:2080px;top:748px"><div class="ctr a-c"><svg id="hubx" class="hide" width="104" height="104" viewBox="0 0 20 20"><path d="M3 3L17 17M17 3L3 17" stroke="#e0453a" stroke-width="2.4" stroke-linecap="round"/></svg></div></div><div class="pin " id="l-file-pin" style="left:2080px;top:670.1px"><div class="wl"><div class="ctr a-b"><div class="lab lab-rs hide" id="l-file">文件 ✗ 被换了</div></div></div></div></div>
+        </div>
+      </div>
+
+      <div id="tl">
+        <div class="lab" id="tl-date">2025-02-21 · 以太坊</div>
+        <div id="tl-amt" class="hide">约 <span id="amt-n">0</span> 亿美元</div>
+        <div id="tl-fbi" class="hide">FBI 口径 · 事发时估值</div>
+      </div>
+
+      <div id="mx">
+        <div id="mx-title">每个点 = 1 亿美元</div>
+        <div id="mx-legend">
+          <span class="lg" id="lg-green"><i class="lgd" style="background:#1f9d55"></i>在钱包里 <b id="lg-g" class="hide">×15</b></span>
+          <span class="lg" id="lg-red"><i class="lgd" style="background:#e0453a"></i>被转走 <b id="lg-r">×0</b></span>
+        </div>
+        <div class="mx-t" id="mx-t0">事发前</div>
+        <div class="mx-t" id="mx-t1">2 月 21 日</div>
+        <div id="mx-line"></div>
+        <i class="slot" style="left:150px;top:150px"></i><i class="dot" id="dot-0" style="left:150px;top:150px"></i><i class="slot" style="left:226px;top:150px"></i><i class="dot" id="dot-1" style="left:226px;top:150px"></i><i class="slot" style="left:302px;top:150px"></i><i class="dot" id="dot-2" style="left:302px;top:150px"></i><i class="slot" style="left:378px;top:150px"></i><i class="dot" id="dot-3" style="left:378px;top:150px"></i><i class="slot" style="left:454px;top:150px"></i><i class="dot" id="dot-4" style="left:454px;top:150px"></i><i class="slot" style="left:150px;top:226px"></i><i class="dot" id="dot-5" style="left:150px;top:226px"></i><i class="slot" style="left:226px;top:226px"></i><i class="dot" id="dot-6" style="left:226px;top:226px"></i><i class="slot" style="left:302px;top:226px"></i><i class="dot" id="dot-7" style="left:302px;top:226px"></i><i class="slot" style="left:378px;top:226px"></i><i class="dot" id="dot-8" style="left:378px;top:226px"></i><i class="slot" style="left:454px;top:226px"></i><i class="dot" id="dot-9" style="left:454px;top:226px"></i><i class="slot" style="left:150px;top:302px"></i><i class="dot" id="dot-10" style="left:150px;top:302px"></i><i class="slot" style="left:226px;top:302px"></i><i class="dot" id="dot-11" style="left:226px;top:302px"></i><i class="slot" style="left:302px;top:302px"></i><i class="dot" id="dot-12" style="left:302px;top:302px"></i><i class="slot" style="left:378px;top:302px"></i><i class="dot" id="dot-13" style="left:378px;top:302px"></i><i class="slot" style="left:454px;top:302px"></i><i class="dot" id="dot-14" style="left:454px;top:302px"></i>
+      </div>
+
+      <div id="code" class="hide">
+        <div class="c-head">
+          <svg width="30" height="36" viewBox="0 0 30 36"><path d="M3 3h16l8 8v22H3z" fill="#ffffff" stroke="#1c1c1c" stroke-width="3" stroke-linejoin="round"/><path d="M19 3v8h8M8 18h14M8 24h14M8 30h9" fill="none" stroke="#1c1c1c" stroke-width="2.6"/></svg>
+          <span>实际签下的交易</span><span class="c-tag">链上可查</span>
+        </div>
+        <div class="c-row c-cm" id="cr-cm"># 签名人屏幕上看不到这些字段</div>
+        <div class="c-row" id="cr-to">to:        0x… (攻击者合约)</div>
+        <div class="c-row" id="cr-val">value:     0</div>
+        <div class="c-row" id="cr-data">data:      transfer(address,uint256)</div>
+        <div class="c-row" id="cr-op"><i id="op-bar"></i>operation: <span id="op0">0<i id="op-strike"></i></span><span id="op1" class="hide">1</span><span id="op-tag" class="hide">DELEGATECALL</span></div>
+      </div>
+
+      <svg id="curve" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <defs><mask id="cv-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
+          <path id="cv-mpath" d="M600,441C900,611 729.2,667.1 1009.2,707.1" fill="none" stroke="#ffffff" stroke-width="16" stroke-dasharray="504 504" stroke-dashoffset="504"/></mask></defs>
+        <path d="M600,441C900,611 729.2,667.1 1009.2,707.1" fill="none" stroke="#e0453a" stroke-width="4" stroke-dasharray="12 9" stroke-linecap="round" mask="url(#cv-mask)"/>
+        <circle id="cv-dot" class="hide" cx="600" cy="441" r="8" fill="#e0453a"/>
+        <circle id="cv-end" class="hide" cx="1009.2" cy="707.1" r="14" fill="none" stroke="#e0453a" stroke-width="4"/>
+      </svg>
+      <div id="fly-env"><div class="ctr a-c"><div class="env hide" id="fly-env-in"><svg width="64" height="44" viewBox="0 0 64 44"><rect x="2" y="2" width="60" height="40" rx="5" fill="#fde6e3" stroke="#e0453a" stroke-width="3"/><path d="M4 5L32 26L60 5" fill="none" stroke="#e0453a" stroke-width="3" stroke-linejoin="round"/></svg></div></div></div>
+
+      <div id="pills">
+        <div class="pill" id="pill-0">① 看到了什么</div>
+        <div class="pill" id="pill-1">② 签下了什么</div>
+        <div class="pill" id="pill-2">③ 断在哪一关</div>
+      </div>
+    </div>
+
+    <div id="veil" class="hide"></div>
+    <div id="end-card" class="hide">
+      <div id="end-title">攻击者不再偷私钥</div>
+      <div id="end-sub" class="hide">第 29 章 · 签名路径</div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const K = {"CAM":{"c1":{"x":-1926.4,"y":-126.3,"scale":1.12},"c1b":{"x":-2222.8,"y":-199.8,"scale":1.24},"c2":{"x":-459.5,"y":-175,"scale":1.05},"c3":{"x":-970.6,"y":-667,"scale":1.6},"c45":{"x":-1039.5,"y":94.1,"scale":0.85},"c6":{"x":-129,"y":71,"scale":0.66},"c7":{"x":-620,"y":20,"scale":0.85}},"P0":[600,441],"P1":[900,611],"P2":[729.1730606973324,667.137753939689],"E":[1009.1730606973324,707.137753939689],"L":504,"hub":[2079.9999999999995,748.0384757729335],"envStart":[[996.9817672736716,540.0959554687417],[1346.9817672736715,600.095955468742],[1696.9817672736713,660.0959554687417]],"vOrigin":[2470,760],"gateOrigins":[[999.9999999999999,999.9999999999999],[1270.3201746153673,905.3598880020772],[1540.6403492307345,810.7197760041547],[1810.9605238461018,716.0796640062321],[2081.280698461469,621.4395520083094],[2351.6008730768363,526.7994400103869],[2621.9210476922035,432.15932801246436]],"gstep":[270.3201746153673,-94.6401119979226],"genvStart":[787.020468484862,1039.9239205742583],"objCentre":[1630,700]};
+      const IO = "power2.inOut";
+      const tl = gsap.timeline({ paused: true });
+      const pop = (s, t, d) => tl.fromTo(s, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: d || 0.25, ease: "back.out(1.4)" }, t);
+      const out = (s, t, d) => tl.to(s, { opacity: 0, duration: d || 0.2, ease: "power2.in" }, t);
+      const fade = (s, t, d, v) => tl.to(s, { opacity: v === undefined ? 1 : v, duration: d || 0.25, ease: "power1.out" }, t);
+      const cam = (t, c, d) => {
+        tl.to("#cam", { x: c.x, y: c.y, scale: c.scale, duration: d || 1.0, ease: IO }, t);
+        tl.to(".wl", { scale: 1 / c.scale, duration: d || 1.0, ease: IO }, t);
+      };
+      const roll = (sel, a, b, t, d, pre, ez) => {
+        const el = document.querySelector(sel); const o = { v: a };
+        tl.fromTo(o, { v: a }, { v: b, duration: d, ease: ez || "power1.out", immediateRender: false, onUpdate: () => { el.textContent = (pre || "") + Math.round(o.v); } }, t);
+      };
+      const pill = (n, t) => [0, 1, 2].forEach((j) => tl.to("#pill-" + j, {
+        backgroundColor: j === n ? "#1c1c1c" : "#ffffff", color: j === n ? "#ffffff" : "#1c1c1c", borderColor: j === n ? "#1c1c1c" : "#e2ddd3",
+        opacity: j === n ? 1 : 0.5, duration: 0.3, ease: "power1.out" }, t));
+
+      // ---------- frame 0: the whole world is already there
+      tl.set("#cam", K.CAM.c1, 0);
+      tl.set(".wl", { scale: 1 / K.CAM.c1.scale }, 0);
+      tl.set("#l-vault, #l-brw, #l-s3", { opacity: 0.55 }, 0);
+      K.gateOrigins.forEach((p, i) => tl.set("#gate-" + i, { scaleY: 0, svgOrigin: p[0] + " " + p[1] }, 0));
+
+      // ---------- l1 · 0–7.4 · the cold wallet and the loss
+      tl.to("#l-vault", { opacity: 1, backgroundColor: "#1d93ba", borderColor: "#1d93ba", color: "#ffffff", duration: 0.25 }, 2.46);
+      tl.fromTo("#l-vault", { scale: 1.12 }, { scale: 1, duration: 0.35, ease: "back.out(1.4)", immediateRender: false }, 2.46);
+      cam(3.60, K.CAM.c1b, 1.0);
+      pop("#tl-amt", 5.23, 0.3);
+      roll("#amt-n", 0, 15, 5.23, 0.9);
+      // dots are full from frame 0; at "15 亿" the legend counts them while each dot pulses once
+      fade("#lg-g", 5.23, 0.1);
+      roll("#lg-g", 1, 15, 5.23, 0.9, "×", "none");
+      for (let i = 0; i < 15; i++) {
+        tl.to("#dot-" + i, { scale: 1.18, duration: 0.12, ease: "power2.out" }, 5.23 + i * 0.06);
+        tl.to("#dot-" + i, { scale: 1, duration: 0.18, ease: "power2.in" }, 5.35 + i * 0.06);
+      }
+      pop("#tl-fbi", 5.40, 0.25);
+      out("#tl, #mx", 7.45, 0.25);
+
+      // ---------- l2 · 7.4–13 · keys locked, signers confirm
+      cam(7.30, K.CAM.c2, 1.1);
+      for (let i = 0; i < 3; i++) pop("#lk-" + i, 7.53 + i * 0.08, 0.3);
+      for (let i = 0; i < 3; i++) pop("#lk-ck-" + i, 8.68 + i * 0.06, 0.25);
+      pop("#l-key", 8.75);
+      for (let i = 0; i < 3; i++) {
+        const t = 9.56 + i * 0.25;
+        fade("#scr-on-" + i, t, 0.2);
+        fade("#sg-" + i, t, 0.4);
+        fade("#ui-" + i, t + 0.1, 0.2);
+      }
+      pop("#l-sign", 9.62);
+      [11.15, 11.45, 12.48].forEach((t, i) => {
+        tl.to("#btn-" + i, { attr: { fill: "#1f9d55" }, duration: 0.15 }, t);
+        const dx = K.hub[0] - K.envStart[i][0] + (i - 1) * 10, dy = K.hub[1] - K.envStart[i][1] - i * 8;
+        fade("#env-" + i, t + 0.05, 0.1);
+        tl.fromTo("#env-" + i, { x: 0 }, { x: dx, duration: 0.75, ease: IO }, t + 0.05);
+        tl.fromTo("#env-" + i, { y: 0 }, { y: Math.min(0, dy) - 90, duration: 0.37, ease: "power2.out" }, t + 0.05);
+        tl.to("#env-" + i, { y: dy, duration: 0.38, ease: "power2.in" }, t + 0.42);
+      });
+
+      // ---------- l3 · 13–18 · what the screen showed
+      cam(14.20, K.CAM.c3, 1.0);
+      pill(0, 14.40);
+      for (let i = 0; i < 3; i++) fade("#ui2-" + i, 14.45, 0.2);
+      fade("#brw-hint", 14.70, 0.4, 0.9);
+      fade("#l-brw, #l-s3", 14.70, 0.3);
+      for (let i = 0; i < 3; i++) tl.fromTo("#ui3-" + i, { opacity: 0, scale: 0.8, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(1.4)" }, 16.09);
+
+      // ---------- l4 · 18–23.7 · what was actually signed
+      cam(17.95, K.CAM.c45, 1.1);
+      out("#l-sign, #l-key", 17.95, 0.2);
+      pill(1, 18.13);
+      tl.fromTo("#code", { x: -880, opacity: 1 }, { x: 0, opacity: 1, duration: 0.5, ease: "expo.out" }, 18.13);
+      tl.to("#cr-to, #cr-val, #cr-data", { opacity: 0.3, duration: 0.3, ease: "power1.out" }, 20.08);
+      tl.fromTo("#op-bar", { scaleY: 0 }, { scaleY: 1, duration: 0.2, ease: "power2.out" }, 20.82);
+      // 20.42–20.82 and 21.02–21.85: hold. 21.85: the one strong moment.
+      tl.fromTo("#op-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.18, ease: "power2.out" }, 21.85);
+      tl.to("#op0", { color: "#7d776b", duration: 0.18 }, 21.85);
+      tl.to("#cr-op", { backgroundColor: "#fdeae7", duration: 0.15 }, 21.85);
+      tl.fromTo("#op1", { opacity: 0, y: -40, scale: 1.5 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "back.out(1.6)" }, 21.90);
+      pop("#op-tag", 22.05, 0.25);
+      tl.fromTo("#stage", { scale: 1, transformOrigin: "330px 441px" }, { scale: 1.06, transformOrigin: "330px 441px", duration: 0.6, ease: "power2.out" }, 21.85);
+      tl.to("#stage", { scale: 1, duration: 0.45, ease: IO }, 23.30);
+
+      // ---------- l5 · 23.7–31 · one number reaches the wallet
+      pop("#cv-dot", 23.95, 0.2);
+      tl.fromTo("#cv-mpath", { strokeDashoffset: K.L }, { strokeDashoffset: 0, duration: 0.6, ease: IO }, 23.95);
+      pop("#cv-end", 24.50, 0.25);
+      pop("#l-impl", 24.55);
+      const fp = { p: 0 };
+      const bz = (t) => [0, 1].map((k) => (1 - t) ** 3 * K.P0[k] + 3 * (1 - t) ** 2 * t * K.P1[k] + 3 * (1 - t) * t * t * K.P2[k] + t ** 3 * K.E[k]);
+      tl.set("#fly-env", { x: K.P0[0], y: K.P0[1] }, 0);
+      fade("#fly-env-in", 26.07, 0.1);
+      tl.fromTo(fp, { p: 0 }, { p: 1, duration: 0.85, ease: IO, onUpdate: () => { const q = bz(fp.p); gsap.set("#fly-env", { x: q[0], y: q[1] }); } }, 26.07);
+      tl.to("#fly-env-in", { scale: 0.4, opacity: 0, duration: 0.18, ease: "power2.in" }, 26.80);
+      fade("#mx", 26.50, 0.3);
+      fade("#v-impl", 27.77, 0.25, 0);
+      fade("#v-impl-wire", 27.77, 0.25);
+      pop("#bdg-impl", 27.85, 0.3);
+      pop("#l-slot", 28.05);
+      tl.fromTo("#v-atk", { opacity: 0, y: -240 }, { opacity: 1, y: 0, duration: 0.5, ease: "back.out(1.4)" }, 28.63);
+      pop("#l-atk", 28.95);
+      for (let i = 0; i < 15; i++) tl.to("#dot-" + i, { backgroundColor: "#e0453a", y: 270, duration: 0.4, ease: IO }, 28.63 + i * 0.06);
+      // the gold is pulled up out of the vault and away, with the dots
+      for (let i = 0; i < 11; i++) tl.to("#gold-" + i, { x: 240, y: -460, opacity: 0, duration: 0.6, ease: "power2.in" }, 28.70 + i * 0.08);
+      roll("#lg-g", 15, 0, 28.70, 1.15, "×", "none");
+      roll("#lg-r", 0, 15, 28.70, 1.15, "×", "none");
+      fade("#lg-red", 28.63, 0.3);
+      fade("#lg-green", 28.63, 0.3, 0.45);
+
+      // ---------- l6 · 31–37.9 · the keys were fine; the file was swapped
+      out("#code, #curve, #mx, #l-slot, #l-impl", 31.15, 0.25);
+      cam(31.30, K.CAM.c6, 1.1);
+      out("#l-key", 31.40, 0.15);
+      pop("#l-key2", 31.50);
+      fade("#l-sign", 31.50, 0.25, 0.4);
+      fade("#l-brw", 31.30, 0.25, 0.4);
+      for (let i = 0; i < 3; i++) {
+        tl.to("#lk-ck-" + i, { scale: 1.15, duration: 0.15, ease: "power2.out" }, 31.45 + i * 0.06);
+        tl.to("#lk-ck-" + i, { scale: 1, duration: 0.2, ease: "power2.in" }, 31.60 + i * 0.06);
+      }
+      fade("#brw-solid", 33.81, 0.3, 0);
+      fade("#brw-hint", 33.81, 0.2, 0);
+      fade("#brw-wire", 33.81, 0.3);
+      pop("#bdg-brw", 33.90, 0.3);
+      pop("#l-js", 34.00);
+      fade(".env-red", 35.43, 0.2);
+      tl.fromTo("#hubx", { opacity: 0, scale: 1.4 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.4)" }, 35.43);
+      pop("#l-file", 35.55);
+
+      // ---------- l7 · 38–43.2 · the seven gates
+      pill(2, 38.10);
+      tl.to("#objlayer", { opacity: 0, scale: 0.94, transformOrigin: K.objCentre[0] + "px " + K.objCentre[1] + "px", duration: 0.5, ease: "power2.in" }, 38.10);
+      cam(38.10, K.CAM.c7, 1.1);
+      fade("#road-g", 38.70, 0.4);
+      K.gateOrigins.forEach((p, i) => {
+        const t = 39.58 + i * 0.35;
+        tl.to("#gate-" + i, { scaleY: 1, svgOrigin: p[0] + " " + p[1], duration: 0.45, ease: "back.out(1.4)" }, t);
+        pop("#l-g" + i, t + 0.2);
+      });
+      const du = 2390;
+      fade("#genv", 39.70, 0.15);
+      tl.fromTo("#genv", { x: 0, y: 0 }, { x: du * 0.8192, y: -du * 0.5736 * 0.5, duration: 2.45, ease: "none" }, 39.75);
+      fade("#gate-solid-3", 42.36, 0.25, 0);
+      fade("#gg-3", 42.36, 0.25, 0);
+      fade("#gate-wire-3", 42.36, 0.25);
+      pop("#bdg-g3", 42.42, 0.3);
+      tl.to("#l-g3", { backgroundColor: "#e0453a", borderColor: "#e0453a", color: "#ffffff", duration: 0.2 }, 42.36);
+
+      // ---------- end card · 43.2–47.16 (still from 43.95)
+      fade("#veil", 43.20, 0.4, 0.62);
+      out("#genv", 43.20, 0.2);
+      tl.fromTo("#end-card", { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.45, ease: "expo.out" }, 43.30);
+      fade("#end-sub", 43.65, 0.3);
+
+      window.__timelines["story"] = tl;
+    })();
+  </script>
+</template>

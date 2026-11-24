@@ -1,0 +1,2930 @@
+{
+ "id": "seg3",
+ "title": "攻击面地图",
+ "pill": 3,
+ "total": 160.95,
+ "lines": [
+  {
+   "id": "seg3-00",
+   "text": "知道了合约是什么，我们跟着一笔交易，看攻击从哪里进来。",
+   "spoken": "知道了合约是什么，我们跟着一笔交易，看攻击从哪里进来。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-00.mp3",
+   "start": 1.6,
+   "dur": 4.992,
+   "speechStart": 1.698,
+   "speechEnd": 5.757
+  },
+  {
+   "id": "seg3-01",
+   "text": "用户或者攻击者的账户，先经过钱包和前端的签名界面。",
+   "spoken": "用户或者攻击者的账户，先经过钱包和前端的签名界面。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-01.mp3",
+   "start": 6.812,
+   "dur": 5.376,
+   "speechStart": 6.91,
+   "speechEnd": 11.338
+  },
+  {
+   "id": "seg3-02",
+   "text": "交易进入内存池，在那里公开排队。",
+   "spoken": "交易进入内存池，在那里公开排队。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-02.mp3",
+   "start": 12.408,
+   "dur": 3.72,
+   "speechStart": 12.506,
+   "speechEnd": 15.279
+  },
+  {
+   "id": "seg3-03",
+   "text": "区块构建者或者排序器，决定它和别的交易谁先谁后。",
+   "spoken": "区块构建者或者排序器，决定它和别的交易谁先谁后。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-03.mp3",
+   "start": 16.348,
+   "dur": 5.496,
+   "speechStart": 16.446,
+   "speechEnd": 21.017
+  },
+  {
+   "id": "seg3-04",
+   "text": "然后它到达目标合约，执行业务逻辑。",
+   "spoken": "然后它到达目标合约，执行业务逻辑。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-04.mp3",
+   "start": 22.064,
+   "dur": 4.224,
+   "speechStart": 22.162,
+   "speechEnd": 25.447
+  },
+  {
+   "id": "seg3-05",
+   "text": "目标合约会去调用外部合约，比如代币、DEX、预言机。它背后还连着代理和实现，也就是升级权限。",
+   "spoken": "目标合约会去掉用外部合约，比如代币、DEX、预言机。它背后还连着代理和实现，也就是升级权限。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-05.mp3",
+   "start": 26.508,
+   "dur": 10.104,
+   "speechStart": 26.606,
+   "speechEnd": 35.758
+  },
+  {
+   "id": "seg3-06",
+   "text": "有的交易，还要经过跨链桥，去到另一条链上的合约。",
+   "spoken": "有的交易，还要经过跨链桥，去到另一条链上的合约。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-06.mp3",
+   "start": 36.832,
+   "dur": 4.656,
+   "speechStart": 36.93,
+   "speechEnd": 40.656
+  },
+  {
+   "id": "seg3-07",
+   "text": "这条路上，有五个地方最危险：签名界面、内存池、外部合约、升级权限、跨链桥。",
+   "spoken": "这条路上，有五个地方最危险：签名界面、内存池、外部合约、升级权限、跨链桥。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-07.mp3",
+   "start": 41.708,
+   "dur": 8.616,
+   "speechStart": 41.806,
+   "speechEnd": 49.496
+  },
+  {
+   "id": "seg3-08",
+   "text": "它们叫信任边界。数据和控制权在这里跨过去，漏洞也最集中。",
+   "spoken": "它们叫信任边界。数据和控制权在这里跨过去，漏洞也最集中。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-08.mp3",
+   "start": 50.544,
+   "dur": 6.312,
+   "speechStart": 50.642,
+   "speechEnd": 56.032
+  },
+  {
+   "id": "seg3-09",
+   "text": "注意一个往回走的箭头。外部合约可以在你的函数执行到一半时，调回你的合约。重入就发生在这里。",
+   "spoken": "注意一个往回走的箭头。外部合约可以在你的函数执行到一半时，掉回你的合约。虫入就发生在这里。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-09.mp3",
+   "start": 57.076,
+   "dur": 8.712,
+   "speechStart": 57.174,
+   "speechEnd": 64.969
+  },
+  {
+   "id": "seg3-10",
+   "text": "内存池和构建者决定交易的顺序。顺序本身，也可以被利用。",
+   "spoken": "内存池和构建者决定交易的顺序。顺序本身，也可以被利用。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-10.mp3",
+   "start": 66.008,
+   "dur": 6.312,
+   "speechStart": 66.106,
+   "speechEnd": 71.472
+  },
+  {
+   "id": "seg3-11",
+   "text": "这张图也有局限。它没画链本身的共识和节点。",
+   "spoken": "这张图也有局限。它没画链本身的共识和节点。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-11.mp3",
+   "start": 72.54,
+   "dur": 4.8,
+   "speechStart": 72.638,
+   "speechEnd": 76.504
+  },
+  {
+   "id": "seg3-12",
+   "text": "链被攻破，或者节点数据有误，合约写得再对也没用。",
+   "spoken": "链被攻破，或者节点数据有误，合约写得再对也没用。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-12.mp3",
+   "start": 77.56,
+   "dur": 5.328,
+   "speechStart": 77.658,
+   "speechEnd": 82.062
+  },
+  {
+   "id": "seg3-13",
+   "text": "沿着这张图，可以把漏洞归成六大类。",
+   "spoken": "沿着这张图，可以把漏洞归成六大类。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-13.mp3",
+   "start": 83.108,
+   "dur": 3.936,
+   "speechStart": 83.206,
+   "speechEnd": 86.206
+  },
+  {
+   "id": "seg3-14",
+   "text": "第一类，控制流。外部调用让攻击者插队执行，比如重入。",
+   "spoken": "第一类，控制流。外部掉用让攻击者插队执行，比如虫入。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-14.mp3",
+   "start": 87.264,
+   "dur": 5.976,
+   "speechStart": 87.362,
+   "speechEnd": 92.419
+  },
+  {
+   "id": "seg3-15",
+   "text": "第二类，权限。不该调用的人调用了，比如缺少修饰器、合约未初始化、私钥泄露。",
+   "spoken": "第二类，权限。不该掉用的人掉用了，比如缺少修饰器、合约未初始化、私钥泄漏。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-15.mp3",
+   "start": 93.46,
+   "dur": 8.016,
+   "speechStart": 93.558,
+   "speechEnd": 100.639
+  },
+  {
+   "id": "seg3-16",
+   "text": "第三类，数学。数字算错了，比如溢出、精度损失、舍入方向。",
+   "spoken": "第三类，数学。数字算错了，比如溢出、精度损失、舍入方向。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-16.mp3",
+   "start": 101.696,
+   "dur": 7.152,
+   "speechStart": 101.794,
+   "speechEnd": 107.994
+  },
+  {
+   "id": "seg3-17",
+   "text": "第四类，数据可信度。合约相信了可以被操纵的数据，比如现货价格预言机、签名重放。",
+   "spoken": "第四类，数据可信度。合约相信了可以被操纵的数据，比如现货价格预言机、签名虫放。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-17.mp3",
+   "start": 109.068,
+   "dur": 8.088,
+   "speechStart": 109.166,
+   "speechEnd": 116.318
+  },
+  {
+   "id": "seg3-18",
+   "text": "第五类，经济设计。代码按规格执行，但规格本身可以被套利。",
+   "spoken": "第五类，经济设计。代码按规格执行，但规格本身可以被套利。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-18.mp3",
+   "start": 117.376,
+   "dur": 6.792,
+   "speechStart": 117.474,
+   "speechEnd": 123.328
+  },
+  {
+   "id": "seg3-19",
+   "text": "第六类，系统与运营。代码之外的环节失守，比如跨链验证、多签私钥、前端篡改、社会工程。",
+   "spoken": "第六类，系统与运营。代码之外的环节失守，比如跨链验证、多签私钥、前端篡改、社会工程。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-19.mp3",
+   "start": 124.388,
+   "dur": 9.456,
+   "speechStart": 124.486,
+   "speechEnd": 133.007
+  },
+  {
+   "id": "seg3-20",
+   "text": "真实事故往往是几类叠加。2023 年的 Euler，就是业务逻辑缺陷，加上闪电贷放大。",
+   "spoken": "真实事故往往是几类叠加。2023 年的 Euler，就是业务逻辑缺陷，加上闪电贷放大。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-20.mp3",
+   "start": 134.064,
+   "dur": 7.92,
+   "speechStart": 134.162,
+   "speechEnd": 141.135
+  },
+  {
+   "id": "seg3-21",
+   "text": "第六类，又可以拆成两块。一块是链本身，和你读链的方式。另一块是人、设备和流程。",
+   "spoken": "第六类，又可以拆成两块。一块是链本身，和你读链的方式。另一块是人、设备和流程。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-21.mp3",
+   "start": 142.204,
+   "dur": 9.0,
+   "speechStart": 142.302,
+   "speechEnd": 150.371
+  },
+  {
+   "id": "seg3-22",
+   "text": "社工常常是入口，私钥或者前端是落点。AI 不是独立的攻击面，而是攻防两边的放大器。",
+   "spoken": "社工常常是入口，私钥或者前端是落点。AI 不是独立的攻击面，而是攻防两边的放大器。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep01/audio/lines/seg3-22.mp3",
+   "start": 151.424,
+   "dur": 8.328,
+   "speechStart": 151.522,
+   "speechEnd": 158.924
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "知道",
+   "start": 1.698,
+   "end": 2.019
+  },
+  {
+   "line": 0,
+   "text": "了",
+   "start": 2.019,
+   "end": 2.09
+  },
+  {
+   "line": 0,
+   "text": "合约",
+   "start": 2.114,
+   "end": 2.34
+  },
+  {
+   "line": 0,
+   "text": "是",
+   "start": 2.352,
+   "end": 2.448
+  },
+  {
+   "line": 0,
+   "text": "什么",
+   "start": 2.448,
+   "end": 2.793
+  },
+  {
+   "line": 0,
+   "text": "我们",
+   "start": 3.126,
+   "end": 3.567
+  },
+  {
+   "line": 0,
+   "text": "跟着",
+   "start": 3.579,
+   "end": 3.757
+  },
+  {
+   "line": 0,
+   "text": "一",
+   "start": 3.769,
+   "end": 3.84
+  },
+  {
+   "line": 0,
+   "text": "笔",
+   "start": 3.84,
+   "end": 3.924
+  },
+  {
+   "line": 0,
+   "text": "交易",
+   "start": 3.936,
+   "end": 4.364
+  },
+  {
+   "line": 0,
+   "text": "看",
+   "start": 4.579,
+   "end": 4.793
+  },
+  {
+   "line": 0,
+   "text": "攻击",
+   "start": 4.793,
+   "end": 5.055
+  },
+  {
+   "line": 0,
+   "text": "从",
+   "start": 5.079,
+   "end": 5.198
+  },
+  {
+   "line": 0,
+   "text": "哪里",
+   "start": 5.21,
+   "end": 5.424
+  },
+  {
+   "line": 0,
+   "text": "进来",
+   "start": 5.436,
+   "end": 5.757
+  },
+  {
+   "line": 1,
+   "text": "用户",
+   "start": 6.91,
+   "end": 7.386
+  },
+  {
+   "line": 1,
+   "text": "或者",
+   "start": 7.41,
+   "end": 7.648
+  },
+  {
+   "line": 1,
+   "text": "攻击者",
+   "start": 7.66,
+   "end": 8.052
+  },
+  {
+   "line": 1,
+   "text": "的",
+   "start": 8.052,
+   "end": 8.112
+  },
+  {
+   "line": 1,
+   "text": "账户",
+   "start": 8.124,
+   "end": 8.6
+  },
+  {
+   "line": 1,
+   "text": "先",
+   "start": 8.779,
+   "end": 9.041
+  },
+  {
+   "line": 1,
+   "text": "经过",
+   "start": 9.041,
+   "end": 9.35
+  },
+  {
+   "line": 1,
+   "text": "钱包",
+   "start": 9.374,
+   "end": 9.91
+  },
+  {
+   "line": 1,
+   "text": "和",
+   "start": 9.933,
+   "end": 10.1
+  },
+  {
+   "line": 1,
+   "text": "前端",
+   "start": 10.112,
+   "end": 10.481
+  },
+  {
+   "line": 1,
+   "text": "的",
+   "start": 10.481,
+   "end": 10.6
+  },
+  {
+   "line": 1,
+   "text": "签名",
+   "start": 10.624,
+   "end": 10.981
+  },
+  {
+   "line": 1,
+   "text": "界面",
+   "start": 10.993,
+   "end": 11.338
+  },
+  {
+   "line": 2,
+   "text": "交易",
+   "start": 12.506,
+   "end": 12.887
+  },
+  {
+   "line": 2,
+   "text": "进入",
+   "start": 12.898,
+   "end": 13.148
+  },
+  {
+   "line": 2,
+   "text": "内",
+   "start": 13.172,
+   "end": 13.303
+  },
+  {
+   "line": 2,
+   "text": "存池",
+   "start": 13.303,
+   "end": 13.899
+  },
+  {
+   "line": 2,
+   "text": "在",
+   "start": 14.065,
+   "end": 14.208
+  },
+  {
+   "line": 2,
+   "text": "那里",
+   "start": 14.22,
+   "end": 14.494
+  },
+  {
+   "line": 2,
+   "text": "公开",
+   "start": 14.518,
+   "end": 14.875
+  },
+  {
+   "line": 2,
+   "text": "排队",
+   "start": 14.887,
+   "end": 15.279
+  },
+  {
+   "line": 3,
+   "text": "区块",
+   "start": 16.446,
+   "end": 16.838
+  },
+  {
+   "line": 3,
+   "text": "构建",
+   "start": 16.85,
+   "end": 17.184
+  },
+  {
+   "line": 3,
+   "text": "者",
+   "start": 17.184,
+   "end": 17.446
+  },
+  {
+   "line": 3,
+   "text": "或者",
+   "start": 17.553,
+   "end": 17.779
+  },
+  {
+   "line": 3,
+   "text": "排序器",
+   "start": 17.791,
+   "end": 18.41
+  },
+  {
+   "line": 3,
+   "text": "决定",
+   "start": 18.755,
+   "end": 19.029
+  },
+  {
+   "line": 3,
+   "text": "它",
+   "start": 19.041,
+   "end": 19.16
+  },
+  {
+   "line": 3,
+   "text": "和",
+   "start": 19.172,
+   "end": 19.279
+  },
+  {
+   "line": 3,
+   "text": "别的",
+   "start": 19.291,
+   "end": 19.553
+  },
+  {
+   "line": 3,
+   "text": "交易",
+   "start": 19.565,
+   "end": 20.005
+  },
+  {
+   "line": 3,
+   "text": "谁",
+   "start": 20.112,
+   "end": 20.422
+  },
+  {
+   "line": 3,
+   "text": "先",
+   "start": 20.422,
+   "end": 20.588
+  },
+  {
+   "line": 3,
+   "text": "谁",
+   "start": 20.588,
+   "end": 20.791
+  },
+  {
+   "line": 3,
+   "text": "后",
+   "start": 20.791,
+   "end": 21.017
+  },
+  {
+   "line": 4,
+   "text": "然后",
+   "start": 22.162,
+   "end": 22.733
+  },
+  {
+   "line": 4,
+   "text": "它",
+   "start": 22.852,
+   "end": 23.054
+  },
+  {
+   "line": 4,
+   "text": "到达",
+   "start": 23.066,
+   "end": 23.388
+  },
+  {
+   "line": 4,
+   "text": "目标",
+   "start": 23.412,
+   "end": 23.685
+  },
+  {
+   "line": 4,
+   "text": "合约",
+   "start": 23.697,
+   "end": 24.102
+  },
+  {
+   "line": 4,
+   "text": "执行",
+   "start": 24.304,
+   "end": 24.757
+  },
+  {
+   "line": 4,
+   "text": "业务",
+   "start": 24.781,
+   "end": 25.043
+  },
+  {
+   "line": 4,
+   "text": "逻辑",
+   "start": 25.054,
+   "end": 25.447
+  },
+  {
+   "line": 5,
+   "text": "目标",
+   "start": 26.606,
+   "end": 26.927
+  },
+  {
+   "line": 5,
+   "text": "合约",
+   "start": 26.939,
+   "end": 27.368
+  },
+  {
+   "line": 5,
+   "text": "会",
+   "start": 27.475,
+   "end": 27.701
+  },
+  {
+   "line": 5,
+   "text": "去调",
+   "start": 27.713,
+   "end": 28.106
+  },
+  {
+   "line": 5,
+   "text": "用",
+   "start": 28.129,
+   "end": 28.308
+  },
+  {
+   "line": 5,
+   "text": "外部",
+   "start": 28.32,
+   "end": 28.653
+  },
+  {
+   "line": 5,
+   "text": "合约",
+   "start": 28.665,
+   "end": 29.07
+  },
+  {
+   "line": 5,
+   "text": "比如",
+   "start": 29.403,
+   "end": 29.677
+  },
+  {
+   "line": 5,
+   "text": "代币",
+   "start": 29.701,
+   "end": 30.165
+  },
+  {
+   "line": 5,
+   "text": "DEX",
+   "start": 30.439,
+   "end": 30.903
+  },
+  {
+   "line": 5,
+   "text": "预言机",
+   "start": 31.153,
+   "end": 31.737
+  },
+  {
+   "line": 5,
+   "text": "它",
+   "start": 32.282,
+   "end": 32.425
+  },
+  {
+   "line": 5,
+   "text": "背后",
+   "start": 32.437,
+   "end": 32.901
+  },
+  {
+   "line": 5,
+   "text": "还",
+   "start": 32.925,
+   "end": 33.079
+  },
+  {
+   "line": 5,
+   "text": "连着",
+   "start": 33.091,
+   "end": 33.282
+  },
+  {
+   "line": 5,
+   "text": "代理",
+   "start": 33.306,
+   "end": 33.627
+  },
+  {
+   "line": 5,
+   "text": "和",
+   "start": 33.651,
+   "end": 33.734
+  },
+  {
+   "line": 5,
+   "text": "实现",
+   "start": 33.746,
+   "end": 34.282
+  },
+  {
+   "line": 5,
+   "text": "也",
+   "start": 34.579,
+   "end": 34.722
+  },
+  {
+   "line": 5,
+   "text": "就",
+   "start": 34.722,
+   "end": 34.829
+  },
+  {
+   "line": 5,
+   "text": "是",
+   "start": 34.829,
+   "end": 34.925
+  },
+  {
+   "line": 5,
+   "text": "升级",
+   "start": 34.948,
+   "end": 35.294
+  },
+  {
+   "line": 5,
+   "text": "权限",
+   "start": 35.306,
+   "end": 35.758
+  },
+  {
+   "line": 6,
+   "text": "有的",
+   "start": 36.93,
+   "end": 37.168
+  },
+  {
+   "line": 6,
+   "text": "交易",
+   "start": 37.18,
+   "end": 37.632
+  },
+  {
+   "line": 6,
+   "text": "还要",
+   "start": 37.93,
+   "end": 38.144
+  },
+  {
+   "line": 6,
+   "text": "经过",
+   "start": 38.156,
+   "end": 38.43
+  },
+  {
+   "line": 6,
+   "text": "跨",
+   "start": 38.453,
+   "end": 38.608
+  },
+  {
+   "line": 6,
+   "text": "链",
+   "start": 38.608,
+   "end": 38.739
+  },
+  {
+   "line": 6,
+   "text": "桥",
+   "start": 38.739,
+   "end": 39.072
+  },
+  {
+   "line": 6,
+   "text": "去",
+   "start": 39.263,
+   "end": 39.442
+  },
+  {
+   "line": 6,
+   "text": "到",
+   "start": 39.442,
+   "end": 39.561
+  },
+  {
+   "line": 6,
+   "text": "另",
+   "start": 39.584,
+   "end": 39.691
+  },
+  {
+   "line": 6,
+   "text": "一条",
+   "start": 39.692,
+   "end": 39.93
+  },
+  {
+   "line": 6,
+   "text": "链",
+   "start": 39.942,
+   "end": 40.072
+  },
+  {
+   "line": 6,
+   "text": "上",
+   "start": 40.072,
+   "end": 40.203
+  },
+  {
+   "line": 6,
+   "text": "的",
+   "start": 40.203,
+   "end": 40.275
+  },
+  {
+   "line": 6,
+   "text": "合约",
+   "start": 40.287,
+   "end": 40.656
+  },
+  {
+   "line": 7,
+   "text": "这",
+   "start": 41.806,
+   "end": 41.972
+  },
+  {
+   "line": 7,
+   "text": "条",
+   "start": 41.972,
+   "end": 42.091
+  },
+  {
+   "line": 7,
+   "text": "路上",
+   "start": 42.103,
+   "end": 42.544
+  },
+  {
+   "line": 7,
+   "text": "有",
+   "start": 42.806,
+   "end": 42.948
+  },
+  {
+   "line": 7,
+   "text": "五",
+   "start": 42.96,
+   "end": 43.115
+  },
+  {
+   "line": 7,
+   "text": "个",
+   "start": 43.115,
+   "end": 43.198
+  },
+  {
+   "line": 7,
+   "text": "地方",
+   "start": 43.21,
+   "end": 43.496
+  },
+  {
+   "line": 7,
+   "text": "最",
+   "start": 43.52,
+   "end": 43.651
+  },
+  {
+   "line": 7,
+   "text": "危险",
+   "start": 43.651,
+   "end": 44.079
+  },
+  {
+   "line": 7,
+   "text": "签名",
+   "start": 44.377,
+   "end": 44.77
+  },
+  {
+   "line": 7,
+   "text": "界面",
+   "start": 44.782,
+   "end": 45.187
+  },
+  {
+   "line": 7,
+   "text": "内",
+   "start": 45.484,
+   "end": 45.663
+  },
+  {
+   "line": 7,
+   "text": "存池",
+   "start": 45.675,
+   "end": 46.27
+  },
+  {
+   "line": 7,
+   "text": "外部",
+   "start": 46.556,
+   "end": 46.913
+  },
+  {
+   "line": 7,
+   "text": "合约",
+   "start": 46.925,
+   "end": 47.341
+  },
+  {
+   "line": 7,
+   "text": "升级",
+   "start": 47.52,
+   "end": 47.96
+  },
+  {
+   "line": 7,
+   "text": "权限",
+   "start": 47.972,
+   "end": 48.472
+  },
+  {
+   "line": 7,
+   "text": "跨",
+   "start": 48.71,
+   "end": 49.02
+  },
+  {
+   "line": 7,
+   "text": "链",
+   "start": 49.02,
+   "end": 49.151
+  },
+  {
+   "line": 7,
+   "text": "桥",
+   "start": 49.151,
+   "end": 49.496
+  },
+  {
+   "line": 8,
+   "text": "它们",
+   "start": 50.642,
+   "end": 50.915
+  },
+  {
+   "line": 8,
+   "text": "叫",
+   "start": 50.927,
+   "end": 51.058
+  },
+  {
+   "line": 8,
+   "text": "信任",
+   "start": 51.058,
+   "end": 51.368
+  },
+  {
+   "line": 8,
+   "text": "边界",
+   "start": 51.38,
+   "end": 51.82
+  },
+  {
+   "line": 8,
+   "text": "数据",
+   "start": 52.365,
+   "end": 52.842
+  },
+  {
+   "line": 8,
+   "text": "和",
+   "start": 52.865,
+   "end": 52.949
+  },
+  {
+   "line": 8,
+   "text": "控制权",
+   "start": 52.961,
+   "end": 53.615
+  },
+  {
+   "line": 8,
+   "text": "在",
+   "start": 53.711,
+   "end": 53.877
+  },
+  {
+   "line": 8,
+   "text": "这里",
+   "start": 53.877,
+   "end": 54.032
+  },
+  {
+   "line": 8,
+   "text": "跨",
+   "start": 54.044,
+   "end": 54.282
+  },
+  {
+   "line": 8,
+   "text": "过去",
+   "start": 54.282,
+   "end": 54.663
+  },
+  {
+   "line": 8,
+   "text": "漏洞",
+   "start": 54.937,
+   "end": 55.377
+  },
+  {
+   "line": 8,
+   "text": "也",
+   "start": 55.401,
+   "end": 55.508
+  },
+  {
+   "line": 8,
+   "text": "最",
+   "start": 55.52,
+   "end": 55.663
+  },
+  {
+   "line": 8,
+   "text": "集中",
+   "start": 55.663,
+   "end": 56.032
+  },
+  {
+   "line": 9,
+   "text": "注意",
+   "start": 57.174,
+   "end": 57.471
+  },
+  {
+   "line": 9,
+   "text": "一个",
+   "start": 57.483,
+   "end": 57.65
+  },
+  {
+   "line": 9,
+   "text": "往回",
+   "start": 57.674,
+   "end": 57.995
+  },
+  {
+   "line": 9,
+   "text": "走",
+   "start": 58.007,
+   "end": 58.102
+  },
+  {
+   "line": 9,
+   "text": "的",
+   "start": 58.102,
+   "end": 58.162
+  },
+  {
+   "line": 9,
+   "text": "箭头",
+   "start": 58.174,
+   "end": 58.674
+  },
+  {
+   "line": 9,
+   "text": "外部",
+   "start": 59.207,
+   "end": 59.516
+  },
+  {
+   "line": 9,
+   "text": "合约",
+   "start": 59.528,
+   "end": 59.981
+  },
+  {
+   "line": 9,
+   "text": "可以",
+   "start": 60.1,
+   "end": 60.326
+  },
+  {
+   "line": 9,
+   "text": "在",
+   "start": 60.326,
+   "end": 60.445
+  },
+  {
+   "line": 9,
+   "text": "你",
+   "start": 60.445,
+   "end": 60.528
+  },
+  {
+   "line": 9,
+   "text": "的",
+   "start": 60.528,
+   "end": 60.588
+  },
+  {
+   "line": 9,
+   "text": "函数",
+   "start": 60.6,
+   "end": 60.945
+  },
+  {
+   "line": 9,
+   "text": "执行",
+   "start": 60.969,
+   "end": 61.219
+  },
+  {
+   "line": 9,
+   "text": "到",
+   "start": 61.219,
+   "end": 61.314
+  },
+  {
+   "line": 9,
+   "text": "一半时",
+   "start": 61.326,
+   "end": 61.993
+  },
+  {
+   "line": 9,
+   "text": "调",
+   "start": 62.278,
+   "end": 62.481
+  },
+  {
+   "line": 9,
+   "text": "回",
+   "start": 62.481,
+   "end": 62.612
+  },
+  {
+   "line": 9,
+   "text": "你",
+   "start": 62.612,
+   "end": 62.695
+  },
+  {
+   "line": 9,
+   "text": "的",
+   "start": 62.695,
+   "end": 62.755
+  },
+  {
+   "line": 9,
+   "text": "合约",
+   "start": 62.766,
+   "end": 63.124
+  },
+  {
+   "line": 9,
+   "text": "重入",
+   "start": 63.671,
+   "end": 64.088
+  },
+  {
+   "line": 9,
+   "text": "就",
+   "start": 64.112,
+   "end": 64.183
+  },
+  {
+   "line": 9,
+   "text": "发生",
+   "start": 64.195,
+   "end": 64.469
+  },
+  {
+   "line": 9,
+   "text": "在",
+   "start": 64.481,
+   "end": 64.588
+  },
+  {
+   "line": 9,
+   "text": "这里",
+   "start": 64.588,
+   "end": 64.969
+  },
+  {
+   "line": 10,
+   "text": "内存池",
+   "start": 66.106,
+   "end": 66.76
+  },
+  {
+   "line": 10,
+   "text": "和",
+   "start": 66.784,
+   "end": 66.903
+  },
+  {
+   "line": 10,
+   "text": "构建",
+   "start": 66.915,
+   "end": 67.237
+  },
+  {
+   "line": 10,
+   "text": "者",
+   "start": 67.237,
+   "end": 67.522
+  },
+  {
+   "line": 10,
+   "text": "决定",
+   "start": 67.629,
+   "end": 67.963
+  },
+  {
+   "line": 10,
+   "text": "交易",
+   "start": 67.987,
+   "end": 68.308
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 68.308,
+   "end": 68.379
+  },
+  {
+   "line": 10,
+   "text": "顺序",
+   "start": 68.391,
+   "end": 68.868
+  },
+  {
+   "line": 10,
+   "text": "顺序",
+   "start": 69.413,
+   "end": 69.829
+  },
+  {
+   "line": 10,
+   "text": "本身",
+   "start": 69.841,
+   "end": 70.389
+  },
+  {
+   "line": 10,
+   "text": "也",
+   "start": 70.663,
+   "end": 70.806
+  },
+  {
+   "line": 10,
+   "text": "可以",
+   "start": 70.806,
+   "end": 71.02
+  },
+  {
+   "line": 10,
+   "text": "被",
+   "start": 71.032,
+   "end": 71.139
+  },
+  {
+   "line": 10,
+   "text": "利用",
+   "start": 71.151,
+   "end": 71.472
+  },
+  {
+   "line": 11,
+   "text": "这",
+   "start": 72.638,
+   "end": 72.84
+  },
+  {
+   "line": 11,
+   "text": "张",
+   "start": 72.84,
+   "end": 73.042
+  },
+  {
+   "line": 11,
+   "text": "图",
+   "start": 73.042,
+   "end": 73.328
+  },
+  {
+   "line": 11,
+   "text": "也有",
+   "start": 73.328,
+   "end": 73.578
+  },
+  {
+   "line": 11,
+   "text": "局限",
+   "start": 73.59,
+   "end": 74.066
+  },
+  {
+   "line": 11,
+   "text": "它",
+   "start": 74.611,
+   "end": 74.778
+  },
+  {
+   "line": 11,
+   "text": "没",
+   "start": 74.778,
+   "end": 74.909
+  },
+  {
+   "line": 11,
+   "text": "画链",
+   "start": 74.909,
+   "end": 75.207
+  },
+  {
+   "line": 11,
+   "text": "本身",
+   "start": 75.23,
+   "end": 75.528
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 75.528,
+   "end": 75.599
+  },
+  {
+   "line": 11,
+   "text": "共识",
+   "start": 75.611,
+   "end": 75.98
+  },
+  {
+   "line": 11,
+   "text": "和",
+   "start": 76.004,
+   "end": 76.1
+  },
+  {
+   "line": 11,
+   "text": "节点",
+   "start": 76.111,
+   "end": 76.504
+  },
+  {
+   "line": 12,
+   "text": "链",
+   "start": 77.658,
+   "end": 77.896
+  },
+  {
+   "line": 12,
+   "text": "被",
+   "start": 77.896,
+   "end": 78.015
+  },
+  {
+   "line": 12,
+   "text": "攻破",
+   "start": 78.027,
+   "end": 78.539
+  },
+  {
+   "line": 12,
+   "text": "或者",
+   "start": 78.789,
+   "end": 79.027
+  },
+  {
+   "line": 12,
+   "text": "节点",
+   "start": 79.05,
+   "end": 79.3
+  },
+  {
+   "line": 12,
+   "text": "数据",
+   "start": 79.312,
+   "end": 79.586
+  },
+  {
+   "line": 12,
+   "text": "有",
+   "start": 79.598,
+   "end": 79.753
+  },
+  {
+   "line": 12,
+   "text": "误",
+   "start": 79.753,
+   "end": 79.991
+  },
+  {
+   "line": 12,
+   "text": "合约",
+   "start": 80.277,
+   "end": 80.574
+  },
+  {
+   "line": 12,
+   "text": "写",
+   "start": 80.586,
+   "end": 80.8
+  },
+  {
+   "line": 12,
+   "text": "得",
+   "start": 80.8,
+   "end": 81.086
+  },
+  {
+   "line": 12,
+   "text": "再",
+   "start": 81.193,
+   "end": 81.503
+  },
+  {
+   "line": 12,
+   "text": "对",
+   "start": 81.503,
+   "end": 81.622
+  },
+  {
+   "line": 12,
+   "text": "也",
+   "start": 81.646,
+   "end": 81.729
+  },
+  {
+   "line": 12,
+   "text": "没用",
+   "start": 81.729,
+   "end": 82.062
+  },
+  {
+   "line": 13,
+   "text": "沿着",
+   "start": 83.206,
+   "end": 83.479
+  },
+  {
+   "line": 13,
+   "text": "这",
+   "start": 83.491,
+   "end": 83.598
+  },
+  {
+   "line": 13,
+   "text": "张",
+   "start": 83.598,
+   "end": 83.789
+  },
+  {
+   "line": 13,
+   "text": "图",
+   "start": 83.789,
+   "end": 84.206
+  },
+  {
+   "line": 13,
+   "text": "可以",
+   "start": 84.42,
+   "end": 84.634
+  },
+  {
+   "line": 13,
+   "text": "把",
+   "start": 84.646,
+   "end": 84.765
+  },
+  {
+   "line": 13,
+   "text": "漏洞",
+   "start": 84.777,
+   "end": 85.241
+  },
+  {
+   "line": 13,
+   "text": "归",
+   "start": 85.265,
+   "end": 85.467
+  },
+  {
+   "line": 13,
+   "text": "成",
+   "start": 85.468,
+   "end": 85.658
+  },
+  {
+   "line": 13,
+   "text": "六",
+   "start": 85.682,
+   "end": 85.848
+  },
+  {
+   "line": 13,
+   "text": "大",
+   "start": 85.848,
+   "end": 86.027
+  },
+  {
+   "line": 13,
+   "text": "类",
+   "start": 86.027,
+   "end": 86.206
+  },
+  {
+   "line": 14,
+   "text": "第一",
+   "start": 87.362,
+   "end": 87.647
+  },
+  {
+   "line": 14,
+   "text": "类",
+   "start": 87.647,
+   "end": 87.909
+  },
+  {
+   "line": 14,
+   "text": "控制流",
+   "start": 88.159,
+   "end": 88.838
+  },
+  {
+   "line": 14,
+   "text": "外部",
+   "start": 89.383,
+   "end": 89.693
+  },
+  {
+   "line": 14,
+   "text": "调用",
+   "start": 89.704,
+   "end": 89.943
+  },
+  {
+   "line": 14,
+   "text": "让",
+   "start": 89.943,
+   "end": 90.074
+  },
+  {
+   "line": 14,
+   "text": "攻击者",
+   "start": 90.085,
+   "end": 90.49
+  },
+  {
+   "line": 14,
+   "text": "插队",
+   "start": 90.514,
+   "end": 90.883
+  },
+  {
+   "line": 14,
+   "text": "执行",
+   "start": 90.895,
+   "end": 91.371
+  },
+  {
+   "line": 14,
+   "text": "比如",
+   "start": 91.693,
+   "end": 91.943
+  },
+  {
+   "line": 14,
+   "text": "重",
+   "start": 91.954,
+   "end": 92.24
+  },
+  {
+   "line": 14,
+   "text": "入",
+   "start": 92.24,
+   "end": 92.419
+  },
+  {
+   "line": 15,
+   "text": "第二",
+   "start": 93.558,
+   "end": 93.879
+  },
+  {
+   "line": 15,
+   "text": "类",
+   "start": 93.879,
+   "end": 94.177
+  },
+  {
+   "line": 15,
+   "text": "权限",
+   "start": 94.486,
+   "end": 95.022
+  },
+  {
+   "line": 15,
+   "text": "不该",
+   "start": 95.555,
+   "end": 95.877
+  },
+  {
+   "line": 15,
+   "text": "调用",
+   "start": 95.889,
+   "end": 96.15
+  },
+  {
+   "line": 15,
+   "text": "的",
+   "start": 96.15,
+   "end": 96.234
+  },
+  {
+   "line": 15,
+   "text": "人",
+   "start": 96.234,
+   "end": 96.365
+  },
+  {
+   "line": 15,
+   "text": "调用",
+   "start": 96.389,
+   "end": 96.71
+  },
+  {
+   "line": 15,
+   "text": "了",
+   "start": 96.71,
+   "end": 96.924
+  },
+  {
+   "line": 15,
+   "text": "比如",
+   "start": 97.115,
+   "end": 97.365
+  },
+  {
+   "line": 15,
+   "text": "缺少",
+   "start": 97.389,
+   "end": 97.698
+  },
+  {
+   "line": 15,
+   "text": "修饰器",
+   "start": 97.71,
+   "end": 98.281
+  },
+  {
+   "line": 15,
+   "text": "合约",
+   "start": 98.627,
+   "end": 98.889
+  },
+  {
+   "line": 15,
+   "text": "未初始化",
+   "start": 98.912,
+   "end": 99.627
+  },
+  {
+   "line": 15,
+   "text": "私钥",
+   "start": 99.841,
+   "end": 100.234
+  },
+  {
+   "line": 15,
+   "text": "泄露",
+   "start": 100.246,
+   "end": 100.639
+  },
+  {
+   "line": 16,
+   "text": "第三",
+   "start": 101.794,
+   "end": 102.139
+  },
+  {
+   "line": 16,
+   "text": "类",
+   "start": 102.139,
+   "end": 102.377
+  },
+  {
+   "line": 16,
+   "text": "数学",
+   "start": 102.722,
+   "end": 103.329
+  },
+  {
+   "line": 16,
+   "text": "数字",
+   "start": 103.863,
+   "end": 104.244
+  },
+  {
+   "line": 16,
+   "text": "算",
+   "start": 104.256,
+   "end": 104.446
+  },
+  {
+   "line": 16,
+   "text": "错",
+   "start": 104.446,
+   "end": 104.696
+  },
+  {
+   "line": 16,
+   "text": "了",
+   "start": 104.696,
+   "end": 104.922
+  },
+  {
+   "line": 16,
+   "text": "比如",
+   "start": 105.148,
+   "end": 105.386
+  },
+  {
+   "line": 16,
+   "text": "溢出",
+   "start": 105.41,
+   "end": 105.851
+  },
+  {
+   "line": 16,
+   "text": "精度",
+   "start": 106.053,
+   "end": 106.41
+  },
+  {
+   "line": 16,
+   "text": "损失",
+   "start": 106.422,
+   "end": 106.958
+  },
+  {
+   "line": 16,
+   "text": "舍",
+   "start": 107.184,
+   "end": 107.494
+  },
+  {
+   "line": 16,
+   "text": "入",
+   "start": 107.494,
+   "end": 107.613
+  },
+  {
+   "line": 16,
+   "text": "方向",
+   "start": 107.625,
+   "end": 107.994
+  },
+  {
+   "line": 17,
+   "text": "第四",
+   "start": 109.166,
+   "end": 109.487
+  },
+  {
+   "line": 17,
+   "text": "类",
+   "start": 109.487,
+   "end": 109.749
+  },
+  {
+   "line": 17,
+   "text": "数据",
+   "start": 110.07,
+   "end": 110.416
+  },
+  {
+   "line": 17,
+   "text": "可信度",
+   "start": 110.428,
+   "end": 110.951
+  },
+  {
+   "line": 17,
+   "text": "合约",
+   "start": 111.497,
+   "end": 111.794
+  },
+  {
+   "line": 17,
+   "text": "相信",
+   "start": 111.806,
+   "end": 112.151
+  },
+  {
+   "line": 17,
+   "text": "了",
+   "start": 112.151,
+   "end": 112.258
+  },
+  {
+   "line": 17,
+   "text": "可以",
+   "start": 112.282,
+   "end": 112.461
+  },
+  {
+   "line": 17,
+   "text": "被",
+   "start": 112.473,
+   "end": 112.627
+  },
+  {
+   "line": 17,
+   "text": "操纵",
+   "start": 112.651,
+   "end": 112.997
+  },
+  {
+   "line": 17,
+   "text": "的",
+   "start": 112.997,
+   "end": 113.056
+  },
+  {
+   "line": 17,
+   "text": "数据",
+   "start": 113.068,
+   "end": 113.544
+  },
+  {
+   "line": 17,
+   "text": "比如",
+   "start": 113.83,
+   "end": 114.116
+  },
+  {
+   "line": 17,
+   "text": "现货",
+   "start": 114.139,
+   "end": 114.508
+  },
+  {
+   "line": 17,
+   "text": "价格",
+   "start": 114.52,
+   "end": 114.758
+  },
+  {
+   "line": 17,
+   "text": "预言机",
+   "start": 114.77,
+   "end": 115.294
+  },
+  {
+   "line": 17,
+   "text": "签名",
+   "start": 115.449,
+   "end": 115.866
+  },
+  {
+   "line": 17,
+   "text": "重",
+   "start": 115.878,
+   "end": 116.116
+  },
+  {
+   "line": 17,
+   "text": "放",
+   "start": 116.116,
+   "end": 116.318
+  },
+  {
+   "line": 18,
+   "text": "第五",
+   "start": 117.474,
+   "end": 117.807
+  },
+  {
+   "line": 18,
+   "text": "类",
+   "start": 117.807,
+   "end": 118.045
+  },
+  {
+   "line": 18,
+   "text": "经济",
+   "start": 118.402,
+   "end": 118.736
+  },
+  {
+   "line": 18,
+   "text": "设计",
+   "start": 118.747,
+   "end": 119.128
+  },
+  {
+   "line": 18,
+   "text": "代码",
+   "start": 119.674,
+   "end": 119.971
+  },
+  {
+   "line": 18,
+   "text": "按",
+   "start": 119.995,
+   "end": 120.15
+  },
+  {
+   "line": 18,
+   "text": "规格",
+   "start": 120.162,
+   "end": 120.519
+  },
+  {
+   "line": 18,
+   "text": "执行",
+   "start": 120.531,
+   "end": 121.078
+  },
+  {
+   "line": 18,
+   "text": "但",
+   "start": 121.4,
+   "end": 121.566
+  },
+  {
+   "line": 18,
+   "text": "规格",
+   "start": 121.578,
+   "end": 121.9
+  },
+  {
+   "line": 18,
+   "text": "本身",
+   "start": 121.912,
+   "end": 122.435
+  },
+  {
+   "line": 18,
+   "text": "可以",
+   "start": 122.543,
+   "end": 122.793
+  },
+  {
+   "line": 18,
+   "text": "被",
+   "start": 122.805,
+   "end": 122.912
+  },
+  {
+   "line": 18,
+   "text": "套利",
+   "start": 122.912,
+   "end": 123.328
+  },
+  {
+   "line": 19,
+   "text": "第六",
+   "start": 124.486,
+   "end": 124.831
+  },
+  {
+   "line": 19,
+   "text": "类",
+   "start": 124.831,
+   "end": 125.117
+  },
+  {
+   "line": 19,
+   "text": "系统",
+   "start": 125.378,
+   "end": 125.855
+  },
+  {
+   "line": 19,
+   "text": "与",
+   "start": 125.878,
+   "end": 126.009
+  },
+  {
+   "line": 19,
+   "text": "运营",
+   "start": 126.021,
+   "end": 126.486
+  },
+  {
+   "line": 19,
+   "text": "代码",
+   "start": 127.031,
+   "end": 127.352
+  },
+  {
+   "line": 19,
+   "text": "之外",
+   "start": 127.364,
+   "end": 127.614
+  },
+  {
+   "line": 19,
+   "text": "的",
+   "start": 127.614,
+   "end": 127.686
+  },
+  {
+   "line": 19,
+   "text": "环节",
+   "start": 127.698,
+   "end": 127.983
+  },
+  {
+   "line": 19,
+   "text": "失守",
+   "start": 127.995,
+   "end": 128.483
+  },
+  {
+   "line": 19,
+   "text": "比如",
+   "start": 128.733,
+   "end": 128.983
+  },
+  {
+   "line": 19,
+   "text": "跨",
+   "start": 129.007,
+   "end": 129.221
+  },
+  {
+   "line": 19,
+   "text": "链验",
+   "start": 129.221,
+   "end": 129.459
+  },
+  {
+   "line": 19,
+   "text": "证",
+   "start": 129.459,
+   "end": 129.697
+  },
+  {
+   "line": 19,
+   "text": "多",
+   "start": 129.948,
+   "end": 130.126
+  },
+  {
+   "line": 19,
+   "text": "签",
+   "start": 130.126,
+   "end": 130.305
+  },
+  {
+   "line": 19,
+   "text": "私钥",
+   "start": 130.317,
+   "end": 130.733
+  },
+  {
+   "line": 19,
+   "text": "前端",
+   "start": 130.959,
+   "end": 131.412
+  },
+  {
+   "line": 19,
+   "text": "篡改",
+   "start": 131.424,
+   "end": 131.936
+  },
+  {
+   "line": 19,
+   "text": "社会",
+   "start": 132.102,
+   "end": 132.531
+  },
+  {
+   "line": 19,
+   "text": "工程",
+   "start": 132.543,
+   "end": 133.007
+  },
+  {
+   "line": 20,
+   "text": "真实",
+   "start": 134.162,
+   "end": 134.531
+  },
+  {
+   "line": 20,
+   "text": "事故",
+   "start": 134.543,
+   "end": 135.054
+  },
+  {
+   "line": 20,
+   "text": "往往",
+   "start": 135.162,
+   "end": 135.471
+  },
+  {
+   "line": 20,
+   "text": "是",
+   "start": 135.471,
+   "end": 135.626
+  },
+  {
+   "line": 20,
+   "text": "几类",
+   "start": 135.65,
+   "end": 135.959
+  },
+  {
+   "line": 20,
+   "text": "叠加",
+   "start": 135.971,
+   "end": 136.435
+  },
+  {
+   "line": 20,
+   "text": "2023",
+   "start": 136.981,
+   "end": 137.54
+  },
+  {
+   "line": 20,
+   "text": "年",
+   "start": 137.54,
+   "end": 137.659
+  },
+  {
+   "line": 20,
+   "text": "的",
+   "start": 137.659,
+   "end": 137.754
+  },
+  {
+   "line": 20,
+   "text": "Euler",
+   "start": 137.778,
+   "end": 138.171
+  },
+  {
+   "line": 20,
+   "text": "就",
+   "start": 138.326,
+   "end": 138.493
+  },
+  {
+   "line": 20,
+   "text": "是",
+   "start": 138.493,
+   "end": 138.683
+  },
+  {
+   "line": 20,
+   "text": "业务",
+   "start": 138.707,
+   "end": 139.004
+  },
+  {
+   "line": 20,
+   "text": "逻辑",
+   "start": 139.016,
+   "end": 139.266
+  },
+  {
+   "line": 20,
+   "text": "缺陷",
+   "start": 139.278,
+   "end": 139.671
+  },
+  {
+   "line": 20,
+   "text": "加上",
+   "start": 139.85,
+   "end": 140.243
+  },
+  {
+   "line": 20,
+   "text": "闪电贷",
+   "start": 140.266,
+   "end": 140.731
+  },
+  {
+   "line": 20,
+   "text": "放大",
+   "start": 140.743,
+   "end": 141.135
+  },
+  {
+   "line": 21,
+   "text": "第六",
+   "start": 142.302,
+   "end": 142.706
+  },
+  {
+   "line": 21,
+   "text": "类",
+   "start": 142.706,
+   "end": 143.004
+  },
+  {
+   "line": 21,
+   "text": "又",
+   "start": 143.325,
+   "end": 143.48
+  },
+  {
+   "line": 21,
+   "text": "可以",
+   "start": 143.492,
+   "end": 143.647
+  },
+  {
+   "line": 21,
+   "text": "拆",
+   "start": 143.671,
+   "end": 143.814
+  },
+  {
+   "line": 21,
+   "text": "成",
+   "start": 143.814,
+   "end": 143.944
+  },
+  {
+   "line": 21,
+   "text": "两",
+   "start": 143.956,
+   "end": 144.123
+  },
+  {
+   "line": 21,
+   "text": "块",
+   "start": 144.123,
+   "end": 144.421
+  },
+  {
+   "line": 21,
+   "text": "一块",
+   "start": 144.954,
+   "end": 145.228
+  },
+  {
+   "line": 21,
+   "text": "是",
+   "start": 145.252,
+   "end": 145.418
+  },
+  {
+   "line": 21,
+   "text": "链",
+   "start": 145.418,
+   "end": 145.537
+  },
+  {
+   "line": 21,
+   "text": "本身",
+   "start": 145.549,
+   "end": 146.049
+  },
+  {
+   "line": 21,
+   "text": "和",
+   "start": 146.418,
+   "end": 146.573
+  },
+  {
+   "line": 21,
+   "text": "你",
+   "start": 146.573,
+   "end": 146.68
+  },
+  {
+   "line": 21,
+   "text": "读链",
+   "start": 146.692,
+   "end": 146.978
+  },
+  {
+   "line": 21,
+   "text": "的",
+   "start": 146.978,
+   "end": 147.037
+  },
+  {
+   "line": 21,
+   "text": "方式",
+   "start": 147.049,
+   "end": 147.418
+  },
+  {
+   "line": 21,
+   "text": "另",
+   "start": 147.966,
+   "end": 148.18
+  },
+  {
+   "line": 21,
+   "text": "一块",
+   "start": 148.18,
+   "end": 148.43
+  },
+  {
+   "line": 21,
+   "text": "是",
+   "start": 148.454,
+   "end": 148.633
+  },
+  {
+   "line": 21,
+   "text": "人",
+   "start": 148.633,
+   "end": 148.93
+  },
+  {
+   "line": 21,
+   "text": "设备",
+   "start": 149.192,
+   "end": 149.716
+  },
+  {
+   "line": 21,
+   "text": "和",
+   "start": 149.74,
+   "end": 149.871
+  },
+  {
+   "line": 21,
+   "text": "流程",
+   "start": 149.883,
+   "end": 150.371
+  },
+  {
+   "line": 22,
+   "text": "社工",
+   "start": 151.522,
+   "end": 152.022
+  },
+  {
+   "line": 22,
+   "text": "常常",
+   "start": 152.045,
+   "end": 152.343
+  },
+  {
+   "line": 22,
+   "text": "是",
+   "start": 152.343,
+   "end": 152.45
+  },
+  {
+   "line": 22,
+   "text": "入口",
+   "start": 152.462,
+   "end": 152.926
+  },
+  {
+   "line": 22,
+   "text": "私钥",
+   "start": 153.164,
+   "end": 153.664
+  },
+  {
+   "line": 22,
+   "text": "或者",
+   "start": 153.688,
+   "end": 153.903
+  },
+  {
+   "line": 22,
+   "text": "前端",
+   "start": 153.914,
+   "end": 154.283
+  },
+  {
+   "line": 22,
+   "text": "是",
+   "start": 154.307,
+   "end": 154.403
+  },
+  {
+   "line": 22,
+   "text": "落点",
+   "start": 154.414,
+   "end": 154.795
+  },
+  {
+   "line": 22,
+   "text": "AI",
+   "start": 155.329,
+   "end": 156.019
+  },
+  {
+   "line": 22,
+   "text": "不是",
+   "start": 156.103,
+   "end": 156.353
+  },
+  {
+   "line": 22,
+   "text": "独立",
+   "start": 156.364,
+   "end": 156.579
+  },
+  {
+   "line": 22,
+   "text": "的",
+   "start": 156.579,
+   "end": 156.65
+  },
+  {
+   "line": 22,
+   "text": "攻击面",
+   "start": 156.662,
+   "end": 157.15
+  },
+  {
+   "line": 22,
+   "text": "而是",
+   "start": 157.448,
+   "end": 157.71
+  },
+  {
+   "line": 22,
+   "text": "攻防",
+   "start": 157.722,
+   "end": 158.031
+  },
+  {
+   "line": 22,
+   "text": "两边",
+   "start": 158.043,
+   "end": 158.329
+  },
+  {
+   "line": 22,
+   "text": "的",
+   "start": 158.329,
+   "end": 158.388
+  },
+  {
+   "line": 22,
+   "text": "放大",
+   "start": 158.412,
+   "end": 158.674
+  },
+  {
+   "line": 22,
+   "text": "器",
+   "start": 158.674,
+   "end": 158.924
+  }
+ ],
+ "captions": [
+  {
+   "text": "知道了合约是什么",
+   "start": 1.648,
+   "end": 2.913,
+   "id": "c0"
+  },
+  {
+   "text": "我们跟着一笔交易",
+   "start": 3.076,
+   "end": 4.484,
+   "id": "c1"
+  },
+  {
+   "text": "看攻击从哪里进来",
+   "start": 4.529,
+   "end": 5.877,
+   "id": "c2"
+  },
+  {
+   "text": "用户或者攻击者的账户",
+   "start": 6.86,
+   "end": 8.709,
+   "id": "c3"
+  },
+  {
+   "text": "先经过钱包和前端的签名界面",
+   "start": 8.729,
+   "end": 11.458,
+   "id": "c4"
+  },
+  {
+   "text": "交易进入内存池",
+   "start": 12.456,
+   "end": 13.995,
+   "id": "c5"
+  },
+  {
+   "text": "在那里公开排队",
+   "start": 14.015,
+   "end": 15.399,
+   "id": "c6"
+  },
+  {
+   "text": "区块构建者或者排序器",
+   "start": 16.396,
+   "end": 18.53,
+   "id": "c7"
+  },
+  {
+   "text": "决定它和别的交易谁先谁后",
+   "start": 18.705,
+   "end": 21.137,
+   "id": "c8"
+  },
+  {
+   "text": "然后它到达目标合约",
+   "start": 22.112,
+   "end": 24.222,
+   "id": "c9"
+  },
+  {
+   "text": "执行业务逻辑",
+   "start": 24.254,
+   "end": 25.567,
+   "id": "c10"
+  },
+  {
+   "text": "目标合约会去调用外部合约",
+   "start": 26.556,
+   "end": 29.19,
+   "id": "c11"
+  },
+  {
+   "text": "比如代币 DEX 预言机",
+   "start": 29.353,
+   "end": 31.857,
+   "id": "c12"
+  },
+  {
+   "text": "它背后还连着代理和实现",
+   "start": 32.232,
+   "end": 34.402,
+   "id": "c13"
+  },
+  {
+   "text": "也就是升级权限",
+   "start": 34.529,
+   "end": 35.878,
+   "id": "c14"
+  },
+  {
+   "text": "有的交易",
+   "start": 36.88,
+   "end": 37.752,
+   "id": "c15"
+  },
+  {
+   "text": "还要经过跨链桥",
+   "start": 37.88,
+   "end": 39.192,
+   "id": "c16"
+  },
+  {
+   "text": "去到另一条链上的合约",
+   "start": 39.213,
+   "end": 40.776,
+   "id": "c17"
+  },
+  {
+   "text": "这条路上",
+   "start": 41.756,
+   "end": 42.664,
+   "id": "c18"
+  },
+  {
+   "text": "有五个地方最危险",
+   "start": 42.756,
+   "end": 44.199,
+   "id": "c19"
+  },
+  {
+   "text": "签名界面 内存池",
+   "start": 44.327,
+   "end": 46.39,
+   "id": "c20"
+  },
+  {
+   "text": "外部合约",
+   "start": 46.506,
+   "end": 47.45,
+   "id": "c21"
+  },
+  {
+   "text": "升级权限 跨链桥",
+   "start": 47.47,
+   "end": 49.616,
+   "id": "c22"
+  },
+  {
+   "text": "它们叫信任边界",
+   "start": 50.592,
+   "end": 51.94,
+   "id": "c23"
+  },
+  {
+   "text": "数据和控制权在这里跨过去",
+   "start": 52.315,
+   "end": 54.783,
+   "id": "c24"
+  },
+  {
+   "text": "漏洞也最集中",
+   "start": 54.887,
+   "end": 56.152,
+   "id": "c25"
+  },
+  {
+   "text": "注意一个往回走的箭头",
+   "start": 57.124,
+   "end": 58.794,
+   "id": "c26"
+  },
+  {
+   "text": "外部合约可以在你的函数执行到一半时",
+   "start": 59.157,
+   "end": 62.113,
+   "id": "c27"
+  },
+  {
+   "text": "调回你的合约",
+   "start": 62.228,
+   "end": 63.244,
+   "id": "c28"
+  },
+  {
+   "text": "重入就发生在这里",
+   "start": 63.621,
+   "end": 65.089,
+   "id": "c29"
+  },
+  {
+   "text": "内存池和构建者决定交易的顺序",
+   "start": 66.056,
+   "end": 68.988,
+   "id": "c30"
+  },
+  {
+   "text": "顺序本身",
+   "start": 69.363,
+   "end": 70.509,
+   "id": "c31"
+  },
+  {
+   "text": "也可以被利用",
+   "start": 70.613,
+   "end": 71.592,
+   "id": "c32"
+  },
+  {
+   "text": "这张图也有局限",
+   "start": 72.588,
+   "end": 74.186,
+   "id": "c33"
+  },
+  {
+   "text": "它没画链本身的共识和节点",
+   "start": 74.561,
+   "end": 76.624,
+   "id": "c34"
+  },
+  {
+   "text": "链被攻破",
+   "start": 77.608,
+   "end": 78.659,
+   "id": "c35"
+  },
+  {
+   "text": "或者节点数据有误",
+   "start": 78.739,
+   "end": 80.111,
+   "id": "c36"
+  },
+  {
+   "text": "合约写得再对也没用",
+   "start": 80.227,
+   "end": 82.182,
+   "id": "c37"
+  },
+  {
+   "text": "沿着这张图",
+   "start": 83.156,
+   "end": 84.326,
+   "id": "c38"
+  },
+  {
+   "text": "可以把漏洞归成六大类",
+   "start": 84.37,
+   "end": 86.326,
+   "id": "c39"
+  },
+  {
+   "text": "第一类 控制流",
+   "start": 87.312,
+   "end": 88.958,
+   "id": "c40"
+  },
+  {
+   "text": "外部调用让攻击者插队执行",
+   "start": 89.333,
+   "end": 91.491,
+   "id": "c41"
+  },
+  {
+   "text": "比如重入",
+   "start": 91.643,
+   "end": 92.539,
+   "id": "c42"
+  },
+  {
+   "text": "第二类 权限",
+   "start": 93.508,
+   "end": 95.142,
+   "id": "c43"
+  },
+  {
+   "text": "不该调用的人调用了",
+   "start": 95.505,
+   "end": 97.044,
+   "id": "c44"
+  },
+  {
+   "text": "比如缺少修饰器",
+   "start": 97.065,
+   "end": 98.401,
+   "id": "c45"
+  },
+  {
+   "text": "合约未初始化",
+   "start": 98.577,
+   "end": 99.747,
+   "id": "c46"
+  },
+  {
+   "text": "私钥泄露",
+   "start": 99.791,
+   "end": 100.759,
+   "id": "c47"
+  },
+  {
+   "text": "第三类 数学",
+   "start": 101.744,
+   "end": 103.449,
+   "id": "c48"
+  },
+  {
+   "text": "数字算错了",
+   "start": 103.813,
+   "end": 105.042,
+   "id": "c49"
+  },
+  {
+   "text": "比如溢出",
+   "start": 105.098,
+   "end": 105.971,
+   "id": "c50"
+  },
+  {
+   "text": "精度损失",
+   "start": 106.003,
+   "end": 107.078,
+   "id": "c51"
+  },
+  {
+   "text": "舍入方向",
+   "start": 107.134,
+   "end": 108.114,
+   "id": "c52"
+  },
+  {
+   "text": "第四类 数据可信度",
+   "start": 109.116,
+   "end": 111.071,
+   "id": "c53"
+  },
+  {
+   "text": "合约相信了可以被操纵的数据",
+   "start": 111.447,
+   "end": 113.664,
+   "id": "c54"
+  },
+  {
+   "text": "比如现货价格预言机",
+   "start": 113.78,
+   "end": 115.379,
+   "id": "c55"
+  },
+  {
+   "text": "签名重放",
+   "start": 115.399,
+   "end": 116.438,
+   "id": "c56"
+  },
+  {
+   "text": "第五类 经济设计",
+   "start": 117.424,
+   "end": 119.248,
+   "id": "c57"
+  },
+  {
+   "text": "代码按规格执行",
+   "start": 119.624,
+   "end": 121.198,
+   "id": "c58"
+  },
+  {
+   "text": "但规格本身可以被套利",
+   "start": 121.35,
+   "end": 123.448,
+   "id": "c59"
+  },
+  {
+   "text": "第六类 系统与运营",
+   "start": 124.436,
+   "end": 126.606,
+   "id": "c60"
+  },
+  {
+   "text": "代码之外的环节失守",
+   "start": 126.981,
+   "end": 128.603,
+   "id": "c61"
+  },
+  {
+   "text": "比如跨链验证",
+   "start": 128.683,
+   "end": 129.817,
+   "id": "c62"
+  },
+  {
+   "text": "多签私钥",
+   "start": 129.898,
+   "end": 130.853,
+   "id": "c63"
+  },
+  {
+   "text": "前端篡改",
+   "start": 130.909,
+   "end": 132.032,
+   "id": "c64"
+  },
+  {
+   "text": "社会工程",
+   "start": 132.052,
+   "end": 133.127,
+   "id": "c65"
+  },
+  {
+   "text": "真实事故往往是几类叠加",
+   "start": 134.112,
+   "end": 136.555,
+   "id": "c66"
+  },
+  {
+   "text": "2023 年的 Euler",
+   "start": 136.931,
+   "end": 138.256,
+   "id": "c67"
+  },
+  {
+   "text": "就是业务逻辑缺陷",
+   "start": 138.276,
+   "end": 139.78,
+   "id": "c68"
+  },
+  {
+   "text": "加上闪电贷放大",
+   "start": 139.8,
+   "end": 141.255,
+   "id": "c69"
+  },
+  {
+   "text": "第六类 又可以拆成两块",
+   "start": 142.252,
+   "end": 144.541,
+   "id": "c70"
+  },
+  {
+   "text": "一块是链本身",
+   "start": 144.904,
+   "end": 146.169,
+   "id": "c71"
+  },
+  {
+   "text": "和你读链的方式",
+   "start": 146.368,
+   "end": 147.538,
+   "id": "c72"
+  },
+  {
+   "text": "另一块是人",
+   "start": 147.916,
+   "end": 149.05,
+   "id": "c73"
+  },
+  {
+   "text": "设备和流程",
+   "start": 149.142,
+   "end": 150.491,
+   "id": "c74"
+  },
+  {
+   "text": "社工常常是入口",
+   "start": 151.472,
+   "end": 153.046,
+   "id": "c75"
+  },
+  {
+   "text": "私钥或者前端是落点",
+   "start": 153.114,
+   "end": 154.915,
+   "id": "c76"
+  },
+  {
+   "text": "AI 不是独立的攻击面",
+   "start": 155.279,
+   "end": 157.27,
+   "id": "c77"
+  },
+  {
+   "text": "而是攻防两边的放大器",
+   "start": 157.398,
+   "end": 159.044,
+   "id": "c78"
+  }
+ ]
+}

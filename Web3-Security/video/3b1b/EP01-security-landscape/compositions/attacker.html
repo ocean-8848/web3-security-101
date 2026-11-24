@@ -1,0 +1,119 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="attacker" data-duration="51.45" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="a-all">
+        <text id="a-q" class="h" x="960" y="120" font-size="54" fill="#e8e6df" text-anchor="middle" font-weight="800"><tspan fill="#FC6255">攻击者</tspan>能控制什么？</text>
+
+        <g id="a-atk" class="h">
+          <circle cx="250" cy="540" r="62" fill="#2a1416" stroke="#FC6255" stroke-width="5" />
+          <text x="250" y="553" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">攻击者</text>
+        </g>
+        <g id="a-con" class="h">
+          <rect x="1350" y="330" width="320" height="420" rx="24" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+          <text x="1510" y="550" font-size="38" fill="#58C4DD" text-anchor="middle" font-weight="700">你的合约</text>
+        </g>
+
+        <!-- 七项能力（红） -->
+        <g id="a-caps" fill="none" stroke="#FC6255" stroke-width="3" stroke-opacity=".85"></g>
+        <g id="a-capt"></g>
+
+        <!-- private 不等于保密 -->
+        <g id="a-priv" class="h">
+          <rect x="1180" y="420" width="660" height="240" rx="18" fill="#0b0e14" stroke="#e8e6df" stroke-opacity=".5" stroke-width="3" />
+          <text class="mono" x="1220" y="490" font-size="34" fill="#58C4DD">private <tspan fill="#e8e6df">adminPassword</tspan></text>
+          <text id="a-dots" class="mono" x="1220" y="590" font-size="46" fill="#8a8f99">= ••••••••</text>
+          <text id="a-val" class="mono h" x="1220" y="590" font-size="46" fill="#FC6255">= "0x5f3c…9a1e"</text>
+          <rect id="a-scan" x="1180" y="420" width="8" height="240" fill="#FC6255" opacity="0" />
+        </g>
+        <text id="a-privt" class="h" x="1490" y="730" font-size="32" fill="#e8e6df" text-anchor="middle">private 只限制别的合约调用，链上数据人人可读</text>
+
+        <!-- 通常做不到 -->
+        <line id="a-wall" class="h" x1="1250" y1="300" x2="1250" y2="800" stroke="#e8e6df" stroke-width="6" />
+        <g id="a-cant" fill="none" stroke="#8a8f99" stroke-width="3">
+          <path class="dr a-cn" pathLength="1" d="M320 520 C 700 420, 900 400, 1240 400" />
+          <path class="dr a-cn" pathLength="1" d="M320 540 L 1240 550" />
+          <path class="dr a-cn" pathLength="1" d="M320 560 C 700 660, 900 700, 1240 700" />
+        </g>
+        <g id="a-cantt" font-size="32" fill="#8a8f99" text-anchor="middle">
+          <text class="a-ct h" x="820" y="400">伪造别人的签名</text>
+          <text class="a-ct h" x="820" y="530">改写已确认的区块</text>
+          <text class="a-ct h" x="820" y="725">冒充别人的地址</text>
+        </g>
+        <g fill="#FC6255" font-size="44" font-weight="800" text-anchor="middle">
+          <text class="a-x h" x="1250" y="416">✕</text><text class="a-x h" x="1250" y="566">✕</text><text class="a-x h" x="1250" y="716">✕</text>
+        </g>
+        <text id="a-cond" class="h" x="960" y="950" font-size="34" fill="#8a8f99" text-anchor="middle">前提：私钥没有泄露，代码也没有写错</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 51.45, "L": [[0.6, 6.55], [7.0, 15.23], [15.68, 21.2], [21.65, 29.79], [30.24, 39.12], [39.57, 50.35]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.7) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+
+      // 七条能力路径：静态几何，按序号生成
+      const NS = "http://www.w3.org/2000/svg";
+      const labels = ["任意参数调用公开函数", "部署恶意合约让你调用", "闪电贷借到巨款", "看到内存池并插队", "绕过函数直接转钱", "读取全部存储", "跨链重放签过的消息"];
+      const caps = document.querySelector("#a-caps"), capt = document.querySelector("#a-capt");
+      const paths = [], texts = [];
+      labels.forEach((s, i) => {
+        const Y = 200 + i * 110, yi = 380 + i * 55;
+        const p = document.createElementNS(NS, "path");
+        p.setAttribute("d", `M312 540 C 560 540, 640 ${Y + 14}, 830 ${Y + 14} C 1020 ${Y + 14}, 1120 ${yi}, 1345 ${yi}`);
+        p.setAttribute("pathLength", "1");
+        p.setAttribute("class", "dr");
+        caps.appendChild(p); paths.push(p);
+        const t = document.createElementNS(NS, "text");
+        t.setAttribute("x", "830"); t.setAttribute("y", String(Y)); t.setAttribute("font-size", "30");
+        t.setAttribute("fill", "#e8e6df"); t.setAttribute("text-anchor", "middle"); t.setAttribute("opacity", "0");
+        t.textContent = s;
+        capt.appendChild(t); texts.push(t);
+      });
+      const CAP = (i, t) => { DRAW(paths[i], t, 0.7); IN(texts[i], t + 0.25, 0.4); };
+
+      // L0
+      IN("#a-q", at(0, 0.45), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      IN("#a-atk", at(0, 0.1), 0.5, { scale: 0.6, svgOrigin: "250 540" }, { scale: 1, ease: "back.out(1.6)" });
+      IN("#a-con", at(0, 0.2), 0.5);
+      // L1–L3 七项能力
+      CAP(0, at(1, 0.25)); CAP(1, at(1, 0.6));
+      CAP(2, at(2, 0.05)); CAP(3, at(2, 0.5));
+      CAP(4, at(3, 0.05)); CAP(5, at(3, 0.42)); CAP(6, at(3, 0.65));
+
+      // L4 private
+      tl.to([...paths, ...texts], { opacity: 0.15, duration: 0.4 }, at(4, 0));
+      tl.to("#a-con", { opacity: 0, duration: 0.3 }, at(4, 0));
+      IN("#a-priv", at(4, 0.1), 0.5, { scale: 0.9, svgOrigin: "1510 540" }, { scale: 1 });
+      tl.fromTo("#a-scan", { opacity: 0, x: 0 }, { opacity: 0.9, x: 650, duration: 0.9, ease: "power1.inOut" }, at(4, 0.3));
+      tl.to("#a-scan", { opacity: 0, duration: 0.2 }, at(4, 0.3) + 0.9);
+      OUT("#a-dots", at(4, 0.3) + 0.45, 0.2);
+      IN("#a-val", at(4, 0.3) + 0.45, 0.3);
+      IN("#a-privt", at(4, 0.6), 0.5);
+
+      // L5 通常做不到
+      OUT(["#a-priv", "#a-privt", ...paths, ...texts], at(5, 0), 0.35);
+      tl.to("#a-con", { opacity: 0.35, duration: 0.4 }, at(5, 0.05));
+      IN("#a-wall", at(5, 0.05), 0.4);
+      gsap.utils.toArray("#root .a-cn").forEach((p, i) => DRAW(p, at(5, 0.1) + i * 0.17 * (L[5][1] - L[5][0]) / 3, 0.6));
+      gsap.utils.toArray("#root .a-ct").forEach((t, i) => IN(t, at(5, 0.12) + i * 0.17 * (L[5][1] - L[5][0]) / 3, 0.4));
+      gsap.utils.toArray("#root .a-x").forEach((t, i) => IN(t, at(5, 0.1) + i * 0.17 * (L[5][1] - L[5][0]) / 3 + 0.55, 0.2, { scale: 1.8, transformOrigin: "50% 50%" }, { scale: 1 }));
+      IN("#a-cond", at(5, 0.68), 0.5);
+
+      tl.to("#a-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["attacker"] = tl;
+    })();
+  </script>
+</template>

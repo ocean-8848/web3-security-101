@@ -1,0 +1,119 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="l2" data-duration="46.86" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="l-all">
+        <g id="l-cols">
+          <text id="l-title" class="h" x="960" y="110" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">L2 的信任假设</text>
+
+          <!-- 乐观 Rollup -->
+          <g id="l-op" class="h">
+            <text x="530" y="200" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">乐观 Rollup · 欺诈证明</text>
+            <rect x="430" y="240" width="200" height="90" rx="14" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+            <text x="530" y="297" font-size="30" fill="#58C4DD" text-anchor="middle">状态根</text>
+          </g>
+          <g id="l-watch"></g>
+          <text id="l-honest" class="h" x="530" y="500" font-size="30" fill="#83C167" text-anchor="middle">至少一个诚实挑战者</text>
+          <g id="l-opbar" class="h">
+            <rect x="200" y="560" width="660" height="26" rx="13" fill="#2a2f3a" />
+            <rect id="l-opfill" x="200" y="560" width="660" height="26" rx="13" fill="#F0B90B" />
+            <text x="530" y="640" font-size="32" fill="#F0B90B" text-anchor="middle">提款：等挑战期，通常数天</text>
+          </g>
+
+          <!-- ZK Rollup -->
+          <g id="l-zk" class="h">
+            <text x="1390" y="200" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">ZK Rollup · 有效性证明</text>
+            <rect x="1290" y="240" width="200" height="90" rx="14" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+            <text x="1390" y="297" font-size="30" fill="#58C4DD" text-anchor="middle">状态根</text>
+            <rect x="1345" y="360" width="90" height="110" rx="10" fill="#161a22" stroke="#e8e6df" stroke-width="3" />
+            <text x="1390" y="435" font-size="44" fill="#83C167" text-anchor="middle" font-weight="800">✓</text>
+          </g>
+          <text id="l-zkas" class="h" x="1390" y="510" font-size="30" fill="#83C167" text-anchor="middle">证明系统可靠 · 电路正确</text>
+          <g id="l-zkbar" class="h">
+            <rect x="1060" y="560" width="660" height="26" rx="13" fill="#2a2f3a" />
+            <rect id="l-zkfill" x="1060" y="560" width="110" height="26" rx="13" fill="#F0B90B" />
+            <text x="1390" y="640" font-size="32" fill="#F0B90B" text-anchor="middle">提款：通常数小时</text>
+          </g>
+
+          <!-- 运营方 -->
+          <g id="l-ops" class="h">
+            <rect x="760" y="760" width="400" height="110" rx="18" fill="#1a1524" stroke="#B48EF0" stroke-width="4" />
+            <text x="960" y="812" font-size="34" fill="#B48EF0" text-anchor="middle" font-weight="700">运营方 · 安全委员会</text>
+            <text x="960" y="852" font-size="28" fill="#8a8f99" text-anchor="middle">切换 · 暂停 · 回滚</text>
+          </g>
+          <path id="l-o1" class="dr" pathLength="1" d="M760 815 C 600 815, 540 760, 530 670" fill="none" stroke="#B48EF0" stroke-width="4" />
+          <path id="l-o2" class="dr" pathLength="1" d="M1160 815 C 1320 815, 1380 760, 1390 670" fill="none" stroke="#B48EF0" stroke-width="4" />
+          <text id="l-ev1" class="h" x="530" y="960" font-size="30" fill="#e8e6df" text-anchor="middle">2024 · OP Mainnet：故障证明切回许可模式</text>
+          <text id="l-ev2" class="h" x="1390" y="960" font-size="30" fill="#e8e6df" text-anchor="middle">2025-09 · Starknet：回滚约 1.5 小时</text>
+        </g>
+
+        <!-- L2BEAT Stages -->
+        <g id="l-stages">
+          <text id="l-st" class="h" x="960" y="150" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">L2BEAT Stages：去掉运营方，还剩多少保障</text>
+          <g id="l-s0" class="h"><rect x="200" y="700" width="480" height="160" rx="14" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><text x="440" y="760" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">Stage 0</text><text x="440" y="815" font-size="28" fill="#8a8f99" text-anchor="middle">状态根与数据上 L1</text></g>
+          <g id="l-s1" class="h"><rect x="720" y="520" width="480" height="340" rx="14" fill="#16181f" stroke="#8a8f99" stroke-width="3" /><text x="960" y="580" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">Stage 1</text><text x="960" y="635" font-size="28" fill="#8a8f99" text-anchor="middle">委员会 ≥ 8 人、阈值 ≥ 75%</text><text x="960" y="680" font-size="28" fill="#8a8f99" text-anchor="middle">退出窗口 ≥ 5 天</text></g>
+          <g id="l-s2" class="h"><rect x="1240" y="340" width="480" height="520" rx="14" fill="#12200f" stroke="#83C167" stroke-width="3" /><text x="1480" y="400" font-size="38" fill="#83C167" text-anchor="middle" font-weight="700">Stage 2</text><text x="1480" y="455" font-size="28" fill="#8a8f99" text-anchor="middle">证明系统无需许可</text><text x="1480" y="500" font-size="28" fill="#8a8f99" text-anchor="middle">退出窗口 ≥ 30 天</text></g>
+          <text id="l-src" class="h" x="960" y="940" font-size="28" fill="#6b6f7a" text-anchor="middle">截至 2026 年 L2BEAT 公开规范 · 手册第 14 章 §3.4</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 46.86, "L": [[0.6, 5.23], [5.68, 14.13], [14.58, 22.36], [22.81, 29.62], [30.07, 39.58], [40.03, 45.76]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 观察者：5 个灰点 + 1 个绿点
+      const wh = document.querySelector("#l-watch"), W = [];
+      for (let i = 0; i < 6; i++) {
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", 355 + i * 70); c.setAttribute("cy", 420); c.setAttribute("r", 18);
+        c.setAttribute("fill", i === 3 ? "#83C167" : "#6b6f7a"); c.setAttribute("opacity", 0);
+        wh.appendChild(c); W.push(c);
+      }
+
+      IN("#l-title", at(0, 0.1), 0.5);
+      // L1 乐观
+      IN("#l-op", at(1, 0.0), 0.5, { y: 16 }, { y: 0 });
+      W.forEach((c, i) => IN(c, at(1, 0.2) + i * 0.07, 0.3));
+      tl.fromTo(W[3], { attr: { r: 18 } }, { attr: { r: 24 }, duration: 0.3, yoyo: true, repeat: 1 }, at(1, 0.5));
+      IN("#l-honest", at(1, 0.45), 0.4);
+      IN("#l-opbar", at(1, 0.7), 0.4);
+      tl.fromTo("#l-opfill", { attr: { width: 0 } }, { attr: { width: 660 }, duration: 1.4, ease: "none" }, at(1, 0.72));
+      // L2 ZK
+      IN("#l-zk", at(2, 0.0), 0.5, { y: 16 }, { y: 0 });
+      IN("#l-zkas", at(2, 0.35), 0.4);
+      IN("#l-zkbar", at(2, 0.7), 0.4);
+      tl.fromTo("#l-zkfill", { attr: { width: 0 } }, { attr: { width: 110 }, duration: 0.5, ease: "none" }, at(2, 0.72));
+      // L3 运营方
+      IN("#l-ops", at(3, 0.05), 0.5, { y: 20 }, { y: 0 });
+      DRAW("#l-o1", at(3, 0.3), 0.6); DRAW("#l-o2", at(3, 0.3), 0.6);
+      tl.to(["#l-op", "#l-zk"], { opacity: 0.55, duration: 0.2, yoyo: true, repeat: 3 }, at(3, 0.55));
+      // L4 两个事件
+      IN("#l-ev1", at(4, 0.05), 0.5);
+      IN("#l-ev2", at(4, 0.5), 0.5);
+      // L5 Stages
+      OUT("#l-cols", at(5, 0.0), 0.4);
+      IN("#l-st", at(5, 0.02), 0.5);
+      IN("#l-s0", at(5, 0.1), 0.4, { y: 30 }, { y: 0 });
+      IN("#l-s1", at(5, 0.2), 0.4, { y: 30 }, { y: 0 });
+      IN("#l-s2", at(5, 0.3), 0.4, { y: 30 }, { y: 0 });
+      IN("#l-src", at(5, 0.4), 0.4);
+
+      tl.to("#l-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["l2"] = tl;
+    })();
+  </script>
+</template>

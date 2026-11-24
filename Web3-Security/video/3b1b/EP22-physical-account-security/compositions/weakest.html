@@ -1,0 +1,113 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="weakest" data-duration="40.31" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <g id="x-lockshape">
+          <path d="M-22 0 V -16 A 22 22 0 0 1 22 -16 V 0" fill="none" stroke-width="7" />
+          <rect x="-34" y="0" width="68" height="54" rx="10" fill="#0f1117" stroke-width="5" />
+        </g>
+        <g id="x-keyshape">
+          <rect x="-26" y="-34" width="52" height="68" rx="10" fill="#0f1117" stroke-width="5" />
+          <circle cx="0" cy="-8" r="10" fill="none" stroke-width="4" />
+          <path d="M-14 46 H 14" stroke-width="6" />
+        </g>
+      </defs>
+      <g id="x-all">
+        <!-- 账号（紫） -->
+        <g id="x-acct" class="h">
+          <rect x="720" y="320" width="480" height="440" rx="26" fill="#1a1524" stroke="#B48EF0" stroke-width="5" />
+          <text x="960" y="400" font-size="40" fill="#B48EF0" text-anchor="middle" font-weight="700">你的账号</text>
+          <g fill="#F0B90B"><circle cx="900" cy="560" r="22" /><circle cx="960" cy="560" r="22" /><circle cx="1020" cy="560" r="22" /><circle cx="930" cy="610" r="22" /><circle cx="990" cy="610" r="22" /></g>
+        </g>
+        <!-- 登录门：两道锁 -->
+        <g id="x-door1" class="h">
+          <rect x="690" y="460" width="60" height="200" rx="8" fill="#0f1117" stroke="#e8e6df" stroke-width="4" />
+          <text x="560" y="300" font-size="36" fill="#e8e6df" text-anchor="middle" font-weight="700">登录</text>
+        </g>
+        <use id="x-l1" class="h" href="#x-lockshape" x="560" y="460" stroke="#83C167" />
+        <use id="x-l2" class="h" href="#x-lockshape" x="560" y="600" stroke="#83C167" />
+        <text id="x-l1t" class="h" x="460" y="500" font-size="28" fill="#83C167" text-anchor="end">密码</text>
+        <text id="x-l2t" class="h" x="460" y="640" font-size="28" fill="#83C167" text-anchor="end">验证器 App</text>
+
+        <!-- 恢复门：一道锁 -->
+        <g id="x-door2" class="h">
+          <rect x="1170" y="460" width="60" height="200" rx="8" fill="#0f1117" stroke="#FF9F43" stroke-width="4" />
+          <text x="1360" y="300" font-size="36" fill="#FF9F43" text-anchor="middle" font-weight="700">忘记密码</text>
+        </g>
+        <use id="x-l3" class="h" href="#x-lockshape" x="1360" y="530" stroke="#FF9F43" />
+        <text id="x-l3t" class="h" x="1460" y="570" font-size="28" fill="#FF9F43">只要短信</text>
+
+        <!-- 攻击者路径 -->
+        <circle id="x-atk" class="h" cx="200" cy="560" r="24" fill="#FC6255" />
+        <path id="x-path" class="dr" pathLength="1" d="M200 590 C 200 900, 1500 950, 1400 650" fill="none" stroke="#FC6255" stroke-width="4" stroke-dasharray="1" />
+
+        <!-- 公式 -->
+        <g id="x-f" class="h">
+          <text x="960" y="940" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="800">强度 = min( <tspan fill="#83C167">登录</tspan> , <tspan fill="#FF9F43">恢复</tspan> )</text>
+        </g>
+        <text id="x-f2" class="h" x="960" y="1010" font-size="32" fill="#8a8f99" text-anchor="middle">两道锁和一道锁，取较弱的那一道</text>
+
+        <!-- 硬件安全密钥（绿） -->
+        <use id="x-k1" class="h" href="#x-keyshape" x="560" y="530" stroke="#83C167" />
+        <text id="x-k1t" class="h" x="460" y="540" font-size="28" fill="#83C167" text-anchor="end">FIDO2</text>
+        <use id="x-k2" class="h" href="#x-keyshape" x="1360" y="550" stroke="#83C167" />
+        <text id="x-k2t" class="h" x="1460" y="570" font-size="28" fill="#83C167">硬件密钥</text>
+        <g font-size="32" fill="#83C167" text-anchor="middle"><text class="x-li h" x="600" y="200">邮箱</text><text class="x-li h" x="840" y="200">交易所</text><text class="x-li h" x="1090" y="200">社交账号</text><text class="x-li h" x="1360" y="200">域名注册商</text></g>
+        <text id="x-shut" class="h" x="960" y="940" font-size="44" fill="#83C167" text-anchor="middle" font-weight="800">前门、后门，都锁上</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 40.31, "L": [[0.6, 4.75], [5.2, 9.5], [9.95, 15.59], [16.04, 20.74], [21.19, 31.54], [31.99, 39.21]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.8) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 账号 + 登录门两道锁
+      IN("#x-acct", at(0, 0.0), 0.6);
+      IN("#x-door1", at(0, 0.25), 0.4);
+      IN(["#x-l1", "#x-l1t"], at(0, 0.4), 0.4, { y: -10 }, { y: 0 });
+      IN(["#x-l2", "#x-l2t"], at(0, 0.6), 0.4, { y: -10 }, { y: 0 });
+      // L1 恢复门：只要短信
+      IN("#x-door2", at(1, 0.3), 0.5);
+      IN(["#x-l3", "#x-l3t"], at(1, 0.6), 0.5, { y: -10 }, { y: 0 });
+      // L2 攻击者不走前门
+      IN("#x-atk", at(2, 0.0), 0.3);
+      tl.to("#x-atk", { attr: { cx: 420 }, duration: 0.5, ease: "power2.in" }, at(2, 0.1));
+      tl.to("#x-atk", { attr: { cx: 300 }, duration: 0.4, ease: "power2.out" }, at(2, 0.1) + 0.5);
+      DRAW("#x-path", at(2, 0.45), 1.0);
+      tl.to("#x-atk", { attr: { cx: 1400, cy: 650 }, duration: 1.0, ease: "power2.inOut" }, at(2, 0.45));
+      tl.to("#x-l3", { stroke: "#FC6255", duration: 0.3 }, at(2, 0.45) + 1.0);
+      tl.to("#x-l3", { opacity: 0.25, y: 30, duration: 0.4 }, at(2, 0.45) + 1.3);
+      // L3 公式
+      IN("#x-f", at(3, 0.05), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      IN("#x-f2", at(3, 0.3), 0.5);
+      // L4 硬件安全密钥
+      OUT(["#x-f", "#x-f2", "#x-path", "#x-atk"], at(4, 0), 0.35);
+      OUT(["#x-l1", "#x-l2", "#x-l1t", "#x-l2t"], at(4, 0.05), 0.35);
+      IN(["#x-k1", "#x-k1t"], at(4, 0.5), 0.5, { scale: 1.3, transformOrigin: "50% 50%" }, { scale: 1 });
+      gsap.utils.toArray("#root .x-li").forEach((e, i) => IN(e, at(4, 0.08 + i * 0.1), 0.4, { y: -10 }, { y: 0 }));
+      tl.fromTo("#x-k1", { attr: { y: 530 } }, { attr: { y: 520 }, duration: 0.3, yoyo: true, repeat: 3 }, at(4, 0.7));
+      // L5 后门也换成硬件密钥
+      OUT(["#x-l3", "#x-l3t"], at(5, 0.05), 0.35);
+      tl.to("#x-door2 rect", { stroke: "#83C167", duration: 0.4 }, at(5, 0.15));
+      tl.to("#x-door2 text", { fill: "#83C167", duration: 0.4 }, at(5, 0.15));
+      IN(["#x-k2", "#x-k2t"], at(5, 0.2), 0.5, { scale: 1.3, transformOrigin: "50% 50%" }, { scale: 1 });
+      IN("#x-shut", at(5, 0.55), 0.5);
+
+      tl.to("#x-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["weakest"] = tl;
+    })();
+  </script>
+</template>

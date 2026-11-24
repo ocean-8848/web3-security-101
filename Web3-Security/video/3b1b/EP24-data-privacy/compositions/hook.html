@@ -1,0 +1,84 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="hook" data-duration="28.51" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="h-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker></defs>
+      <g id="h-all">
+        <text id="h-date" class="h" x="200" y="160" font-size="34" fill="#6b6f7a" letter-spacing="2">2025 年 5 月 · Coinbase</text>
+        <g id="h-agent" class="h">
+          <rect x="200" y="300" width="420" height="300" rx="20" fill="#161a22" stroke="#8a8f99" stroke-width="3" />
+          <text x="410" y="350" font-size="30" fill="#8a8f99" text-anchor="middle">客服后台</text>
+          <g fill="#B48EF0" opacity=".7"><rect x="240" y="380" width="340" height="22" rx="6" /><rect x="240" y="420" width="300" height="22" rx="6" /><rect x="240" y="460" width="320" height="22" rx="6" /><rect x="240" y="500" width="280" height="22" rx="6" /><rect x="240" y="540" width="330" height="22" rx="6" /></g>
+          <circle cx="410" cy="680" r="34" fill="#2a2240" stroke="#B48EF0" stroke-width="4" />
+          <text x="410" y="760" font-size="30" fill="#B48EF0" text-anchor="middle">被收买的外包客服</text>
+        </g>
+        <path id="h-arr" class="dr h" pathLength="1" d="M630 450 L 1180 450" fill="none" stroke="#FC6255" stroke-width="5" marker-end="url(#h-ahr)" />
+        <g id="h-rows" fill="#B48EF0"></g>
+        <g id="h-gang" class="h"><circle cx="1260" cy="430" r="40" fill="#FC6255" /><text x="1260" y="520" font-size="30" fill="#FC6255" text-anchor="middle">犯罪团伙</text></g>
+        <text id="h-cnt" class="h" x="960" y="380" font-size="56" fill="#FF9F43" text-anchor="middle" font-weight="800"><tspan id="h-n">0</tspan> 名用户</text>
+        <!-- 字段清单 -->
+        <g id="h-fields" font-size="32">
+          <text class="h-f h" x="1420" y="300" fill="#e8e6df">✓ 姓名、联系方式</text>
+          <text class="h-f h" x="1420" y="360" fill="#e8e6df">✓ 证件图像</text>
+          <text class="h-f h" x="1420" y="420" fill="#e8e6df">✓ 余额、交易记录</text>
+          <text class="h-g h" x="1420" y="520" fill="#6b6f7a">✕ 密码</text>
+          <text class="h-g h" x="1420" y="580" fill="#6b6f7a">✕ 私钥</text>
+        </g>
+        <line id="h-s1" class="h" x1="1450" y1="510" x2="1560" y2="510" stroke="#6b6f7a" stroke-width="3" />
+        <line id="h-s2" class="h" x1="1450" y1="570" x2="1560" y2="570" stroke="#6b6f7a" stroke-width="3" />
+        <text id="h-cost" class="h" x="1100" y="830" font-size="60" fill="#F0B90B" text-anchor="middle" font-weight="800">≈ 1.8 – 4 亿美元</text>
+        <text id="h-costn" class="h" x="1100" y="890" font-size="30" fill="#6b6f7a" text-anchor="middle">公司在 SEC 文件中的估算</text>
+      </g>
+      <text id="h-q" class="h" x="960" y="560" font-size="68" fill="#e8e6df" text-anchor="middle" font-weight="800">泄露的<tspan fill="#B48EF0">数据</tspan>，怎样变成<tspan fill="#FC6255">攻击</tspan>？</text>
+      <g id="h-pin" class="h">
+        <rect x="80" y="70" width="640" height="84" rx="14" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="400" y="125" font-size="34" fill="#e8e6df" text-anchor="middle">泄露的数据，怎样变成攻击？</text>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 28.51, "L": [[0.6, 8.74], [9.19, 13.17], [13.62, 19.43], [19.88, 27.41]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const host = document.querySelector("#h-rows"), rows = [];
+      for (let i = 0; i < 10; i++) { const r = document.createElementNS("http://www.w3.org/2000/svg", "rect"); r.setAttribute("x", 600); r.setAttribute("y", 400 + (i % 5) * 22); r.setAttribute("width", 60); r.setAttribute("height", 14); r.setAttribute("rx", 4); r.setAttribute("opacity", "0"); host.appendChild(r); rows.push(r); }
+      // L0 外包客服导出数据
+      IN("#h-date", at(0, 0), 0.5);
+      IN("#h-agent", at(0, 0.1), 0.6, { y: 20 }, { y: 0 });
+      DRAW("#h-arr", at(0, 0.4), 0.6);
+      IN("#h-gang", at(0, 0.45), 0.4);
+      rows.forEach((r, i) => { tl.fromTo(r, { opacity: 0 }, { opacity: 1, duration: 0.1 }, at(0, 0.5) + i * 0.15); tl.to(r, { attr: { x: 1180 }, opacity: 0, duration: 0.8, ease: "power1.in" }, at(0, 0.5) + i * 0.15); });
+      IN("#h-cnt", at(0, 0.55), 0.4);
+      const n = { v: 0 }, el = document.querySelector("#h-n");
+      tl.fromTo(n, { v: 0 }, { v: 69461, duration: 2.2, ease: "power2.out", onUpdate: () => { el.textContent = Math.round(n.v).toLocaleString("en-US"); } }, at(0, 0.55));
+      // L1 字段：有什么，没有什么
+      gsap.utils.toArray("#root .h-f").forEach((e, i) => IN(e, at(1, 0.0) + i * 0.25, 0.3, { x: 20 }, { x: 0 }));
+      gsap.utils.toArray("#root .h-g").forEach((e, i) => IN(e, at(1, 0.5) + i * 0.3, 0.3, { x: 20 }, { x: 0 }));
+      IN("#h-s1", at(1, 0.6), 0.2); IN("#h-s2", at(1, 0.8), 0.2);
+      // L2 成本
+      IN("#h-cost", at(2, 0.25), 0.6, { scale: 0.8, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(1.6)" });
+      IN("#h-costn", at(2, 0.5), 0.4);
+      // L3 问题
+      tl.to("#h-all", { opacity: 0, filter: "blur(6px)", duration: 0.5, ease: "power2.in" }, at(3, 0.05));
+      IN("#h-q", at(3, 0.1), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      tl.to("#h-q", { opacity: 0, duration: 0.4 }, at(3, 0.66));
+      IN("#h-pin", at(3, 0.7), 0.4, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1 });
+      tl.to("#h-pin", { opacity: 0, duration: 0.3 }, C.d - 0.35);
+
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>

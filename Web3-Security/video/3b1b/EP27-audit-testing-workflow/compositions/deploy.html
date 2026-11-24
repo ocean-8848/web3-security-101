@@ -1,0 +1,134 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="deploy" data-duration="50.8" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="d-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="d-ahp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#B48EF0" /></marker>
+      </defs>
+      <g id="d-all">
+        <g id="d-p1">
+          <!-- 部署脚本 -->
+          <g id="d-script" class="h">
+            <rect x="100" y="160" width="360" height="220" rx="14" fill="#12151c" stroke="#58C4DD" stroke-width="3" />
+            <text x="130" y="210" font-size="30" fill="#58C4DD" font-family="JetBrains Mono">deploy.s.sol</text>
+            <g stroke="#58C4DD" stroke-width="8" stroke-linecap="round" opacity=".55"><line x1="130" y1="250" x2="380" y2="250" /><line x1="150" y1="290" x2="420" y2="290" /><line x1="150" y1="330" x2="330" y2="330" /></g>
+          </g>
+          <text id="d-rev" class="h" x="280" y="430" font-size="30" fill="#83C167" text-anchor="middle">✓ 脚本也评审</text>
+          <path id="d-a1" class="dr h" pathLength="1" d="M470 270 L 600 270" fill="none" stroke="#8a8f99" stroke-width="4" marker-end="url(#d-ah)" />
+          <!-- 同一笔交易：部署 + 初始化 -->
+          <g id="d-tx" class="h">
+            <rect x="610" y="170" width="440" height="200" rx="16" fill="#1a1708" stroke="#F0B90B" stroke-width="3" />
+            <text x="830" y="215" font-size="28" fill="#F0B90B" text-anchor="middle">同一笔交易</text>
+            <rect x="640" y="240" width="180" height="90" rx="10" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="730" y="295" font-size="30" fill="#e8e6df" text-anchor="middle">部署</text>
+            <rect x="840" y="240" width="180" height="90" rx="10" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="930" y="295" font-size="30" fill="#e8e6df" text-anchor="middle">初始化</text>
+          </g>
+          <text id="d-txn" class="h" x="830" y="430" font-size="28" fill="#8a8f99" text-anchor="middle">中间没有空隙可抢先初始化</text>
+          <!-- 验证 -->
+          <g id="d-ver" class="h">
+            <rect x="1150" y="160" width="660" height="300" rx="14" fill="#161a22" stroke="#e8e6df" stroke-opacity=".5" stroke-width="3" />
+            <text x="1180" y="210" font-size="30" fill="#e8e6df" font-weight="700">浏览器验证源码 ✓ · 验证脚本</text>
+          </g>
+          <g font-size="28" font-family="JetBrains Mono">
+            <text class="d-vr h" x="1180" y="270" fill="#e8e6df">fee     = 30 bps</text>
+            <text class="d-vr h" x="1180" y="320" fill="#e8e6df">oracle  = 0x9c…</text>
+            <text class="d-vr h" x="1180" y="370" fill="#e8e6df">pauser  = guardian</text>
+            <text class="d-vr h" x="1180" y="420" fill="#e8e6df">owner   = timelock</text>
+          </g>
+          <g font-size="28" fill="#83C167">
+            <text class="d-vk h" x="1780" y="270" text-anchor="end">与预期一致 ✓</text><text class="d-vk h" x="1780" y="320" text-anchor="end">✓</text>
+            <text class="d-vk h" x="1780" y="370" text-anchor="end">✓</text><text class="d-vk h" x="1780" y="420" text-anchor="end">✓</text>
+          </g>
+          <!-- 权限移交 -->
+          <g id="d-dep" class="h">
+            <circle cx="300" cy="640" r="44" fill="none" stroke="#B48EF0" stroke-width="4" />
+            <text x="300" y="720" font-size="30" fill="#e8e6df" text-anchor="middle">部署账户</text>
+            <text id="d-roles" x="300" y="765" font-size="28" fill="#8a8f99" text-anchor="middle">owner · admin · minter</text>
+          </g>
+          <line id="d-cross" class="h" x1="180" y1="755" x2="420" y2="755" stroke="#FC6255" stroke-width="5" />
+          <text id="d-crosst" class="h" x="300" y="810" font-size="28" fill="#FC6255" text-anchor="middle">全部角色撤销</text>
+          <path id="d-a2" class="dr h" pathLength="1" d="M360 640 L 640 640" fill="none" stroke="#B48EF0" stroke-width="4" marker-end="url(#d-ahp)" />
+          <g id="d-ms" class="h">
+            <circle cx="700" cy="610" r="18" fill="#B48EF0" /><circle cx="760" cy="610" r="18" fill="#B48EF0" /><circle cx="820" cy="610" r="18" fill="#6b6f7a" />
+            <circle cx="730" cy="665" r="18" fill="#B48EF0" /><circle cx="790" cy="665" r="18" fill="#6b6f7a" />
+            <text x="760" y="730" font-size="30" fill="#B48EF0" text-anchor="middle">多签</text>
+          </g>
+          <path id="d-a3" class="dr h" pathLength="1" d="M860 640 L 1000 640" fill="none" stroke="#B48EF0" stroke-width="4" marker-end="url(#d-ahp)" />
+          <g id="d-tlk" class="h">
+            <circle cx="1080" cy="640" r="60" fill="none" stroke="#B48EF0" stroke-width="4" />
+            <line x1="1080" y1="640" x2="1080" y2="600" stroke="#B48EF0" stroke-width="5" /><line x1="1080" y1="640" x2="1110" y2="655" stroke="#B48EF0" stroke-width="5" />
+            <text x="1080" y="730" font-size="30" fill="#B48EF0" text-anchor="middle">时间锁</text>
+          </g>
+        </g>
+
+        <!-- 目标链差异 -->
+        <g id="d-p2">
+          <text id="d-ct" class="h" x="960" y="150" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">在以太坊上测过 ≠ 在目标链上能跑</text>
+          <g id="d-c1" class="h">
+            <rect x="160" y="250" width="760" height="300" rx="18" fill="#161a22" stroke="#F0B90B" stroke-width="3" />
+            <text x="540" y="320" font-size="38" fill="#F0B90B" text-anchor="middle" font-weight="700">BNB Chain</text>
+            <text x="540" y="400" font-size="32" fill="#e8e6df" text-anchor="middle">出块间隔 0.45 秒</text>
+            <text x="540" y="460" font-size="28" fill="#8a8f99" text-anchor="middle">按区块数算时间要重算；</text>
+            <text x="540" y="505" font-size="28" fill="#8a8f99" text-anchor="middle">相邻区块的秒级时间戳可能相同</text>
+          </g>
+          <g id="d-c2" class="h">
+            <rect x="1000" y="250" width="760" height="300" rx="18" fill="#161a22" stroke="#58C4DD" stroke-width="3" />
+            <text x="1380" y="320" font-size="38" fill="#58C4DD" text-anchor="middle" font-weight="700">Mantle</text>
+            <text x="1380" y="400" font-size="32" fill="#e8e6df" text-anchor="middle" font-family="JetBrains Mono">msg.value = MNT</text>
+            <text x="1380" y="460" font-size="28" fill="#8a8f99" text-anchor="middle">不是 ETH；ETH 在这里是 ERC-20</text>
+          </g>
+          <g id="d-run" class="h">
+            <rect x="460" y="680" width="1000" height="140" rx="18" fill="#132013" stroke="#83C167" stroke-width="3" />
+            <text x="960" y="740" font-size="34" fill="#83C167" text-anchor="middle" font-weight="700">目标链测试网 / 主网分叉</text>
+            <text x="960" y="790" font-size="30" fill="#e8e6df" text-anchor="middle">完整测试再跑一遍</text>
+          </g>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 50.8, "L": [[0.6, 7.78], [8.23, 13.91], [14.36, 22.12], [22.57, 30.03], [30.48, 42.53], [42.98, 49.7]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 脚本部署
+      IN("#d-script", at(0, 0.05), 0.5, { y: 20 }, { y: 0 });
+      IN("#d-rev", at(0, 0.6), 0.4);
+      // L1 部署 + 初始化同一笔交易
+      DRAW("#d-a1", at(1, 0.0), 0.4);
+      IN("#d-tx", at(1, 0.1), 0.5);
+      IN("#d-txn", at(1, 0.6), 0.4);
+      // L2 验证
+      IN("#d-ver", at(2, 0.0), 0.5);
+      gsap.utils.toArray("#root .d-vr").forEach((t, i) => IN(t, at(2, 0.35) + i * 0.4, 0.3));
+      gsap.utils.toArray("#root .d-vk").forEach((t, i) => IN(t, at(2, 0.35) + i * 0.4 + 0.25, 0.3));
+      // L3 权限移交
+      IN("#d-dep", at(3, 0.0), 0.5);
+      DRAW("#d-a2", at(3, 0.2), 0.5); IN("#d-ms", at(3, 0.3), 0.4);
+      DRAW("#d-a3", at(3, 0.45), 0.4); IN("#d-tlk", at(3, 0.5), 0.4);
+      IN("#d-cross", at(3, 0.75), 0.2, { scaleX: 0, svgOrigin: "180 755" }, { scaleX: 1 });
+      IN("#d-crosst", at(3, 0.8), 0.4);
+      // L4 目标链
+      tl.to("#d-p1", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(4, 0.0));
+      IN("#d-ct", at(4, 0.05), 0.5);
+      IN("#d-c1", at(4, 0.3), 0.5, { y: 20 }, { y: 0 });
+      IN("#d-c2", at(4, 0.65), 0.5, { y: 20 }, { y: 0 });
+      // L5 再跑一遍
+      IN("#d-run", at(5, 0.1), 0.6, { y: 20 }, { y: 0 });
+
+      tl.to("#d-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["deploy"] = tl;
+    })();
+  </script>
+</template>

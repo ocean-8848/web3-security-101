@@ -1,0 +1,80 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="control" data-duration="37.53" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="c-all">
+        <g id="c-atk" class="h">
+          <circle cx="960" cy="520" r="80" fill="#2a1416" stroke="#FC6255" stroke-width="5" />
+          <text x="960" y="532" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">攻击者</text>
+        </g>
+        <text id="c-q" class="h" x="960" y="120" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700"><tspan fill="#FC6255">攻击者</tspan>能控制什么？</text>
+        <g id="c-items"></g>
+        <!-- 复用 -->
+        <g id="c-copy"></g>
+        <text id="c-note" class="h" x="960" y="1000" font-size="32" fill="#e8e6df" text-anchor="middle">最活跃：朝鲜相关组织　·　但手法被各类团伙复用 → 防御不只盯一个组织</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 37.53, "L": [[0.6, 4.18], [4.63, 10.48], [10.93, 19.64], [20.09, 25.49], [25.94, 36.43]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 五样东西围绕攻击者（原文第 2 节表格）
+      const I = [
+        ["一个假身份", "招聘者 · 前同事 · 合作方 · 记者", 960 - 520, 300],
+        ["一个任务", "测试题 · 代码作业 · 复盘文件 · 合同", 960 + 520, 300],
+        ["一场会议", "假会议软件 · 远程控制", 960 - 560, 680],
+        ["一笔钱", "收买客服或外包", 960 + 560, 680],
+        ["一个被雇用的身份", "用盗来的身份应聘远程岗位", 960, 820]
+      ];
+      const G = I.map(([a, b, x, y]) => {
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        g.innerHTML = `<line x1="960" y1="520" x2="${x}" y2="${y - 20}" stroke="#FC6255" stroke-opacity=".35" stroke-width="3" />` +
+          `<rect x="${x - 250}" y="${y - 60}" width="500" height="110" rx="16" fill="#161a22" stroke="#FC6255" stroke-width="3" />` +
+          `<text x="${x}" y="${y - 12}" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">${a}</text>` +
+          `<text x="${x}" y="${y + 30}" font-size="28" fill="#8a8f99" text-anchor="middle">${b}</text>`;
+        document.querySelector("#c-items").appendChild(g); return g;
+      });
+      // 复用：灰色小圆点从攻击者复制出去
+      const cp = document.querySelector("#c-copy"), dots = [];
+      for (let i = 0; i < 14; i++) {
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", "960"); c.setAttribute("cy", "520"); c.setAttribute("r", "14"); c.setAttribute("fill", "#8a8f99"); c.setAttribute("opacity", "0");
+        cp.appendChild(c);
+        const a = (i / 14) * Math.PI * 2 + 0.2;
+        dots.push({ c, x: Math.cos(a) * 860, y: Math.sin(a) * 380 });
+      }
+
+      // L0
+      IN("#c-atk", at(0, 0.0), 0.5, { scale: 0.4, svgOrigin: "960 520" }, { scale: 1 });
+      IN("#c-q", at(0, 0.2), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      // L1 假身份
+      IN(G[0], at(1, 0.1), 0.5, { x: 40, y: 40 }, { x: 0, y: 0 });
+      // L2 任务、会议、一笔钱
+      IN(G[1], at(2, 0.05), 0.5, { x: -40, y: 40 }, { x: 0, y: 0 });
+      IN(G[2], at(2, 0.55), 0.5, { x: 40, y: -40 }, { x: 0, y: 0 });
+      IN(G[3], at(2, 0.78), 0.5, { x: -40, y: -40 }, { x: 0, y: 0 });
+      // L3 被雇用的身份
+      IN(G[4], at(3, 0.1), 0.5, { y: -40 }, { y: 0 });
+      tl.to(G[4].querySelector("rect"), { strokeWidth: 7, duration: 0.25, yoyo: true, repeat: 3 }, at(3, 0.6));
+      // L4 手法被复用
+      tl.to(G, { opacity: 0.25, duration: 0.4 }, at(4, 0.05));
+      dots.forEach((d, i) => tl.fromTo(d.c, { opacity: 0, x: 0, y: 0 }, { opacity: 0.8, x: d.x, y: d.y, duration: 1.0, ease: "power2.out" }, at(4, 0.12) + i * 0.08));
+      IN("#c-note", at(4, 0.45), 0.6);
+
+      tl.to("#c-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["control"] = tl;
+    })();
+  </script>
+</template>

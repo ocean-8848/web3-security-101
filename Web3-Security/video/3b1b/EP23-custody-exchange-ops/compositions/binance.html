@@ -1,0 +1,85 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="binance" data-duration="45.52" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="b-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="b-all">
+        <text id="b-title" class="h" x="960" y="110" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="800">Binance 初步报告 <tspan fill="#8a8f99" font-size="32" font-weight="400">（11 月 3 日）</tspan></text>
+        <!-- 工程师电脑 -->
+        <g id="b-pcs" class="h">
+          <g stroke="#B48EF0" stroke-width="4" fill="#1a1524">
+            <rect x="90" y="400" width="120" height="80" rx="8" /><rect x="230" y="400" width="120" height="80" rx="8" /><rect x="160" y="500" width="120" height="80" rx="8" />
+          </g>
+          <text x="220" y="640" font-size="30" fill="#B48EF0" text-anchor="middle">工程师的电脑</text>
+        </g>
+        <g id="b-pwn" class="h" fill="#FC6255"><circle cx="150" cy="440" r="10" /><circle cx="290" cy="440" r="10" /><circle cx="220" cy="540" r="10" /></g>
+        <path id="b-a1" class="dr h" pathLength="1" d="M360 490 L 450 490" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#b-ahr)" />
+        <g id="b-tok" class="h"><rect x="460" y="430" width="300" height="120" rx="16" fill="#1d1214" stroke="#FC6255" stroke-width="5" /><text x="610" y="482" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">长期部署令牌</text><text x="610" y="525" font-size="28" fill="#8a8f99" text-anchor="middle">存在开发终端上</text></g>
+        <path id="b-a2" class="dr h" pathLength="1" d="M765 490 L 840 490" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#b-ahr)" />
+        <g id="b-con" class="h"><rect x="850" y="430" width="240" height="120" rx="16" fill="#161a22" stroke="#FC6255" stroke-width="3" /><text x="970" y="500" font-size="32" fill="#e8e6df" text-anchor="middle">部署容器</text></g>
+        <path id="b-a3" class="dr h" pathLength="1" d="M1095 490 L 1170 490" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#b-ahr)" />
+        <g id="b-sig" class="h"><rect x="1180" y="420" width="280" height="140" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="5" /><text x="1320" y="500" font-size="32" fill="#58C4DD" text-anchor="middle" font-weight="700">内部签名服务</text></g>
+        <!-- 被绕过的正常流程 -->
+        <g id="b-norm" class="h">
+          <rect x="860" y="220" width="420" height="100" rx="14" fill="none" stroke="#8a8f99" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="1070" y="280" font-size="30" fill="#8a8f99" text-anchor="middle">正常提现流程</text>
+        </g>
+        <text id="b-byp" class="h" x="1070" y="380" font-size="30" fill="#FF9F43" text-anchor="middle" font-weight="700">被绕过</text>
+        <!-- 两个分支 -->
+        <path id="b-a4" class="dr h" pathLength="1" d="M1465 460 C 1520 400, 1520 330, 1550 320" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#b-ahr)" />
+        <g id="b-eth" class="h"><rect x="1560" y="230" width="300" height="160" rx="16" fill="#1d1214" stroke="#FC6255" stroke-width="4" /><text x="1710" y="285" font-size="28" fill="#e8e6df" text-anchor="middle">以太坊</text><text x="1710" y="330" font-size="30" fill="#FC6255" text-anchor="middle" font-weight="700">EIP-7702 委托</text><text x="1710" y="372" font-size="28" fill="#8a8f99" text-anchor="middle">执行权 → 攻击者合约</text></g>
+        <path id="b-a5" class="dr h" pathLength="1" d="M1465 520 C 1520 580, 1520 650, 1550 660" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#b-ahr)" />
+        <g id="b-oth" class="h"><rect x="1560" y="600" width="300" height="120" rx="16" fill="#1d1214" stroke="#FC6255" stroke-width="3" /><text x="1710" y="650" font-size="28" fill="#e8e6df" text-anchor="middle">其他链</text><text x="1710" y="692" font-size="28" fill="#FC6255" text-anchor="middle">普通签名转账</text></g>
+        <!-- 私钥与金额 -->
+        <g id="b-key" class="h">
+          <circle cx="1240" cy="680" r="22" fill="none" stroke="#83C167" stroke-width="6" />
+          <path d="M1262 680 H 1320 M 1304 680 V 698" stroke="#83C167" stroke-width="6" fill="none" />
+          <text x="1280" y="760" font-size="28" fill="#83C167" text-anchor="middle">未发现私钥泄露</text>
+        </g>
+        <text id="b-amt" class="h" x="960" y="900" font-size="60" fill="#FC6255" text-anchor="middle" font-weight="800">≈ 63.4 亿美元</text>
+        <text id="b-amtn" class="h" x="960" y="960" font-size="28" fill="#6b6f7a" text-anchor="middle">项目方口径；TRM 63.6 亿，Elliptic 64.3 亿</text>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 45.52, "L": [[0.6, 5.28], [5.73, 12.98], [13.43, 21.2], [21.65, 32.91], [33.36, 44.42]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      IN("#b-title", at(0, 0.05), 0.6);
+      // L1 电脑失陷 → 令牌
+      IN("#b-pcs", at(1, 0.0), 0.5);
+      IN("#b-pwn", at(1, 0.2), 0.4, { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      DRAW("#b-a1", at(1, 0.5)); POP("#b-tok", at(1, 0.55));
+      tl.fromTo("#b-tok rect", { strokeWidth: 5 }, { strokeWidth: 9, duration: 0.3, yoyo: true, repeat: 1 }, at(1, 0.8));
+      // L2 容器 → 签名服务，绕过正常流程
+      DRAW("#b-a2", at(2, 0.1)); POP("#b-con", at(2, 0.15));
+      DRAW("#b-a3", at(2, 0.4)); POP("#b-sig", at(2, 0.45));
+      IN("#b-norm", at(2, 0.65), 0.4); IN("#b-byp", at(2, 0.75), 0.4);
+      // L3 两个分支
+      DRAW("#b-a4", at(3, 0.05)); POP("#b-eth", at(3, 0.12));
+      DRAW("#b-a5", at(3, 0.7)); POP("#b-oth", at(3, 0.76));
+      // L4 私钥没泄露；金额
+      IN("#b-key", at(4, 0.05), 0.5);
+      IN("#b-amt", at(4, 0.6), 0.5);
+      IN("#b-amtn", at(4, 0.7), 0.4);
+      tl.to("#b-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["binance"] = tl;
+    })();
+  </script>
+</template>

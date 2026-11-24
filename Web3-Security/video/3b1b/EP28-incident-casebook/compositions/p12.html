@@ -1,0 +1,106 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="p12" data-duration="53.2" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="b-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="b-all">
+        <!-- ① 先交互后记账 -->
+        <g id="b-1">
+          <text id="b-1t" class="h" x="120" y="130" font-size="44" fill="#58C4DD" font-weight="800">① 先交互，后记账</text>
+          <g id="b-seq" font-size="32" text-anchor="middle">
+            <g id="b-call" class="h"><rect x="720" y="170" width="300" height="80" rx="40" fill="#2a1414" stroke="#FC6255" stroke-width="3" /><text x="870" y="222" fill="#FC6255">外部调用</text></g>
+            <g id="b-book" class="h"><rect x="1140" y="170" width="300" height="80" rx="40" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="1290" y="222" fill="#58C4DD">记账</text></g>
+          </g>
+          <path id="b-a1" class="dr h" pathLength="1" d="M1025 210 L 1132 210" fill="none" stroke="#8a8f99" stroke-width="3" marker-end="url(#b-ah)" />
+          <text id="b-sig1" class="h" x="120" y="220" font-size="30" fill="#FF9F43">信号：外部调用之后，还有状态写入</text>
+          <g id="b-inc1" class="h" font-size="28">
+            <text x="120" y="330" fill="#FC6255">The DAO 2016 → Fei Rari 2022 → Curve / Vyper 2023 → Penpie 2024</text>
+          </g>
+          <g id="b-fix1" class="h">
+            <text x="120" y="420" font-size="32" fill="#83C167" font-weight="700">防御：检查 → 改状态 → 最后交互（CEI）+ 共享重入锁</text>
+          </g>
+          <g id="b-lock" class="h">
+            <rect x="1490" y="186" width="44" height="40" rx="6" fill="#83C167" />
+            <path d="M1499 186 v-12 a13 13 0 0 1 26 0 v12" fill="none" stroke="#83C167" stroke-width="5" />
+          </g>
+        </g>
+        <line id="b-div" class="h" x1="120" y1="490" x2="1800" y2="490" stroke="#2a2f3a" stroke-width="2" />
+
+        <!-- ② 零值有含义 -->
+        <g id="b-2">
+          <text id="b-2t" class="h" x="120" y="580" font-size="44" fill="#58C4DD" font-weight="800">② 零值或默认值有含义</text>
+          <g id="b-nomad" class="h">
+            <text x="120" y="660" font-size="30" fill="#8a8f99">Nomad 2022 · 一次升级后</text>
+            <rect x="120" y="690" width="520" height="90" rx="12" fill="#121a22" stroke="#58C4DD" stroke-width="3" />
+            <text x="380" y="747" font-size="34" fill="#e8e6df" text-anchor="middle" font-family="JetBrains Mono">trustedRoot = 0x00</text>
+          </g>
+          <text id="b-nomadx" class="h" x="380" y="830" font-size="30" fill="#FC6255" text-anchor="middle">本该表示「没有」，却被当成合法的根</text>
+          <g id="b-qubit" class="h">
+            <text x="760" y="660" font-size="30" fill="#8a8f99">Qubit 2022</text>
+            <rect x="760" y="690" width="560" height="90" rx="12" fill="#121a22" stroke="#58C4DD" stroke-width="3" />
+            <text x="1040" y="747" font-size="28" fill="#e8e6df" text-anchor="middle" font-family="JetBrains Mono">safeTransferFrom(address(0))</text>
+            <text x="1040" y="830" font-size="30" fill="#83C167" text-anchor="middle">→ 返回「成功」</text>
+          </g>
+          <g id="b-qx" class="h">
+            <text x="1400" y="720" font-size="30" fill="#e8e6df">以太坊一侧：<tspan fill="#8a8f99">没收到 ETH</tspan></text>
+            <text x="1400" y="780" font-size="30" fill="#e8e6df">另一侧：<tspan fill="#FC6255" font-weight="700">铸出代币</tspan></text>
+          </g>
+          <g id="b-fix2">
+            <text class="b-f2 h" x="120" y="930" font-size="30" fill="#FF9F43">信号：== 0、address(0)、未初始化的映射被当作合法值</text>
+            <text class="b-f2 h" x="120" y="990" font-size="32" fill="#83C167" font-weight="700">防御：零值一律视为无效；存在与否显式标记</text>
+          </g>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 53.2, "L": [[0.6, 7.56], [8.01, 17.83], [18.28, 21.76], [22.21, 30.94], [31.39, 40.27], [40.72, 52.1]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 ① 顺序 + 信号
+      IN("#b-1t", at(0, 0.0), 0.5);
+      IN("#b-call", at(0, 0.3), 0.4, { x: -20 }, { x: 0 });
+      DRAW("#b-a1", at(0, 0.45), 0.4);
+      IN("#b-book", at(0, 0.5), 0.4, { x: -20 }, { x: 0 });
+      IN("#b-sig1", at(0, 0.7), 0.4);
+      // L1 名字在变；交换顺序 + 锁
+      IN("#b-inc1", at(1, 0.0), 0.5);
+      tl.to("#b-call", { x: 420, duration: 0.7, ease: "power2.inOut" }, at(1, 0.45));
+      tl.to("#b-book", { x: -420, duration: 0.7, ease: "power2.inOut" }, at(1, 0.45));
+      tl.to("#b-call rect", { stroke: "#83C167", duration: 0.3 }, at(1, 0.7));
+      IN("#b-lock", at(1, 0.75), 0.3, { scale: 1.6, svgOrigin: "1512 200" }, { scale: 1 });
+      IN("#b-fix1", at(1, 0.65), 0.5);
+
+      // L2 ② 标题
+      tl.to("#b-1", { opacity: 0.35, duration: 0.4 }, at(2, 0.0));
+      IN("#b-div", at(2, 0.0), 0.4);
+      IN("#b-2t", at(2, 0.15), 0.5);
+      // L3 Nomad
+      IN("#b-nomad", at(3, 0.05), 0.5);
+      IN("#b-nomadx", at(3, 0.55), 0.4);
+      // L4 Qubit
+      IN("#b-qubit", at(4, 0.0), 0.5);
+      IN("#b-qx", at(4, 0.55), 0.5, { x: -20 }, { x: 0 });
+      // L5 信号与防御
+      gsap.utils.toArray("#root .b-f2").forEach((t, i) => IN(t, at(5, 0.05 + i * 0.45), 0.5));
+      tl.to(["#b-nomad rect", "#b-qubit rect"], { stroke: "#83C167", duration: 0.4 }, at(5, 0.75));
+
+      tl.to("#b-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["p12"] = tl;
+    })();
+  </script>
+</template>

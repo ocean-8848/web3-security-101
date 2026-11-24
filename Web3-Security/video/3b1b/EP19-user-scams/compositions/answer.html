@@ -1,0 +1,80 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="42.13" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <g id="r-keyshape">
+          <circle cx="-34" cy="0" r="20" fill="none" stroke="#B48EF0" stroke-width="7" />
+          <path d="M-14 0 H 46 M 30 0 V 16 M 44 0 V 13" stroke="#B48EF0" stroke-width="7" stroke-linecap="round" fill="none" />
+        </g>
+      </defs>
+      <g id="r-case">
+        <g id="r-pin" class="h">
+          <rect x="560" y="60" width="800" height="100" rx="18" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="960" y="127" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="700">不偷<tspan fill="#B48EF0">钥匙</tspan>，怎么骗走<tspan fill="#F0B90B">钱</tspan>？</text>
+        </g>
+        <text id="r-ans" class="h" x="960" y="290" font-size="72" fill="#e8e6df" text-anchor="middle" font-weight="800">让你<tspan fill="#FF9F43">自己动手</tspan></text>
+        <g id="r-two" class="h" font-size="38" text-anchor="middle" font-weight="700">
+          <text x="560" y="400" fill="#FF9F43">自己签下授权</text>
+          <text x="1360" y="400" fill="#FC6255">自己转到错误地址</text>
+        </g>
+        <!-- 本案：私钥安全，失守在复制那一下 -->
+        <g id="r-k" class="h"><use href="#r-keyshape" x="566" y="560" /><text x="560" y="640" font-size="32" fill="#83C167" text-anchor="middle">私钥 ✓ 一直安全</text></g>
+        <g id="r-copy" class="h">
+          <rect x="1000" y="500" width="720" height="120" rx="14" fill="#14171e" stroke="#FC6255" stroke-width="4" />
+          <text x="1360" y="545" font-size="28" fill="#8a8f99" text-anchor="middle">从交易记录复制</text>
+          <text x="1360" y="595" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">0xd9e1…7f3a（投毒）</text>
+        </g>
+        <g id="r-fix" class="h">
+          <rect x="1000" y="680" width="720" height="120" rx="14" fill="#141e14" stroke="#83C167" stroke-width="4" />
+          <text x="1360" y="728" font-size="30" fill="#83C167" text-anchor="middle" font-weight="700">从地址簿取地址</text>
+          <text x="1360" y="775" font-size="30" fill="#e8e6df" text-anchor="middle">核对完整地址，不看首尾</text>
+        </g>
+        <line id="r-strike" class="h" x1="1010" y1="560" x2="1710" y2="560" stroke="#FC6255" stroke-width="5" />
+      </g>
+      <g id="r-final">
+        <text id="r-c1" class="h" x="960" y="430" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="700">成立条件：签下的、转出的，是你<tspan fill="#83C167">真正看懂</tspan>的内容</text>
+        <text id="r-c2" class="h" x="960" y="560" font-size="64" fill="#e8e6df" text-anchor="middle" font-weight="800">看不懂的签名，<tspan fill="#FC6255">就不签</tspan></text>
+      </g>
+      <text id="r-next" class="h" x="960" y="900" font-size="36" fill="#6b6f7a" text-anchor="middle">下一集 · 20 前端、DNS 与供应链：合约没变，页面变了</text>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 42.13, "L": [[0.6, 4.82], [5.27, 13.43], [13.88, 19.69], [20.14, 27.94], [28.39, 36.67], [37.12, 41.03]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      // L0 问题回来
+      IN("#r-pin", at(0, 0.0), 0.8, { scale: 0.5, x: -580, y: -10, svgOrigin: "960 110" }, { scale: 1, x: 0, y: 0, ease: "expo.out" });
+      // L1 让你自己动手：两条路
+      IN("#r-ans", at(1, 0.05), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      IN("#r-two", at(1, 0.4), 0.6);
+      // L2 本案：私钥安全，失守在复制
+      tl.to("#r-two text:first-child", { opacity: 0.3, duration: 0.3 }, at(2, 0));
+      IN("#r-k", at(2, 0.05), 0.5);
+      IN("#r-copy", at(2, 0.45), 0.5, { x: 30 }, { x: 0 });
+      // L3 习惯：地址簿、完整地址
+      IN("#r-fix", at(3, 0.1), 0.5, { y: 20 }, { y: 0 });
+      tl.fromTo("#r-fix text:nth-of-type(2)", { opacity: 0 }, { opacity: 1, duration: 0.4 }, at(3, 0.4));
+      tl.fromTo("#r-strike", { attr: { x2: 1010 }, opacity: 1 }, { attr: { x2: 1710 }, duration: 0.5, ease: "power2.out" }, at(3, 0.75));
+      // L4 成立条件
+      tl.to("#r-case", { opacity: 0, duration: 0.5 }, at(4, 0));
+      IN("#r-c1", at(4, 0.05), 0.6);
+      IN("#r-c2", at(4, 0.55), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      // L5 下一集
+      IN("#r-next", at(5, 0.05), 0.5);
+      tl.to(["#r-case", "#r-final", "#r-next"], { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

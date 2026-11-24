@@ -1,0 +1,72 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="template" data-duration="42.3" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="t-all">
+        <g id="t-form" class="h">
+          <rect x="160" y="140" width="1600" height="800" rx="20" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+          <text x="200" y="215" font-size="38" fill="#e8e6df" font-weight="700">复盘表</text>
+          <g stroke="#2a2f3a" stroke-width="2"><line x1="160" y1="260" x2="1760" y2="260" /><line x1="160" y1="430" x2="1760" y2="430" /><line x1="160" y1="600" x2="1760" y2="600" /><line x1="160" y1="770" x2="1760" y2="770" /><line x1="560" y1="260" x2="560" y2="940" /></g>
+          <g font-size="32" fill="#8a8f99">
+            <text x="200" y="355">直接原因</text><text x="200" y="525">根本原因</text><text x="200" y="695">本可拦住的关口</text><text x="200" y="865">被打破的不变量</text>
+          </g>
+        </g>
+        <g id="t-name"><text id="t-nm" class="h" x="400" y="215" font-size="38" fill="#58C4DD" font-weight="700">Uranium（2021-04，BNB Chain）</text></g>
+        <g id="t-r1" class="h"><text x="600" y="340" font-size="32" fill="#e8e6df">交换检查里，一个常数没改</text><text x="600" y="390" font-size="28" fill="#8a8f99" font-family="JetBrains Mono">… * 1000**2   // 应为 10000**2</text></g>
+        <g id="t-r2" class="h"><text x="600" y="525" font-size="32" fill="#e8e6df">流程缺一环：分叉改动没有做差异审计</text></g>
+        <g id="t-r3" class="h">
+          <g font-size="28" text-anchor="middle" fill="#8a8f99">
+            <text x="640" y="700">①</text><text x="720" y="700">②</text><text x="800" y="700">③</text><text x="880" y="700" fill="#83C167" font-weight="800">④</text><text x="960" y="700">⑤</text><text x="1040" y="700">⑥</text><text x="1120" y="700">⑦</text><text x="1200" y="700">⑧</text>
+          </g>
+          <circle id="t-ring" class="h" cx="880" cy="690" r="28" fill="none" stroke="#83C167" stroke-width="4" />
+        </g>
+        <text id="t-r3b" class="h" x="1260" y="700" font-size="30" fill="#83C167">测试：每次交换后检查乘积</text>
+        <g>
+        </g>
+        <g id="t-r4" class="h"><text x="600" y="870" font-size="40" fill="#83C167" font-family="JetBrains Mono" font-weight="700">x′ × y′ ≥ x × y</text></g>
+        <text id="t-r4b" class="h" x="1000" y="868" font-size="30" fill="#FC6255">← 检查放宽 100 倍后，这条式子没守住</text>
+        <!-- 名字会换，四格对上同一种模式 -->
+        <g id="t-pat" class="h">
+          <circle cx="1620" cy="200" r="46" fill="#121a22" stroke="#FF9F43" stroke-width="4" />
+          <text x="1620" y="216" font-size="44" fill="#FF9F43" text-anchor="middle" font-weight="800">⑤</text>
+        </g>
+        <text id="t-nm2" class="h" x="400" y="215" font-size="38" fill="#58C4DD" font-weight="700">新的名字？</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 42.3, "L": [[0.6, 6.77], [7.22, 13.77], [14.22, 19.91], [20.36, 27.7], [28.15, 33.24], [33.69, 41.2]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      IN("#t-form", at(0, 0.2), 0.6, { y: 20 }, { y: 0 });
+      IN("#t-nm", at(1, 0.0), 0.4);
+      IN("#t-r1", at(1, 0.35), 0.5, { x: -20 }, { x: 0 });
+      IN("#t-r2", at(2, 0.1), 0.5, { x: -20 }, { x: 0 });
+      IN("#t-r3", at(3, 0.15), 0.5, { x: -20 }, { x: 0 });
+      IN("#t-ring", at(3, 0.15), 0.5);
+      tl.to("#t-ring", { attr: { r: 38 }, duration: 0.3, yoyo: true, repeat: 1 }, at(3, 0.5));
+      IN("#t-r3b", at(3, 0.6), 0.5, { x: -20 }, { x: 0 });
+      IN("#t-r4", at(4, 0.2), 0.6, { scale: 1.2, svgOrigin: "760 860" }, { scale: 1 });
+      IN("#t-r4b", at(4, 0.6), 0.5, { x: 20 }, { x: 0 });
+      // L5 名字换掉，四格仍对上 ⑤
+      OUT("#t-nm", at(5, 0.05), 0.3);
+      IN("#t-nm2", at(5, 0.15), 0.4);
+      IN("#t-pat", at(5, 0.4), 0.5, { scale: 1.6, svgOrigin: "1620 200" }, { scale: 1, ease: "back.out(2)" });
+      tl.to(["#t-r1", "#t-r2", "#t-r3", "#t-r4"], { opacity: 0.55, duration: 0.25, yoyo: true, repeat: 1, stagger: 0.15 }, at(5, 0.55));
+
+      tl.to("#t-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["template"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,66 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="52.55" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="r-pin" class="h">
+        <rect x="560" y="60" width="800" height="100" rx="18" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="960" y="127" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">钱被转走之后，还能做什么？</text>
+      </g>
+      <g id="r-a">
+        <g font-size="32" text-anchor="middle">
+          <g class="r-h h"><rect x="160" y="230" width="480" height="110" rx="16" fill="#1d1710" stroke="#FF9F43" stroke-width="3" /><text x="400" y="297" fill="#FF9F43">准确的地址清单</text></g>
+          <g class="r-h h"><rect x="720" y="230" width="480" height="110" rx="16" fill="#1d1710" stroke="#FF9F43" stroke-width="3" /><text x="960" y="297" fill="#FF9F43">并行通知所有出口</text></g>
+          <g class="r-h h"><rect x="1280" y="230" width="480" height="110" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="1520" y="297" fill="#58C4DD">先保全，再恢复</text></g>
+        </g>
+        <g font-size="32">
+          <text class="r-y h" x="160" y="440" fill="#83C167" font-weight="700">拦得住：</text>
+          <text class="r-y h" x="320" y="440" fill="#e8e6df">稳定币 · 合规交易所 · 有运营方的兑换服务</text>
+          <text class="r-n h" x="160" y="510" fill="#8a8f99" font-weight="700">拦不住：</text>
+          <text class="r-n h" x="320" y="510" fill="#8a8f99">原生资产 · 去中心化的路径</text>
+        </g>
+      </g>
+      <g id="r-pre" class="h">
+        <rect x="160" y="590" width="1600" height="160" rx="20" fill="#13200f" stroke="#83C167" stroke-width="4" />
+        <text x="960" y="655" font-size="38" fill="#83C167" text-anchor="middle" font-weight="800">最有效的追回，发生在事前</text>
+        <text id="r-pre2" x="960" y="715" font-size="32" fill="#e8e6df" text-anchor="middle" opacity="0">暂停 · 延迟提款 · 通知清单 · 安全港 —— 写好，演练过</text>
+      </g>
+      <g id="r-scam" class="h">
+        <rect x="160" y="790" width="1600" height="90" rx="16" fill="#1d1214" stroke="#FC6255" stroke-width="3" />
+        <text x="960" y="848" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">“先付费，帮你追回资金”：几乎都是诈骗</text>
+      </g>
+      <text id="r-next" class="h" x="960" y="970" font-size="36" fill="#6b6f7a" text-anchor="middle">下一集 · 26 AI × Web3 安全</text>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 52.55, "L": [[0.6, 5.14], [5.59, 14.49], [14.94, 27.06], [27.51, 36.65], [37.1, 43.9], [44.35, 51.45]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      IN("#r-pin", at(0, 0.05), 0.8, { y: -40 }, { y: 0, ease: "expo.out" });
+      gsap.utils.toArray("#root .r-h").forEach((g, i) => POP(g, at(1, 0.1 + i * 0.25)));
+      gsap.utils.toArray("#root .r-y").forEach((e) => IN(e, at(2, 0.1), 0.4, { x: -10 }, { x: 0 }));
+      gsap.utils.toArray("#root .r-n").forEach((e) => IN(e, at(2, 0.55), 0.4, { x: -10 }, { x: 0 }));
+      IN("#r-pre", at(3, 0.05), 0.6, { y: 20 }, { y: 0 });
+      tl.to("#r-pre2", { opacity: 1, duration: 0.5 }, at(3, 0.45));
+      tl.to("#r-a", { opacity: 0.4, duration: 0.5 }, at(3, 0.7));
+      IN("#r-scam", at(4, 0.1), 0.5, { y: 20 }, { y: 0 });
+      tl.to("#r-pre", { opacity: 0.4, duration: 0.5 }, at(4, 0.55));
+      IN("#r-next", at(5, 0.1), 0.5);
+      tl.to(["#r-pin", "#r-a", "#r-pre", "#r-scam", "#r-next"], { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

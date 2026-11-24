@@ -1,0 +1,109 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root text.mono, #root tspan.mono { font-family: "JetBrains Mono", "NotoSC", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="hook" data-duration="30.75" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="h-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="h-all">
+        <text id="h-tag" class="h" x="120" y="130" font-size="34" fill="#6b6f7a">Hyperledger Fabric · CVE-2023-46132</text>
+        <!-- 原区块 -->
+        <g id="h-blk" class="h">
+          <rect x="760" y="190" width="400" height="250" rx="18" fill="#161a22" stroke="#e8e6df" stroke-opacity=".7" stroke-width="3" />
+          <text x="960" y="228" font-size="28" fill="#8a8f99" text-anchor="middle">区块</text>
+          <g fill="#F0B90B" fill-opacity=".18" stroke="#F0B90B" stroke-width="2">
+            <rect x="800" y="246" width="320" height="38" rx="6" /><rect x="800" y="292" width="320" height="38" rx="6" /><rect x="800" y="338" width="320" height="38" rx="6" /><rect x="800" y="384" width="320" height="38" rx="6" />
+          </g>
+          <g font-size="28" fill="#F0B90B" text-anchor="middle"><text x="960" y="275">交易 1</text><text x="960" y="321">交易 2</text><text x="960" y="367">交易 3</text><text x="960" y="413">交易 4</text></g>
+        </g>
+        <text id="h-hash0" class="mono h" x="960" y="490" font-size="30" fill="#e8e6df" text-anchor="middle">哈希 9c4e…</text>
+        <path id="h-l1" class="dr h" pathLength="1" d="M760 420 C 600 470, 450 480, 400 540" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#h-ah)" />
+        <path id="h-l2" class="dr h" pathLength="1" d="M1160 420 C 1320 470, 1470 480, 1520 540" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#h-ah)" />
+        <!-- 节点甲收到的版本 -->
+        <g id="h-a" class="h">
+          <rect x="200" y="550" width="400" height="250" rx="18" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+          <text x="400" y="588" font-size="28" fill="#8a8f99" text-anchor="middle">节点甲解析出</text>
+          <g fill="#F0B90B" fill-opacity=".18" stroke="#F0B90B" stroke-width="2">
+            <rect x="240" y="606" width="320" height="38" rx="6" /><rect x="240" y="652" width="320" height="38" rx="6" /><rect x="240" y="698" width="320" height="38" rx="6" /><rect x="240" y="744" width="320" height="38" rx="6" />
+          </g>
+          <g font-size="28" fill="#F0B90B" text-anchor="middle"><text x="400" y="635">交易 1</text><text x="400" y="681">交易 2</text><text x="400" y="727">交易 3</text><text x="400" y="773">交易 4</text></g>
+        </g>
+        <!-- 节点乙收到的版本：同一批字节，被解析成不同交易 -->
+        <g id="h-b" class="h">
+          <rect x="1320" y="550" width="400" height="250" rx="18" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+          <text x="1520" y="588" font-size="28" fill="#8a8f99" text-anchor="middle">节点乙解析出</text>
+          <rect x="1360" y="606" width="320" height="38" rx="6" fill="#F0B90B" fill-opacity=".18" stroke="#F0B90B" stroke-width="2" />
+          <rect id="h-bx" x="1360" y="652" width="320" height="84" rx="6" fill="#FC6255" fill-opacity=".18" stroke="#FC6255" stroke-width="3" />
+          <rect x="1360" y="744" width="320" height="38" rx="6" fill="#F0B90B" fill-opacity=".18" stroke="#F0B90B" stroke-width="2" />
+          <g font-size="28" text-anchor="middle"><text x="1520" y="635" fill="#F0B90B">交易 1</text><text x="1520" y="704" fill="#FC6255">另一笔交易</text><text x="1520" y="773" fill="#F0B90B">交易 4</text></g>
+        </g>
+        <text id="h-ha" class="mono h" x="400" y="850" font-size="30" fill="#e8e6df" text-anchor="middle">哈希 9c4e…</text>
+        <text id="h-hb" class="mono h" x="1520" y="850" font-size="30" fill="#e8e6df" text-anchor="middle">哈希 9c4e…</text>
+        <text id="h-same" class="h" x="960" y="850" font-size="34" fill="#FF9F43" text-anchor="middle" font-weight="700">= 同一个哈希</text>
+        <text id="h-diff" class="h" x="960" y="700" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">≠ 解析出的交易</text>
+        <!-- 世界状态分岔 -->
+        <g id="h-sa" class="h"><rect x="250" y="900" width="300" height="80" rx="12" fill="#1a1708" stroke="#F0B90B" stroke-width="3" /><text x="400" y="952" font-size="30" fill="#F0B90B" text-anchor="middle">世界状态 ①</text></g>
+        <g id="h-sb" class="h"><rect x="1370" y="900" width="300" height="80" rx="12" fill="#1f1414" stroke="#FC6255" stroke-width="3" /><text x="1520" y="952" font-size="30" fill="#FC6255" text-anchor="middle">世界状态 ②</text></g>
+        <text id="h-fork" class="h" x="960" y="955" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="800">账本分叉</text>
+        <!-- 有效证书 -->
+        <g id="h-ca" class="h"><rect x="130" y="520" width="130" height="50" rx="10" fill="#18141f" stroke="#B48EF0" stroke-width="3" /><text x="195" y="555" font-size="28" fill="#B48EF0" text-anchor="middle">证书 ✓</text></g>
+        <g id="h-cb" class="h"><rect x="1660" y="520" width="130" height="50" rx="10" fill="#18141f" stroke="#B48EF0" stroke-width="3" /><text x="1725" y="555" font-size="28" fill="#B48EF0" text-anchor="middle">证书 ✓</text></g>
+      </g>
+      <g id="h-q" class="h">
+        <text x="960" y="470" font-size="72" fill="#e8e6df" text-anchor="middle" font-weight="800">人人<tspan fill="#B48EF0">持证</tspan>，账本为何<tspan fill="#FC6255">分叉</tspan>？</text>
+        <text x="960" y="580" font-size="44" fill="#FF9F43" text-anchor="middle" font-weight="700">许可链的威胁模型，哪里不一样？</text>
+      </g>
+      <g id="h-pin" class="h">
+        <rect x="70" y="60" width="560" height="84" rx="14" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="350" y="115" font-size="34" fill="#e8e6df" text-anchor="middle">人人持证，账本为何分叉？</text>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 30.75, "L": [[0.6, 7.27], [7.72, 14.75], [15.2, 19.48], [19.93, 29.65]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, ox, oy, d = 0.4) => IN(s, t, d, { scale: 0.4, svgOrigin: `${ox} ${oy}` }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      // L0 漏洞编号；一个区块
+      IN("#h-tag", at(0, 0), 0.5);
+      IN("#h-blk", at(0, 0.35), 0.6, { y: 20 }, { y: 0 });
+      IN("#h-hash0", at(0, 0.6), 0.4);
+      // L1 同一批字节，两种解析；哈希相同
+      DRAW("#h-l1", at(1, 0.0), 0.5); DRAW("#h-l2", at(1, 0.05), 0.5);
+      IN("#h-a", at(1, 0.12), 0.5, { y: -30 }, { y: 0 });
+      IN("#h-b", at(1, 0.18), 0.5, { y: -30 }, { y: 0 });
+      IN("#h-ha", at(1, 0.4), 0.3); IN("#h-hb", at(1, 0.42), 0.3);
+      IN("#h-same", at(1, 0.48), 0.4);
+      tl.fromTo("#h-bx", { strokeWidth: 3 }, { strokeWidth: 7, duration: 0.25, yoyo: true, repeat: 1 }, at(1, 0.7));
+      IN("#h-diff", at(1, 0.72), 0.4);
+      // L2 世界状态分岔
+      IN("#h-sa", at(2, 0.05), 0.4, { y: -20 }, { y: 0 });
+      IN("#h-sb", at(2, 0.12), 0.4, { y: -20 }, { y: 0 });
+      IN("#h-fork", at(2, 0.4), 0.4, { scale: 1.3, svgOrigin: "960 940" }, { scale: 1, ease: "back.out(2)" });
+      // L3 人人持证；问题；钉住
+      POP("#h-ca", at(3, 0.02), 195, 545); POP("#h-cb", at(3, 0.06), 1725, 545);
+      tl.to("#h-all", { opacity: 0.15, duration: 0.5 }, at(3, 0.25));
+      IN("#h-q", at(3, 0.3), 0.7, { filter: "blur(10px)" }, { filter: "blur(0px)" });
+      tl.to("#h-all", { opacity: 0, filter: "blur(6px)", duration: 0.5 }, at(3, 0.78));
+      tl.to("#h-q", { opacity: 0, scale: 0.45, x: -610, y: -425, svgOrigin: "960 520", duration: 0.7, ease: "power3.inOut" }, at(3, 0.78));
+      IN("#h-pin", at(3, 0.84), 0.5);
+      tl.to("#h-pin", { opacity: 0, duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>

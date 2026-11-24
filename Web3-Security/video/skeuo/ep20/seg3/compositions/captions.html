@@ -1,0 +1,165 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .cap-g { position: absolute; left: 0; right: 0; bottom: var(--cap-bottom, 84px); text-align: center; opacity: 0; visibility: hidden; }
+    .cap-t { display: inline-block; font-family: var(--cap-font, "Noto Sans SC"), sans-serif; font-weight: var(--cap-weight, 700);
+      font-size: var(--cap-size, 46px); line-height: 1.25; color: var(--cap-ink, #111); letter-spacing: 0.02em;
+      padding: var(--cap-pad, 0); background: var(--cap-bg, transparent); border-radius: var(--cap-radius, 0);
+      text-shadow: var(--cap-shadow, none); }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-c0" class="cap-g"><span class="cap-t">先看链路最外面的一环 域名</span></div>
+    <div id="cap-c1" class="cap-g"><span class="cap-t">浏览器先问 DNS</span></div>
+    <div id="cap-c2" class="cap-g"><span class="cap-t">这个域名指向哪台服务器</span></div>
+    <div id="cap-c3" class="cap-g"><span class="cap-t">攻击者控制域名注册商的账号</span></div>
+    <div id="cap-c4" class="cap-g"><span class="cap-t">或者攻破注册商本身</span></div>
+    <div id="cap-c5" class="cap-g"><span class="cap-t">再把解析记录</span></div>
+    <div id="cap-c6" class="cap-g"><span class="cap-t">指向自己的服务器</span></div>
+    <div id="cap-c7" class="cap-g"><span class="cap-t">你访问正确的域名</span></div>
+    <div id="cap-c8" class="cap-g"><span class="cap-t">打开的却是克隆页面</span></div>
+    <div id="cap-c9" class="cap-g"><span class="cap-t">回到开头的题</span></div>
+    <div id="cap-c10" class="cap-g"><span class="cap-t">不能证明</span></div>
+    <div id="cap-c11" class="cap-g"><span class="cap-t">控制了解析的人</span></div>
+    <div id="cap-c12" class="cap-g"><span class="cap-t">可以用常见的域名验证方式</span></div>
+    <div id="cap-c13" class="cap-g"><span class="cap-t">申请到有效证书</span></div>
+    <div id="cap-c14" class="cap-g"><span class="cap-t">锁标志只说明</span></div>
+    <div id="cap-c15" class="cap-g"><span class="cap-t">浏览器连上了域名此刻指向的服务器</span></div>
+    <div id="cap-c16" class="cap-g"><span class="cap-t">地址栏这一层的检查</span></div>
+    <div id="cap-c17" class="cap-g"><span class="cap-t">在这里全部失效</span></div>
+    <div id="cap-c18" class="cap-g"><span class="cap-t">2025 年 5 月</span></div>
+    <div id="cap-c19" class="cap-g"><span class="cap-t">攻击者进入同一家注册商的系统</span></div>
+    <div id="cap-c20" class="cap-g"><span class="cap-t">又一次把 Curve 的域名委派</span></div>
+    <div id="cap-c21" class="cap-g"><span class="cap-t">改到自己的服务器</span></div>
+    <div id="cap-c22" class="cap-g"><span class="cap-t">Curve 把用户引导到新域名</span></div>
+    <div id="cap-c23" class="cap-g"><span class="cap-t">并公开批评注册商响应迟缓</span></div>
+    <div id="cap-c24" class="cap-g"><span class="cap-t">同一家注册商出两次事</span></div>
+    <div id="cap-c25" class="cap-g"><span class="cap-t">说明换个强密码不够</span></div>
+    <div id="cap-c26" class="cap-g"><span class="cap-t">注册商本身就是风险</span></div>
+    <div id="cap-c27" class="cap-g"><span class="cap-t">2024 年 7 月</span></div>
+    <div id="cap-c28" class="cap-g"><span class="cap-t">Google Domains 的域名业务</span></div>
+    <div id="cap-c29" class="cap-g"><span class="cap-t">迁到 Squarespace</span></div>
+    <div id="cap-c30" class="cap-g"><span class="cap-t">之后</span></div>
+    <div id="cap-c31" class="cap-g"><span class="cap-t">Compound 等多个 DeFi</span></div>
+    <div id="cap-c32" class="cap-g"><span class="cap-t">项目的域名被劫持</span></div>
+    <div id="cap-c33" class="cap-g"><span class="cap-t">指向盗币页面</span></div>
+    <div id="cap-c34" class="cap-g"><span class="cap-t">研究者认为</span></div>
+    <div id="cap-c35" class="cap-g"><span class="cap-t">这和迁移期间多因素认证失效有关</span></div>
+    <div id="cap-c36" class="cap-g"><span class="cap-t">官方没有公布根因</span></div>
+    <div id="cap-c37" class="cap-g"><span class="cap-t">Celer 靠域名监控</span></div>
+    <div id="cap-c38" class="cap-g"><span class="cap-t">拦下了劫持尝试</span></div>
+    <div id="cap-c39" class="cap-g"><span class="cap-t">所以域名这一环</span></div>
+    <div id="cap-c40" class="cap-g"><span class="cap-t">要开注册商锁和注册局锁</span></div>
+    <div id="cap-c41" class="cap-g"><span class="cap-t">注册商账号用硬件密钥登录</span></div>
+    <div id="cap-c42" class="cap-g"><span class="cap-t">只给少数人权限</span></div>
+    <div id="cap-c43" class="cap-g"><span class="cap-t">开启 DNSSEC</span></div>
+    <div id="cap-c44" class="cap-g"><span class="cap-t">监控解析记录</span></div>
+    <div id="cap-c45" class="cap-g"><span class="cap-t">委派和证书的变化</span></div>
+    <div id="cap-c46" class="cap-g"><span class="cap-t">换服务商的当天</span></div>
+    <div id="cap-c47" class="cap-g"><span class="cap-t">重新核查账号和多因素认证</span></div>
+    <div id="cap-c48" class="cap-g"><span class="cap-t">再提前公布一个备用域名</span></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      tl.set("#cap-c0", {opacity: 1, visibility: "visible"}, 1.550);
+      tl.set("#cap-c0", {opacity: 0, visibility: "hidden"}, 4.340);
+      tl.set("#cap-c1", {opacity: 1, visibility: "visible"}, 4.661);
+      tl.set("#cap-c1", {opacity: 0, visibility: "hidden"}, 5.231);
+      tl.set("#cap-c2", {opacity: 1, visibility: "visible"}, 5.251);
+      tl.set("#cap-c2", {opacity: 0, visibility: "hidden"}, 8.156);
+      tl.set("#cap-c3", {opacity: 1, visibility: "visible"}, 8.390);
+      tl.set("#cap-c3", {opacity: 0, visibility: "hidden"}, 10.861);
+      tl.set("#cap-c4", {opacity: 1, visibility: "visible"}, 11.081);
+      tl.set("#cap-c4", {opacity: 0, visibility: "hidden"}, 13.221);
+      tl.set("#cap-c5", {opacity: 1, visibility: "visible"}, 13.490);
+      tl.set("#cap-c5", {opacity: 0, visibility: "hidden"}, 14.765);
+      tl.set("#cap-c6", {opacity: 1, visibility: "visible"}, 14.874);
+      tl.set("#cap-c6", {opacity: 0, visibility: "hidden"}, 16.231);
+      tl.set("#cap-c7", {opacity: 1, visibility: "visible"}, 16.510);
+      tl.set("#cap-c7", {opacity: 0, visibility: "hidden"}, 18.017);
+      tl.set("#cap-c8", {opacity: 1, visibility: "visible"}, 18.212);
+      tl.set("#cap-c8", {opacity: 0, visibility: "hidden"}, 20.097);
+      tl.set("#cap-c9", {opacity: 1, visibility: "visible"}, 20.330);
+      tl.set("#cap-c9", {opacity: 0, visibility: "hidden"}, 21.483);
+      tl.set("#cap-c10", {opacity: 1, visibility: "visible"}, 21.685);
+      tl.set("#cap-c10", {opacity: 0, visibility: "hidden"}, 22.413);
+      tl.set("#cap-c11", {opacity: 1, visibility: "visible"}, 22.725);
+      tl.set("#cap-c11", {opacity: 0, visibility: "hidden"}, 24.125);
+      tl.set("#cap-c12", {opacity: 1, visibility: "visible"}, 24.376);
+      tl.set("#cap-c12", {opacity: 0, visibility: "hidden"}, 26.792);
+      tl.set("#cap-c13", {opacity: 1, visibility: "visible"}, 26.853);
+      tl.set("#cap-c13", {opacity: 0, visibility: "hidden"}, 28.289);
+      tl.set("#cap-c14", {opacity: 1, visibility: "visible"}, 28.624);
+      tl.set("#cap-c14", {opacity: 0, visibility: "hidden"}, 30.315);
+      tl.set("#cap-c15", {opacity: 1, visibility: "visible"}, 30.366);
+      tl.set("#cap-c15", {opacity: 0, visibility: "hidden"}, 34.001);
+      tl.set("#cap-c16", {opacity: 1, visibility: "visible"}, 34.370);
+      tl.set("#cap-c16", {opacity: 0, visibility: "hidden"}, 36.071);
+      tl.set("#cap-c17", {opacity: 1, visibility: "visible"}, 36.176);
+      tl.set("#cap-c17", {opacity: 0, visibility: "hidden"}, 37.731);
+      tl.set("#cap-c18", {opacity: 1, visibility: "visible"}, 38.112);
+      tl.set("#cap-c18", {opacity: 0, visibility: "hidden"}, 39.614);
+      tl.set("#cap-c19", {opacity: 1, visibility: "visible"}, 39.838);
+      tl.set("#cap-c19", {opacity: 0, visibility: "hidden"}, 42.914);
+      tl.set("#cap-c20", {opacity: 1, visibility: "visible"}, 43.110);
+      tl.set("#cap-c20", {opacity: 0, visibility: "hidden"}, 44.941);
+      tl.set("#cap-c21", {opacity: 1, visibility: "visible"}, 44.961);
+      tl.set("#cap-c21", {opacity: 0, visibility: "hidden"}, 46.596);
+      tl.set("#cap-c22", {opacity: 1, visibility: "visible"}, 46.958);
+      tl.set("#cap-c22", {opacity: 0, visibility: "hidden"}, 49.305);
+      tl.set("#cap-c23", {opacity: 1, visibility: "visible"}, 49.563);
+      tl.set("#cap-c23", {opacity: 0, visibility: "hidden"}, 52.134);
+      tl.set("#cap-c24", {opacity: 1, visibility: "visible"}, 52.350);
+      tl.set("#cap-c24", {opacity: 0, visibility: "hidden"}, 54.626);
+      tl.set("#cap-c25", {opacity: 1, visibility: "visible"}, 54.912);
+      tl.set("#cap-c25", {opacity: 0, visibility: "hidden"}, 56.710);
+      tl.set("#cap-c26", {opacity: 1, visibility: "visible"}, 56.928);
+      tl.set("#cap-c26", {opacity: 0, visibility: "hidden"}, 58.828);
+      tl.set("#cap-c27", {opacity: 1, visibility: "visible"}, 59.050);
+      tl.set("#cap-c27", {opacity: 0, visibility: "hidden"}, 60.361);
+      tl.set("#cap-c28", {opacity: 1, visibility: "visible"}, 60.434);
+      tl.set("#cap-c28", {opacity: 0, visibility: "hidden"}, 61.964);
+      tl.set("#cap-c29", {opacity: 1, visibility: "visible"}, 61.984);
+      tl.set("#cap-c29", {opacity: 0, visibility: "hidden"}, 63.267);
+      tl.set("#cap-c30", {opacity: 1, visibility: "visible"}, 63.510);
+      tl.set("#cap-c30", {opacity: 0, visibility: "hidden"}, 64.022);
+      tl.set("#cap-c31", {opacity: 1, visibility: "visible"}, 64.164);
+      tl.set("#cap-c31", {opacity: 0, visibility: "hidden"}, 65.845);
+      tl.set("#cap-c32", {opacity: 1, visibility: "visible"}, 65.865);
+      tl.set("#cap-c32", {opacity: 0, visibility: "hidden"}, 67.727);
+      tl.set("#cap-c33", {opacity: 1, visibility: "visible"}, 67.906);
+      tl.set("#cap-c33", {opacity: 0, visibility: "hidden"}, 69.168);
+      tl.set("#cap-c34", {opacity: 1, visibility: "visible"}, 69.506);
+      tl.set("#cap-c34", {opacity: 0, visibility: "hidden"}, 70.380);
+      tl.set("#cap-c35", {opacity: 1, visibility: "visible"}, 70.632);
+      tl.set("#cap-c35", {opacity: 0, visibility: "hidden"}, 73.574);
+      tl.set("#cap-c36", {opacity: 1, visibility: "visible"}, 73.703);
+      tl.set("#cap-c36", {opacity: 0, visibility: "hidden"}, 75.115);
+      tl.set("#cap-c37", {opacity: 1, visibility: "visible"}, 75.390);
+      tl.set("#cap-c37", {opacity: 0, visibility: "hidden"}, 76.940);
+      tl.set("#cap-c38", {opacity: 1, visibility: "visible"}, 76.960);
+      tl.set("#cap-c38", {opacity: 0, visibility: "hidden"}, 78.320);
+      tl.set("#cap-c39", {opacity: 1, visibility: "visible"}, 78.570);
+      tl.set("#cap-c39", {opacity: 0, visibility: "hidden"}, 80.258);
+      tl.set("#cap-c40", {opacity: 1, visibility: "visible"}, 80.338);
+      tl.set("#cap-c40", {opacity: 0, visibility: "hidden"}, 83.024);
+      tl.set("#cap-c41", {opacity: 1, visibility: "visible"}, 83.190);
+      tl.set("#cap-c41", {opacity: 0, visibility: "hidden"}, 85.612);
+      tl.set("#cap-c42", {opacity: 1, visibility: "visible"}, 85.801);
+      tl.set("#cap-c42", {opacity: 0, visibility: "hidden"}, 87.095);
+      tl.set("#cap-c43", {opacity: 1, visibility: "visible"}, 87.421);
+      tl.set("#cap-c43", {opacity: 0, visibility: "hidden"}, 89.227);
+      tl.set("#cap-c44", {opacity: 1, visibility: "visible"}, 89.472);
+      tl.set("#cap-c44", {opacity: 0, visibility: "hidden"}, 90.656);
+      tl.set("#cap-c45", {opacity: 1, visibility: "visible"}, 90.821);
+      tl.set("#cap-c45", {opacity: 0, visibility: "hidden"}, 92.346);
+      tl.set("#cap-c46", {opacity: 1, visibility: "visible"}, 92.590);
+      tl.set("#cap-c46", {opacity: 0, visibility: "hidden"}, 93.897);
+      tl.set("#cap-c47", {opacity: 1, visibility: "visible"}, 93.930);
+      tl.set("#cap-c47", {opacity: 0, visibility: "hidden"}, 96.322);
+      tl.set("#cap-c48", {opacity: 1, visibility: "visible"}, 96.570);
+      tl.set("#cap-c48", {opacity: 0, visibility: "hidden"}, 98.784);
+      window.__timelines["captions"] = tl;
+    })();
+  </script>
+</template>

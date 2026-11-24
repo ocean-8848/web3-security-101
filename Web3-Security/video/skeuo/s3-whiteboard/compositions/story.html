@@ -1,0 +1,231 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; background: #fbfbf8; font-family: "LXGW WenKai", serif; color: #222; }
+    #wb-world { position: absolute; left: 0; top: 0; width: 3900px; height: 1080px; }
+    #wb-svg, #wb-end-svg { position: absolute; left: 0; top: 0; overflow: visible; }
+    path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .k path { stroke: #222; } .b path { stroke: #1f5fbf; } .r path { stroke: #d23a2a; }
+    path.d { stroke-dasharray: 1 2; stroke-dashoffset: 1; }
+    .w { position: absolute; white-space: nowrap; line-height: 1.2; clip-path: inset(-40% 100% -40% -6%); }
+    .mono { font-family: "JetBrains Mono", monospace; font-weight: 500; }
+    .kai { font-family: "LXGW WenKai", serif; }
+    .cb { color: #1f5fbf; } .cr { color: #d23a2a; } .ck { color: #222; }
+    #wb-erase { position: absolute; inset: 0; background: #fbfbf8; clip-path: inset(0 100% 0 0); }
+    #wb-felt { position: absolute; left: 0; top: 330px; width: 150px; height: 330px; }
+    #wb-felt-pad { position: absolute; left: 0; top: 0; width: 150px; height: 330px; background: #dcd8cf; border-radius: 10px; }
+    #wb-felt-top { position: absolute; left: 34px; top: 0; width: 116px; height: 330px; background: #3a3a3a; border-radius: 10px 16px 16px 10px; }
+    #wb-end { position: absolute; inset: 0; }
+    .bl { position: absolute; width: 190px; text-align: center; }
+    .bl .w { position: relative; display: inline-block; }
+  </style>
+  <div id="root" data-composition-id="story" data-width="1920" data-height="1080">
+    <div id="wb-world" data-layout-allow-overflow>
+      <svg id="wb-svg" width="3900" height="1080" viewBox="0 0 3900 1080">
+        <defs><filter id="wb-soft" x="-30%" y="-80%" width="160%" height="260%"><feGaussianBlur stdDeviation="12"/></filter></defs>
+        <g id="wb-ghosts" filter="url(#wb-soft)" fill="#f0f0ec">
+          <ellipse cx="690" cy="295" rx="170" ry="35" transform="rotate(-6 690 295)"/>
+          <ellipse cx="2090" cy="850" rx="210" ry="30" transform="rotate(4 2090 850)"/>
+          <ellipse cx="2770" cy="145" rx="150" ry="25" transform="rotate(-3 2770 145)"/>
+          <ellipse cx="3650" cy="915" rx="190" ry="35" transform="rotate(5 3650 915)"/>
+          <ellipse cx="290" cy="930" rx="130" ry="30" transform="rotate(2 290 930)"/>
+          <ellipse cx="1370" cy="142" rx="130" ry="22" transform="rotate(-2 1370 142)"/>
+          <ellipse cx="3290" cy="180" rx="110" ry="20" transform="rotate(8 3290 180)"/>
+        </g>
+        <g id="p-safe-out" class="k" stroke-width="7"><path pathLength="1" d="M941.2 330.2 Q1196.8 328.9 1454.5 331.2"/><path pathLength="1" d="M1449.3 327.5 Q1450.7 557.8 1452.3 787.8"/><path pathLength="1" d="M1452.9 779 Q1195.9 782.2 942.7 780"/><path pathLength="1" d="M951.8 784.1 Q951.7 552.2 952.5 320.6"/></g>
+        <g id="p-safe-in" class="k" stroke-width="5"><path pathLength="1" d="M982.1 367.6 Q1168.7 366.4 1356.7 367.4"/><path pathLength="1" d="M1353.6 364.3 Q1352 555.8 1352.1 747.1"/><path pathLength="1" d="M1356.4 743.3 Q1169.5 744.3 982 741.8"/><path pathLength="1" d="M987.9 743.2 Q983.1 554.2 985.6 362.6"/></g>
+        <g id="p-safe-dial" class="k" stroke-width="5"><path pathLength="1" d="M1402 439.1 L1407.4 440.4 L1412.2 442.7 L1417.3 444.3 L1422.5 446.6 L1425.9 450.9 L1427.8 456.1 L1430.3 460.8 L1432.9 465.8 L1433 471.4 L1430.9 476.6 L1429.4 481.6 L1428.1 487.1 L1424.7 491.6 L1419.7 494.2 L1414.9 496.7 L1410.3 500 L1404.9 501.6 L1399.3 500.3 L1394.2 498.7 L1388.6 498 L1383.3 495.9 L1379.7 491.4 L1377.1 486.6 L1373.7 482.2 L1370.8 477.2 L1370.7 471.5 L1372.1 466.1 L1372.7 460.6 L1373.7 454.9 L1377.1 450.3 L1381.8 447.1 L1386.1 443.7 L1390.6 440.1 L1396.1 438.4 L1401.9 439.1 L1407.3 439.7"/><path pathLength="1" d="M1401.7 440 Q1401.1 445.3 1401.3 455.5"/><path pathLength="1" d="M1431.9 470.3 Q1424.5 472.9 1419 470.3"/><path pathLength="1" d="M1372.6 469.6 Q1379.6 469.7 1384.7 469.6"/></g>
+        <g id="p-safe-handle" class="k" stroke-width="6"><path pathLength="1" d="M1400.9 560.3 Q1404.6 610 1405.3 660.6"/><path pathLength="1" d="M1414.1 552 L1413.1 556.3 L1410.6 559.9 L1406.9 562.4 L1402.5 563.3 L1398.2 562.1 L1394.7 559.3 L1392.3 555.5 L1391.7 551 L1393 546.6 L1395.9 543.2 L1400 541.1 L1404.5 540.6 L1408.9 542.1 L1412.3 545.2 L1414.1 549.4 L1414.3 554"/><path pathLength="1" d="M1385.3 661 Q1401.5 660.1 1420.7 659.3"/></g>
+        <g id="p-safe-feet" class="k" stroke-width="7"><path pathLength="1" d="M989.6 782.4 Q990.1 797.7 986.9 813.2"/><path pathLength="1" d="M1410.2 782.1 Q1409.7 795.7 1413.4 810.6"/></g>
+        <g id="p-amt-ul" class="k" stroke-width="6"><path class="d" pathLength="1" d="M1500.1 451.6 Q1751.8 449.8 2000.3 447.3"/><path class="d" pathLength="1" d="M1539.8 464.5 Q1749.3 463.2 1959.7 461"/></g>
+        <g id="p-key" class="k" stroke-width="6"><path class="d" pathLength="1" d="M1082.5 449.3 L1083.3 455.2 L1084.3 461.6 L1082.6 467.7 L1078.5 472.6 L1074.7 477.3 L1071.2 482.7 L1066.1 486.5 L1059.7 487.5 L1053.6 488.1 L1047.5 489.7 L1041 489.5 L1035.4 486.2 L1030.6 482.3 L1025.2 479.1 L1020.2 474.9 L1017.9 468.8 L1017.1 462.5 L1015.5 456.5 L1014.5 450.1 L1016.4 443.9 L1020.1 438.6 L1023.3 433.2 L1026.8 427.7 L1032.1 424 L1038.4 422.5 L1044.5 421 L1050.8 419.2 L1057.3 419.6 L1063.2 422.6 L1068.6 425.8 L1074.3 428.9 L1079.1 433.3 L1081.8 439.3 L1083.5 445.5 L1085.5 451.6 L1086.3 458.2"/><path class="d" pathLength="1" d="M1059 455 L1057.8 459.2 L1055.7 463 L1052 465.7 L1047.5 466.2 L1043.3 464.8 L1039.6 462.3 L1037.1 458.6 L1036.6 454 L1038.2 449.8 L1041 446.3 L1044.9 443.8 L1049.5 443.5 L1053.7 445.3 L1057.1 448.3 L1059.3 452.4 L1059.6 457"/><path class="d" pathLength="1" d="M1085.4 455.3 Q1167 458.1 1249.2 456.1"/><path class="d" pathLength="1" d="M1203.7 455.2 Q1205.9 472.9 1206.3 493.1"/><path class="d" pathLength="1" d="M1233 458.3 Q1231.8 471.3 1232.3 482.9"/></g>
+        <g id="p-key-ok" class="b" stroke-width="8"><path class="d" pathLength="1" d="M1262 453 Q1273.9 464.9 1285.8 480.7 Q1302.9 445.1 1331.3 416"/></g>
+        <g id="p-sg0" class="k" stroke-width="6"><path class="d" pathLength="1" d="M293.1 459.2 L301.2 458.1 L309.4 458.5 L317.2 461.6 L323.8 466.6 L329.9 472.3 L335.5 478.7 L339 486.7 L339.8 495.4 L339.7 504 L339.2 512.7 L336.3 521 L330.7 527.7 L324.4 533.2 L318 538.8 L310.3 542.6 L301.8 543 L293.6 541.5 L285.3 540.2 L277.2 537.3 L270.9 531.2 L266.6 523.6 L262.1 516.2 L258.3 508.1 L257.9 499 L260.4 490.4 L262.9 482.1 L265.8 473.5 L271.5 466.6 L279.4 462.7 L287.1 459.4 L295 455.6 L303.8 454.8"/><path class="d" pathLength="1" d="M300.9 542.4 Q302 623.2 298.3 701.3"/><path class="d" pathLength="1" d="M238 610.7 Q269.6 591.4 299.7 573"/><path class="d" pathLength="1" d="M299.9 573.5 Q330.5 589.7 360.5 606.5"/><path class="d" pathLength="1" d="M298.5 700.2 Q274.7 747.5 253.2 799.8"/><path class="d" pathLength="1" d="M297.1 700 Q321.9 750 345 802.2"/></g>
+        <g id="p-sg0-ok" class="b" stroke-width="8"><path class="d" pathLength="1" d="M268 420 Q279.5 431.5 291 446.9 Q307.7 412.3 335.2 384.2"/></g>
+        <g id="p-sg1" class="k" stroke-width="6"><path class="d" pathLength="1" d="M492.9 457.7 L501.2 458.6 L509.1 460 L517.3 461.4 L524.7 465.4 L530 472.2 L534.2 479.5 L538.6 486.9 L541.2 495.3 L540.4 504.1 L538 512.3 L535.5 520.6 L531.5 528.4 L525.1 534.1 L517.6 537.9 L510 541.3 L501.8 543.6 L493.4 543 L485.5 539.9 L478 536 L470.9 531.2 L465.3 524.5 L461.9 516.3 L459.7 507.8 L458.4 499 L459.1 490.1 L462.1 481.7 L466.7 474.2 L472.2 467.5 L478.9 461.8 L486.7 458.1 L495.1 456.5 L503.6 456.3"/><path class="d" pathLength="1" d="M501.5 542.1 Q497.2 620.5 496.5 699.5"/><path class="d" pathLength="1" d="M437.2 610.5 Q470.2 591.9 501.3 575"/><path class="d" pathLength="1" d="M500.8 574 Q528.1 589.9 559.1 604.6"/><path class="d" pathLength="1" d="M497.4 699.4 Q478 750.9 454.4 801.5"/><path class="d" pathLength="1" d="M498.3 700.9 Q519.1 750.2 543.9 800.7"/></g>
+        <g id="p-sg1-ok" class="b" stroke-width="8"><path class="d" pathLength="1" d="M468 420 Q479.5 431.5 491 446.9 Q507.7 412.3 535.2 384.2"/></g>
+        <g id="p-sg2" class="k" stroke-width="6"><path class="d" pathLength="1" d="M693.2 459.6 L701.2 458.8 L709.5 458.2 L717.5 460.9 L723.7 466.8 L729.4 472.8 L735.6 478.7 L739.6 486.5 L739.8 495.4 L739.1 503.9 L739.1 512.7 L736.8 521.3 L730.9 527.8 L724.1 532.8 L717.8 538.5 L710.4 543.1 L701.8 543.4 L693.6 541.2 L685.5 539.8 L677.1 537.5 L670.7 531.5 L666.7 523.5 L662.5 516.1 L658.2 508.1 L657.5 499 L660.4 490.4 L663.2 482.2 L665.9 473.6 L671.3 466.4 L679.3 462.5 L687.2 459.6 L695.1 455.9 L703.8 454.7"/><path class="d" pathLength="1" d="M701.8 543.1 Q701.6 624.3 698.3 700.7"/><path class="d" pathLength="1" d="M637.3 609.7 Q668.9 590.2 699.4 573.6"/><path class="d" pathLength="1" d="M700.3 574.5 Q731.1 590.8 761 606.2"/><path class="d" pathLength="1" d="M698.2 699.3 Q674.1 747.5 652.6 799.7"/><path class="d" pathLength="1" d="M697.2 700.6 Q722.8 751 745.5 802.6"/></g>
+        <g id="p-sg2-ok" class="b" stroke-width="8"><path class="d" pathLength="1" d="M668 420 Q679.5 431.5 691 446.9 Q707.7 412.3 735.2 384.2"/></g>
+        <g id="p-scr" class="k" stroke-width="6"><path class="d" pathLength="1" d="M3041.5 260.6 Q3395.9 258.7 3754.5 261.1"/><path class="d" pathLength="1" d="M3750.3 257.4 Q3751.2 483.7 3752.1 707.5"/><path class="d" pathLength="1" d="M3753.4 699.4 Q3395.7 703.8 3042.4 699.4"/><path class="d" pathLength="1" d="M3052.7 703.6 Q3051.6 477.9 3051.3 250.7"/><path class="d" pathLength="1" d="M3078.4 287.6 Q3400.4 287.8 3722.6 286.8"/><path class="d" pathLength="1" d="M3723.8 286.9 Q3721.3 479.4 3720.7 671.5"/><path class="d" pathLength="1" d="M3723.3 672.9 Q3401.9 672.8 3077.7 671.6"/><path class="d" pathLength="1" d="M3077.3 670.7 Q3075.3 480.4 3075.1 289.1"/></g>
+        <g id="p-scr-stand" class="k" stroke-width="6"><path class="d" pathLength="1" d="M3388.3 705.3 Q3385.9 747.3 3384.3 791.4"/><path class="d" pathLength="1" d="M3411.7 703 Q3413.5 748.4 3415.8 792"/><path class="d" pathLength="1" d="M3280.6 796.6 Q3402.8 797.4 3519.9 793.4"/></g>
+        <g id="p-scr-ok" class="b" stroke-width="10"><path class="d" pathLength="1" d="M3490 455 Q3508 473 3526 497 Q3552 443 3595 399"/></g>
+        <g id="p-paper" class="k" stroke-width="6"><path class="d" pathLength="1" d="M2141.1 221.7 Q2464.4 216 2792.2 217.6"/><path class="d" pathLength="1" d="M2793.2 218.3 Q2823.5 251.8 2851.9 280.3"/><path class="d" pathLength="1" d="M2850.8 279.4 Q2849.6 583.2 2849.8 892"/><path class="d" pathLength="1" d="M2852.9 890.9 Q2499.7 895.9 2146.7 893.9"/><path class="d" pathLength="1" d="M2147.6 892.8 Q2146.8 552 2142.8 214.1"/><path class="d" pathLength="1" d="M2791.8 223.1 Q2795.5 253.2 2797.4 282.3"/><path class="d" pathLength="1" d="M2796.5 281.2 Q2821.3 281.5 2848.6 281.2"/></g>
+        <g id="p-one" class="r" stroke-width="15"><path class="d" pathLength="1" d="M2607 600 Q2627 588 2647 566 Q2645 640 2644 716"/></g>
+        <g id="p-one-ring" class="r" stroke-width="7"><path class="d" pathLength="1" d="M2674.1 571.6 L2682.6 580.5 L2691.3 588.8 L2699.8 598.1 L2705.1 610.2 L2707.2 623.7 L2709.7 636.6 L2712.8 650 L2712 663.7 L2706.8 676.2 L2701.8 688.1 L2698.1 701.3 L2691.5 712.8 L2681.1 719.5 L2670.6 724.9 L2661.3 733 L2650.5 739.2 L2638.7 737.9 L2627.5 734 L2616 733.6 L2603.9 732.4 L2594.3 724 L2587.5 712.2 L2579 703.4 L2569 694.7 L2564.3 681.6 L2564.8 667 L2563.2 653.7 L2559 639.9 L2560.1 625.6 L2567.8 613.9 L2574.1 602.6 L2577.3 588.4 L2584.2 576.4 L2596.1 571.7 L2607.4 568 L2617 559.2 L2628.2 552.6 L2640.4 556 L2651.4 562 L2663.2 562.4 L2675.9 563.6 L2685 573.7 L2690.6 586.9 L2699.2 596.2"/></g>
+        <g id="p-one-arr" class="r" stroke-width="6"><path class="d" pathLength="1" d="M2606 745 Q2596 772 2588 800"/><path class="d" pathLength="1" d="M2602 785.8 L2588 800 L2583.6 780.5"/></g>
+        <g id="p-l5-arr" class="r" stroke-width="8"><path class="d" pathLength="1" d="M2132 655 Q1800 622 1478 650"/><path class="d" pathLength="1" d="M1509.1 663.7 L1478 650 L1506.3 631.2"/></g>
+        <g id="p-strike" class="r" stroke-width="6"><path class="d" pathLength="1" d="M1050.3 651 Q1172.6 648.2 1290.5 642.3"/><path class="d" pathLength="1" d="M1051.5 661.4 Q1166 656.9 1285.8 655.4"/></g>
+        <g id="p-l6-ok" class="b" stroke-width="9"><path class="d" pathLength="1" d="M1262 219 Q1273.9 230.9 1285.8 246.7 Q1302.9 211.1 1331.3 182"/></g>
+        <g id="p-q" class="k" stroke-width="13"><path class="d" pathLength="1" d="M1716 150 C1712 82 1792 58 1826 92 C1862 128 1840 176 1802 198 C1778 212 1776 236 1778 262"/></g>
+        <g id="p-q-dot" class="k" stroke-width="12"><path class="d" pathLength="1" d="M1788.2 302 L1786.9 305.9 L1784.4 309.1 L1780.7 311.2 L1776.5 311 L1773 308.6 L1770.7 305.3 L1769.6 301.2 L1770.9 297 L1774.1 294.2 L1778.1 293 L1782.3 293.2 L1786.1 295.4 L1788 299.3 L1788 303.6"/></g>
+        <g id="p-l6-x" class="k" stroke-width="9"><path class="d" pathLength="1" d="M2500.9 120 Q2531.9 155.2 2565 185.8"/><path class="d" pathLength="1" d="M2564.7 123.2 Q2532 155.9 2497.7 186.4"/></g>
+      </svg>
+      <!-- l1 -->
+      <div id="t-date" class="w" style="left:220px;top:40px;font-size:72px;rotate:-1deg">2025 年 2 月 21 日</div>
+      <div id="t-bybit" class="w" style="left:1000px;top:808px;font-size:52px">Bybit</div>
+      <div id="t-cold" class="w" style="left:1160px;top:808px;font-size:52px;rotate:-0.6deg">冷钱包</div>
+      <div id="t-amt" class="w" style="left:1508px;top:330px;font-size:92px;rotate:-1.2deg">≈ 15 亿美元</div>
+      <div id="t-fbi" class="w" style="left:1520px;top:484px;font-size:36px">FBI 口径 · 事发时估值</div>
+      <!-- l2 -->
+      <div id="t-signers" class="w" style="left:418px;top:820px;font-size:52px">签名人</div>
+      <!-- l3 -->
+      <div id="t-seen" class="w cb" style="left:3104px;top:300px;font-size:52px;rotate:-0.8deg">签名人看到的</div>
+      <div id="t-xfer" class="w cb" style="left:3220px;top:400px;font-size:124px">转账</div>
+      <!-- l4 -->
+      <div id="t-real" class="w" style="left:2200px;top:250px;font-size:76px;rotate:-0.8deg">真正签下的</div>
+      <div id="t-to" class="w" style="left:2206px;top:400px;font-size:44px"><span class="mono">to = </span><span class="kai">攻击者合约</span></div>
+      <div id="t-data" class="w mono" style="left:2206px;top:490px;font-size:44px">data = transfer(…)</div>
+      <div id="t-op" class="w mono" style="left:2206px;top:612px;font-size:46px">operation =</div>
+      <div id="t-dc" class="w mono cr" style="left:2300px;top:800px;font-size:42px;font-weight:700">DELEGATECALL</div>
+      <!-- l5 -->
+      <div id="t-run" class="w" style="left:1640px;top:562px;font-size:40px;rotate:-1.5deg">代码在钱包里运行</div>
+      <div id="t-slot" class="w mono" style="left:1012px;top:566px;font-size:36px">slot 0</div>
+      <div id="t-impl" class="w" style="left:1060px;top:618px;font-size:46px">实现合约</div>
+      <div id="t-atk" class="w cr" style="left:1048px;top:680px;font-size:46px;rotate:-1deg">攻击者合约</div>
+      <!-- l6 -->
+      <div id="t-key" class="w" style="left:1080px;top:168px;font-size:80px;rotate:-1deg">钥匙</div>
+      <div id="t-doc" class="w" style="left:2330px;top:102px;font-size:80px;rotate:0.8deg">文件</div>
+    </div>
+    <div id="wb-erase">
+      <svg width="1920" height="1080" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0">
+        <defs><filter id="wb-soft2" x="-30%" y="-80%" width="160%" height="260%"><feGaussianBlur stdDeviation="14"/></filter></defs>
+        <g filter="url(#wb-soft2)" fill="#f0f0ec"><ellipse cx="550" cy="345" rx="310" ry="40"/><ellipse cx="1250" cy="880" rx="360" ry="36"/><ellipse cx="1560" cy="170" rx="250" ry="34"/></g>
+      </svg>
+    </div>
+    <div id="wb-felt" data-layout-ignore><div id="wb-felt-pad"></div><div id="wb-felt-top"></div></div>
+    <div id="wb-end">
+      <svg id="wb-end-svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <g id="e-route" class="k" stroke-width="6"><path class="d" pathLength="1" d="M169.3 521.5 Q267.5 521.3 368.4 521.6"/><path class="d" pathLength="1" d="M363.9 517.9 Q366.3 618.5 366.1 716.2"/><path class="d" pathLength="1" d="M367.7 710.3 Q265.5 711.7 168.7 710.1"/><path class="d" pathLength="1" d="M177.1 713.3 Q176.7 615 176.3 513.2"/><path class="d" pathLength="1" d="M371 614.7 L399 612.8"/><path class="d" pathLength="1" d="M386 603.7 L399 614.7 L386 625.7"/><path class="d" pathLength="1" d="M398.4 519 Q499.4 518.4 600.1 520.1"/><path class="d" pathLength="1" d="M595 516.9 Q594.4 614.6 596.7 715"/><path class="d" pathLength="1" d="M598.9 711.2 Q499 712.2 399.7 710.8"/><path class="d" pathLength="1" d="M404.2 711.9 Q399.4 613.9 404.6 514.1"/><path class="d" pathLength="1" d="M601 618.5 L629 620.4"/><path class="d" pathLength="1" d="M616 607.5 L629 618.5 L616 629.5"/><path class="d" pathLength="1" d="M628.3 520.4 Q727.1 519 828.3 521.3"/><path class="d" pathLength="1" d="M824.3 518.5 Q826 617.6 827.3 715.8"/><path class="d" pathLength="1" d="M827 709.2 Q726.2 711.7 629.6 709.9"/><path class="d" pathLength="1" d="M637 713.3 Q636.5 613.2 637.4 512.6"/><path class="d" pathLength="1" d="M831 613.5 L859 612.3"/><path class="d" pathLength="1" d="M846 602.5 L859 613.5 L846 624.5"/><path class="d" pathLength="1" d="M858.9 519.6 Q960.7 520.6 1059.8 520.7"/><path class="d" pathLength="1" d="M1053.1 516.7 Q1054.5 614.6 1055.8 715.9"/><path class="d" pathLength="1" d="M1058.6 711.5 Q958.4 710 859.2 711.6"/><path class="d" pathLength="1" d="M863.2 712.8 Q860.9 614.5 865.6 514.3"/><path class="d" pathLength="1" d="M1061 617.7 L1089 619.7"/><path class="d" pathLength="1" d="M1076 606.7 L1089 617.7 L1076 628.7"/><path class="d" pathLength="1" d="M1087.7 519 Q1187.5 517.1 1288.5 520.4"/><path class="d" pathLength="1" d="M1285 518.3 Q1285.2 616 1287.5 715.4"/><path class="d" pathLength="1" d="M1286.9 708.6 Q1188 711 1090.3 709.9"/><path class="d" pathLength="1" d="M1095.9 712.8 Q1095.1 611.4 1097.4 512.7"/><path class="d" pathLength="1" d="M1291 613.3 L1319 613.6"/><path class="d" pathLength="1" d="M1306 602.3 L1319 613.3 L1306 624.3"/><path class="d" pathLength="1" d="M1319.3 520.4 Q1421.1 522.2 1519 521"/><path class="d" pathLength="1" d="M1512 516.8 Q1514.8 615.5 1514.9 716.8"/><path class="d" pathLength="1" d="M1517.9 711 Q1417.7 708 1318.7 711.7"/><path class="d" pathLength="1" d="M1323.2 713.5 Q1324.2 614.5 1326.5 514.3"/><path class="d" pathLength="1" d="M1521 615.5 L1549 616.7"/><path class="d" pathLength="1" d="M1536 604.5 L1549 615.5 L1536 626.5"/><path class="d" pathLength="1" d="M1547.6 518.1 Q1648.8 516.7 1748.9 519.5"/><path class="d" pathLength="1" d="M1745.3 517.5 Q1744.3 614.5 1746.7 715.4"/><path class="d" pathLength="1" d="M1747.3 708.8 Q1649.9 709.8 1550.4 710.1"/><path class="d" pathLength="1" d="M1554.2 712.2 Q1553.4 610.7 1556.5 513.4"/></g>
+        <g id="e-ring4" class="r" stroke-width="8"><path class="d" pathLength="1" d="M890.9 505.5 L910.2 501.7 L926.5 489.7 L945.6 481.2 L966.1 486.4 L984.8 494.3 L1004.9 494 L1026.5 495 L1042.1 507.8 L1052.8 524.4 L1068.2 535.6 L1086.2 546.7 L1094.1 564.2 L1093.2 583.8 L1097.4 601.2 L1105.7 619.4 L1104.3 638.3 L1092.7 654.7 L1083.9 670.9 L1079.5 689.8 L1068.7 706.1 L1050 715.2 L1032 723.4 L1016.5 735.9 L998.2 745.5 L977.2 745.6 L956.9 742.8 L936.7 744.1 L915.6 743.7 L897 735 L881.4 722.5 L864.7 712.2 L847.3 701.4 L835.3 685.9 L828.9 667.7 L822.3 650.2 L814.8 632.5 L812.5 613.5 L816.7 594.8 L822.5 576.9 L827.8 558.7 L836.3 541.2 L849.8 526.6 L865.7 514.5 L881.8 502.8 L899.1 492.2 L918.6 485.1 L939.3 482.5 L960 481.9"/></g>
+      </svg>
+      <div class="bl" style="left:175px;top:540px"><div id="e-n0" class="w" style="font-size:46px">①</div></div>
+      <div class="bl" style="left:175px;top:622px"><div id="e-l0" class="w" style="font-size:36px">业务意图</div></div>
+      <div class="bl" style="left:405px;top:540px"><div id="e-n1" class="w" style="font-size:46px">②</div></div>
+      <div class="bl" style="left:405px;top:622px"><div id="e-l1" class="w" style="font-size:36px">请求构造</div></div>
+      <div class="bl" style="left:635px;top:540px"><div id="e-n2" class="w" style="font-size:46px">③</div></div>
+      <div class="bl" style="left:635px;top:622px"><div id="e-l2" class="w" style="font-size:32px">风控与审批</div></div>
+      <div class="bl" style="left:865px;top:540px"><div id="e-n3" class="w" style="font-size:46px">④</div></div>
+      <div class="bl" style="left:865px;top:622px"><div id="e-l3" class="w" style="font-size:32px">显示与解码</div></div>
+      <div class="bl" style="left:1095px;top:540px"><div id="e-n4" class="w" style="font-size:46px">⑤</div></div>
+      <div class="bl" style="left:1095px;top:622px"><div id="e-l4" class="w" style="font-size:36px">签名</div></div>
+      <div class="bl" style="left:1325px;top:540px"><div id="e-n5" class="w" style="font-size:46px">⑥</div></div>
+      <div class="bl" style="left:1325px;top:622px"><div id="e-l5" class="w" style="font-size:36px">广播</div></div>
+      <div class="bl" style="left:1555px;top:540px"><div id="e-n6" class="w" style="font-size:46px">⑦</div></div>
+      <div class="bl" style="left:1555px;top:622px"><div id="e-l6" class="w" style="font-size:36px">链上状态</div></div>
+      <div id="e-bybit" class="w" style="left:842px;top:756px;font-size:42px">Bybit 断在这一关</div>
+      <div id="e-title" class="w" style="left:172px;top:150px;font-size:96px;rotate:-0.8deg">攻击者不再偷私钥</div>
+      <div id="e-sub" class="w" style="left:180px;top:300px;font-size:52px">第 29 章 · 签名路径</div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      // draw a stroke (pathLength=1)
+      // strokes inside a group are drawn one after another, time split by length
+      function D(sel, t, dur, ease) {
+        const ps = Array.from(document.querySelectorAll(sel + " path"));
+        const L = ps.map((p) => p.getTotalLength());
+        const T = L.reduce((a, b) => a + b, 0);
+        let c = t;
+        ps.forEach((p, i) => {
+          const d = (dur * L[i]) / T;
+          tl.fromTo(p, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: ps.length > 1 ? "none" : ease || "power1.inOut" }, c);
+          c += d;
+        });
+        return t + dur;
+      }
+      // write text left to right, ~0.07 s per glyph
+      function W(sel, t, rate) {
+        const el = document.querySelector(sel);
+        const n = Array.from(el.textContent.replace(/\s/g, "")).length;
+        const dur = Math.max(0.14, n * (rate || 0.07));
+        tl.fromTo(sel, { clipPath: "inset(-40% 100% -40% -6%)" }, { clipPath: "inset(-40% -6% -40% -6%)", duration: dur, ease: "none" }, t);
+        return t + dur;
+      }
+      // camera: frame = (x, y) + s * world
+      let cam = { x: -150, y: 0, scale: 1 };
+      tl.set("#wb-world", { transformOrigin: "0 0", x: cam.x, y: cam.y, scale: cam.scale }, 0);
+      function CAM(t, x, y, scale, dur) {
+        const to = { x: x, y: y, scale: scale };
+        tl.fromTo("#wb-world", Object.assign({}, cam), Object.assign({ duration: dur || 0.8, ease: "power2.inOut", immediateRender: false }, to), t);
+        cam = to;
+      }
+
+      // l1 0.70-6.10 : date, Bybit, cold wallet, amount
+      W("#t-date", 0.70, 0.07);
+      W("#t-bybit", 2.46, 0.07);
+      W("#t-cold", 3.60, 0.08);
+      W("#t-amt", 5.23, 0.08);
+      D("#p-amt-ul", 5.80, 0.35);
+      W("#t-fbi", 6.25, 0.06);
+
+      // l2 7.53-12.90 : key ✓, three signers ✓ ✓ ✓
+      D("#p-key", 7.53, 0.75);
+      D("#p-key-ok", 8.68, 0.28);
+      D("#p-sg0", 9.56, 0.5);
+      D("#p-sg1", 9.96, 0.5);
+      D("#p-sg2", 10.36, 0.5);
+      W("#t-signers", 10.86, 0.08);
+      D("#p-sg0-ok", 11.30, 0.22);
+      D("#p-sg1-ok", 11.82, 0.22);
+      D("#p-sg2-ok", 12.34, 0.22);
+
+      // l3 14.40-16.94 : the screen
+      CAM(13.5, -2440, 0, 1);
+      D("#p-scr", 14.40, 0.6);
+      D("#p-scr-stand", 14.95, 0.3);
+      W("#t-seen", 15.15, 0.07);
+      W("#t-xfer", 16.09, 0.08);
+      D("#p-scr-ok", 16.30, 0.3);
+
+      // l4 18.13-22.39 : the paper actually signed; climax operation = 1
+      CAM(17.3, -2060, 0, 1);
+      D("#p-paper", 17.90, 0.5);
+      W("#t-real", 18.30, 0.07);
+      W("#t-to", 18.85, 0.07);
+      W("#t-data", 19.62, 0.06);
+      CAM(20.95, -2460, -268, 1.2);
+      W("#t-op", 20.80, 0.06);
+      // 0.4 s hold, then the red 1
+      D("#p-one", 21.86, 0.26, "power2.out");
+      D("#p-one-ring", 22.14, 0.34);
+      D("#p-one-arr", 22.50, 0.16);
+      W("#t-dc", 22.64, 0.06);
+
+      // l5 23.76-29.66 : arrow into the safe, implementation swapped
+      CAM(23.40, -750, 80, 0.9);
+      D("#p-l5-arr", 24.20, 0.7);
+      W("#t-slot", 25.00, 0.07);
+      W("#t-impl", 25.45, 0.07);
+      W("#t-run", 26.07, 0.07);
+      D("#p-strike", 27.80, 0.3);
+      W("#t-atk", 28.63, 0.08);
+
+      // l6 31.40-36.58 : key ✓ ? document ✗
+      W("#t-key", 31.40, 0.08);
+      D("#p-l6-ok", 32.53, 0.28);
+      D("#p-q", 33.81, 0.5);
+      D("#p-q-dot", 34.33, 0.1);
+      W("#t-doc", 35.43, 0.08);
+      D("#p-l6-x", 35.70, 0.35);
+
+      // l7 38.10-42.93 : erase, then the seven gates in one stroke
+      tl.fromTo("#wb-erase", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.8, ease: "power1.inOut" }, 37.30);
+      tl.fromTo("#wb-felt", { x: -170 }, { x: 1940, duration: 0.86, ease: "power1.inOut" }, 37.30);
+      D("#e-route", 38.90, 3.0, "none");
+      for (let i = 0; i < 7; i++) {
+        const t0 = 38.90 + 3.0 * (i + 0.72) / 7;
+        W("#e-n" + i, t0, 0.07);
+        W("#e-l" + i, t0 + 0.08, 0.06);
+      }
+      D("#e-ring4", 42.36, 0.4);
+      W("#e-bybit", 42.62, 0.05);
+
+      // end card 43.2-47.16 : title written, then 2.5 s+ dead still
+      W("#e-title", 43.22, 0.065);
+      W("#e-sub", 43.84, 0.055);
+      tl.set({}, {}, 47.16);
+
+      window.__timelines["story"] = tl;
+    })();
+  </script>
+</template>

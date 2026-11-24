@@ -1,0 +1,88 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="hook" data-duration="32.57" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="h-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker></defs>
+      <g id="h-all">
+        <text id="h-date" class="h" x="160" y="140" font-size="34" fill="#6b6f7a" letter-spacing="2">2022 年 3 月 23 日 · Ronin 跨链桥</text>
+        <g id="h-vault" class="h">
+          <rect x="560" y="560" width="520" height="300" rx="22" fill="#1a1708" stroke="#F0B90B" stroke-width="4" />
+          <text x="820" y="625" font-size="36" fill="#F0B90B" text-anchor="middle" font-weight="700">桥合约里的资金</text>
+          <g fill="#F0B90B">
+            <circle class="h-coin" cx="690" cy="710" r="22" /><circle class="h-coin" cx="755" cy="710" r="22" /><circle class="h-coin" cx="820" cy="710" r="22" /><circle class="h-coin" cx="885" cy="710" r="22" /><circle class="h-coin" cx="950" cy="710" r="22" />
+            <circle class="h-coin" cx="690" cy="780" r="22" /><circle class="h-coin" cx="755" cy="780" r="22" /><circle class="h-coin" cx="820" cy="780" r="22" /><circle class="h-coin" cx="885" cy="780" r="22" /><circle class="h-coin" cx="950" cy="780" r="22" />
+          </g>
+        </g>
+        <path id="h-tx1" class="dr h" pathLength="1" d="M1090 650 C 1250 620, 1300 560, 1360 520" stroke="#FC6255" stroke-width="5" fill="none" marker-end="url(#h-ahr)" />
+        <path id="h-tx2" class="dr h" pathLength="1" d="M1090 780 C 1250 800, 1300 840, 1360 860" stroke="#FC6255" stroke-width="5" fill="none" marker-end="url(#h-ahr)" />
+        <text id="h-a1" class="h" x="1390" y="530" font-size="44" fill="#F0B90B" font-weight="800">173,600 ETH</text>
+        <text id="h-a2" class="h" x="1390" y="875" font-size="44" fill="#F0B90B" font-weight="800">2,550 万 USDC</text>
+
+        <!-- 9 个验证者 -->
+        <g id="h-vals"></g>
+        <text id="h-th" class="h" x="820" y="200" font-size="40" fill="#e8e6df" text-anchor="middle">9 个验证者 · 凑齐 <tspan fill="#FF9F43" font-weight="800">5</tspan> 个签名就放行</text>
+        <text id="h-ok" class="h" x="820" y="930" font-size="34" fill="#83C167" text-anchor="middle">合约照规则验证：签名是真的 ✓</text>
+        <text id="h-sum" class="h" x="1560" y="700" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="800">≈ 6.2 亿美元</text>
+        <text id="h-sum2" class="h" x="1560" y="745" font-size="28" fill="#6b6f7a" text-anchor="middle">事发时估值</text>
+      </g>
+      <g id="h-qq">
+        <text id="h-q" class="h" x="960" y="560" font-size="72" fill="#e8e6df" text-anchor="middle" font-weight="800">桥凭什么<tspan fill="#FF9F43">相信</tspan>另一条链？</text>
+      </g>
+      <g id="h-pin" class="h">
+        <rect x="80" y="70" width="600" height="84" rx="14" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="380" y="125" font-size="34" fill="#e8e6df" text-anchor="middle">桥凭什么<tspan fill="#FF9F43">相信</tspan>另一条链？</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 32.57, "L": [[0.6, 10.03], [10.48, 15.76], [16.21, 26.92], [27.37, 31.47]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // 9 个验证者：沿弧线排开
+      const NS = "http://www.w3.org/2000/svg", vh = document.querySelector("#h-vals"), V = [];
+      for (let i = 0; i < 9; i++) {
+        const a = Math.PI * (0.15 + 0.7 * i / 8), x = 820 - Math.cos(a) * 420, y = 520 - Math.sin(a) * 230;
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", x.toFixed(1)); c.setAttribute("cy", y.toFixed(1)); c.setAttribute("r", "26");
+        c.setAttribute("fill", "#1b1f28"); c.setAttribute("stroke", "#e8e6df"); c.setAttribute("stroke-width", "3"); c.setAttribute("opacity", "0");
+        vh.appendChild(c); V.push(c);
+      }
+
+      // L0 两笔交易
+      IN("#h-date", at(0, 0), 0.5);
+      IN("#h-vault", at(0, 0.05), 0.7, { y: 20 }, { y: 0 });
+      DRAW("#h-tx1", at(0, 0.35), 0.6);
+      IN("#h-a1", at(0, 0.45), 0.5);
+      DRAW("#h-tx2", at(0, 0.6), 0.6);
+      IN("#h-a2", at(0, 0.72), 0.5);
+      gsap.utils.toArray("#root .h-coin").forEach((c, i) => tl.to(c, { x: 520, y: (i % 2 ? 80 : -80), fill: "#FC6255", opacity: 0, duration: 0.8, ease: "power3.in" }, at(0, 0.4) + i * 0.1));
+      // L1 9 个验证者，5 个放行
+      V.forEach((c, i) => IN(c, at(1, 0.05) + i * 0.06, 0.3, { scale: 0.4, transformOrigin: "50% 50%" }, { scale: 1 }));
+      IN("#h-th", at(1, 0.4), 0.5);
+      // L2 5 把私钥
+      V.slice(0, 5).forEach((c, i) => tl.to(c, { fill: "#FC6255", stroke: "#FC6255", duration: 0.25 }, at(2, 0.05) + i * 0.15));
+      IN("#h-ok", at(2, 0.35), 0.5);
+      IN(["#h-sum", "#h-sum2"], at(2, 0.75), 0.5);
+      // L3 问题
+      tl.to("#h-all", { opacity: 0, filter: "blur(6px)", duration: 0.5, ease: "power2.in" }, at(3, 0));
+      IN("#h-q", at(3, 0.08), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      tl.to("#h-qq", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(3, 0.7));
+      IN("#h-pin", at(3, 0.7) + 0.15, 0.5, { scale: 1.5, svgOrigin: "380 112" }, { scale: 1 });
+      OUT("#h-pin", C.d - 0.45, 0.35);
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>

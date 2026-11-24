@@ -1,0 +1,95 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="stack" data-duration="36.24" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="s-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker></defs>
+      <g id="s-all">
+        <text id="s-title" class="h" x="960" y="110" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="700">调用栈：一层套一层</text>
+        <g id="s-frames"></g>
+        <text id="s-dots" class="h" x="660" y="830" font-size="44" fill="#6b6f7a">⋮ 直到银行的钱不够</text>
+        <text id="s-ret" class="h" x="1500" y="830" font-size="32" fill="#83C167" text-anchor="middle">最内层先返回</text>
+        <text id="s-sum" class="h" x="960" y="930" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">清零发生了，只是发生在<tspan fill="#FC6255">所有转账之后</tspan></text>
+        <text id="s-lim" class="h" x="960" y="1000" font-size="32" fill="#8a8f99" text-anchor="middle">深度上限：gas 与 1024 层调用深度 → 攻击者每次取尽量大的金额</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 36.24, "L": [[0.6, 3.82], [4.27, 12.38], [12.83, 17.82], [18.27, 23.48], [23.93, 35.14]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAWA = (s, t, d = 0.4) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      const host = document.querySelector("#s-frames"), F = [];
+      for (let k = 0; k < 4; k++) {
+        const x = 160 + k * 80, y = 170 + k * 150;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        g.innerHTML =
+          `<rect x="${x}" y="${y}" width="1000" height="124" rx="14" fill="#121a22" stroke="#58C4DD" stroke-width="3" />` +
+          `<text x="${x + 30}" y="${y + 44}" font-size="30" fill="#58C4DD" font-weight="700">withdraw() · 第 ${k + 1} 层</text>` +
+          `<rect x="${x + 30}" y="${y + 62}" width="260" height="48" rx="8" fill="#161a22" stroke="#e8e6df" stroke-width="2" /><text x="${x + 50}" y="${y + 96}" font-size="28" fill="#e8e6df">读余额 = 1 ETH</text>` +
+          `<rect class="s-c2" x="${x + 310}" y="${y + 62}" width="260" height="48" rx="8" fill="#161a22" stroke="#F0B90B" stroke-width="2" /><text x="${x + 330}" y="${y + 96}" font-size="28" fill="#F0B90B">转账 1 ETH</text>` +
+          `<rect class="s-c3" x="${x + 590}" y="${y + 62}" width="230" height="48" rx="8" fill="#161a22" stroke="#6b6f7a" stroke-width="2" stroke-dasharray="8 6" /><text class="s-c3t" x="${x + 610}" y="${y + 96}" font-size="28" fill="#6b6f7a">清零</text>`;
+        host.appendChild(g);
+        let a = null, lab = null;
+        if (k < 3) {
+          a = document.createElementNS(NS, "path");
+          a.setAttribute("d", `M${x + 440} ${y + 112} C ${x + 440} ${y + 140}, ${x + 120} ${y + 130}, ${x + 120} ${y + 146}`);
+          a.setAttribute("stroke", "#FC6255"); a.setAttribute("stroke-width", "4"); a.setAttribute("fill", "none");
+          a.setAttribute("pathLength", "1"); a.setAttribute("class", "dr"); a.setAttribute("opacity", "0"); a.setAttribute("marker-end", "url(#s-ahr)");
+          host.appendChild(a);
+          lab = document.createElementNS(NS, "text");
+          lab.setAttribute("x", x + 1020); lab.setAttribute("y", y + 96); lab.setAttribute("font-size", "28"); lab.setAttribute("fill", "#FC6255"); lab.setAttribute("opacity", "0");
+          lab.textContent = "receive() → 再进来";
+          host.appendChild(lab);
+        }
+        F.push({ g, a, lab, c2: g.querySelector(".s-c2"), c3: g.querySelector(".s-c3"), c3t: g.querySelector(".s-c3t") });
+      }
+
+      IN("#s-title", at(0, 0.1), 0.6);
+      // L1 第 1、2 层
+      IN(F[0].g, at(1, 0.0), 0.5, { y: -20 }, { y: 0 });
+      tl.fromTo(F[0].c2, { strokeWidth: 2 }, { stroke: "#FF9F43", strokeWidth: 5, duration: 0.3 }, at(1, 0.25));
+      IN(F[0].lab, at(1, 0.3), 0.4); DRAWA(F[0].a, at(1, 0.35));
+      IN(F[1].g, at(1, 0.5), 0.5, { y: -20 }, { y: 0 });
+      tl.fromTo(F[1].c2, { strokeWidth: 2 }, { stroke: "#FF9F43", strokeWidth: 5, duration: 0.3 }, at(1, 0.75));
+      IN(F[1].lab, at(1, 0.8), 0.4); DRAWA(F[1].a, at(1, 0.85));
+      // L2 每层都停在转账
+      IN(F[2].g, at(2, 0.0), 0.5, { y: -20 }, { y: 0 });
+      tl.fromTo(F[2].c2, { strokeWidth: 2 }, { stroke: "#FF9F43", strokeWidth: 5, duration: 0.3 }, at(2, 0.15));
+      IN(F[2].lab, at(2, 0.2), 0.4); DRAWA(F[2].a, at(2, 0.22));
+      IN(F[3].g, at(2, 0.35), 0.5, { y: -20 }, { y: 0 });
+      tl.fromTo(F[3].c2, { strokeWidth: 2 }, { stroke: "#FF9F43", strokeWidth: 5, duration: 0.3 }, at(2, 0.5));
+      F.forEach((f, k) => tl.fromTo(f.c3, { strokeWidth: 2 }, { stroke: "#FF9F43", strokeWidth: 4, duration: 0.2, yoyo: true, repeat: 1 }, at(2, 0.65) + k * 0.1));
+      IN("#s-dots", at(2, 0.8), 0.4);
+      // L3 最内层先返回，各层依次清零
+      IN("#s-ret", at(3, 0.0), 0.4);
+      for (let k = 3; k >= 0; k--) {
+        const t = at(3, 0.15) + (3 - k) * 0.8;
+        tl.to(F[k].c3, { stroke: "#83C167", strokeDasharray: "none", strokeWidth: 3, duration: 0.3 }, t);
+        tl.to(F[k].c3t, { fill: "#83C167", duration: 0.3 }, t);
+        tl.to(F[k].g, { opacity: 0.35, duration: 0.4 }, t + 0.4);
+        if (F[k].lab) tl.to(F[k].lab, { opacity: 0.2, duration: 0.4 }, t + 0.4);
+      }
+      OUT("#s-dots", at(3, 0.1), 0.3);
+      // L4 结论
+      OUT("#s-ret", at(4, 0.0), 0.3);
+      IN("#s-sum", at(4, 0.0), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      IN("#s-lim", at(4, 0.45), 0.5);
+
+      tl.to("#s-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["stack"] = tl;
+    })();
+  </script>
+</template>

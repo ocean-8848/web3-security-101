@@ -1,0 +1,74 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="61.26" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="r-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker></defs>
+      <g id="r-pin" class="h">
+        <rect x="560" y="60" width="800" height="100" rx="18" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="960" y="127" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">泄露的数据，怎样变成攻击？</text>
+      </g>
+      <g id="r-a">
+        <g id="r-data" class="h"><rect x="120" y="420" width="300" height="140" rx="18" fill="#1d1710" stroke="#FF9F43" stroke-width="4" /><text x="270" y="478" font-size="36" fill="#FF9F43" text-anchor="middle" font-weight="800">泄露的数据</text><text x="270" y="525" font-size="28" fill="#8a8f99" text-anchor="middle">名字 · 余额 · 工单</text></g>
+        <path id="r-arr0" class="dr h" pathLength="1" d="M425 490 L 640 490" fill="none" stroke="#8a8f99" stroke-width="4" marker-end="url(#r-ah)" />
+        <g id="r-trust" class="h"><rect x="650" y="420" width="300" height="140" rx="18" fill="#1a1524" stroke="#B48EF0" stroke-width="4" /><text x="800" y="505" font-size="40" fill="#B48EF0" text-anchor="middle" font-weight="800">信任</text></g>
+        <path id="r-arr1" class="dr h" pathLength="1" d="M955 490 L 1170 490" fill="none" stroke="#8a8f99" stroke-width="4" marker-end="url(#r-ah)" />
+        <g id="r-user" class="h"><text x="1190" y="480" font-size="34" fill="#F0B90B">用户自己把钱</text><text x="1190" y="530" font-size="34" fill="#F0B90B">转了出去</text></g>
+        <!-- 三种变形 -->
+        <g font-size="34" font-weight="700">
+          <text class="r-t h" x="650" y="300" fill="#B48EF0">→ 信任：钓鱼</text>
+          <text class="r-t h" x="650" y="680" fill="#B48EF0">→ 身份：接管账号</text>
+          <text class="r-t h" x="650" y="760" fill="#FC6255">→ 目标：找上门</text>
+        </g>
+      </g>
+      <g id="r-def" font-size="32">
+        <text class="r-d h" x="200" y="300" fill="#83C167" font-weight="700">① 少收 · 遮蔽 · 限定范围</text>
+        <text class="r-d h" x="200" y="380" fill="#83C167" font-weight="700">② 留痕 · 告警</text>
+        <text class="r-d h" x="200" y="460" fill="#83C167" font-weight="700">③ 管住每一家第三方</text>
+        <text class="r-d h" x="1100" y="380" fill="#e8e6df">对用户：说得出细节 <tspan fill="#FF9F43">≠</tspan> 真客服</text>
+      </g>
+      <g id="r-cond" font-size="30" text-anchor="middle">
+        <text class="r-c h" x="960" y="640" fill="#FF9F43" font-weight="700">数据一旦泄露，会流通很多年：控制只能减少下一次</text>
+        <text class="r-c h" x="960" y="710" fill="#8a8f99">1.8–4 亿美元是公司估算；个别诈骗案不能直接归因于这次泄露</text>
+      </g>
+      <text id="r-next" class="h" x="960" y="900" font-size="36" fill="#6b6f7a" text-anchor="middle">下一集 · 25 资金追踪、冻结与事后处置</text>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 61.26, "L": [[0.6, 6.41], [6.86, 16.82], [17.27, 28.0], [28.45, 40.95], [41.4, 53.59], [54.04, 60.16]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      IN("#r-pin", at(0, 0.05), 0.8, { y: -40 }, { y: 0, ease: "expo.out" });
+      // L1 靠信任
+      IN("#r-data", at(1, 0.0), 0.4);
+      DRAW("#r-arr0", at(1, 0.15), 0.5); POP("#r-trust", at(1, 0.25));
+      DRAW("#r-arr1", at(1, 0.6), 0.5); IN("#r-user", at(1, 0.7), 0.4);
+      // L2 三种变形
+      OUT(["#r-arr1", "#r-user"], at(2, 0), 0.3);
+      gsap.utils.toArray("#root .r-t").forEach((e, i) => IN(e, at(2, 0.25 + i * 0.22), 0.4, { x: -10 }, { x: 0 }));
+      // L3 三层防守
+      tl.to("#r-a", { opacity: 0, duration: 0.4 }, at(3, 0));
+      gsap.utils.toArray("#root .r-d").forEach((e, i) => IN(e, at(3, 0.1 + i * 0.2), 0.4, { x: -10 }, { x: 0 }));
+      // L4 成立条件
+      gsap.utils.toArray("#root .r-c").forEach((e, i) => IN(e, at(4, 0.05 + i * 0.45), 0.5));
+      // L5
+      tl.fromTo(gsap.utils.toArray("#root .r-c")[0], { fill: "#FF9F43" }, { fill: "#FFC78A", duration: 0.3, yoyo: true, repeat: 1, immediateRender: false }, at(4, 0.85));
+      IN("#r-next", at(5, 0.1), 0.5);
+      tl.to(["#r-pin", "#r-def", "#r-cond", "#r-next"], { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

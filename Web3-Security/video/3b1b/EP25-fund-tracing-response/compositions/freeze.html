@@ -1,0 +1,90 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="freeze" data-duration="50.7" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="z-all">
+        <text id="z-title" class="h" x="960" y="110" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="800">冻结算一笔账（亿美元，约数）</text>
+        <g id="z-calc">
+          <rect id="z-t" class="h" x="300" y="240" width="0" height="80" rx="10" fill="#83C167" />
+          <text id="z-tt" class="h" x="300" y="220" font-size="30" fill="#83C167">Tether 9.7</text>
+          <rect id="z-c" class="h" x="950.3" y="240" width="0" height="80" rx="10" fill="#83C167" fill-opacity=".7" />
+          <text id="z-ct" class="h" x="950.3" y="220" font-size="30" fill="#83C167">Circle 8.2</text>
+          <text id="z-sum" class="h" x="1530" y="296" font-size="48" fill="#83C167" font-weight="800">= 17.9 冻结</text>
+          <rect id="z-s" class="h" x="300" y="520" width="0" height="80" rx="10" fill="#FC6255" />
+          <text id="z-st" class="h" x="300" y="640" font-size="30" fill="#FC6255">冻结前已换走 7.9（Elliptic 估计）</text>
+        </g>
+        <!-- 44% -->
+        <g id="z-cov">
+          <rect id="z-all100" class="h" x="300" y="720" width="1320" height="70" rx="12" fill="#2a2f3a" />
+          <rect id="z-44" class="h" x="300" y="720" width="0" height="70" rx="12" fill="#83C167" />
+          <text id="z-44t" class="h" x="300" y="840" font-size="36" fill="#83C167" font-weight="800">冻结与拦截 ≈ 44%</text>
+          <text id="z-56t" class="h" x="1620" y="840" font-size="32" fill="#8a8f99" text-anchor="end">其余拦不住</text>
+        </g>
+        <!-- 原生资产 -->
+        <g id="z-assets" font-size="34" font-weight="700" text-anchor="middle">
+          <g class="z-a h"><rect x="200" y="300" width="240" height="100" rx="50" fill="#13200f" stroke="#83C167" stroke-width="4" /><text x="320" y="362" fill="#83C167">USDT</text></g>
+          <g class="z-a h"><rect x="480" y="300" width="240" height="100" rx="50" fill="#13200f" stroke="#83C167" stroke-width="4" /><text x="600" y="362" fill="#83C167">USDC</text></g>
+          <g class="z-b h"><rect x="900" y="300" width="240" height="100" rx="50" fill="#161a22" stroke="#6b6f7a" stroke-width="4" /><text x="1020" y="362" fill="#8a8f99">BTC</text></g>
+          <g class="z-b h"><rect x="1180" y="300" width="240" height="100" rx="50" fill="#161a22" stroke="#6b6f7a" stroke-width="4" /><text x="1300" y="362" fill="#8a8f99">XRP</text></g>
+          <g class="z-b h"><rect x="1460" y="300" width="240" height="100" rx="50" fill="#161a22" stroke="#6b6f7a" stroke-width="4" /><text x="1580" y="362" fill="#8a8f99">SOL</text></g>
+          <text class="z-a h" x="460" y="460" font-size="30" fill="#83C167" font-weight="400">有发行方：可冻结</text>
+          <text class="z-b h" x="1300" y="460" font-size="30" fill="#8a8f99" font-weight="400">原生资产：没有发行方</text>
+        </g>
+        <!-- 冻结可撤销 -->
+        <g id="z-libra" class="h">
+          <rect x="300" y="560" width="1320" height="200" rx="18" fill="#161a22" stroke="#8a8f99" stroke-width="3" />
+          <text x="340" y="620" font-size="30" fill="#8a8f99">Circle · LIBRA 案</text>
+          <text x="340" y="690" font-size="32" fill="#e8e6df">2025 年 5 月：依法院临时限制令冻结 ≈ 5,760 万美元 USDC</text>
+        </g>
+        <text id="z-unf" class="h" x="340" y="740" font-size="32" fill="#FF9F43" font-weight="700">2025 年 8 月：法官解除冻结</text>
+        <text id="z-end" class="h" x="960" y="900" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="800">发行方冻结：<tspan fill="#83C167">工具</tspan>，不是<tspan fill="#FF9F43">兜底</tspan></text>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 50.7, "L": [[0.6, 3.79], [4.24, 16.07], [16.52, 22.76], [23.21, 33.08], [33.53, 44.62], [45.07, 49.6]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const PX = 1200 / 17.9;
+      IN("#z-title", at(0, 0.1), 0.5);
+      // L1 9.7 + 8.2 = 17.9；7.9 换走
+      IN(["#z-t", "#z-tt"], at(1, 0.05), 0.3);
+      tl.to("#z-t", { attr: { width: 9.7 * PX }, duration: 0.8, ease: "expo.out" }, at(1, 0.05));
+      IN(["#z-c", "#z-ct"], at(1, 0.2), 0.3);
+      tl.to("#z-c", { attr: { width: 8.2 * PX }, duration: 0.8, ease: "expo.out" }, at(1, 0.2));
+      IN("#z-sum", at(1, 0.5), 0.4);
+      IN(["#z-s", "#z-st"], at(1, 0.65), 0.3);
+      tl.to("#z-s", { attr: { width: 7.9 * PX }, duration: 0.8, ease: "expo.out" }, at(1, 0.65));
+      // L2 44%
+      IN("#z-all100", at(2, 0.05), 0.4);
+      IN("#z-44", at(2, 0.15), 0.2);
+      tl.to("#z-44", { attr: { width: 1320 * 0.44 }, duration: 1.0, ease: "power2.out" }, at(2, 0.15));
+      IN("#z-44t", at(2, 0.5), 0.4); IN("#z-56t", at(2, 0.65), 0.4);
+      // L3 原生资产
+      OUT(["#z-calc", "#z-cov"], at(3, 0), 0.4);
+      gsap.utils.toArray("#root .z-a").forEach((g, i) => IN(g, at(3, 0.08 + i * 0.05), 0.4));
+      gsap.utils.toArray("#root .z-b").forEach((g, i) => IN(g, at(3, 0.35 + i * 0.1), 0.4));
+      // L4 冻结可撤销
+      IN("#z-libra", at(4, 0.05), 0.5, { y: 20 }, { y: 0 });
+      IN("#z-unf", at(4, 0.6), 0.4);
+      // L5
+      IN("#z-end", at(5, 0.05), 0.5, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      tl.to("#z-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["freeze"] = tl;
+    })();
+  </script>
+</template>

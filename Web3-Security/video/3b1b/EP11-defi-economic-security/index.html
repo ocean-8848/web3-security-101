@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      /* EP11 DeFi 经济安全 · 3b1b 风格。颜色语义全片固定，见 STORYBOARD.md §2。 */
+      @font-face {
+        font-family: "NotoSC";
+        src: url("assets/fonts/noto-sc.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0f1117; }
+      #root { position: relative; width: 100%; height: 100%; background: #0f1117; font-family: "NotoSC", sans-serif; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="443.82" data-width="1920" data-height="1080">
+      <div id="hook" data-composition-id="hook" data-composition-src="compositions/hook.html" data-start="0.0" data-duration="28.1" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="rules" data-composition-id="rules" data-composition-src="compositions/rules.html" data-start="28.1" data-duration="45.07" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="health" data-composition-id="health" data-composition-src="compositions/health.html" data-start="73.17" data-duration="47.01" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="baddebt" data-composition-id="baddebt" data-composition-src="compositions/baddebt.html" data-start="120.18" data-duration="49.72" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="euler" data-composition-id="euler" data-composition-src="compositions/euler.html" data-start="169.9" data-duration="59.43" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="gov" data-composition-id="gov" data-composition-src="compositions/gov.html" data-start="229.33" data-duration="51.45" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="delay" data-composition-id="delay" data-composition-src="compositions/delay.html" data-start="280.78" data-duration="48.0" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="stable" data-composition-id="stable" data-composition-src="compositions/stable.html" data-start="328.78" data-duration="58.91" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="answer" data-composition-id="answer" data-composition-src="compositions/answer.html" data-start="387.69" data-duration="56.13" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <audio id="narration" class="clip" src="assets/narration.wav" data-start="0" data-duration="443.82" data-track-index="2" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

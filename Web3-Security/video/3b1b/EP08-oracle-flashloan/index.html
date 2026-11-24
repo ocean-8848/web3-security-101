@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      /* EP08 预言机与闪电贷 · 3b1b 风格。颜色语义全片固定，见 STORYBOARD.md §2。 */
+      @font-face {
+        font-family: "NotoSC";
+        src: url("assets/fonts/noto-sc.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0f1117; }
+      #root { position: relative; width: 100%; height: 100%; background: #0f1117; font-family: "NotoSC", sans-serif; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="402.71" data-width="1920" data-height="1080">
+      <div id="hook" data-composition-id="hook" data-composition-src="compositions/hook.html" data-start="0.0" data-duration="40.53" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="pawn" data-composition-id="pawn" data-composition-src="compositions/pawn.html" data-start="40.53" data-duration="55.55" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="threat" data-composition-id="threat" data-composition-src="compositions/threat.html" data-start="96.08" data-duration="42.62" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="amm" data-composition-id="amm" data-composition-src="compositions/amm.html" data-start="138.7" data-duration="42.72" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="attack" data-composition-id="attack" data-composition-src="compositions/attack.html" data-start="181.42" data-duration="50.8" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="sources" data-composition-id="sources" data-composition-src="compositions/sources.html" data-start="232.22" data-duration="56.32" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="checks" data-composition-id="checks" data-composition-src="compositions/checks.html" data-start="288.54" data-duration="60.88" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="answer" data-composition-id="answer" data-composition-src="compositions/answer.html" data-start="349.42" data-duration="53.29" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <audio id="narration" class="clip" src="assets/narration.wav" data-start="0" data-duration="402.71" data-track-index="2" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

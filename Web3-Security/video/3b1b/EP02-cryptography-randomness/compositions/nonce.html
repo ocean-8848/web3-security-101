@@ -1,0 +1,150 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="nonce" data-duration="71.12" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <g id="n-key"><circle cx="0" cy="0" r="20" fill="none" stroke="#FC6255" stroke-width="5" /><path d="M20 0 H 90 M66 0 v 18 M82 0 v 13" stroke="#FC6255" stroke-width="5" fill="none" stroke-linecap="round" /></g>
+      </defs>
+      <g id="n-all">
+        <text id="n-tag" class="h" x="120" y="130" font-size="48" fill="#FF9F43" font-weight="800">② nonce</text>
+        <text id="n-f" class="h" x="1100" y="140" font-size="44" fill="#e8e6df" text-anchor="middle">签名 = ECDSA(<tspan fill="#B48EF0">私钥</tspan>, 消息, <tspan fill="#FF9F43" font-weight="700">k</tspan>)</text>
+        <text id="n-f2" class="h" x="1100" y="195" font-size="28" fill="#8a8f99" text-anchor="middle">k：每次签名一次性的随机数</text>
+
+        <text id="n-hd1" class="h" x="1330" y="300" font-size="28" fill="#6b6f7a" text-anchor="middle">需要几个签名</text>
+        <text id="n-hd2" class="h" x="1630" y="300" font-size="28" fill="#6b6f7a" text-anchor="middle">结果</text>
+        <line id="n-hl" class="h" x1="120" y1="320" x2="1800" y2="320" stroke="#2a2f3a" stroke-width="2" />
+
+        <!-- 行 1：同一个 k 用两次 -->
+        <g id="n-r1">
+          <text id="n-c1" class="h" x="120" y="430" font-size="36" fill="#e8e6df">同一个 <tspan fill="#FF9F43" font-weight="700">k</tspan> 用了两次</text>
+          <text id="n-t1" class="h" x="120" y="480" font-size="28" fill="#6b6f7a">2013 · 安卓随机数缺陷</text>
+          <g id="n-s1" class="h">
+            <rect x="800" y="370" width="90" height="110" rx="10" fill="#161a22" stroke="#e8e6df" stroke-width="3" /><text class="mono" x="845" y="440" font-size="36" fill="#FF9F43" text-anchor="middle">k</text>
+            <rect x="930" y="370" width="90" height="110" rx="10" fill="#161a22" stroke="#e8e6df" stroke-width="3" /><text class="mono" x="975" y="440" font-size="36" fill="#FF9F43" text-anchor="middle">k</text>
+          </g>
+          <text id="n-eq1" class="h" x="1100" y="440" font-size="30" fill="#8a8f99" text-anchor="middle">解方程</text>
+          <text id="n-n1" class="h" x="1330" y="445" font-size="56" fill="#e8e6df" text-anchor="middle" font-weight="800">2</text>
+          <g id="n-k1" class="h"><use href="#n-key" x="1590" y="425" /></g>
+        </g>
+        <!-- 同一个 k：两个签名解出私钥（L1–L2） -->
+        <g id="n-eq" class="h">
+          <rect x="120" y="530" width="1680" height="400" rx="18" fill="#12151c" stroke="#2a2f3a" stroke-width="2" />
+          <text x="200" y="610" font-size="36" fill="#e8e6df">签名 1 = (<tspan class="n-r" fill="#e8e6df" font-weight="700">r</tspan>, s<tspan dy="10" font-size="26">1</tspan><tspan dy="-10"></tspan>)　　签名 2 = (<tspan class="n-r" fill="#e8e6df" font-weight="700">r</tspan>, s<tspan dy="10" font-size="26">2</tspan><tspan dy="-10"></tspan>)</text>
+          <text id="n-eqk" class="h" x="200" y="715" font-size="44" fill="#e8e6df"><tspan fill="#FF9F43" font-weight="700">k</tspan> = (z<tspan dy="10" font-size="26">1</tspan><tspan dy="-10"></tspan> − z<tspan dy="10" font-size="26">2</tspan><tspan dy="-10"></tspan>) ÷ (s<tspan dy="10" font-size="26">1</tspan><tspan dy="-10"></tspan> − s<tspan dy="10" font-size="26">2</tspan><tspan dy="-10"></tspan>)</text>
+          <text id="n-eqd" class="h" x="200" y="810" font-size="44" fill="#e8e6df"><tspan fill="#B48EF0" font-weight="700">私钥</tspan> = (s<tspan dy="10" font-size="26">1</tspan><tspan dy="-10"></tspan> · <tspan fill="#FF9F43" font-weight="700">k</tspan> − z<tspan dy="10" font-size="26">1</tspan><tspan dy="-10"></tspan>) ÷ <tspan font-weight="700">r</tspan></text>
+          <text x="200" y="890" font-size="30" fill="#8a8f99">z：消息的哈希，公开可算　·　运算都在模 n 下进行</text>
+          <text id="n-rr" class="h" x="1220" y="610" font-size="34" fill="#FF9F43" font-weight="700">← r 相同：同一个 k 的痕迹</text>
+          <text id="n-mon" class="h" x="1220" y="810" font-size="34" fill="#83C167" font-weight="700">防御：监控重复 r 值</text>
+        </g>
+        <!-- 行 2：k 有偏置 -->
+        <g id="n-r2">
+          <text id="n-c2" class="h" x="120" y="620" font-size="36" fill="#e8e6df"><tspan fill="#FF9F43" font-weight="700">k</tspan> 有偏置（高几位总是 0）</text>
+          <text id="n-t2" class="h" x="120" y="670" font-size="28" fill="#6b6f7a">2019 · 研究者恢复出数百个比特币私钥</text>
+          <g id="n-s2"></g>
+          <text id="n-eq2" class="h" x="1100" y="690" font-size="30" fill="#8a8f99" text-anchor="middle">格方法</text>
+          <text id="n-n2" class="h" x="1330" y="635" font-size="52" fill="#e8e6df" text-anchor="middle" font-weight="800">很多</text>
+          <g id="n-k2" class="h"><use href="#n-key" x="1590" y="615" /></g>
+        </g>
+        <!-- 行 3：k 由公开数据算出 -->
+        <g id="n-r3">
+          <text id="n-c3" class="h" x="120" y="810" font-size="36" fill="#e8e6df"><tspan fill="#FF9F43" font-weight="700">k</tspan> 能由公开数据算出</text>
+          <text id="n-t3" class="h" x="120" y="860" font-size="28" fill="#6b6f7a">2026 年 6 月 · SecondFi（Cardano）安卓版</text>
+          <g id="n-s3" class="h"><rect x="800" y="750" width="90" height="110" rx="10" fill="#161a22" stroke="#e8e6df" stroke-width="3" /><text class="mono" x="845" y="820" font-size="36" fill="#FF9F43" text-anchor="middle">k</text></g>
+          <text id="n-eq3" class="h" x="1050" y="820" font-size="30" fill="#8a8f99" text-anchor="middle">人人可算</text>
+          <text id="n-n3" class="h" x="1330" y="825" font-size="56" fill="#FC6255" text-anchor="middle" font-weight="800">1</text>
+          <g id="n-k3" class="h"><use href="#n-key" x="1590" y="805" /></g>
+        </g>
+        <text id="n-sf" class="h" x="120" y="915" font-size="32" fill="#FC6255" font-weight="700"><tspan id="n-sfn">0</tspan> 个钱包被盗 · 约 1,600 万 ADA</text>
+
+        <!-- 修复：RFC 6979 -->
+        <g id="n-fix" class="h">
+          <rect x="960" y="950" width="840" height="90" rx="16" fill="#121a12" stroke="#83C167" stroke-width="4" />
+          <text x="1380" y="1008" font-size="34" fill="#83C167" text-anchor="middle" font-weight="700">RFC 6979：k 由私钥和消息确定性派生</text>
+        </g>
+        <text id="n-hd3" class="h" x="1775" y="300" font-size="28" fill="#83C167" text-anchor="middle">RFC 6979</text>
+        <g id="n-ok" class="h" stroke="#83C167" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1730 420 l 16 18 l 30 -38" /><path d="M1730 610 l 16 18 l 30 -38" />
+        </g>
+        <text id="n-dev" class="h" x="1800" y="875" font-size="30" fill="#FF9F43" text-anchor="end">实现偏离了标准</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 71.12, "L": [[0.6, 7.2], [7.65, 19.58], [20.03, 26.77], [27.22, 39.41], [39.86, 46.1], [46.55, 59.18], [59.63, 70.02]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 行 2：很多签名，每张 k 的高位都是 0（示意）
+      const s2 = document.querySelector("#n-s2"), cards = [];
+      for (let i = 0; i < 10; i++) {
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        const x = 800 + i * 36, y = 570 - (i % 2) * 14;
+        g.innerHTML = `<rect x="${x}" y="${y}" width="30" height="74" rx="5" fill="#161a22" stroke="#e8e6df" stroke-width="2" /><rect x="${x + 4}" y="${y + 6}" width="22" height="14" fill="#FF9F43" />`;
+        s2.appendChild(g); cards.push(g);
+      }
+
+      // L0 签名需要 k
+      IN("#n-tag", at(0, 0.0), 0.5, { x: -20 }, { x: 0 });
+      IN("#n-f", at(0, 0.15), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      IN("#n-f2", at(0, 0.6), 0.4);
+      // L1 同一个 k 两次
+      IN(["#n-hd1", "#n-hd2", "#n-hl"], at(1, 0.0), 0.4);
+      IN("#n-c1", at(1, 0.02), 0.4);
+      IN("#n-s1", at(1, 0.12), 0.5, { y: 10 }, { y: 0 });
+      tl.fromTo("#n-s1 text", { fill: "#FF9F43" }, { fill: "#FFD08A", duration: 0.2, yoyo: true, repeat: 3 }, at(1, 0.3));
+      IN("#n-eq1", at(1, 0.4), 0.4);
+      IN("#n-n1", at(1, 0.45), 0.4);
+      IN("#n-k1", at(1, 0.5), 0.5, { x: -30 }, { x: 0 });
+      IN("#n-t1", at(1, 0.75), 0.4);
+      // L1 解方程
+      IN("#n-eq", at(1, 0.4), 0.5, { y: 20 }, { y: 0 });
+      IN("#n-eqk", at(1, 0.55), 0.5);
+      IN("#n-eqd", at(1, 0.68), 0.5);
+      // L2 r 相同
+      tl.to("#root .n-r", { fill: "#FF9F43", duration: 0.3 }, at(2, 0.05));
+      IN("#n-rr", at(2, 0.1), 0.5, { x: -20 }, { x: 0 });
+      IN("#n-mon", at(2, 0.55), 0.5);
+      OUT("#n-eq", at(3, 0.0), 0.4);
+      // L3 偏置
+      IN("#n-c2", at(3, 0.02), 0.4);
+      cards.forEach((g, i) => IN(g, at(3, 0.2) + i * 0.08, 0.25, { y: -20 }, { y: 0 }));
+      IN("#n-n2", at(3, 0.45), 0.4);
+      IN("#n-eq2", at(3, 0.5), 0.4);
+      IN("#n-k2", at(3, 0.55), 0.5, { x: -30 }, { x: 0 });
+      IN("#n-t2", at(3, 0.75), 0.4);
+      // L4 一个签名就够
+      IN("#n-c3", at(4, 0.02), 0.4);
+      IN("#n-s3", at(4, 0.25), 0.4, { y: 10 }, { y: 0 });
+      IN("#n-eq3", at(4, 0.3), 0.4);
+      IN("#n-n3", at(4, 0.55), 0.4, { scale: 1.6, svgOrigin: "1330 805" }, { scale: 1 });
+      IN("#n-k3", at(4, 0.65), 0.5, { x: -30 }, { x: 0 });
+      // L5 SecondFi
+      tl.to(["#n-r1", "#n-r2"], { opacity: 0.25, duration: 0.4 }, at(5, 0.0));
+      IN("#n-t3", at(5, 0.05), 0.4);
+      IN("#n-sf", at(5, 0.6), 0.4);
+      const o = { v: 0 }, sfn = document.querySelector("#n-sfn");
+      tl.fromTo(o, { v: 0 }, { v: 374, duration: 1.4, ease: "power2.out", onUpdate: () => { sfn.textContent = Math.round(o.v); } }, at(5, 0.6));
+      // L6 RFC 6979
+      tl.to(["#n-r1", "#n-r2"], { opacity: 1, duration: 0.4 }, at(6, 0.0));
+      tl.to("#n-sf", { opacity: 0.3, duration: 0.4 }, at(6, 0.0));
+      IN("#n-fix", at(6, 0.05), 0.6, { y: 20 }, { y: 0 });
+      IN(["#n-ok", "#n-hd3"], at(6, 0.3), 0.5);
+      IN("#n-dev", at(6, 0.65), 0.5);
+
+      tl.to("#n-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["nonce"] = tl;
+    })();
+  </script>
+</template>

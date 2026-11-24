@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      /* EP23 托管、充提与合规安全 · 3b1b 风格。颜色语义全片固定，见 STORYBOARD.md §2。 */
+      @font-face {
+        font-family: "NotoSC";
+        src: url("assets/fonts/noto-sc.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0f1117; }
+      #root { position: relative; width: 100%; height: 100%; background: #0f1117; font-family: "NotoSC", sans-serif; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="480.51" data-width="1920" data-height="1080">
+      <div id="hook" data-composition-id="hook" data-composition-src="compositions/hook.html" data-start="0.0" data-duration="25.42" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="airport" data-composition-id="airport" data-composition-src="compositions/airport.html" data-start="25.42" data-duration="44.44" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="wallets" data-composition-id="wallets" data-composition-src="compositions/wallets.html" data-start="69.86" data-duration="46.56" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="fakedep" data-composition-id="fakedep" data-composition-src="compositions/fakedep.html" data-start="116.42" data-duration="57.78" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="signing" data-composition-id="signing" data-composition-src="compositions/signing.html" data-start="174.2" data-duration="51.4" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="binance" data-composition-id="binance" data-composition-src="compositions/binance.html" data-start="225.6" data-duration="45.52" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="pause" data-composition-id="pause" data-composition-src="compositions/pause.html" data-start="271.12" data-duration="52.07" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="checkpoint" data-composition-id="checkpoint" data-composition-src="compositions/checkpoint.html" data-start="323.19" data-duration="57.69" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="travel" data-composition-id="travel" data-composition-src="compositions/travel.html" data-start="380.88" data-duration="51.5" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="answer" data-composition-id="answer" data-composition-src="compositions/answer.html" data-start="432.38" data-duration="48.13" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <audio id="narration" class="clip" src="assets/narration.wav" data-start="0" data-duration="480.51" data-track-index="2" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

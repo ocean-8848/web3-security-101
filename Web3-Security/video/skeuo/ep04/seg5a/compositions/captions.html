@@ -1,0 +1,144 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .cap-g { position: absolute; left: 0; right: 0; bottom: var(--cap-bottom, 84px); text-align: center; opacity: 0; visibility: hidden; }
+    .cap-t { display: inline-block; font-family: var(--cap-font, "Noto Sans SC"), sans-serif; font-weight: var(--cap-weight, 700);
+      font-size: var(--cap-size, 46px); line-height: 1.25; color: var(--cap-ink, #111); letter-spacing: 0.02em;
+      padding: var(--cap-pad, 0); background: var(--cap-bg, transparent); border-radius: var(--cap-radius, 0);
+      text-shadow: var(--cap-shadow, none); }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-c0" class="cap-g"><span class="cap-t">重入的入口</span></div>
+    <div id="cap-c1" class="cap-g"><span class="cap-t">不只是转 ETH</span></div>
+    <div id="cap-c2" class="cap-g"><span class="cap-t">2020 年 4 月的 imBTC</span></div>
+    <div id="cap-c3" class="cap-g"><span class="cap-t">是一种 ERC-777 代币</span></div>
+    <div id="cap-c4" class="cap-g"><span class="cap-t">转账时 会回调持有人注册的钩子</span></div>
+    <div id="cap-c5" class="cap-g"><span class="cap-t">借贷协议 Lendf.Me 的存款函数</span></div>
+    <div id="cap-c6" class="cap-g"><span class="cap-t">返回时用旧值写回余额</span></div>
+    <div id="cap-c7" class="cap-g"><span class="cap-t">抵押记录因此虚高</span></div>
+    <div id="cap-c8" class="cap-g"><span class="cap-t">攻击者借走约 2500 万美元的资产</span></div>
+    <div id="cap-c9" class="cap-g"><span class="cap-t">按事发时估值</span></div>
+    <div id="cap-c10" class="cap-g"><span class="cap-t">据 The Block 报道</span></div>
+    <div id="cap-c11" class="cap-g"><span class="cap-t">资金后来已归还</span></div>
+    <div id="cap-c12" class="cap-g"><span class="cap-t">在 BNB Chain 上</span></div>
+    <div id="cap-c13" class="cap-g"><span class="cap-t">很多项目分叉自以太坊协议</span></div>
+    <div id="cap-c14" class="cap-g"><span class="cap-t">原协议只接受白名单代币</span></div>
+    <div id="cap-c15" class="cap-g"><span class="cap-t">分叉项目放开成任意代币都能上架</span></div>
+    <div id="cap-c16" class="cap-g"><span class="cap-t">却没给存款函数加锁</span></div>
+    <div id="cap-c17" class="cap-g"><span class="cap-t">攻击者上架一个自己部署的代币</span></div>
+    <div id="cap-c18" class="cap-g"><span class="cap-t">在转账函数里回调存款</span></div>
+    <div id="cap-c19" class="cap-g"><span class="cap-t">同一笔资产被记了两次</span></div>
+    <div id="cap-c20" class="cap-g"><span class="cap-t">允许任意代币</span></div>
+    <div id="cap-c21" class="cap-g"><span class="cap-t">就等于允许任意回调</span></div>
+    <div id="cap-c22" class="cap-g"><span class="cap-t">上架流程本身</span></div>
+    <div id="cap-c23" class="cap-g"><span class="cap-t">就是安全边界</span></div>
+    <div id="cap-c24" class="cap-g"><span class="cap-t">2024 年 9 月的 Penpie 也类似</span></div>
+    <div id="cap-c25" class="cap-g"><span class="cap-t">损失约 2700 万美元</span></div>
+    <div id="cap-c26" class="cap-g"><span class="cap-t">攻击者无许可创建市场</span></div>
+    <div id="cap-c27" class="cap-g"><span class="cap-t">市场用了恶意代币</span></div>
+    <div id="cap-c28" class="cap-g"><span class="cap-t">批量领取奖励的函数没有锁</span></div>
+    <div id="cap-c29" class="cap-g"><span class="cap-t">攻击者在回调里存入资产</span></div>
+    <div id="cap-c30" class="cap-g"><span class="cap-t">把存款变成了奖励</span></div>
+    <div id="cap-c31" class="cap-g"><span class="cap-t">所以审计的第一步</span></div>
+    <div id="cap-c32" class="cap-g"><span class="cap-t">是列出所有外部调用</span></div>
+    <div id="cap-c33" class="cap-g"><span class="cap-t">代币转账</span></div>
+    <div id="cap-c34" class="cap-g"><span class="cap-t">NFT 安全转账 回调</span></div>
+    <div id="cap-c35" class="cap-g"><span class="cap-t">低级 call</span></div>
+    <div id="cap-c36" class="cap-g"><span class="cap-t">一个都不漏</span></div>
+    <div id="cap-c37" class="cap-g"><span class="cap-t">然后对每一处问两句</span></div>
+    <div id="cap-c38" class="cap-g"><span class="cap-t">调用之前</span></div>
+    <div id="cap-c39" class="cap-g"><span class="cap-t">相关状态都更新到最终值了吗</span></div>
+    <div id="cap-c40" class="cap-g"><span class="cap-t">读写同一状态的入口</span></div>
+    <div id="cap-c41" class="cap-g"><span class="cap-t">共用同一把锁吗</span></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      tl.set("#cap-c0", {opacity: 1, visibility: "visible"}, 1.550);
+      tl.set("#cap-c0", {opacity: 0, visibility: "hidden"}, 2.701);
+      tl.set("#cap-c1", {opacity: 1, visibility: "visible"}, 2.756);
+      tl.set("#cap-c1", {opacity: 0, visibility: "hidden"}, 4.424);
+      tl.set("#cap-c2", {opacity: 1, visibility: "visible"}, 4.822);
+      tl.set("#cap-c2", {opacity: 0, visibility: "hidden"}, 7.544);
+      tl.set("#cap-c3", {opacity: 1, visibility: "visible"}, 7.792);
+      tl.set("#cap-c3", {opacity: 0, visibility: "hidden"}, 9.224);
+      tl.set("#cap-c4", {opacity: 1, visibility: "visible"}, 9.244);
+      tl.set("#cap-c4", {opacity: 0, visibility: "hidden"}, 13.658);
+      tl.set("#cap-c5", {opacity: 1, visibility: "visible"}, 14.000);
+      tl.set("#cap-c5", {opacity: 0, visibility: "hidden"}, 17.510);
+      tl.set("#cap-c6", {opacity: 1, visibility: "visible"}, 17.916);
+      tl.set("#cap-c6", {opacity: 0, visibility: "hidden"}, 20.553);
+      tl.set("#cap-c7", {opacity: 1, visibility: "visible"}, 20.940);
+      tl.set("#cap-c7", {opacity: 0, visibility: "hidden"}, 22.503);
+      tl.set("#cap-c8", {opacity: 1, visibility: "visible"}, 22.863);
+      tl.set("#cap-c8", {opacity: 0, visibility: "hidden"}, 26.262);
+      tl.set("#cap-c9", {opacity: 1, visibility: "visible"}, 26.392);
+      tl.set("#cap-c9", {opacity: 0, visibility: "hidden"}, 27.689);
+      tl.set("#cap-c10", {opacity: 1, visibility: "visible"}, 28.404);
+      tl.set("#cap-c10", {opacity: 0, visibility: "hidden"}, 29.614);
+      tl.set("#cap-c11", {opacity: 1, visibility: "visible"}, 29.784);
+      tl.set("#cap-c11", {opacity: 0, visibility: "hidden"}, 31.427);
+      tl.set("#cap-c12", {opacity: 1, visibility: "visible"}, 31.800);
+      tl.set("#cap-c12", {opacity: 0, visibility: "hidden"}, 33.168);
+      tl.set("#cap-c13", {opacity: 1, visibility: "visible"}, 33.319);
+      tl.set("#cap-c13", {opacity: 0, visibility: "hidden"}, 35.575);
+      tl.set("#cap-c14", {opacity: 1, visibility: "visible"}, 35.945);
+      tl.set("#cap-c14", {opacity: 0, visibility: "hidden"}, 38.314);
+      tl.set("#cap-c15", {opacity: 1, visibility: "visible"}, 38.470);
+      tl.set("#cap-c15", {opacity: 0, visibility: "hidden"}, 41.675);
+      tl.set("#cap-c16", {opacity: 1, visibility: "visible"}, 42.049);
+      tl.set("#cap-c16", {opacity: 0, visibility: "hidden"}, 44.027);
+      tl.set("#cap-c17", {opacity: 1, visibility: "visible"}, 44.310);
+      tl.set("#cap-c17", {opacity: 0, visibility: "hidden"}, 46.951);
+      tl.set("#cap-c18", {opacity: 1, visibility: "visible"}, 47.150);
+      tl.set("#cap-c18", {opacity: 0, visibility: "hidden"}, 49.457);
+      tl.set("#cap-c19", {opacity: 1, visibility: "visible"}, 49.657);
+      tl.set("#cap-c19", {opacity: 0, visibility: "hidden"}, 51.690);
+      tl.set("#cap-c20", {opacity: 1, visibility: "visible"}, 52.061);
+      tl.set("#cap-c20", {opacity: 0, visibility: "hidden"}, 53.392);
+      tl.set("#cap-c21", {opacity: 1, visibility: "visible"}, 53.573);
+      tl.set("#cap-c21", {opacity: 0, visibility: "hidden"}, 55.664);
+      tl.set("#cap-c22", {opacity: 1, visibility: "visible"}, 55.899);
+      tl.set("#cap-c22", {opacity: 0, visibility: "hidden"}, 57.262);
+      tl.set("#cap-c23", {opacity: 1, visibility: "visible"}, 57.282);
+      tl.set("#cap-c23", {opacity: 0, visibility: "hidden"}, 58.486);
+      tl.set("#cap-c24", {opacity: 1, visibility: "visible"}, 58.847);
+      tl.set("#cap-c24", {opacity: 0, visibility: "hidden"}, 61.323);
+      tl.set("#cap-c25", {opacity: 1, visibility: "visible"}, 61.506);
+      tl.set("#cap-c25", {opacity: 0, visibility: "hidden"}, 63.684);
+      tl.set("#cap-c26", {opacity: 1, visibility: "visible"}, 63.930);
+      tl.set("#cap-c26", {opacity: 0, visibility: "hidden"}, 66.124);
+      tl.set("#cap-c27", {opacity: 1, visibility: "visible"}, 66.225);
+      tl.set("#cap-c27", {opacity: 0, visibility: "hidden"}, 67.750);
+      tl.set("#cap-c28", {opacity: 1, visibility: "visible"}, 67.990);
+      tl.set("#cap-c28", {opacity: 0, visibility: "hidden"}, 70.129);
+      tl.set("#cap-c29", {opacity: 1, visibility: "visible"}, 70.434);
+      tl.set("#cap-c29", {opacity: 0, visibility: "hidden"}, 72.708);
+      tl.set("#cap-c30", {opacity: 1, visibility: "visible"}, 72.786);
+      tl.set("#cap-c30", {opacity: 0, visibility: "hidden"}, 74.566);
+      tl.set("#cap-c31", {opacity: 1, visibility: "visible"}, 74.860);
+      tl.set("#cap-c31", {opacity: 0, visibility: "hidden"}, 77.225);
+      tl.set("#cap-c32", {opacity: 1, visibility: "visible"}, 77.245);
+      tl.set("#cap-c32", {opacity: 0, visibility: "hidden"}, 78.589);
+      tl.set("#cap-c33", {opacity: 1, visibility: "visible"}, 78.934);
+      tl.set("#cap-c33", {opacity: 0, visibility: "hidden"}, 79.808);
+      tl.set("#cap-c34", {opacity: 1, visibility: "visible"}, 80.009);
+      tl.set("#cap-c34", {opacity: 0, visibility: "hidden"}, 82.392);
+      tl.set("#cap-c35", {opacity: 1, visibility: "visible"}, 82.564);
+      tl.set("#cap-c35", {opacity: 0, visibility: "hidden"}, 83.230);
+      tl.set("#cap-c36", {opacity: 1, visibility: "visible"}, 83.483);
+      tl.set("#cap-c36", {opacity: 0, visibility: "hidden"}, 84.311);
+      tl.set("#cap-c37", {opacity: 1, visibility: "visible"}, 84.688);
+      tl.set("#cap-c37", {opacity: 0, visibility: "hidden"}, 86.281);
+      tl.set("#cap-c38", {opacity: 1, visibility: "visible"}, 86.661);
+      tl.set("#cap-c38", {opacity: 0, visibility: "hidden"}, 87.696);
+      tl.set("#cap-c39", {opacity: 1, visibility: "visible"}, 87.716);
+      tl.set("#cap-c39", {opacity: 0, visibility: "hidden"}, 90.464);
+      tl.set("#cap-c40", {opacity: 1, visibility: "visible"}, 91.085);
+      tl.set("#cap-c40", {opacity: 0, visibility: "hidden"}, 93.020);
+      tl.set("#cap-c41", {opacity: 1, visibility: "visible"}, 93.206);
+      tl.set("#cap-c41", {opacity: 0, visibility: "hidden"}, 94.639);
+      window.__timelines["captions"] = tl;
+    })();
+  </script>
+</template>

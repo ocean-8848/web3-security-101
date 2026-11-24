@@ -1,0 +1,131 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root text.mono, #root tspan.mono { font-family: "JetBrains Mono", "NotoSC", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="building" data-duration="45.38" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="g-all">
+        <!-- 定义：围栏内的多家组织 -->
+        <g id="g-def">
+          <ellipse id="g-fence" class="h" cx="960" cy="470" rx="560" ry="270" fill="#18141f" fill-opacity=".5" stroke="#B48EF0" stroke-width="4" stroke-dasharray="14 10" />
+          <g id="g-orgs"></g>
+          <text id="g-d1" class="h" x="960" y="840" font-size="38" fill="#e8e6df" text-anchor="middle"><tspan fill="#B48EF0" font-weight="700">许可链</tspan>：获得授权，才能读、写或出块</text>
+          <text id="g-d2" class="h" x="960" y="910" font-size="38" fill="#e8e6df" text-anchor="middle"><tspan fill="#B48EF0" font-weight="700">联盟链</tspan>：多家组织共同治理的许可链</text>
+        </g>
+        <!-- 公共广场 -->
+        <g id="g-sq">
+          <ellipse id="g-ground" class="h" cx="500" cy="560" rx="380" ry="210" fill="#151922" stroke="#8a8f99" stroke-opacity=".4" stroke-width="2" />
+          <g id="g-crowd" fill="#8a8f99"></g>
+          <g id="g-coins" class="h" fill="#F0B90B"><circle cx="440" cy="560" r="16" /><circle cx="480" cy="560" r="16" /><circle cx="520" cy="560" r="16" /><circle cx="460" cy="530" r="16" /><circle cx="500" cy="530" r="16" /></g>
+          <text id="g-sqt" class="h" x="500" y="850" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">公链：公共广场</text>
+          <text id="g-sqs" class="h" x="500" y="905" font-size="30" fill="#8a8f99" text-anchor="middle">谁都能进 · 规则 + 押金</text>
+        </g>
+        <!-- 写字楼 -->
+        <g id="g-bld">
+          <g id="g-house" class="h">
+            <rect x="1200" y="230" width="540" height="540" rx="10" fill="#14121a" stroke="#B48EF0" stroke-width="4" />
+            <g fill="#B48EF0" fill-opacity=".12" stroke="#B48EF0" stroke-opacity=".4" stroke-width="2">
+              <rect x="1250" y="280" width="90" height="60" /><rect x="1425" y="280" width="90" height="60" /><rect x="1600" y="280" width="90" height="60" />
+            </g>
+            <rect x="1420" y="650" width="100" height="120" fill="#0f1117" stroke="#B48EF0" stroke-width="3" />
+            <rect x="1540" y="680" width="34" height="50" rx="5" fill="#B48EF0" />
+          </g>
+          <text id="g-badge" class="h" x="1590" y="718" font-size="28" fill="#B48EF0">刷工牌</text>
+          <g id="g-out" fill="#8a8f99"></g>
+          <text id="g-bt" class="h" x="1470" y="905" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">许可链：写字楼</text>
+          <!-- 前台与物业 -->
+          <g id="g-desk" class="h"><rect x="1250" y="420" width="200" height="110" rx="12" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="1350" y="465" font-size="30" fill="#e8e6df" text-anchor="middle">前台</text><text x="1350" y="505" font-size="28" fill="#8a8f99" text-anchor="middle">发工牌</text></g>
+          <g id="g-mgr" class="h"><rect x="1490" y="420" width="200" height="110" rx="12" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="1590" y="465" font-size="30" fill="#e8e6df" text-anchor="middle">物业</text><text x="1590" y="505" font-size="28" fill="#8a8f99" text-anchor="middle">万能钥匙</text></g>
+          <g fill="none" stroke="#FC6255" stroke-width="4">
+            <circle id="g-t1" class="h" cx="1350" cy="475" r="95" /><circle id="g-t2" class="h" cx="1590" cy="475" r="95" />
+          </g>
+          <text id="g-tt" class="h" x="1470" y="620" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">最值得攻击的人</text>
+        </g>
+        <!-- 比方的局限 -->
+        <g id="g-lim1" class="h"><text x="500" y="560" font-size="36" fill="#8a8f99" text-anchor="middle">写字楼失窃：调监控、报警</text></g>
+        <line id="g-limx" class="h" x1="280" y1="548" x2="720" y2="548" stroke="#FF9F43" stroke-width="5" />
+        <text id="g-lim2" class="h" x="500" y="650" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">联盟链：多数成员可以合法重写状态</text>
+        <text id="g-lim3" class="h" x="500" y="710" font-size="30" fill="#8a8f99" text-anchor="middle">账本本身看不出这是作恶</text>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 45.38, "L": [[0.6, 11.45], [11.9, 18.5], [18.95, 25.36], [25.81, 32.41], [32.86, 44.28]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, ox, oy, d = 0.4) => IN(s, t, d, { scale: 0.4, svgOrigin: `${ox} ${oy}` }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      // 组织节点（围栏内 6 家）
+      const og = document.querySelector("#g-orgs"), orgs = [];
+      for (let i = 0; i < 6; i++) {
+        const a = (i / 6) * Math.PI * 2 - Math.PI / 2, x = 960 + Math.cos(a) * 330, y = 470 + Math.sin(a) * 150;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        g.innerHTML = `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="44" fill="#161a22" stroke="#e8e6df" stroke-opacity=".7" stroke-width="3" /><text x="${x.toFixed(1)}" y="${(y + 10).toFixed(1)}" font-size="28" fill="#e8e6df" text-anchor="middle">${"ABCDEF"[i]}</text>`;
+        og.appendChild(g); orgs.push(g);
+      }
+      // 广场上的人（确定性）
+      const cr = document.querySelector("#g-crowd"), crowd = [];
+      for (let i = 0; i < 16; i++) {
+        const a = (i / 16) * Math.PI * 2 + 0.2, r = 200 + (i % 3) * 50;
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", (500 + Math.cos(a) * r * 1.2).toFixed(1)); c.setAttribute("cy", (560 + Math.sin(a) * r * 0.55).toFixed(1));
+        c.setAttribute("r", "12"); c.setAttribute("opacity", "0"); cr.appendChild(c);
+        crowd.push({ c, dx: Math.cos(a) * 300, dy: Math.sin(a) * 160 });
+      }
+      // 写字楼外的人
+      const ou = document.querySelector("#g-out"), outs = [];
+      for (let i = 0; i < 5; i++) {
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", 1300 + i * 90); c.setAttribute("cy", "830"); c.setAttribute("r", "12"); c.setAttribute("opacity", "0");
+        ou.appendChild(c); outs.push(c);
+      }
+
+      // L0 定义
+      IN("#g-fence", at(0, 0.0), 0.6, { scale: 0.85, svgOrigin: "960 470" }, { scale: 1 });
+      orgs.forEach((g, i) => IN(g, at(0, 0.08) + i * 0.15, 0.4, { scale: 0.6, svgOrigin: "960 470" }, { scale: 1 }));
+      IN("#g-d1", at(0, 0.2), 0.5);
+      IN("#g-d2", at(0, 0.7), 0.5);
+      // L1 公共广场
+      tl.to("#g-def", { opacity: 0, filter: "blur(6px)", duration: 0.45 }, at(1, 0));
+      IN("#g-ground", at(1, 0.1), 0.5);
+      crowd.forEach((p, i) => tl.fromTo(p.c, { opacity: 0, x: p.dx, y: p.dy }, { opacity: 1, x: 0, y: 0, duration: 0.8, ease: "power3.out" }, at(1, 0.2) + i * 0.04));
+      IN("#g-sqt", at(1, 0.25), 0.4);
+      IN("#g-coins", at(1, 0.7), 0.4);
+      IN("#g-sqs", at(1, 0.72), 0.4);
+      // L2 写字楼：刷工牌；陌生人进不来
+      IN("#g-house", at(2, 0.0), 0.6, { y: 20 }, { y: 0 });
+      IN("#g-bt", at(2, 0.1), 0.4);
+      IN("#g-badge", at(2, 0.3), 0.3);
+      outs.forEach((c, i) => {
+        tl.fromTo(c, { opacity: 0, x: (i - 2) * 30, y: 120 }, { opacity: 1, x: 0, y: 0, duration: 0.5 }, at(2, 0.45) + i * 0.08);
+        tl.to(c, { y: -40, duration: 0.25, yoyo: true, repeat: 1, ease: "power1.inOut" }, at(2, 0.75) + i * 0.06);
+      });
+      // L3 前台与物业成为目标
+      IN("#g-desk", at(3, 0.02), 0.4); IN("#g-mgr", at(3, 0.28), 0.4);
+      POP("#g-t1", at(3, 0.55), 1350, 475); POP("#g-t2", at(3, 0.62), 1590, 475);
+      IN("#g-tt", at(3, 0.7), 0.4);
+      // L4 比方的局限
+      tl.to("#g-sq", { opacity: 0, duration: 0.4 }, at(4, 0));
+      tl.to("#g-bld", { opacity: 0.35, duration: 0.4 }, at(4, 0));
+      IN("#g-lim1", at(4, 0.05), 0.4);
+      IN("#g-limx", at(4, 0.32), 0.1);
+      tl.fromTo("#g-limx", { attr: { x2: 280 } }, { attr: { x2: 720 }, duration: 0.4 }, at(4, 0.32));
+      IN("#g-lim2", at(4, 0.45), 0.5, { y: 10 }, { y: 0 });
+      IN("#g-lim3", at(4, 0.8), 0.4);
+      tl.to("#g-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["building"] = tl;
+    })();
+  </script>
+</template>

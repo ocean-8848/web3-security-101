@@ -1,0 +1,116 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="context" data-duration="55.84" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="x-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker></defs>
+      <g id="x-all">
+        <!-- 调用链 -->
+        <g id="x-U" class="h"><circle cx="560" cy="220" r="60" fill="#1c2029" stroke="#e8e6df" stroke-width="4" /><text x="560" y="232" font-size="32" fill="#e8e6df" text-anchor="middle" font-weight="700">用户</text></g>
+        <g id="x-A" class="h"><rect x="840" y="160" width="200" height="120" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="940" y="234" font-size="40" fill="#58C4DD" text-anchor="middle" font-weight="700">A</text></g>
+        <g id="x-B" class="h"><rect x="1220" y="160" width="200" height="120" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="1320" y="234" font-size="40" fill="#58C4DD" text-anchor="middle" font-weight="700">B</text></g>
+        <g id="x-C" class="h"><rect x="1600" y="160" width="200" height="120" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="1700" y="234" font-size="40" fill="#58C4DD" text-anchor="middle" font-weight="700">C</text></g>
+        <g fill="none" stroke="#8a8f99" stroke-width="3" marker-end="url(#x-ah)">
+          <path id="x-e1" class="dr h" pathLength="1" d="M624 220 L 832 220" />
+          <path id="x-e2" class="dr h" pathLength="1" d="M1044 220 L 1212 220" />
+          <path id="x-e3" class="dr h" pathLength="1" d="M1424 220 L 1592 220" />
+        </g>
+
+        <!-- 当前所在的一站 -->
+        <rect id="x-cur" class="h" x="830" y="320" width="220" height="440" rx="18" fill="#FF9F43" fill-opacity=".08" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+
+        <!-- 四个变量 -->
+        <text id="x-l1" class="h mono" x="120" y="420" font-size="34" fill="#e8e6df">tx.origin</text>
+        <text id="x-l2" class="h mono" x="120" y="520" font-size="34" fill="#e8e6df">msg.sender</text>
+        <text id="x-l3" class="h mono" x="120" y="620" font-size="34" fill="#e8e6df">msg.value</text>
+        <text id="x-l4" class="h mono" x="120" y="720" font-size="34" fill="#e8e6df">address(this)</text>
+        <line id="x-grid" class="h" x1="120" y1="350" x2="1800" y2="350" stroke="#2a2f3a" stroke-width="2" />
+
+        <text id="x-d1" class="h" x="960" y="900" font-size="32" fill="#8a8f99" text-anchor="middle">tx.origin：发起整笔交易的外部账户</text>
+        <g id="x-d2" class="h">
+          <text x="960" y="880" font-size="30" fill="#8a8f99" text-anchor="middle">msg.sender：直接调用当前函数的地址 · msg.value：这次调用附带的原生币</text>
+          <text x="960" y="930" font-size="30" fill="#8a8f99" text-anchor="middle">address(this)：当前执行代码的合约</text>
+        </g>
+
+        <!-- A 列 -->
+        <g id="x-cA" class="h">
+          <text x="940" y="420" font-size="34" fill="#e8e6df" text-anchor="middle">用户</text>
+          <text x="940" y="520" font-size="34" fill="#e8e6df" text-anchor="middle">用户</text>
+          <text x="940" y="620" font-size="28" fill="#F0B90B" text-anchor="middle">用户转给 A 的</text>
+          <text x="940" y="720" font-size="34" fill="#58C4DD" text-anchor="middle">A</text>
+        </g>
+        <g id="x-cB" class="h">
+          <text x="1320" y="420" font-size="34" fill="#e8e6df" text-anchor="middle">用户</text>
+          <text id="x-sB" x="1320" y="520" font-size="34" fill="#FF9F43" text-anchor="middle" font-weight="700">A</text>
+          <text x="1320" y="620" font-size="28" fill="#F0B90B" text-anchor="middle">A 转给 B 的</text>
+          <text x="1320" y="720" font-size="34" fill="#58C4DD" text-anchor="middle">B</text>
+        </g>
+        <g id="x-cC" class="h">
+          <text x="1700" y="420" font-size="34" fill="#e8e6df" text-anchor="middle">用户</text>
+          <text id="x-sC" x="1700" y="520" font-size="34" fill="#FF9F43" text-anchor="middle" font-weight="700">B</text>
+          <text x="1700" y="620" font-size="28" fill="#F0B90B" text-anchor="middle">B 转给 C 的</text>
+          <text x="1700" y="720" font-size="34" fill="#58C4DD" text-anchor="middle">C</text>
+        </g>
+
+        <!-- 结论：一行在变，一行不变 -->
+        <rect id="x-hs" class="h" x="100" y="478" width="1720" height="62" rx="12" fill="none" stroke="#FF9F43" stroke-width="4" />
+        <rect id="x-ho" class="h" x="100" y="378" width="1720" height="62" rx="12" fill="none" stroke="#83C167" stroke-width="4" />
+        <text id="x-t1" class="h" x="960" y="880" font-size="40" fill="#FF9F43" text-anchor="middle" font-weight="700"><tspan class="mono">msg.sender</tspan>：每一站都在变</text>
+        <text id="x-t2" class="h" x="960" y="950" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700"><tspan class="mono">tx.origin</tspan>：从头到尾不变</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 55.84, "L": [[0.6, 7.49], [7.94, 14.85], [15.3, 27.08], [27.53, 34.16], [34.61, 41.62], [42.07, 54.74]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAWA = (s, t, d = 0.45) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 调用链
+      IN("#x-U", at(0, 0.15), 0.5);
+      DRAWA("#x-e1", at(0, 0.3)); IN("#x-A", at(0, 0.36), 0.4);
+      DRAWA("#x-e2", at(0, 0.5)); IN("#x-B", at(0, 0.56), 0.4);
+      DRAWA("#x-e3", at(0, 0.7)); IN("#x-C", at(0, 0.76), 0.4);
+      // L1 tx.origin
+      IN("#x-grid", at(1, 0.0), 0.4);
+      IN("#x-l1", at(1, 0.1), 0.4, { x: -20 }, { x: 0 });
+      IN("#x-d1", at(1, 0.4), 0.4);
+      // L2 另外三个
+      OUT("#x-d1", at(2, 0.0), 0.3);
+      IN("#x-l2", at(2, 0.02), 0.4, { x: -20 }, { x: 0 });
+      IN("#x-l3", at(2, 0.4), 0.4, { x: -20 }, { x: 0 });
+      IN("#x-l4", at(2, 0.72), 0.4, { x: -20 }, { x: 0 });
+      IN("#x-d2", at(2, 0.1), 0.4);
+      // L3 走到 A
+      OUT("#x-d2", at(3, 0.0), 0.3);
+      IN("#x-cur", at(3, 0.05), 0.4);
+      IN("#x-cA", at(3, 0.25), 0.5, { y: -10 }, { y: 0 });
+      // L4 走到 B
+      tl.to("#x-cur", { attr: { x: 1210 }, duration: 0.6, ease: "power2.inOut" }, at(4, 0.0));
+      IN("#x-cB", at(4, 0.2), 0.5, { y: -10 }, { y: 0 });
+      tl.fromTo("#x-sB", { scale: 1.6, svgOrigin: "1320 508" }, { scale: 1, duration: 0.5, ease: "back.out(2)" }, at(4, 0.2));
+      // L5 走到 C；一行变，一行不变
+      tl.to("#x-cur", { attr: { x: 1590 }, duration: 0.6, ease: "power2.inOut" }, at(5, 0.0));
+      IN("#x-cC", at(5, 0.15), 0.5, { y: -10 }, { y: 0 });
+      tl.fromTo("#x-sC", { scale: 1.6, svgOrigin: "1700 508" }, { scale: 1, duration: 0.5, ease: "back.out(2)" }, at(5, 0.15));
+      OUT("#x-cur", at(5, 0.4), 0.3);
+      IN("#x-hs", at(5, 0.45), 0.4);
+      IN("#x-t1", at(5, 0.45), 0.4);
+      IN("#x-ho", at(5, 0.7), 0.4);
+      IN("#x-t2", at(5, 0.7), 0.4);
+
+      tl.to("#x-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["context"] = tl;
+    })();
+  </script>
+</template>

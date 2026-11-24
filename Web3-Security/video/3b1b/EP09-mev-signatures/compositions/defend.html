@@ -1,0 +1,84 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="defend" data-duration="64.12" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="d-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#83C167" /></marker>
+      <marker id="d-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker></defs>
+      <g id="d-p1">
+        <text id="d-t1" class="h" x="960" y="150" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="800">MEV 的三种形态</text>
+        <g class="d-row h"><text x="200" y="292" font-size="38" fill="#e8e6df" font-weight="700">抢跑</text><rect x="560" y="240" width="200" height="80" rx="12" fill="#2a1414" stroke="#FC6255" stroke-width="3" /><text x="660" y="292" font-size="30" fill="#FC6255" text-anchor="middle">攻击者</text><rect x="790" y="240" width="200" height="80" rx="12" fill="#1a1708" stroke="#F0B90B" stroke-width="3" /><text x="890" y="292" font-size="30" fill="#F0B90B" text-anchor="middle">你</text><text x="1300" y="292" font-size="30" fill="#8a8f99">排在你前面</text></g>
+        <g class="d-row h"><text x="200" y="462" font-size="38" fill="#e8e6df" font-weight="700">三明治</text><rect x="560" y="410" width="200" height="80" rx="12" fill="#2a1414" stroke="#FC6255" stroke-width="3" /><text x="660" y="462" font-size="30" fill="#FC6255" text-anchor="middle">攻击者</text><rect x="790" y="410" width="200" height="80" rx="12" fill="#1a1708" stroke="#F0B90B" stroke-width="3" /><text x="890" y="462" font-size="30" fill="#F0B90B" text-anchor="middle">你</text><rect x="1020" y="410" width="200" height="80" rx="12" fill="#2a1414" stroke="#FC6255" stroke-width="3" /><text x="1120" y="462" font-size="30" fill="#FC6255" text-anchor="middle">攻击者</text><text x="1300" y="462" font-size="30" fill="#8a8f99">夹住你</text></g>
+        <g class="d-row h"><text x="200" y="632" font-size="38" fill="#e8e6df" font-weight="700">尾随</text><rect x="560" y="580" width="200" height="80" rx="12" fill="#1a1708" stroke="#F0B90B" stroke-width="3" /><text x="660" y="632" font-size="30" fill="#F0B90B" text-anchor="middle">你</text><rect x="790" y="580" width="200" height="80" rx="12" fill="#2a1414" stroke="#FC6255" stroke-width="3" /><text x="890" y="632" font-size="30" fill="#FC6255" text-anchor="middle">攻击者</text><text x="1300" y="632" font-size="30" fill="#8a8f99">吃你制造的价差</text></g>
+      </g>
+      <g id="d-p2">
+        <text id="d-u" class="h" x="200" y="170" font-size="36" fill="#83C167" font-weight="700">用户这边</text>
+        <g id="d-you" class="h"><circle cx="300" cy="330" r="56" fill="#161a22" stroke="#e8e6df" stroke-width="4" /><text x="300" y="342" font-size="32" fill="#e8e6df" text-anchor="middle">你</text></g>
+        <g id="d-mem" class="h"><rect x="620" y="230" width="420" height="110" rx="16" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="830" y="296" font-size="30" fill="#8a8f99" text-anchor="middle">公开内存池（搜索者在看）</text></g>
+        <g id="d-bld" class="h"><rect x="1360" y="270" width="360" height="120" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="1540" y="342" font-size="32" fill="#58C4DD" text-anchor="middle">区块构建者</text></g>
+        <path id="d-priv" class="dr h" pathLength="1" d="M360 360 C 600 460, 1100 460, 1350 350" fill="none" stroke="#83C167" stroke-width="5" marker-end="url(#d-ahg)" />
+        <text id="d-privt" class="h" x="850" y="480" font-size="30" fill="#83C167" text-anchor="middle">私有通道：打包前看不到 · 滑点设合理</text>
+        <text id="d-c" class="h" x="200" y="620" font-size="36" fill="#83C167" font-weight="700">合约这边</text>
+        <text id="d-code" class="h mono" x="200" y="700" font-size="36" fill="#58C4DD">swap(amountIn, <tspan fill="#83C167">minOut</tspan>, <tspan fill="#83C167">deadline</tspan>)</text>
+        <g id="d-bad1" class="h"><text x="200" y="780" font-size="32" fill="#8a8f99"><tspan class="mono" fill="#8a8f99">minOut</tspan> 在合约内部用现货价算出来 = 没有保护</text><line x1="195" y1="768" x2="1180" y2="768" stroke="#FC6255" stroke-width="4" /></g>
+        <g id="d-zero" class="h"><text x="200" y="900" font-size="44" fill="#FC6255" font-weight="800" class="mono">amountOutMin = 0</text><text x="760" y="900" font-size="36" fill="#FC6255">= "我接受任何价格"</text><text x="200" y="960" font-size="30" fill="#8a8f99">常见于：金库、自动复投、清算合约</text></g>
+      </g>
+      <g id="d-p3">
+        <text id="d-cr" class="h" x="960" y="160" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="800">提交-揭示</text>
+        <g id="d-ph1" class="h"><rect x="200" y="260" width="700" height="160" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="550" y="320" font-size="32" fill="#e8e6df" text-anchor="middle">阶段 1：提交</text><text x="550" y="380" font-size="30" fill="#58C4DD" text-anchor="middle" class="mono">hash(答案, salt, msg.sender)</text></g>
+        <g id="d-ph2" class="h"><rect x="1020" y="260" width="700" height="160" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="1370" y="320" font-size="32" fill="#e8e6df" text-anchor="middle">阶段 2：揭示</text><text x="1370" y="380" font-size="30" fill="#8a8f99" text-anchor="middle">公开答案和 salt</text></g>
+        <g id="d-bot" class="h"><circle cx="550" cy="560" r="56" fill="#2a1414" stroke="#FC6255" stroke-width="4" /><text x="550" y="572" font-size="30" fill="#FC6255" text-anchor="middle">机器人</text><text x="660" y="572" font-size="30" fill="#FC6255">复制哈希</text></g>
+        <text id="d-botx" class="h" x="960" y="660" font-size="34" fill="#83C167" text-anchor="middle">哈希绑定了提交者地址 → 复制者揭示不了 ✓</text>
+        <g id="d-mantle" class="h"><rect x="560" y="760" width="800" height="200" rx="18" fill="#161a22" stroke="#FF9F43" stroke-width="3" /><text x="960" y="830" font-size="34" fill="#e8e6df" text-anchor="middle">Mantle：单一排序器</text><text x="960" y="900" font-size="34" fill="#FF9F43" text-anchor="middle" font-weight="700">没有公开内存池 ≠ 没有 MEV</text></g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 64.12, "L": [[0.6, 10.13], [10.58, 17.99], [18.44, 28.76], [29.21, 40.01], [40.46, 52.25], [52.7, 63.02]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      const KID = (sel, n, t) => tl.fromTo(sel + " > text:nth-of-type(" + n + ")", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, t);
+            const rows = gsap.utils.toArray("#root .d-row");
+      // L0 三种形态
+      IN("#d-t1", at(0, 0.0), 0.4);
+      [0.12, 0.42, 0.72].forEach((f, i) => IN(rows[i], at(0, f), 0.5, { x: -40 }, { x: 0 }));
+      // L1 用户
+      tl.to("#d-p1", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(1, 0));
+      IN("#d-u", at(1, 0.05), 0.4);
+      IN(["#d-you", "#d-mem", "#d-bld"], at(1, 0.1), 0.5);
+      DRAW("#d-priv", at(1, 0.45), 0.8);
+      IN("#d-privt", at(1, 0.55), 0.4);
+      // L2 合约
+      IN("#d-c", at(2, 0.0), 0.4);
+      IN("#d-code", at(2, 0.1), 0.5);
+      IN("#d-bad1", at(2, 0.6), 0.5);
+      // L3 minOut = 0
+      IN("#d-zero", at(3, 0.05), 0.5, { scale: 1.1, svgOrigin: "500 900" }, { scale: 1 });
+      KID("#d-zero", 2, at(3, 0.3)); KID("#d-zero", 3, at(3, 0.65));
+      // L4 提交-揭示
+      tl.to("#d-p2", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(4, 0));
+      IN("#d-cr", at(4, 0.05), 0.4);
+      IN("#d-ph1", at(4, 0.15), 0.5);
+      IN("#d-ph2", at(4, 0.35), 0.5);
+      IN("#d-bot", at(4, 0.55), 0.4);
+      IN("#d-botx", at(4, 0.8), 0.4);
+      // L5 Mantle
+      IN("#d-mantle", at(5, 0.1), 0.6);
+      KID("#d-mantle", 2, at(5, 0.45));
+      tl.to("#d-p3", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["defend"] = tl;
+    })();
+  </script>
+</template>

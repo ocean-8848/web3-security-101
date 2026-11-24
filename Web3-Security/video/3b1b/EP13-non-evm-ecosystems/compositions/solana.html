@@ -1,0 +1,99 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="solana" data-duration="43.15" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="s-all">
+        <g id="s-evm" class="h">
+          <text x="370" y="200" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">EVM</text>
+          <rect x="120" y="250" width="500" height="380" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="370" y="320" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">合约</text>
+          <rect x="170" y="370" width="400" height="200" rx="14" fill="#1a1708" stroke="#F0B90B" stroke-width="3" />
+          <text x="370" y="455" font-size="30" fill="#F0B90B" text-anchor="middle">自己的存储</text>
+          <text x="370" y="510" font-size="28" fill="#83C167" text-anchor="middle">攻击者换不掉 ✓</text>
+        </g>
+
+        <g id="s-prog" class="h">
+          <text x="1290" y="200" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">Solana</text>
+          <rect x="1040" y="240" width="500" height="120" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="1290" y="290" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">程序</text>
+          <text x="1290" y="335" font-size="28" fill="#8a8f99" text-anchor="middle">本身不存状态</text>
+        </g>
+        <g font-size="30">
+          <g class="s-acc h"><rect x="760" y="470" width="220" height="70" rx="10" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="870" y="516" fill="#e8e6df" text-anchor="middle">账户 1</text></g>
+          <g class="s-acc h"><rect x="760" y="560" width="220" height="70" rx="10" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="870" y="606" fill="#e8e6df" text-anchor="middle">账户 2</text></g>
+          <g class="s-acc h"><rect x="760" y="650" width="220" height="70" rx="10" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="870" y="696" fill="#e8e6df" text-anchor="middle">账户 3</text></g>
+          <g class="s-acc h"><rect x="760" y="740" width="220" height="70" rx="10" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="870" y="786" fill="#e8e6df" text-anchor="middle">系统账户</text></g>
+        </g>
+        <g id="s-caller" class="h"><circle cx="870" cy="900" r="22" fill="#e8e6df" /><text x="920" y="910" font-size="30" fill="#8a8f99">调用者整列传入</text></g>
+
+        <!-- 检查矩阵 -->
+        <g font-size="30" text-anchor="middle">
+          <text class="s-col h" x="1110" y="440" fill="#FF9F43">所有者</text>
+          <text class="s-col h" x="1300" y="440" fill="#FF9F43">签名</text>
+          <text class="s-col h" x="1490" y="440" fill="#FF9F43">类型</text>
+          <text class="s-col h" x="1680" y="440" fill="#FF9F43">地址</text>
+        </g>
+        <g id="s-ticks" font-size="34" fill="#83C167" text-anchor="middle"></g>
+        <g id="s-more" font-size="32">
+          <text class="s-m h" x="760" y="980" fill="#e8e6df">跨程序调用的目标：<tspan fill="#83C167">校验 program id</tspan></text>
+          <text class="s-m h" x="760" y="1035" fill="#e8e6df">系统账户：<tspan fill="#83C167">带校验的方式读取</tspan></text>
+        </g>
+        <g id="s-anchor" class="h">
+          <rect x="1020" y="460" width="780" height="360" rx="20" fill="none" stroke="#83C167" stroke-width="3" stroke-dasharray="12 8" />
+          <text x="1410" y="870" font-size="30" fill="#83C167" text-anchor="middle">Anchor 约束：自动做大部分检查</text>
+        </g>
+        <g id="s-miss" class="h">
+          <rect x="1630" y="745" width="100" height="60" rx="10" fill="#1f1214" stroke="#FC6255" stroke-width="4" stroke-dasharray="8 6" />
+          <text x="1410" y="920" font-size="30" fill="#FC6255" text-anchor="middle" font-weight="700">漏写一个，就等于没有</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 43.15, "L": [[0.6, 7.22], [7.67, 15.71], [16.16, 24.9], [25.35, 33.25], [33.7, 42.05]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      const NS = "http://www.w3.org/2000/svg", th = document.querySelector("#s-ticks"), T = [];
+      for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) {
+        const t = document.createElementNS(NS, "text");
+        t.setAttribute("x", String(1110 + c * 190)); t.setAttribute("y", String(518 + r * 90)); t.setAttribute("opacity", "0");
+        t.textContent = "✓"; th.appendChild(t); T.push({ t, r, c });
+      }
+
+      // L0 EVM
+      IN("#s-evm", at(0, 0.15), 0.7, { y: 20 }, { y: 0 });
+      // L1 Solana：程序无状态，账户由调用者传入
+      tl.to("#s-evm", { opacity: 0.35, duration: 0.4 }, at(1, 0.05));
+      IN("#s-prog", at(1, 0.08), 0.6);
+      IN("#s-caller", at(1, 0.45), 0.4);
+      gsap.utils.toArray("#root .s-acc").forEach((g, i) => IN(g, at(1, 0.55) + i * 0.15, 0.4, { y: 80 }, { y: 0 }));
+      // L2 四项检查，逐列打勾
+      OUT("#s-evm", at(2, 0), 0.35);
+      const cols = gsap.utils.toArray("#root .s-col");
+      [0.12, 0.35, 0.58, 0.8].forEach((f, c) => {
+        IN(cols[c], at(2, f), 0.3);
+        T.filter((o) => o.c === c && !(o.r === 3 && c === 3)).forEach((o, k) => IN(o.t, at(2, f) + 0.1 + k * 0.06, 0.2));
+      });
+      // L3 CPI 目标 + 系统账户
+      gsap.utils.toArray("#root .s-m").forEach((t, i) => IN(t, at(3, [0.05, 0.55][i]), 0.4));
+      // L4 Anchor + 漏写一个
+      IN("#s-anchor", at(4, 0.05), 0.5);
+      IN("#s-miss", at(4, 0.6), 0.4, { scale: 1.3, svgOrigin: "1680 775" }, { scale: 1 });
+
+      tl.to("#s-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["solana"] = tl;
+    })();
+  </script>
+</template>

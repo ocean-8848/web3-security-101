@@ -1,0 +1,133 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="calls" data-duration="51.04" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="k-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#e8e6df" /></marker>
+        <marker id="k-aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FF9F43" /></marker>
+      </defs>
+      <g id="k-all">
+        <text id="k-title" class="h" x="960" y="120" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="700">合约调用合约：三种方式</text>
+
+        <!-- 合约 A -->
+        <g id="k-A" class="h">
+          <rect x="140" y="200" width="560" height="680" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="420" y="260" font-size="38" fill="#58C4DD" text-anchor="middle" font-weight="700">合约 A</text>
+          <text x="420" y="320" font-size="28" fill="#8a8f99" text-anchor="middle">A 的存储（档案柜）</text>
+          <rect id="k-a0" x="200" y="350" width="440" height="90" rx="10" fill="#2a2f3a" stroke="#8a8f99" stroke-width="2" />
+          <rect x="200" y="460" width="440" height="90" rx="10" fill="#2a2f3a" stroke="#8a8f99" stroke-width="2" />
+          <rect x="200" y="570" width="440" height="90" rx="10" fill="#2a2f3a" stroke="#8a8f99" stroke-width="2" />
+          <text x="230" y="407" font-size="30" fill="#e8e6df">0 号抽屉</text>
+          <text x="230" y="517" font-size="30" fill="#e8e6df">1 号抽屉</text>
+          <text x="230" y="627" font-size="30" fill="#e8e6df">2 号抽屉</text>
+          <g id="k-av" fill="#F0B90B"><rect x="440" y="378" width="170" height="34" rx="6" /></g>
+          <rect x="440" y="488" width="120" height="34" rx="6" fill="#F0B90B" />
+          <rect x="440" y="598" width="150" height="34" rx="6" fill="#F0B90B" />
+        </g>
+
+        <!-- 合约 B -->
+        <g id="k-B" class="h">
+          <rect x="1220" y="200" width="560" height="680" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="1500" y="260" font-size="38" fill="#58C4DD" text-anchor="middle" font-weight="700">合约 B</text>
+          <rect id="k-man" x="1280" y="300" width="440" height="200" rx="12" fill="#0b141a" stroke="#58C4DD" stroke-width="3" />
+          <text x="1500" y="345" font-size="28" fill="#58C4DD" text-anchor="middle">B 的代码（规程手册）</text>
+          <text id="k-rule" class="mono" x="1500" y="420" font-size="32" fill="#e8e6df" text-anchor="middle">slot0 = 0</text>
+          <text x="1500" y="470" font-size="28" fill="#8a8f99" text-anchor="middle">清空 0 号抽屉</text>
+          <text x="1500" y="570" font-size="28" fill="#8a8f99" text-anchor="middle">B 的存储</text>
+          <rect id="k-b0" x="1280" y="600" width="440" height="90" rx="10" fill="#2a2f3a" stroke="#8a8f99" stroke-width="2" />
+          <text x="1310" y="657" font-size="30" fill="#e8e6df">0 号抽屉</text>
+          <rect id="k-bv" x="1520" y="628" width="170" height="34" rx="6" fill="#F0B90B" />
+        </g>
+
+        <!-- 1. call -->
+        <path id="k-c1" class="dr h" pathLength="1" d="M705 300 L 1212 300" stroke="#e8e6df" stroke-width="4" fill="none" marker-end="url(#k-ah)" />
+        <text id="k-c1t" class="h mono" x="960" y="280" font-size="34" fill="#e8e6df" text-anchor="middle">call</text>
+        <text id="k-c1d" class="h" x="960" y="345" font-size="28" fill="#8a8f99" text-anchor="middle">B 的代码 · 改 B 的存储</text>
+
+        <!-- 2. delegatecall -->
+        <path id="k-c2" class="dr h" pathLength="1" d="M705 520 L 1212 520" stroke="#e8e6df" stroke-width="4" fill="none" marker-end="url(#k-ah)" />
+        <text id="k-c2t" class="h mono" x="960" y="500" font-size="34" fill="#e8e6df" text-anchor="middle">delegatecall</text>
+        <text id="k-c2d" class="h" x="960" y="565" font-size="28" fill="#FF9F43" text-anchor="middle">B 的代码 · 改 <tspan font-weight="700">A</tspan> 的存储</text>
+        <text id="k-c2e" class="h" x="960" y="610" font-size="28" fill="#8a8f99" text-anchor="middle">msg.sender、msg.value 不变</text>
+        <g id="k-copy" class="h">
+          <rect x="1300" y="390" width="400" height="50" rx="8" fill="#0b141a" stroke="#58C4DD" stroke-width="3" stroke-dasharray="8 6" />
+          <text class="mono" x="1500" y="425" font-size="30" fill="#58C4DD" text-anchor="middle">slot0 = 0</text>
+        </g>
+        <text id="k-clr" class="h" x="420" y="710" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">被清空的是 A 的 0 号抽屉</text>
+
+        <!-- 3. staticcall -->
+        <path id="k-c3" class="dr h" pathLength="1" d="M705 760 L 1212 760" stroke="#e8e6df" stroke-width="4" fill="none" marker-end="url(#k-ah)" />
+        <text id="k-c3t" class="h mono" x="960" y="740" font-size="34" fill="#e8e6df" text-anchor="middle">staticcall</text>
+        <text id="k-c3d" class="h" x="960" y="805" font-size="28" fill="#8a8f99" text-anchor="middle">只读 · 一写存储就回滚</text>
+        <g id="k-x" class="h" stroke="#FC6255" stroke-width="7" stroke-linecap="round"><line x1="1580" y1="740" x2="1640" y2="800" /><line x1="1640" y1="740" x2="1580" y2="800" /></g>
+        <text id="k-xt" class="h" x="1500" y="850" font-size="30" fill="#FC6255" text-anchor="middle">写入 → 回滚</text>
+
+        <!-- 低级 call 失败只返回 false -->
+        <path id="k-f" class="dr h" pathLength="1" d="M1212 330 C 1100 420, 820 420, 712 330" stroke="#FF9F43" stroke-width="4" fill="none" marker-end="url(#k-aho)" />
+        <text id="k-ft" class="h mono" x="960" y="450" font-size="36" fill="#FF9F43" text-anchor="middle" font-weight="700">false</text>
+        <text id="k-fd" class="h" x="960" y="960" font-size="36" fill="#FF9F43" text-anchor="middle">低级 call 失败：调用者不自动回滚，只拿到 <tspan class="mono">false</tspan> —— 忘了检查，就继续往下执行</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 51.04, "L": [[0.6, 3.91], [4.36, 9.88], [10.33, 20.6], [21.05, 33.03], [33.48, 40.32], [40.77, 49.94]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAWA = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const FLASH = (s, t, c) => tl.fromTo(s, { stroke: "#8a8f99", strokeWidth: 2 }, { stroke: c, strokeWidth: 6, duration: 0.25, yoyo: true, repeat: 3 }, t);
+
+      // L0
+      IN("#k-title", at(0, 0.0), 0.5);
+      IN("#k-A", at(0, 0.2), 0.6, { x: -30 }, { x: 0 });
+      IN("#k-B", at(0, 0.35), 0.6, { x: 30 }, { x: 0 });
+      // L1 call
+      DRAWA("#k-c1", at(1, 0.05), 0.6);
+      IN("#k-c1t", at(1, 0.05), 0.4);
+      IN("#k-c1d", at(1, 0.35), 0.4);
+      tl.fromTo("#k-man", { strokeWidth: 3 }, { strokeWidth: 8, duration: 0.3, yoyo: true, repeat: 1 }, at(1, 0.4));
+      FLASH("#k-b0", at(1, 0.6), "#F0B90B");
+      // L2 delegatecall
+      tl.to(["#k-c1", "#k-c1t", "#k-c1d"], { opacity: 0.25, duration: 0.4 }, at(2, 0.0));
+      DRAWA("#k-c2", at(2, 0.05), 0.6);
+      IN("#k-c2t", at(2, 0.05), 0.4);
+      IN("#k-copy", at(2, 0.2), 0.3);
+      tl.to("#k-copy", { x: -1080, y: -30, duration: 1.2, ease: "power2.inOut" }, at(2, 0.25));
+      IN("#k-c2d", at(2, 0.35), 0.4);
+      FLASH("#k-a0", at(2, 0.5), "#FF9F43");
+      IN("#k-c2e", at(2, 0.75), 0.4);
+      // L3 清空 A 的 0 号抽屉
+      tl.fromTo("#k-rule", { fill: "#e8e6df" }, { fill: "#FF9F43", duration: 0.3 }, at(3, 0.25));
+      tl.to("#k-av", { opacity: 0, scaleX: 0, svgOrigin: "440 395", duration: 0.6, ease: "power2.in" }, at(3, 0.6));
+      tl.to("#k-a0", { stroke: "#FC6255", strokeWidth: 5, duration: 0.3 }, at(3, 0.62));
+      IN("#k-clr", at(3, 0.7), 0.4);
+      OUT("#k-copy", at(3, 0.6), 0.4);
+      // L4 staticcall
+      tl.to(["#k-c2", "#k-c2t", "#k-c2d", "#k-c2e"], { opacity: 0.25, duration: 0.4 }, at(4, 0.0));
+      DRAWA("#k-c3", at(4, 0.05), 0.6);
+      IN("#k-c3t", at(4, 0.05), 0.4);
+      IN("#k-c3d", at(4, 0.35), 0.4);
+      IN("#k-x", at(4, 0.6), 0.3, { scale: 1.5, svgOrigin: "1610 770" }, { scale: 1 });
+      IN("#k-xt", at(4, 0.65), 0.3);
+      // L5 低级 call 只返回 false
+      tl.to(["#k-c3", "#k-c3t", "#k-c3d", "#k-x", "#k-xt", "#k-clr", "#k-c2", "#k-c2t", "#k-c2d", "#k-c2e"], { opacity: 0, duration: 0.4 }, at(5, 0.0));
+      tl.to(["#k-c1", "#k-c1t"], { opacity: 1, duration: 0.4 }, at(5, 0.0));
+      DRAWA("#k-f", at(5, 0.15), 0.6);
+      IN("#k-ft", at(5, 0.3), 0.4, { scale: 1.4, svgOrigin: "960 440" }, { scale: 1 });
+      IN("#k-fd", at(5, 0.5), 0.5);
+
+      tl.to("#k-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["calls"] = tl;
+    })();
+  </script>
+</template>

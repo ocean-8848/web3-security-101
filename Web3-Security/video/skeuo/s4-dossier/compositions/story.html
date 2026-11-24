@@ -1,0 +1,374 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; color: #1d1d1b; font-family: "Noto Sans SC", sans-serif; }
+    #st-scene { position: absolute; inset: 0; }
+    #cam { position: absolute; left: 0; top: 0; width: 1px; height: 1px; }
+    #felt { position: absolute; left: -2400px; top: -1800px; width: 10400px; height: 7400px; background-color: #c9cbbf;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.12 0 0 0 0 0.13 0 0 0 0 0.1 0 0 0 0.55 -0.16'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+        repeating-linear-gradient(90deg, rgba(60,64,52,0.035) 0 2px, rgba(0,0,0,0) 2px 7px); }
+
+    .paper { position: absolute; background: #f6f2e8; box-shadow: 0 8px 14px rgba(0,0,0,0.18), 0 1px 2px rgba(0,0,0,0.10); }
+    .ttl { position: absolute; font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 72px; line-height: 1.1; color: #1d1d1b; white-space: nowrap; }
+    .mono { font-family: "IBM Plex Mono", "Noto Sans SC", monospace; }
+    .tw { white-space: pre; }
+    .tw .ch { opacity: 0; }
+    .hand { position: absolute; font-family: "LXGW WenKai", serif; font-weight: 500; color: #55554f; white-space: nowrap; }
+    .red { color: #b3261e; }
+    .pen { position: absolute; overflow: visible; }
+    .pen path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .lbl { position: absolute; font-size: 34px; color: #6b6a62; white-space: nowrap; }
+    .val { position: absolute; font-size: 42px; white-space: pre; }
+
+    /* folder */
+    #fd { position: absolute; left: 300px; top: 300px; width: 1200px; height: 850px; z-index: 3; }
+    #fd-base { position: absolute; inset: 0; background: #cbb88d; box-shadow: 0 8px 14px rgba(0,0,0,0.18); }
+    #fd-tab { position: absolute; left: 40px; top: -58px; width: 340px; height: 62px; background: #cbb88d; border-radius: 14px 14px 0 0; }
+    #fd-page { left: 40px; top: 40px; width: 1120px; height: 770px; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+    #fd-cover { position: absolute; inset: 0; transform-style: preserve-3d; }
+    .face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+    #fd-front { background: #d9c7a0; box-shadow: 0 8px 14px rgba(0,0,0,0.18); }
+    #fd-back { background: #ccb98f; transform: rotateY(180deg); box-shadow: 0 8px 14px rgba(0,0,0,0.18); }
+    #fd-label { position: absolute; left: 150px; top: 220px; width: 860px; height: 380px; background: #f6f2e8; box-shadow: 0 2px 4px rgba(0,0,0,0.12); }
+    #fd-rule1, #fd-rule2 { position: absolute; left: 50px; right: 50px; height: 2px; background: #1d1d1b; opacity: 0.55; }
+
+    /* private key card */
+    #pk { left: 1850px; top: 260px; width: 860px; height: 900px; transform: rotate(1.2deg); }
+    .row-line { position: absolute; left: 70px; right: 70px; height: 2px; background: #1d1d1b; opacity: 0.25; }
+    #pk-stamp { position: absolute; left: 470px; top: 150px; width: 250px; height: 120px; border: 6px double #1d1d1b; color: #1d1d1b;
+      font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 54px; line-height: 104px; text-align: center; letter-spacing: 6px; opacity: 0; }
+
+    /* photo */
+    #ph { left: 1730px; top: 1450px; width: 820px; height: 700px; background: #fbfaf5; transform: rotate(-2.5deg); }
+    #ph-screen { position: absolute; left: 30px; top: 30px; width: 760px; height: 560px; background: #e6e8e2; overflow: hidden; }
+    #ph-bar { position: absolute; left: 0; top: 0; right: 0; height: 96px; background: #d5d8d0; }
+    .btn { position: absolute; top: 440px; width: 300px; height: 84px; font-size: 38px; font-weight: 700; text-align: center; line-height: 78px; border: 3px solid #1d1d1b; }
+
+    /* printout */
+    #pr { left: 2620px; top: 1330px; width: 980px; height: 1060px; background: #f8f7f0; }
+    .holes { position: absolute; top: 0; bottom: 0; width: 40px; background-image: radial-gradient(circle at 20px 25px, #c9cbbf 9px, rgba(0,0,0,0) 10px); background-size: 40px 50px; }
+    .band { position: absolute; left: 40px; right: 40px; height: 100px; background: #e8ede0; }
+
+    /* chain result */
+    #chs { left: 3800px; top: 1380px; width: 940px; height: 900px; transform: rotate(0.8deg); }
+    #ch-bar { position: absolute; left: 320px; top: 500px; width: 560px; height: 64px; background: #1d1d1b; transform-origin: 0 50%; }
+
+    /* key + doc */
+    #ky { left: 3700px; top: 2560px; width: 760px; height: 720px; transform: rotate(-1.4deg); }
+    #dc { left: 4800px; top: 2540px; width: 760px; height: 760px; transform: rotate(1.2deg); }
+    .gl { position: absolute; left: 70px; height: 18px; background: #1d1d1b; opacity: 0.16; }
+
+    /* flow */
+    #fl { left: 150px; top: 520px; width: 1500px; height: 640px; z-index: 1; }
+    .slot { position: absolute; top: 230px; width: 180px; height: 170px; border: 3px dashed #1d1d1b; opacity: 0.22; }
+    .step { position: absolute; top: 230px; width: 180px; height: 170px; border: 4px solid #1d1d1b; background: #f6f2e8; text-align: center; opacity: 0; }
+    .step .num { display: block; margin-top: 18px; font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 48px; line-height: 1; }
+    .step .nm { display: block; margin-top: 24px; font-size: 32px; font-weight: 700; }
+    .arr { position: absolute; top: 300px; width: 30px; height: 30px; opacity: 0; }
+
+    /* label card */
+    #lb { left: 280px; top: 980px; width: 1240px; height: 420px; z-index: 10; background: #fbf8ef; opacity: 0; }
+    .tape { position: absolute; top: -26px; width: 200px; height: 56px; background: rgba(236,230,205,0.78); box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+  </style>
+
+  <div id="root" data-composition-id="story" data-width="1920" data-height="1080">
+    <div id="st-scene" class="clip" data-start="0" data-duration="47.16" data-layout-allow-overflow data-layout-allow-overlap>
+      <div id="cam">
+        <div id="felt" data-layout-ignore></div>
+
+        <!-- 7. flow sheet, tucked under the folder -->
+        <div id="fl" class="paper">
+          <div id="fl-title" class="ttl tw" style="left:50px; top:50px;">签名路径 · 七道关</div>
+          <div class="slot" style="left:30px"></div><div class="slot" style="left:240px"></div><div class="slot" style="left:450px"></div>
+          <div class="slot" style="left:660px"></div><div class="slot" style="left:870px"></div><div class="slot" style="left:1080px"></div><div class="slot" style="left:1290px"></div>
+          <div id="fs1" class="step" style="left:30px"><span class="num">①</span><span class="nm">业务意图</span></div>
+          <div id="fs2" class="step" style="left:240px"><span class="num">②</span><span class="nm">请求构造</span></div>
+          <div id="fs3" class="step" style="left:450px"><span class="num">③</span><span class="nm">风控与审批</span></div>
+          <div id="fs4" class="step" style="left:660px"><span class="num">④</span><span class="nm">显示与解码</span></div>
+          <div id="fs5" class="step" style="left:870px"><span class="num">⑤</span><span class="nm">签名</span></div>
+          <div id="fs6" class="step" style="left:1080px"><span class="num">⑥</span><span class="nm">广播</span></div>
+          <div id="fs7" class="step" style="left:1290px"><span class="num">⑦</span><span class="nm">链上状态</span></div>
+          <svg id="fa2" class="arr" style="left:210px" viewBox="0 0 30 30"><path d="M2 15 H26 M18 7 L27 15 L18 23" stroke="#1d1d1b" stroke-width="4" fill="none"/></svg>
+          <svg id="fa3" class="arr" style="left:420px" viewBox="0 0 30 30"><path d="M2 15 H26 M18 7 L27 15 L18 23" stroke="#1d1d1b" stroke-width="4" fill="none"/></svg>
+          <svg id="fa4" class="arr" style="left:630px" viewBox="0 0 30 30"><path d="M2 15 H26 M18 7 L27 15 L18 23" stroke="#1d1d1b" stroke-width="4" fill="none"/></svg>
+          <svg id="fa5" class="arr" style="left:840px" viewBox="0 0 30 30"><path d="M2 15 H26 M18 7 L27 15 L18 23" stroke="#1d1d1b" stroke-width="4" fill="none"/></svg>
+          <svg id="fa6" class="arr" style="left:1050px" viewBox="0 0 30 30"><path d="M2 15 H26 M18 7 L27 15 L18 23" stroke="#1d1d1b" stroke-width="4" fill="none"/></svg>
+          <svg id="fa7" class="arr" style="left:1260px" viewBox="0 0 30 30"><path d="M2 15 H26 M18 7 L27 15 L18 23" stroke="#1d1d1b" stroke-width="4" fill="none"/></svg>
+          <svg id="fl-ring" class="pen" style="left:625px; top:200px; width:250px; height:232px;" viewBox="0 0 250 232">
+            <path pathLength="1" d="M138 10 C 214 12, 246 70, 240 120 C 234 182, 170 226, 110 222 C 46 218, 6 170, 10 112 C 14 52, 64 12, 132 12 C 170 12, 200 26, 216 44" stroke="#b3261e" stroke-width="6"/>
+          </svg>
+          <div id="fl-note" class="hand red" style="left:640px; top:440px; font-size:54px;">断在这里</div>
+        </div>
+
+        <!-- 1. folder -->
+        <div id="fd">
+          <div id="fd-tab"></div>
+          <div id="fd-base"></div>
+          <div id="fd-page" class="paper">
+            <div class="ttl" style="left:80px; top:70px;">摘要</div>
+            <div class="row-line" style="top:200px; left:80px; right:80px;"></div>
+            <div id="fd-loss" class="val mono tw" style="left:80px; top:255px; font-size:84px; font-weight:700;">损失：约 15 亿美元</div>
+            <div id="fd-src" class="val mono tw" style="left:84px; top:395px; font-size:40px; color:#4b4a44;">口径：FBI · 事发时估值</div>
+            <svg class="pen" style="left:-14px; top:-30px; width:60px; height:150px;" viewBox="0 0 60 150"><path d="M20 140 V30 a14 14 0 0 1 28 0 V120 a8 8 0 0 1 -16 0 V40" stroke="#7d7f78" stroke-width="5"/></svg>
+          </div>
+          <div id="fd-cover">
+            <div id="fd-front" class="face">
+              <div id="fd-label">
+                <div class="ttl" style="left:50px; top:56px;">案卷 · <span style="position:relative">Bybit<svg id="fd-ul2" class="pen" style="left:-6px; top:78px; width:220px; height:24px;" viewBox="0 0 220 24"><path pathLength="1" d="M4 14 C 60 6, 130 18, 214 8" stroke="#55554f" stroke-width="5"/></svg></span> 冷钱包</div>
+                <div id="fd-rule1" style="top:190px;"></div>
+                <div class="mono" style="position:absolute; left:50px; top:222px; font-size:56px; line-height:1;">2025-02-21</div>
+                <svg id="fd-ul1" class="pen" style="left:44px; top:290px; width:360px; height:26px;" viewBox="0 0 360 26"><path pathLength="1" d="M4 16 C 90 6, 200 20, 354 9" stroke="#55554f" stroke-width="5"/></svg>
+              </div>
+              <svg class="pen" style="left:1060px; top:330px; width:100px; height:200px;" viewBox="0 0 100 200">
+                <circle cx="50" cy="40" r="24" fill="#b9a67c" stroke="#1d1d1b" stroke-width="3" opacity="0.8"/>
+                <circle cx="50" cy="160" r="24" fill="#b9a67c" stroke="#1d1d1b" stroke-width="3" opacity="0.8"/>
+                <path d="M50 40 C 90 70, 10 110, 50 160 C 80 130, 30 80, 50 40" stroke="#5d4f36" stroke-width="3"/>
+              </svg>
+            </div>
+            <div id="fd-back" class="face"></div>
+          </div>
+        </div>
+
+        <!-- 2. private key status -->
+        <div id="pk" class="paper">
+          <div class="ttl" style="left:70px; top:56px;">私钥状态</div>
+          <div class="lbl" style="left:72px; top:200px;">状态</div>
+          <div id="pk-st" class="val tw" style="left:72px; top:248px; font-size:64px; font-weight:700;">未泄露</div>
+          <div id="pk-stamp">已核实</div>
+          <div class="row-line" style="top:380px;"></div>
+          <div style="position:absolute; left:70px; top:420px; font-family:'Noto Serif SC',serif; font-weight:900; font-size:48px;">签名记录</div>
+          <div id="pk-r1" class="val mono tw" style="left:72px; top:520px; font-size:40px;">签名人 ······ 确认</div>
+          <div id="pk-r2" class="val mono tw" style="left:72px; top:610px; font-size:40px;">签名人 ······ 确认</div>
+          <div id="pk-r3" class="val mono tw" style="left:72px; top:700px; font-size:40px;">签名人 ······ 确认</div>
+          <svg id="pk-t1" class="pen" style="left:520px; top:518px; width:60px; height:56px;" viewBox="0 0 60 56"><path pathLength="1" d="M6 30 L22 48 L54 6" stroke="#1d1d1b" stroke-width="6"/></svg>
+          <svg id="pk-t2" class="pen" style="left:520px; top:608px; width:60px; height:56px;" viewBox="0 0 60 56"><path pathLength="1" d="M6 30 L22 48 L54 6" stroke="#1d1d1b" stroke-width="6"/></svg>
+          <svg id="pk-t3" class="pen" style="left:520px; top:698px; width:60px; height:56px;" viewBox="0 0 60 56"><path pathLength="1" d="M6 30 L22 48 L54 6" stroke="#1d1d1b" stroke-width="6"/></svg>
+          <svg class="pen" style="left:700px; top:-34px; width:70px; height:170px;" viewBox="0 0 70 170"><path d="M22 160 V34 a16 16 0 0 1 32 0 V140 a9 9 0 0 1 -18 0 V46" stroke="#7d7f78" stroke-width="5"/></svg>
+        </div>
+
+        <!-- 3. screenshot photo -->
+        <div id="ph" class="paper">
+          <div id="ph-screen">
+            <div id="ph-bar"></div>
+            <div style="position:absolute; left:40px; top:22px; font-size:44px; font-weight:700;">交易确认</div>
+            <div style="position:absolute; right:36px; top:28px; font-size:32px; padding:2px 14px; border:2px solid #1d1d1b;">示意</div>
+            <div class="lbl" style="left:40px; top:150px; font-size:36px;">类型</div>
+            <div style="position:absolute; left:200px; top:140px; font-size:48px; font-weight:700;">转账<svg id="ph-ul" class="pen" style="left:-6px; top:62px; width:110px; height:22px;" viewBox="0 0 110 22"><path pathLength="1" d="M4 12 C 30 4, 70 18, 106 8" stroke="#55554f" stroke-width="5"/></svg></div>
+            <div class="lbl" style="left:40px; top:250px; font-size:36px;">收款</div>
+            <div class="mono" style="position:absolute; left:200px; top:244px; font-size:40px;">0x…（示例）</div>
+            <div class="lbl" style="left:40px; top:340px; font-size:36px;">网络</div>
+            <div style="position:absolute; left:200px; top:334px; font-size:40px;">以太坊</div>
+            <div class="btn" style="left:40px;">拒绝</div>
+            <div class="btn" style="left:420px; background:#1d1d1b; color:#f6f2e8;">确认</div>
+          </div>
+          <div class="hand" style="left:40px; top:612px; font-size:46px;">屏幕截图 · 示意</div>
+        </div>
+
+        <!-- 4. printout -->
+        <div id="pr" class="paper">
+          <div class="holes" style="left:0;"></div>
+          <div class="holes" style="right:0;"></div>
+          <div class="ttl" style="left:80px; top:64px;">实际签名数据</div>
+          <div class="band" style="top:230px;"></div>
+          <div class="band" style="top:450px;"></div>
+          <div id="pr-k1" class="val mono tw" style="left:80px; top:256px; font-size:40px; color:#4b4a44;">to</div>
+          <div id="pr-v1" class="val mono tw" style="left:340px; top:256px; font-size:40px;">0x…（攻击者合约）</div>
+          <div id="pr-k2" class="val mono tw" style="left:80px; top:366px; font-size:40px; color:#4b4a44;">value</div>
+          <div id="pr-v2" class="val mono tw" style="left:340px; top:366px; font-size:40px;">0</div>
+          <div id="pr-k3" class="val mono tw" style="left:80px; top:476px; font-size:40px; color:#4b4a44;">data</div>
+          <div id="pr-v3" class="val mono tw" style="left:340px; top:476px; font-size:40px;">transfer(address,uint256)</div>
+          <div id="pr-k4" class="val mono tw" style="left:80px; top:586px; font-size:40px; color:#4b4a44;">operation</div>
+          <div id="pr-v4" class="val mono tw" style="left:340px; top:578px; font-size:48px; font-weight:700;">1</div>
+          <svg id="pr-ring" class="pen" style="left:298px; top:556px; width:120px; height:104px;" viewBox="0 0 120 104">
+            <path pathLength="1" d="M66 8 C 104 6, 118 34, 110 62 C 102 92, 34 98, 14 72 C -2 48, 18 10, 60 8 C 82 7, 96 14, 104 22" stroke="#b3261e" stroke-width="6"/>
+          </svg>
+          <div id="pr-note" class="hand red" style="left:450px; top:568px; font-size:64px;">DELEGATECALL</div>
+          <div id="pr-note2" class="hand" style="left:454px; top:656px; font-size:40px;">正常转账 = 0（CALL）</div>
+        </div>
+
+        <!-- 5. chain result -->
+        <div id="chs" class="paper">
+          <div class="ttl" style="left:70px; top:56px;">链上结果</div>
+          <div class="lbl" style="left:72px; top:214px;">调用方式</div>
+          <div id="ch-v1" class="val mono tw" style="left:320px; top:206px;">DELEGATECALL</div>
+          <div class="lbl" style="left:72px; top:314px;">运行代码</div>
+          <div id="ch-v2" class="val mono tw" style="left:320px; top:306px;">攻击者合约</div>
+          <div class="row-line" style="top:400px;"></div>
+          <div style="position:absolute; left:70px; top:424px; font-size:40px; font-weight:700;">Safe 代理存储 · slot 0</div>
+          <div class="lbl" style="left:72px; top:514px;">实现合约</div>
+          <div class="val mono" style="left:330px; top:506px;">0x…（原实现，示例）</div>
+          <div id="ch-bar"></div>
+          <div id="ch-new" class="hand" style="left:330px; top:600px; font-size:62px; color:#1d1d1b;">→ 攻击者合约</div>
+        </div>
+
+        <!-- 6. key + doc -->
+        <div id="ky" class="paper">
+          <div class="ttl" style="left:70px; top:56px;">钥匙</div>
+          <svg class="pen" style="left:110px; top:220px; width:540px; height:240px;" viewBox="0 0 540 240">
+            <circle cx="110" cy="120" r="88" stroke="#1d1d1b" stroke-width="8" fill="#ebe5d6"/>
+            <circle cx="110" cy="120" r="30" stroke="#1d1d1b" stroke-width="6" fill="#f6f2e8"/>
+            <path d="M198 106 H520 V134 H198 Z" stroke="#1d1d1b" stroke-width="7" fill="#ebe5d6"/>
+            <path d="M420 134 V184 H448 V150 H470 V196 H498 V134" stroke="#1d1d1b" stroke-width="7" fill="#ebe5d6"/>
+          </svg>
+          <div class="lbl" style="left:72px; top:540px;">私钥</div>
+          <div id="ky-st" class="val tw" style="left:190px; top:524px; font-size:60px; font-weight:700;">完好</div>
+        </div>
+        <div id="dc" class="paper">
+          <div class="ttl" style="left:70px; top:56px;">签下的文件</div>
+          <div class="gl" style="top:220px; width:560px;"></div>
+          <div class="gl" style="top:270px; width:480px;"></div>
+          <div class="gl" style="top:320px; width:600px;"></div>
+          <div class="gl" style="top:370px; width:380px;"></div>
+          <div id="dc-op" class="val mono tw" style="left:70px; top:440px;">operation   1</div>
+          <div id="dc-note" class="hand" style="left:76px; top:560px; font-size:58px;">被换掉的是它</div>
+        </div>
+        <svg id="ln-red" class="pen" style="left:4440px; top:2780px; width:400px; height:240px; z-index:4;" viewBox="0 0 400 240">
+          <path pathLength="1" d="M10 150 C 90 60, 200 220, 300 120 C 330 92, 352 86, 384 96" stroke="#b3261e" stroke-width="5"/>
+          <path id="ln-head" d="M360 76 L388 97 L358 116" stroke="#b3261e" stroke-width="5" opacity="0"/>
+        </svg>
+
+        <!-- 8. label card -->
+        <div id="lb" class="paper">
+          <div class="tape" style="left:70px; transform:rotate(-6deg);"></div>
+          <div class="tape" style="right:70px; transform:rotate(5deg);"></div>
+          <div id="lb-t" class="ttl tw" style="left:110px; top:96px; font-size:108px;">攻击者不再偷私钥</div>
+          <div style="position:absolute; left:112px; top:250px; width:1016px; height:3px; background:#1d1d1b; opacity:0.6;"></div>
+          <div id="lb-s" class="val mono tw" style="left:112px; top:286px; font-size:50px;">第 29 章 · 签名路径</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const q = (s) => document.querySelector(s);
+
+      // ---------- typewriter: split each .tw into per-char spans (deterministic) ----------
+      document.querySelectorAll("#st-scene .tw").forEach((el) => {
+        const text = el.textContent;
+        el.textContent = "";
+        for (const c of text) {
+          const s = document.createElement("span");
+          s.className = "ch";
+          s.textContent = c;
+          el.appendChild(s);
+        }
+      });
+      const CH = 0.04;
+      function type(sel, t) {
+        const chars = document.querySelectorAll(sel + " .ch");
+        tl.fromTo(chars, { opacity: 0 }, { opacity: 1, duration: 0.001, stagger: CH, ease: "none", immediateRender: false }, t);
+        return t + chars.length * CH;
+      }
+      function draw(sel, t, d) {
+        const p = document.querySelectorAll(sel + " path[pathLength]");
+        tl.fromTo(p, { opacity: 0 }, { opacity: 1, duration: 0.001, immediateRender: false }, t);
+        tl.fromTo(p, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d || 0.45, ease: "power1.inOut" }, t);
+      }
+      function write(sel, t, d) {
+        tl.fromTo(sel, { clipPath: "inset(-20% 100% -20% 0%)" }, { clipPath: "inset(-20% 0% -20% 0%)", duration: d || 0.5, ease: "power1.inOut" }, t);
+      }
+      // initial pen states
+      gsap.set("#st-scene path[pathLength]", { strokeDasharray: 1, strokeDashoffset: 1, opacity: 0 });
+      gsap.set(".hand.red, #pr-note2, #ch-new, #dc-note", { clipPath: "inset(-20% 100% -20% 0%)" });
+
+      // ---------- camera: pure function of time ----------
+      const E = gsap.parseEase("power2.inOut");
+      const START = { cx: 900, cy: 725, s: 1.0 };
+      const MOVES = [
+        [3.7, 5.0, { cx: 900, cy: 700, s: 1.12 }, 0],
+        [6.6, 7.6, { cx: 2280, cy: 710, s: 0.97 }, 0.06],
+        [13.3, 14.4, { cx: 2140, cy: 1800, s: 1.0 }, 0.06],
+        [17.2, 18.3, { cx: 3110, cy: 1830, s: 0.95 }, 0.04],
+        [20.4, 21.7, { cx: 3150, cy: 1900, s: 1.55 }, 0],
+        [22.9, 24.1, { cx: 4270, cy: 1830, s: 0.95 }, 0.12],
+        [30.2, 31.4, { cx: 4080, cy: 2920, s: 1.05 }, 0.1],
+        [33.6, 34.8, { cx: 4630, cy: 2920, s: 0.92 }, 0],
+        [36.7, 38.1, { cx: 900, cy: 1200, s: 0.72 }, 0.4],
+        [38.6, 39.7, { cx: 900, cy: 1570, s: 1.0 }, 0],
+        [42.9, 44.0, { cx: 900, cy: 1290, s: 0.95 }, 0],
+      ];
+      function camAt(t) {
+        let a = START;
+        for (const [t0, t1, b, bump] of MOVES) {
+          if (t <= t0) return a;
+          if (t < t1) {
+            const e = E((t - t0) / (t1 - t0));
+            const s = Math.exp(Math.log(a.s) + (Math.log(b.s) - Math.log(a.s)) * e) * (1 - bump * Math.sin(Math.PI * e));
+            return { cx: a.cx + (b.cx - a.cx) * e, cy: a.cy + (b.cy - a.cy) * e, s };
+          }
+          a = b;
+        }
+        return a;
+      }
+      function applyCam(t) {
+        const c = camAt(t);
+        gsap.set("#cam", { x: 960 - c.cx * c.s, y: 470 - c.cy * c.s, scale: c.s, transformOrigin: "0 0" });
+      }
+      applyCam(0);
+      const clock = { t: 0 };
+      tl.fromTo(clock, { t: 0 }, { t: 47.16, duration: 47.16, ease: "none", onUpdate: () => applyCam(clock.t) }, 0);
+
+      // ---------- l1 folder ----------
+      draw("#fd-ul1", 0.7, 0.6);
+      draw("#fd-ul2", 2.46, 0.4);
+      tl.fromTo("#fd-cover", { rotationY: 0, transformPerspective: 3000, transformOrigin: "0% 50%" },
+        { rotationY: -178, transformPerspective: 3000, transformOrigin: "0% 50%", duration: 1.2, ease: "power2.inOut" }, 3.6);
+      type("#fd-loss", 5.23);
+      type("#fd-src", 5.72);
+
+      // ---------- l2 private key ----------
+      type("#pk-st", 8.68);
+      tl.fromTo("#pk-stamp", { opacity: 0, scale: 1.6, rotation: -8 }, { opacity: 0.88, scale: 0.94, rotation: -8, duration: 0.12, ease: "power3.in" }, 9.1);
+      tl.fromTo("#pk-stamp", { scale: 0.94 }, { scale: 1, duration: 0.12, ease: "power2.out", immediateRender: false }, 9.22);
+      draw("#pk-t1", type("#pk-r1", 9.56) + 0.05, 0.25);
+      draw("#pk-t2", type("#pk-r2", 10.7) + 0.05, 0.25);
+      draw("#pk-t3", type("#pk-r3", 11.85) + 0.05, 0.25);
+
+      // ---------- l3 photo ----------
+      draw("#ph-ul", 16.09, 0.45);
+
+      // ---------- l4 printout (climax) ----------
+      type("#pr-k1", 18.3); type("#pr-v1", 18.42);
+      type("#pr-k2", 19.0); type("#pr-v2", 19.22);
+      type("#pr-k3", 19.4); type("#pr-v3", 19.58);
+      type("#pr-k4", 20.82);
+      type("#pr-v4", 21.85);
+      draw("#pr-ring", 21.9, 0.35);
+      write("#pr-note", 22.12, 0.5);
+      write("#pr-note2", 22.42, 0.4);
+
+      // ---------- l5 chain result ----------
+      type("#ch-v1", 23.95);
+      type("#ch-v2", 26.07);
+      tl.fromTo("#ch-bar", { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: "power2.inOut" }, 27.77);
+      write("#ch-new", 28.63, 0.6);
+
+      // ---------- l6 key vs document ----------
+      type("#ky-st", 32.53);
+      type("#dc-op", 33.95);
+      draw("#ln-red", 35.43, 0.55);
+      tl.fromTo("#ln-head", { opacity: 0 }, { opacity: 1, duration: 0.001, immediateRender: false }, 35.98);
+      write("#dc-note", 35.7, 0.55);
+
+      // ---------- l7 flow sheet ----------
+      tl.fromTo("#fl", { y: 0 }, { y: 730, duration: 1.0, ease: "power2.inOut" }, 38.1);
+      type("#fl-title", 39.58);
+      for (let i = 1; i <= 7; i++) {
+        const t = 41.13 + (i - 1) * 0.14;
+        tl.fromTo("#fs" + i, { opacity: 0 }, { opacity: 1, duration: 0.001, immediateRender: false }, t);
+        if (i > 1) tl.fromTo("#fa" + i, { opacity: 0 }, { opacity: 1, duration: 0.001, immediateRender: false }, t - 0.05);
+      }
+      draw("#fl-ring", 42.36, 0.4);
+      write("#fl-note", 42.6, 0.45);
+
+      // ---------- title card ----------
+      tl.fromTo("#lb", { opacity: 0, scale: 1.12, rotation: -4, y: -30 }, { opacity: 1, scale: 1, rotation: -1.2, y: 0, duration: 0.35, ease: "power2.out" }, 43.3);
+      tl.fromTo("#fl-title", { opacity: 1 }, { opacity: 0, duration: 0.001, immediateRender: false }, 43.5);
+      type("#lb-t", 43.7);
+      type("#lb-s", 44.1);
+
+      window.__timelines["story"] = tl;
+    })();
+  </script>
+</template>

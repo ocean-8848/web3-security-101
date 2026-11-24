@@ -1,0 +1,92 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="airport" data-duration="44.44" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="a-all">
+        <g id="a-ex" class="h">
+          <rect x="560" y="260" width="800" height="440" rx="26" fill="#161a22" stroke="#8a8f99" stroke-width="4" />
+          <text x="960" y="230" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">交易所</text>
+          <line x1="960" y1="280" x2="960" y2="680" stroke="#2a2f3a" stroke-width="3" stroke-dasharray="8 8" />
+        </g>
+        <!-- 保管者 -->
+        <g id="a-cus" class="h">
+          <text x="760" y="330" font-size="40" fill="#F0B90B" text-anchor="middle" font-weight="800">保管者</text>
+          <rect x="660" y="380" width="200" height="180" rx="16" fill="#1a1708" stroke="#F0B90B" stroke-width="5" />
+          <circle cx="760" cy="440" r="22" fill="none" stroke="#B48EF0" stroke-width="5" /><path d="M782 440 H 830 M 816 440 V 456" stroke="#B48EF0" stroke-width="5" />
+          <g fill="#F0B90B"><circle cx="715" cy="510" r="16" /><circle cx="760" cy="510" r="16" /><circle cx="805" cy="510" r="16" /></g>
+          <text x="760" y="600" font-size="30" fill="#8a8f99" text-anchor="middle">私钥 + 资产</text>
+        </g>
+        <g id="a-cusx" class="h"><text x="760" y="790" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">出错 → 用户丢钱</text></g>
+        <!-- 检查站 -->
+        <g id="a-chk" class="h">
+          <text x="1160" y="330" font-size="40" fill="#FF9F43" text-anchor="middle" font-weight="800">检查站</text>
+          <rect x="1100" y="560" width="120" height="180" rx="10" fill="none" stroke="#FF9F43" stroke-width="5" stroke-dasharray="12 8" />
+        </g>
+        <path id="a-flow" class="dr" pathLength="1" d="M300 650 L 1640 650" stroke="#F0B90B" stroke-width="5" fill="none" />
+        <text id="a-chain" class="h" x="300" y="610" font-size="32" fill="#58C4DD" text-anchor="middle">链上</text>
+        <text id="a-fiat" class="h" x="1640" y="610" font-size="32" fill="#e8e6df" text-anchor="middle">法币世界</text>
+        <g id="a-chkx" class="h"><text x="1160" y="790" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">出错 → 赃款洗白 · 法律责任</text></g>
+
+        <!-- 机场比方 -->
+        <g id="a-air">
+          <line id="a-floor" class="h" x1="160" y1="560" x2="1760" y2="560" stroke="#2a2f3a" stroke-width="4" />
+          <g class="a-st h"><rect x="180" y="460" width="220" height="100" rx="12" fill="#1a1708" stroke="#F0B90B" stroke-width="4" /><text x="290" y="522" font-size="34" fill="#F0B90B" text-anchor="middle" font-weight="700">金库</text><text x="290" y="620" font-size="28" fill="#8a8f99" text-anchor="middle">冷钱包：防盗</text></g>
+          <g class="a-st h"><rect x="500" y="460" width="220" height="100" rx="12" fill="#161a22" stroke="#e8e6df" stroke-width="3" /><text x="610" y="522" font-size="34" fill="#e8e6df" text-anchor="middle">登机口</text><text x="610" y="620" font-size="28" fill="#8a8f99" text-anchor="middle">提币：验票</text></g>
+          <g class="a-st h"><rect x="820" y="460" width="220" height="100" rx="12" fill="#161a22" stroke="#e8e6df" stroke-width="3" /><text x="930" y="522" font-size="34" fill="#e8e6df" text-anchor="middle">入境口</text><text x="930" y="620" font-size="28" fill="#8a8f99" text-anchor="middle">充值：验真伪</text></g>
+          <g class="a-st h"><rect x="1140" y="460" width="220" height="100" rx="12" fill="#1d1710" stroke="#FF9F43" stroke-width="3" /><text x="1250" y="522" font-size="34" fill="#FF9F43" text-anchor="middle">安检</text><text x="1250" y="620" font-size="28" fill="#8a8f99" text-anchor="middle">AML：拦违禁品</text></g>
+          <g class="a-st h"><rect x="1460" y="460" width="220" height="100" rx="12" fill="#1d1710" stroke="#FF9F43" stroke-width="3" /><text x="1570" y="522" font-size="34" fill="#FF9F43" text-anchor="middle">边检</text><text x="1570" y="620" font-size="28" fill="#8a8f99" text-anchor="middle">制裁：拦名单</text></g>
+        </g>
+        <!-- 比方的局限 -->
+        <circle id="a-trav" class="h" cx="200" cy="820" r="18" fill="#8a8f99" />
+        <text id="a-travt" class="h" x="200" y="890" font-size="30" fill="#8a8f99" text-anchor="middle">旅客：走了就走了</text>
+        <path id="a-trail" class="dr" pathLength="1" d="M1000 820 L 1150 800 L 1300 850 L 1450 790 L 1600 830 L 1720 810" fill="none" stroke="#F0B90B" stroke-width="4" />
+        <g id="a-hops" class="h" fill="#F0B90B"><circle cx="1000" cy="820" r="12" /><circle cx="1150" cy="800" r="12" /><circle cx="1300" cy="850" r="12" /><circle cx="1450" cy="790" r="12" /><circle cx="1600" cy="830" r="12" /><circle cx="1720" cy="810" r="12" /></g>
+        <text id="a-trailt" class="h" x="1360" y="920" font-size="30" fill="#F0B90B" text-anchor="middle">链上：每一跳永久公开，几年后也能回查</text>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 44.44, "L": [[0.6, 3.53], [3.98, 11.18], [11.63, 22.4], [22.85, 33.65], [34.1, 43.34]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      // L0 交易所两半
+      IN("#a-ex", at(0, 0.05), 0.6, { y: 20 }, { y: 0 });
+      // L1 保管者
+      IN("#a-cus", at(1, 0.05), 0.6);
+      IN("#a-cusx", at(1, 0.7), 0.4);
+      // L2 检查站
+      IN("#a-chk", at(2, 0.0), 0.5);
+      IN(["#a-chain", "#a-fiat"], at(2, 0.1), 0.4);
+      DRAW("#a-flow", at(2, 0.15), 1.2);
+      tl.to("#a-cus", { opacity: 0.4, duration: 0.4 }, at(2, 0.1));
+      IN("#a-chkx", at(2, 0.65), 0.4);
+      // L3 机场
+      OUT(["#a-ex", "#a-cus", "#a-cusx", "#a-chk", "#a-chkx", "#a-flow", "#a-chain", "#a-fiat"], at(3, 0), 0.4);
+      IN("#a-floor", at(3, 0.05), 0.4);
+      gsap.utils.toArray("#root .a-st").forEach((g, i) => POP(g, at(3, 0.12 + i * 0.16)));
+      // L4 局限
+      tl.to("#a-air", { opacity: 0.3, duration: 0.4 }, at(4, 0));
+      IN(["#a-trav", "#a-travt"], at(4, 0.05), 0.4);
+      tl.to("#a-trav", { attr: { cx: 700 }, opacity: 0, duration: 1.4, ease: "power1.in" }, at(4, 0.15));
+      DRAW("#a-trail", at(4, 0.4), 1.4);
+      IN("#a-hops", at(4, 0.4), 1.0);
+      IN("#a-trailt", at(4, 0.6), 0.5);
+      tl.to("#a-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["airport"] = tl;
+    })();
+  </script>
+</template>

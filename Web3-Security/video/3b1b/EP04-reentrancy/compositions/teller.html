@@ -1,0 +1,87 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="teller" data-duration="39.64" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="t-all">
+        <g id="t-scene">
+          <!-- 柜台 -->
+          <rect id="t-desk" class="h" x="300" y="520" width="1320" height="40" rx="8" fill="#2a2f3a" />
+          <g id="t-teller" class="h"><circle cx="960" cy="330" r="34" fill="#8a8f99" /><path d="M900 470 C 900 400, 1020 400, 1020 470 Z" fill="#8a8f99" /><text x="960" y="250" font-size="30" fill="#8a8f99" text-anchor="middle">柜员</text></g>
+          <g id="t-book" class="h">
+            <rect x="1110" y="370" width="200" height="130" rx="10" fill="#121a12" stroke="#83C167" stroke-width="3" />
+            <text x="1210" y="420" font-size="28" fill="#83C167" text-anchor="middle">账本：余额</text>
+            <text id="t-bal" x="1210" y="475" font-size="40" fill="#83C167" text-anchor="middle" font-weight="800">100</text>
+          </g>
+          <g id="t-you" class="h"><circle cx="560" cy="660" r="34" fill="#e8e6df" /><path d="M500 800 C 500 730, 620 730, 620 800 Z" fill="#e8e6df" /><text x="560" y="850" font-size="30" fill="#e8e6df" text-anchor="middle">你</text></g>
+          <g id="t-pal" class="h"><circle cx="1360" cy="660" r="34" fill="#FC6255" /><path d="M1300 800 C 1300 730, 1420 730, 1420 800 Z" fill="#FC6255" /><text x="1360" y="850" font-size="30" fill="#FC6255" text-anchor="middle">同伴（旁边窗口）</text></g>
+          <g id="t-say" class="h"><rect x="1450" y="600" width="380" height="70" rx="14" fill="#1f1012" stroke="#FC6255" stroke-width="2" /><text x="1640" y="645" font-size="30" fill="#FC6255" text-anchor="middle">“他要再取 100 元”</text></g>
+          <rect id="t-cash1" class="h" x="900" y="490" width="110" height="56" rx="6" fill="#F0B90B" />
+          <rect id="t-cash2" class="h" x="900" y="490" width="110" height="56" rx="6" fill="#F0B90B" />
+          <rect id="t-cash3" class="h" x="900" y="490" width="110" height="56" rx="6" fill="#F0B90B" />
+          <text id="t-order" class="h" x="960" y="960" font-size="36" fill="#FF9F43" text-anchor="middle" font-weight="700">先给钱，后改账 → 一直能取</text>
+        </g>
+
+        <!-- 比方的局限：并发 vs 嵌套 -->
+        <g id="t-par" class="h">
+          <text x="200" y="300" font-size="36" fill="#8a8f99">现实：两个柜员，同时办事</text>
+          <rect x="200" y="340" width="1100" height="60" rx="10" fill="#2a2f3a" stroke="#8a8f99" stroke-width="2" /><text x="230" y="381" font-size="28" fill="#e8e6df">柜员 1：第一次取款</text>
+          <rect x="400" y="420" width="1100" height="60" rx="10" fill="#2a2f3a" stroke="#8a8f99" stroke-width="2" /><text x="430" y="461" font-size="28" fill="#e8e6df">柜员 2：第二次取款</text>
+          <line x1="200" y1="520" x2="1600" y2="520" stroke="#3a3f4a" stroke-width="2" /><text x="1620" y="528" font-size="28" fill="#6b6f7a">时间 →</text>
+        </g>
+        <g id="t-x" class="h" stroke="#FF9F43" stroke-width="6"><line x1="190" y1="290" x2="760" y2="290" /></g>
+        <g id="t-nest" class="h">
+          <text x="200" y="640" font-size="36" fill="#58C4DD">EVM：单线程，嵌套</text>
+          <rect x="200" y="680" width="1400" height="230" rx="14" fill="#121a22" stroke="#58C4DD" stroke-width="3" />
+          <text x="230" y="725" font-size="28" fill="#e8e6df">第一次取款</text>
+          <g id="t-n1" class="h"><rect x="230" y="760" width="560" height="50" rx="8" fill="#161a22" stroke="#F0B90B" stroke-width="2" /><text x="250" y="795" font-size="28" fill="#F0B90B">读余额、转账……</text></g>
+          <g id="t-n2" class="h"><rect id="t-inner" x="820" y="740" width="500" height="150" rx="12" fill="#1f1012" stroke="#FC6255" stroke-width="3" /><text x="845" y="785" font-size="28" fill="#FC6255">第二次取款（完整一次）</text></g>
+          <g id="t-n3" class="h"><rect x="1350" y="760" width="220" height="50" rx="8" fill="#161a22" stroke="#83C167" stroke-width="2" /><text x="1370" y="795" font-size="28" fill="#83C167">……清零</text></g>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 39.64, "L": [[0.6, 7.51], [7.96, 13.72], [14.17, 23.03], [23.48, 29.0], [29.45, 38.54]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const GIVE = (s, t) => { IN(s, t, 0.2); tl.to(s, { x: -400, y: 210, duration: 0.8, ease: "power2.inOut" }, t + 0.1); };
+
+      // L0 柜员先给钱
+      IN(["#t-desk", "#t-teller"], at(0, 0.0), 0.5);
+      IN("#t-you", at(0, 0.15), 0.5);
+      IN("#t-book", at(0, 0.3), 0.5);
+      GIVE("#t-cash1", at(0, 0.55));
+      // L1 同伴在旁边窗口
+      IN("#t-pal", at(1, 0.05), 0.5, { x: 30 }, { x: 0 });
+      IN("#t-say", at(1, 0.4), 0.4);
+      // L2 柜员查账本：还是 100 → 又给一次
+      tl.fromTo("#t-book rect", { strokeWidth: 3 }, { stroke: "#FF9F43", strokeWidth: 7, duration: 0.25, yoyo: true, repeat: 3 }, at(2, 0.05));
+      GIVE("#t-cash2", at(2, 0.3));
+      GIVE("#t-cash3", at(2, 0.55));
+      IN("#t-order", at(2, 0.7), 0.4);
+      // L3 比方不成立：现实里是并发
+      tl.to("#t-scene", { opacity: 0, filter: "blur(6px)", duration: 0.5 }, at(3, 0.0));
+      IN("#t-par", at(3, 0.15), 0.6);
+      // L4 EVM 是嵌套
+      IN("#t-x", at(4, 0.0), 0.3);
+      tl.to("#t-par", { opacity: 0.35, duration: 0.4 }, at(4, 0.05));
+      IN("#t-nest", at(4, 0.2), 0.6, { y: 20 }, { y: 0 });
+      IN("#t-n1", at(4, 0.35), 0.4);
+      IN("#t-n2", at(4, 0.5), 0.5, { scale: 0.6, svgOrigin: "1070 815" }, { scale: 1 });
+      IN("#t-n3", at(4, 0.72), 0.4);
+
+      tl.to("#t-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["teller"] = tl;
+    })();
+  </script>
+</template>

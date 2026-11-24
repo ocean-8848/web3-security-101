@@ -1,0 +1,118 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="flow" data-duration="47.29" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="f-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="f-all">
+        <text id="f-title" class="h" x="960" y="100" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">ERC-4337</text>
+        <!-- 节点 -->
+        <g id="f-user" class="h"><circle cx="200" cy="360" r="62" fill="#161a22" stroke="#e8e6df" stroke-width="4" /><text x="200" y="372" font-size="32" fill="#e8e6df" text-anchor="middle">用户</text></g>
+        <g id="f-op" class="h">
+          <rect x="140" y="460" width="130" height="90" rx="10" fill="#161a22" stroke="#F0B90B" stroke-width="3" />
+          <text x="205" y="502" font-size="28" fill="#F0B90B" text-anchor="middle">UserOp</text>
+          <text x="205" y="535" font-size="28" fill="#8a8f99" text-anchor="middle">＋签名</text>
+        </g>
+        <g id="f-bun" class="h"><rect id="f-bunr" x="440" y="290" width="280" height="140" rx="18" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="580" y="350" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">Bundler</text><text x="580" y="395" font-size="28" fill="#8a8f99" text-anchor="middle">打包</text></g>
+        <g id="f-ep" class="h"><rect x="860" y="270" width="320" height="180" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="5" /><text x="1020" y="345" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">EntryPoint</text><text x="1020" y="395" font-size="28" fill="#8a8f99" text-anchor="middle">统一入口合约</text></g>
+        <g id="f-acc" class="h"><rect id="f-accr" x="1390" y="190" width="380" height="130" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="1580" y="268" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">智能账户</text></g>
+        <g id="f-pm" class="h"><rect id="f-pmr" x="1390" y="410" width="380" height="130" rx="18" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="1580" y="465" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">Paymaster</text><text x="1580" y="510" font-size="28" fill="#8a8f99" text-anchor="middle">替用户付 Gas</text></g>
+        <g fill="none" stroke="#8a8f99" stroke-width="3" marker-end="url(#f-ah)">
+          <path id="f-a1" class="dr h" pathLength="1" d="M270 360 L 430 360" />
+          <path id="f-a2" class="dr h" pathLength="1" d="M720 360 L 850 360" />
+          <path id="f-a3" class="dr h" pathLength="1" d="M1180 310 L 1380 250" />
+          <path id="f-a4" class="dr h" pathLength="1" d="M1180 400 L 1380 470" />
+          <path id="f-a5" class="dr h" pathLength="1" d="M1180 340 C 1260 330, 1300 300, 1380 290" />
+        </g>
+        <text id="f-a2t" class="h mono" x="785" y="250" font-size="28" fill="#8a8f99" text-anchor="middle">handleOps</text>
+        <g font-size="30" font-weight="700">
+          <text id="f-s1" class="h" x="1260" y="240" fill="#e8e6df" text-anchor="middle">① 验签</text>
+          <text id="f-s2" class="h" x="1265" y="485" fill="#e8e6df" text-anchor="middle">② 付 Gas？</text>
+          <text id="f-s3" class="h" x="1580" y="155" fill="#83C167" text-anchor="middle">③ 执行</text>
+        </g>
+
+        <!-- 哈希面板 -->
+        <g id="f-panel" class="h">
+          <rect x="140" y="620" width="1640" height="360" rx="20" fill="#0b0e14" stroke="#e8e6df" stroke-opacity=".25" stroke-width="3" />
+          <text x="180" y="680" font-size="30" fill="#8a8f99">UserOperation 的字段</text>
+        </g>
+        <g id="f-fields" class="mono" font-size="28" fill="#e8e6df"></g>
+        <path id="f-ha" class="dr h" pathLength="1" d="M760 800 L 940 800" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#f-ah)" />
+        <g id="f-hash" class="h"><rect x="950" y="760" width="300" height="80" rx="12" fill="#161a22" stroke="#e8e6df" stroke-width="3" /><text class="mono" x="1100" y="810" font-size="30" fill="#e8e6df" text-anchor="middle">userOpHash</text></g>
+        <g id="f-sig" class="h"><text x="1300" y="790" font-size="30" fill="#83C167">← 签名覆盖它</text><text x="1300" y="840" font-size="28" fill="#8a8f99">编码规则决定哪些字段受保护</text></g>
+        <!-- 2023 打包漏洞：同一 UserOp 两个哈希（示意） -->
+        <g id="f-bug" class="h">
+          <rect x="950" y="880" width="300" height="70" rx="12" fill="#2a1416" stroke="#FC6255" stroke-width="3" />
+          <text class="mono" x="1100" y="926" font-size="30" fill="#FC6255" text-anchor="middle">另一个哈希</text>
+          <text x="1300" y="925" font-size="28" fill="#FC6255">2023：同一个 UserOp，不同哈希</text>
+        </g>
+        <text id="f-fixed" class="h" x="1300" y="965" font-size="28" fill="#83C167">EntryPoint 已修复 · 无已知损失</text>
+        <!-- 信任边界 -->
+        <g fill="none" stroke="#FF9F43" stroke-width="4" stroke-dasharray="12 8">
+          <rect class="f-tb h" x="425" y="275" width="310" height="170" rx="24" />
+          <rect class="f-tb h" x="1375" y="395" width="410" height="160" rx="24" />
+          <rect class="f-tb h" x="1375" y="175" width="410" height="160" rx="24" />
+        </g>
+        <text id="f-tbt" class="h" x="960" y="580" font-size="36" fill="#FF9F43" text-anchor="middle" font-weight="700">每一个都是新的信任边界</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 47.29, "L": [[0.6, 9.31], [9.76, 13.96], [14.41, 22.36], [22.81, 30.46], [30.91, 40.2], [40.65, 46.19]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      const F = ["sender", "nonce", "callData", "gas 字段", "paymasterAndData"], fh = document.querySelector("#f-fields"), FE = [];
+      F.forEach((t, i) => {
+        const e = document.createElementNS(NS, "text");
+        e.setAttribute("x", 200 + (i % 2) * 280); e.setAttribute("y", 740 + Math.floor(i / 2) * 60); e.setAttribute("opacity", 0);
+        e.textContent = t; fh.appendChild(e); FE.push(e);
+      });
+      // L0 用户签 UserOp → Bundler
+      IN("#f-title", at(0, 0.0), 0.4);
+      NODE("#f-user", at(0, 0.05));
+      IN("#f-op", at(0, 0.3), 0.5, { y: -20 }, { y: 0 });
+      DRAW("#f-a1", at(0, 0.6), 0.5);
+      NODE("#f-bun", at(0, 0.7));
+      // L1 → EntryPoint
+      DRAW("#f-a2", at(1, 0.0), 0.5);
+      IN("#f-a2t", at(1, 0.1), 0.4);
+      NODE("#f-ep", at(1, 0.3));
+      // L2 验签、付 Gas、执行
+      NODE("#f-acc", at(2, 0.0)); DRAW("#f-a3", at(2, 0.05), 0.5); IN("#f-s1", at(2, 0.15), 0.4);
+      NODE("#f-pm", at(2, 0.35)); DRAW("#f-a4", at(2, 0.4), 0.5); IN("#f-s2", at(2, 0.5), 0.4);
+      DRAW("#f-a5", at(2, 0.78), 0.5); IN("#f-s3", at(2, 0.85), 0.4);
+      // L3 签名覆盖哈希
+      IN("#f-panel", at(3, 0.0), 0.5);
+      FE.forEach((e, i) => IN(e, at(3, 0.08) + i * 0.12, 0.3));
+      DRAW("#f-ha", at(3, 0.45), 0.5);
+      IN("#f-hash", at(3, 0.5), 0.4);
+      IN("#f-sig", at(3, 0.65), 0.5);
+      // L4 打包漏洞
+      IN("#f-bug", at(4, 0.1), 0.5, { y: -20 }, { y: 0 });
+      IN("#f-fixed", at(4, 0.7), 0.5);
+      // L5 信任边界
+      OUT(["#f-panel", "#f-fields", "#f-ha", "#f-hash", "#f-sig", "#f-bug", "#f-fixed"], at(5, 0.0), 0.3);
+      gsap.utils.toArray("#root .f-tb").forEach((r, i) => IN(r, at(5, 0.1) + i * 0.15, 0.4, { scale: 1.1, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" }));
+      IN("#f-tbt", at(5, 0.5), 0.5);
+      tl.to("#f-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["flow"] = tl;
+    })();
+  </script>
+</template>

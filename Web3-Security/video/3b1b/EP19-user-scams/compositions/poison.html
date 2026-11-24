@@ -1,0 +1,105 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="poison" data-duration="53.44" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="p-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#F0B90B" /></marker>
+        <marker id="p-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="p-all">
+        <text id="p-title" class="h" x="960" y="110" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">地址投毒</text>
+        <!-- 三方 -->
+        <g id="p-user" class="h"><circle cx="220" cy="300" r="60" fill="#2a2f3a" stroke="#e8e6df" stroke-width="3" /><text x="220" y="312" font-size="30" fill="#e8e6df" text-anchor="middle">用户</text></g>
+        <g id="p-real" class="h"><circle cx="1680" cy="260" r="60" fill="#161a22" stroke="#e8e6df" stroke-width="3" /><text x="1680" y="350" font-size="28" fill="#e8e6df" text-anchor="middle">真实收款方</text></g>
+        <g id="p-atk" class="h"><circle cx="1680" cy="560" r="60" fill="#2a1416" stroke="#FC6255" stroke-width="4" /><text x="1680" y="572" font-size="30" fill="#FC6255" text-anchor="middle">攻击者</text></g>
+        <path id="p-t1" class="dr h" pathLength="1" d="M285 290 L 1610 260" stroke="#F0B90B" stroke-width="4" fill="none" marker-end="url(#p-ah)" />
+        <text id="p-t1l" class="h" x="900" y="250" font-size="30" fill="#F0B90B" text-anchor="middle">① 测试 50 USDT</text>
+        <path id="p-watch" class="dr" pathLength="1" d="M1680 495 L 1680 330" stroke="#FC6255" stroke-width="3" stroke-dasharray="1" fill="none" />
+        <text id="p-watcht" class="h" x="1700" y="430" font-size="28" fill="#FC6255">② 监控</text>
+
+        <!-- 两个地址对比：首尾相同、中间不同（示例） -->
+        <g id="p-addr" class="h" font-size="40">
+          <text x="300" y="480" fill="#8a8f99" font-size="30">真地址</text>
+          <text x="460" y="480" fill="#e8e6df"><tspan fill="#83C167">0xd9e1</tspan>4b70a3c58e21f6d09b7e5c2<tspan fill="#83C167">7f3a</tspan></text>
+          <text x="300" y="550" fill="#8a8f99" font-size="30">投毒</text>
+          <text x="460" y="550" fill="#e8e6df"><tspan fill="#83C167">0xd9e1</tspan><tspan fill="#FC6255">88f21c90a4d7e3b51c09bd</tspan><tspan fill="#83C167">7f3a</tspan></text>
+        </g>
+        <text id="p-ex" class="h" x="460" y="605" font-size="28" fill="#6b6f7a">地址为示例</text>
+
+        <!-- 算式：16^8 -->
+        <g id="p-calc">
+          <text id="p-c1" class="h" x="960" y="720" font-size="40" fill="#e8e6df" text-anchor="middle">首尾共 8 个十六进制字符，每个 16 种</text>
+          <text id="p-c2" class="h" x="960" y="800" font-size="56" fill="#e8e6df" text-anchor="middle">16⁸ = 4,294,967,296</text>
+          <text id="p-c3" class="h" x="960" y="880" font-size="48" fill="#FF9F43" text-anchor="middle" font-weight="800">≈ 43 亿次尝试</text>
+        </g>
+
+        <!-- 交易记录 -->
+        <g id="p-rec" class="h">
+          <rect x="160" y="660" width="900" height="260" rx="16" fill="#14171e" stroke="#6b6f7a" stroke-width="2" />
+          <text x="190" y="705" font-size="28" fill="#6b6f7a">交易记录</text>
+          <text x="190" y="770" font-size="32" fill="#e8e6df">→ 0xd9e1…7f3a　50 USDT</text>
+          <text id="p-row2" class="h" x="190" y="840" font-size="32" fill="#e8e6df">← 0xd9e1…7f3a　0.005 USDT</text>
+        </g>
+        <rect id="p-pick" class="h" x="176" y="805" width="868" height="52" rx="8" fill="none" stroke="#FC6255" stroke-width="3" />
+        <path id="p-dust" class="dr h" pathLength="1" d="M1625 575 C 1450 560, 1250 650, 1070 760" stroke="#FC6255" stroke-width="3" fill="none" marker-end="url(#p-ahr)" />
+        <text id="p-dustl" class="h" x="1200" y="610" font-size="28" fill="#FC6255">③ 0.005 USDT 粉尘</text>
+        <text id="p-26" class="h" x="1720" y="720" font-size="32" fill="#8a8f99">约 26 分钟后</text>
+        <path id="p-big" class="dr h" pathLength="1" d="M1050 835 C 1350 900, 1600 760, 1665 628" stroke="#FC6255" stroke-width="10" fill="none" marker-end="url(#p-ahr)" />
+        <text id="p-bigl" class="h" x="1560" y="1000" font-size="44" fill="#FC6255" text-anchor="end" font-weight="800">④ 49,999,950 USDT</text>
+
+        <text id="p-test" class="h" x="610" y="1010" font-size="34" fill="#FF9F43" text-anchor="middle" font-weight="700">测试成功 ≠ 防住投毒</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 53.44, "L": [[0.6, 5.62], [6.07, 14.35], [14.8, 23.7], [24.15, 33.73], [34.18, 45.07], [45.52, 52.34]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.8) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      const DRAWA = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0
+      IN("#p-title", at(0, 0.1), 0.5);
+      IN("#p-user", at(0, 0.4), 0.4);
+      IN("#p-real", at(0, 0.55), 0.4);
+      IN("#p-atk", at(0, 0.7), 0.4);
+      // L1 测试；攻击者监控，生成首尾相同的地址
+      DRAWA("#p-t1", at(1, 0.0), 0.7); IN("#p-t1l", at(1, 0.05), 0.4);
+      DRAW("#p-watch", at(1, 0.4), 0.5); IN("#p-watcht", at(1, 0.42), 0.4);
+      IN("#p-addr", at(1, 0.65), 0.6);
+      IN("#p-ex", at(1, 0.8), 0.4);
+      // L2 16^8 一步步算
+      IN("#p-c1", at(2, 0.25), 0.5);
+      IN("#p-c2", at(2, 0.5), 0.5);
+      IN("#p-c3", at(2, 0.72), 0.5, { scale: 0.7, svgOrigin: "960 865" }, { scale: 1 });
+      // L3 粉尘转账，记录里两个"一样"的地址
+      OUT("#p-calc", at(3, 0), 0.35);
+      tl.to("#p-addr", { opacity: 0.35, duration: 0.3 }, at(3, 0));
+      IN("#p-rec", at(3, 0.1), 0.5);
+      DRAWA("#p-dust", at(3, 0.25), 0.6); IN("#p-dustl", at(3, 0.3), 0.4);
+      IN("#p-row2", at(3, 0.5), 0.4, { x: -20 }, { x: 0 });
+      tl.to("#p-rec text:nth-of-type(2), #p-row2", { fill: "#FF9F43", duration: 0.25, yoyo: true, repeat: 1 }, at(3, 0.75));
+      // L4 26 分钟后复制，转出大额
+      IN("#p-26", at(4, 0.0), 0.4);
+      IN("#p-pick", at(4, 0.25), 0.3);
+      DRAWA("#p-big", at(4, 0.4), 0.8);
+      IN("#p-bigl", at(4, 0.5), 0.5);
+      // L5 测试防不了投毒
+      tl.to("#p-t1", { stroke: "#83C167", duration: 0.3 }, at(5, 0.05));
+      IN("#p-test", at(5, 0.2), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+
+      tl.to("#p-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["poison"] = tl;
+    })();
+  </script>
+</template>

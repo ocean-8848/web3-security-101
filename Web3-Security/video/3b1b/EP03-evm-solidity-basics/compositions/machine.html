@@ -1,0 +1,123 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="machine" data-duration="41.8" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="m-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FF9F43" /></marker></defs>
+      <g id="m-all">
+        <!-- L0 栈式计算机 -->
+        <g id="m-evm">
+          <text id="m-title" class="h" x="960" y="200" font-size="80" fill="#58C4DD" text-anchor="middle" font-weight="800">EVM</text>
+          <text id="m-sub" class="h" x="960" y="260" font-size="32" fill="#8a8f99" text-anchor="middle">以太坊虚拟机 · 单线程 · 栈式</text>
+          <g id="m-stack"></g>
+          <line id="m-thread" class="h" x1="660" y1="860" x2="1260" y2="860" stroke="#58C4DD" stroke-width="4" />
+          <circle id="m-tdot" class="h" cx="660" cy="860" r="12" fill="#58C4DD" />
+        </g>
+
+        <!-- 外部账户 -->
+        <g id="m-eoa" class="h">
+          <circle cx="250" cy="540" r="80" fill="#1b1626" stroke="#B48EF0" stroke-width="4" />
+          <circle cx="225" cy="540" r="20" fill="none" stroke="#B48EF0" stroke-width="5" />
+          <path d="M245 540 H 300 M285 540 v 16" stroke="#B48EF0" stroke-width="5" fill="none" stroke-linecap="round" />
+          <text x="250" y="670" font-size="32" fill="#B48EF0" text-anchor="middle" font-weight="700">外部账户</text>
+          <text x="250" y="712" font-size="28" fill="#8a8f99" text-anchor="middle">私钥控制</text>
+          <text x="250" y="750" font-size="28" fill="#8a8f99" text-anchor="middle">能主动发起交易</text>
+        </g>
+        <g id="m-7702" class="h">
+          <rect x="300" y="440" width="96" height="60" rx="10" fill="#121a22" stroke="#58C4DD" stroke-width="3" stroke-dasharray="8 6" />
+          <g stroke="#58C4DD" stroke-width="4" stroke-linecap="round"><line x1="314" y1="462" x2="370" y2="462" /><line x1="322" y1="480" x2="384" y2="480" /></g>
+          <text x="350" y="420" font-size="28" fill="#58C4DD" text-anchor="middle">EIP-7702 委托</text>
+        </g>
+
+        <!-- 两个合约：代码 + 存储 -->
+        <g id="m-A" class="h">
+          <rect id="m-Ar" x="640" y="340" width="400" height="400" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="840" y="400" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">合约 A</text>
+          <g stroke="#58C4DD" stroke-width="5" stroke-linecap="round" opacity=".7"><line x1="690" y1="450" x2="880" y2="450" /><line x1="710" y1="480" x2="910" y2="480" /><line x1="710" y1="510" x2="900" y2="510" /></g>
+          <text x="990" y="490" font-size="28" fill="#58C4DD" text-anchor="end">代码</text>
+          <g fill="#2a2f3a" stroke="#8a8f99" stroke-width="2"><rect x="690" y="570" width="90" height="50" rx="6" /><rect x="795" y="570" width="90" height="50" rx="6" /><rect x="900" y="570" width="90" height="50" rx="6" /><rect x="690" y="635" width="90" height="50" rx="6" /><rect x="795" y="635" width="90" height="50" rx="6" /><rect x="900" y="635" width="90" height="50" rx="6" /></g>
+          <text x="840" y="722" font-size="28" fill="#8a8f99" text-anchor="middle">存储</text>
+        </g>
+        <g id="m-B" class="h">
+          <rect id="m-Br" x="1320" y="340" width="400" height="400" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="1520" y="400" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">合约 B</text>
+          <g stroke="#58C4DD" stroke-width="5" stroke-linecap="round" opacity=".7"><line x1="1370" y1="450" x2="1560" y2="450" /><line x1="1390" y1="480" x2="1590" y2="480" /><line x1="1390" y1="510" x2="1580" y2="510" /></g>
+          <text x="1670" y="490" font-size="28" fill="#58C4DD" text-anchor="end">代码</text>
+          <g fill="#2a2f3a" stroke="#8a8f99" stroke-width="2"><rect x="1370" y="570" width="90" height="50" rx="6" /><rect x="1475" y="570" width="90" height="50" rx="6" /><rect x="1580" y="570" width="90" height="50" rx="6" /><rect x="1370" y="635" width="90" height="50" rx="6" /><rect x="1475" y="635" width="90" height="50" rx="6" /><rect x="1580" y="635" width="90" height="50" rx="6" /></g>
+          <text x="1520" y="722" font-size="28" fill="#8a8f99" text-anchor="middle">存储</text>
+        </g>
+        <text id="m-ca" class="h" x="1180" y="830" font-size="30" fill="#58C4DD" text-anchor="middle">合约账户：代码控制 · 只能被调用</text>
+
+        <!-- 消息调用：控制权传递 -->
+        <path id="m-c1" class="dr h" pathLength="1" d="M332 540 L 632 540" stroke="#FF9F43" stroke-width="4" fill="none" marker-end="url(#m-ah)" />
+        <path id="m-c2" class="dr h" pathLength="1" d="M1044 540 L 1312 540" stroke="#FF9F43" stroke-width="4" fill="none" marker-end="url(#m-ah)" />
+        <text id="m-ct" class="h" x="1180" y="515" font-size="28" fill="#FF9F43" text-anchor="middle">消息调用</text>
+        <circle id="m-tok" class="h" cx="250" cy="540" r="16" fill="#FF9F43" />
+        <text id="m-ctl" class="h" x="960" y="950" font-size="36" fill="#FF9F43" text-anchor="middle" font-weight="700">每一次调用，都可能把控制权交给别人</text>
+
+        <text id="m-warn" class="h" x="960" y="950" font-size="36" fill="#FF9F43" text-anchor="middle" font-weight="700">有没有代码，判断不了是不是普通用户</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 41.8, "L": [[0.6, 5.62], [6.07, 9.86], [10.31, 19.33], [19.78, 26.17], [26.62, 40.7]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAWA = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 栈：5 个格子依次压入
+      const st = document.querySelector("#m-stack"), blocks = [];
+      for (let i = 0; i < 5; i++) {
+        const r = document.createElementNS(NS, "rect");
+        r.setAttribute("x", 860); r.setAttribute("y", 780 - i * 80); r.setAttribute("width", 200); r.setAttribute("height", 64); r.setAttribute("rx", 8);
+        r.setAttribute("fill", "#121a22"); r.setAttribute("stroke", "#58C4DD"); r.setAttribute("stroke-width", 3); r.setAttribute("opacity", "0");
+        st.appendChild(r); blocks.push(r);
+      }
+
+      // L0 EVM
+      IN("#m-title", at(0, 0.0), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      IN("#m-sub", at(0, 0.25), 0.5);
+      blocks.forEach((b, i) => IN(b, at(0, 0.35) + i * 0.18, 0.3, { y: -160 }, { y: 0, ease: "power2.out" }));
+      IN(["#m-thread", "#m-tdot"], at(0, 0.5), 0.3);
+      tl.fromTo("#m-tdot", { attr: { cx: 660 } }, { attr: { cx: 1260 }, duration: 2.0, ease: "none" }, at(0, 0.55));
+      // L1 合约：代码 + 存储
+      tl.to("#m-evm", { opacity: 0, duration: 0.4 }, at(1, 0.0));
+      IN("#m-A", at(1, 0.1), 0.6, { y: 20 }, { y: 0 });
+      IN("#m-B", at(1, 0.3), 0.6, { y: 20 }, { y: 0 });
+      // L2 两类账户
+      IN("#m-eoa", at(2, 0.05), 0.6, { x: -30 }, { x: 0 });
+      IN("#m-ca", at(2, 0.6), 0.5);
+      // L3 消息调用，控制权传递
+      OUT("#m-ca", at(3, 0.0), 0.3);
+      IN("#m-tok", at(3, 0.05), 0.2);
+      DRAWA("#m-c1", at(3, 0.1), 0.5);
+      tl.to("#m-tok", { attr: { cx: 840 }, duration: 0.8, ease: "power2.inOut" }, at(3, 0.15));
+      tl.to("#m-Ar", { stroke: "#FF9F43", duration: 0.3 }, at(3, 0.25));
+      DRAWA("#m-c2", at(3, 0.4), 0.5);
+      IN("#m-ct", at(3, 0.42), 0.4);
+      tl.to("#m-tok", { attr: { cx: 1520 }, duration: 0.8, ease: "power2.inOut" }, at(3, 0.45));
+      tl.to("#m-Ar", { stroke: "#58C4DD", duration: 0.3 }, at(3, 0.55));
+      tl.to("#m-Br", { stroke: "#FF9F43", duration: 0.3 }, at(3, 0.55));
+      IN("#m-ctl", at(3, 0.6), 0.5);
+      // L4 EIP-7702
+      tl.to("#m-Br", { stroke: "#58C4DD", duration: 0.3 }, at(4, 0.0));
+      OUT(["#m-ctl", "#m-tok"], at(4, 0.0), 0.3);
+      IN("#m-7702", at(4, 0.2), 0.6, { scale: 0.85, svgOrigin: "348 470" }, { scale: 1, ease: "back.out(2)" });
+      IN("#m-warn", at(4, 0.6), 0.5);
+
+      tl.to("#m-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["machine"] = tl;
+    })();
+  </script>
+</template>

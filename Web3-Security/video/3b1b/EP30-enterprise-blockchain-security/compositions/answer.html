@@ -1,0 +1,88 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root text.mono, #root tspan.mono { font-family: "JetBrains Mono", "NotoSC", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="64.74" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="a-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="a-all">
+        <g id="a-pin" class="h">
+          <rect x="530" y="70" width="860" height="110" rx="18" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="960" y="142" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="700">人人持证，账本为何分叉？</text>
+        </g>
+        <g id="a-case">
+          <text id="a-cert" class="h" x="960" y="270" font-size="36" fill="#B48EF0" text-anchor="middle">证书：只回答谁能进来</text>
+          <text id="a-hash" class="mono h" x="960" y="380" font-size="36" fill="#e8e6df" text-anchor="middle">哈希 9c4e…</text>
+          <path id="a-l1" class="dr h" pathLength="1" d="M900 400 L 620 500" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#a-ah)" />
+          <path id="a-l2" class="dr h" pathLength="1" d="M1020 400 L 1300 500" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#a-ah)" />
+          <g id="a-p1" class="h"><rect x="440" y="510" width="300" height="90" rx="12" fill="#1a1708" stroke="#F0B90B" stroke-width="3" /><text x="590" y="565" font-size="30" fill="#F0B90B" text-anchor="middle">解析 ①</text></g>
+          <g id="a-p2" class="h"><rect x="1180" y="510" width="300" height="90" rx="12" fill="#1f1414" stroke="#FC6255" stroke-width="3" /><text x="1330" y="565" font-size="30" fill="#FC6255" text-anchor="middle">解析 ②</text></g>
+          <text id="a-fix" class="h" x="960" y="700" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700">哈希编码必须没有歧义</text>
+          <text id="a-ver" class="h" x="960" y="760" font-size="30" fill="#8a8f99" text-anchor="middle">修复版本：2.2.14 · 2.5.5</text>
+        </g>
+        <g id="a-shift">
+          <text id="a-who" class="h" x="960" y="860" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">谁能参与：<tspan fill="#8a8f99">密码学 + 经济</tspan> → <tspan fill="#B48EF0">身份 + 治理</tspan></text>
+        </g>
+        <!-- 系列收尾 -->
+        <text id="a-ep" class="h" x="960" y="260" font-size="32" fill="#6b6f7a" text-anchor="middle">主线最后一集 · 回到第 1 集的问题</text>
+        <text id="a-big" class="h" x="960" y="400" font-size="96" fill="#e8e6df" text-anchor="middle" font-weight="800"><tspan fill="#FC6255">攻击者</tspan>能控制什么？</text>
+        <g font-size="36" text-anchor="middle">
+          <text class="a-r h" x="960" y="530" fill="#58C4DD">公链：任意调用 · 闪电贷 · 交易顺序</text>
+          <text class="a-r h" x="960" y="600" fill="#B48EF0">签名路径：钥匙盖在什么文件上</text>
+          <text class="a-r h" x="960" y="670" fill="#FF9F43">许可链：证书 · 管理员密钥 · 几家成员 · 没人审过的实现</text>
+        </g>
+        <text id="a-same" class="h" x="960" y="780" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">问题不变，答案随系统变</text>
+        <text id="a-pre" class="h" x="960" y="850" font-size="34" fill="#83C167" text-anchor="middle">前提：把每一个能被控制的环节，都画进地图</text>
+        <text id="a-ask" class="h" x="960" y="930" font-size="34" fill="#FF9F43" text-anchor="middle">谁能写 · 谁能看 · 谁能改规则</text>
+      </g>
+      <text id="a-end" class="h" x="960" y="1030" font-size="30" fill="#6b6f7a" text-anchor="middle">Web3 安全手册 · 主线 30 集完</text>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 64.74, "L": [[0.6, 6.07], [6.52, 21.16], [21.61, 27.88], [28.33, 34.59], [35.04, 48.94], [49.39, 63.64]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, ox, oy, d = 0.4) => IN(s, t, d, { scale: 0.4, svgOrigin: `${ox} ${oy}` }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      // L0 问题回来
+      IN("#a-pin", at(0, 0.05), 0.8, { scale: 0.6, x: -560, y: -20, svgOrigin: "960 125" }, { scale: 1, x: 0, y: 0, ease: "expo.out" });
+      // L1 证书只管进门；哈希有歧义；修复
+      IN("#a-cert", at(1, 0.02), 0.5);
+      IN("#a-hash", at(1, 0.2), 0.4);
+      DRAW("#a-l1", at(1, 0.28), 0.4); DRAW("#a-l2", at(1, 0.3), 0.4);
+      IN("#a-p1", at(1, 0.35), 0.4); IN("#a-p2", at(1, 0.4), 0.4);
+      IN("#a-ver", at(1, 0.55), 0.4);
+      IN("#a-fix", at(1, 0.78), 0.5, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      // L2 谁能参与：身份与治理
+      IN("#a-who", at(2, 0.1), 0.6, { y: 15 }, { y: 0 });
+      // L3 系列收尾：第 1 集的问题
+      tl.to(["#a-case", "#a-shift", "#a-pin"], { opacity: 0, filter: "blur(6px)", duration: 0.5 }, at(3, 0));
+      IN("#a-ep", at(3, 0.1), 0.5);
+      IN("#a-big", at(3, 0.5), 0.7, { filter: "blur(10px)" }, { filter: "blur(0px)" });
+      // L4 三种系统，三种答案
+      gsap.utils.toArray("#root .a-r").forEach((s, i) => IN(s, at(4, [0.02, 0.3, 0.55][i]), 0.5, { y: 15 }, { y: 0 }));
+      tl.fromTo("#a-big tspan", { fill: "#FC6255" }, { fill: "#ff9a90", duration: 0.35, yoyo: true, repeat: 1 }, at(4, 0.85));
+      // L5 问题不变；前提；三问
+      IN("#a-same", at(5, 0.02), 0.5);
+      IN("#a-pre", at(5, 0.25), 0.5);
+      IN("#a-ask", at(5, 0.68), 0.5);
+      IN("#a-end", at(5, 0.85), 0.5);
+      tl.to(["#a-all", "#a-end"], { opacity: 0, duration: 0.6, ease: "power2.in" }, C.d - 0.7);
+
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

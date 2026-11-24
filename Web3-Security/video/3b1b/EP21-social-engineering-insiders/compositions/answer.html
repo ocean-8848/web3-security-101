@@ -1,0 +1,71 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="38.4" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="r-case">
+        <g id="r-pin" class="h">
+          <rect x="560" y="60" width="800" height="100" rx="18" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="960" y="127" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="700">攻击者为什么先攻破<tspan fill="#B48EF0">人</tspan>？</text>
+        </g>
+        <!-- 中央一个人：右边连着权限，左边是够得着他的入口 -->
+        <g id="r-p" class="h"><circle cx="960" cy="520" r="70" fill="#2a2f3a" stroke="#B48EF0" stroke-width="4" /><text x="960" y="533" font-size="34" fill="#e8e6df" text-anchor="middle">人</text></g>
+        <g id="r-perm">
+          <g class="r-pm h"><line x1="1030" y1="500" x2="1340" y2="340" stroke="#58C4DD" stroke-width="3" /><rect x="1340" y="300" width="260" height="80" rx="14" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="1470" y="352" font-size="30" fill="#58C4DD" text-anchor="middle">签名</text></g>
+          <g class="r-pm h"><line x1="1030" y1="520" x2="1340" y2="520" stroke="#58C4DD" stroke-width="3" /><rect x="1340" y="480" width="260" height="80" rx="14" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="1470" y="532" font-size="30" fill="#58C4DD" text-anchor="middle">部署</text></g>
+          <g class="r-pm h"><line x1="1030" y1="540" x2="1340" y2="700" stroke="#58C4DD" stroke-width="3" /><rect x="1340" y="660" width="260" height="80" rx="14" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="1470" y="712" font-size="30" fill="#58C4DD" text-anchor="middle">审批</text></g>
+        </g>
+        <g id="r-reach">
+          <g class="r-rc h"><line x1="890" y1="500" x2="580" y2="340" stroke="#FC6255" stroke-width="3" /><rect x="320" y="300" width="260" height="80" rx="14" fill="#2a1416" stroke="#FC6255" stroke-width="3" /><text x="450" y="352" font-size="30" fill="#FC6255" text-anchor="middle">一份工作</text></g>
+          <g class="r-rc h"><line x1="890" y1="520" x2="580" y2="520" stroke="#FC6255" stroke-width="3" /><rect x="320" y="480" width="260" height="80" rx="14" fill="#2a1416" stroke="#FC6255" stroke-width="3" /><text x="450" y="532" font-size="30" fill="#FC6255" text-anchor="middle">一场会议</text></g>
+          <g class="r-rc h"><line x1="890" y1="540" x2="580" y2="700" stroke="#FC6255" stroke-width="3" /><rect x="320" y="660" width="260" height="80" rx="14" fill="#2a1416" stroke="#FC6255" stroke-width="3" /><text x="450" y="712" font-size="30" fill="#FC6255" text-anchor="middle">一笔钱</text></g>
+        </g>
+        <g id="r-pc" class="h">
+          <rect id="r-scr" x="860" y="800" width="200" height="120" rx="10" fill="#2a1416" stroke="#FC6255" stroke-width="3" />
+          <text x="960" y="870" font-size="28" fill="#FC6255" text-anchor="middle">一个文件</text>
+          <text x="960" y="970" font-size="30" fill="#e8e6df" text-anchor="middle">之后显示的一切不再可信 · 审计看不到这一步</text>
+        </g>
+      </g>
+      <g id="r-final">
+        <text id="r-c1" class="h" x="960" y="400" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">成立条件：流程允许<tspan fill="#FC6255">一个人、一台电脑</tspan>单独完成关键操作</text>
+        <text id="r-c2" class="h" x="960" y="540" font-size="56" fill="#e8e6df" text-anchor="middle" font-weight="800">改成「攻破一个人<tspan fill="#83C167">不够</tspan>」</text>
+        <text id="r-c3" class="h" x="960" y="640" font-size="36" fill="#8a8f99" text-anchor="middle">这个答案就不再成立</text>
+      </g>
+      <text id="r-next" class="h" x="960" y="900" font-size="36" fill="#6b6f7a" text-anchor="middle">下一集 · 22 人身与账号安全：从链上走到线下</text>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 38.4, "L": [[0.6, 4.22], [4.67, 12.86], [13.31, 21.2], [21.65, 32.02], [32.47, 37.3]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const D = (i) => L[i][1] - L[i][0];
+
+      // L0 问题回来
+      IN("#r-pin", at(0, 0.0), 0.8, { scale: 0.5, x: -580, y: -10, svgOrigin: "960 110" }, { scale: 1, x: 0, y: 0, ease: "expo.out" });
+      IN("#r-p", at(0, 0.4), 0.5, { scale: 0.4, svgOrigin: "960 520" }, { scale: 1 });
+      // L1 人连着权限；人够得着
+      gsap.utils.toArray("#root .r-pm").forEach((g, i) => IN(g, at(1, 0.05) + i * 0.1 * D(1), 0.4, { x: -30 }, { x: 0 }));
+      gsap.utils.toArray("#root .r-rc").forEach((g, i) => IN(g, at(1, 0.5) + i * 0.1 * D(1), 0.4, { x: 30 }, { x: 0 }));
+      // L2 一个文件
+      IN("#r-pc", at(2, 0.1), 0.5, { y: 20 }, { y: 0 });
+      tl.to("#r-perm rect", { stroke: "#FC6255", duration: 0.3 }, at(2, 0.6));
+      // L3 成立条件
+      tl.to("#r-case", { opacity: 0, duration: 0.5 }, at(3, 0));
+      IN("#r-c1", at(3, 0.05), 0.6);
+      IN("#r-c2", at(3, 0.5), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      IN("#r-c3", at(3, 0.75), 0.5);
+      // L4 下一集
+      IN("#r-next", at(4, 0.05), 0.5);
+      tl.to(["#r-final", "#r-next"], { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

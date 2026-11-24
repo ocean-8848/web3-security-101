@@ -1,0 +1,120 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="hook" data-duration="32.9" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="h-ahp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#B48EF0" /></marker>
+        <marker id="h-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="h-all">
+        <text id="h-date" class="h" x="120" y="130" font-size="34" fill="#6b6f7a" letter-spacing="2">2026 年 10 月 · Binance</text>
+        <!-- 内部签名服务（代码之外 = 紫） -->
+        <g id="h-sign" class="h">
+          <rect x="120" y="330" width="380" height="180" rx="20" fill="#1a1524" stroke="#B48EF0" stroke-width="4" />
+          <text x="310" y="410" font-size="36" fill="#B48EF0" text-anchor="middle" font-weight="700">内部签名服务</text>
+          <text x="310" y="460" font-size="28" fill="#8a8f99" text-anchor="middle">链下</text>
+        </g>
+        <g id="h-atk" class="h"><circle cx="310" cy="260" r="30" fill="#2a1416" stroke="#FC6255" stroke-width="4" /><text x="310" y="215" font-size="30" fill="#FC6255" text-anchor="middle">攻击者</text></g>
+        <path id="h-a1" class="dr h" pathLength="1" d="M510 420 L 760 420" stroke="#B48EF0" stroke-width="4" fill="none" marker-end="url(#h-ahp)" />
+        <text id="h-a1t" class="h" x="635" y="395" font-size="28" fill="#B48EF0" text-anchor="middle">7702 委托</text>
+        <!-- 热钱包（资产 = 金） -->
+        <g id="h-wal" class="h">
+          <rect x="780" y="300" width="420" height="300" rx="22" fill="#1a1708" stroke="#F0B90B" stroke-width="4" />
+          <text x="990" y="360" font-size="36" fill="#F0B90B" text-anchor="middle" font-weight="700">以太坊热钱包</text>
+          <g fill="#F0B90B"><circle cx="900" cy="440" r="22" /><circle cx="960" cy="440" r="22" /><circle cx="1020" cy="440" r="22" /><circle cx="1080" cy="440" r="22" /></g>
+          <rect x="820" y="500" width="340" height="70" rx="12" fill="#0b0e14" stroke="#6b6f7a" stroke-width="2" />
+        </g>
+        <text id="h-code0" class="h mono" x="990" y="546" font-size="30" fill="#6b6f7a" text-anchor="middle">code: （空）</text>
+        <text id="h-code1" class="h mono" x="990" y="546" font-size="30" fill="#FC6255" text-anchor="middle">code: → 委托</text>
+        <path id="h-ptr" class="dr h" pathLength="1" d="M1165 535 C 1260 535, 1300 470, 1390 470" stroke="#FC6255" stroke-width="5" fill="none" marker-end="url(#h-ahr)" />
+        <g id="h-evil" class="h">
+          <rect x="1400" y="370" width="400" height="200" rx="20" fill="#2a1416" stroke="#FC6255" stroke-width="4" />
+          <text x="1600" y="460" font-size="36" fill="#FC6255" text-anchor="middle" font-weight="700">攻击者的合约</text>
+          <text x="1600" y="510" font-size="28" fill="#8a8f99" text-anchor="middle">地址执行它的代码</text>
+        </g>
+        <!-- 提现服务开关 -->
+        <g id="h-svc" class="h">
+          <rect x="120" y="640" width="380" height="120" rx="18" fill="#161a22" stroke="#8a8f99" stroke-width="3" />
+          <text x="230" y="712" font-size="32" fill="#e8e6df" text-anchor="middle">提现服务</text>
+          <rect id="h-sw" x="350" y="680" width="110" height="44" rx="22" fill="#83C167" />
+          <circle id="h-knob" cx="436" cy="702" r="18" fill="#0f1117" />
+        </g>
+        <text id="h-off" class="h" x="310" y="810" font-size="30" fill="#8a8f99" text-anchor="middle">已关闭</text>
+        <text id="h-still" class="h" x="1340" y="650" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">委托还在</text>
+        <!-- 时钟 -->
+        <g id="h-clock" class="h">
+          <text x="990" y="760" font-size="34" fill="#8a8f99" text-anchor="middle">链上状态，直到一笔新的授权清零</text>
+          <text x="990" y="850" font-size="64" fill="#e8e6df" text-anchor="middle" font-weight="800">≈ <tspan id="h-hh">0</tspan> 小时 <tspan id="h-mm">0</tspan> 分</text>
+        </g>
+        <text id="h-zero" class="h" x="1340" y="650" font-size="34" fill="#83C167" text-anchor="middle" font-weight="700">已清零</text>
+        <g id="h-q" class="h"><text x="960" y="980" font-size="58" fill="#e8e6df" text-anchor="middle" font-weight="700">账户变成合约后，<tspan fill="#F0B90B">花钱</tspan>的到底是谁？</text></g>
+      </g>
+      <circle id="h-seed" class="h" cx="960" cy="540" r="10" fill="#58C4DD" />
+      <g id="h-pin" class="h">
+        <rect x="80" y="70" width="620" height="84" rx="14" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="390" y="125" font-size="34" fill="#e8e6df" text-anchor="middle">账户变成合约后，谁在<tspan fill="#F0B90B">花钱</tspan>？</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 32.9, "L": [[0.6, 9.94], [10.39, 13.41], [13.86, 18.4], [18.85, 26.19], [26.64, 31.8]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      // L0 签名服务被控制 → 设置委托
+      IN("#h-date", at(0, 0), 0.5);
+      NODE("#h-sign", at(0, 0.1));
+      POP("#h-atk", at(0, 0.3));
+      NODE("#h-wal", at(0, 0.45));
+      IN("#h-code0", at(0, 0.5), 0.3);
+      DRAW("#h-a1", at(0, 0.7), 0.6);
+      IN("#h-a1t", at(0, 0.75), 0.4);
+      OUT("#h-code0", at(0, 0.9), 0.2);
+      IN("#h-code1", at(0, 0.92), 0.3);
+      // L1 目标：攻击者的合约
+      DRAW("#h-ptr", at(1, 0.0), 0.6);
+      NODE("#h-evil", at(1, 0.2));
+      // L2 关提现服务，委托还在
+      IN("#h-svc", at(2, 0.0), 0.5);
+      tl.to("#h-knob", { attr: { cx: 374 }, duration: 0.4, ease: "power2.inOut" }, at(2, 0.3));
+      tl.to("#h-sw", { attr: { fill: "#2a2f3a" }, duration: 0.4 }, at(2, 0.3));
+      IN("#h-off", at(2, 0.4), 0.3);
+      IN("#h-still", at(2, 0.65), 0.4);
+      tl.fromTo("#h-ptr", { strokeWidth: 5 }, { strokeWidth: 9, duration: 0.3, yoyo: true, repeat: 3 }, at(2, 0.65));
+      // L3 链上状态，约 3 小时 50 分后清零
+      IN("#h-clock", at(3, 0.0), 0.5);
+      const c = { m: 0 }, hh = document.querySelector("#h-hh"), mm = document.querySelector("#h-mm");
+      tl.fromTo(c, { m: 0 }, { m: 230, duration: 3.2, ease: "power1.inOut", onUpdate: () => { const v = Math.round(c.m); hh.textContent = Math.floor(v / 60); mm.textContent = v % 60; } }, at(3, 0.2));
+      OUT("#h-still", at(3, 0.85), 0.2);
+      tl.to("#h-ptr", { opacity: 0, duration: 0.4 }, at(3, 0.85));
+      tl.to("#h-evil", { opacity: 0.3, duration: 0.4 }, at(3, 0.85));
+      IN("#h-zero", at(3, 0.88), 0.4);
+      OUT("#h-code1", at(3, 0.86), 0.2);
+      tl.to("#h-code0", { opacity: 1, duration: 0.3 }, at(3, 0.9));
+      // L4 问题
+      tl.to(["#h-date", "#h-sign", "#h-atk", "#h-a1", "#h-a1t", "#h-wal", "#h-code0", "#h-evil", "#h-svc", "#h-off", "#h-clock", "#h-zero"], { opacity: 0.2, duration: 0.5 }, at(4, 0));
+      IN("#h-q", at(4, 0.15), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      tl.to("#h-all", { opacity: 0, filter: "blur(6px)", duration: 0.5, ease: "power2.in" }, at(4, 0.76));
+      IN("#h-pin", at(4, 0.8), 0.4, { scale: 1.5, svgOrigin: "390 112" }, { scale: 1 });
+      IN("#h-seed", at(4, 0.9), 0.3);
+      tl.to("#h-seed", { scale: 3, opacity: 0, svgOrigin: "960 540", duration: 0.3 }, C.d - 0.4);
+      OUT("#h-pin", C.d - 0.35, 0.3);
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>

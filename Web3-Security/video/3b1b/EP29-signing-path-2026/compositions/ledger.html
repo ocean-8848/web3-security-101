@@ -1,0 +1,129 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root text.mono { font-family: "JetBrains Mono", "NotoSC", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="ledger" data-duration="53.1" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="l-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="l-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="l-all">
+        <text id="l-title" class="h" x="960" y="120" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="700">第一类防御：<tspan fill="#83C167">每一层重新检查</tspan></text>
+
+        <!-- 签名请求 -->
+        <g id="l-req" class="h">
+          <rect x="90" y="260" width="480" height="380" rx="18" fill="#1a1708" stroke="#F0B90B" stroke-width="3" />
+          <text x="330" y="320" font-size="34" fill="#F0B90B" text-anchor="middle" font-weight="700">签名请求</text>
+          <text x="130" y="400" font-size="28" fill="#8a8f99">描述</text>
+          <text class="mono" x="130" y="450" font-size="30" fill="#e8e6df">to = A</text>
+          <text class="mono" x="130" y="495" font-size="30" fill="#e8e6df">amount = 10</text>
+          <text x="130" y="565" font-size="28" fill="#8a8f99">原始字节</text>
+          <text id="l-raw" class="mono" x="130" y="610" font-size="30" fill="#F0B90B">0x02f8…a9c1</text>
+        </g>
+        <g id="l-noread" class="h">
+          <rect x="115" y="368" width="430" height="145" rx="10" fill="#0f1117" fill-opacity=".55" stroke="#6b6f7a" stroke-width="2" stroke-dasharray="8 6" />
+          <text x="330" y="690" font-size="28" fill="#6b6f7a" text-anchor="middle">上游写的描述 · 策略不读</text>
+        </g>
+
+        <!-- 策略引擎 -->
+        <path id="l-a1" class="dr h" pathLength="1" d="M375 600 C 520 600, 560 560, 690 520" stroke="#F0B90B" stroke-width="3" fill="none" marker-end="url(#l-ah)" />
+        <g id="l-pe" class="h">
+          <rect x="700" y="260" width="460" height="380" rx="18" fill="#121a14" stroke="#83C167" stroke-width="4" />
+          <text x="930" y="320" font-size="34" fill="#83C167" text-anchor="middle" font-weight="700">策略引擎</text>
+          <text x="930" y="380" font-size="28" fill="#8a8f99" text-anchor="middle">从原始字节解析</text>
+        </g>
+        <text id="l-pto" class="mono h" x="740" y="470" font-size="32" fill="#FC6255">to = X</text>
+        <text id="l-pamt" class="mono h" x="740" y="540" font-size="32" fill="#FC6255">amount = 500</text>
+        <text id="l-pto2" class="mono h" x="740" y="470" font-size="32" fill="#83C167">to = A</text>
+        <text id="l-pamt2" class="mono h" x="740" y="540" font-size="32" fill="#83C167">amount = 10</text>
+
+        <!-- 账本 -->
+        <g id="l-led" class="h">
+          <rect x="1330" y="260" width="500" height="380" rx="18" fill="#161a22" stroke="#e8e6df" stroke-opacity=".7" stroke-width="3" />
+          <text x="1580" y="320" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">账本 · 单号 #1024</text>
+          <text class="mono" x="1370" y="470" font-size="32" fill="#e8e6df">to = A</text>
+          <text class="mono" x="1370" y="540" font-size="32" fill="#e8e6df">amount = 10</text>
+        </g>
+        <text id="l-st1" class="h" x="1580" y="390" font-size="30" fill="#83C167" text-anchor="middle">已批准 · 未签</text>
+        <text id="l-st2" class="h" x="1580" y="390" font-size="30" fill="#8a8f99" text-anchor="middle">已批准 · 已签</text>
+        <path id="l-a2" class="dr h" pathLength="1" d="M1165 330 L 1320 330" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#l-ah)" />
+        <text id="l-look" class="h" x="1245" y="300" font-size="28" fill="#8a8f99" text-anchor="middle">查单</text>
+
+        <!-- 比对 -->
+        <text id="l-x1" class="h" x="1245" y="482" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="800">≠</text>
+        <text id="l-x2" class="h" x="1245" y="552" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="800">≠</text>
+        <text id="l-v1" class="h" x="1245" y="482" font-size="44" fill="#83C167" text-anchor="middle" font-weight="800">=</text>
+        <text id="l-v2" class="h" x="1245" y="552" font-size="44" fill="#83C167" text-anchor="middle" font-weight="800">=</text>
+        <text id="l-deny" class="h" x="930" y="740" font-size="60" fill="#FC6255" text-anchor="middle" font-weight="800">✕ 拒签</text>
+        <text id="l-sign" class="h" x="930" y="740" font-size="60" fill="#83C167" text-anchor="middle" font-weight="800">✓ 签名</text>
+        <text id="l-once" class="h" x="930" y="810" font-size="32" fill="#e8e6df" text-anchor="middle">同一单号再来一次 → <tspan fill="#FC6255">✕ 已签过</tspan></text>
+        <text id="l-ex" class="h" x="1790" y="1050" font-size="28" fill="#6b6f7a" text-anchor="end">地址、金额、单号均为示例</text>
+
+        <!-- 前提：攻击者不能同时写两边 -->
+        <circle id="l-atk" class="h" cx="960" cy="900" r="24" fill="#FC6255" />
+        <path id="l-at1" class="dr h" pathLength="1" d="M932 893 C 760 880, 640 760, 585 648" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#l-ahr)" />
+        <path id="l-at2" class="dr h" pathLength="1" d="M988 893 C 1320 880, 1540 800, 1580 650" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#l-ahr)" />
+        <text id="l-sep" class="h" x="960" y="985" font-size="38" fill="#FF9F43" text-anchor="middle" font-weight="700">写账本的权限 ≠ 调用签名的权限</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 53.1, "L": [[0.6, 5.76], [6.21, 15.5], [15.95, 23.72], [24.17, 35.65], [36.1, 42.58], [43.03, 52.0]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, ox, oy) => IN(s, t, 0.35, { scale: 1.6, svgOrigin: `${ox} ${oy}` }, { scale: 1, ease: "back.out(2)" });
+
+      // L0
+      IN("#l-title", at(0, 0.05), 0.6);
+      // L1 请求：上游描述，策略不读
+      IN("#l-req", at(1, 0.05), 0.6, { x: -30 }, { x: 0 });
+      IN("#l-noread", at(1, 0.72), 0.5);
+      // L2 策略解析原始字节，去账本查单
+      IN("#l-pe", at(2, 0.0), 0.5);
+      tl.fromTo("#l-raw", { fill: "#F0B90B" }, { fill: "#ffe27a", duration: 0.3, yoyo: true, repeat: 1 }, at(2, 0.1));
+      DRAW("#l-a1", at(2, 0.15), 0.5);
+      IN("#l-pto", at(2, 0.35), 0.4);
+      IN("#l-pamt", at(2, 0.42), 0.4);
+      DRAW("#l-a2", at(2, 0.7), 0.4);
+      IN("#l-look", at(2, 0.72), 0.3);
+      IN("#l-led", at(2, 0.78), 0.5);
+      // L3 账本：A / 10；原始字节：X / 500 → 拒签
+      IN("#l-st1", at(3, 0.05), 0.4);
+      tl.fromTo("#l-led rect", { strokeWidth: 3 }, { strokeWidth: 6, duration: 0.2, yoyo: true, repeat: 1 }, at(3, 0.15));
+      tl.fromTo(["#l-pto", "#l-pamt"], { scale: 1 }, { scale: 1.12, svgOrigin: "740 500", duration: 0.2, yoyo: true, repeat: 1 }, at(3, 0.55));
+      POP("#l-x1", at(3, 0.7), 1245, 470);
+      POP("#l-x2", at(3, 0.76), 1245, 540);
+      IN("#l-deny", at(3, 0.85), 0.4, { scale: 1.3, svgOrigin: "930 720" }, { scale: 1, ease: "back.out(2)" });
+      // L4 一致才签；签完标记；同一单只签一次
+      OUT(["#l-deny", "#l-x1", "#l-x2", "#l-pto", "#l-pamt"], at(4, 0), 0.3);
+      IN("#l-pto2", at(4, 0.08), 0.3); IN("#l-pamt2", at(4, 0.12), 0.3);
+      POP("#l-v1", at(4, 0.2), 1245, 470); POP("#l-v2", at(4, 0.24), 1245, 540);
+      IN("#l-sign", at(4, 0.32), 0.4);
+      OUT("#l-st1", at(4, 0.5), 0.2); IN("#l-st2", at(4, 0.52), 0.3);
+      IN("#l-once", at(4, 0.7), 0.4);
+      IN("#l-ex", at(4, 0.2), 0.4);
+      // L5 前提：攻击者不能同时写账本和请求
+      tl.to(["#l-sign", "#l-once", "#l-v1", "#l-v2"], { opacity: 0.25, duration: 0.4 }, at(5, 0));
+      IN("#l-atk", at(5, 0.05), 0.3, { scale: 0, svgOrigin: "960 900" }, { scale: 1, ease: "back.out(2)" });
+      DRAW("#l-at1", at(5, 0.12), 0.6);
+      DRAW("#l-at2", at(5, 0.2), 0.6);
+      tl.to("#l-led rect", { stroke: "#FC6255", strokeOpacity: 1, duration: 0.3 }, at(5, 0.32));
+      tl.to("#l-req rect", { stroke: "#FC6255", duration: 0.3 }, at(5, 0.32));
+      IN("#l-sep", at(5, 0.55), 0.5);
+
+      tl.to("#l-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["ledger"] = tl;
+    })();
+  </script>
+</template>

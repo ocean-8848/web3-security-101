@@ -1,0 +1,120 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="breaks" data-duration="53.32" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="b-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="b-all">
+        <text id="b-title" class="h" x="960" y="140" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="700">每起事件，打断了哪一段</text>
+
+        <g id="b-arrows" fill="none" stroke="#8a8f99" stroke-width="3"></g>
+        <g id="b-nodes"></g>
+        <g id="b-rpc">
+          <rect id="b-rpcr" x="1110" y="770" width="220" height="100" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+          <text x="1220" y="815" font-size="30" fill="#e8e6df" text-anchor="middle">数据源</text>
+          <text x="1220" y="852" font-size="28" fill="#8a8f99" text-anchor="middle">RPC 节点</text>
+        </g>
+        <path d="M1220 765 L 1220 582" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#b-ah)" />
+
+        <!-- 事件标签（红 = 攻击者打断处） -->
+        <g fill="none" stroke="#FC6255" stroke-width="3" stroke-dasharray="8 7">
+          <path id="b-l1" class="h" d="M440 362 L 440 448" />
+          <path id="b-l2" class="h" d="M960 362 L 960 448" />
+          <path id="b-l3" class="h" d="M1400 710 L 1300 584" />
+          <path id="b-l4" class="h" d="M1003 820 L 1108 820" />
+          <path id="b-l5a" class="h" d="M1490 362 L 1290 448" />
+          <path id="b-l5b" class="h" d="M1700 362 L 1740 448" />
+        </g>
+        <g id="b-t1" class="h">
+          <rect x="300" y="262" width="280" height="100" rx="14" fill="#1f1414" stroke="#FC6255" stroke-width="3" />
+          <text x="440" y="303" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">Bitget</text>
+          <text x="440" y="343" font-size="28" fill="#e8e6df" text-anchor="middle">伪造提现指令</text>
+        </g>
+        <g id="b-t2" class="h">
+          <rect x="800" y="262" width="320" height="100" rx="14" fill="#1f1414" stroke="#FC6255" stroke-width="3" />
+          <text x="960" y="303" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">Bybit / WazirX</text>
+          <text x="960" y="343" font-size="28" fill="#e8e6df" text-anchor="middle">看到的 ≠ 实际签的</text>
+        </g>
+        <text id="b-wz" class="h" x="960" y="235" font-size="28" fill="#6b6f7a" text-anchor="middle">WazirX：双方说法冲突</text>
+        <g id="b-t3" class="h">
+          <rect x="1400" y="660" width="330" height="100" rx="14" fill="#1f1414" stroke="#FC6255" stroke-width="3" />
+          <text x="1565" y="701" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">Drift</text>
+          <text x="1565" y="741" font-size="28" fill="#e8e6df" text-anchor="middle">预签名 + 持久 nonce</text>
+        </g>
+        <g id="b-t4" class="h">
+          <rect x="700" y="770" width="300" height="100" rx="14" fill="#1f1414" stroke="#FC6255" stroke-width="3" />
+          <text x="850" y="811" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">KelpDAO</text>
+          <text x="850" y="851" font-size="28" fill="#e8e6df" text-anchor="middle">RPC 喂假数据</text>
+        </g>
+        <g id="b-t5" class="h">
+          <rect x="1440" y="262" width="400" height="100" rx="14" fill="#1f1414" stroke="#FC6255" stroke-width="3" />
+          <text x="1640" y="303" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">Binance</text>
+          <text x="1640" y="343" font-size="28" fill="#e8e6df" text-anchor="middle">直达签名服务 + 委托</text>
+        </g>
+
+        <text id="b-same" class="h" x="960" y="975" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">结果相同：签名系统<tspan fill="#83C167">照常运行</tspan>，签出攻击者要的签名</text>
+        <text id="b-simp" class="h" x="960" y="1035" font-size="28" fill="#6b6f7a" text-anchor="middle">简化：每起事件只画一个主要断点，真实路径更长</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 53.32, "L": [[0.6, 5.5], [5.95, 10.67], [11.12, 19.86], [20.31, 27.01], [27.46, 39.62], [40.07, 52.22]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      // 七个环节：与 path 场景结尾完全相同，直接在场
+      const NS = "http://www.w3.org/2000/svg";
+      const N = [["① 业务意图", "提现单"], ["② 请求构造", "账本/后台"], ["③ 风控审批", ""], ["④ 显示解码", ""], ["⑤ 签名", "MPC/HSM/多签"], ["⑥ 广播", ""], ["⑦ 链上状态", "余额/代码/权限"]];
+      const X = (i) => 70 + i * 260, nodes = [];
+      N.forEach(([a, b], i) => {
+        const g = document.createElementNS(NS, "g");
+        const col = i === 4 ? "#B48EF0" : "#e8e6df";
+        g.innerHTML = `<rect x="${X(i)}" y="450" width="220" height="130" rx="16" fill="#161a22" stroke="${col}" stroke-opacity="${i === 4 ? 1 : 0.6}" stroke-width="3" />` +
+          `<text x="${X(i) + 110}" y="${b ? 505 : 525}" font-size="30" fill="${col}" text-anchor="middle" font-weight="700">${a}</text>` +
+          (b ? `<text x="${X(i) + 110}" y="548" font-size="28" fill="#8a8f99" text-anchor="middle">${b}</text>` : "");
+        document.querySelector("#b-nodes").appendChild(g); nodes.push(g);
+        if (i < 6) {
+          const p = document.createElementNS(NS, "path");
+          p.setAttribute("d", `M${X(i) + 222} 515 L ${X(i) + 256} 515`); p.setAttribute("marker-end", "url(#b-ah)");
+          document.querySelector("#b-arrows").appendChild(p);
+        }
+      });
+      const R = (i) => nodes[i].querySelector("rect");
+      const HIT = (sel, t) => tl.to(sel, { stroke: "#FC6255", strokeOpacity: 1, strokeWidth: 6, duration: 0.3 }, t);
+      const TAG = (tag, line, t) => { IN(tag, t, 0.5, { scale: 0.9, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" }); IN(line, t + 0.25, 0.4); };
+
+      // L0
+      IN("#b-title", at(0, 0.05), 0.5);
+      // L1 Bitget → ② 请求构造
+      TAG("#b-t1", "#b-l1", at(1, 0.05)); HIT(R(1), at(1, 0.5));
+      // L2 Bybit / WazirX → ④ 显示
+      TAG("#b-t2", "#b-l2", at(2, 0.05)); HIT(R(3), at(2, 0.45));
+      IN("#b-wz", at(2, 0.75), 0.4);
+      // L3 Drift → ⑤ 签名人预签
+      TAG("#b-t3", "#b-l3", at(3, 0.05)); HIT(R(4), at(3, 0.4));
+      // L4 KelpDAO → 数据源；Binance → ⑤ 与 ⑦
+      TAG("#b-t4", "#b-l4", at(4, 0.02)); HIT("#b-rpcr", at(4, 0.2));
+      TAG("#b-t5", ["#b-l5a", "#b-l5b"], at(4, 0.5)); HIT(R(6), at(4, 0.8));
+
+      // L5 结果相同：签名照常
+      tl.to(["#b-t1", "#b-t2", "#b-t3", "#b-t4", "#b-t5", "#b-wz", "#b-l1", "#b-l2", "#b-l3", "#b-l4", "#b-l5a", "#b-l5b"], { opacity: 0.35, duration: 0.5 }, at(5, 0));
+      tl.fromTo(R(4), { fill: "#161a22" }, { fill: "#2a1f3a", duration: 0.3, yoyo: true, repeat: 3 }, at(5, 0.1));
+      IN("#b-same", at(5, 0.15), 0.6);
+      IN("#b-simp", at(5, 0.6), 0.5);
+
+      tl.to("#b-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["breaks"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,171 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .cap-g { position: absolute; left: 0; right: 0; bottom: var(--cap-bottom, 84px); text-align: center; opacity: 0; visibility: hidden; }
+    .cap-t { display: inline-block; font-family: var(--cap-font, "Noto Sans SC"), sans-serif; font-weight: var(--cap-weight, 700);
+      font-size: var(--cap-size, 46px); line-height: 1.25; color: var(--cap-ink, #111); letter-spacing: 0.02em;
+      padding: var(--cap-pad, 0); background: var(--cap-bg, transparent); border-radius: var(--cap-radius, 0);
+      text-shadow: var(--cap-shadow, none); }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-c0" class="cap-g"><span class="cap-t">先看算力</span></div>
+    <div id="cap-c1" class="cap-g"><span class="cap-t">51% 攻击分四步</span></div>
+    <div id="cap-c2" class="cap-g"><span class="cap-t">攻击者在交易所充值一大笔币</span></div>
+    <div id="cap-c3" class="cap-g"><span class="cap-t">同时私下挖一条不包含这笔充值的链</span></div>
+    <div id="cap-c4" class="cap-g"><span class="cap-t">交易所等够确认数入账</span></div>
+    <div id="cap-c5" class="cap-g"><span class="cap-t">他把币卖掉</span></div>
+    <div id="cap-c6" class="cap-g"><span class="cap-t">提走别的资产</span></div>
+    <div id="cap-c7" class="cap-g"><span class="cap-t">然后他公开私下那条更长的链</span></div>
+    <div id="cap-c8" class="cap-g"><span class="cap-t">网络发生重组</span></div>
+    <div id="cap-c9" class="cap-g"><span class="cap-t">充值交易消失</span></div>
+    <div id="cap-c10" class="cap-g"><span class="cap-t">币回到他手里</span></div>
+    <div id="cap-c11" class="cap-g"><span class="cap-t">交易所账上多出一笔不存在的充值</span></div>
+    <div id="cap-c12" class="cap-g"><span class="cap-t">再猜一道题</span></div>
+    <div id="cap-c13" class="cap-g"><span class="cap-t">攻击者有 60% 算力</span></div>
+    <div id="cap-c14" class="cap-g"><span class="cap-t">确认数从 6 提高到 600</span></div>
+    <div id="cap-c15" class="cap-g"><span class="cap-t">成功概率降多少</span></div>
+    <div id="cap-c16" class="cap-g"><span class="cap-t">答案是不降</span></div>
+    <div id="cap-c17" class="cap-g"><span class="cap-t">算力超过一半</span></div>
+    <div id="cap-c18" class="cap-g"><span class="cap-t">攻击者最终一定能追上</span></div>
+    <div id="cap-c19" class="cap-g"><span class="cap-t">加确认数</span></div>
+    <div id="cap-c20" class="cap-g"><span class="cap-t">只增加他租算力的时间和成本</span></div>
+    <div id="cap-c21" class="cap-g"><span class="cap-t">所以小算力链的确认数</span></div>
+    <div id="cap-c22" class="cap-g"><span class="cap-t">是一个经济问题</span></div>
+    <div id="cap-c23" class="cap-g"><span class="cap-t">租算力的成本</span></div>
+    <div id="cap-c24" class="cap-g"><span class="cap-t">必须高于能双花的金额</span></div>
+    <div id="cap-c25" class="cap-g"><span class="cap-t">2019 年 1 月</span></div>
+    <div id="cap-c26" class="cap-g"><span class="cap-t">Ethereum Classic</span></div>
+    <div id="cap-c27" class="cap-g"><span class="cap-t">被深度重组和双花</span></div>
+    <div id="cap-c28" class="cap-g"><span class="cap-t">约 110 万美元</span></div>
+    <div id="cap-c29" class="cap-g"><span class="cap-t">Coinbase 发现后</span></div>
+    <div id="cap-c30" class="cap-g"><span class="cap-t">暂停了 ETC 的收付</span></div>
+    <div id="cap-c31" class="cap-g"><span class="cap-t">2020 年 8 月</span></div>
+    <div id="cap-c32" class="cap-g"><span class="cap-t">它一个月内被攻击三次</span></div>
+    <div id="cap-c33" class="cap-g"><span class="cap-t">第一次双花约 560 万美元</span></div>
+    <div id="cap-c34" class="cap-g"><span class="cap-t">之后 Coinbase 把 ETC 的充值确认时间</span></div>
+    <div id="cap-c35" class="cap-g"><span class="cap-t">提高到约两周</span></div>
+    <div id="cap-c36" class="cap-g"><span class="cap-t">多数算力</span></div>
+    <div id="cap-c37" class="cap-g"><span class="cap-t">也不一定要持续拥有</span></div>
+    <div id="cap-c38" class="cap-g"><span class="cap-t">自私挖矿</span></div>
+    <div id="cap-c39" class="cap-g"><span class="cap-t">是把挖到的块先扣住</span></div>
+    <div id="cap-c40" class="cap-g"><span class="cap-t">再择机一次性释放</span></div>
+    <div id="cap-c41" class="cap-g"><span class="cap-t">2025 年 9 月</span></div>
+    <div id="cap-c42" class="cap-g"><span class="cap-t">Monero 出现史上最深的 18 块重组</span></div>
+    <div id="cap-c43" class="cap-g"><span class="cap-t">矿池 Qubic 公开说用了自私挖矿</span></div>
+    <div id="cap-c44" class="cap-g"><span class="cap-t">研究者认为</span></div>
+    <div id="cap-c45" class="cap-g"><span class="cap-t">它的日均算力没有达到 51%</span></div>
+    <div id="cap-c46" class="cap-g"><span class="cap-t">交易所要按租算力的成本和充值金额</span></div>
+    <div id="cap-c47" class="cap-g"><span class="cap-t">定确认数</span></div>
+    <div id="cap-c48" class="cap-g"><span class="cap-t">设单笔和单日上限</span></div>
+    <div id="cap-c49" class="cap-g"><span class="cap-t">重组深度超过阈值</span></div>
+    <div id="cap-c50" class="cap-g"><span class="cap-t">自动暂停这条链的充提</span></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      tl.set("#cap-c0", {opacity: 1, visibility: "visible"}, 1.550);
+      tl.set("#cap-c0", {opacity: 0, visibility: "hidden"}, 2.553);
+      tl.set("#cap-c1", {opacity: 1, visibility: "visible"}, 2.905);
+      tl.set("#cap-c1", {opacity: 0, visibility: "hidden"}, 4.746);
+      tl.set("#cap-c2", {opacity: 1, visibility: "visible"}, 5.122);
+      tl.set("#cap-c2", {opacity: 0, visibility: "hidden"}, 7.737);
+      tl.set("#cap-c3", {opacity: 1, visibility: "visible"}, 7.975);
+      tl.set("#cap-c3", {opacity: 0, visibility: "hidden"}, 11.069);
+      tl.set("#cap-c4", {opacity: 1, visibility: "visible"}, 11.330);
+      tl.set("#cap-c4", {opacity: 0, visibility: "hidden"}, 13.148);
+      tl.set("#cap-c5", {opacity: 1, visibility: "visible"}, 13.286);
+      tl.set("#cap-c5", {opacity: 0, visibility: "hidden"}, 14.234);
+      tl.set("#cap-c6", {opacity: 1, visibility: "visible"}, 14.369);
+      tl.set("#cap-c6", {opacity: 0, visibility: "hidden"}, 15.447);
+      tl.set("#cap-c7", {opacity: 1, visibility: "visible"}, 15.812);
+      tl.set("#cap-c7", {opacity: 0, visibility: "hidden"}, 18.387);
+      tl.set("#cap-c8", {opacity: 1, visibility: "visible"}, 18.668);
+      tl.set("#cap-c8", {opacity: 0, visibility: "hidden"}, 20.023);
+      tl.set("#cap-c9", {opacity: 1, visibility: "visible"}, 20.250);
+      tl.set("#cap-c9", {opacity: 0, visibility: "hidden"}, 21.553);
+      tl.set("#cap-c10", {opacity: 1, visibility: "visible"}, 21.769);
+      tl.set("#cap-c10", {opacity: 0, visibility: "hidden"}, 23.064);
+      tl.set("#cap-c11", {opacity: 1, visibility: "visible"}, 23.357);
+      tl.set("#cap-c11", {opacity: 0, visibility: "hidden"}, 26.153);
+      tl.set("#cap-c12", {opacity: 1, visibility: "visible"}, 26.390);
+      tl.set("#cap-c12", {opacity: 0, visibility: "hidden"}, 27.323);
+      tl.set("#cap-c13", {opacity: 1, visibility: "visible"}, 27.570);
+      tl.set("#cap-c13", {opacity: 0, visibility: "hidden"}, 29.491);
+      tl.set("#cap-c14", {opacity: 1, visibility: "visible"}, 29.741);
+      tl.set("#cap-c14", {opacity: 0, visibility: "hidden"}, 31.866);
+      tl.set("#cap-c15", {opacity: 1, visibility: "visible"}, 31.970);
+      tl.set("#cap-c15", {opacity: 0, visibility: "hidden"}, 33.237);
+      tl.set("#cap-c16", {opacity: 1, visibility: "visible"}, 33.750);
+      tl.set("#cap-c16", {opacity: 0, visibility: "hidden"}, 35.274);
+      tl.set("#cap-c17", {opacity: 1, visibility: "visible"}, 35.490);
+      tl.set("#cap-c17", {opacity: 0, visibility: "hidden"}, 36.846);
+      tl.set("#cap-c18", {opacity: 1, visibility: "visible"}, 36.995);
+      tl.set("#cap-c18", {opacity: 0, visibility: "hidden"}, 39.104);
+      tl.set("#cap-c19", {opacity: 1, visibility: "visible"}, 39.310);
+      tl.set("#cap-c19", {opacity: 0, visibility: "hidden"}, 40.392);
+      tl.set("#cap-c20", {opacity: 1, visibility: "visible"}, 40.661);
+      tl.set("#cap-c20", {opacity: 0, visibility: "hidden"}, 43.360);
+      tl.set("#cap-c21", {opacity: 1, visibility: "visible"}, 43.610);
+      tl.set("#cap-c21", {opacity: 0, visibility: "hidden"}, 45.907);
+      tl.set("#cap-c22", {opacity: 1, visibility: "visible"}, 45.952);
+      tl.set("#cap-c22", {opacity: 0, visibility: "hidden"}, 47.252);
+      tl.set("#cap-c23", {opacity: 1, visibility: "visible"}, 47.609);
+      tl.set("#cap-c23", {opacity: 0, visibility: "hidden"}, 48.832);
+      tl.set("#cap-c24", {opacity: 1, visibility: "visible"}, 48.983);
+      tl.set("#cap-c24", {opacity: 0, visibility: "hidden"}, 51.155);
+      tl.set("#cap-c25", {opacity: 1, visibility: "visible"}, 51.410);
+      tl.set("#cap-c25", {opacity: 0, visibility: "hidden"}, 52.672);
+      tl.set("#cap-c26", {opacity: 1, visibility: "visible"}, 52.865);
+      tl.set("#cap-c26", {opacity: 0, visibility: "hidden"}, 54.182);
+      tl.set("#cap-c27", {opacity: 1, visibility: "visible"}, 54.202);
+      tl.set("#cap-c27", {opacity: 0, visibility: "hidden"}, 56.070);
+      tl.set("#cap-c28", {opacity: 1, visibility: "visible"}, 56.338);
+      tl.set("#cap-c28", {opacity: 0, visibility: "hidden"}, 57.808);
+      tl.set("#cap-c29", {opacity: 1, visibility: "visible"}, 58.131);
+      tl.set("#cap-c29", {opacity: 0, visibility: "hidden"}, 59.250);
+      tl.set("#cap-c30", {opacity: 1, visibility: "visible"}, 59.270);
+      tl.set("#cap-c30", {opacity: 0, visibility: "hidden"}, 60.804);
+      tl.set("#cap-c31", {opacity: 1, visibility: "visible"}, 61.050);
+      tl.set("#cap-c31", {opacity: 0, visibility: "hidden"}, 62.465);
+      tl.set("#cap-c32", {opacity: 1, visibility: "visible"}, 62.669);
+      tl.set("#cap-c32", {opacity: 0, visibility: "hidden"}, 64.690);
+      tl.set("#cap-c33", {opacity: 1, visibility: "visible"}, 64.917);
+      tl.set("#cap-c33", {opacity: 0, visibility: "hidden"}, 68.016);
+      tl.set("#cap-c34", {opacity: 1, visibility: "visible"}, 68.230);
+      tl.set("#cap-c34", {opacity: 0, visibility: "hidden"}, 71.431);
+      tl.set("#cap-c35", {opacity: 1, visibility: "visible"}, 71.575);
+      tl.set("#cap-c35", {opacity: 0, visibility: "hidden"}, 72.920);
+      tl.set("#cap-c36", {opacity: 1, visibility: "visible"}, 73.266);
+      tl.set("#cap-c36", {opacity: 0, visibility: "hidden"}, 74.177);
+      tl.set("#cap-c37", {opacity: 1, visibility: "visible"}, 74.237);
+      tl.set("#cap-c37", {opacity: 0, visibility: "hidden"}, 75.882);
+      tl.set("#cap-c38", {opacity: 1, visibility: "visible"}, 76.110);
+      tl.set("#cap-c38", {opacity: 0, visibility: "hidden"}, 77.144);
+      tl.set("#cap-c39", {opacity: 1, visibility: "visible"}, 77.172);
+      tl.set("#cap-c39", {opacity: 0, visibility: "hidden"}, 79.068);
+      tl.set("#cap-c40", {opacity: 1, visibility: "visible"}, 79.265);
+      tl.set("#cap-c40", {opacity: 0, visibility: "hidden"}, 80.909);
+      tl.set("#cap-c41", {opacity: 1, visibility: "visible"}, 81.236);
+      tl.set("#cap-c41", {opacity: 0, visibility: "hidden"}, 82.526);
+      tl.set("#cap-c42", {opacity: 1, visibility: "visible"}, 82.567);
+      tl.set("#cap-c42", {opacity: 0, visibility: "hidden"}, 85.472);
+      tl.set("#cap-c43", {opacity: 1, visibility: "visible"}, 85.750);
+      tl.set("#cap-c43", {opacity: 0, visibility: "hidden"}, 88.998);
+      tl.set("#cap-c44", {opacity: 1, visibility: "visible"}, 89.351);
+      tl.set("#cap-c44", {opacity: 0, visibility: "hidden"}, 90.209);
+      tl.set("#cap-c45", {opacity: 1, visibility: "visible"}, 90.314);
+      tl.set("#cap-c45", {opacity: 0, visibility: "hidden"}, 93.447);
+      tl.set("#cap-c46", {opacity: 1, visibility: "visible"}, 93.710);
+      tl.set("#cap-c46", {opacity: 0, visibility: "hidden"}, 97.252);
+      tl.set("#cap-c47", {opacity: 1, visibility: "visible"}, 97.381);
+      tl.set("#cap-c47", {opacity: 0, visibility: "hidden"}, 98.429);
+      tl.set("#cap-c48", {opacity: 1, visibility: "visible"}, 98.599);
+      tl.set("#cap-c48", {opacity: 0, visibility: "hidden"}, 100.546);
+      tl.set("#cap-c49", {opacity: 1, visibility: "visible"}, 100.902);
+      tl.set("#cap-c49", {opacity: 0, visibility: "hidden"}, 102.597);
+      tl.set("#cap-c50", {opacity: 1, visibility: "visible"}, 102.800);
+      tl.set("#cap-c50", {opacity: 0, visibility: "hidden"}, 104.618);
+      window.__timelines["captions"] = tl;
+    })();
+  </script>
+</template>

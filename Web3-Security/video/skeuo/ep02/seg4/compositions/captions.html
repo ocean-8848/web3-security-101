@@ -1,0 +1,213 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .cap-g { position: absolute; left: 0; right: 0; bottom: var(--cap-bottom, 84px); text-align: center; opacity: 0; visibility: hidden; }
+    .cap-t { display: inline-block; font-family: var(--cap-font, "Noto Sans SC"), sans-serif; font-weight: var(--cap-weight, 700);
+      font-size: var(--cap-size, 46px); line-height: 1.25; color: var(--cap-ink, #111); letter-spacing: 0.02em;
+      padding: var(--cap-pad, 0); background: var(--cap-bg, transparent); border-radius: var(--cap-radius, 0);
+      text-shadow: var(--cap-shadow, none); }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-c0" class="cap-g"><span class="cap-t">第二处随机性</span></div>
+    <div id="cap-c1" class="cap-g"><span class="cap-t">在签名里</span></div>
+    <div id="cap-c2" class="cap-g"><span class="cap-t">ECDSA 每次签名</span></div>
+    <div id="cap-c3" class="cap-g"><span class="cap-t">都需要一个一次性的数 叫 k</span></div>
+    <div id="cap-c4" class="cap-g"><span class="cap-t">也就是 nonce</span></div>
+    <div id="cap-c5" class="cap-g"><span class="cap-t">k 出错有三种情况</span></div>
+    <div id="cap-c6" class="cap-g"><span class="cap-t">第一种 两次签名用了同一个 k</span></div>
+    <div id="cap-c7" class="cap-g"><span class="cap-t">攻击者还需要别的东西吗</span></div>
+    <div id="cap-c8" class="cap-g"><span class="cap-t">不需要</span></div>
+    <div id="cap-c9" class="cap-g"><span class="cap-t">两个签名和两个消息哈希都是公开的</span></div>
+    <div id="cap-c10" class="cap-g"><span class="cap-t">直接解方程</span></div>
+    <div id="cap-c11" class="cap-g"><span class="cap-t">就得到私钥</span></div>
+    <div id="cap-c12" class="cap-g"><span class="cap-t">打个比方</span></div>
+    <div id="cap-c13" class="cap-g"><span class="cap-t">nonce 像一块每次都换的遮布</span></div>
+    <div id="cap-c14" class="cap-g"><span class="cap-t">盖在私钥上面</span></div>
+    <div id="cap-c15" class="cap-g"><span class="cap-t">同一块布用了两次</span></div>
+    <div id="cap-c16" class="cap-g"><span class="cap-t">两次结果一对比</span></div>
+    <div id="cap-c17" class="cap-g"><span class="cap-t">布就被消掉</span></div>
+    <div id="cap-c18" class="cap-g"><span class="cap-t">私钥就显出来了</span></div>
+    <div id="cap-c19" class="cap-g"><span class="cap-t">比方的局限是</span></div>
+    <div id="cap-c20" class="cap-g"><span class="cap-t">真实过程是解方程</span></div>
+    <div id="cap-c21" class="cap-g"><span class="cap-t">而且下面两种情况</span></div>
+    <div id="cap-c22" class="cap-g"><span class="cap-t">一次对比无法解决</span></div>
+    <div id="cap-c23" class="cap-g"><span class="cap-t">第二种 k 有偏置</span></div>
+    <div id="cap-c24" class="cap-g"><span class="cap-t">比如高几位总是 0</span></div>
+    <div id="cap-c25" class="cap-g"><span class="cap-t">收集足够多签名</span></div>
+    <div id="cap-c26" class="cap-g"><span class="cap-t">用格方法就能恢复私钥</span></div>
+    <div id="cap-c27" class="cap-g"><span class="cap-t">第三种最糟</span></div>
+    <div id="cap-c28" class="cap-g"><span class="cap-t">k 可以由公开数据算出</span></div>
+    <div id="cap-c29" class="cap-g"><span class="cap-t">那么单个签名就能反推私钥</span></div>
+    <div id="cap-c30" class="cap-g"><span class="cap-t">标准早有解法</span></div>
+    <div id="cap-c31" class="cap-g"><span class="cap-t">叫 RFC 6979</span></div>
+    <div id="cap-c32" class="cap-g"><span class="cap-t">它用私钥和消息</span></div>
+    <div id="cap-c33" class="cap-g"><span class="cap-t">确定性地派生 k</span></div>
+    <div id="cap-c34" class="cap-g"><span class="cap-t">可以消除前两种风险</span></div>
+    <div id="cap-c35" class="cap-g"><span class="cap-t">EdDSA 标准也要求</span></div>
+    <div id="cap-c36" class="cap-g"><span class="cap-t">nonce 由私钥的秘密部分派生</span></div>
+    <div id="cap-c37" class="cap-g"><span class="cap-t">风险来自偏离标准的实现</span></div>
+    <div id="cap-c38" class="cap-g"><span class="cap-t">三个案例</span></div>
+    <div id="cap-c39" class="cap-g"><span class="cap-t">2013 年 8 月</span></div>
+    <div id="cap-c40" class="cap-g"><span class="cap-t">Android 的随机数缺陷</span></div>
+    <div id="cap-c41" class="cap-g"><span class="cap-t">让不同签名用了相同的 nonce</span></div>
+    <div id="cap-c42" class="cap-g"><span class="cap-t">多款比特币钱包受影响</span></div>
+    <div id="cap-c43" class="cap-g"><span class="cap-t">2019 年</span></div>
+    <div id="cap-c44" class="cap-g"><span class="cap-t">一项研究用格方法</span></div>
+    <div id="cap-c45" class="cap-g"><span class="cap-t">恢复出数百个比特币私钥</span></div>
+    <div id="cap-c46" class="cap-g"><span class="cap-t">和数十个以太坊私钥</span></div>
+    <div id="cap-c47" class="cap-g"><span class="cap-t">2026 年 6 月</span></div>
+    <div id="cap-c48" class="cap-g"><span class="cap-t">Cardano 钱包 SecondFi</span></div>
+    <div id="cap-c49" class="cap-g"><span class="cap-t">的 Android 版</span></div>
+    <div id="cap-c50" class="cap-g"><span class="cap-t">用公开交易数据派生 nonce</span></div>
+    <div id="cap-c51" class="cap-g"><span class="cap-t">漏掉了秘密部分</span></div>
+    <div id="cap-c52" class="cap-g"><span class="cap-t">nonce 人人可算</span></div>
+    <div id="cap-c53" class="cap-g"><span class="cap-t">单个签名就能反推私钥</span></div>
+    <div id="cap-c54" class="cap-g"><span class="cap-t">374 个钱包被盗</span></div>
+    <div id="cap-c55" class="cap-g"><span class="cap-t">约 1600 万 ADA</span></div>
+    <div id="cap-c56" class="cap-g"><span class="cap-t">约 240 万美元</span></div>
+    <div id="cap-c57" class="cap-g"><span class="cap-t">这是官方口径</span></div>
+    <div id="cap-c58" class="cap-g"><span class="cap-t">SlowMist 的估计更高</span></div>
+    <div id="cap-c59" class="cap-g"><span class="cap-t">硬件钱包签名走另一条路径</span></div>
+    <div id="cap-c60" class="cap-g"><span class="cap-t">不受影响</span></div>
+    <div id="cap-c61" class="cap-g"><span class="cap-t">教训是 nonce 必须确定性派生</span></div>
+    <div id="cap-c62" class="cap-g"><span class="cap-t">并包含私钥的秘密材料</span></div>
+    <div id="cap-c63" class="cap-g"><span class="cap-t">封装层要做已知答案测试</span></div>
+    <div id="cap-c64" class="cap-g"><span class="cap-t">不能只信任底层库</span></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      tl.set("#cap-c0", {opacity: 1, visibility: "visible"}, 1.550);
+      tl.set("#cap-c0", {opacity: 0, visibility: "hidden"}, 3.089);
+      tl.set("#cap-c1", {opacity: 1, visibility: "visible"}, 3.237);
+      tl.set("#cap-c1", {opacity: 0, visibility: "hidden"}, 4.274);
+      tl.set("#cap-c2", {opacity: 1, visibility: "visible"}, 4.669);
+      tl.set("#cap-c2", {opacity: 0, visibility: "hidden"}, 6.679);
+      tl.set("#cap-c3", {opacity: 1, visibility: "visible"}, 6.707);
+      tl.set("#cap-c3", {opacity: 0, visibility: "hidden"}, 9.197);
+      tl.set("#cap-c4", {opacity: 1, visibility: "visible"}, 9.399);
+      tl.set("#cap-c4", {opacity: 0, visibility: "hidden"}, 10.647);
+      tl.set("#cap-c5", {opacity: 1, visibility: "visible"}, 10.965);
+      tl.set("#cap-c5", {opacity: 0, visibility: "hidden"}, 12.665);
+      tl.set("#cap-c6", {opacity: 1, visibility: "visible"}, 12.848);
+      tl.set("#cap-c6", {opacity: 0, visibility: "hidden"}, 15.486);
+      tl.set("#cap-c7", {opacity: 1, visibility: "visible"}, 15.730);
+      tl.set("#cap-c7", {opacity: 0, visibility: "hidden"}, 17.691);
+      tl.set("#cap-c8", {opacity: 1, visibility: "visible"}, 18.332);
+      tl.set("#cap-c8", {opacity: 0, visibility: "hidden"}, 18.931);
+      tl.set("#cap-c9", {opacity: 1, visibility: "visible"}, 19.188);
+      tl.set("#cap-c9", {opacity: 0, visibility: "hidden"}, 22.322);
+      tl.set("#cap-c10", {opacity: 1, visibility: "visible"}, 22.523);
+      tl.set("#cap-c10", {opacity: 0, visibility: "hidden"}, 23.569);
+      tl.set("#cap-c11", {opacity: 1, visibility: "visible"}, 23.589);
+      tl.set("#cap-c11", {opacity: 0, visibility: "hidden"}, 24.480);
+      tl.set("#cap-c12", {opacity: 1, visibility: "visible"}, 24.866);
+      tl.set("#cap-c12", {opacity: 0, visibility: "hidden"}, 25.519);
+      tl.set("#cap-c13", {opacity: 1, visibility: "visible"}, 25.727);
+      tl.set("#cap-c13", {opacity: 0, visibility: "hidden"}, 28.786);
+      tl.set("#cap-c14", {opacity: 1, visibility: "visible"}, 28.838);
+      tl.set("#cap-c14", {opacity: 0, visibility: "hidden"}, 30.016);
+      tl.set("#cap-c15", {opacity: 1, visibility: "visible"}, 30.366);
+      tl.set("#cap-c15", {opacity: 0, visibility: "hidden"}, 32.086);
+      tl.set("#cap-c16", {opacity: 1, visibility: "visible"}, 32.514);
+      tl.set("#cap-c16", {opacity: 0, visibility: "hidden"}, 33.853);
+      tl.set("#cap-c17", {opacity: 1, visibility: "visible"}, 34.019);
+      tl.set("#cap-c17", {opacity: 0, visibility: "hidden"}, 35.117);
+      tl.set("#cap-c18", {opacity: 1, visibility: "visible"}, 35.169);
+      tl.set("#cap-c18", {opacity: 0, visibility: "hidden"}, 36.449);
+      tl.set("#cap-c19", {opacity: 1, visibility: "visible"}, 36.838);
+      tl.set("#cap-c19", {opacity: 0, visibility: "hidden"}, 38.071);
+      tl.set("#cap-c20", {opacity: 1, visibility: "visible"}, 38.280);
+      tl.set("#cap-c20", {opacity: 0, visibility: "hidden"}, 40.297);
+      tl.set("#cap-c21", {opacity: 1, visibility: "visible"}, 40.491);
+      tl.set("#cap-c21", {opacity: 0, visibility: "hidden"}, 42.268);
+      tl.set("#cap-c22", {opacity: 1, visibility: "visible"}, 42.333);
+      tl.set("#cap-c22", {opacity: 0, visibility: "hidden"}, 44.101);
+      tl.set("#cap-c23", {opacity: 1, visibility: "visible"}, 44.390);
+      tl.set("#cap-c23", {opacity: 0, visibility: "hidden"}, 46.461);
+      tl.set("#cap-c24", {opacity: 1, visibility: "visible"}, 46.932);
+      tl.set("#cap-c24", {opacity: 0, visibility: "hidden"}, 47.999);
+      tl.set("#cap-c25", {opacity: 1, visibility: "visible"}, 48.019);
+      tl.set("#cap-c25", {opacity: 0, visibility: "hidden"}, 50.622);
+      tl.set("#cap-c26", {opacity: 1, visibility: "visible"}, 50.696);
+      tl.set("#cap-c26", {opacity: 0, visibility: "hidden"}, 52.577);
+      tl.set("#cap-c27", {opacity: 1, visibility: "visible"}, 52.850);
+      tl.set("#cap-c27", {opacity: 0, visibility: "hidden"}, 54.063);
+      tl.set("#cap-c28", {opacity: 1, visibility: "visible"}, 54.583);
+      tl.set("#cap-c28", {opacity: 0, visibility: "hidden"}, 56.590);
+      tl.set("#cap-c29", {opacity: 1, visibility: "visible"}, 56.789);
+      tl.set("#cap-c29", {opacity: 0, visibility: "hidden"}, 59.272);
+      tl.set("#cap-c30", {opacity: 1, visibility: "visible"}, 59.645);
+      tl.set("#cap-c30", {opacity: 0, visibility: "hidden"}, 60.914);
+      tl.set("#cap-c31", {opacity: 1, visibility: "visible"}, 61.148);
+      tl.set("#cap-c31", {opacity: 0, visibility: "hidden"}, 62.259);
+      tl.set("#cap-c32", {opacity: 1, visibility: "visible"}, 62.279);
+      tl.set("#cap-c32", {opacity: 0, visibility: "hidden"}, 64.880);
+      tl.set("#cap-c33", {opacity: 1, visibility: "visible"}, 65.060);
+      tl.set("#cap-c33", {opacity: 0, visibility: "hidden"}, 65.842);
+      tl.set("#cap-c34", {opacity: 1, visibility: "visible"}, 65.862);
+      tl.set("#cap-c34", {opacity: 0, visibility: "hidden"}, 68.387);
+      tl.set("#cap-c35", {opacity: 1, visibility: "visible"}, 68.750);
+      tl.set("#cap-c35", {opacity: 0, visibility: "hidden"}, 70.581);
+      tl.set("#cap-c36", {opacity: 1, visibility: "visible"}, 70.641);
+      tl.set("#cap-c36", {opacity: 0, visibility: "hidden"}, 73.261);
+      tl.set("#cap-c37", {opacity: 1, visibility: "visible"}, 73.627);
+      tl.set("#cap-c37", {opacity: 0, visibility: "hidden"}, 75.826);
+      tl.set("#cap-c38", {opacity: 1, visibility: "visible"}, 76.070);
+      tl.set("#cap-c38", {opacity: 0, visibility: "hidden"}, 76.955);
+      tl.set("#cap-c39", {opacity: 1, visibility: "visible"}, 77.387);
+      tl.set("#cap-c39", {opacity: 0, visibility: "hidden"}, 78.641);
+      tl.set("#cap-c40", {opacity: 1, visibility: "visible"}, 78.752);
+      tl.set("#cap-c40", {opacity: 0, visibility: "hidden"}, 80.594);
+      tl.set("#cap-c41", {opacity: 1, visibility: "visible"}, 80.750);
+      tl.set("#cap-c41", {opacity: 0, visibility: "hidden"}, 83.182);
+      tl.set("#cap-c42", {opacity: 1, visibility: "visible"}, 83.342);
+      tl.set("#cap-c42", {opacity: 0, visibility: "hidden"}, 85.266);
+      tl.set("#cap-c43", {opacity: 1, visibility: "visible"}, 85.594);
+      tl.set("#cap-c43", {opacity: 0, visibility: "hidden"}, 86.606);
+      tl.set("#cap-c44", {opacity: 1, visibility: "visible"}, 86.738);
+      tl.set("#cap-c44", {opacity: 0, visibility: "hidden"}, 88.730);
+      tl.set("#cap-c45", {opacity: 1, visibility: "visible"}, 88.973);
+      tl.set("#cap-c45", {opacity: 0, visibility: "hidden"}, 91.254);
+      tl.set("#cap-c46", {opacity: 1, visibility: "visible"}, 91.439);
+      tl.set("#cap-c46", {opacity: 0, visibility: "hidden"}, 93.510);
+      tl.set("#cap-c47", {opacity: 1, visibility: "visible"}, 93.897);
+      tl.set("#cap-c47", {opacity: 0, visibility: "hidden"}, 95.205);
+      tl.set("#cap-c48", {opacity: 1, visibility: "visible"}, 95.442);
+      tl.set("#cap-c48", {opacity: 0, visibility: "hidden"}, 97.150);
+      tl.set("#cap-c49", {opacity: 1, visibility: "visible"}, 97.170);
+      tl.set("#cap-c49", {opacity: 0, visibility: "hidden"}, 98.369);
+      tl.set("#cap-c50", {opacity: 1, visibility: "visible"}, 98.593);
+      tl.set("#cap-c50", {opacity: 0, visibility: "hidden"}, 100.877);
+      tl.set("#cap-c51", {opacity: 1, visibility: "visible"}, 100.973);
+      tl.set("#cap-c51", {opacity: 0, visibility: "hidden"}, 102.439);
+      tl.set("#cap-c52", {opacity: 1, visibility: "visible"}, 102.752);
+      tl.set("#cap-c52", {opacity: 0, visibility: "hidden"}, 104.318);
+      tl.set("#cap-c53", {opacity: 1, visibility: "visible"}, 104.699);
+      tl.set("#cap-c53", {opacity: 0, visibility: "hidden"}, 106.715);
+      tl.set("#cap-c54", {opacity: 1, visibility: "visible"}, 106.950);
+      tl.set("#cap-c54", {opacity: 0, visibility: "hidden"}, 109.015);
+      tl.set("#cap-c55", {opacity: 1, visibility: "visible"}, 109.203);
+      tl.set("#cap-c55", {opacity: 0, visibility: "hidden"}, 110.833);
+      tl.set("#cap-c56", {opacity: 1, visibility: "visible"}, 111.090);
+      tl.set("#cap-c56", {opacity: 0, visibility: "hidden"}, 112.783);
+      tl.set("#cap-c57", {opacity: 1, visibility: "visible"}, 112.963);
+      tl.set("#cap-c57", {opacity: 0, visibility: "hidden"}, 114.169);
+      tl.set("#cap-c58", {opacity: 1, visibility: "visible"}, 114.345);
+      tl.set("#cap-c58", {opacity: 0, visibility: "hidden"}, 116.197);
+      tl.set("#cap-c59", {opacity: 1, visibility: "visible"}, 116.450);
+      tl.set("#cap-c59", {opacity: 0, visibility: "hidden"}, 118.773);
+      tl.set("#cap-c60", {opacity: 1, visibility: "visible"}, 118.866);
+      tl.set("#cap-c60", {opacity: 0, visibility: "hidden"}, 119.665);
+      tl.set("#cap-c61", {opacity: 1, visibility: "visible"}, 120.040);
+      tl.set("#cap-c61", {opacity: 0, visibility: "hidden"}, 122.808);
+      tl.set("#cap-c62", {opacity: 1, visibility: "visible"}, 122.828);
+      tl.set("#cap-c62", {opacity: 0, visibility: "hidden"}, 124.772);
+      tl.set("#cap-c63", {opacity: 1, visibility: "visible"}, 125.036);
+      tl.set("#cap-c63", {opacity: 0, visibility: "hidden"}, 127.343);
+      tl.set("#cap-c64", {opacity: 1, visibility: "visible"}, 127.457);
+      tl.set("#cap-c64", {opacity: 0, visibility: "hidden"}, 129.074);
+      window.__timelines["captions"] = tl;
+    })();
+  </script>
+</template>

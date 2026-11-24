@@ -1,0 +1,137 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="62.94" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <g id="r-keyshape">
+          <circle cx="-34" cy="0" r="20" fill="none" stroke="#B48EF0" stroke-width="7" />
+          <path d="M-14 0 H 46 M 30 0 V 16 M 44 0 V 13" stroke="#B48EF0" stroke-width="7" stroke-linecap="round" fill="none" />
+        </g>
+        <marker id="r-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="r-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="r-case">
+        <g id="r-pin" class="h">
+          <rect x="560" y="60" width="800" height="100" rx="18" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="960" y="127" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="700">WazirX：<tspan fill="#B48EF0">多签</tspan>为什么没有拦住？</text>
+        </g>
+
+        <!-- 六把钥匙：WazirX 五把 + Liminal 一把 -->
+        <g id="r-keys">
+          <g class="r-k h"><use href="#r-keyshape" x="200" y="300" /></g>
+          <g class="r-k h"><use href="#r-keyshape" x="330" y="300" /></g>
+          <g class="r-k h"><use href="#r-keyshape" x="460" y="300" /></g>
+          <g class="r-k h"><use href="#r-keyshape" x="200" y="390" /></g>
+          <g class="r-k h"><use href="#r-keyshape" x="330" y="390" /></g>
+          <g class="r-k h"><use href="#r-keyshape" x="600" y="345" /></g>
+        </g>
+        <text id="r-kw" class="h" x="330" y="470" font-size="30" fill="#e8e6df" text-anchor="middle">WazirX × 5</text>
+        <text id="r-kl" class="h" x="600" y="470" font-size="30" fill="#e8e6df" text-anchor="middle">Liminal × 1</text>
+        <rect id="r-sel" class="h" x="140" y="250" width="520" height="190" rx="18" fill="none" stroke="#83C167" stroke-width="3" />
+        <text id="r-rule" class="h" x="400" y="530" font-size="32" fill="#83C167" text-anchor="middle">执行：3 个 WazirX + Liminal</text>
+
+        <!-- 签名界面：看到的 vs 签下的 -->
+        <g id="r-ui" class="h">
+          <rect id="r-uir" x="160" y="600" width="520" height="260" rx="20" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="4" />
+          <text x="420" y="660" font-size="32" fill="#e8e6df" text-anchor="middle" font-weight="700">Liminal 界面</text>
+          <text id="r-see" x="420" y="760" font-size="34" fill="#e8e6df" text-anchor="middle">看到：例行交易</text>
+          <text id="r-real" class="h" x="420" y="760" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">实际签下：合约升级</text>
+        </g>
+
+        <!-- 多签钱包被切换到恶意合约 -->
+        <g id="r-safe" class="h">
+          <rect x="900" y="300" width="400" height="260" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+          <text x="1100" y="370" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">多签冷钱包</text>
+          <g fill="#F0B90B"><circle class="r-c" cx="1010" cy="470" r="22" /><circle class="r-c" cx="1065" cy="470" r="22" /><circle class="r-c" cx="1120" cy="470" r="22" /><circle class="r-c" cx="1175" cy="470" r="22" /></g>
+        </g>
+        <path id="r-up" class="dr h" pathLength="1" d="M690 730 C 800 730, 860 620, 960 570" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#r-ahr)" />
+        <g id="r-evil" class="h">
+          <rect x="1440" y="300" width="400" height="260" rx="20" fill="#2a1416" stroke="#FC6255" stroke-width="5" />
+          <text x="1640" y="400" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">恶意合约</text>
+          <text x="1640" y="460" font-size="28" fill="#8a8f99" text-anchor="middle">提前 8 天部署</text>
+        </g>
+        <path id="r-sw" class="dr h" pathLength="1" d="M1310 430 L 1430 430" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#r-ahr)" />
+        <text id="r-loss" class="h" x="1370" y="640" font-size="52" fill="#FC6255" text-anchor="middle" font-weight="800">≈ 2.3 亿美元</text>
+        <text id="r-byp" class="h" x="1370" y="710" font-size="32" fill="#e8e6df" text-anchor="middle">多签 · 白名单：被绕过</text>
+
+        <!-- 争议 -->
+        <g id="r-dis" class="h">
+          <text x="1370" y="800" font-size="28" fill="#8a8f99" text-anchor="middle">WazirX：Liminal 界面显示的数据不一致</text>
+          <text x="1370" y="845" font-size="28" fill="#8a8f99" text-anchor="middle">Liminal：受害方 3 台机器被注入恶意载荷</text>
+          <text x="1370" y="900" font-size="30" fill="#FF9F43" text-anchor="middle">未见最终独立报告</text>
+        </g>
+      </g>
+
+      <!-- 答案 -->
+      <g id="r-final">
+        <text id="r-f1" class="h" x="960" y="330" font-size="64" fill="#e8e6df" text-anchor="middle" font-weight="800">多签数的是：<tspan fill="#83C167">签名够不够</tspan></text>
+        <text id="r-f2" class="h" x="960" y="430" font-size="64" fill="#e8e6df" text-anchor="middle" font-weight="800">不检查的是：<tspan fill="#FC6255">签的是什么</tspan></text>
+      </g>
+      <g id="r-cond">
+        <text id="r-c1" class="h" x="960" y="580" font-size="36" fill="#e8e6df" text-anchor="middle">成立条件：每个签名人在<tspan fill="#83C167">自己的设备</tspan>上独立解码</text>
+        <text id="r-c2" class="h" x="960" y="640" font-size="36" fill="#e8e6df" text-anchor="middle">在硬件屏幕上核对 <tspan fill="#83C167">to · operation · data</tspan></text>
+      </g>
+      <text id="r-take" class="h" x="960" y="790" font-size="56" fill="#e8e6df" text-anchor="middle" font-weight="800"><tspan fill="#B48EF0">钥匙安全</tspan> ≠ <tspan fill="#83C167">签名安全</tspan></text>
+      <text id="r-next" class="h" x="960" y="940" font-size="36" fill="#6b6f7a" text-anchor="middle">下一集 · 19 用户侧诈骗：不偷钥匙，骗你自己签</text>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 62.94, "L": [[0.6, 11.09], [11.54, 19.58], [20.03, 27.78], [28.23, 34.28], [34.73, 44.28], [44.73, 56.44], [56.89, 61.84]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAWA = (s, t, d = 0.5) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 问题回来；六把钥匙与执行规则
+      IN("#r-pin", at(0, 0.0), 0.8, { scale: 0.5, x: -560, y: -10, svgOrigin: "960 110" }, { scale: 1, x: 0, y: 0, ease: "expo.out" });
+      gsap.utils.toArray("#root .r-k").forEach((k, i) => IN(k, at(0, 0.15) + i * 0.08, 0.4, { scale: 0.6, transformOrigin: "50% 50%" }, { scale: 1 }));
+      IN("#r-kw", at(0, 0.2), 0.4);
+      IN("#r-kl", at(0, 0.45), 0.4);
+      IN("#r-sel", at(0, 0.7), 0.5);
+      IN("#r-rule", at(0, 0.72), 0.5);
+
+      // L1 看到的和签下的不一致
+      IN("#r-ui", at(1, 0.05), 0.5, { y: 20 }, { y: 0 });
+      tl.to("#r-uir", { stroke: "#FC6255", strokeOpacity: 1, duration: 0.3 }, at(1, 0.55));
+      OUT("#r-see", at(1, 0.6), 0.3);
+      IN("#r-real", at(1, 0.65), 0.4);
+
+      // L2 合约升级 → 恶意合约，多签和白名单被绕过
+      IN("#r-safe", at(2, 0.0), 0.5);
+      DRAWA("#r-up", at(2, 0.05), 0.5);
+      IN("#r-evil", at(2, 0.25), 0.5);
+      DRAWA("#r-sw", at(2, 0.35), 0.4);
+      gsap.utils.toArray("#root .r-c").forEach((c, i) => tl.to(c, { x: 560, fill: "#FC6255", opacity: 0, duration: 0.8, ease: "power2.in" }, at(2, 0.5) + i * 0.1));
+      IN("#r-loss", at(2, 0.6), 0.4);
+      IN("#r-byp", at(2, 0.75), 0.4);
+
+      // L3 争议
+      IN("#r-dis", at(3, 0.05), 0.6);
+
+      // L4 答案
+      tl.to("#r-case", { opacity: 0.04, filter: "blur(3px)", duration: 0.5 }, at(4, 0));
+      IN("#r-f1", at(4, 0.08), 0.7, { filter: "blur(10px)" }, { filter: "blur(0px)" });
+      IN("#r-f2", at(4, 0.42), 0.7, { filter: "blur(10px)" }, { filter: "blur(0px)" });
+      tl.to("#r-f2 tspan", { fill: "#FF9F43", duration: 0.25, yoyo: true, repeat: 3 }, at(4, 0.75));
+
+      // L5 成立条件
+      IN("#r-c1", at(5, 0.05), 0.6);
+      IN("#r-c2", at(5, 0.4), 0.6);
+      IN("#r-take", at(5, 0.72), 0.6, { scale: 0.8, svgOrigin: "960 770" }, { scale: 1 });
+
+      // L6 下一集
+      IN("#r-next", at(6, 0.1), 0.5);
+      tl.to(["#r-case", "#r-final", "#r-cond", "#r-take", "#r-next"], { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

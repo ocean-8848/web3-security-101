@@ -1,0 +1,83 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="44.25" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="a-aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#F0B90B" /></marker>
+        <marker id="a-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+        <marker id="a-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#83C167" /></marker>
+      </defs>
+      <g id="a-pin" class="h">
+        <rect x="560" y="70" width="800" height="100" rx="16" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="960" y="136" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">为什么要<tspan fill="#83C167">先记账</tspan>，再<tspan fill="#F0B90B">转钱</tspan>？</text>
+      </g>
+      <g id="a-diag">
+        <g id="a-c" class="h"><rect x="240" y="300" width="520" height="300" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="500" y="360" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">你的合约</text></g>
+        <g id="a-led" class="h"><rect x="300" y="420" width="400" height="110" rx="14" fill="#1f170c" stroke="#FF9F43" stroke-width="3" /><text id="a-ledt" x="500" y="488" font-size="34" fill="#FF9F43" text-anchor="middle" font-weight="700">账本：旧的</text></g>
+        <g id="a-led2" class="h"><rect x="300" y="420" width="400" height="110" rx="14" fill="#121a12" stroke="#83C167" stroke-width="3" /><text x="500" y="488" font-size="34" fill="#83C167" text-anchor="middle" font-weight="700">账本：最终的</text></g>
+        <g id="a-x" class="h"><circle cx="1440" cy="450" r="90" fill="#1f1012" stroke="#FC6255" stroke-width="5" /><text x="1440" y="462" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">对方</text></g>
+        <path id="a-give" class="dr h" pathLength="1" d="M764 400 L 1344 400" stroke="#F0B90B" stroke-width="5" fill="none" marker-end="url(#a-aho)" />
+        <text id="a-givet" class="h" x="1050" y="370" font-size="32" fill="#F0B90B" text-anchor="middle">转钱 = 交出控制权</text>
+        <path id="a-back" class="dr h" pathLength="1" d="M1380 530 C 1250 640, 900 640, 768 540" stroke="#FC6255" stroke-width="5" fill="none" marker-end="url(#a-ahr)" />
+        <path id="a-back2" class="dr h" pathLength="1" d="M1380 530 C 1250 640, 900 640, 768 540" stroke="#83C167" stroke-width="5" fill="none" marker-end="url(#a-ahg)" />
+        <text id="a-backt" class="h" x="1060" y="680" font-size="32" fill="#FC6255" text-anchor="middle">带着旧账本，再进来一次</text>
+        <text id="a-bx" class="h" x="1060" y="680" font-size="32" fill="#83C167" text-anchor="middle">再进来，读到的已经是最终余额</text>
+      </g>
+      <g id="a-cond">
+        <text id="a-c1" class="h" x="960" y="330" font-size="34" fill="#83C167" text-anchor="middle">前提 ①：所有读写同一份状态的入口，都遵守这个顺序，或共享同一把锁</text>
+        <text id="a-c2" class="h" x="960" y="400" font-size="34" fill="#83C167" text-anchor="middle">前提 ②：第三方读你的数据前，确认你不在中途</text>
+      </g>
+      <g id="a-audit">
+        <rect id="a-au0" class="h" x="260" y="500" width="1400" height="190" rx="20" fill="#1f170c" stroke="#FF9F43" stroke-width="3" />
+        <text id="a-au1" class="h" x="960" y="575" font-size="36" fill="#FF9F43" text-anchor="middle" font-weight="700">审计：找出每一个交出控制权的位置</text>
+        <text id="a-au2" class="h" x="960" y="640" font-size="36" fill="#e8e6df" text-anchor="middle">那一刻，哪些状态还没更新？</text>
+      </g>
+      <text id="a-next" class="h" x="960" y="860" font-size="40" fill="#8a8f99" text-anchor="middle">下一集 · <tspan fill="#58C4DD">访问控制与权限</tspan></text>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 44.25, "L": [[0.6, 5.23], [5.68, 12.4], [12.85, 18.13], [18.58, 28.52], [28.97, 36.98], [37.43, 43.15]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAWA = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      IN("#a-pin", at(0, 0.05), 0.8, { scale: 0.6, x: -560, y: -10, svgOrigin: "960 120" }, { scale: 1, x: 0, y: 0, ease: "expo.out" });
+      IN("#a-c", at(0, 0.5), 0.5);
+      IN("#a-led", at(0, 0.6), 0.4);
+      IN("#a-x", at(0, 0.7), 0.4);
+      // L1 转钱 = 交出控制权；带着旧账本再进来
+      DRAWA("#a-give", at(1, 0.0), 0.6);
+      IN("#a-givet", at(1, 0.05), 0.4);
+      DRAWA("#a-back", at(1, 0.5), 0.7);
+      IN("#a-backt", at(1, 0.55), 0.4);
+      // L2 先记账：控制权离开时账本已是最终
+      OUT(["#a-give", "#a-givet", "#a-back", "#a-backt"], at(2, 0.0), 0.3);
+      OUT("#a-led", at(2, 0.15), 0.3);
+      IN("#a-led2", at(2, 0.2), 0.5, { scale: 1.1, svgOrigin: "500 475" }, { scale: 1 });
+      DRAWA("#a-give", at(2, 0.3), 0.5);
+      DRAWA("#a-back2", at(2, 0.4), 0.5);
+      IN("#a-bx", at(2, 0.45), 0.4);
+      // L3 成立条件
+      tl.to("#a-diag", { opacity: 0, duration: 0.5 }, at(3, 0.0));
+      IN("#a-c1", at(3, 0.1), 0.6);
+      IN("#a-c2", at(3, 0.6), 0.6);
+      // L4 审计问题
+      IN(["#a-au0", "#a-au1"], at(4, 0.05), 0.6, { y: 20 }, { y: 0 });
+      IN("#a-au2", at(4, 0.5), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      // L5 下一集
+      IN("#a-next", at(5, 0.1), 0.5);
+      tl.to(["#a-pin", "#a-cond", "#a-audit", "#a-next"], { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,151 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="storage" data-duration="64.04" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="s-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="s-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#83C167" /></marker>
+      </defs>
+      <g id="s-all">
+        <text id="s-title" class="h" x="960" y="200" font-size="40" fill="#F0B90B" text-anchor="middle" font-weight="700">代理的存储（两份代码共用）</text>
+        <!-- 槽位列 -->
+        <g id="s-col" class="h" font-size="30">
+          <rect id="s-c0" x="760" y="280" width="400" height="76" rx="10" fill="#161a22" stroke="#8a8f99" stroke-width="2" />
+          <rect id="s-c1" x="760" y="376" width="400" height="76" rx="10" fill="#161a22" stroke="#8a8f99" stroke-width="2" />
+          <rect x="760" y="472" width="400" height="76" rx="10" fill="#161a22" stroke="#8a8f99" stroke-width="2" />
+          <rect x="760" y="568" width="400" height="76" rx="10" fill="#161a22" stroke="#8a8f99" stroke-width="2" />
+          <text x="785" y="329" fill="#6b6f7a">0</text><text x="785" y="425" fill="#6b6f7a">1</text><text x="785" y="521" fill="#6b6f7a">2</text><text x="785" y="617" fill="#6b6f7a">3</text>
+        </g>
+
+        <!-- 类型 A：朴素代理撞槽 -->
+        <g id="s-ca" class="h">
+          <rect x="140" y="270" width="420" height="140" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="3" />
+          <text x="350" y="320" font-size="30" fill="#58C4DD" text-anchor="middle">代理的变量</text>
+          <text class="mono" x="350" y="375" font-size="30" fill="#e8e6df" text-anchor="middle">implementation</text>
+        </g>
+        <g id="s-cb" class="h">
+          <rect x="1360" y="270" width="420" height="140" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="3" />
+          <text x="1570" y="320" font-size="30" fill="#58C4DD" text-anchor="middle">实现的变量</text>
+          <text class="mono" x="1570" y="375" font-size="30" fill="#e8e6df" text-anchor="middle">owner</text>
+        </g>
+        <path id="s-aa" class="dr h" pathLength="1" d="M565 340 L 748 318" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#s-ah)" />
+        <path id="s-ab" class="dr h" pathLength="1" d="M1355 340 L 1172 318" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#s-ah)" />
+        <text id="s-clash" class="h" x="960" y="760" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="700">写 owner = 改实现地址</text>
+
+        <!-- EIP-1967 固定槽位 -->
+        <text id="s-dots" class="h" x="960" y="740" font-size="40" fill="#6b6f7a" text-anchor="middle">⋮</text>
+        <g id="s-far" class="h">
+          <rect x="760" y="790" width="400" height="76" rx="10" fill="#132016" stroke="#83C167" stroke-width="3" />
+          <text class="mono" x="960" y="839" font-size="30" fill="#83C167" text-anchor="middle">keccak256(…) − 1</text>
+        </g>
+        <path id="s-af" class="dr h" pathLength="1" d="M350 415 C 350 700, 520 828, 748 828" stroke="#83C167" stroke-width="4" fill="none" marker-end="url(#s-ahg)" />
+        <text id="s-fart" class="h" x="1200" y="839" font-size="30" fill="#83C167">✓ 普通变量和映射碰不到</text>
+
+        <!-- 类型 B：升级前后布局错位 -->
+        <text id="s-v1h" class="h" x="700" y="250" font-size="34" fill="#83C167" text-anchor="end" font-weight="700">V1 读作</text>
+        <g id="s-v1" class="h" font-size="30" fill="#83C167" text-anchor="end">
+          <text x="700" y="329">owner</text><text x="700" y="425">总存款</text><text x="700" y="521">balances</text><text x="700" y="617">initialized</text>
+        </g>
+        <g id="s-vals" class="h" font-size="30" text-anchor="end">
+          <text class="mono" x="1140" y="329" fill="#e8e6df">0xA11c…</text>
+          <text id="s-val1" class="mono" x="1140" y="425" fill="#F0B90B">5,000,000</text>
+          <text x="1140" y="521" fill="#8a8f99">映射占位</text>
+          <text class="mono" x="1140" y="617" fill="#e8e6df">true</text>
+        </g>
+        <text id="s-v2h" class="h" x="1200" y="250" font-size="34" fill="#FC6255" font-weight="700">V2 读作（前面插入）</text>
+        <g font-size="30" fill="#FC6255">
+          <text class="s-v2 h" x="1200" y="329">feeBps</text>
+          <text id="s-v2own" class="s-v2 h" x="1200" y="425">owner</text>
+          <text class="s-v2 h" x="1200" y="521">总存款</text>
+          <text class="s-v2 h" x="1200" y="617">balances</text>
+        </g>
+        <text id="s-stay" class="h" x="960" y="720" font-size="32" fill="#8a8f99" text-anchor="middle">变量名往后挪一格，旧数据留在原地</text>
+
+        <!-- 一步步算 -->
+        <g id="s-k1" class="h"><text x="380" y="860" font-size="34" fill="#F0B90B" text-anchor="middle">旧总存款 5,000,000</text><text x="380" y="905" font-size="28" fill="#6b6f7a" text-anchor="middle">示例数值</text></g>
+        <text id="s-ka" class="h" x="680" y="860" font-size="40" fill="#8a8f99" text-anchor="middle">→</text>
+        <g id="s-k2" class="h"><text class="mono" x="930" y="860" font-size="36" fill="#e8e6df" text-anchor="middle">0x4C4B40</text><text x="930" y="905" font-size="28" fill="#6b6f7a" text-anchor="middle">十六进制</text></g>
+        <text id="s-kb" class="h" x="1170" y="860" font-size="40" fill="#8a8f99" text-anchor="middle">→</text>
+        <g id="s-k3" class="h"><text class="mono" x="1500" y="860" font-size="34" fill="#FC6255" text-anchor="middle">owner = 0x0000…004C4B40</text><text x="1500" y="905" font-size="28" fill="#6b6f7a" text-anchor="middle">低 20 字节当作地址</text></g>
+
+        <!-- 修复：末尾追加 -->
+        <g id="s-v2g" class="h" font-size="30" fill="#83C167">
+          <text x="1200" y="329">owner</text><text x="1200" y="425">总存款</text><text x="1200" y="521">balances</text><text x="1200" y="617">initialized</text>
+          <text x="1200" y="713" font-weight="700">feeBps（新，追加）</text>
+        </g>
+        <text id="s-v2gh" class="h" x="1200" y="250" font-size="34" fill="#83C167" font-weight="700">V2 读作（末尾追加）</text>
+        <g id="s-c4" class="h">
+          <rect x="760" y="664" width="400" height="76" rx="10" fill="#132016" stroke="#83C167" stroke-width="3" />
+          <text x="785" y="713" font-size="30" fill="#6b6f7a">4</text>
+          <text class="mono" x="1140" y="713" font-size="30" fill="#83C167" text-anchor="end">0</text>
+        </g>
+        <text id="s-rule" class="h" x="960" y="880" font-size="38" fill="#e8e6df" text-anchor="middle">只在<tspan fill="#83C167">末尾追加</tspan> · 不删除 · 不重排 · 不改类型</text>
+        <text id="s-rule2" class="h" x="960" y="950" font-size="34" fill="#8a8f99" text-anchor="middle">用工具比对新旧存储布局</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 64.04, "L": [[0.6, 5.42], [5.87, 15.43], [15.88, 26.15], [26.6, 34.18], [34.63, 42.07], [42.52, 54.11], [54.56, 62.94]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 共用一块存储
+      IN("#s-title", at(0, 0.05), 0.5);
+      IN("#s-col", at(0, 0.2), 0.7, { y: 20 }, { y: 0 });
+      // L1 朴素代理：同在 0 号槽
+      IN("#s-ca", at(1, 0.08), 0.5, { x: -30 }, { x: 0 });
+      DRAW("#s-aa", at(1, 0.2), 0.5);
+      IN("#s-cb", at(1, 0.38), 0.5, { x: 30 }, { x: 0 });
+      DRAW("#s-ab", at(1, 0.5), 0.5);
+      tl.to("#s-c0", { stroke: "#FC6255", strokeWidth: 5, fill: "#1f1214", duration: 0.3 }, at(1, 0.66));
+      IN("#s-clash", at(1, 0.72), 0.5);
+      // L2 EIP-1967
+      OUT(["#s-clash", "#s-aa"], at(2, 0), 0.3);
+      tl.to("#s-c0", { stroke: "#8a8f99", strokeWidth: 2, fill: "#161a22", duration: 0.3 }, at(2, 0.05));
+      IN("#s-dots", at(2, 0.15), 0.3);
+      IN("#s-far", at(2, 0.2), 0.6, { y: 20 }, { y: 0 });
+      DRAW("#s-af", at(2, 0.3), 0.8);
+      IN("#s-fart", at(2, 0.7), 0.5);
+      // L3 V1 布局
+      OUT(["#s-ca", "#s-cb", "#s-ab", "#s-af", "#s-far", "#s-dots", "#s-fart", "#s-title"], at(3, 0), 0.4);
+      IN("#s-vals", at(3, 0.15), 0.6);
+      IN(["#s-v1h", "#s-v1"], at(3, 0.3), 0.6);
+      // L4 V2 前面插入：名字下移，数据不动
+      IN("#s-v2h", at(4, 0.05), 0.4);
+      gsap.utils.toArray("#root .s-v2").forEach((t, i) => IN(t, at(4, 0.2) + i * 0.15, 0.5, { y: -96 }, { y: 0 }));
+      IN("#s-stay", at(4, 0.6), 0.5);
+      // L5 一步步算
+      OUT("#s-stay", at(5, 0), 0.3);
+      tl.to("#s-c1", { stroke: "#F0B90B", strokeWidth: 4, duration: 0.3 }, at(5, 0.05));
+      IN("#s-k1", at(5, 0.08), 0.5);
+      IN("#s-ka", at(5, 0.28), 0.3);
+      IN("#s-k2", at(5, 0.3), 0.5);
+      IN("#s-kb", at(5, 0.55), 0.3);
+      IN("#s-k3", at(5, 0.58), 0.5);
+      tl.to("#s-v2own", { fontWeight: 700, duration: 0.2 }, at(5, 0.58));
+      // L6 修复：末尾追加
+      OUT(["#s-k1", "#s-k2", "#s-k3", "#s-ka", "#s-kb", "#root .s-v2", "#s-v2h"], at(6, 0), 0.35);
+      tl.to("#s-c1", { stroke: "#8a8f99", strokeWidth: 2, duration: 0.3 }, at(6, 0.0));
+      IN("#s-v2gh", at(6, 0.08), 0.4);
+      IN("#s-v2g", at(6, 0.12), 0.5);
+      IN("#s-c4", at(6, 0.12), 0.5, { y: 20 }, { y: 0 });
+      IN("#s-rule", at(6, 0.3), 0.5);
+      IN("#s-rule2", at(6, 0.75), 0.5);
+
+      tl.to("#s-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["storage"] = tl;
+    })();
+  </script>
+</template>

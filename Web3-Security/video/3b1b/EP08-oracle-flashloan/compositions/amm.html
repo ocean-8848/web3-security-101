@@ -1,0 +1,78 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="amm" data-duration="42.72" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="m-all">
+        <g id="m-axes" class="h" stroke="#6b6f7a" stroke-width="3"><line x1="300" y1="900" x2="1140" y2="900" /><line x1="300" y1="900" x2="300" y2="180" /></g>
+        <text id="m-xl" class="h" x="1150" y="910" font-size="30" fill="#8a8f99">x：ETH 储备</text>
+        <text id="m-yl" class="h" x="300" y="160" font-size="30" fill="#8a8f99" text-anchor="middle">y：USDC 储备</text>
+        <path id="m-curve" class="dr" pathLength="1" fill="none" stroke="#83C167" stroke-width="5" />
+        <text id="m-k" class="h" x="1050" y="660" font-size="34" fill="#83C167">x · y = k</text>
+        <text id="m-p" class="h" x="1260" y="240" font-size="40" fill="#e8e6df">现货价 P = <tspan fill="#58C4DD">y / x</tspan></text>
+        <text id="m-pnote" class="h" x="1260" y="290" font-size="28" fill="#8a8f99">= 从原点到这一点的斜率</text>
+        <line id="m-ray1" class="h" x1="300" y1="900" x2="967" y2="700" stroke="#58C4DD" stroke-width="3" stroke-dasharray="8 6" />
+        <circle id="m-a" class="h" cx="967" cy="700" r="16" fill="#F0B90B" />
+        <text id="m-s1" class="h" x="1260" y="400" font-size="34" fill="#e8e6df">1,000 ETH · 200 万 USDC<tspan font-size="28" fill="#8a8f99">（示例）</tspan></text>
+        <text id="m-s1p" class="h" x="1260" y="455" font-size="36" fill="#58C4DD">P = 2,000</text>
+        <text id="m-s2" class="h" x="1260" y="550" font-size="34" fill="#e8e6df">买入：<tspan fill="#FC6255">+400 万 USDC</tspan> → 600 万</text>
+        <line id="m-y6" class="h" x1="300" y1="300" x2="1100" y2="300" stroke="#FC6255" stroke-width="2" stroke-dasharray="6 6" />
+        <text id="m-y6t" class="h" x="290" y="310" font-size="28" fill="#FC6255" text-anchor="end">600 万</text>
+        <text id="m-y2t" class="h" x="290" y="710" font-size="28" fill="#8a8f99" text-anchor="end">200 万</text>
+        <text id="m-s3" class="h" x="1260" y="640" font-size="34" fill="#e8e6df">ETH = 20 亿 ÷ 600 万 ≈ <tspan fill="#F0B90B">333.3</tspan></text>
+        <line id="m-ray2" class="h" x1="300" y1="900" x2="522.2" y2="300" stroke="#FC6255" stroke-width="4" />
+        <text id="m-s4" class="h" x="1260" y="730" font-size="34" fill="#e8e6df">P = 600 万 ÷ 333.3 ≈ <tspan fill="#FC6255" font-weight="800">18,000</tspan></text>
+        <text id="m-x9" class="h" x="1500" y="860" font-size="80" fill="#FC6255" text-anchor="middle" font-weight="800">× 9</text>
+        <text id="m-fee" class="h" x="1500" y="920" font-size="28" fill="#8a8f99" text-anchor="middle">忽略手续费</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 42.72, "L": [[0.6, 9.46], [9.91, 17.99], [18.44, 25.43], [25.88, 31.97], [32.42, 41.62]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      let d = ""; for (let i = 0; i <= 80; i++) { const e = 290 * Math.pow(1200 / 290, i / 80), u = 2e9 / e; d += (i ? " L " : "M ") + (300 + e * 2 / 3).toFixed(1) + " " + (900 - u / 1e4).toFixed(1); }
+      document.querySelector("#m-curve").setAttribute("d", d);
+      const pt = { e: 1000 }, A = document.querySelector("#m-a"), R = document.querySelector("#m-ray1");
+      const place = () => { const x = 300 + pt.e * 2 / 3, y = 900 - 2e9 / pt.e / 1e4; A.setAttribute("cx", x.toFixed(1)); A.setAttribute("cy", y.toFixed(1)); };
+      // L0 坐标、曲线、现货价
+      IN(["#m-axes", "#m-xl", "#m-yl"], at(0, 0.0), 0.5);
+      tl.fromTo("#m-curve", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.0, ease: "power2.inOut" }, at(0, 0.15));
+      IN("#m-k", at(0, 0.3), 0.4);
+      IN("#m-p", at(0, 0.6), 0.5);
+      // L1 示例池子
+      IN("#m-a", at(1, 0.05), 0.3, { scale: 0, svgOrigin: "967 700" }, { scale: 1 });
+      IN("#m-y2t", at(1, 0.1), 0.3);
+      IN("#m-s1", at(1, 0.1), 0.4);
+      IN("#m-ray1", at(1, 0.45), 0.4);
+      IN("#m-pnote", at(1, 0.5), 0.4);
+      IN("#m-s1p", at(1, 0.6), 0.4);
+      // L2 +400 万 USDC
+      IN("#m-s2", at(2, 0.05), 0.4);
+      IN(["#m-y6", "#m-y6t"], at(2, 0.4), 0.4);
+      // L3 k 不变 → 点沿曲线滑到 333.3
+      IN("#m-s3", at(3, 0.05), 0.4);
+      tl.fromTo(pt, { e: 1000 }, { e: 333.33, duration: 1.4, ease: "power2.inOut", onUpdate: place }, at(3, 0.2));
+      tl.to("#m-ray1", { opacity: 0.25, duration: 0.3 }, at(3, 0.2));
+      // L4 现货价 × 9
+      IN("#m-ray2", at(4, 0.05), 0.5);
+      IN("#m-s4", at(4, 0.1), 0.4);
+      IN("#m-x9", at(4, 0.5), 0.5, { scale: 1.5, svgOrigin: "1500 840" }, { scale: 1, ease: "back.out(2)" });
+      IN("#m-fee", at(4, 0.7), 0.4);
+      tl.to("#m-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["amm"] = tl;
+    })();
+  </script>
+</template>

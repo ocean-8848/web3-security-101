@@ -1,0 +1,107 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="hook" data-duration="35.73" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="h-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="h-all">
+        <g id="h-case">
+          <text id="h-date" class="h" x="200" y="170" font-size="34" fill="#6b6f7a" letter-spacing="2">2022 年 2 月 · Wormhole（Solana 一侧）</text>
+          <g id="h-prog" class="h">
+            <rect x="760" y="360" width="440" height="220" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+            <text x="980" y="455" font-size="38" fill="#58C4DD" text-anchor="middle" font-weight="700">Wormhole 程序</text>
+            <text x="980" y="510" font-size="28" fill="#8a8f99" text-anchor="middle">读取传入的系统账户</text>
+          </g>
+          <g id="h-fake" class="h">
+            <rect x="240" y="410" width="360" height="120" rx="14" fill="#1f1214" stroke="#FC6255" stroke-width="4" />
+            <text x="420" y="482" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">伪造的系统账户</text>
+          </g>
+          <path id="h-fa" class="dr h" pathLength="1" d="M605 470 L 750 470" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#h-ah)" />
+          <text id="h-mint" class="h" x="1560" y="480" font-size="52" fill="#F0B90B" text-anchor="middle" font-weight="800">12 万 wETH</text>
+          <text id="h-usd" class="h" x="1560" y="545" font-size="36" fill="#FC6255" text-anchor="middle">≈ 3.2 亿美元</text>
+        </g>
+
+        <!-- EVM vs Solana -->
+        <g id="h-evm" class="h">
+          <text x="480" y="220" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">EVM</text>
+          <rect x="200" y="300" width="560" height="200" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="480" y="380" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">合约 A</text>
+          <text x="480" y="440" font-size="28" fill="#8a8f99" text-anchor="middle">对方地址写在代码 / 存储里</text>
+          <path d="M480 505 L 480 590" stroke="#8a8f99" stroke-width="4" marker-end="url(#h-ah)" />
+          <rect x="300" y="600" width="360" height="130" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="3" />
+          <text x="480" y="678" font-size="32" fill="#58C4DD" text-anchor="middle">合约 B</text>
+        </g>
+        <g id="h-sol" class="h">
+          <text x="1440" y="220" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">Solana</text>
+          <rect x="1160" y="300" width="560" height="200" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="1440" y="380" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">程序</text>
+          <text x="1440" y="440" font-size="28" fill="#8a8f99" text-anchor="middle">要读哪些账户？由调用者给</text>
+        </g>
+        <g id="h-caller" class="h">
+          <circle cx="1440" cy="900" r="24" fill="#e8e6df" />
+          <text x="1500" y="910" font-size="30" fill="#8a8f99">调用者</text>
+        </g>
+        <g font-size="28" text-anchor="middle">
+          <g class="h-acc h"><rect x="1180" y="620" width="160" height="90" rx="12" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="1260" y="675" fill="#e8e6df">账户 1</text></g>
+          <g class="h-acc h"><rect x="1360" y="620" width="160" height="90" rx="12" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="1440" y="675" fill="#e8e6df">账户 2</text></g>
+          <g class="h-acc h"><rect id="h-a3" x="1540" y="620" width="160" height="90" rx="12" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text id="h-a3t" x="1620" y="675" fill="#e8e6df">系统账户</text></g>
+        </g>
+        <path id="h-up" class="dr h" pathLength="1" d="M1440 610 L 1440 512" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#h-ah)" />
+        <text id="h-noch" class="h" x="1440" y="800" font-size="34" fill="#FF9F43" text-anchor="middle" font-weight="700">程序不校验 → 可以换成伪造的</text>
+      </g>
+      <g id="h-qq">
+        <text id="h-q" class="h" x="960" y="560" font-size="68" fill="#e8e6df" text-anchor="middle" font-weight="800">换一种账户模型，换<tspan fill="#FF9F43">哪些检查</tspan>？</text>
+      </g>
+      <g id="h-pin" class="h">
+        <rect x="80" y="70" width="680" height="84" rx="14" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="420" y="125" font-size="34" fill="#e8e6df" text-anchor="middle">换一种账户模型，换<tspan fill="#FF9F43">哪些检查</tspan>？</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 35.73, "L": [[0.6, 10.78], [11.23, 17.03], [17.48, 22.91], [23.36, 30.51], [30.96, 34.63]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 伪造账户 → 铸币
+      IN("#h-date", at(0, 0), 0.5);
+      IN("#h-prog", at(0, 0.12), 0.6);
+      IN("#h-fake", at(0, 0.3), 0.5, { x: -40 }, { x: 0 });
+      DRAW("#h-fa", at(0, 0.42), 0.5);
+      IN("#h-mint", at(0, 0.6), 0.5, { scale: 0.8, svgOrigin: "1560 465" }, { scale: 1 });
+      IN("#h-usd", at(0, 0.72), 0.4);
+      // L1 EVM
+      OUT("#h-case", at(1, 0), 0.4);
+      IN("#h-evm", at(1, 0.1), 0.7, { y: 20 }, { y: 0 });
+      // L2 Solana：账户由调用者传入
+      IN("#h-sol", at(2, 0.05), 0.6, { y: 20 }, { y: 0 });
+      IN("#h-caller", at(2, 0.3), 0.4);
+      gsap.utils.toArray("#root .h-acc").forEach((g, i) => IN(g, at(2, 0.45) + i * 0.15, 0.4, { y: 120 }, { y: 0 }));
+      DRAW("#h-up", at(2, 0.8), 0.4);
+      // L3 换成伪造的
+      tl.to("#h-a3", { stroke: "#FC6255", fill: "#1f1214", strokeWidth: 4, duration: 0.3 }, at(3, 0.15));
+      tl.to("#h-a3t", { fill: "#FC6255", duration: 0.3 }, at(3, 0.15));
+      IN("#h-noch", at(3, 0.25), 0.5);
+      // L4 问题
+      tl.to("#h-all", { opacity: 0, filter: "blur(6px)", duration: 0.5, ease: "power2.in" }, at(4, 0));
+      IN("#h-q", at(4, 0.05), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      tl.to("#h-qq", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, C.d - 1.5);
+      IN("#h-pin", C.d - 1.3, 0.5, { scale: 1.5, svgOrigin: "420 112" }, { scale: 1 });
+      OUT("#h-pin", C.d - 0.45, 0.35);
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>

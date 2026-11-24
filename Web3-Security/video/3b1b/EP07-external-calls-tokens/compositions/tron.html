@@ -1,0 +1,100 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="tron" data-duration="44.95" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="t-p1">
+        <g id="t-coin" class="h">
+          <circle cx="960" cy="540" r="130" fill="#1a1708" stroke="#F0B90B" stroke-width="5" />
+          <text x="960" y="530" font-size="44" fill="#F0B90B" text-anchor="middle" font-weight="800">ERC-20</text>
+          <text x="960" y="580" font-size="28" fill="#8a8f99" text-anchor="middle">接口 ✓ 行为 ?</text>
+        </g>
+        <g font-size="32" fill="#e8e6df" text-anchor="middle">
+          <text class="t-b h" x="960" y="290">不返回值</text>
+          <text id="t-false" class="t-b h" x="1330" y="370" fill="#FF9F43" font-weight="700">成功却返回 false</text>
+          <text class="t-b h" x="1440" y="550">转账收税</text>
+          <text class="t-b h" x="1330" y="730">余额自动变化</text>
+          <text class="t-b h" x="960" y="820">黑名单 / 冻结</text>
+          <text class="t-b h" x="590" y="730">可暂停</text>
+          <text class="t-b h" x="480" y="550">转账钩子</text>
+          <text class="t-b h" x="590" y="370">可升级</text>
+        </g>
+        <text id="t-eight" class="h" x="960" y="160" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">ERC-20 只规定接口，没有规定行为</text>
+      </g>
+      <g id="t-p2">
+        <text id="t-tt" class="h" x="960" y="140" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="800">TRON 上的 USDT</text>
+        <g id="t-call" class="h">
+          <text x="960" y="250" font-size="36" fill="#58C4DD" text-anchor="middle" class="mono">transfer(to, amt)</text>
+          <text x="760" y="320" font-size="34" fill="#83C167" text-anchor="middle">钱：到账 ✓</text>
+          <text x="1160" y="320" font-size="34" fill="#FC6255" text-anchor="middle" class="mono">返回 false</text>
+        </g>
+        <!-- 两条链 -->
+        <g id="t-eth" class="h"><text x="560" y="450" font-size="34" fill="#e8e6df" text-anchor="middle">以太坊</text><rect x="360" y="480" width="400" height="90" rx="14" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="560" y="537" font-size="30" fill="#58C4DD" text-anchor="middle" class="mono">safeTransfer</text></g>
+        <text id="t-ethok" class="h" x="560" y="630" font-size="34" fill="#83C167" text-anchor="middle">提款 ✓</text>
+        <g id="t-trx" class="h"><text x="1360" y="450" font-size="34" fill="#e8e6df" text-anchor="middle">TRON</text><rect id="t-trxr" x="1160" y="480" width="400" height="90" rx="14" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="1360" y="537" font-size="30" fill="#58C4DD" text-anchor="middle" class="mono">safeTransfer</text></g>
+        <text id="t-trxno" class="h" x="1360" y="630" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">✕ 一律回滚</text>
+      </g>
+      <g id="t-p3">
+        <text id="t-ft" class="h" x="960" y="140" font-size="44" fill="#83C167" text-anchor="middle" font-weight="800">不读返回值，看结果</text>
+        <line id="t-base" class="h" x1="560" y1="760" x2="1360" y2="760" stroke="#2a2f3a" stroke-width="3" />
+        <rect id="t-bef" class="h" x="660" y="460" width="200" height="300" fill="#F0B90B" opacity=".55" />
+        <text id="t-beft" class="h" x="760" y="810" font-size="32" fill="#e8e6df" text-anchor="middle">转账前</text>
+        <rect id="t-aft" class="h" x="1060" y="460" width="200" height="300" fill="#F0B90B" opacity=".55" />
+        <rect id="t-delta" x="1060" y="460" width="200" height="0" fill="#83C167" />
+        <text id="t-aftt" class="h" x="1160" y="810" font-size="32" fill="#e8e6df" text-anchor="middle">转账后</text>
+        <text id="t-dt" class="h" x="1300" y="400" font-size="36" fill="#83C167" font-weight="700">增量 = 金额 ✓</text>
+        <text id="t-code" class="h mono" x="960" y="900" font-size="32" fill="#58C4DD" text-anchor="middle">require(balanceOf(to) - before == amt)</text>
+        <g id="t-warn" class="h">
+          <text x="960" y="980" font-size="34" fill="#FF9F43" text-anchor="middle">假设：没有转账手续费 · Tether 保留了开启手续费的能力</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 44.95, "L": [[0.6, 9.41], [9.86, 15.95], [16.4, 26.7], [27.15, 37.3], [37.75, 43.85]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      const bs = gsap.utils.toArray("#root .t-b");
+      // L0 八种行为
+      IN("#t-coin", at(0, 0.05), 0.6, { scale: 0.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      IN("#t-eight", at(0, 0.15), 0.5);
+      bs.forEach((b, i) => IN(b, at(0, 0.55) + i * 0.3, 0.35, { scale: 0.7, transformOrigin: "50% 50%" }, { scale: 1 }));
+      // L1 成功却返回 false
+      tl.to(bs.filter((b, i) => i !== 1), { opacity: 0.2, duration: 0.4 }, at(1, 0.05));
+      tl.to("#t-false", { scale: 1.25, transformOrigin: "50% 50%", duration: 0.4, yoyo: true, repeat: 1 }, at(1, 0.2));
+      tl.to("#t-p1", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(1, 0.55));
+      IN("#t-tt", at(1, 0.6), 0.4);
+      IN("#t-call", at(1, 0.68), 0.5);
+      // L2 SafeERC20 在 TRON 上一律回滚
+      IN("#t-eth", at(2, 0.05), 0.4);
+      IN("#t-ethok", at(2, 0.2), 0.4);
+      IN("#t-trx", at(2, 0.3), 0.4);
+      tl.to("#t-trxr", { stroke: "#FC6255", duration: 0.3 }, at(2, 0.45));
+      IN("#t-trxno", at(2, 0.48), 0.4, { scale: 1.3, transformOrigin: "50% 50%" }, { scale: 1 });
+      // L3 余额差
+      tl.to("#t-p2", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(3, 0));
+      IN("#t-ft", at(3, 0.05), 0.5);
+      IN(["#t-base", "#t-bef", "#t-beft"], at(3, 0.2), 0.4);
+      IN(["#t-aft", "#t-aftt"], at(3, 0.45), 0.4);
+      tl.fromTo("#t-delta", { attr: { y: 460, height: 0 } }, { attr: { y: 360, height: 100 }, duration: 0.6, ease: "power2.out" }, at(3, 0.55));
+      IN("#t-dt", at(3, 0.62), 0.4);
+      IN("#t-code", at(3, 0.75), 0.4);
+      // L4 前提
+      IN("#t-warn", at(4, 0.05), 0.5);
+      tl.to(["#t-p3"], { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["tron"] = tl;
+    })();
+  </script>
+</template>

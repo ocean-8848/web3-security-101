@@ -1,0 +1,138 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="rounding" data-duration="58.86" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <text id="r-rule" class="h" x="960" y="140" font-size="52" fill="#e8e6df" text-anchor="middle" font-weight="800">舍入的<tspan fill="#FF9F43">余数</tspan>归<tspan fill="#58C4DD">协议</tspan>，不归调用者</text>
+
+      <g id="r-p1">
+        <!-- 余数落向协议 -->
+        <g id="r-who" class="h">
+          <circle cx="560" cy="560" r="80" fill="none" stroke="#e8e6df" stroke-width="4" />
+          <text x="560" y="575" font-size="36" fill="#e8e6df" text-anchor="middle">调用者</text>
+          <rect x="1220" y="470" width="280" height="180" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+          <text x="1360" y="575" font-size="40" fill="#58C4DD" text-anchor="middle" font-weight="700">协议</text>
+        </g>
+        <rect id="r-chip" class="h" x="935" y="330" width="50" height="50" rx="8" fill="#FF9F43" />
+
+        <!-- 四个金库函数 -->
+        <g id="r-lanes" font-size="34">
+          <g class="r-ln h"><text x="120" y="330" class="mono" fill="#58C4DD">deposit(资产)</text><text x="640" y="330" fill="#e8e6df">给 <tspan fill="#F0B90B">资产</tspan>，得 <tspan fill="#58C4DD">份额</tspan></text><text x="1180" y="330" fill="#83C167" font-weight="700">↓ 向下</text><text x="1400" y="330" fill="#8a8f99">少给份额</text></g>
+          <g class="r-ln h"><text x="120" y="450" class="mono" fill="#58C4DD">redeem(份额)</text><text x="640" y="450" fill="#e8e6df">给 <tspan fill="#58C4DD">份额</tspan>，得 <tspan fill="#F0B90B">资产</tspan></text><text x="1180" y="450" fill="#83C167" font-weight="700">↓ 向下</text><text x="1400" y="450" fill="#8a8f99">少给资产</text></g>
+          <g class="r-ln h"><text x="120" y="610" class="mono" fill="#58C4DD">mint(份额)</text><text x="640" y="610" fill="#e8e6df">要 <tspan fill="#58C4DD">份额</tspan>，算要付的 <tspan fill="#F0B90B">资产</tspan></text><text x="1180" y="610" fill="#83C167" font-weight="700">↑ 向上</text><text x="1400" y="610" fill="#8a8f99">多收资产</text></g>
+          <g class="r-ln h"><text x="120" y="730" class="mono" fill="#58C4DD">withdraw(资产)</text><text x="640" y="730" fill="#e8e6df">要 <tspan fill="#F0B90B">资产</tspan>，算要扣的 <tspan fill="#58C4DD">份额</tspan></text><text x="1180" y="730" fill="#83C167" font-weight="700">↑ 向上</text><text x="1400" y="730" fill="#8a8f99">多扣份额</text></g>
+        </g>
+        <text id="r-same" class="h" x="960" y="880" font-size="36" fill="#8a8f99" text-anchor="middle">方向不同，目的相同：余数留在协议里</text>
+      </g>
+
+      <!-- 一步步算：mint 1 份额 -->
+      <g id="r-p2">
+        <text id="r-ex" class="h" x="960" y="260" font-size="40" fill="#e8e6df" text-anchor="middle">示例：1 份额值 <tspan fill="#F0B90B">1.5</tspan> 个单位，<tspan class="mono" fill="#58C4DD">mint(1)</tspan> 错误地向下取整</text>
+        <text id="r-l1" class="h" x="300" y="400" font-size="32" fill="#8a8f99" text-anchor="end">应收</text>
+        <rect id="r-b1" class="h" x="330" y="360" width="600" height="60" rx="6" fill="#F0B90B" opacity=".35" stroke="#F0B90B" stroke-width="3" />
+        <text id="r-b1t" class="h" x="950" y="402" font-size="34" fill="#F0B90B">1.5</text>
+        <text id="r-l2" class="h" x="300" y="500" font-size="32" fill="#8a8f99" text-anchor="end">实收</text>
+        <rect id="r-b2" class="h" x="330" y="460" width="400" height="60" rx="6" fill="#F0B90B" />
+        <text id="r-b2t" class="h" x="710" y="502" font-size="34" fill="#1a1708" text-anchor="end" font-weight="800">1</text>
+        <rect id="r-gap" class="h" x="730" y="460" width="200" height="60" rx="6" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="8 6" />
+        <text id="r-gapt" class="h" x="830" y="575" font-size="34" fill="#FF9F43" text-anchor="middle" font-weight="700">白得 0.5</text>
+
+        <!-- 重复 1,000 次 -->
+        <g id="r-pieces" fill="#FF9F43"></g>
+        <text id="r-cnt" class="h" x="1100" y="420" font-size="40" fill="#e8e6df">× <tspan id="r-n">1</tspan> 次</text>
+        <rect id="r-acc" x="1100" y="840" width="160" height="0" rx="6" fill="#FC6255" />
+        <text id="r-acct" class="h" x="1180" y="900" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">≈ 500 单位</text>
+        <g id="r-hold" class="h">
+          <rect id="r-h1" x="1420" y="540" width="90" height="300" fill="#8a8f99" opacity=".6" />
+          <rect id="r-h2" x="1540" y="600" width="90" height="240" fill="#8a8f99" opacity=".6" />
+          <rect id="r-h3" x="1660" y="580" width="90" height="260" fill="#8a8f99" opacity=".6" />
+          <text x="1585" y="900" font-size="30" fill="#8a8f99" text-anchor="middle">其他持有人</text>
+        </g>
+        <line id="r-base" class="h" x1="1060" y1="842" x2="1800" y2="842" stroke="#2a2f3a" stroke-width="2" />
+      </g>
+
+      <!-- KyberSwap Elastic -->
+      <g id="r-kyber" class="h">
+        <text x="960" y="300" font-size="34" fill="#6b6f7a" text-anchor="middle">2023 年 11 月 · KyberSwap Elastic</text>
+        <text x="960" y="430" font-size="44" fill="#e8e6df" text-anchor="middle"><tspan class="mono" fill="#58C4DD">deltaL</tspan>：应<tspan fill="#83C167">向上</tspan>取整</text>
+        <text id="r-kdown" x="960" y="530" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="700">实际写成了向下取整</text>
+        <text id="r-kamt" x="960" y="660" font-size="40" fill="#FC6255" text-anchor="middle">受影响资产 ≈ 5,620 万美元</text>
+        <text id="r-ksrc" x="960" y="715" font-size="28" fill="#6b6f7a" text-anchor="middle">官方复盘 · 事发时估值</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 58.86, "L": [[0.6, 7.2], [7.65, 18.93], [19.38, 29.24], [29.69, 37.83], [38.28, 45.55], [46.0, 57.76]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 0.5 小块：从缺口飞向累积条
+      const pg = document.querySelector("#r-pieces"), P = [];
+      for (let i = 0; i < 24; i++) {
+        const r = document.createElementNS(NS, "rect");
+        r.setAttribute("x", "780"); r.setAttribute("y", "470"); r.setAttribute("width", "40"); r.setAttribute("height", "40"); r.setAttribute("rx", "6"); r.setAttribute("opacity", "0");
+        pg.appendChild(r); P.push(r);
+      }
+
+      // L0 规则
+      IN("#r-rule", at(0, 0.05), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      IN("#r-who", at(0, 0.3), 0.5);
+      IN("#r-chip", at(0, 0.45), 0.3, { scale: 0, transformOrigin: "50% 50%" }, { scale: 1 });
+      tl.to("#r-chip", { x: 400, y: 140, duration: 0.8, ease: "power2.inOut" }, at(0, 0.6));
+      OUT(["#r-who", "#r-chip"], at(0, 1) + 0.1, 0.3);
+
+      // L1 deposit / redeem：向下
+      const ln = gsap.utils.toArray("#root .r-ln");
+      tl.to("#r-rule", { y: -40, scale: 0.75, svgOrigin: "960 140", duration: 0.5 }, at(1, 0));
+      IN(ln[0], at(1, 0.1), 0.5, { x: -30 }, { x: 0 });
+      IN(ln[1], at(1, 0.55), 0.5, { x: -30 }, { x: 0 });
+      // L2 mint / withdraw：向上
+      IN(ln[2], at(2, 0.1), 0.5, { x: -30 }, { x: 0 });
+      IN(ln[3], at(2, 0.55), 0.5, { x: -30 }, { x: 0 });
+      IN("#r-same", at(2, 0.72), 0.4);
+
+      // L3 一步步算
+      tl.to("#r-p1", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(3, 0));
+      IN("#r-ex", at(3, 0.05), 0.5);
+      IN(["#r-l1", "#r-b1", "#r-b1t"], at(3, 0.3), 0.4);
+      IN(["#r-l2", "#r-b2", "#r-b2t"], at(3, 0.6), 0.4);
+      IN("#r-gap", at(3, 0.78), 0.3);
+      IN("#r-gapt", at(3, 0.82), 0.3);
+
+      // L4 × 1,000
+      IN(["#r-cnt", "#r-hold", "#r-base"], at(4, 0.0), 0.4);
+      const t0 = at(4, 0.1), dt = (at(4, 0.8) - t0) / P.length;
+      P.forEach((p, i) => {
+        tl.fromTo(p, { opacity: 0, x: 0, y: 0 }, { opacity: 1, duration: 0.08 }, t0 + i * dt);
+        tl.to(p, { x: 360, y: 330, opacity: 0, duration: 0.4, ease: "power2.in" }, t0 + i * dt + 0.08);
+      });
+      const n = { v: 1 }, nn = document.querySelector("#r-n");
+      tl.fromTo(n, { v: 1 }, { v: 1000, duration: at(4, 0.85) - t0, ease: "power2.in", onUpdate: () => { nn.textContent = Math.round(n.v).toLocaleString("en-US"); } }, t0);
+      tl.fromTo("#r-acc", { attr: { y: 840, height: 0 } }, { attr: { y: 600, height: 240 }, duration: at(4, 0.85) - t0, ease: "power2.in" }, t0 + 0.3);
+      tl.to(["#r-h1", "#r-h2", "#r-h3"], { scaleY: 0.8, transformOrigin: "50% 100%", duration: at(4, 0.85) - t0, ease: "power2.in" }, t0 + 0.3);
+      IN("#r-acct", at(4, 0.8), 0.4);
+
+      // L5 KyberSwap
+      tl.to("#r-p2", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(5, 0));
+      OUT("#r-rule", at(5, 0), 0.3);
+      IN("#r-kyber", at(5, 0.1), 0.6);
+      IN("#r-kdown", at(5, 0.3), 0.4, { y: -20 }, { y: 0 });
+      IN("#r-kamt", at(5, 0.68), 0.5);
+      IN("#r-ksrc", at(5, 0.78), 0.4);
+
+      tl.to("#r-kyber", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["rounding"] = tl;
+    })();
+  </script>
+</template>

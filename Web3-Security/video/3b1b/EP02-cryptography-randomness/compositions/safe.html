@@ -1,0 +1,122 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="safe" data-duration="34.22" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="f-all">
+        <!-- 保险柜（资产 = 金） -->
+        <g id="f-safe" class="h">
+          <rect x="760" y="170" width="400" height="400" rx="24" fill="#1a1708" stroke="#F0B90B" stroke-width="5" />
+          <circle cx="960" cy="370" r="120" fill="#13110a" stroke="#F0B90B" stroke-width="4" />
+          <g id="f-dial" stroke="#F0B90B" stroke-width="4">
+            <line x1="960" y1="262" x2="960" y2="292" /><line x1="1068" y1="370" x2="1038" y2="370" /><line x1="960" y1="478" x2="960" y2="448" /><line x1="852" y1="370" x2="882" y2="370" />
+            <circle cx="960" cy="370" r="34" fill="#F0B90B" stroke="none" />
+          </g>
+        </g>
+        <text id="f-lab" class="h" x="960" y="660" font-size="32" fill="#8a8f99" text-anchor="middle">密码：77 位数字</text>
+        <text id="f-digits" class="h mono" x="960" y="730" font-size="30" text-anchor="middle"><tspan id="f-bd" fill="#e8e6df">00000000</tspan><tspan id="f-fx" fill="#e8e6df">0</tspan></text>
+        <text id="f-bdl" class="h" x="340" y="790" font-size="30" fill="#FF9F43" text-anchor="middle">生日</text>
+        <text id="f-fxl" class="h" x="1030" y="790" font-size="30" fill="#6b6f7a" text-anchor="middle">一串固定数字</text>
+        <text id="f-try" class="h" x="960" y="900" font-size="48" fill="#FF9F43" text-anchor="middle" font-weight="700">只要试：几万个生日</text>
+
+        <!-- 小偷站在保险柜前 -->
+        <g id="f-thief" class="h">
+          <circle cx="1400" cy="330" r="46" fill="#2a1416" stroke="#FC6255" stroke-width="5" />
+          <path d="M1340 470 C 1340 400, 1460 400, 1460 470" fill="#2a1416" stroke="#FC6255" stroke-width="5" />
+          <text x="1400" y="530" font-size="30" fill="#FC6255" text-anchor="middle">小偷</text>
+        </g>
+        <g id="f-bell" class="h">
+          <path d="M1600 300 C 1600 240, 1680 240, 1680 300 L 1690 340 H 1590 Z" fill="none" stroke="#FF9F43" stroke-width="5" stroke-linejoin="round" />
+          <circle cx="1640" cy="352" r="9" fill="#FF9F43" />
+          <text x="1640" y="410" font-size="28" fill="#FF9F43" text-anchor="middle">试多了会被发现</text>
+        </g>
+      </g>
+
+      <!-- 链上：离线、并行、无限次 -->
+      <g id="f-chain">
+        <g id="f-list" class="h">
+          <rect x="140" y="280" width="480" height="500" rx="18" fill="#161a22" stroke="#8a8f99" stroke-width="3" />
+          <text x="380" y="340" font-size="32" fill="#e8e6df" text-anchor="middle" font-weight="700">链上公开：公钥与地址</text>
+          <text class="mono" x="380" y="420" font-size="30" fill="#8a8f99" text-anchor="middle">0x7a3f…c1</text>
+          <text class="mono" x="380" y="480" font-size="30" fill="#8a8f99" text-anchor="middle">0x19be…04</text>
+          <text class="mono" x="380" y="540" font-size="30" fill="#8a8f99" text-anchor="middle">0xd05c…7e</text>
+          <text class="mono" x="380" y="600" font-size="30" fill="#8a8f99" text-anchor="middle">0x4e8a…b2</text>
+          <text class="mono" x="380" y="660" font-size="30" fill="#8a8f99" text-anchor="middle">0x0000…9f</text>
+          <text x="380" y="740" font-size="28" fill="#6b6f7a" text-anchor="middle">（示意）</text>
+        </g>
+        <g id="f-lanes" fill="none" stroke="#FC6255" stroke-width="3" stroke-opacity=".8"></g>
+        <text id="f-w1" class="h" x="1320" y="430" font-size="48" fill="#FC6255" font-weight="700">离线</text>
+        <text id="f-w2" class="h" x="1320" y="540" font-size="48" fill="#FC6255" font-weight="700">并行</text>
+        <text id="f-w3" class="h" x="1320" y="650" font-size="48" fill="#FC6255" font-weight="700">无限次</text>
+        <g id="f-nobell" class="h">
+          <path d="M920 860 C 920 800, 1000 800, 1000 860 L 1010 900 H 910 Z" fill="none" stroke="#6b6f7a" stroke-width="5" stroke-linejoin="round" />
+          <line x1="900" y1="920" x2="1020" y2="800" stroke="#6b6f7a" stroke-width="5" />
+          <text x="1050" y="885" font-size="34" fill="#6b6f7a">不触发任何告警</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 34.22, "L": [[0.6, 7.08], [7.53, 12.55], [13.0, 16.91], [17.36, 23.96], [24.41, 33.12]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      let seed = 5; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+      // 77 位数字：前 8 位是生日，其余 69 位固定（示意）
+      const bd = document.querySelector("#f-bd"), fx = document.querySelector("#f-fx");
+      let s = ""; for (let i = 0; i < 69; i++) s += Math.floor(rnd() * 10);
+      fx.textContent = s; bd.textContent = "19870423";
+      const dates = ["19870423", "19870424", "19870425", "19870426", "19870427", "19870428", "19870429", "19870430", "19870501", "19870502", "19870503", "19870504"];
+
+      // L0 保险柜 + 77 位密码
+      IN("#f-safe", at(0, 0.05), 0.8, { y: 20 }, { y: 0 });
+      tl.fromTo("#f-dial", { rotation: 0, svgOrigin: "960 370" }, { rotation: 200, svgOrigin: "960 370", duration: 1.6, ease: "power2.inOut" }, at(0, 0.3));
+      IN("#f-lab", at(0, 0.4), 0.4);
+      IN("#f-digits", at(0, 0.45), 0.6);
+      // L1 生日 + 固定数字
+      tl.to("#f-bd", { fill: "#FF9F43", duration: 0.4 }, at(1, 0.25));
+      IN("#f-bdl", at(1, 0.25), 0.4);
+      tl.to("#f-fx", { fill: "#6b6f7a", duration: 0.4 }, at(1, 0.6));
+      IN("#f-fxl", at(1, 0.6), 0.4);
+      // L2 只要试几万个生日
+      const o = { v: 0 };
+      tl.fromTo(o, { v: 0 }, { v: dates.length - 1, duration: 2.6, ease: "none", onUpdate: () => { bd.textContent = dates[Math.round(o.v)]; } }, at(2, 0.05));
+      IN("#f-try", at(2, 0.3), 0.5);
+      // L3 比方的局限：小偷要站在柜前
+      tl.to(["#f-lab", "#f-digits", "#f-bdl", "#f-fxl", "#f-try"], { opacity: 0.2, duration: 0.4 }, at(3, 0.0));
+      IN("#f-thief", at(3, 0.1), 0.6, { x: 60 }, { x: 0 });
+      IN("#f-bell", at(3, 0.55), 0.5);
+      tl.fromTo("#f-bell path", { rotation: -12, svgOrigin: "1640 250" }, { rotation: 12, svgOrigin: "1640 250", duration: 0.15, repeat: 3, yoyo: true }, at(3, 0.7));
+      // L4 链上：离线、并行、无限次
+      tl.to("#f-all", { opacity: 0, filter: "blur(6px)", duration: 0.5, ease: "power2.in" }, at(4, 0.0));
+      IN("#f-list", at(4, 0.1), 0.6);
+      const lanes = document.querySelector("#f-lanes"), ls = [];
+      for (let i = 0; i < 8; i++) {
+        const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        const y = 330 + i * 55;
+        p.setAttribute("d", `M640 ${530} C 900 ${530}, 1000 ${y}, 1280 ${y}`);
+        p.setAttribute("pathLength", "1"); p.setAttribute("class", "dr");
+        lanes.appendChild(p); ls.push(p);
+      }
+      ls.forEach((p, i) => DRAW(p, at(4, 0.25) + i * 0.06, 0.6));
+      IN("#f-w1", at(4, 0.2), 0.4);
+      IN("#f-w2", at(4, 0.32), 0.4);
+      IN("#f-w3", at(4, 0.44), 0.4);
+      IN("#f-nobell", at(4, 0.7), 0.5);
+
+      tl.to("#f-chain", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["safe"] = tl;
+    })();
+  </script>
+</template>

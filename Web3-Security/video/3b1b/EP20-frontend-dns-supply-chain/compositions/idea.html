@@ -1,0 +1,120 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="idea" data-duration="39.07" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="i-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="i-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="i-all">
+        <!-- 用户 → 页面 → 钱包 → 合约 -->
+        <g id="i-user" class="h"><circle cx="200" cy="480" r="60" fill="#2a2f3a" stroke="#e8e6df" stroke-width="3" /><text x="200" y="492" font-size="32" fill="#e8e6df" text-anchor="middle">用户</text></g>
+        <g id="i-page" class="h">
+          <rect id="i-pager" x="420" y="330" width="380" height="300" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+          <text x="610" y="390" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">页面</text>
+          <text id="i-say" x="610" y="480" font-size="30" fill="#e8e6df" text-anchor="middle">「这是一笔兑换」</text>
+          <text id="i-say2" class="h" x="610" y="480" font-size="30" fill="#FC6255" text-anchor="middle" font-weight="700">实际：授权给攻击者</text>
+        </g>
+        <path id="i-eye" class="dr h" pathLength="1" d="M265 480 L 410 480" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#i-ah)" />
+        <text id="i-read" class="h" x="337" y="455" font-size="28" fill="#8a8f99" text-anchor="middle">读</text>
+        <path id="i-a2" class="dr h" pathLength="1" d="M810 480 L 990 480" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#i-ah)" />
+        <text id="i-tx" class="h" x="900" y="455" font-size="28" fill="#F0B90B" text-anchor="middle">交易</text>
+        <g id="i-wal" class="h">
+          <rect x="1000" y="380" width="300" height="200" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+          <text x="1150" y="470" font-size="32" fill="#e8e6df" text-anchor="middle">钱包</text>
+          <text x="1150" y="520" font-size="28" fill="#8a8f99" text-anchor="middle">请你签名</text>
+        </g>
+        <path id="i-a3" class="dr h" pathLength="1" d="M1310 480 L 1490 480" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#i-ah)" />
+        <g id="i-con" class="h">
+          <rect x="1500" y="360" width="300" height="240" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+          <text x="1650" y="460" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">合约</text>
+          <text x="1650" y="520" font-size="28" fill="#83C167" text-anchor="middle">✓ 审计过</text>
+        </g>
+        <text id="i-noread" class="h" x="1650" y="660" font-size="30" fill="#6b6f7a" text-anchor="middle">用户不读这里</text>
+        <path id="i-bad" class="dr h" pathLength="1" d="M810 520 C 1000 700, 1300 700, 1490 560" stroke="#FC6255" stroke-width="5" fill="none" marker-end="url(#i-ahr)" />
+        <text id="i-badt" class="h" x="1150" y="760" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">对着审计过的合约，签下攻击交易</text>
+      </g>
+
+      <!-- 比方：柜台玻璃上的账号贴纸 -->
+      <g id="i-meta">
+        <g id="i-bank" class="h">
+          <rect x="300" y="240" width="1320" height="560" rx="20" fill="none" stroke="#2a2f3a" stroke-width="3" />
+          <text x="420" y="320" font-size="30" fill="#8a8f99">银行</text>
+          <g font-size="30" fill="#83C167" text-anchor="middle"><text x="500" y="720">金库 ✓</text><text x="760" y="720">账本 ✓</text><text x="1020" y="720">保安 ✓</text></g>
+          <rect x="1180" y="300" width="380" height="380" rx="12" fill="#1a2028" stroke="#8a8f99" stroke-width="3" />
+          <text x="1370" y="350" font-size="28" fill="#8a8f99" text-anchor="middle">柜台玻璃</text>
+        </g>
+        <g id="i-st1" class="h"><rect x="1220" y="420" width="300" height="140" rx="8" fill="#e8e6df" /><text x="1370" y="475" font-size="28" fill="#0f1117" text-anchor="middle">收款账号</text><text x="1370" y="525" font-size="30" fill="#0f1117" text-anchor="middle" font-weight="700">6222 0001 …</text></g>
+        <g id="i-st2" class="h"><rect x="1220" y="420" width="300" height="140" rx="8" fill="#FC6255" /><text x="1370" y="475" font-size="28" fill="#0f1117" text-anchor="middle">收款账号</text><text x="1370" y="525" font-size="30" fill="#0f1117" text-anchor="middle" font-weight="700">6222 9999 …</text></g>
+        <text id="i-stx" class="h" x="1370" y="760" font-size="28" fill="#6b6f7a" text-anchor="middle">账号为示例</text>
+        <!-- 不成立：千里之外；只给一个人看 -->
+        <g id="i-far" class="h">
+          <circle cx="200" cy="900" r="24" fill="#2a1416" stroke="#FC6255" stroke-width="3" />
+          <path d="M230 900 C 600 980, 1000 980, 1220 600" stroke="#FC6255" stroke-width="3" stroke-dasharray="10 8" fill="none" />
+          <text x="260" y="960" font-size="30" fill="#FC6255">千里之外</text>
+        </g>
+        <g id="i-crowd"></g>
+        <text id="i-only" class="h" x="1700" y="900" font-size="30" fill="#FC6255" text-anchor="end">只有一个人看到假贴纸</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 39.07, "L": [[0.6, 3.86], [4.31, 10.46], [10.91, 17.7], [18.15, 26.29], [26.74, 37.97]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAWA = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // 人群：8 个灰点，只有 1 个看到红色
+      const NS = "http://www.w3.org/2000/svg", cr = document.querySelector("#i-crowd"), ppl = [];
+      for (let i = 0; i < 8; i++) {
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", (500 + i * 90).toString()); c.setAttribute("cy", "640"); c.setAttribute("r", "22");
+        c.setAttribute("fill", "#8a8f99"); c.setAttribute("opacity", "0"); cr.appendChild(c); ppl.push(c);
+      }
+
+      // L0 用户读页面
+      IN("#i-user", at(0, 0.0), 0.4);
+      IN("#i-page", at(0, 0.2), 0.5, { scale: 0.3, svgOrigin: "610 480" }, { scale: 1 });
+      DRAWA("#i-eye", at(0, 0.5), 0.4); IN("#i-read", at(0, 0.55), 0.3);
+      // L1 页面构造交易 → 钱包签名
+      DRAWA("#i-a2", at(1, 0.3), 0.5); IN("#i-tx", at(1, 0.35), 0.3);
+      IN("#i-wal", at(1, 0.45), 0.5);
+      DRAWA("#i-a3", at(1, 0.7), 0.4);
+      IN("#i-con", at(1, 0.75), 0.5);
+      IN("#i-noread", at(1, 0.85), 0.4);
+      // L2 改掉页面
+      tl.to("#i-pager", { stroke: "#FC6255", strokeOpacity: 1, duration: 0.3 }, at(2, 0.15));
+      OUT("#i-say", at(2, 0.2), 0.2);
+      IN("#i-say2", at(2, 0.25), 0.3);
+      DRAWA("#i-bad", at(2, 0.45), 0.7);
+      IN("#i-badt", at(2, 0.6), 0.5);
+
+      // L3 银行贴纸
+      tl.to("#i-all", { opacity: 0, duration: 0.4 }, at(3, 0));
+      IN("#i-bank", at(3, 0.05), 0.6);
+      IN("#i-st1", at(3, 0.2), 0.4);
+      tl.to("#i-st1", { y: -400, opacity: 0, duration: 0.5, ease: "power2.in" }, at(3, 0.75));
+      IN("#i-st2", at(3, 0.8), 0.4, { y: -60 }, { y: 0 });
+      IN("#i-stx", at(3, 0.85), 0.3);
+      // L4 不成立：千里之外；只给一个人看
+      tl.to("#i-bank g", { opacity: 0.3, duration: 0.3 }, at(4, 0));
+      IN("#i-far", at(4, 0.1), 0.6);
+      ppl.forEach((p, i) => IN(p, at(4, 0.5) + i * 0.06, 0.3));
+      tl.to(ppl[5], { fill: "#FC6255", duration: 0.3 }, at(4, 0.75));
+      IN("#i-only", at(4, 0.78), 0.4);
+
+      tl.to(["#i-all", "#i-meta"], { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["idea"] = tl;
+    })();
+  </script>
+</template>

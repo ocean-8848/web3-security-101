@@ -1,0 +1,88 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="anycall" data-duration="38.35" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="a-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="a-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="a-all">
+        <text id="a-t" class="h" x="120" y="120" font-size="44" fill="#FC6255" font-weight="800">④ 替用户调用任意地址</text>
+        <!-- 中间合约 -->
+        <g id="a-c" class="h">
+          <rect id="a-cr" x="700" y="300" width="520" height="300" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="960" y="360" font-size="32" fill="#58C4DD" text-anchor="middle" font-weight="700">某个合约</text>
+          <text class="mono" x="960" y="430" font-size="30" fill="#e8e6df" text-anchor="middle">execute(target, data)</text>
+          <text class="mono" x="960" y="480" font-size="30" fill="#8a8f99" text-anchor="middle">target.call(data)</text>
+        </g>
+        <g id="a-slots" class="h">
+          <rect x="760" y="520" width="120" height="50" rx="6" fill="#2a2f3a" stroke="#8a8f99" stroke-width="2" /><rect x="900" y="520" width="120" height="50" rx="6" fill="#2a2f3a" stroke="#8a8f99" stroke-width="2" /><rect x="1040" y="520" width="120" height="50" rx="6" fill="#2a2f3a" stroke="#8a8f99" stroke-width="2" />
+        </g>
+        <!-- 攻击者 -->
+        <g id="a-atk" class="h"><circle cx="960" cy="150" r="56" fill="#1f1012" stroke="#FC6255" stroke-width="4" /><text x="960" y="162" font-size="28" fill="#FC6255" text-anchor="middle">攻击者</text></g>
+        <path id="a-e1" class="dr h" pathLength="1" d="M960 210 L 960 292" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#a-ahr)" />
+        <text id="a-e1t" class="h" x="990" y="262" font-size="28" fill="#FC6255">目标和数据：由调用者决定</text>
+        <!-- 受害者与授权 -->
+        <g id="a-v" class="h">
+          <circle cx="260" cy="450" r="70" fill="#1c2029" stroke="#e8e6df" stroke-width="3" /><text x="260" y="462" font-size="30" fill="#e8e6df" text-anchor="middle">受害者</text>
+          <g fill="#F0B90B"><circle class="a-vc" cx="200" cy="580" r="20" /><circle class="a-vc" cx="250" cy="580" r="20" /><circle class="a-vc" cx="300" cy="580" r="20" /></g>
+        </g>
+        <path id="a-allow" class="dr h" pathLength="1" d="M335 450 L 692 450" stroke="#83C167" stroke-width="3" stroke-dasharray="1" fill="none" />
+        <text id="a-allowt" class="h" x="510" y="425" font-size="28" fill="#83C167" text-anchor="middle">授权：可以动用他的代币</text>
+        <!-- 代币合约 -->
+        <g id="a-tok" class="h"><rect x="1440" y="340" width="380" height="220" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="1630" y="400" font-size="32" fill="#58C4DD" text-anchor="middle" font-weight="700">代币合约</text></g>
+        <path id="a-e2" class="dr h" pathLength="1" d="M1224 450 L 1432 450" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#a-ahr)" />
+        <text id="a-e2t" class="h" x="1330" y="680" font-size="30" fill="#FC6255" text-anchor="middle">transferFrom(受害者, 攻击者, 金额)</text>
+        <text id="a-chk" class="h" x="1630" y="490" font-size="28" fill="#83C167" text-anchor="middle">调用方 = 被授权的合约 ✓</text>
+        <text id="a-res" class="h" x="960" y="800" font-size="36" fill="#FC6255" text-anchor="middle" font-weight="700">额度检查照样通过 · 代币到了攻击者手里</text>
+        <!-- delegatecall -->
+        <text id="a-dc" class="h" x="960" y="940" font-size="36" fill="#FF9F43" text-anchor="middle">换成 <tspan class="mono">delegatecall</tspan>：攻击者的代码直接改写这个合约的存储</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 38.35, "L": [[0.6, 5.14], [5.59, 14.73], [15.18, 19.6], [20.05, 30.92], [31.37, 37.25]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      const DRAWA = (s, t, d = 0.5) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      IN("#a-t", at(0, 0.05), 0.5, { x: -20 }, { x: 0 });
+      // L1 execute(target, data)
+      IN("#a-c", at(1, 0.0), 0.6, { y: 20 }, { y: 0 });
+      IN("#a-atk", at(1, 0.35), 0.4);
+      DRAWA("#a-e1", at(1, 0.45));
+      IN("#a-e1t", at(1, 0.55), 0.4);
+      // L2 受害者曾授权
+      IN("#a-v", at(2, 0.0), 0.5, { x: -20 }, { x: 0 });
+      DRAWA("#a-allow", at(2, 0.3), 0.6);
+      IN("#a-allowt", at(2, 0.4), 0.4);
+      // L3 transferFrom
+      IN("#a-tok", at(3, 0.0), 0.4);
+      DRAWA("#a-e2", at(3, 0.15));
+      IN("#a-e2t", at(3, 0.2), 0.4);
+      IN("#a-chk", at(3, 0.45), 0.4);
+      gsap.utils.toArray("#root .a-vc").forEach((c, i) => tl.to(c, { attr: { cx: 1060 + i * 46, cy: 150 }, fill: "#FC6255", duration: 1.0, ease: "power2.inOut" }, at(3, 0.6) + i * 0.1));
+      IN("#a-res", at(3, 0.75), 0.4);
+      // L4 delegatecall 改写存储
+      IN("#a-slots", at(4, 0.0), 0.3);
+      tl.to("#a-slots rect", { fill: "#3a1416", stroke: "#FC6255", duration: 0.3, stagger: 0.15 }, at(4, 0.3));
+      tl.to("#a-cr", { stroke: "#FC6255", duration: 0.3 }, at(4, 0.5));
+      IN("#a-dc", at(4, 0.2), 0.5);
+
+      tl.to("#a-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["anycall"] = tl;
+    })();
+  </script>
+</template>

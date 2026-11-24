@@ -1,0 +1,98 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="eclipse" data-duration="45.91" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="e-all">
+        <text id="e-title" class="h" x="960" y="100" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">日蚀攻击：蒙住节点的眼睛</text>
+        <g id="e-links"></g>
+        <g id="e-peers"></g>
+        <g id="e-vic" class="h">
+          <circle cx="700" cy="540" r="100" fill="#1a1524" stroke="#B48EF0" stroke-width="5" />
+          <text x="700" y="535" font-size="32" fill="#e8e6df" text-anchor="middle" font-weight="700">受害节点</text>
+          <text id="e-rs" x="700" y="580" font-size="28" fill="#8a8f99" text-anchor="middle">运行中</text>
+        </g>
+        <text id="e-rst" class="h" x="700" y="580" font-size="28" fill="#FF9F43" text-anchor="middle">重启 ↻</text>
+        <!-- 状态卡 -->
+        <g id="e-card" class="h">
+          <rect x="1260" y="300" width="500" height="260" rx="18" fill="#161a22" stroke="#e8e6df" stroke-opacity=".5" stroke-width="3" />
+          <text x="1300" y="370" font-size="32" fill="#e8e6df">同步状态：<tspan fill="#83C167">正常 ✓</tspan></text>
+          <text x="1300" y="430" font-size="32" fill="#e8e6df">对等连接：<tspan fill="#83C167">有 ✓</tspan></text>
+          <text x="1300" y="490" font-size="32" fill="#e8e6df">实际：<tspan fill="#FC6255">落后 / 错误分支</tspan></text>
+        </g>
+        <!-- 研究数字 -->
+        <g id="e-r1" class="h">
+          <text x="1260" y="660" font-size="30" fill="#e8e6df">比特币（研究，2015）：</text>
+          <text x="1260" y="705" font-size="30" fill="#FF9F43">400 台主机足以日蚀真实节点</text>
+        </g>
+        <g id="e-r2" class="h">
+          <text x="1260" y="775" font-size="30" fill="#e8e6df">以太坊（研究，2018）：</text>
+          <text x="1260" y="820" font-size="30" fill="#FF9F43">2 台主机、各 1 个 IP</text>
+          <text id="e-r3" x="1260" y="865" font-size="28" fill="#8a8f99">Geth 1.8.0 起限制同一 /24 的节点数</text>
+        </g>
+        <!-- 外部比对 -->
+        <g id="e-ext" class="h">
+          <rect x="140" y="890" width="380" height="110" rx="16" fill="#12200f" stroke="#83C167" stroke-width="3" />
+          <text x="330" y="955" font-size="30" fill="#83C167" text-anchor="middle">运营方 X 的链头</text>
+          <rect x="880" y="890" width="380" height="110" rx="16" fill="#12200f" stroke="#83C167" stroke-width="3" />
+          <text x="1070" y="955" font-size="30" fill="#83C167" text-anchor="middle">运营方 Y 的链头</text>
+        </g>
+        <text id="e-50" class="h" x="960" y="1040" font-size="32" fill="#e8e6df" text-anchor="middle">连接再多，也不等于独立：链头要和不同运营方比对</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 45.91, "L": [[0.6, 6.79], [7.24, 15.67], [16.12, 22.12], [22.57, 35.53], [35.98, 44.81]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      // 8 个对等节点
+      const ph = document.querySelector("#e-peers"), lh = document.querySelector("#e-links"), P = [], LN = [];
+      for (let i = 0; i < 8; i++) {
+        const a = (i / 8) * Math.PI * 2, x = 700 + Math.cos(a) * 300, y = 540 + Math.sin(a) * 280;
+        const l = document.createElementNS(NS, "line");
+        l.setAttribute("x1", 700 + Math.cos(a) * 100); l.setAttribute("y1", 540 + Math.sin(a) * 100); l.setAttribute("x2", x - Math.cos(a) * 36); l.setAttribute("y2", y - Math.sin(a) * 36);
+        l.setAttribute("stroke", "#8a8f99"); l.setAttribute("stroke-width", 3); l.setAttribute("opacity", 0);
+        lh.appendChild(l); LN.push(l);
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", x); c.setAttribute("cy", y); c.setAttribute("r", 36); c.setAttribute("fill", "#161a22"); c.setAttribute("stroke", "#8a8f99"); c.setAttribute("stroke-width", 3); c.setAttribute("opacity", 0);
+        ph.appendChild(c); P.push(c);
+      }
+      // L0
+      IN("#e-title", at(0, 0.0), 0.5);
+      NODE("#e-vic", at(0, 0.2));
+      P.forEach((c, i) => { IN(c, at(0, 0.35) + i * 0.06, 0.3); IN(LN[i], at(0, 0.35) + i * 0.06, 0.3); });
+      // L1 攻击者占满连接 → 重启 → 只连攻击者
+      P.forEach((c, i) => tl.to(c, { stroke: "#FC6255", fill: "#2a1416", duration: 0.25 }, at(1, 0.05) + i * 0.12));
+      tl.to("#e-rs", { opacity: 0, duration: 0.2 }, at(1, 0.55));
+      IN("#e-rst", at(1, 0.57), 0.3);
+      tl.to(LN, { opacity: 0, duration: 0.2 }, at(1, 0.6));
+      tl.to(LN, { opacity: 1, stroke: "#FC6255", duration: 0.3, stagger: 0.05 }, at(1, 0.72));
+      // L2 状态卡
+      IN("#e-card", at(2, 0.05), 0.5, { x: 20 }, { x: 0 });
+      // L3 研究数字
+      IN("#e-r1", at(3, 0.05), 0.5);
+      IN("#e-r2", at(3, 0.45), 0.5);
+      tl.fromTo("#e-r3", { opacity: 0 }, { opacity: 1, duration: 0.4 }, at(3, 0.8));
+      // L4 外部比对
+      IN("#e-ext", at(4, 0.15), 0.5, { y: 20 }, { y: 0 });
+      IN("#e-50", at(4, 0.45), 0.5);
+      tl.to("#e-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["eclipse"] = tl;
+    })();
+  </script>
+</template>

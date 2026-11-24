@@ -1,0 +1,116 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="invariant" data-duration="43.43" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="i-all">
+        <!-- 建模步骤条 -->
+        <text id="i-title" class="h" x="960" y="560" font-size="64" fill="#e8e6df" text-anchor="middle" font-weight="800">威胁建模</text>
+        <g id="i-strip" class="h">
+          <line x1="360" y1="130" x2="1560" y2="130" stroke="#2a2f3a" stroke-width="4" />
+        </g>
+        <g font-size="30" text-anchor="middle">
+          <g id="i-s1" class="h"><circle cx="360" cy="130" r="20" fill="#F0B90B" /><text x="360" y="195" fill="#F0B90B">资产</text></g>
+          <g id="i-s2" class="h"><circle cx="660" cy="130" r="20" fill="#e8e6df" /><text x="660" y="195" fill="#e8e6df">函数与调用者</text></g>
+          <g id="i-s3" class="h"><circle cx="960" cy="130" r="20" fill="#83C167" /><text x="960" y="195" fill="#83C167">不变量</text></g>
+          <g id="i-s4" class="h"><circle cx="1260" cy="130" r="20" fill="#FC6255" /><text x="1260" y="195" fill="#FC6255">逐个追问</text></g>
+          <g id="i-s5" class="h"><circle cx="1560" cy="130" r="20" fill="#58C4DD" /><text x="1560" y="195" fill="#58C4DD">测试验证</text></g>
+        </g>
+
+        <!-- 不变量：左边合约余额（金），右边存款之和 -->
+        <g id="i-left" class="h">
+          <rect x="560" y="420" width="200" height="380" rx="10" fill="#F0B90B" opacity=".9" />
+          <text x="660" y="860" font-size="32" fill="#F0B90B" text-anchor="middle">合约 USDT 余额</text>
+        </g>
+        <g id="i-right">
+          <rect class="i-dep h" x="1160" y="720" width="200" height="80" rx="8" fill="#e8e6df" opacity=".85" />
+          <rect class="i-dep h" x="1160" y="634" width="200" height="80" rx="8" fill="#e8e6df" opacity=".7" />
+          <rect class="i-dep h" x="1160" y="548" width="200" height="80" rx="8" fill="#e8e6df" opacity=".85" />
+          <rect class="i-dep h" x="1160" y="462" width="200" height="80" rx="8" fill="#e8e6df" opacity=".7" />
+        </g>
+        <text id="i-rt" class="h" x="1260" y="860" font-size="32" fill="#e8e6df" text-anchor="middle">所有用户存款之和</text>
+        <text id="i-ge" class="h" x="960" y="660" font-size="160" fill="#83C167" text-anchor="middle" font-weight="800">≥</text>
+        <text id="i-def" class="h" x="960" y="330" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700">不变量：任何操作之后都必须成立</text>
+
+        <!-- 四类追问（红箭头推向 ≥） -->
+        <g fill="none" stroke="#FC6255" stroke-width="4">
+          <path class="dr i-pa" pathLength="1" d="M200 400 L 860 560" /><path class="dr i-pa" pathLength="1" d="M200 760 L 860 620" />
+          <path class="dr i-pa" pathLength="1" d="M1720 400 L 1060 560" /><path class="dr i-pa" pathLength="1" d="M1720 760 L 1060 620" />
+        </g>
+        <g font-size="32" fill="#FC6255" font-weight="700">
+          <text class="i-pt h" x="70" y="385">外部调用</text><text class="i-pt h" x="70" y="805">外部数据</text>
+          <text class="i-pt h" x="1700" y="385" text-anchor="end">特权角色</text><text class="i-pt h" x="1700" y="805" text-anchor="end">数学运算</text>
+        </g>
+
+        <!-- 模糊测试：确定性输入点 -->
+        <g id="i-fuzz" fill="#58C4DD"></g>
+        <text id="i-ok" class="h" x="960" y="760" font-size="44" fill="#83C167" text-anchor="middle" font-weight="700">✓ 仍然成立</text>
+      </g>
+      <text id="i-anchor" class="h" x="960" y="980" font-size="50" fill="#e8e6df" text-anchor="middle" font-weight="800"><tspan fill="#83C167">不变量</tspan>是安全工作的锚点</text>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 43.43, "L": [[0.6, 4.42], [4.87, 11.15], [11.6, 18.13], [18.58, 24.77], [25.22, 34.25], [34.7, 42.33]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      const DOT = (s, t) => IN(s, t, 0.4, { scale: 0.4, transformOrigin: "50% 30%" }, { scale: 1, ease: "back.out(2)" });
+
+      // 模糊测试输入：固定种子的线性同余序列
+      let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      const fz = document.querySelector("#i-fuzz"), dots = [];
+      for (let i = 0; i < 46; i++) {
+        const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        const x = 300 + rnd() * 1320, y = 260 + rnd() * 120;
+        c.setAttribute("cx", x.toFixed(1)); c.setAttribute("cy", y.toFixed(1)); c.setAttribute("r", "7"); c.setAttribute("opacity", "0");
+        fz.appendChild(c); dots.push({ c, dx: (960 - x) * 0.8, dy: 300 + rnd() * 60 });
+      }
+
+      // L0
+      IN("#i-strip", at(0, 0.2), 0.6);
+      IN("#i-title", at(0, 0.5), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      OUT("#i-title", at(2, 0.3), 0.3);
+      // L1 资产、函数
+      DOT("#i-s1", at(1, 0.05));
+      DOT("#i-s2", at(1, 0.5));
+      // L2 不变量
+      DOT("#i-s3", at(2, 0.1));
+      IN("#i-def", at(2, 0.45), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      // L3 例子
+      tl.fromTo("#i-left", { opacity: 0, scaleY: 0, svgOrigin: "660 800" }, { opacity: 1, scaleY: 1, duration: 0.8, ease: "expo.out" }, at(3, 0.1));
+      gsap.utils.toArray("#root .i-dep").forEach((r, i) => IN(r, at(3, 0.3) + i * 0.18, 0.35, { y: -60 }, { y: 0, ease: "power3.out" }));
+      IN("#i-rt", at(3, 0.45), 0.4);
+      IN("#i-ge", at(3, 0.72), 0.5, { scale: 0.5, svgOrigin: "960 600" }, { scale: 1, ease: "back.out(1.8)" });
+      OUT("#i-def", at(3, 0.9), 0.3);
+
+      // L4 四类追问
+      DOT("#i-s4", at(4, 0.0));
+      const pa = gsap.utils.toArray("#root .i-pa"), pt = gsap.utils.toArray("#root .i-pt");
+      [0.12, 0.3, 0.48, 0.66].forEach((f, i) => { DRAW(pa[i], at(4, f), 0.5); IN(pt[i], at(4, f), 0.4); });
+      tl.to("#i-ge", { fill: "#FF9F43", duration: 0.2, yoyo: true, repeat: 3 }, at(4, 0.8));
+
+      // L5 测试验证
+      DOT("#i-s5", at(5, 0.0));
+      OUT([...pa, ...pt], at(5, 0.0), 0.3);
+      dots.forEach((d, i) => {
+        const t0 = at(5, 0.08) + i * 0.035;
+        tl.fromTo(d.c, { opacity: 0, x: 0, y: 0 }, { opacity: 0.9, duration: 0.15 }, t0);
+        tl.to(d.c, { x: d.dx, y: d.dy, opacity: 0, duration: 0.7, ease: "power2.in" }, t0 + 0.1);
+      });
+      IN("#i-ok", at(5, 0.45), 0.4);
+      IN("#i-anchor", at(5, 0.62), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+
+      tl.to(["#i-all", "#i-anchor"], { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["invariant"] = tl;
+    })();
+  </script>
+</template>

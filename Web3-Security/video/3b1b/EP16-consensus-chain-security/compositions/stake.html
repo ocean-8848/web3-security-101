@@ -1,0 +1,109 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="stake" data-duration="53.97" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="s-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="s-all">
+        <g id="s-tab">
+          <text id="s-title" class="h" x="960" y="110" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">权益证明：2/3 质押投票 → 最终确定</text>
+          <g id="s-bar" class="h">
+            <rect x="200" y="200" width="1520" height="56" rx="10" fill="#2a2f3a" />
+            <text x="200" y="300" font-size="28" fill="#8a8f99" text-anchor="middle">0</text>
+            <text x="1720" y="300" font-size="28" fill="#8a8f99" text-anchor="middle">100%</text>
+          </g>
+          <g id="s-23" class="h"><line x1="1213.3" y1="185" x2="1213.3" y2="270" stroke="#83C167" stroke-width="5" /><text x="1213.3" y="170" font-size="30" fill="#83C167" text-anchor="middle">2/3</text></g>
+          <rect id="s-fill" class="h" x="200" y="200" width="0" height="56" rx="10" fill="#FC6255" />
+          <g id="s-rows" font-size="32"></g>
+        </g>
+        <!-- 长程攻击 -->
+        <g id="s-lr">
+          <text id="s-lrt" class="h" x="960" y="110" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">旧私钥：已退出的验证者，不再怕罚没</text>
+          <g id="s-main"></g>
+          <path id="s-fork" class="dr h" pathLength="1" d="M260 380 C 360 540, 600 600, 1500 600" fill="none" stroke="#FC6255" stroke-width="5" stroke-dasharray="1" marker-end="url(#s-ah)" />
+          <text id="s-forkt" class="h" x="900" y="660" font-size="30" fill="#FC6255" text-anchor="middle">从很久以前分叉，重写历史</text>
+          <rect id="s-finz" class="h" x="200" y="300" width="1100" height="130" rx="16" fill="none" stroke="#83C167" stroke-width="3" stroke-dasharray="10 8" />
+          <text id="s-finzt" class="h" x="750" y="285" font-size="28" fill="#83C167" text-anchor="middle">已最终确定</text>
+          <g id="s-n1" class="h"><rect x="200" y="740" width="680" height="120" rx="16" fill="#12200f" stroke="#83C167" stroke-width="3" /><text x="540" y="790" font-size="30" fill="#e8e6df" text-anchor="middle">持续在线的节点</text><text x="540" y="835" font-size="30" fill="#83C167" text-anchor="middle">不回滚已最终确定的区块 ✓</text></g>
+          <g id="s-n2" class="h"><rect x="1040" y="740" width="680" height="120" rx="16" fill="#1f1608" stroke="#FF9F43" stroke-width="3" /><text x="1380" y="790" font-size="30" fill="#e8e6df" text-anchor="middle">刚安装的节点</text><text x="1380" y="835" font-size="30" fill="#FF9F43" text-anchor="middle">要靠检查点 ?</text></g>
+          <g id="s-cp" class="h">
+            <text x="1380" y="950" font-size="32" fill="#83C167" text-anchor="middle" font-weight="700">检查点：至少两个独立来源比对</text>
+            <circle cx="1180" cy="1010" r="18" fill="#83C167" /><circle cx="1580" cy="1010" r="18" fill="#83C167" />
+            <line x1="1200" y1="1010" x2="1560" y2="1010" stroke="#83C167" stroke-width="3" stroke-dasharray="8 6" />
+          </g>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 53.97, "L": [[0.6, 7.56], [8.01, 15.19], [15.64, 23.34], [23.79, 34.35], [34.8, 47.23], [47.68, 52.87]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      const ROWS = [
+        { p: 33, a: "约 33%", t: "阻止最终性", c: "不活跃惩罚逐步削减其质押" },
+        { p: 34, a: "约 34%", t: "＋控制消息时序：双重最终性", c: "被最大比例罚没" },
+        { p: 51, a: "约 51%", t: "主导分叉选择：审查、短程重组", c: "社会层可能介入" },
+        { p: 66, a: "约 66%", t: "最终确定自己的链", c: "只能靠社会层恢复" },
+      ];
+      const rh = document.querySelector("#s-rows"), R = [];
+      ROWS.forEach((r, i) => {
+        const y = 400 + i * 140, g = document.createElementNS(NS, "g"); g.setAttribute("opacity", 0);
+        g.innerHTML = `<rect x="200" y="${y - 50}" width="1520" height="110" rx="14" fill="#161a22" stroke="#2a2f3a" stroke-width="2" />` +
+          `<text x="240" y="${y + 15}" fill="#FC6255" font-weight="700" font-size="36">${r.a}</text>` +
+          `<text x="460" y="${y + 15}" fill="#e8e6df">${r.t}</text>` +
+          `<text x="1690" y="${y + 15}" fill="#8a8f99" text-anchor="end" font-size="30">${r.c}</text>`;
+        rh.appendChild(g); R.push(g);
+      });
+      const W = (p) => 1520 * p / 100;
+      // 主链（灰）
+      const mh = document.querySelector("#s-main"), MB = [];
+      for (let i = 0; i < 12; i++) {
+        const r = document.createElementNS(NS, "rect");
+        r.setAttribute("x", 220 + i * 125); r.setAttribute("y", 320); r.setAttribute("width", 90); r.setAttribute("height", 90); r.setAttribute("rx", 10);
+        r.setAttribute("fill", "#161a22"); r.setAttribute("stroke", "#8a8f99"); r.setAttribute("stroke-width", 3); r.setAttribute("opacity", 0);
+        mh.appendChild(r); MB.push(r);
+      }
+      // L0 2/3
+      IN("#s-title", at(0, 0.0), 0.5);
+      IN("#s-bar", at(0, 0.2), 0.4);
+      IN("#s-23", at(0, 0.45), 0.4);
+      // L1–L3 份额阈值，一档一档加
+      IN("#s-fill", at(1, 0.0), 0.2);
+      const FILL = (p, t) => tl.to("#s-fill", { attr: { width: W(p) }, duration: 0.6, ease: "power2.inOut" }, t);
+      FILL(33, at(1, 0.05)); IN(R[0], at(1, 0.15), 0.4, { x: -20 }, { x: 0 });
+      FILL(34, at(2, 0.05)); IN(R[1], at(2, 0.15), 0.4, { x: -20 }, { x: 0 });
+      FILL(51, at(3, 0.05)); IN(R[2], at(3, 0.1), 0.4, { x: -20 }, { x: 0 });
+      FILL(66, at(3, 0.55)); IN(R[3], at(3, 0.6), 0.4, { x: -20 }, { x: 0 });
+      // L4 长程攻击
+      OUT("#s-tab", at(4, 0.0), 0.35);
+      IN("#s-lrt", at(4, 0.05), 0.4);
+      MB.forEach((r, i) => tl.to(r, { opacity: 1, duration: 0.15 }, at(4, 0.08) + i * 0.03));
+      IN("#s-finz", at(4, 0.2), 0.4); IN("#s-finzt", at(4, 0.2), 0.4);
+      DRAW("#s-fork", at(4, 0.3), 0.8);
+      IN("#s-forkt", at(4, 0.35), 0.4);
+      IN("#s-n1", at(4, 0.6), 0.4);
+      IN("#s-n2", at(4, 0.8), 0.4);
+      // L5 检查点
+      IN("#s-cp", at(5, 0.1), 0.5);
+      tl.to("#s-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["stake"] = tl;
+    })();
+  </script>
+</template>

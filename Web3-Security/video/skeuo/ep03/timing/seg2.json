@@ -1,0 +1,3080 @@
+{
+ "id": "seg2",
+ "title": "调用上下文",
+ "pill": 2,
+ "total": 166.6,
+ "lines": [
+  {
+   "id": "seg2-00",
+   "text": "EVM 是一台单线程的栈式计算机。每个合约，有自己的代码和存储。",
+   "spoken": "EVM 是一台单线程的栈式计算机。每个合约，有自己的代码和存储。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-00.mp3",
+   "start": 1.6,
+   "dur": 6.384,
+   "speechStart": 1.698,
+   "speechEnd": 7.136
+  },
+  {
+   "id": "seg2-01",
+   "text": "合约之间，靠消息调用来通信。每一次调用，都可能把控制权交给别人。",
+   "spoken": "合约之间，靠消息掉用来通信。每一次掉用，都可能把控制权交给别人。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-01.mp3",
+   "start": 8.204,
+   "dur": 6.864,
+   "speechStart": 8.302,
+   "speechEnd": 14.216
+  },
+  {
+   "id": "seg2-02",
+   "text": "链上有两类账户。",
+   "spoken": "链上有两类账户。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-02.mp3",
+   "start": 15.288,
+   "dur": 2.448,
+   "speechStart": 15.386,
+   "speechEnd": 16.886
+  },
+  {
+   "id": "seg2-03",
+   "text": "外部账户叫 EOA，由私钥控制，能主动发起交易。",
+   "spoken": "外部账户叫 EOA，由私钥控制，能主动发起交易。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-03.mp3",
+   "start": 17.956,
+   "dur": 4.92,
+   "speechStart": 18.054,
+   "speechEnd": 22.042
+  },
+  {
+   "id": "seg2-04",
+   "text": "合约账户由代码控制，不能主动发起，只能被调用。",
+   "spoken": "合约账户由代码控制，不能主动发起，只能被掉用。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-04.mp3",
+   "start": 23.096,
+   "dur": 4.92,
+   "speechStart": 23.194,
+   "speechEnd": 27.194
+  },
+  {
+   "id": "seg2-05",
+   "text": "但这条界线在变。2025 年 5 月，以太坊 Pectra 升级上线了 EIP-7702，EOA 可以委托执行一段合约代码。",
+   "spoken": "但这条界线在变。2025 年 5 月，以太坊 Pectra 升级上线了 EIP-7702，EOA 可以委托执行一段合约代码。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-05.mp3",
+   "start": 28.236,
+   "dur": 10.872,
+   "speechStart": 28.334,
+   "speechEnd": 38.272
+  },
+  {
+   "id": "seg2-06",
+   "text": "所以，查对方有没有代码，已经不能判断它是不是普通用户。比较 msg.sender 和 tx.origin，也不行。",
+   "spoken": "所以，查对方有没有代码，已经不能判断它是不是普通用户。比较 msg.sender 和 tx.origin，也不行。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-06.mp3",
+   "start": 39.328,
+   "dur": 10.152,
+   "speechStart": 39.426,
+   "speechEnd": 48.637
+  },
+  {
+   "id": "seg2-07",
+   "text": "再看调用上下文。假设用户调用合约 A，A 调用 B，B 再调用 C。",
+   "spoken": "再看掉用上下文。假设用户掉用合约 A，A 掉用 B，B 再掉用 C。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-07.mp3",
+   "start": 49.7,
+   "dur": 6.912,
+   "speechStart": 49.798,
+   "speechEnd": 55.771
+  },
+  {
+   "id": "seg2-08",
+   "text": "站在 C 的位置，看四个变量。",
+   "spoken": "站在 C 的位置，看四个变量。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-08.mp3",
+   "start": 56.832,
+   "dur": 3.144,
+   "speechStart": 56.93,
+   "speechEnd": 59.144
+  },
+  {
+   "id": "seg2-09",
+   "text": "tx.origin，是发起整笔交易的用户。",
+   "spoken": "tx.origin，是发起整笔交易的用户。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-09.mp3",
+   "start": 60.196,
+   "dur": 4.08,
+   "speechStart": 60.294,
+   "speechEnd": 63.425
+  },
+  {
+   "id": "seg2-10",
+   "text": "msg.sender，是直接调用 C 的那一个，也就是 B。",
+   "spoken": "msg.sender，是直接掉用 C 的那一个，也就是 B。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-10.mp3",
+   "start": 64.496,
+   "dur": 4.92,
+   "speechStart": 64.594,
+   "speechEnd": 68.606
+  },
+  {
+   "id": "seg2-11",
+   "text": "msg.value，是这次调用附带的原生币，也就是 B 转给 C 的数量。",
+   "spoken": "msg.value，是这次掉用附带的原生币，也就是 B 转给 C 的数量。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-11.mp3",
+   "start": 69.636,
+   "dur": 5.832,
+   "speechStart": 69.734,
+   "speechEnd": 74.615
+  },
+  {
+   "id": "seg2-12",
+   "text": "address(this)，是当前执行代码的合约，也就是 C 自己。",
+   "spoken": "address(this)，是当前执行代码的合约，也就是 C 自己。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-12.mp3",
+   "start": 75.688,
+   "dur": 5.592,
+   "speechStart": 75.786,
+   "speechEnd": 80.452
+  },
+  {
+   "id": "seg2-13",
+   "text": "开头那个金库，该看的是 msg.sender，不是 tx.origin。",
+   "spoken": "开头那个金库，该看的是 msg.sender，不是 tx.origin。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-13.mp3",
+   "start": 81.5,
+   "dur": 6.12,
+   "speechStart": 81.598,
+   "speechEnd": 86.788
+  },
+  {
+   "id": "seg2-14",
+   "text": "合约之间怎么调用？有三种方式。",
+   "spoken": "合约之间怎么掉用？有三种方式。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-14.mp3",
+   "start": 87.84,
+   "dur": 3.768,
+   "speechStart": 87.938,
+   "speechEnd": 90.757
+  },
+  {
+   "id": "seg2-15",
+   "text": "第一种 call，最常见。执行 B 的代码，改的是 B 的存储。",
+   "spoken": "第一种 call，最常见。执行 B 的代码，改的是 B 的存储。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-15.mp3",
+   "start": 91.828,
+   "dur": 5.52,
+   "speechStart": 91.926,
+   "speechEnd": 96.507
+  },
+  {
+   "id": "seg2-16",
+   "text": "第二种 delegatecall。执行的还是 B 的代码，改的却是 A 的存储。",
+   "spoken": "第二种 delegatecall。执行的还是 B 的代码，改的却是 A 的存储。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-16.mp3",
+   "start": 97.568,
+   "dur": 6.456,
+   "speechStart": 97.666,
+   "speechEnd": 103.175
+  },
+  {
+   "id": "seg2-17",
+   "text": "而且 msg.sender 和 msg.value 保持不变。代理合约和库合约，都依赖它。",
+   "spoken": "而且 msg.sender 和 msg.value 保持不变。代理合约和库合约，都依赖它。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-17.mp3",
+   "start": 104.244,
+   "dur": 8.16,
+   "speechStart": 104.342,
+   "speechEnd": 111.577
+  },
+  {
+   "id": "seg2-18",
+   "text": "打个比方。EVM 像一个只有一个窗口的政务大厅，每个合约是一个科室。",
+   "spoken": "打个比方。EVM 像一个只有一个窗口的政务大厅，每个合约是一个科室。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-18.mp3",
+   "start": 112.624,
+   "dur": 6.672,
+   "speechStart": 112.722,
+   "speechEnd": 118.457
+  },
+  {
+   "id": "seg2-19",
+   "text": "call，是派人带着材料，去 B 的窗口办事。",
+   "spoken": "call，是派人带着材料，去 B 的窗口办事。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-19.mp3",
+   "start": 119.516,
+   "dur": 4.032,
+   "speechStart": 119.614,
+   "speechEnd": 122.697
+  },
+  {
+   "id": "seg2-20",
+   "text": "delegatecall，是把 B 的规程手册借过来，在 A 自己的档案柜上照着办。",
+   "spoken": "delegatecall，是把 B 的规程手册借过来，在 A 自己的档案柜上照着办。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-20.mp3",
+   "start": 123.768,
+   "dur": 5.952,
+   "speechStart": 123.866,
+   "speechEnd": 128.889
+  },
+  {
+   "id": "seg2-21",
+   "text": "如果手册写着，清空 0 号抽屉，被清空的是 A 的抽屉。",
+   "spoken": "如果手册写着，清空 0 号抽屉，被清空的是 A 的抽屉。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-21.mp3",
+   "start": 129.94,
+   "dur": 4.944,
+   "speechStart": 130.038,
+   "speechEnd": 134.05
+  },
+  {
+   "id": "seg2-22",
+   "text": "这个比方有一处不成立。真实的大厅里，你离开窗口，就不能插队回来。",
+   "spoken": "这个比方有一处不成立。真实的大厅里，你离开窗口，就不能插队回来。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-22.mp3",
+   "start": 135.104,
+   "dur": 7.152,
+   "speechStart": 135.202,
+   "speechEnd": 141.413
+  },
+  {
+   "id": "seg2-23",
+   "text": "EVM 里，B 办到一半，可以反过来再找 A。这时 A 的上一件事，还没办完。这就是重入。",
+   "spoken": "EVM 里，B 办到一半，可以反过来再找 A。这时 A 的上一件事，还没办完。这就是虫入。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-23.mp3",
+   "start": 142.476,
+   "dur": 8.16,
+   "speechStart": 142.574,
+   "speechEnd": 149.786
+  },
+  {
+   "id": "seg2-24",
+   "text": "第三种 staticcall，是只读调用。任何写存储或发事件的操作，都会回滚。",
+   "spoken": "第三种 staticcall，是只读掉用。任何写存储或发事件的操作，都会回滚。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-24.mp3",
+   "start": 150.856,
+   "dur": 7.464,
+   "speechStart": 150.954,
+   "speechEnd": 157.487
+  },
+  {
+   "id": "seg2-25",
+   "text": "还有一个坑。低级 call 失败时，不会自动让调用者回滚，只返回 false。",
+   "spoken": "还有一个坑。低级 call 失败时，不会自动让掉用者回滚，只返回 false。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg2-25.mp3",
+   "start": 158.54,
+   "dur": 6.864,
+   "speechStart": 158.638,
+   "speechEnd": 164.588
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "EVM",
+   "start": 1.698,
+   "end": 2.293
+  },
+  {
+   "line": 0,
+   "text": "是",
+   "start": 2.305,
+   "end": 2.471
+  },
+  {
+   "line": 0,
+   "text": "一",
+   "start": 2.483,
+   "end": 2.555
+  },
+  {
+   "line": 0,
+   "text": "台",
+   "start": 2.555,
+   "end": 2.769
+  },
+  {
+   "line": 0,
+   "text": "单线程",
+   "start": 2.793,
+   "end": 3.233
+  },
+  {
+   "line": 0,
+   "text": "的",
+   "start": 3.233,
+   "end": 3.317
+  },
+  {
+   "line": 0,
+   "text": "栈式",
+   "start": 3.34,
+   "end": 3.626
+  },
+  {
+   "line": 0,
+   "text": "计算机",
+   "start": 3.638,
+   "end": 4.162
+  },
+  {
+   "line": 0,
+   "text": "每个",
+   "start": 4.707,
+   "end": 5.029
+  },
+  {
+   "line": 0,
+   "text": "合约",
+   "start": 5.04,
+   "end": 5.505
+  },
+  {
+   "line": 0,
+   "text": "有",
+   "start": 5.707,
+   "end": 5.85
+  },
+  {
+   "line": 0,
+   "text": "自己",
+   "start": 5.862,
+   "end": 6.124
+  },
+  {
+   "line": 0,
+   "text": "的",
+   "start": 6.124,
+   "end": 6.195
+  },
+  {
+   "line": 0,
+   "text": "代码",
+   "start": 6.207,
+   "end": 6.54
+  },
+  {
+   "line": 0,
+   "text": "和",
+   "start": 6.564,
+   "end": 6.66
+  },
+  {
+   "line": 0,
+   "text": "存储",
+   "start": 6.671,
+   "end": 7.136
+  },
+  {
+   "line": 1,
+   "text": "合约",
+   "start": 8.302,
+   "end": 8.623
+  },
+  {
+   "line": 1,
+   "text": "之间",
+   "start": 8.635,
+   "end": 9.075
+  },
+  {
+   "line": 1,
+   "text": "靠",
+   "start": 9.325,
+   "end": 9.528
+  },
+  {
+   "line": 1,
+   "text": "消息",
+   "start": 9.54,
+   "end": 9.897
+  },
+  {
+   "line": 1,
+   "text": "调",
+   "start": 9.897,
+   "end": 10.016
+  },
+  {
+   "line": 1,
+   "text": "用来",
+   "start": 10.04,
+   "end": 10.206
+  },
+  {
+   "line": 1,
+   "text": "通信",
+   "start": 10.218,
+   "end": 10.623
+  },
+  {
+   "line": 1,
+   "text": "每",
+   "start": 11.168,
+   "end": 11.359
+  },
+  {
+   "line": 1,
+   "text": "一次",
+   "start": 11.359,
+   "end": 11.573
+  },
+  {
+   "line": 1,
+   "text": "调用",
+   "start": 11.585,
+   "end": 12.061
+  },
+  {
+   "line": 1,
+   "text": "都",
+   "start": 12.287,
+   "end": 12.442
+  },
+  {
+   "line": 1,
+   "text": "可能",
+   "start": 12.442,
+   "end": 12.859
+  },
+  {
+   "line": 1,
+   "text": "把",
+   "start": 12.954,
+   "end": 13.073
+  },
+  {
+   "line": 1,
+   "text": "控制",
+   "start": 13.085,
+   "end": 13.394
+  },
+  {
+   "line": 1,
+   "text": "权",
+   "start": 13.394,
+   "end": 13.597
+  },
+  {
+   "line": 1,
+   "text": "交给",
+   "start": 13.621,
+   "end": 13.859
+  },
+  {
+   "line": 1,
+   "text": "别人",
+   "start": 13.871,
+   "end": 14.216
+  },
+  {
+   "line": 2,
+   "text": "链",
+   "start": 15.386,
+   "end": 15.636
+  },
+  {
+   "line": 2,
+   "text": "上",
+   "start": 15.636,
+   "end": 15.898
+  },
+  {
+   "line": 2,
+   "text": "有",
+   "start": 15.921,
+   "end": 16.064
+  },
+  {
+   "line": 2,
+   "text": "两",
+   "start": 16.064,
+   "end": 16.278
+  },
+  {
+   "line": 2,
+   "text": "类",
+   "start": 16.278,
+   "end": 16.421
+  },
+  {
+   "line": 2,
+   "text": "账户",
+   "start": 16.433,
+   "end": 16.886
+  },
+  {
+   "line": 3,
+   "text": "外部",
+   "start": 18.054,
+   "end": 18.363
+  },
+  {
+   "line": 3,
+   "text": "账户",
+   "start": 18.375,
+   "end": 18.744
+  },
+  {
+   "line": 3,
+   "text": "叫",
+   "start": 18.756,
+   "end": 18.946
+  },
+  {
+   "line": 3,
+   "text": "EOA",
+   "start": 18.946,
+   "end": 19.589
+  },
+  {
+   "line": 3,
+   "text": "由",
+   "start": 19.78,
+   "end": 19.97
+  },
+  {
+   "line": 3,
+   "text": "私钥",
+   "start": 19.994,
+   "end": 20.339
+  },
+  {
+   "line": 3,
+   "text": "控制",
+   "start": 20.351,
+   "end": 20.78
+  },
+  {
+   "line": 3,
+   "text": "能",
+   "start": 20.946,
+   "end": 21.125
+  },
+  {
+   "line": 3,
+   "text": "主动",
+   "start": 21.137,
+   "end": 21.446
+  },
+  {
+   "line": 3,
+   "text": "发起",
+   "start": 21.458,
+   "end": 21.72
+  },
+  {
+   "line": 3,
+   "text": "交易",
+   "start": 21.732,
+   "end": 22.042
+  },
+  {
+   "line": 4,
+   "text": "合约",
+   "start": 23.194,
+   "end": 23.479
+  },
+  {
+   "line": 4,
+   "text": "账户",
+   "start": 23.491,
+   "end": 23.896
+  },
+  {
+   "line": 4,
+   "text": "由",
+   "start": 23.92,
+   "end": 24.039
+  },
+  {
+   "line": 4,
+   "text": "代码",
+   "start": 24.051,
+   "end": 24.313
+  },
+  {
+   "line": 4,
+   "text": "控制",
+   "start": 24.325,
+   "end": 24.789
+  },
+  {
+   "line": 4,
+   "text": "不能",
+   "start": 25.11,
+   "end": 25.372
+  },
+  {
+   "line": 4,
+   "text": "主动",
+   "start": 25.384,
+   "end": 25.67
+  },
+  {
+   "line": 4,
+   "text": "发起",
+   "start": 25.682,
+   "end": 26.17
+  },
+  {
+   "line": 4,
+   "text": "只能",
+   "start": 26.408,
+   "end": 26.694
+  },
+  {
+   "line": 4,
+   "text": "被",
+   "start": 26.706,
+   "end": 26.825
+  },
+  {
+   "line": 4,
+   "text": "调用",
+   "start": 26.825,
+   "end": 27.194
+  },
+  {
+   "line": 5,
+   "text": "但",
+   "start": 28.334,
+   "end": 28.5
+  },
+  {
+   "line": 5,
+   "text": "这",
+   "start": 28.512,
+   "end": 28.667
+  },
+  {
+   "line": 5,
+   "text": "条",
+   "start": 28.667,
+   "end": 28.81
+  },
+  {
+   "line": 5,
+   "text": "界线",
+   "start": 28.822,
+   "end": 29.191
+  },
+  {
+   "line": 5,
+   "text": "在",
+   "start": 29.203,
+   "end": 29.381
+  },
+  {
+   "line": 5,
+   "text": "变",
+   "start": 29.381,
+   "end": 29.655
+  },
+  {
+   "line": 5,
+   "text": "2025",
+   "start": 30.188,
+   "end": 30.688
+  },
+  {
+   "line": 5,
+   "text": "年",
+   "start": 30.688,
+   "end": 30.903
+  },
+  {
+   "line": 5,
+   "text": "5 月",
+   "start": 30.915,
+   "end": 31.319
+  },
+  {
+   "line": 5,
+   "text": "以",
+   "start": 31.605,
+   "end": 31.748
+  },
+  {
+   "line": 5,
+   "text": "太坊",
+   "start": 31.748,
+   "end": 32.284
+  },
+  {
+   "line": 5,
+   "text": "Pectra",
+   "start": 32.379,
+   "end": 32.891
+  },
+  {
+   "line": 5,
+   "text": "升级",
+   "start": 32.915,
+   "end": 33.176
+  },
+  {
+   "line": 5,
+   "text": "上线",
+   "start": 33.188,
+   "end": 33.51
+  },
+  {
+   "line": 5,
+   "text": "了",
+   "start": 33.51,
+   "end": 33.7
+  },
+  {
+   "line": 5,
+   "text": "EIP",
+   "start": 33.807,
+   "end": 34.51
+  },
+  {
+   "line": 5,
+   "text": "7702",
+   "start": 34.617,
+   "end": 35.379
+  },
+  {
+   "line": 5,
+   "text": "EOA",
+   "start": 35.7,
+   "end": 36.367
+  },
+  {
+   "line": 5,
+   "text": "可以",
+   "start": 36.45,
+   "end": 36.676
+  },
+  {
+   "line": 5,
+   "text": "委托",
+   "start": 36.688,
+   "end": 37.01
+  },
+  {
+   "line": 5,
+   "text": "执行",
+   "start": 37.034,
+   "end": 37.296
+  },
+  {
+   "line": 5,
+   "text": "一段",
+   "start": 37.307,
+   "end": 37.581
+  },
+  {
+   "line": 5,
+   "text": "合约",
+   "start": 37.605,
+   "end": 37.903
+  },
+  {
+   "line": 5,
+   "text": "代码",
+   "start": 37.915,
+   "end": 38.272
+  },
+  {
+   "line": 6,
+   "text": "所以",
+   "start": 39.426,
+   "end": 39.938
+  },
+  {
+   "line": 6,
+   "text": "查",
+   "start": 40.307,
+   "end": 40.533
+  },
+  {
+   "line": 6,
+   "text": "对方",
+   "start": 40.545,
+   "end": 40.83
+  },
+  {
+   "line": 6,
+   "text": "有没有",
+   "start": 40.854,
+   "end": 41.14
+  },
+  {
+   "line": 6,
+   "text": "代码",
+   "start": 41.152,
+   "end": 41.604
+  },
+  {
+   "line": 6,
+   "text": "已经",
+   "start": 41.83,
+   "end": 42.068
+  },
+  {
+   "line": 6,
+   "text": "不能",
+   "start": 42.08,
+   "end": 42.318
+  },
+  {
+   "line": 6,
+   "text": "判断",
+   "start": 42.33,
+   "end": 42.711
+  },
+  {
+   "line": 6,
+   "text": "它",
+   "start": 42.711,
+   "end": 42.866
+  },
+  {
+   "line": 6,
+   "text": "是不是",
+   "start": 42.878,
+   "end": 43.188
+  },
+  {
+   "line": 6,
+   "text": "普通",
+   "start": 43.211,
+   "end": 43.533
+  },
+  {
+   "line": 6,
+   "text": "用户",
+   "start": 43.545,
+   "end": 43.854
+  },
+  {
+   "line": 6,
+   "text": "比较",
+   "start": 44.399,
+   "end": 44.721
+  },
+  {
+   "line": 6,
+   "text": "msg",
+   "start": 44.745,
+   "end": 45.376
+  },
+  {
+   "line": 6,
+   "text": "sender",
+   "start": 45.59,
+   "end": 46.209
+  },
+  {
+   "line": 6,
+   "text": "和",
+   "start": 46.316,
+   "end": 46.495
+  },
+  {
+   "line": 6,
+   "text": "tx",
+   "start": 46.507,
+   "end": 47.09
+  },
+  {
+   "line": 6,
+   "text": "origin",
+   "start": 47.233,
+   "end": 47.84
+  },
+  {
+   "line": 6,
+   "text": "也",
+   "start": 48.054,
+   "end": 48.185
+  },
+  {
+   "line": 6,
+   "text": "不行",
+   "start": 48.197,
+   "end": 48.637
+  },
+  {
+   "line": 7,
+   "text": "再",
+   "start": 49.798,
+   "end": 49.952
+  },
+  {
+   "line": 7,
+   "text": "看调",
+   "start": 49.952,
+   "end": 50.536
+  },
+  {
+   "line": 7,
+   "text": "用",
+   "start": 50.643,
+   "end": 50.821
+  },
+  {
+   "line": 7,
+   "text": "上下文",
+   "start": 50.833,
+   "end": 51.44
+  },
+  {
+   "line": 7,
+   "text": "假设",
+   "start": 51.986,
+   "end": 52.331
+  },
+  {
+   "line": 7,
+   "text": "用户",
+   "start": 52.343,
+   "end": 52.676
+  },
+  {
+   "line": 7,
+   "text": "调用",
+   "start": 52.7,
+   "end": 52.974
+  },
+  {
+   "line": 7,
+   "text": "合约",
+   "start": 52.986,
+   "end": 53.343
+  },
+  {
+   "line": 7,
+   "text": "A",
+   "start": 53.343,
+   "end": 53.676
+  },
+  {
+   "line": 7,
+   "text": "A",
+   "start": 53.974,
+   "end": 54.188
+  },
+  {
+   "line": 7,
+   "text": "调用",
+   "start": 54.188,
+   "end": 54.486
+  },
+  {
+   "line": 7,
+   "text": "B",
+   "start": 54.486,
+   "end": 54.7
+  },
+  {
+   "line": 7,
+   "text": "B",
+   "start": 54.926,
+   "end": 55.117
+  },
+  {
+   "line": 7,
+   "text": "再",
+   "start": 55.129,
+   "end": 55.26
+  },
+  {
+   "line": 7,
+   "text": "调用",
+   "start": 55.271,
+   "end": 55.509
+  },
+  {
+   "line": 7,
+   "text": "C",
+   "start": 55.51,
+   "end": 55.771
+  },
+  {
+   "line": 8,
+   "text": "站在",
+   "start": 56.93,
+   "end": 57.239
+  },
+  {
+   "line": 8,
+   "text": "C",
+   "start": 57.239,
+   "end": 57.441
+  },
+  {
+   "line": 8,
+   "text": "的",
+   "start": 57.442,
+   "end": 57.513
+  },
+  {
+   "line": 8,
+   "text": "位置",
+   "start": 57.525,
+   "end": 57.989
+  },
+  {
+   "line": 8,
+   "text": "看",
+   "start": 58.227,
+   "end": 58.489
+  },
+  {
+   "line": 8,
+   "text": "四个",
+   "start": 58.489,
+   "end": 58.751
+  },
+  {
+   "line": 8,
+   "text": "变量",
+   "start": 58.763,
+   "end": 59.144
+  },
+  {
+   "line": 9,
+   "text": "tx",
+   "start": 60.294,
+   "end": 60.925
+  },
+  {
+   "line": 9,
+   "text": "origin",
+   "start": 61.044,
+   "end": 61.686
+  },
+  {
+   "line": 9,
+   "text": "是",
+   "start": 61.829,
+   "end": 62.02
+  },
+  {
+   "line": 9,
+   "text": "发起",
+   "start": 62.032,
+   "end": 62.401
+  },
+  {
+   "line": 9,
+   "text": "整",
+   "start": 62.425,
+   "end": 62.627
+  },
+  {
+   "line": 9,
+   "text": "笔",
+   "start": 62.627,
+   "end": 62.734
+  },
+  {
+   "line": 9,
+   "text": "交易",
+   "start": 62.746,
+   "end": 62.984
+  },
+  {
+   "line": 9,
+   "text": "的",
+   "start": 62.984,
+   "end": 63.044
+  },
+  {
+   "line": 9,
+   "text": "用户",
+   "start": 63.056,
+   "end": 63.425
+  },
+  {
+   "line": 10,
+   "text": "msg",
+   "start": 64.594,
+   "end": 65.236
+  },
+  {
+   "line": 10,
+   "text": "sender",
+   "start": 65.32,
+   "end": 65.939
+  },
+  {
+   "line": 10,
+   "text": "是",
+   "start": 66.141,
+   "end": 66.332
+  },
+  {
+   "line": 10,
+   "text": "直接",
+   "start": 66.344,
+   "end": 66.582
+  },
+  {
+   "line": 10,
+   "text": "调用",
+   "start": 66.594,
+   "end": 66.856
+  },
+  {
+   "line": 10,
+   "text": "C",
+   "start": 66.856,
+   "end": 67.058
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 67.058,
+   "end": 67.141
+  },
+  {
+   "line": 10,
+   "text": "那",
+   "start": 67.153,
+   "end": 67.248
+  },
+  {
+   "line": 10,
+   "text": "一个",
+   "start": 67.248,
+   "end": 67.558
+  },
+  {
+   "line": 10,
+   "text": "也",
+   "start": 67.76,
+   "end": 67.891
+  },
+  {
+   "line": 10,
+   "text": "就",
+   "start": 67.891,
+   "end": 68.01
+  },
+  {
+   "line": 10,
+   "text": "是",
+   "start": 68.01,
+   "end": 68.248
+  },
+  {
+   "line": 10,
+   "text": "B",
+   "start": 68.344,
+   "end": 68.606
+  },
+  {
+   "line": 11,
+   "text": "msg",
+   "start": 69.734,
+   "end": 70.269
+  },
+  {
+   "line": 11,
+   "text": "value",
+   "start": 70.365,
+   "end": 70.984
+  },
+  {
+   "line": 11,
+   "text": "是",
+   "start": 71.234,
+   "end": 71.4
+  },
+  {
+   "line": 11,
+   "text": "这次",
+   "start": 71.412,
+   "end": 71.662
+  },
+  {
+   "line": 11,
+   "text": "调用",
+   "start": 71.674,
+   "end": 71.995
+  },
+  {
+   "line": 11,
+   "text": "附带",
+   "start": 72.019,
+   "end": 72.269
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 72.269,
+   "end": 72.329
+  },
+  {
+   "line": 11,
+   "text": "原生币",
+   "start": 72.341,
+   "end": 72.853
+  },
+  {
+   "line": 11,
+   "text": "也",
+   "start": 73.019,
+   "end": 73.15
+  },
+  {
+   "line": 11,
+   "text": "就",
+   "start": 73.15,
+   "end": 73.246
+  },
+  {
+   "line": 11,
+   "text": "是",
+   "start": 73.246,
+   "end": 73.424
+  },
+  {
+   "line": 11,
+   "text": "B",
+   "start": 73.448,
+   "end": 73.591
+  },
+  {
+   "line": 11,
+   "text": "转给",
+   "start": 73.603,
+   "end": 73.9
+  },
+  {
+   "line": 11,
+   "text": "C",
+   "start": 73.912,
+   "end": 74.162
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 74.162,
+   "end": 74.222
+  },
+  {
+   "line": 11,
+   "text": "数量",
+   "start": 74.234,
+   "end": 74.615
+  },
+  {
+   "line": 12,
+   "text": "address",
+   "start": 75.786,
+   "end": 76.524
+  },
+  {
+   "line": 12,
+   "text": "this",
+   "start": 76.738,
+   "end": 77.214
+  },
+  {
+   "line": 12,
+   "text": "是",
+   "start": 77.369,
+   "end": 77.524
+  },
+  {
+   "line": 12,
+   "text": "当前",
+   "start": 77.536,
+   "end": 77.893
+  },
+  {
+   "line": 12,
+   "text": "执行",
+   "start": 77.917,
+   "end": 78.19
+  },
+  {
+   "line": 12,
+   "text": "代码",
+   "start": 78.202,
+   "end": 78.428
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 78.428,
+   "end": 78.488
+  },
+  {
+   "line": 12,
+   "text": "合约",
+   "start": 78.5,
+   "end": 78.869
+  },
+  {
+   "line": 12,
+   "text": "也",
+   "start": 79.095,
+   "end": 79.238
+  },
+  {
+   "line": 12,
+   "text": "就",
+   "start": 79.238,
+   "end": 79.357
+  },
+  {
+   "line": 12,
+   "text": "是",
+   "start": 79.357,
+   "end": 79.643
+  },
+  {
+   "line": 12,
+   "text": "C",
+   "start": 79.75,
+   "end": 80.071
+  },
+  {
+   "line": 12,
+   "text": "自己",
+   "start": 80.071,
+   "end": 80.452
+  },
+  {
+   "line": 13,
+   "text": "开头",
+   "start": 81.598,
+   "end": 81.967
+  },
+  {
+   "line": 13,
+   "text": "那个",
+   "start": 81.979,
+   "end": 82.145
+  },
+  {
+   "line": 13,
+   "text": "金库",
+   "start": 82.157,
+   "end": 82.598
+  },
+  {
+   "line": 13,
+   "text": "该",
+   "start": 82.848,
+   "end": 83.014
+  },
+  {
+   "line": 13,
+   "text": "看",
+   "start": 83.014,
+   "end": 83.133
+  },
+  {
+   "line": 13,
+   "text": "的",
+   "start": 83.133,
+   "end": 83.217
+  },
+  {
+   "line": 13,
+   "text": "是",
+   "start": 83.217,
+   "end": 83.586
+  },
+  {
+   "line": 13,
+   "text": "msg",
+   "start": 83.705,
+   "end": 84.443
+  },
+  {
+   "line": 13,
+   "text": "sender",
+   "start": 84.574,
+   "end": 85.145
+  },
+  {
+   "line": 13,
+   "text": "不是",
+   "start": 85.324,
+   "end": 85.669
+  },
+  {
+   "line": 13,
+   "text": "tx",
+   "start": 85.693,
+   "end": 86.11
+  },
+  {
+   "line": 13,
+   "text": "origin",
+   "start": 86.205,
+   "end": 86.788
+  },
+  {
+   "line": 14,
+   "text": "合约",
+   "start": 87.938,
+   "end": 88.319
+  },
+  {
+   "line": 14,
+   "text": "之间",
+   "start": 88.33,
+   "end": 88.592
+  },
+  {
+   "line": 14,
+   "text": "怎么",
+   "start": 88.616,
+   "end": 88.771
+  },
+  {
+   "line": 14,
+   "text": "调用",
+   "start": 88.783,
+   "end": 89.164
+  },
+  {
+   "line": 14,
+   "text": "有",
+   "start": 89.709,
+   "end": 89.876
+  },
+  {
+   "line": 14,
+   "text": "三",
+   "start": 89.888,
+   "end": 90.138
+  },
+  {
+   "line": 14,
+   "text": "种",
+   "start": 90.138,
+   "end": 90.28
+  },
+  {
+   "line": 14,
+   "text": "方式",
+   "start": 90.292,
+   "end": 90.757
+  },
+  {
+   "line": 15,
+   "text": "第一",
+   "start": 91.926,
+   "end": 92.14
+  },
+  {
+   "line": 15,
+   "text": "种",
+   "start": 92.14,
+   "end": 92.307
+  },
+  {
+   "line": 15,
+   "text": "call",
+   "start": 92.307,
+   "end": 92.676
+  },
+  {
+   "line": 15,
+   "text": "最",
+   "start": 92.866,
+   "end": 93.068
+  },
+  {
+   "line": 15,
+   "text": "常见",
+   "start": 93.068,
+   "end": 93.497
+  },
+  {
+   "line": 15,
+   "text": "执行",
+   "start": 94.03,
+   "end": 94.459
+  },
+  {
+   "line": 15,
+   "text": "B",
+   "start": 94.471,
+   "end": 94.578
+  },
+  {
+   "line": 15,
+   "text": "的",
+   "start": 94.578,
+   "end": 94.661
+  },
+  {
+   "line": 15,
+   "text": "代码",
+   "start": 94.673,
+   "end": 95.161
+  },
+  {
+   "line": 15,
+   "text": "改",
+   "start": 95.411,
+   "end": 95.602
+  },
+  {
+   "line": 15,
+   "text": "的",
+   "start": 95.602,
+   "end": 95.673
+  },
+  {
+   "line": 15,
+   "text": "是",
+   "start": 95.673,
+   "end": 95.804
+  },
+  {
+   "line": 15,
+   "text": "B",
+   "start": 95.828,
+   "end": 95.995
+  },
+  {
+   "line": 15,
+   "text": "的",
+   "start": 95.995,
+   "end": 96.066
+  },
+  {
+   "line": 15,
+   "text": "存储",
+   "start": 96.078,
+   "end": 96.507
+  },
+  {
+   "line": 16,
+   "text": "第二",
+   "start": 97.666,
+   "end": 97.951
+  },
+  {
+   "line": 16,
+   "text": "种",
+   "start": 97.951,
+   "end": 98.237
+  },
+  {
+   "line": 16,
+   "text": "delegatecall",
+   "start": 98.332,
+   "end": 99.166
+  },
+  {
+   "line": 16,
+   "text": "执行",
+   "start": 99.699,
+   "end": 100.104
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 100.104,
+   "end": 100.306
+  },
+  {
+   "line": 16,
+   "text": "还是",
+   "start": 100.33,
+   "end": 100.616
+  },
+  {
+   "line": 16,
+   "text": "B",
+   "start": 100.628,
+   "end": 100.782
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 100.782,
+   "end": 100.854
+  },
+  {
+   "line": 16,
+   "text": "代码",
+   "start": 100.866,
+   "end": 101.294
+  },
+  {
+   "line": 16,
+   "text": "改",
+   "start": 101.58,
+   "end": 101.83
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 101.83,
+   "end": 102.032
+  },
+  {
+   "line": 16,
+   "text": "却",
+   "start": 102.128,
+   "end": 102.306
+  },
+  {
+   "line": 16,
+   "text": "是",
+   "start": 102.306,
+   "end": 102.437
+  },
+  {
+   "line": 16,
+   "text": "A",
+   "start": 102.461,
+   "end": 102.639
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 102.639,
+   "end": 102.723
+  },
+  {
+   "line": 16,
+   "text": "存储",
+   "start": 102.735,
+   "end": 103.175
+  },
+  {
+   "line": 17,
+   "text": "而且",
+   "start": 104.342,
+   "end": 104.913
+  },
+  {
+   "line": 17,
+   "text": "msg",
+   "start": 105.032,
+   "end": 105.77
+  },
+  {
+   "line": 17,
+   "text": "sender",
+   "start": 105.973,
+   "end": 106.592
+  },
+  {
+   "line": 17,
+   "text": "和",
+   "start": 106.699,
+   "end": 106.865
+  },
+  {
+   "line": 17,
+   "text": "msg",
+   "start": 106.877,
+   "end": 107.425
+  },
+  {
+   "line": 17,
+   "text": "value",
+   "start": 107.568,
+   "end": 108.199
+  },
+  {
+   "line": 17,
+   "text": "保持",
+   "start": 108.306,
+   "end": 108.568
+  },
+  {
+   "line": 17,
+   "text": "不",
+   "start": 108.58,
+   "end": 108.699
+  },
+  {
+   "line": 17,
+   "text": "变",
+   "start": 108.699,
+   "end": 108.925
+  },
+  {
+   "line": 17,
+   "text": "代理",
+   "start": 109.446,
+   "end": 109.696
+  },
+  {
+   "line": 17,
+   "text": "合约",
+   "start": 109.708,
+   "end": 109.982
+  },
+  {
+   "line": 17,
+   "text": "和",
+   "start": 110.006,
+   "end": 110.113
+  },
+  {
+   "line": 17,
+   "text": "库",
+   "start": 110.125,
+   "end": 110.292
+  },
+  {
+   "line": 17,
+   "text": "合约",
+   "start": 110.292,
+   "end": 110.673
+  },
+  {
+   "line": 17,
+   "text": "都",
+   "start": 110.923,
+   "end": 111.101
+  },
+  {
+   "line": 17,
+   "text": "依赖",
+   "start": 111.113,
+   "end": 111.327
+  },
+  {
+   "line": 17,
+   "text": "它",
+   "start": 111.327,
+   "end": 111.577
+  },
+  {
+   "line": 18,
+   "text": "打",
+   "start": 112.722,
+   "end": 112.972
+  },
+  {
+   "line": 18,
+   "text": "个",
+   "start": 112.972,
+   "end": 113.055
+  },
+  {
+   "line": 18,
+   "text": "比方",
+   "start": 113.067,
+   "end": 113.507
+  },
+  {
+   "line": 18,
+   "text": "EVM",
+   "start": 114.041,
+   "end": 114.66
+  },
+  {
+   "line": 18,
+   "text": "像",
+   "start": 114.743,
+   "end": 114.969
+  },
+  {
+   "line": 18,
+   "text": "一个",
+   "start": 114.981,
+   "end": 115.231
+  },
+  {
+   "line": 18,
+   "text": "只有",
+   "start": 115.255,
+   "end": 115.469
+  },
+  {
+   "line": 18,
+   "text": "一个",
+   "start": 115.481,
+   "end": 115.683
+  },
+  {
+   "line": 18,
+   "text": "窗口",
+   "start": 115.695,
+   "end": 115.981
+  },
+  {
+   "line": 18,
+   "text": "的",
+   "start": 115.981,
+   "end": 116.064
+  },
+  {
+   "line": 18,
+   "text": "政务",
+   "start": 116.088,
+   "end": 116.303
+  },
+  {
+   "line": 18,
+   "text": "大厅",
+   "start": 116.314,
+   "end": 116.791
+  },
+  {
+   "line": 18,
+   "text": "每个",
+   "start": 117.005,
+   "end": 117.291
+  },
+  {
+   "line": 18,
+   "text": "合约",
+   "start": 117.303,
+   "end": 117.684
+  },
+  {
+   "line": 18,
+   "text": "是",
+   "start": 117.707,
+   "end": 117.874
+  },
+  {
+   "line": 18,
+   "text": "一个",
+   "start": 117.874,
+   "end": 118.041
+  },
+  {
+   "line": 18,
+   "text": "科室",
+   "start": 118.053,
+   "end": 118.457
+  },
+  {
+   "line": 19,
+   "text": "call",
+   "start": 119.614,
+   "end": 120.09
+  },
+  {
+   "line": 19,
+   "text": "是",
+   "start": 120.304,
+   "end": 120.459
+  },
+  {
+   "line": 19,
+   "text": "派",
+   "start": 120.471,
+   "end": 120.602
+  },
+  {
+   "line": 19,
+   "text": "人",
+   "start": 120.602,
+   "end": 120.709
+  },
+  {
+   "line": 19,
+   "text": "带",
+   "start": 120.733,
+   "end": 120.84
+  },
+  {
+   "line": 19,
+   "text": "着",
+   "start": 120.84,
+   "end": 120.911
+  },
+  {
+   "line": 19,
+   "text": "材料",
+   "start": 120.923,
+   "end": 121.411
+  },
+  {
+   "line": 19,
+   "text": "去",
+   "start": 121.626,
+   "end": 121.804
+  },
+  {
+   "line": 19,
+   "text": "B",
+   "start": 121.816,
+   "end": 121.911
+  },
+  {
+   "line": 19,
+   "text": "的",
+   "start": 121.911,
+   "end": 121.983
+  },
+  {
+   "line": 19,
+   "text": "窗口",
+   "start": 121.995,
+   "end": 122.292
+  },
+  {
+   "line": 19,
+   "text": "办事",
+   "start": 122.304,
+   "end": 122.697
+  },
+  {
+   "line": 20,
+   "text": "delegatecall",
+   "start": 123.866,
+   "end": 124.651
+  },
+  {
+   "line": 20,
+   "text": "是",
+   "start": 124.818,
+   "end": 125.008
+  },
+  {
+   "line": 20,
+   "text": "把",
+   "start": 125.008,
+   "end": 125.139
+  },
+  {
+   "line": 20,
+   "text": "B",
+   "start": 125.163,
+   "end": 125.318
+  },
+  {
+   "line": 20,
+   "text": "的",
+   "start": 125.318,
+   "end": 125.449
+  },
+  {
+   "line": 20,
+   "text": "规程",
+   "start": 125.473,
+   "end": 125.818
+  },
+  {
+   "line": 20,
+   "text": "手册",
+   "start": 125.83,
+   "end": 126.223
+  },
+  {
+   "line": 20,
+   "text": "借",
+   "start": 126.247,
+   "end": 126.342
+  },
+  {
+   "line": 20,
+   "text": "过来",
+   "start": 126.354,
+   "end": 126.687
+  },
+  {
+   "line": 20,
+   "text": "在",
+   "start": 126.901,
+   "end": 127.08
+  },
+  {
+   "line": 20,
+   "text": "A",
+   "start": 127.08,
+   "end": 127.235
+  },
+  {
+   "line": 20,
+   "text": "自己",
+   "start": 127.247,
+   "end": 127.449
+  },
+  {
+   "line": 20,
+   "text": "的",
+   "start": 127.449,
+   "end": 127.532
+  },
+  {
+   "line": 20,
+   "text": "档案",
+   "start": 127.544,
+   "end": 127.782
+  },
+  {
+   "line": 20,
+   "text": "柜",
+   "start": 127.782,
+   "end": 128.056
+  },
+  {
+   "line": 20,
+   "text": "上照",
+   "start": 128.151,
+   "end": 128.604
+  },
+  {
+   "line": 20,
+   "text": "着",
+   "start": 128.604,
+   "end": 128.687
+  },
+  {
+   "line": 20,
+   "text": "办",
+   "start": 128.687,
+   "end": 128.889
+  },
+  {
+   "line": 21,
+   "text": "如果",
+   "start": 130.038,
+   "end": 130.288
+  },
+  {
+   "line": 21,
+   "text": "手册",
+   "start": 130.311,
+   "end": 130.68
+  },
+  {
+   "line": 21,
+   "text": "写",
+   "start": 130.692,
+   "end": 130.859
+  },
+  {
+   "line": 21,
+   "text": "着",
+   "start": 130.859,
+   "end": 131.145
+  },
+  {
+   "line": 21,
+   "text": "清空",
+   "start": 131.359,
+   "end": 131.776
+  },
+  {
+   "line": 21,
+   "text": "0",
+   "start": 131.776,
+   "end": 131.907
+  },
+  {
+   "line": 21,
+   "text": "号",
+   "start": 131.907,
+   "end": 132.061
+  },
+  {
+   "line": 21,
+   "text": "抽屉",
+   "start": 132.073,
+   "end": 132.526
+  },
+  {
+   "line": 21,
+   "text": "被",
+   "start": 132.704,
+   "end": 132.835
+  },
+  {
+   "line": 21,
+   "text": "清空",
+   "start": 132.847,
+   "end": 133.169
+  },
+  {
+   "line": 21,
+   "text": "的",
+   "start": 133.169,
+   "end": 133.264
+  },
+  {
+   "line": 21,
+   "text": "是",
+   "start": 133.264,
+   "end": 133.407
+  },
+  {
+   "line": 21,
+   "text": "A",
+   "start": 133.419,
+   "end": 133.585
+  },
+  {
+   "line": 21,
+   "text": "的",
+   "start": 133.585,
+   "end": 133.657
+  },
+  {
+   "line": 21,
+   "text": "抽屉",
+   "start": 133.669,
+   "end": 134.05
+  },
+  {
+   "line": 22,
+   "text": "这个",
+   "start": 135.202,
+   "end": 135.464
+  },
+  {
+   "line": 22,
+   "text": "比方",
+   "start": 135.475,
+   "end": 135.975
+  },
+  {
+   "line": 22,
+   "text": "有",
+   "start": 136.071,
+   "end": 136.237
+  },
+  {
+   "line": 22,
+   "text": "一",
+   "start": 136.237,
+   "end": 136.309
+  },
+  {
+   "line": 22,
+   "text": "处",
+   "start": 136.309,
+   "end": 136.428
+  },
+  {
+   "line": 22,
+   "text": "不",
+   "start": 136.452,
+   "end": 136.535
+  },
+  {
+   "line": 22,
+   "text": "成立",
+   "start": 136.535,
+   "end": 136.987
+  },
+  {
+   "line": 22,
+   "text": "真实",
+   "start": 137.521,
+   "end": 137.925
+  },
+  {
+   "line": 22,
+   "text": "的",
+   "start": 137.925,
+   "end": 138.009
+  },
+  {
+   "line": 22,
+   "text": "大厅",
+   "start": 138.021,
+   "end": 138.414
+  },
+  {
+   "line": 22,
+   "text": "里",
+   "start": 138.414,
+   "end": 138.664
+  },
+  {
+   "line": 22,
+   "text": "你",
+   "start": 139.021,
+   "end": 139.247
+  },
+  {
+   "line": 22,
+   "text": "离开",
+   "start": 139.259,
+   "end": 139.485
+  },
+  {
+   "line": 22,
+   "text": "窗口",
+   "start": 139.497,
+   "end": 140.021
+  },
+  {
+   "line": 22,
+   "text": "就不能",
+   "start": 140.33,
+   "end": 140.675
+  },
+  {
+   "line": 22,
+   "text": "插队",
+   "start": 140.699,
+   "end": 141.044
+  },
+  {
+   "line": 22,
+   "text": "回来",
+   "start": 141.056,
+   "end": 141.413
+  },
+  {
+   "line": 23,
+   "text": "EVM",
+   "start": 142.574,
+   "end": 143.062
+  },
+  {
+   "line": 23,
+   "text": "里",
+   "start": 143.062,
+   "end": 143.312
+  },
+  {
+   "line": 23,
+   "text": "B",
+   "start": 143.562,
+   "end": 143.716
+  },
+  {
+   "line": 23,
+   "text": "办到",
+   "start": 143.728,
+   "end": 143.943
+  },
+  {
+   "line": 23,
+   "text": "一半",
+   "start": 143.955,
+   "end": 144.3
+  },
+  {
+   "line": 23,
+   "text": "可以",
+   "start": 144.526,
+   "end": 144.728
+  },
+  {
+   "line": 23,
+   "text": "反过来",
+   "start": 144.74,
+   "end": 145.086
+  },
+  {
+   "line": 23,
+   "text": "再",
+   "start": 145.109,
+   "end": 145.216
+  },
+  {
+   "line": 23,
+   "text": "找",
+   "start": 145.216,
+   "end": 145.395
+  },
+  {
+   "line": 23,
+   "text": "A",
+   "start": 145.395,
+   "end": 145.633
+  },
+  {
+   "line": 23,
+   "text": "这时",
+   "start": 146.166,
+   "end": 146.488
+  },
+  {
+   "line": 23,
+   "text": "A",
+   "start": 146.488,
+   "end": 146.631
+  },
+  {
+   "line": 23,
+   "text": "的",
+   "start": 146.631,
+   "end": 146.714
+  },
+  {
+   "line": 23,
+   "text": "上",
+   "start": 146.726,
+   "end": 146.916
+  },
+  {
+   "line": 23,
+   "text": "一",
+   "start": 146.916,
+   "end": 147.012
+  },
+  {
+   "line": 23,
+   "text": "件",
+   "start": 147.012,
+   "end": 147.166
+  },
+  {
+   "line": 23,
+   "text": "事",
+   "start": 147.166,
+   "end": 147.488
+  },
+  {
+   "line": 23,
+   "text": "还",
+   "start": 147.666,
+   "end": 147.869
+  },
+  {
+   "line": 23,
+   "text": "没",
+   "start": 147.869,
+   "end": 147.964
+  },
+  {
+   "line": 23,
+   "text": "办完",
+   "start": 147.976,
+   "end": 148.393
+  },
+  {
+   "line": 23,
+   "text": "这",
+   "start": 148.94,
+   "end": 149.178
+  },
+  {
+   "line": 23,
+   "text": "就",
+   "start": 149.178,
+   "end": 149.262
+  },
+  {
+   "line": 23,
+   "text": "是",
+   "start": 149.262,
+   "end": 149.345
+  },
+  {
+   "line": 23,
+   "text": "重入",
+   "start": 149.357,
+   "end": 149.786
+  },
+  {
+   "line": 24,
+   "text": "第三",
+   "start": 150.954,
+   "end": 151.335
+  },
+  {
+   "line": 24,
+   "text": "种",
+   "start": 151.335,
+   "end": 151.596
+  },
+  {
+   "line": 24,
+   "text": "staticcall",
+   "start": 151.692,
+   "end": 152.489
+  },
+  {
+   "line": 24,
+   "text": "是",
+   "start": 152.668,
+   "end": 152.966
+  },
+  {
+   "line": 24,
+   "text": "只",
+   "start": 152.977,
+   "end": 153.168
+  },
+  {
+   "line": 24,
+   "text": "读",
+   "start": 153.168,
+   "end": 153.287
+  },
+  {
+   "line": 24,
+   "text": "调用",
+   "start": 153.299,
+   "end": 153.656
+  },
+  {
+   "line": 24,
+   "text": "任何",
+   "start": 154.201,
+   "end": 154.546
+  },
+  {
+   "line": 24,
+   "text": "写",
+   "start": 154.558,
+   "end": 154.725
+  },
+  {
+   "line": 24,
+   "text": "存储",
+   "start": 154.725,
+   "end": 155.273
+  },
+  {
+   "line": 24,
+   "text": "或",
+   "start": 155.296,
+   "end": 155.439
+  },
+  {
+   "line": 24,
+   "text": "发",
+   "start": 155.439,
+   "end": 155.558
+  },
+  {
+   "line": 24,
+   "text": "事件",
+   "start": 155.57,
+   "end": 155.82
+  },
+  {
+   "line": 24,
+   "text": "的",
+   "start": 155.82,
+   "end": 155.88
+  },
+  {
+   "line": 24,
+   "text": "操作",
+   "start": 155.892,
+   "end": 156.451
+  },
+  {
+   "line": 24,
+   "text": "都",
+   "start": 156.761,
+   "end": 156.927
+  },
+  {
+   "line": 24,
+   "text": "会",
+   "start": 156.927,
+   "end": 157.058
+  },
+  {
+   "line": 24,
+   "text": "回滚",
+   "start": 157.07,
+   "end": 157.487
+  },
+  {
+   "line": 25,
+   "text": "还有",
+   "start": 158.638,
+   "end": 158.959
+  },
+  {
+   "line": 25,
+   "text": "一个",
+   "start": 158.971,
+   "end": 159.126
+  },
+  {
+   "line": 25,
+   "text": "坑",
+   "start": 159.126,
+   "end": 159.507
+  },
+  {
+   "line": 25,
+   "text": "低级",
+   "start": 160.04,
+   "end": 160.314
+  },
+  {
+   "line": 25,
+   "text": "call",
+   "start": 160.338,
+   "end": 160.588
+  },
+  {
+   "line": 25,
+   "text": "失败",
+   "start": 160.6,
+   "end": 160.885
+  },
+  {
+   "line": 25,
+   "text": "时",
+   "start": 160.885,
+   "end": 161.254
+  },
+  {
+   "line": 25,
+   "text": "不会",
+   "start": 161.552,
+   "end": 161.79
+  },
+  {
+   "line": 25,
+   "text": "自动",
+   "start": 161.802,
+   "end": 162.254
+  },
+  {
+   "line": 25,
+   "text": "让",
+   "start": 162.35,
+   "end": 162.528
+  },
+  {
+   "line": 25,
+   "text": "调用",
+   "start": 162.54,
+   "end": 162.838
+  },
+  {
+   "line": 25,
+   "text": "者",
+   "start": 162.838,
+   "end": 162.921
+  },
+  {
+   "line": 25,
+   "text": "回滚",
+   "start": 162.933,
+   "end": 163.35
+  },
+  {
+   "line": 25,
+   "text": "只",
+   "start": 163.564,
+   "end": 163.754
+  },
+  {
+   "line": 25,
+   "text": "返回",
+   "start": 163.766,
+   "end": 164.088
+  },
+  {
+   "line": 25,
+   "text": "false",
+   "start": 164.088,
+   "end": 164.588
+  }
+ ],
+ "captions": [
+  {
+   "text": "EVM 是一台单线程的栈式计算机",
+   "start": 1.648,
+   "end": 4.282,
+   "id": "c0"
+  },
+  {
+   "text": "每个合约",
+   "start": 4.657,
+   "end": 5.625,
+   "id": "c1"
+  },
+  {
+   "text": "有自己的代码和存储",
+   "start": 5.657,
+   "end": 7.256,
+   "id": "c2"
+  },
+  {
+   "text": "合约之间",
+   "start": 8.252,
+   "end": 9.195,
+   "id": "c3"
+  },
+  {
+   "text": "靠消息调用来通信",
+   "start": 9.275,
+   "end": 10.743,
+   "id": "c4"
+  },
+  {
+   "text": "每一次调用",
+   "start": 11.118,
+   "end": 12.181,
+   "id": "c5"
+  },
+  {
+   "text": "都可能把控制权交给别人",
+   "start": 12.237,
+   "end": 14.336,
+   "id": "c6"
+  },
+  {
+   "text": "链上有两类账户",
+   "start": 15.336,
+   "end": 17.006,
+   "id": "c7"
+  },
+  {
+   "text": "外部账户叫 EOA",
+   "start": 18.004,
+   "end": 19.709,
+   "id": "c8"
+  },
+  {
+   "text": "由私钥控制",
+   "start": 19.73,
+   "end": 20.876,
+   "id": "c9"
+  },
+  {
+   "text": "能主动发起交易",
+   "start": 20.896,
+   "end": 22.162,
+   "id": "c10"
+  },
+  {
+   "text": "合约账户由代码控制",
+   "start": 23.144,
+   "end": 24.909,
+   "id": "c11"
+  },
+  {
+   "text": "不能主动发起",
+   "start": 25.06,
+   "end": 26.29,
+   "id": "c12"
+  },
+  {
+   "text": "只能被调用",
+   "start": 26.358,
+   "end": 27.314,
+   "id": "c13"
+  },
+  {
+   "text": "但这条界线在变",
+   "start": 28.284,
+   "end": 29.775,
+   "id": "c14"
+  },
+  {
+   "text": "2025 年 5 月",
+   "start": 30.138,
+   "end": 31.439,
+   "id": "c15"
+  },
+  {
+   "text": "以太坊 Pectra 升级上线了 EIP-7702",
+   "start": 31.555,
+   "end": 35.499,
+   "id": "c16"
+  },
+  {
+   "text": "EOA 可以委托执行一段合约代码",
+   "start": 35.65,
+   "end": 38.392,
+   "id": "c17"
+  },
+  {
+   "text": "所以 查对方有没有代码",
+   "start": 39.376,
+   "end": 41.724,
+   "id": "c18"
+  },
+  {
+   "text": "已经不能判断它是不是普通用户",
+   "start": 41.78,
+   "end": 43.974,
+   "id": "c19"
+  },
+  {
+   "text": "比较 msg.sender 和 tx.origin",
+   "start": 44.349,
+   "end": 47.96,
+   "id": "c20"
+  },
+  {
+   "text": "也不行",
+   "start": 48.004,
+   "end": 48.757,
+   "id": "c21"
+  },
+  {
+   "text": "再看调用上下文",
+   "start": 49.748,
+   "end": 51.56,
+   "id": "c22"
+  },
+  {
+   "text": "假设用户调用合约 A",
+   "start": 51.936,
+   "end": 53.796,
+   "id": "c23"
+  },
+  {
+   "text": "A 调用 B",
+   "start": 53.924,
+   "end": 54.82,
+   "id": "c24"
+  },
+  {
+   "text": "B 再调用 C",
+   "start": 54.876,
+   "end": 55.891,
+   "id": "c25"
+  },
+  {
+   "text": "站在 C 的位置",
+   "start": 56.88,
+   "end": 58.109,
+   "id": "c26"
+  },
+  {
+   "text": "看四个变量",
+   "start": 58.177,
+   "end": 59.264,
+   "id": "c27"
+  },
+  {
+   "text": "tx.origin",
+   "start": 60.244,
+   "end": 61.759,
+   "id": "c28"
+  },
+  {
+   "text": "是发起整笔交易的用户",
+   "start": 61.779,
+   "end": 63.545,
+   "id": "c29"
+  },
+  {
+   "text": "msg.sender",
+   "start": 64.544,
+   "end": 66.059,
+   "id": "c30"
+  },
+  {
+   "text": "是直接调用 C 的那一个",
+   "start": 66.091,
+   "end": 67.678,
+   "id": "c31"
+  },
+  {
+   "text": "也就是 B",
+   "start": 67.71,
+   "end": 68.726,
+   "id": "c32"
+  },
+  {
+   "text": "msg.value",
+   "start": 69.684,
+   "end": 71.104,
+   "id": "c33"
+  },
+  {
+   "text": "是这次调用附带的原生币",
+   "start": 71.184,
+   "end": 72.949,
+   "id": "c34"
+  },
+  {
+   "text": "也就是 B 转给 C 的数量",
+   "start": 72.969,
+   "end": 74.735,
+   "id": "c35"
+  },
+  {
+   "text": "address(this)",
+   "start": 75.736,
+   "end": 77.299,
+   "id": "c36"
+  },
+  {
+   "text": "是当前执行代码的合约",
+   "start": 77.319,
+   "end": 78.989,
+   "id": "c37"
+  },
+  {
+   "text": "也就是 C 自己",
+   "start": 79.045,
+   "end": 80.572,
+   "id": "c38"
+  },
+  {
+   "text": "开头那个金库",
+   "start": 81.548,
+   "end": 82.718,
+   "id": "c39"
+  },
+  {
+   "text": "该看的是 msg.sender",
+   "start": 82.798,
+   "end": 85.254,
+   "id": "c40"
+  },
+  {
+   "text": "不是 tx.origin",
+   "start": 85.274,
+   "end": 86.908,
+   "id": "c41"
+  },
+  {
+   "text": "合约之间怎么调用",
+   "start": 87.888,
+   "end": 89.284,
+   "id": "c42"
+  },
+  {
+   "text": "有三种方式",
+   "start": 89.659,
+   "end": 90.877,
+   "id": "c43"
+  },
+  {
+   "text": "第一种 call 最常见",
+   "start": 91.876,
+   "end": 93.617,
+   "id": "c44"
+  },
+  {
+   "text": "执行 B 的代码",
+   "start": 93.98,
+   "end": 95.281,
+   "id": "c45"
+  },
+  {
+   "text": "改的是 B 的存储",
+   "start": 95.361,
+   "end": 96.627,
+   "id": "c46"
+  },
+  {
+   "text": "第二种 delegatecall",
+   "start": 97.616,
+   "end": 99.286,
+   "id": "c47"
+  },
+  {
+   "text": "执行的还是 B 的代码",
+   "start": 99.649,
+   "end": 101.414,
+   "id": "c48"
+  },
+  {
+   "text": "改的却是 A 的存储",
+   "start": 101.53,
+   "end": 103.295,
+   "id": "c49"
+  },
+  {
+   "text": "而且 msg.sender 和",
+   "start": 104.292,
+   "end": 106.807,
+   "id": "c50"
+  },
+  {
+   "text": "msg.value 保持不变",
+   "start": 106.827,
+   "end": 109.045,
+   "id": "c51"
+  },
+  {
+   "text": "代理合约和库合约",
+   "start": 109.396,
+   "end": 110.793,
+   "id": "c52"
+  },
+  {
+   "text": "都依赖它",
+   "start": 110.873,
+   "end": 111.697,
+   "id": "c53"
+  },
+  {
+   "text": "打个比方",
+   "start": 112.672,
+   "end": 113.627,
+   "id": "c54"
+  },
+  {
+   "text": "EVM 像一个只有一个窗口的政务大厅",
+   "start": 113.991,
+   "end": 116.911,
+   "id": "c55"
+  },
+  {
+   "text": "每个合约是一个科室",
+   "start": 116.955,
+   "end": 118.577,
+   "id": "c56"
+  },
+  {
+   "text": "call",
+   "start": 119.564,
+   "end": 120.21,
+   "id": "c57"
+  },
+  {
+   "text": "是派人带着材料",
+   "start": 120.254,
+   "end": 121.531,
+   "id": "c58"
+  },
+  {
+   "text": "去 B 的窗口办事",
+   "start": 121.576,
+   "end": 122.817,
+   "id": "c59"
+  },
+  {
+   "text": "delegatecall",
+   "start": 123.816,
+   "end": 124.748,
+   "id": "c60"
+  },
+  {
+   "text": "是把 B 的规程手册借过来",
+   "start": 124.768,
+   "end": 126.807,
+   "id": "c61"
+  },
+  {
+   "text": "在 A 自己的档案柜上照着办",
+   "start": 126.851,
+   "end": 129.009,
+   "id": "c62"
+  },
+  {
+   "text": "如果手册写着",
+   "start": 129.988,
+   "end": 131.265,
+   "id": "c63"
+  },
+  {
+   "text": "清空 0 号抽屉",
+   "start": 131.309,
+   "end": 132.634,
+   "id": "c64"
+  },
+  {
+   "text": "被清空的是 A 的抽屉",
+   "start": 132.654,
+   "end": 134.17,
+   "id": "c65"
+  },
+  {
+   "text": "这个比方有一处不成立",
+   "start": 135.152,
+   "end": 137.107,
+   "id": "c66"
+  },
+  {
+   "text": "真实的大厅里",
+   "start": 137.471,
+   "end": 138.784,
+   "id": "c67"
+  },
+  {
+   "text": "你离开窗口",
+   "start": 138.971,
+   "end": 140.141,
+   "id": "c68"
+  },
+  {
+   "text": "就不能插队回来",
+   "start": 140.28,
+   "end": 141.533,
+   "id": "c69"
+  },
+  {
+   "text": "EVM 里",
+   "start": 142.524,
+   "end": 143.432,
+   "id": "c70"
+  },
+  {
+   "text": "B 办到一半",
+   "start": 143.512,
+   "end": 144.42,
+   "id": "c71"
+  },
+  {
+   "text": "可以反过来再找 A",
+   "start": 144.476,
+   "end": 145.753,
+   "id": "c72"
+  },
+  {
+   "text": "这时 A 的上一件事",
+   "start": 146.116,
+   "end": 147.596,
+   "id": "c73"
+  },
+  {
+   "text": "还没办完",
+   "start": 147.616,
+   "end": 148.513,
+   "id": "c74"
+  },
+  {
+   "text": "这就是重入",
+   "start": 148.89,
+   "end": 149.906,
+   "id": "c75"
+  },
+  {
+   "text": "第三种 staticcall",
+   "start": 150.904,
+   "end": 152.598,
+   "id": "c76"
+  },
+  {
+   "text": "是只读调用",
+   "start": 152.618,
+   "end": 153.776,
+   "id": "c77"
+  },
+  {
+   "text": "任何写存储或发事件的操作",
+   "start": 154.151,
+   "end": 156.571,
+   "id": "c78"
+  },
+  {
+   "text": "都会回滚",
+   "start": 156.711,
+   "end": 157.607,
+   "id": "c79"
+  },
+  {
+   "text": "还有一个坑",
+   "start": 158.588,
+   "end": 159.627,
+   "id": "c80"
+  },
+  {
+   "text": "低级 call 失败时",
+   "start": 159.99,
+   "end": 161.374,
+   "id": "c81"
+  },
+  {
+   "text": "不会自动让调用者回滚",
+   "start": 161.502,
+   "end": 163.47,
+   "id": "c82"
+  },
+  {
+   "text": "只返回 false",
+   "start": 163.514,
+   "end": 164.708,
+   "id": "c83"
+  }
+ ]
+}

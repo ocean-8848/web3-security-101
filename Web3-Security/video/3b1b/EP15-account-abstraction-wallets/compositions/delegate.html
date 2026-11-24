@@ -1,0 +1,119 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="delegate" data-duration="48.79" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="d-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#58C4DD" /></marker>
+      </defs>
+      <g id="d-all">
+        <text id="d-title" class="h" x="960" y="110" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">EIP-7702 · 2025 年 5 月 Pectra 升级</text>
+        <g id="d-part1">
+          <g id="d-eoa" class="h">
+            <circle cx="330" cy="420" r="90" fill="#161a22" stroke="#e8e6df" stroke-width="4" />
+            <text x="330" y="432" font-size="32" fill="#e8e6df" text-anchor="middle">普通地址</text>
+          </g>
+          <g id="d-tuple" class="h">
+            <rect x="520" y="340" width="640" height="110" rx="14" fill="#161a22" stroke="#e8e6df" stroke-width="3" />
+            <text class="mono" x="840" y="408" font-size="34" fill="#e8e6df" text-anchor="middle">[chain_id, address, nonce]</text>
+          </g>
+          <text id="d-tuplet" class="h" x="840" y="310" font-size="30" fill="#8a8f99" text-anchor="middle">授权元组（由这个地址的私钥签名）</text>
+          <g id="d-code" class="h">
+            <rect x="160" y="560" width="680" height="90" rx="12" fill="#0b0e14" stroke="#58C4DD" stroke-width="3" />
+            <text class="mono" x="190" y="617" font-size="32" fill="#58C4DD">code = 0xef0100 ‖ address</text>
+          </g>
+          <path id="d-ptr" class="dr h" pathLength="1" d="M850 605 C 1000 605, 1060 640, 1200 640" stroke="#58C4DD" stroke-width="4" fill="none" marker-end="url(#d-ah)" />
+          <g id="d-con" class="h">
+            <rect x="1210" y="560" width="420" height="160" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+            <text x="1420" y="630" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">委托合约</text>
+            <text x="1420" y="680" font-size="28" fill="#8a8f99" text-anchor="middle">地址执行它的代码</text>
+          </g>
+        </g>
+        <!-- chain_id = 0 -->
+        <g id="d-zero" class="h">
+          <rect x="520" y="340" width="640" height="110" rx="14" fill="#1f1608" stroke="#FF9F43" stroke-width="4" />
+          <text class="mono" x="840" y="408" font-size="34" fill="#e8e6df" text-anchor="middle">[<tspan fill="#FF9F43" font-weight="700">0</tspan>, address, nonce]</text>
+        </g>
+        <g id="d-chains"></g>
+        <text id="d-anyt" class="h" x="960" y="900" font-size="32" fill="#FF9F43" text-anchor="middle">所有支持 7702 的 EVM 链（nonce 对得上即可）</text>
+        <text id="d-rej" class="h" x="960" y="980" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700">钱包默认拒绝 chain_id = 0</text>
+        <!-- tx.origin -->
+        <g id="d-tx" class="h">
+          <rect x="300" y="380" width="1320" height="150" rx="18" fill="#0b0e14" stroke="#e8e6df" stroke-opacity=".3" stroke-width="3" />
+          <text class="mono" x="960" y="475" font-size="44" fill="#e8e6df" text-anchor="middle">require(tx.origin == msg.sender);</text>
+        </g>
+        <text id="d-txold" class="h" x="960" y="620" font-size="36" fill="#8a8f99" text-anchor="middle">旧假设：调用者一定是普通地址</text>
+        <line id="d-txx" class="h" x1="660" y1="608" x2="1260" y2="608" stroke="#FC6255" stroke-width="5" />
+        <text id="d-txnew" class="h" x="960" y="700" font-size="36" fill="#FC6255" text-anchor="middle" font-weight="700">7702 之后：这个地址也可能在运行合约代码</text>
+        <!-- 网站弹窗 -->
+        <g id="d-pop" class="h">
+          <rect x="560" y="300" width="800" height="420" rx="22" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+          <text x="960" y="390" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">升级为智能账户？</text>
+          <text x="960" y="450" font-size="30" fill="#8a8f99" text-anchor="middle">某网站请求：签署 7702 授权</text>
+          <rect x="640" y="560" width="300" height="90" rx="14" fill="#1f242e" stroke="#6b6f7a" stroke-width="2" />
+          <text x="790" y="617" font-size="32" fill="#6b6f7a" text-anchor="middle">签名</text>
+          <rect id="d-no" x="980" y="560" width="300" height="90" rx="14" fill="#12200f" stroke="#83C167" stroke-width="3" />
+          <text x="1130" y="617" font-size="32" fill="#83C167" text-anchor="middle" font-weight="700">拒绝</text>
+        </g>
+        <text id="d-spec" class="h" x="960" y="830" font-size="32" fill="#e8e6df" text-anchor="middle">EIP-7702 原文：应用不应该请求用户签署委托</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 48.79, "L": [[0.6, 7.32], [7.77, 18.21], [18.66, 29.36], [29.81, 38.45], [38.9, 47.69]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      const chs = document.querySelector("#d-chains"), CH = [];
+      ["以太坊", "链 B", "链 C", "链 D", "链 E"].forEach((t, i) => {
+        const x = 400 + i * 280;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", 0);
+        g.innerHTML = `<line x1="840" y1="455" x2="${x}" y2="690" stroke="#FF9F43" stroke-width="2" stroke-opacity=".6" />` +
+          `<circle cx="${x}" cy="740" r="52" fill="#1f1608" stroke="#FF9F43" stroke-width="3" /><text x="${x}" y="750" font-size="28" fill="#e8e6df" text-anchor="middle">${t}</text>`;
+        chs.appendChild(g); CH.push(g);
+      });
+      // L0
+      IN("#d-title", at(0, 0.05), 0.5);
+      // L1 授权元组 → code 指向委托合约
+      NODE("#d-eoa", at(0, 0.45));
+      IN("#d-tuple", at(1, 0.12), 0.5, { x: -20 }, { x: 0 });
+      IN("#d-tuplet", at(1, 0.2), 0.4);
+      IN("#d-code", at(1, 0.55), 0.5, { y: -20 }, { y: 0 });
+      DRAW("#d-ptr", at(1, 0.7), 0.5);
+      NODE("#d-con", at(1, 0.75));
+      // L2 chain_id = 0：多链有效
+      tl.to(["#d-code", "#d-ptr", "#d-con", "#d-eoa", "#d-tuplet", "#d-tuple"], { opacity: 0, duration: 0.15 }, at(2, 0.0));
+      IN("#d-zero", at(2, 0.05), 0.4);
+      CH.forEach((g, i) => IN(g, at(2, 0.2) + i * 0.08, 0.4, { y: -20 }, { y: 0 }));
+      IN("#d-anyt", at(2, 0.4), 0.5);
+      IN("#d-rej", at(2, 0.78), 0.5, { scale: 1.2, svgOrigin: "960 965" }, { scale: 1 });
+      // L3 tx.origin
+      OUT(["#d-zero", "#d-chains", "#d-anyt", "#d-rej"], at(3, 0.0), 0.3);
+      IN("#d-tx", at(3, 0.08), 0.5);
+      IN("#d-txold", at(3, 0.35), 0.4);
+      tl.fromTo("#d-txx", { opacity: 0, attr: { x2: 660 } }, { opacity: 1, attr: { x2: 1260 }, duration: 0.4 }, at(3, 0.6));
+      IN("#d-txnew", at(3, 0.7), 0.5);
+      // L4 网站弹窗，默认拒绝
+      OUT(["#d-tx", "#d-txold", "#d-txx", "#d-txnew"], at(4, 0.0), 0.3);
+      NODE("#d-pop", at(4, 0.08));
+      IN("#d-spec", at(4, 0.3), 0.5);
+      tl.to("#d-no", { strokeWidth: 7, duration: 0.25, yoyo: true, repeat: 3 }, at(4, 0.65));
+      tl.to("#d-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["delegate"] = tl;
+    })();
+  </script>
+</template>

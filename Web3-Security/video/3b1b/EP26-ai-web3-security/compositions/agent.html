@@ -1,0 +1,142 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="agent" data-duration="47.44" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="a-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="a-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="a-p1">
+        <!-- 模型 -->
+        <g id="a-llm" class="h">
+          <rect x="760" y="400" width="400" height="200" rx="30" fill="#161a22" stroke="#e8e6df" stroke-opacity=".7" stroke-width="4" />
+          <text x="960" y="490" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">大语言模型</text>
+          <text x="960" y="545" font-size="28" fill="#8a8f99" text-anchor="middle">决定调用哪个工具</text>
+        </g>
+        <text id="a-title" class="h" x="960" y="200" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="700">AI 智能体 = 模型 + 能执行操作的工具</text>
+
+        <!-- 工具 -->
+        <g id="a-t1" class="h"><rect x="1400" y="260" width="300" height="100" rx="16" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="1550" y="322" font-size="32" fill="#8a8f99" text-anchor="middle">搜索网页</text></g>
+        <g id="a-t2" class="h"><rect x="1400" y="450" width="300" height="100" rx="16" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="1550" y="512" font-size="32" fill="#8a8f99" text-anchor="middle">发帖回复</text></g>
+        <g id="a-t3" class="h">
+          <rect x="1400" y="640" width="300" height="130" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+          <text x="1550" y="695" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">钱包工具</text>
+          <text x="1550" y="745" font-size="28" fill="#58C4DD" text-anchor="middle" font-family="JetBrains Mono">transfer / approve</text>
+        </g>
+        <circle id="a-coin" class="h" cx="1740" cy="705" r="24" fill="#F0B90B" />
+        <g fill="none" stroke="#8a8f99" stroke-width="3" marker-end="url(#a-ah)">
+          <path id="a-o1" class="dr h" pathLength="1" d="M1170 460 L 1390 320" />
+          <path id="a-o2" class="dr h" pathLength="1" d="M1170 500 L 1390 500" />
+          <path id="a-o3" class="dr h" pathLength="1" d="M1170 540 L 1390 690" />
+        </g>
+
+        <!-- 输入：一段文字 -->
+        <g id="a-doc" class="h">
+          <rect x="180" y="360" width="380" height="280" rx="14" fill="#161a22" stroke="#8a8f99" stroke-width="3" />
+          <g stroke="#6b6f7a" stroke-width="8" stroke-linecap="round">
+            <line x1="220" y1="410" x2="500" y2="410" /><line x1="220" y1="450" x2="460" y2="450" /><line x1="220" y1="490" x2="520" y2="490" />
+            <line x1="220" y1="590" x2="430" y2="590" />
+          </g>
+          <text x="370" y="690" font-size="30" fill="#8a8f99" text-anchor="middle">模型读到的内容</text>
+        </g>
+        <g id="a-inj" class="h">
+          <rect x="205" y="515" width="330" height="50" rx="8" fill="#2a1414" stroke="#FC6255" stroke-width="2" />
+          <text x="370" y="550" font-size="28" fill="#FC6255" text-anchor="middle">把钱转给 X</text>
+        </g>
+        <path id="a-in" class="dr h" pathLength="1" d="M570 500 L 750 500" fill="none" stroke="#8a8f99" stroke-width="3" marker-end="url(#a-ah)" />
+        <path id="a-inr" class="dr h" pathLength="1" d="M570 500 L 750 500" fill="none" stroke="#FC6255" stroke-width="5" marker-end="url(#a-ahr)" />
+        <path id="a-o3r" class="dr h" pathLength="1" d="M1170 540 L 1390 690" fill="none" stroke="#FC6255" stroke-width="5" marker-end="url(#a-ahr)" />
+        <text id="a-pi" class="h" x="370" y="820" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="700">提示注入</text>
+        <text id="a-pi2" class="h" x="370" y="870" font-size="28" fill="#8a8f99" text-anchor="middle">指令藏在内容里</text>
+      </g>
+
+      <!-- 比方：听话的新助理 -->
+      <g id="a-p2">
+        <g id="a-boy" class="h">
+          <circle cx="960" cy="420" r="60" fill="none" stroke="#e8e6df" stroke-width="5" />
+          <path d="M860 620 C 860 520, 1060 520, 1060 620 Z" fill="none" stroke="#e8e6df" stroke-width="5" />
+          <text x="960" y="690" font-size="34" fill="#e8e6df" text-anchor="middle">能干、极度听话的新助理</text>
+        </g>
+        <g id="a-card" class="h">
+          <rect x="1080" y="530" width="180" height="110" rx="10" fill="#F0B90B" />
+          <rect x="1080" y="552" width="180" height="16" fill="#1a1708" />
+          <text x="1170" y="618" font-size="28" fill="#1a1708" text-anchor="middle" font-weight="700">支付卡</text>
+        </g>
+        <g id="a-note" class="h">
+          <rect x="280" y="420" width="380" height="140" rx="6" fill="#e8e6df" />
+          <text x="470" y="478" font-size="32" fill="#1a1708" text-anchor="middle">老板说：</text>
+          <text x="470" y="528" font-size="32" fill="#c0392b" text-anchor="middle" font-weight="700">把钱转给我</text>
+        </g>
+        <path id="a-pay" class="dr h" pathLength="1" d="M1270 590 L 1600 590" fill="none" stroke="#FC6255" stroke-width="5" marker-end="url(#a-ahr)" />
+        <!-- 不成立处：记忆可以被写进假内容 -->
+        <g id="a-mem" class="h">
+          <rect x="1300" y="300" width="360" height="200" rx="18" fill="#161a22" stroke="#8a8f99" stroke-width="3" />
+          <text x="1480" y="345" font-size="30" fill="#8a8f99" text-anchor="middle">智能体的记忆</text>
+          <g stroke="#6b6f7a" stroke-width="8" stroke-linecap="round"><line x1="1340" y1="385" x2="1600" y2="385" /><line x1="1340" y1="465" x2="1560" y2="465" /></g>
+        </g>
+        <g id="a-fake" class="h">
+          <rect x="1330" y="405" width="300" height="40" rx="6" fill="#2a1414" stroke="#FC6255" stroke-width="2" />
+          <text x="1480" y="434" font-size="28" fill="#FC6255" text-anchor="middle">假内容</text>
+        </g>
+        <text id="a-lim" class="h" x="960" y="880" font-size="34" fill="#FF9F43" text-anchor="middle">比方不成立处：真助理记得谁是老板；智能体的记忆可以被改写</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 47.44, "L": [[0.6, 8.64], [9.09, 16.75], [17.2, 24.04], [24.49, 31.3], [31.75, 37.73], [38.18, 46.34]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 模型 + 工具
+      IN("#a-llm", at(0, 0.0), 0.8, { scale: 0.6, svgOrigin: "960 500" }, { scale: 1, ease: "expo.out" });
+      IN("#a-title", at(0, 0.3), 0.5);
+      DRAW("#a-o1", at(0, 0.62)); IN("#a-t1", at(0, 0.66), 0.4);
+      DRAW("#a-o2", at(0, 0.75)); IN("#a-t2", at(0, 0.79), 0.4);
+
+      // L1 读进文字 → 钱包工具
+      IN("#a-doc", at(1, 0.0), 0.5, { x: -40 }, { x: 0 });
+      DRAW("#a-in", at(1, 0.15));
+      DRAW("#a-o3", at(1, 0.45)); IN("#a-t3", at(1, 0.5), 0.5);
+      IN("#a-coin", at(1, 0.65), 0.4, { scale: 0, svgOrigin: "1740 705" }, { scale: 1, ease: "back.out(2)" });
+
+      // L2 提示注入
+      OUT("#a-title", at(2, 0.0), 0.3);
+      IN("#a-inj", at(2, 0.1), 0.5, { scale: 1.2, svgOrigin: "370 540" }, { scale: 1 });
+      DRAW("#a-inr", at(2, 0.3));
+      tl.to("#a-llm rect", { stroke: "#FC6255", strokeOpacity: 1, duration: 0.3 }, at(2, 0.45));
+      DRAW("#a-o3r", at(2, 0.55));
+      IN("#a-pi", at(2, 0.6), 0.4);
+      IN("#a-pi2", at(2, 0.7), 0.4);
+
+      // L3 比方：助理 + 支付卡
+      tl.to("#a-p1", { opacity: 0, filter: "blur(6px)", duration: 0.5, ease: "power2.in" }, at(3, 0.0));
+      IN("#a-boy", at(3, 0.2), 0.6, { y: 20 }, { y: 0 });
+      IN("#a-card", at(3, 0.65), 0.5, { x: 120 }, { x: 0 });
+
+      // L4 纸条
+      IN("#a-note", at(4, 0.0), 0.5, { x: -80, rotation: -6, svgOrigin: "470 490" }, { x: 0, rotation: 0 });
+      DRAW("#a-pay", at(4, 0.7), 0.5);
+      tl.to("#a-card", { x: 380, opacity: 0, duration: 0.6, ease: "power2.in" }, at(4, 0.75));
+
+      // L5 比方不成立处
+      OUT(["#a-note", "#a-pay"], at(5, 0.0), 0.3);
+      IN("#a-mem", at(5, 0.4), 0.5);
+      IN("#a-fake", at(5, 0.7), 0.4, { x: -40 }, { x: 0 });
+      IN("#a-lim", at(5, 0.15), 0.5);
+
+      tl.to(["#a-p1", "#a-p2"], { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["agent"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,144 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .cap-g { position: absolute; left: 0; right: 0; bottom: var(--cap-bottom, 84px); text-align: center; opacity: 0; visibility: hidden; }
+    .cap-t { display: inline-block; font-family: var(--cap-font, "Noto Sans SC"), sans-serif; font-weight: var(--cap-weight, 700);
+      font-size: var(--cap-size, 46px); line-height: 1.25; color: var(--cap-ink, #111); letter-spacing: 0.02em;
+      padding: var(--cap-pad, 0); background: var(--cap-bg, transparent); border-radius: var(--cap-radius, 0);
+      text-shadow: var(--cap-shadow, none); }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-c0" class="cap-g"><span class="cap-t">交易所每天都要给用户提币</span></div>
+    <div id="cap-c1" class="cap-g"><span class="cap-t">不能每一笔都等人工签名</span></div>
+    <div id="cap-c2" class="cap-g"><span class="cap-t">常见做法</span></div>
+    <div id="cap-c3" class="cap-g"><span class="cap-t">是分成热 温</span></div>
+    <div id="cap-c4" class="cap-g"><span class="cap-t">冷三层钱包</span></div>
+    <div id="cap-c5" class="cap-g"><span class="cap-t">冷钱包放大部分资产</span></div>
+    <div id="cap-c6" class="cap-g"><span class="cap-t">用多签或 MPC</span></div>
+    <div id="cap-c7" class="cap-g"><span class="cap-t">每个签名人用硬件钱包</span></div>
+    <div id="cap-c8" class="cap-g"><span class="cap-t">温钱包负责中转</span></div>
+    <div id="cap-c9" class="cap-g"><span class="cap-t">靠审批加时间窗口</span></div>
+    <div id="cap-c10" class="cap-g"><span class="cap-t">热钱包自动给用户提币</span></div>
+    <div id="cap-c11" class="cap-g"><span class="cap-t">用 HSM 或 MPC</span></div>
+    <div id="cap-c12" class="cap-g"><span class="cap-t">热钱包只放一小部分</span></div>
+    <div id="cap-c13" class="cap-g"><span class="cap-t">按每天的提币需求设水位</span></div>
+    <div id="cap-c14" class="cap-g"><span class="cap-t">热钱包失守</span></div>
+    <div id="cap-c15" class="cap-g"><span class="cap-t">损失有上限</span></div>
+    <div id="cap-c16" class="cap-g"><span class="cap-t">冷到温 温到热</span></div>
+    <div id="cap-c17" class="cap-g"><span class="cap-t">每一跳都要限额和审批</span></div>
+    <div id="cap-c18" class="cap-g"><span class="cap-t">再猜一道题</span></div>
+    <div id="cap-c19" class="cap-g"><span class="cap-t">HSM 的私钥不能导出</span></div>
+    <div id="cap-c20" class="cap-g"><span class="cap-t">攻击者控制了能给 HSM 发指令的服务器</span></div>
+    <div id="cap-c21" class="cap-g"><span class="cap-t">HSM 会拒绝吗</span></div>
+    <div id="cap-c22" class="cap-g"><span class="cap-t">不会</span></div>
+    <div id="cap-c23" class="cap-g"><span class="cap-t">HSM 只保证私钥不出设备</span></div>
+    <div id="cap-c24" class="cap-g"><span class="cap-t">它按收到的指令签名</span></div>
+    <div id="cap-c25" class="cap-g"><span class="cap-t">所以热钱包的安全</span></div>
+    <div id="cap-c26" class="cap-g"><span class="cap-t">在签名请求进入 HSM 之前</span></div>
+    <div id="cap-c27" class="cap-g"><span class="cap-t">那里要有一个独立的风控引擎</span></div>
+    <div id="cap-c28" class="cap-g"><span class="cap-t">检查白名单 限额</span></div>
+    <div id="cap-c29" class="cap-g"><span class="cap-t">速率和异常</span></div>
+    <div id="cap-c30" class="cap-g"><span class="cap-t">检查要按待签的原始字节判断</span></div>
+    <div id="cap-c31" class="cap-g"><span class="cap-t">不看界面怎么写</span></div>
+    <div id="cap-c32" class="cap-g"><span class="cap-t">一笔大额转出</span></div>
+    <div id="cap-c33" class="cap-g"><span class="cap-t">审批也要按顺序走</span></div>
+    <div id="cap-c34" class="cap-g"><span class="cap-t">发起人提交交易</span></div>
+    <div id="cap-c35" class="cap-g"><span class="cap-t">写明用途</span></div>
+    <div id="cap-c36" class="cap-g"><span class="cap-t">系统自动检查白名单 限额</span></div>
+    <div id="cap-c37" class="cap-g"><span class="cap-t">以及操作类型是不是 CALL</span></div>
+    <div id="cap-c38" class="cap-g"><span class="cap-t">签名人各自解码核对</span></div>
+    <div id="cap-c39" class="cap-g"><span class="cap-t">大额再用电话或当面确认</span></div>
+    <div id="cap-c40" class="cap-g"><span class="cap-t">执行之后</span></div>
+    <div id="cap-c41" class="cap-g"><span class="cap-t">监控系统把链上结果和审批记录比对</span></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      tl.set("#cap-c0", {opacity: 1, visibility: "visible"}, 1.550);
+      tl.set("#cap-c0", {opacity: 0, visibility: "hidden"}, 4.008);
+      tl.set("#cap-c1", {opacity: 1, visibility: "visible"}, 4.181);
+      tl.set("#cap-c1", {opacity: 0, visibility: "hidden"}, 6.390);
+      tl.set("#cap-c2", {opacity: 1, visibility: "visible"}, 6.748);
+      tl.set("#cap-c2", {opacity: 0, visibility: "hidden"}, 7.635);
+      tl.set("#cap-c3", {opacity: 1, visibility: "visible"}, 7.665);
+      tl.set("#cap-c3", {opacity: 0, visibility: "hidden"}, 9.671);
+      tl.set("#cap-c4", {opacity: 1, visibility: "visible"}, 9.776);
+      tl.set("#cap-c4", {opacity: 0, visibility: "hidden"}, 11.280);
+      tl.set("#cap-c5", {opacity: 1, visibility: "visible"}, 11.609);
+      tl.set("#cap-c5", {opacity: 0, visibility: "hidden"}, 13.607);
+      tl.set("#cap-c6", {opacity: 1, visibility: "visible"}, 13.806);
+      tl.set("#cap-c6", {opacity: 0, visibility: "hidden"}, 15.564);
+      tl.set("#cap-c7", {opacity: 1, visibility: "visible"}, 15.774);
+      tl.set("#cap-c7", {opacity: 0, visibility: "hidden"}, 17.939);
+      tl.set("#cap-c8", {opacity: 1, visibility: "visible"}, 18.210);
+      tl.set("#cap-c8", {opacity: 0, visibility: "hidden"}, 19.912);
+      tl.set("#cap-c9", {opacity: 1, visibility: "visible"}, 19.996);
+      tl.set("#cap-c9", {opacity: 0, visibility: "hidden"}, 22.007);
+      tl.set("#cap-c10", {opacity: 1, visibility: "visible"}, 22.270);
+      tl.set("#cap-c10", {opacity: 0, visibility: "hidden"}, 25.315);
+      tl.set("#cap-c11", {opacity: 1, visibility: "visible"}, 25.404);
+      tl.set("#cap-c11", {opacity: 0, visibility: "hidden"}, 26.421);
+      tl.set("#cap-c12", {opacity: 1, visibility: "visible"}, 26.745);
+      tl.set("#cap-c12", {opacity: 0, visibility: "hidden"}, 28.508);
+      tl.set("#cap-c13", {opacity: 1, visibility: "visible"}, 28.690);
+      tl.set("#cap-c13", {opacity: 0, visibility: "hidden"}, 30.894);
+      tl.set("#cap-c14", {opacity: 1, visibility: "visible"}, 31.203);
+      tl.set("#cap-c14", {opacity: 0, visibility: "hidden"}, 32.382);
+      tl.set("#cap-c15", {opacity: 1, visibility: "visible"}, 32.507);
+      tl.set("#cap-c15", {opacity: 0, visibility: "hidden"}, 33.920);
+      tl.set("#cap-c16", {opacity: 1, visibility: "visible"}, 34.210);
+      tl.set("#cap-c16", {opacity: 0, visibility: "hidden"}, 36.104);
+      tl.set("#cap-c17", {opacity: 1, visibility: "visible"}, 36.170);
+      tl.set("#cap-c17", {opacity: 0, visibility: "hidden"}, 39.241);
+      tl.set("#cap-c18", {opacity: 1, visibility: "visible"}, 39.550);
+      tl.set("#cap-c18", {opacity: 0, visibility: "hidden"}, 40.483);
+      tl.set("#cap-c19", {opacity: 1, visibility: "visible"}, 40.823);
+      tl.set("#cap-c19", {opacity: 0, visibility: "hidden"}, 43.173);
+      tl.set("#cap-c20", {opacity: 1, visibility: "visible"}, 43.441);
+      tl.set("#cap-c20", {opacity: 0, visibility: "hidden"}, 46.909);
+      tl.set("#cap-c21", {opacity: 1, visibility: "visible"}, 47.094);
+      tl.set("#cap-c21", {opacity: 0, visibility: "hidden"}, 48.563);
+      tl.set("#cap-c22", {opacity: 1, visibility: "visible"}, 49.225);
+      tl.set("#cap-c22", {opacity: 0, visibility: "hidden"}, 49.679);
+      tl.set("#cap-c23", {opacity: 1, visibility: "visible"}, 50.010);
+      tl.set("#cap-c23", {opacity: 0, visibility: "hidden"}, 53.087);
+      tl.set("#cap-c24", {opacity: 1, visibility: "visible"}, 53.254);
+      tl.set("#cap-c24", {opacity: 0, visibility: "hidden"}, 55.280);
+      tl.set("#cap-c25", {opacity: 1, visibility: "visible"}, 55.661);
+      tl.set("#cap-c25", {opacity: 0, visibility: "hidden"}, 57.352);
+      tl.set("#cap-c26", {opacity: 1, visibility: "visible"}, 57.433);
+      tl.set("#cap-c26", {opacity: 0, visibility: "hidden"}, 60.698);
+      tl.set("#cap-c27", {opacity: 1, visibility: "visible"}, 61.006);
+      tl.set("#cap-c27", {opacity: 0, visibility: "hidden"}, 63.480);
+      tl.set("#cap-c28", {opacity: 1, visibility: "visible"}, 63.639);
+      tl.set("#cap-c28", {opacity: 0, visibility: "hidden"}, 65.766);
+      tl.set("#cap-c29", {opacity: 1, visibility: "visible"}, 65.786);
+      tl.set("#cap-c29", {opacity: 0, visibility: "hidden"}, 67.151);
+      tl.set("#cap-c30", {opacity: 1, visibility: "visible"}, 67.370);
+      tl.set("#cap-c30", {opacity: 0, visibility: "hidden"}, 69.954);
+      tl.set("#cap-c31", {opacity: 1, visibility: "visible"}, 70.015);
+      tl.set("#cap-c31", {opacity: 0, visibility: "hidden"}, 71.267);
+      tl.set("#cap-c32", {opacity: 1, visibility: "visible"}, 71.604);
+      tl.set("#cap-c32", {opacity: 0, visibility: "hidden"}, 73.041);
+      tl.set("#cap-c33", {opacity: 1, visibility: "visible"}, 73.132);
+      tl.set("#cap-c33", {opacity: 0, visibility: "hidden"}, 74.732);
+      tl.set("#cap-c34", {opacity: 1, visibility: "visible"}, 75.010);
+      tl.set("#cap-c34", {opacity: 0, visibility: "hidden"}, 76.589);
+      tl.set("#cap-c35", {opacity: 1, visibility: "visible"}, 76.609);
+      tl.set("#cap-c35", {opacity: 0, visibility: "hidden"}, 77.648);
+      tl.set("#cap-c36", {opacity: 1, visibility: "visible"}, 77.870);
+      tl.set("#cap-c36", {opacity: 0, visibility: "hidden"}, 80.392);
+      tl.set("#cap-c37", {opacity: 1, visibility: "visible"}, 80.570);
+      tl.set("#cap-c37", {opacity: 0, visibility: "hidden"}, 82.370);
+      tl.set("#cap-c38", {opacity: 1, visibility: "visible"}, 82.650);
+      tl.set("#cap-c38", {opacity: 0, visibility: "hidden"}, 84.680);
+      tl.set("#cap-c39", {opacity: 1, visibility: "visible"}, 84.803);
+      tl.set("#cap-c39", {opacity: 0, visibility: "hidden"}, 87.352);
+      tl.set("#cap-c40", {opacity: 1, visibility: "visible"}, 87.685);
+      tl.set("#cap-c40", {opacity: 0, visibility: "hidden"}, 88.437);
+      tl.set("#cap-c41", {opacity: 1, visibility: "visible"}, 88.760);
+      tl.set("#cap-c41", {opacity: 0, visibility: "hidden"}, 92.054);
+      window.__timelines["captions"] = tl;
+    })();
+  </script>
+</template>

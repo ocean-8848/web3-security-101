@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      /* EP18 钱包与密钥管理 · 3b1b 风格。颜色语义全片固定，见 STORYBOARD.md §2。 */
+      @font-face {
+        font-family: "NotoSC";
+        src: url("assets/fonts/noto-sc.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0f1117; }
+      #root { position: relative; width: 100%; height: 100%; background: #0f1117; font-family: "NotoSC", sans-serif; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="435.81" data-width="1920" data-height="1080">
+      <div id="hook" data-composition-id="hook" data-composition-src="compositions/hook.html" data-start="0.0" data-duration="30.43" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="key" data-composition-id="key" data-composition-src="compositions/key.html" data-start="30.43" data-duration="37.75" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="schemes" data-composition-id="schemes" data-composition-src="compositions/schemes.html" data-start="68.18" data-duration="49.0" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="weak" data-composition-id="weak" data-composition-src="compositions/weak.html" data-start="117.18" data-duration="39.81" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="life" data-composition-id="life" data-composition-src="compositions/life.html" data-start="156.99" data-duration="60.73" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="indep" data-composition-id="indep" data-composition-src="compositions/indep.html" data-start="217.72" data-duration="52.0" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="sign" data-composition-id="sign" data-composition-src="compositions/sign.html" data-start="269.72" data-duration="59.79" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="hot" data-composition-id="hot" data-composition-src="compositions/hot.html" data-start="329.51" data-duration="43.36" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="answer" data-composition-id="answer" data-composition-src="compositions/answer.html" data-start="372.87" data-duration="62.94" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <audio id="narration" class="clip" src="assets/narration.wav" data-start="0" data-duration="435.81" data-track-index="2" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

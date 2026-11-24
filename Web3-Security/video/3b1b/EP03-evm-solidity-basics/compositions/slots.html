@@ -1,0 +1,120 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="slots" data-duration="60.66" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="o-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#58C4DD" /></marker></defs>
+      <g id="o-all">
+        <!-- 代码 -->
+        <g id="o-code" class="h">
+          <rect x="100" y="110" width="880" height="250" rx="16" fill="#0b0e14" stroke="#58C4DD" stroke-opacity=".5" stroke-width="3" />
+          <text class="mono o-cl" xml:space="preserve" x="130" y="160" font-size="30" fill="#e8e6df">address owner;  <tspan fill="#6b6f7a">// 20</tspan></text>
+          <text class="mono o-cl" xml:space="preserve" x="130" y="205" font-size="30" fill="#e8e6df">bool    paused; <tspan fill="#6b6f7a">// 1</tspan></text>
+          <text id="o-f96" class="mono o-cl" xml:space="preserve" x="130" y="250" font-size="30" fill="#e8e6df">uint96  fee;    <tspan fill="#6b6f7a">// 12</tspan></text>
+          <text class="mono o-cl" xml:space="preserve" x="130" y="295" font-size="30" fill="#e8e6df">uint256 total;  <tspan fill="#6b6f7a">// 32</tspan></text>
+          <text class="mono o-cl" xml:space="preserve" x="130" y="340" font-size="30" fill="#e8e6df">mapping(address =&gt; uint256) bal;</text>
+        </g>
+        <text id="o-f88" class="h mono" xml:space="preserve" x="130" y="250" font-size="30" fill="#FF9F43">uint88  fee;    <tspan fill="#FF9F43">// 11</tspan></text>
+        
+        <!-- 算式 -->
+        <text id="o-k1" class="h" x="1060" y="180" font-size="38" fill="#e8e6df">20 + 1 = 21 ≤ 32 <tspan fill="#83C167">放得下</tspan></text>
+        <text id="o-k2" class="h" x="1060" y="250" font-size="38" fill="#e8e6df">21 + 12 = 33 &gt; 32 <tspan fill="#FC6255">放不下</tspan></text>
+        <text id="o-k3" class="h" x="1060" y="320" font-size="38" fill="#FF9F43">改成 uint88：20 + 1 + 11 = 32 <tspan fill="#83C167">正好</tspan></text>
+
+        <!-- 槽位 -->
+        <text id="o-unit" class="h" x="440" y="420" font-size="28" fill="#6b6f7a">每个槽 32 字节（从右往左填）</text>
+        <g id="o-rows"></g>
+
+        <!-- 变量块 -->
+        <rect id="o-owner" class="h" x="920" y="450" width="800" height="80" rx="6" fill="#3a3f4a" stroke="#e8e6df" stroke-width="2" />
+        <text id="o-ownert" class="h mono" x="1320" y="501" font-size="30" fill="#e8e6df" text-anchor="middle">owner · 20</text>
+        <rect id="o-paused" class="h" x="880" y="450" width="40" height="80" rx="4" fill="#FF9F43" />
+        <text id="o-pausedt" class="h mono" x="900" y="420" font-size="28" fill="#FF9F43" text-anchor="middle">paused · 1</text>
+        <rect id="o-fee" class="h" x="400" y="450" width="480" height="80" rx="6" fill="#F0B90B" fill-opacity=".55" stroke="#F0B90B" stroke-width="3" />
+        <text id="o-feet" class="h mono" x="640" y="501" font-size="30" fill="#0f1117" text-anchor="middle" font-weight="700">fee · 12</text>
+        <text id="o-feet2" class="h mono" x="660" y="501" font-size="30" fill="#0f1117" text-anchor="middle" font-weight="700">fee · 11</text>
+        <rect id="o-total" class="h" x="440" y="690" width="1280" height="80" rx="6" fill="#F0B90B" fill-opacity=".3" stroke="#F0B90B" stroke-width="2" />
+        <text id="o-totalt" class="h mono" x="1080" y="741" font-size="30" fill="#F0B90B" text-anchor="middle">total · 32</text>
+        <rect id="o-map" class="h" x="440" y="810" width="1280" height="80" rx="6" fill="none" stroke="#58C4DD" stroke-width="3" stroke-dasharray="12 8" />
+        <text id="o-mapt" class="h" x="1080" y="861" font-size="30" fill="#58C4DD" text-anchor="middle">bal（本槽为空）</text>
+        <path id="o-mapa" class="dr h" pathLength="1" d="M1720 850 C 1820 880, 1820 960, 1700 985" stroke="#58C4DD" stroke-width="3" fill="none" marker-end="url(#o-ah)" />
+        <text id="o-hash" class="h" x="1690" y="1000" font-size="30" fill="#58C4DD" text-anchor="end">bal[k] 在 keccak256(k, 3)</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 60.66, "L": [[0.6, 7.2], [7.65, 16.12], [16.57, 27.25], [27.7, 39.53], [39.98, 47.66], [48.11, 59.56]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAWA = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      const GROW = (s, t, ox, d = 0.6) => tl.fromTo(s, { opacity: 0, scaleX: 0, transformOrigin: ox }, { opacity: 1, scaleX: 1, duration: d, ease: "power3.out" }, t);
+
+      // 4 个槽，每格 32 字节（每字节 40 px）
+      const rows = document.querySelector("#o-rows"), R = [];
+      for (let k = 0; k < 4; k++) {
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        const y = 450 + k * 120;
+        let ticks = "";
+        for (let b = 1; b < 32; b++) ticks += `<line x1="${440 + b * 40}" y1="${y}" x2="${440 + b * 40}" y2="${y + 80}" stroke="#20242d" stroke-width="2" />`;
+        g.innerHTML = `<rect x="440" y="${y}" width="1280" height="80" rx="6" fill="#161a22" stroke="#3a3f4a" stroke-width="2" />${ticks}<text class="mono" x="410" y="${y + 51}" font-size="32" fill="#8a8f99" text-anchor="end">slot ${k}</text>`;
+        rows.appendChild(g); R.push(g);
+      }
+
+      // L0 槽位
+      R.forEach((g, k) => IN(g, at(0, 0.2) + k * 0.15, 0.5, { x: -30 }, { x: 0 }));
+      IN("#o-unit", at(0, 0.6), 0.4);
+      // L1 代码：按声明顺序
+      IN("#o-code", at(1, 0.0), 0.6);
+      gsap.utils.toArray("#root .o-cl").forEach((el, i) => tl.fromTo(el, { fill: "#e8e6df" }, { fill: "#FF9F43", duration: 0.25, yoyo: true, repeat: 1 }, at(1, 0.2) + i * 0.9));
+      // L2 owner + paused 进 slot 0
+      GROW("#o-owner", at(2, 0.15), "1720px 490px");
+      IN("#o-ownert", at(2, 0.25), 0.4);
+      GROW("#o-paused", at(2, 0.55), "920px 490px", 0.4);
+      IN("#o-pausedt", at(2, 0.55), 0.4);
+      OUT("#o-unit", at(2, 0.5), 0.2);
+      IN("#o-k1", at(2, 0.7), 0.4);
+      // L3 fee 放不下 → slot 1；total → slot 2
+      GROW("#o-fee", at(3, 0.05), "880px 490px", 0.6);
+      IN("#o-feet", at(3, 0.1), 0.4);
+      tl.to("#o-fee", { fill: "#FC6255", stroke: "#FC6255", duration: 0.3 }, at(3, 0.25));
+      IN("#o-k2", at(3, 0.25), 0.4);
+      tl.to("#o-fee", { attr: { x: 1240, y: 570 }, fill: "#F0B90B", stroke: "#F0B90B", duration: 0.8, ease: "power2.inOut" }, at(3, 0.45));
+      tl.to("#o-feet", { attr: { x: 1480, y: 621 }, duration: 0.8, ease: "power2.inOut" }, at(3, 0.45));
+      GROW("#o-total", at(3, 0.75), "1720px 730px", 0.6);
+      IN("#o-totalt", at(3, 0.8), 0.4);
+      // L4 mapping
+      IN("#o-map", at(4, 0.05), 0.5);
+      IN("#o-mapt", at(4, 0.1), 0.4);
+      DRAWA("#o-mapa", at(4, 0.5), 0.6);
+      IN("#o-hash", at(4, 0.55), 0.4);
+      // L5 改成 uint88：全挤进 slot 0，total 挪到 slot 1
+      OUT("#o-f96", at(5, 0.05), 0.25);
+      IN("#o-f88", at(5, 0.1), 0.4);
+      tl.to(["#o-k1", "#o-k2"], { opacity: 0.3, duration: 0.3 }, at(5, 0.05));
+      IN("#o-k3", at(5, 0.15), 0.4);
+      tl.to("#o-fee", { attr: { x: 440, y: 450, width: 440 }, duration: 0.9, ease: "power2.inOut" }, at(5, 0.4));
+      OUT("#o-feet", at(5, 0.4), 0.2);
+      IN("#o-feet2", at(5, 0.4) + 0.8, 0.3);
+      tl.to(["#o-total"], { attr: { y: 570 }, duration: 0.8, ease: "power2.inOut" }, at(5, 0.62));
+      tl.to(["#o-totalt"], { attr: { y: 621 }, duration: 0.8, ease: "power2.inOut" }, at(5, 0.62));
+      tl.to(["#o-map"], { attr: { y: 690 }, duration: 0.8, ease: "power2.inOut" }, at(5, 0.68));
+      tl.to(["#o-mapt"], { attr: { y: 741 }, duration: 0.8, ease: "power2.inOut" }, at(5, 0.68));
+      OUT(["#o-mapa", "#o-hash"], at(5, 0.6), 0.3);
+      tl.fromTo("#o-totalt", { fill: "#F0B90B" }, { fill: "#FF9F43", duration: 0.3, yoyo: true, repeat: 3 }, at(5, 0.8));
+
+      tl.to("#o-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["slots"] = tl;
+    })();
+  </script>
+</template>

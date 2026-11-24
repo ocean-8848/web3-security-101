@@ -1,0 +1,111 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="simswap" data-duration="49.43" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="s-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+        <marker id="s-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="s-all">
+        <text id="s-title" class="h" x="960" y="90" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="800">SIM 卡劫持 <tspan font-size="32" fill="#8a8f99" font-weight="400">SIM Swap</tspan></text>
+
+        <!-- 四条泳道 -->
+        <g id="s-lanes" class="h">
+          <g stroke="#2a2f3a" stroke-width="3" stroke-dasharray="8 10">
+            <line x1="300" y1="250" x2="300" y2="900" /><line x1="760" y1="250" x2="760" y2="900" />
+            <line x1="1200" y1="250" x2="1200" y2="900" /><line x1="1640" y1="250" x2="1640" y2="900" />
+          </g>
+          <rect x="170" y="150" width="260" height="96" rx="14" fill="#1d1214" stroke="#FC6255" stroke-width="4" />
+          <text x="300" y="210" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">攻击者</text>
+          <rect x="630" y="150" width="260" height="96" rx="14" fill="#161a22" stroke="#8a8f99" stroke-width="3" />
+          <text x="760" y="210" font-size="34" fill="#e8e6df" text-anchor="middle">运营商客服</text>
+          <rect id="s-phr" x="1070" y="150" width="260" height="96" rx="14" fill="#1a1524" stroke="#B48EF0" stroke-width="4" />
+          <text id="s-pht" x="1200" y="210" font-size="34" fill="#B48EF0" text-anchor="middle" font-weight="700">你的手机号</text>
+          <rect x="1470" y="150" width="340" height="96" rx="14" fill="#161a22" stroke="#8a8f99" stroke-width="3" />
+          <text x="1640" y="196" font-size="30" fill="#e8e6df" text-anchor="middle">交易所 · 邮箱</text>
+          <text x="1640" y="232" font-size="30" fill="#e8e6df" text-anchor="middle">社交账号</text>
+        </g>
+
+        <!-- 消息 -->
+        <path id="s-m1" class="dr h" pathLength="1" d="M300 340 L 750 340" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#s-ahr)" />
+        <text id="s-m1t" class="h" x="530" y="322" font-size="28" fill="#FC6255" text-anchor="middle">伪造证件 · 欺骗或买通</text>
+        <path id="s-m2" class="dr h" pathLength="1" d="M760 420 L 1190 420" fill="none" stroke="#8a8f99" stroke-width="4" marker-end="url(#s-ahg)" />
+        <text id="s-m2t" class="h" x="975" y="402" font-size="28" fill="#e8e6df" text-anchor="middle">号码转到新 SIM 卡</text>
+
+        <path id="s-m3" class="dr h" pathLength="1" d="M300 540 L 1630 540" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#s-ahr)" />
+        <text id="s-m3t" class="h" x="1420" y="522" font-size="28" fill="#FC6255" text-anchor="middle">忘记密码</text>
+        <path id="s-m4" class="dr h" pathLength="1" d="M1640 620 L 1210 620" fill="none" stroke="#8a8f99" stroke-width="4" marker-end="url(#s-ahg)" />
+        <text id="s-m4t" class="h" x="1420" y="602" font-size="28" fill="#e8e6df" text-anchor="middle">短信验证码</text>
+        <path id="s-m5" class="dr h" pathLength="1" d="M1200 700 L 310 700" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#s-ahr)" />
+        <text id="s-m5t" class="h" x="750" y="682" font-size="28" fill="#FC6255" text-anchor="middle" font-family="JetBrains Mono">482 913（示例）</text>
+
+        <path id="s-m6" class="dr h" pathLength="1" d="M1640 800 L 310 800" fill="none" stroke="#FC6255" stroke-width="6" marker-end="url(#s-ahr)" />
+        <text id="s-m6t" class="h" x="975" y="782" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">账号控制权</text>
+        <g id="s-out" class="h" font-size="28" fill="#FC6255" text-anchor="middle">
+          <text x="300" y="880">转走资产</text><text x="300" y="925">发钓鱼链接</text>
+        </g>
+
+        <!-- 关键设定：短信可单独恢复 -->
+        <rect id="s-box" class="h" x="1180" y="565" width="480" height="80" rx="12" fill="none" stroke="#FF9F43" stroke-width="4" stroke-dasharray="10 8" />
+        <text id="s-boxt" class="h" x="1420" y="700" font-size="32" fill="#FF9F43" text-anchor="middle" font-weight="700">短信可单独完成恢复</text>
+
+        <!-- 两层防线 -->
+        <g id="s-fix1" class="h">
+          <line x1="900" y1="395" x2="1050" y2="445" stroke="#83C167" stroke-width="6" />
+          <rect x="820" y="450" width="310" height="60" rx="12" fill="#13200f" stroke="#83C167" stroke-width="3" />
+          <text x="975" y="491" font-size="30" fill="#83C167" text-anchor="middle" font-weight="700">运营商：号码转移锁</text>
+        </g>
+        <g id="s-fix2" class="h">
+          <line x1="1350" y1="595" x2="1490" y2="645" stroke="#83C167" stroke-width="6" />
+          <rect x="1250" y="860" width="340" height="60" rx="12" fill="#13200f" stroke="#83C167" stroke-width="3" />
+          <text x="1420" y="901" font-size="30" fill="#83C167" text-anchor="middle" font-weight="700">账号：不用短信</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 49.43, "L": [[0.6, 7.01], [7.46, 15.33], [15.78, 24.44], [24.89, 32.26], [32.71, 38.88], [39.33, 48.33]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0
+      IN("#s-title", at(0, 0.0), 0.5);
+      IN("#s-lanes", at(0, 0.45), 0.7);
+      // L1 换卡
+      DRAW("#s-m1", at(1, 0.1)); IN("#s-m1t", at(1, 0.15), 0.4);
+      DRAW("#s-m2", at(1, 0.6)); IN("#s-m2t", at(1, 0.62), 0.4);
+      tl.to("#s-phr", { stroke: "#FC6255", duration: 0.4 }, at(1, 0.85));
+      // L2 忘记密码 → 验证码到了攻击者手上
+      DRAW("#s-m3", at(2, 0.05), 0.8); IN("#s-m3t", at(2, 0.15), 0.4);
+      DRAW("#s-m4", at(2, 0.55)); IN("#s-m4t", at(2, 0.58), 0.4);
+      DRAW("#s-m5", at(2, 0.75), 0.7); IN("#s-m5t", at(2, 0.8), 0.4);
+      // L3 控制权
+      DRAW("#s-m6", at(3, 0.05), 0.8); IN("#s-m6t", at(3, 0.15), 0.4);
+      IN("#s-out", at(3, 0.55), 0.5);
+      // L4 关键设定
+      tl.to(["#s-m1", "#s-m1t", "#s-m2", "#s-m2t", "#s-m3", "#s-m3t", "#s-m5", "#s-m5t", "#s-m6", "#s-m6t", "#s-out"], { opacity: 0.2, duration: 0.4 }, at(4, 0.05));
+      IN("#s-box", at(4, 0.2), 0.5, { scale: 1.1, transformOrigin: "50% 50%" }, { scale: 1 });
+      IN("#s-boxt", at(4, 0.35), 0.4);
+      // L5 两层防线
+      OUT("#s-boxt", at(5, 0), 0.3);
+      OUT("#s-box", at(5, 0), 0.3);
+      tl.to(["#s-m2", "#s-m2t"], { opacity: 1, duration: 0.3 }, at(5, 0.05));
+      IN("#s-fix1", at(5, 0.25), 0.5, { y: 10 }, { y: 0 });
+      IN("#s-fix2", at(5, 0.62), 0.5, { y: 10 }, { y: 0 });
+
+      tl.to("#s-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["simswap"] = tl;
+    })();
+  </script>
+</template>

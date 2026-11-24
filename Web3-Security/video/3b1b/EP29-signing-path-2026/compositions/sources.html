@@ -1,0 +1,173 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root text.mono { font-family: "JetBrains Mono", "NotoSC", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="sources" data-duration="48.0" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="s-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="s-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+        <marker id="s-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#83C167" /></marker>
+      </defs>
+      <g id="s-all">
+        <text id="s-title" class="h" x="960" y="120" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="700">第二类防御：<tspan fill="#83C167">关键输入，多个独立来源</tspan></text>
+
+        <!-- KelpDAO：单一数据源 + 故障转移 -->
+        <g id="s-kelp">
+          <g id="s-dvn" class="h">
+            <rect x="1200" y="420" width="320" height="130" rx="18" fill="#18141f" stroke="#B48EF0" stroke-width="4" />
+            <text x="1360" y="478" font-size="34" fill="#B48EF0" text-anchor="middle" font-weight="700">验证者</text>
+            <text id="s-dvnsub" x="1360" y="522" font-size="28" fill="#8a8f99" text-anchor="middle">DVN · 1-of-1</text>
+          </g>
+          <g id="s-rpc2" class="h">
+            <rect id="s-rpc2r" x="640" y="560" width="260" height="100" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+            <text id="s-rpc2t" x="770" y="622" font-size="30" fill="#e8e6df" text-anchor="middle">RPC · 正常</text>
+          </g>
+          <path id="s-l2" class="dr h" pathLength="1" d="M905 600 C 1050 600, 1100 530, 1192 515" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#s-ah)" />
+          <text id="s-down" class="h" x="770" y="710" font-size="30" fill="#6b6f7a" text-anchor="middle">被 DDoS，不可用</text>
+          <g id="s-ddos" fill="none" stroke="#FC6255" stroke-width="4">
+            <path class="s-dd dr h" pathLength="1" d="M200 520 L 300 560 L 280 590 L 630 600" />
+            <path class="s-dd dr h" pathLength="1" d="M200 640 L 320 620 L 330 650 L 630 625" />
+            <path class="s-dd dr h" pathLength="1" d="M200 760 L 330 700 L 350 730 L 630 650" />
+          </g>
+          <g id="s-rpc1" class="h">
+            <rect x="640" y="290" width="260" height="100" rx="16" fill="#1f1414" stroke="#FC6255" stroke-width="3" />
+            <text x="770" y="352" font-size="30" fill="#FC6255" text-anchor="middle" font-weight="700">恶意 RPC</text>
+          </g>
+          <text id="s-two" class="h" x="770" y="250" font-size="28" fill="#8a8f99" text-anchor="middle">对验证者：假数据 · 对其他 IP：真数据</text>
+          <path id="s-l1" class="dr h" pathLength="1" d="M905 340 C 1050 340, 1100 410, 1192 440" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#s-ahr)" />
+          <text id="s-fo" class="h" x="1090" y="320" font-size="28" fill="#FC6255">故障转移</text>
+          <path id="s-sig" class="dr h" pathLength="1" d="M1525 485 L 1720 485" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#s-ahr)" />
+          <text id="s-sigt" class="h" x="1620" y="455" font-size="28" fill="#FC6255" text-anchor="middle">对假数据签名</text>
+          <text id="s-src" class="h" x="960" y="1030" font-size="28" fill="#6b6f7a" text-anchor="middle">据 LayerZero 声明；KelpDAO 事件责任仍有争议</text>
+        </g>
+
+        <!-- 修复：两个独立运营方，不一致就拒签 -->
+        <g id="s-fix">
+          <g id="s-oa" class="h"><rect x="640" y="300" width="300" height="100" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="790" y="362" font-size="30" fill="#e8e6df" text-anchor="middle">运营方 A</text></g>
+          <g id="s-ob" class="h"><rect x="640" y="580" width="300" height="100" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="790" y="642" font-size="30" fill="#e8e6df" text-anchor="middle">运营方 B</text></g>
+          <path id="s-fa" class="dr h" pathLength="1" d="M945 350 C 1050 350, 1100 420, 1192 450" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#s-ah)" />
+          <path id="s-fb" class="dr h" pathLength="1" d="M945 630 C 1050 630, 1100 550, 1192 525" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#s-ah)" />
+          <text id="s-va" class="h" x="1000" y="300" font-size="28" fill="#e8e6df">有这个事件</text>
+          <text id="s-vb" class="h" x="1000" y="700" font-size="28" fill="#e8e6df">没有这个事件</text>
+          <text id="s-neq" class="h" x="1360" y="640" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700">不一致 → 拒签</text>
+          <g id="s-nofo" class="h">
+            <text x="1360" y="710" font-size="30" fill="#6b6f7a" text-anchor="middle">不做故障转移</text>
+          </g>
+          <text id="s-min" class="h" x="960" y="860" font-size="34" fill="#83C167" text-anchor="middle">至少两个独立运营方的数据源</text>
+        </g>
+
+        <!-- 部署：工程师电脑上的令牌 -->
+        <g id="s-dep">
+          <g id="s-pc" class="h">
+            <rect x="130" y="400" width="300" height="180" rx="14" fill="#18141f" stroke="#B48EF0" stroke-width="3" />
+            <path d="M100 600 H 460 L 430 580 H 130 Z" fill="#B48EF0" fill-opacity=".5" />
+            <text x="280" y="470" font-size="30" fill="#B48EF0" text-anchor="middle" font-weight="700">工程师电脑</text>
+          </g>
+          <g id="s-tok" class="h">
+            <rect x="210" y="500" width="140" height="50" rx="10" fill="#1f1414" stroke="#FC6255" stroke-width="3" />
+            <text x="280" y="535" font-size="28" fill="#FC6255" text-anchor="middle">部署令牌</text>
+          </g>
+          <g id="s-mid" class="h">
+            <rect id="s-midr" x="760" y="420" width="320" height="140" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+            <text id="s-midt" x="920" y="500" font-size="32" fill="#e8e6df" text-anchor="middle">生产部署</text>
+          </g>
+          <g id="s-ci" class="h">
+            <rect x="760" y="420" width="320" height="140" rx="16" fill="#121a14" stroke="#83C167" stroke-width="4" />
+            <text x="920" y="480" font-size="32" fill="#83C167" text-anchor="middle" font-weight="700">CI / CD</text>
+            <text x="920" y="530" font-size="28" fill="#8a8f99" text-anchor="middle">令牌按分钟过期</text>
+          </g>
+          <g id="s-svc" class="h">
+            <rect x="1440" y="420" width="340" height="140" rx="16" fill="#18141f" stroke="#B48EF0" stroke-width="4" />
+            <text x="1610" y="500" font-size="32" fill="#B48EF0" text-anchor="middle" font-weight="700">签名服务</text>
+          </g>
+          <path id="s-d1" class="dr h" pathLength="1" d="M435 490 L 752 490" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#s-ahr)" />
+          <path id="s-d2" class="dr h" pathLength="1" d="M1085 490 L 1432 490" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#s-ahr)" />
+          <text id="s-d2t" class="h" x="1258" y="460" font-size="28" fill="#FC6255" text-anchor="middle">部署容器</text>
+          <path id="s-g2" class="dr h" pathLength="1" d="M1085 490 L 1432 490" stroke="#83C167" stroke-width="4" fill="none" marker-end="url(#s-ahg)" />
+          <text id="s-g2t" class="h" x="1258" y="535" font-size="28" fill="#83C167" text-anchor="middle">只部署已签名镜像</text>
+          <g id="s-appr" class="h">
+            <circle cx="920" cy="290" r="26" fill="#83C167" />
+            <text x="920" y="365" font-size="28" fill="#83C167" text-anchor="middle">第二人批准 · 看镜像摘要</text>
+            <text class="mono" x="920" y="240" font-size="28" fill="#8a8f99" text-anchor="middle">sha256:9f2c…</text>
+          </g>
+          <path id="s-cut" class="dr h" pathLength="1" d="M280 610 V 800 H 1610 V 568" stroke="#6b6f7a" stroke-width="3" stroke-dasharray="1" fill="none" />
+          <text id="s-cutx" class="h" x="945" y="815" font-size="52" fill="#FC6255" text-anchor="middle" font-weight="800">✕</text>
+          <text id="s-cutt" class="h" x="945" y="880" font-size="32" fill="#e8e6df" text-anchor="middle">开发网络 → 签名网络：没有路由</text>
+          <text id="s-depsrc" class="h" x="960" y="1030" font-size="28" fill="#6b6f7a" text-anchor="middle">事件经过据 Binance 初步报告</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 48.0, "L": [[0.6, 5.06], [5.51, 17.59], [18.04, 26.63], [27.08, 35.57], [36.02, 46.9]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0
+      IN("#s-title", at(0, 0.05), 0.6);
+      // L1 KelpDAO：唯一数据源被 DDoS，故障转移到恶意 RPC
+      IN("#s-dvn", at(1, 0.0), 0.5);
+      IN("#s-rpc2", at(1, 0.08), 0.4);
+      DRAW("#s-l2", at(1, 0.12), 0.5);
+      IN("#s-src", at(1, 0.15), 0.4);
+      IN("#s-rpc1", at(1, 0.3), 0.4);
+      IN("#s-two", at(1, 0.38), 0.4);
+      gsap.utils.toArray("#root .s-dd").forEach((p, i) => DRAW(p, at(1, 0.5) + i * 0.15, 0.4));
+      tl.to("#s-rpc2r", { stroke: "#3a3f4a", duration: 0.3 }, at(1, 0.62));
+      tl.to("#s-rpc2t", { fill: "#3a3f4a", duration: 0.3 }, at(1, 0.62));
+      tl.to("#s-l2", { opacity: 0.15, duration: 0.3 }, at(1, 0.64));
+      IN("#s-down", at(1, 0.64), 0.3);
+      DRAW("#s-l1", at(1, 0.74), 0.5);
+      IN("#s-fo", at(1, 0.76), 0.3);
+      DRAW("#s-sig", at(1, 0.9), 0.4);
+      IN("#s-sigt", at(1, 0.9), 0.3);
+
+      // L2 两个独立来源，不一致就拒签
+      OUT(["#s-rpc1", "#s-rpc2", "#s-l1", "#s-l2", "#s-ddos", "#s-down", "#s-two", "#s-fo", "#s-sig", "#s-sigt", "#s-src", "#s-dvnsub"], at(2, 0), 0.35);
+      IN("#s-oa", at(2, 0.08), 0.4); IN("#s-ob", at(2, 0.14), 0.4);
+      DRAW("#s-fa", at(2, 0.2), 0.4); DRAW("#s-fb", at(2, 0.24), 0.4);
+      IN("#s-min", at(2, 0.3), 0.4);
+      IN("#s-va", at(2, 0.4), 0.3); IN("#s-vb", at(2, 0.45), 0.3);
+      IN("#s-neq", at(2, 0.55), 0.4, { scale: 1.3, svgOrigin: "1360 630" }, { scale: 1, ease: "back.out(2)" });
+      IN("#s-nofo", at(2, 0.8), 0.4);
+
+      // L3 部署：工程师电脑上的令牌
+      OUT(["#s-kelp", "#s-fix"], at(3, 0), 0.4);
+      IN("#s-pc", at(3, 0.08), 0.5);
+      IN("#s-tok", at(3, 0.35), 0.35, { scale: 1.5, svgOrigin: "280 525" }, { scale: 1, ease: "back.out(2)" });
+      IN("#s-mid", at(3, 0.5), 0.4);
+      IN("#s-svc", at(3, 0.55), 0.4);
+      DRAW("#s-d1", at(3, 0.62), 0.5);
+      DRAW("#s-d2", at(3, 0.78), 0.5);
+      IN("#s-d2t", at(3, 0.8), 0.3);
+      IN("#s-depsrc", at(3, 0.3), 0.4);
+
+      // L4 防御：令牌只在 CI、第二人批准、开发网络无路由
+      OUT(["#s-d1", "#s-d2", "#s-d2t", "#s-depsrc"], at(4, 0), 0.3);
+      tl.to("#s-tok", { x: 640, y: -50, duration: 0.7, ease: "power2.inOut" }, at(4, 0.02));
+      OUT("#s-tok", at(4, 0.02) + 0.7, 0.2);
+      OUT("#s-mid", at(4, 0.1), 0.3);
+      IN("#s-ci", at(4, 0.12), 0.4);
+      IN("#s-appr", at(4, 0.32), 0.5);
+      DRAW("#s-g2", at(4, 0.42), 0.5);
+      IN("#s-g2t", at(4, 0.45), 0.4);
+      DRAW("#s-cut", at(4, 0.7), 0.6);
+      IN("#s-cutx", at(4, 0.8), 0.3, { scale: 1.8, svgOrigin: "945 800" }, { scale: 1 });
+      IN("#s-cutt", at(4, 0.82), 0.4);
+
+      tl.to("#s-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["sources"] = tl;
+    })();
+  </script>
+</template>

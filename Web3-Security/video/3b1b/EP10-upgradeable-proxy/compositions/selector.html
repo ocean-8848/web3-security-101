@@ -1,0 +1,123 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="selector" data-duration="39.59" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="x-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="x-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#83C167" /></marker>
+      </defs>
+      <g id="x-all">
+        <text id="x-title" class="h" x="960" y="130" font-size="52" fill="#e8e6df" text-anchor="middle" font-weight="700">第三类：选择器冲突</text>
+
+        <!-- calldata -->
+        <g id="x-cd" class="h">
+          <rect x="360" y="290" width="320" height="90" rx="10" fill="#1f1a12" stroke="#FF9F43" stroke-width="4" />
+          <text class="mono" x="520" y="348" font-size="34" fill="#FF9F43" text-anchor="middle">42 96 6c 68</text>
+          <rect x="690" y="290" width="870" height="90" rx="10" fill="#161a22" stroke="#6b6f7a" stroke-width="3" />
+          <text x="1125" y="348" font-size="32" fill="#6b6f7a" text-anchor="middle">参数 ……</text>
+          <text x="520" y="260" font-size="30" fill="#FF9F43" text-anchor="middle">选择器 · 前 4 字节</text>
+        </g>
+
+        <!-- 两个函数，同一个选择器 -->
+        <g id="x-s1" class="h"><text class="mono" x="900" y="560" font-size="32" fill="#58C4DD" text-anchor="end">burn(uint256)</text></g>
+        <g id="x-s2" class="h"><text class="mono" x="900" y="680" font-size="32" fill="#58C4DD" text-anchor="end">collate_propagate_storage(bytes16)</text></g>
+        <path id="x-a1" class="dr h" pathLength="1" d="M920 550 L 1150 605" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#x-ah)" />
+        <path id="x-a2" class="dr h" pathLength="1" d="M920 670 L 1150 625" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#x-ah)" />
+        <text id="x-sel" class="h mono" x="1170" y="630" font-size="44" fill="#FF9F43" font-weight="700">0x42966c68</text>
+
+        <!-- 代理截下调用 -->
+        <circle id="x-user" class="h" cx="180" cy="560" r="22" fill="#e8e6df" />
+        <g id="x-px" class="h">
+          <rect x="400" y="380" width="560" height="360" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="680" y="445" font-size="38" fill="#58C4DD" text-anchor="middle" font-weight="700">代理</text>
+          <rect id="x-prow" x="440" y="500" width="480" height="110" rx="10" fill="#161a22" stroke="#8a8f99" stroke-width="2" />
+          <text x="680" y="545" font-size="30" fill="#e8e6df" text-anchor="middle">代理自己的函数</text>
+          <text class="mono" x="680" y="590" font-size="30" fill="#FF9F43" text-anchor="middle">0x42966c68</text>
+        </g>
+        <g id="x-im" class="h">
+          <rect x="1260" y="380" width="520" height="360" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="3" stroke-opacity=".7" />
+          <text x="1520" y="445" font-size="38" fill="#58C4DD" text-anchor="middle" font-weight="700">实现</text>
+          <rect x="1300" y="500" width="440" height="110" rx="10" fill="#161a22" stroke="#8a8f99" stroke-width="2" />
+          <text class="mono" x="1520" y="545" font-size="30" fill="#e8e6df" text-anchor="middle">burn</text>
+          <text class="mono" x="1520" y="590" font-size="30" fill="#FF9F43" text-anchor="middle">0x42966c68</text>
+        </g>
+        <rect id="x-pkt" class="h" x="200" y="535" width="120" height="50" rx="8" fill="#FF9F43" />
+        <text id="x-pktt" class="h mono" x="260" y="520" font-size="28" fill="#FF9F43" text-anchor="middle">burn</text>
+        <g id="x-nofw" class="h">
+          <path d="M970 560 L 1250 560" stroke="#6b6f7a" stroke-width="4" stroke-dasharray="10 10" />
+          <path d="M1090 540 l 40 40 M1130 540 l -40 40" stroke="#FC6255" stroke-width="6" />
+        </g>
+        <text id="x-cut" class="h" x="680" y="810" font-size="38" fill="#FC6255" text-anchor="middle" font-weight="700">被代理截下，不会转发</text>
+
+        <!-- 编译器检查范围 -->
+        <text id="x-c1" class="h" x="960" y="870" font-size="34" fill="#83C167" text-anchor="middle">同一合约内的冲突：编译器会拒绝 ✓</text>
+        <text id="x-c2" class="h" x="960" y="935" font-size="34" fill="#FC6255" text-anchor="middle">代理 ↔ 实现之间：不检查 ✕</text>
+
+        <!-- 透明代理的规则 -->
+        <circle id="x-adm" class="h" cx="180" cy="420" r="22" fill="#FF9F43" />
+        <text id="x-admt" class="h" x="180" y="380" font-size="28" fill="#FF9F43" text-anchor="middle">管理员</text>
+        <path id="x-ra" class="dr h" pathLength="1" d="M205 420 L 430 470" stroke="#FF9F43" stroke-width="4" fill="none" marker-end="url(#x-ah)" />
+        <path id="x-ru" class="dr h" pathLength="1" d="M205 700 C 600 860, 1100 860, 1400 752" stroke="#83C167" stroke-width="5" fill="none" marker-end="url(#x-ahg)" />
+        <circle id="x-user2" class="h" cx="180" cy="700" r="22" fill="#e8e6df" />
+        <text id="x-usert" class="h" x="180" y="760" font-size="28" fill="#8a8f99" text-anchor="middle">其他人</text>
+        <text id="x-rule" class="h" x="960" y="935" font-size="36" fill="#e8e6df" text-anchor="middle"><tspan fill="#FF9F43">管理员</tspan>一律不转发 · <tspan fill="#83C167">其他人</tspan>一律转发</text>
+        <text id="x-tool" class="h" x="960" y="1000" font-size="32" fill="#8a8f99" text-anchor="middle">部署前，用工具比对两边的选择器</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 39.59, "L": [[0.6, 3.84], [4.29, 9.93], [10.38, 14.99], [15.44, 22.16], [22.61, 27.79], [28.24, 38.49]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      IN("#x-title", at(0, 0.05), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      // L1 calldata 的前 4 字节
+      IN("#x-cd", at(1, 0.05), 0.6, { y: 20 }, { y: 0 });
+      // L2 两个函数同一个选择器
+      IN("#x-s1", at(2, 0.05), 0.5);
+      DRAW("#x-a1", at(2, 0.2), 0.4);
+      IN("#x-s2", at(2, 0.35), 0.5);
+      DRAW("#x-a2", at(2, 0.5), 0.4);
+      IN("#x-sel", at(2, 0.6), 0.5, { scale: 1.3, svgOrigin: "1280 615" }, { scale: 1 });
+      // L3 代理截下
+      OUT(["#x-cd", "#x-s1", "#x-s2", "#x-a1", "#x-a2", "#x-sel"], at(3, 0), 0.35);
+      IN("#x-px", at(3, 0.05), 0.6);
+      IN("#x-im", at(3, 0.15), 0.6);
+      IN("#x-user", at(3, 0.2), 0.3);
+      IN(["#x-pkt", "#x-pktt"], at(3, 0.3), 0.3);
+      tl.to(["#x-pkt", "#x-pktt"], { x: 250, duration: 0.8, ease: "power2.in" }, at(3, 0.35));
+      OUT(["#x-pkt", "#x-pktt"], at(3, 0.35) + 0.7, 0.2);
+      tl.to("#x-prow", { stroke: "#FC6255", strokeWidth: 5, duration: 0.3 }, at(3, 0.35) + 0.8);
+      IN("#x-nofw", at(3, 0.65), 0.4);
+      IN("#x-cut", at(3, 0.7), 0.5);
+      // L4 编译器检查的范围
+      OUT("#x-cut", at(4, 0), 0.3);
+      IN("#x-c1", at(4, 0.1), 0.5);
+      IN("#x-c2", at(4, 0.5), 0.5);
+      // L5 透明代理的规则
+      OUT(["#x-c1", "#x-c2", "#x-nofw", "#x-pkt", "#x-pktt", "#x-user"], at(5, 0), 0.35);
+      tl.to("#x-prow", { stroke: "#FF9F43", strokeWidth: 3, duration: 0.3 }, at(5, 0));
+      IN(["#x-adm", "#x-admt"], at(5, 0.08), 0.4);
+      DRAW("#x-ra", at(5, 0.12), 0.5);
+      IN(["#x-user2", "#x-usert"], at(5, 0.25), 0.4);
+      DRAW("#x-ru", at(5, 0.3), 0.8);
+      IN("#x-rule", at(5, 0.2), 0.5);
+      IN("#x-tool", at(5, 0.7), 0.5);
+
+      tl.to("#x-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["selector"] = tl;
+    })();
+  </script>
+</template>

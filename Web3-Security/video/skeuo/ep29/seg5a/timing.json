@@ -1,0 +1,2423 @@
+{
+ "id": "seg5a",
+ "title": "怎么守",
+ "pill": 5,
+ "total": 132.1,
+ "lines": [
+  {
+   "id": "seg5a-00",
+   "text": "下面是手册给出的一套示例架构。它综合了公开事件的教训，不是哪家交易所公布的方案。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep29/audio/lines/seg5a-00.mp3",
+   "start": 1.6,
+   "dur": 7.632,
+   "speechStart": 1.698,
+   "speechEnd": 8.386
+  },
+  {
+   "id": "seg5a-01",
+   "text": "账本，意图签发，策略引擎，审批，签名集群，广播，链上，再加一套独立监控。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep29/audio/lines/seg5a-01.mp3",
+   "start": 9.452,
+   "dur": 8.928,
+   "speechStart": 9.55,
+   "speechEnd": 17.538
+  },
+  {
+   "id": "seg5a-02",
+   "text": "开发电脑到签名集群，这条线是禁止的。网络上根本不该有这条路由。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep29/audio/lines/seg5a-02.mp3",
+   "start": 18.6,
+   "dur": 6.72,
+   "speechStart": 18.698,
+   "speechEnd": 24.481
+  },
+  {
+   "id": "seg5a-03",
+   "text": "我们挑四个重点。第一，账本绑定签名。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep29/audio/lines/seg5a-03.mp3",
+   "start": 25.54,
+   "dur": 4.8,
+   "speechStart": 25.638,
+   "speechEnd": 29.492
+  },
+  {
+   "id": "seg5a-04",
+   "text": "签名服务只为账本里存在、状态正确、金额一致的提现单签名。同一张单，只能签一次。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep29/audio/lines/seg5a-04.mp3",
+   "start": 30.56,
+   "dur": 8.688,
+   "speechStart": 30.659,
+   "speechEnd": 38.409,
+   "spoken": "签名服务只给账本里存在、状态正确、金额一致的提现单签名。同一张单，只能签一次。"
+  },
+  {
+   "id": "seg5a-05",
+   "text": "目标和金额，要从原始交易里解析出来，不读上游写的描述。伪造的提现指令，在这里对不上账。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep29/audio/lines/seg5a-05.mp3",
+   "start": 39.468,
+   "dur": 8.592,
+   "speechStart": 39.566,
+   "speechEnd": 47.23
+  },
+  {
+   "id": "seg5a-06",
+   "text": "第二，策略读的是原始待签字节，而且默认拒绝。没有明确规则的交易类型，一律不签。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep29/audio/lines/seg5a-06.mp3",
+   "start": 48.28,
+   "dur": 8.592,
+   "speechStart": 48.378,
+   "speechEnd": 56.042
+  },
+  {
+   "id": "seg5a-07",
+   "text": "比如 Safe 多签，operation 只允许等于 0。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep29/audio/lines/seg5a-07.mp3",
+   "start": 57.092,
+   "dur": 4.704,
+   "speechStart": 57.19,
+   "speechEnd": 60.963
+  },
+  {
+   "id": "seg5a-08",
+   "text": "要用 1，只能指向官方的批量调用合约，链上还有 Guard 合约再拦一次。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep29/audio/lines/seg5a-08.mp3",
+   "start": 62.016,
+   "dur": 6.312,
+   "speechStart": 62.115,
+   "speechEnd": 67.473,
+   "spoken": "要用 1，只能指向官方的批量掉用合约，链上还有 Guard 合约再拦一次。"
+  },
+  {
+   "id": "seg5a-09",
+   "text": "Bybit 那笔 operation 等于 1 的交易，在这里会被拒绝。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep29/audio/lines/seg5a-09.mp3",
+   "start": 68.548,
+   "dur": 4.752,
+   "speechStart": 68.646,
+   "speechEnd": 72.467
+  },
+  {
+   "id": "seg5a-10",
+   "text": "再比如热钱包，EIP-7702 授权一律拒签。策略如果覆盖了这一条，Binance 那批委托就签不出来。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep29/audio/lines/seg5a-10.mp3",
+   "start": 73.52,
+   "dur": 9.432,
+   "speechStart": 73.618,
+   "speechEnd": 82.115
+  },
+  {
+   "id": "seg5a-11",
+   "text": "第三，分链熔断。某条链流出异常，就停这条链的广播。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep29/audio/lines/seg5a-11.mp3",
+   "start": 83.172,
+   "dur": 5.928,
+   "speechStart": 83.27,
+   "speechEnd": 88.267
+  },
+  {
+   "id": "seg5a-12",
+   "text": "发现账本里没有对应订单的流出，所有链一起停。熔断的开关，不能依赖已经被攻击的系统。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep29/audio/lines/seg5a-12.mp3",
+   "start": 89.32,
+   "dur": 8.04,
+   "speechStart": 89.418,
+   "speechEnd": 96.522
+  },
+  {
+   "id": "seg5a-13",
+   "text": "第四，紧急撤销。7702 委托，要用一笔新的授权，把委托地址设成零地址，才能清掉。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep29/audio/lines/seg5a-13.mp3",
+   "start": 97.58,
+   "dur": 9.096,
+   "speechStart": 97.678,
+   "speechEnd": 105.83
+  },
+  {
+   "id": "seg5a-14",
+   "text": "MPC 钱包没有一把单独的私钥能立刻做这件事。所以要有一条独立的撤销路径，预先批准，每季度演练，记下用时。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep29/audio/lines/seg5a-14.mp3",
+   "start": 106.896,
+   "dur": 10.896,
+   "speechStart": 106.994,
+   "speechEnd": 116.967
+  },
+  {
+   "id": "seg5a-15",
+   "text": "最后查一下账户代码，结果为空，才算完成。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep29/audio/lines/seg5a-15.mp3",
+   "start": 118.012,
+   "dur": 4.32,
+   "speechStart": 118.11,
+   "speechEnd": 121.479
+  },
+  {
+   "id": "seg5a-16",
+   "text": "也要说清局限。架构挡不住所有内部人作恶。它做的，是把一个人作恶，变成需要多人共谋。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep29/audio/lines/seg5a-16.mp3",
+   "start": 122.552,
+   "dur": 8.352,
+   "speechStart": 122.65,
+   "speechEnd": 130.052
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "下面",
+   "start": 1.698,
+   "end": 2.329
+  },
+  {
+   "line": 0,
+   "text": "是",
+   "start": 2.424,
+   "end": 2.602
+  },
+  {
+   "line": 0,
+   "text": "手册",
+   "start": 2.614,
+   "end": 2.96
+  },
+  {
+   "line": 0,
+   "text": "给出",
+   "start": 2.971,
+   "end": 3.221
+  },
+  {
+   "line": 0,
+   "text": "的",
+   "start": 3.221,
+   "end": 3.293
+  },
+  {
+   "line": 0,
+   "text": "一套",
+   "start": 3.305,
+   "end": 3.555
+  },
+  {
+   "line": 0,
+   "text": "示例",
+   "start": 3.579,
+   "end": 3.84
+  },
+  {
+   "line": 0,
+   "text": "架构",
+   "start": 3.852,
+   "end": 4.233
+  },
+  {
+   "line": 0,
+   "text": "它",
+   "start": 4.779,
+   "end": 4.921
+  },
+  {
+   "line": 0,
+   "text": "综合",
+   "start": 4.933,
+   "end": 5.243
+  },
+  {
+   "line": 0,
+   "text": "了",
+   "start": 5.243,
+   "end": 5.338
+  },
+  {
+   "line": 0,
+   "text": "公开",
+   "start": 5.362,
+   "end": 5.648
+  },
+  {
+   "line": 0,
+   "text": "事件",
+   "start": 5.66,
+   "end": 5.921
+  },
+  {
+   "line": 0,
+   "text": "的",
+   "start": 5.921,
+   "end": 5.993
+  },
+  {
+   "line": 0,
+   "text": "教训",
+   "start": 6.005,
+   "end": 6.481
+  },
+  {
+   "line": 0,
+   "text": "不是",
+   "start": 6.802,
+   "end": 7.1
+  },
+  {
+   "line": 0,
+   "text": "哪",
+   "start": 7.112,
+   "end": 7.243
+  },
+  {
+   "line": 0,
+   "text": "家",
+   "start": 7.243,
+   "end": 7.35
+  },
+  {
+   "line": 0,
+   "text": "交易所",
+   "start": 7.362,
+   "end": 7.719
+  },
+  {
+   "line": 0,
+   "text": "公布",
+   "start": 7.743,
+   "end": 7.981
+  },
+  {
+   "line": 0,
+   "text": "的",
+   "start": 7.981,
+   "end": 8.04
+  },
+  {
+   "line": 0,
+   "text": "方案",
+   "start": 8.052,
+   "end": 8.386
+  },
+  {
+   "line": 1,
+   "text": "账本",
+   "start": 9.55,
+   "end": 10.073
+  },
+  {
+   "line": 1,
+   "text": "意图",
+   "start": 10.371,
+   "end": 10.681
+  },
+  {
+   "line": 1,
+   "text": "签发",
+   "start": 10.692,
+   "end": 11.181
+  },
+  {
+   "line": 1,
+   "text": "策略",
+   "start": 11.419,
+   "end": 11.835
+  },
+  {
+   "line": 1,
+   "text": "引擎",
+   "start": 11.847,
+   "end": 12.371
+  },
+  {
+   "line": 1,
+   "text": "审批",
+   "start": 12.538,
+   "end": 13.133
+  },
+  {
+   "line": 1,
+   "text": "签名",
+   "start": 13.371,
+   "end": 13.788
+  },
+  {
+   "line": 1,
+   "text": "集群",
+   "start": 13.8,
+   "end": 14.312
+  },
+  {
+   "line": 1,
+   "text": "广播",
+   "start": 14.55,
+   "end": 15.085
+  },
+  {
+   "line": 1,
+   "text": "链",
+   "start": 15.3,
+   "end": 15.538
+  },
+  {
+   "line": 1,
+   "text": "上",
+   "start": 15.538,
+   "end": 15.847
+  },
+  {
+   "line": 1,
+   "text": "再",
+   "start": 16.109,
+   "end": 16.3
+  },
+  {
+   "line": 1,
+   "text": "加",
+   "start": 16.3,
+   "end": 16.431
+  },
+  {
+   "line": 1,
+   "text": "一套",
+   "start": 16.442,
+   "end": 16.788
+  },
+  {
+   "line": 1,
+   "text": "独立",
+   "start": 16.812,
+   "end": 17.157
+  },
+  {
+   "line": 1,
+   "text": "监控",
+   "start": 17.169,
+   "end": 17.538
+  },
+  {
+   "line": 2,
+   "text": "开发",
+   "start": 18.698,
+   "end": 19.067
+  },
+  {
+   "line": 2,
+   "text": "电脑",
+   "start": 19.079,
+   "end": 19.4
+  },
+  {
+   "line": 2,
+   "text": "到",
+   "start": 19.424,
+   "end": 19.507
+  },
+  {
+   "line": 2,
+   "text": "签名",
+   "start": 19.519,
+   "end": 19.864
+  },
+  {
+   "line": 2,
+   "text": "集群",
+   "start": 19.876,
+   "end": 20.412
+  },
+  {
+   "line": 2,
+   "text": "这",
+   "start": 20.781,
+   "end": 20.971
+  },
+  {
+   "line": 2,
+   "text": "条",
+   "start": 20.971,
+   "end": 21.138
+  },
+  {
+   "line": 2,
+   "text": "线",
+   "start": 21.138,
+   "end": 21.329
+  },
+  {
+   "line": 2,
+   "text": "是",
+   "start": 21.352,
+   "end": 21.46
+  },
+  {
+   "line": 2,
+   "text": "禁止",
+   "start": 21.471,
+   "end": 21.805
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 21.805,
+   "end": 22.007
+  },
+  {
+   "line": 2,
+   "text": "网络",
+   "start": 22.54,
+   "end": 22.909
+  },
+  {
+   "line": 2,
+   "text": "上",
+   "start": 22.91,
+   "end": 23.16
+  },
+  {
+   "line": 2,
+   "text": "根本",
+   "start": 23.183,
+   "end": 23.469
+  },
+  {
+   "line": 2,
+   "text": "不该",
+   "start": 23.481,
+   "end": 23.731
+  },
+  {
+   "line": 2,
+   "text": "有",
+   "start": 23.731,
+   "end": 23.814
+  },
+  {
+   "line": 2,
+   "text": "这",
+   "start": 23.838,
+   "end": 23.921
+  },
+  {
+   "line": 2,
+   "text": "条",
+   "start": 23.921,
+   "end": 24.052
+  },
+  {
+   "line": 2,
+   "text": "路由",
+   "start": 24.064,
+   "end": 24.481
+  },
+  {
+   "line": 3,
+   "text": "我们",
+   "start": 25.638,
+   "end": 25.935
+  },
+  {
+   "line": 3,
+   "text": "挑",
+   "start": 25.947,
+   "end": 26.126
+  },
+  {
+   "line": 3,
+   "text": "四",
+   "start": 26.15,
+   "end": 26.328
+  },
+  {
+   "line": 3,
+   "text": "个",
+   "start": 26.328,
+   "end": 26.399
+  },
+  {
+   "line": 3,
+   "text": "重点",
+   "start": 26.411,
+   "end": 26.84
+  },
+  {
+   "line": 3,
+   "text": "第一",
+   "start": 27.385,
+   "end": 27.754
+  },
+  {
+   "line": 3,
+   "text": "账本",
+   "start": 28.111,
+   "end": 28.647
+  },
+  {
+   "line": 3,
+   "text": "绑定",
+   "start": 28.671,
+   "end": 29.016
+  },
+  {
+   "line": 3,
+   "text": "签名",
+   "start": 29.028,
+   "end": 29.492
+  },
+  {
+   "line": 4,
+   "text": "签名",
+   "start": 30.659,
+   "end": 31.044
+  },
+  {
+   "line": 4,
+   "text": "服务",
+   "start": 31.056,
+   "end": 31.477
+  },
+  {
+   "line": 4,
+   "text": "只",
+   "start": 31.574,
+   "end": 31.766
+  },
+  {
+   "line": 4,
+   "text": "给",
+   "start": 31.766,
+   "end": 31.863
+  },
+  {
+   "line": 4,
+   "text": "账本",
+   "start": 31.887,
+   "end": 32.212
+  },
+  {
+   "line": 4,
+   "text": "里",
+   "start": 32.212,
+   "end": 32.296
+  },
+  {
+   "line": 4,
+   "text": "存在",
+   "start": 32.308,
+   "end": 32.729
+  },
+  {
+   "line": 4,
+   "text": "状态",
+   "start": 32.922,
+   "end": 33.283
+  },
+  {
+   "line": 4,
+   "text": "正确",
+   "start": 33.295,
+   "end": 33.764
+  },
+  {
+   "line": 4,
+   "text": "金额",
+   "start": 34.029,
+   "end": 34.39
+  },
+  {
+   "line": 4,
+   "text": "一致",
+   "start": 34.402,
+   "end": 34.752
+  },
+  {
+   "line": 4,
+   "text": "的",
+   "start": 34.752,
+   "end": 34.872
+  },
+  {
+   "line": 4,
+   "text": "提现",
+   "start": 34.896,
+   "end": 35.281
+  },
+  {
+   "line": 4,
+   "text": "单",
+   "start": 35.281,
+   "end": 35.45
+  },
+  {
+   "line": 4,
+   "text": "签名",
+   "start": 35.462,
+   "end": 35.919
+  },
+  {
+   "line": 4,
+   "text": "同",
+   "start": 36.471,
+   "end": 36.663
+  },
+  {
+   "line": 4,
+   "text": "一",
+   "start": 36.663,
+   "end": 36.759
+  },
+  {
+   "line": 4,
+   "text": "张",
+   "start": 36.759,
+   "end": 36.916
+  },
+  {
+   "line": 4,
+   "text": "单",
+   "start": 36.916,
+   "end": 37.205
+  },
+  {
+   "line": 4,
+   "text": "只能",
+   "start": 37.554,
+   "end": 37.843
+  },
+  {
+   "line": 4,
+   "text": "签",
+   "start": 37.855,
+   "end": 38.096
+  },
+  {
+   "line": 4,
+   "text": "一次",
+   "start": 38.096,
+   "end": 38.409
+  },
+  {
+   "line": 5,
+   "text": "目标",
+   "start": 39.566,
+   "end": 39.911
+  },
+  {
+   "line": 5,
+   "text": "和",
+   "start": 39.935,
+   "end": 40.054
+  },
+  {
+   "line": 5,
+   "text": "金额",
+   "start": 40.066,
+   "end": 40.601
+  },
+  {
+   "line": 5,
+   "text": "要",
+   "start": 40.828,
+   "end": 40.982
+  },
+  {
+   "line": 5,
+   "text": "从",
+   "start": 40.982,
+   "end": 41.125
+  },
+  {
+   "line": 5,
+   "text": "原始",
+   "start": 41.149,
+   "end": 41.458
+  },
+  {
+   "line": 5,
+   "text": "交易",
+   "start": 41.47,
+   "end": 41.744
+  },
+  {
+   "line": 5,
+   "text": "里",
+   "start": 41.744,
+   "end": 41.863
+  },
+  {
+   "line": 5,
+   "text": "解析",
+   "start": 41.887,
+   "end": 42.197
+  },
+  {
+   "line": 5,
+   "text": "出来",
+   "start": 42.208,
+   "end": 42.577
+  },
+  {
+   "line": 5,
+   "text": "不",
+   "start": 42.863,
+   "end": 43.054
+  },
+  {
+   "line": 5,
+   "text": "读",
+   "start": 43.054,
+   "end": 43.185
+  },
+  {
+   "line": 5,
+   "text": "上",
+   "start": 43.208,
+   "end": 43.411
+  },
+  {
+   "line": 5,
+   "text": "游写",
+   "start": 43.411,
+   "end": 43.649
+  },
+  {
+   "line": 5,
+   "text": "的",
+   "start": 43.649,
+   "end": 43.72
+  },
+  {
+   "line": 5,
+   "text": "描述",
+   "start": 43.732,
+   "end": 44.113
+  },
+  {
+   "line": 5,
+   "text": "伪造",
+   "start": 44.658,
+   "end": 45.004
+  },
+  {
+   "line": 5,
+   "text": "的",
+   "start": 45.004,
+   "end": 45.099
+  },
+  {
+   "line": 5,
+   "text": "提现",
+   "start": 45.123,
+   "end": 45.456
+  },
+  {
+   "line": 5,
+   "text": "指令",
+   "start": 45.468,
+   "end": 45.885
+  },
+  {
+   "line": 5,
+   "text": "在",
+   "start": 46.17,
+   "end": 46.337
+  },
+  {
+   "line": 5,
+   "text": "这里",
+   "start": 46.337,
+   "end": 46.563
+  },
+  {
+   "line": 5,
+   "text": "对",
+   "start": 46.587,
+   "end": 46.682
+  },
+  {
+   "line": 5,
+   "text": "不",
+   "start": 46.694,
+   "end": 46.789
+  },
+  {
+   "line": 5,
+   "text": "上账",
+   "start": 46.789,
+   "end": 47.23
+  },
+  {
+   "line": 6,
+   "text": "第二",
+   "start": 48.378,
+   "end": 48.759
+  },
+  {
+   "line": 6,
+   "text": "策略",
+   "start": 49.128,
+   "end": 49.437
+  },
+  {
+   "line": 6,
+   "text": "读",
+   "start": 49.449,
+   "end": 49.592
+  },
+  {
+   "line": 6,
+   "text": "的",
+   "start": 49.592,
+   "end": 49.866
+  },
+  {
+   "line": 6,
+   "text": "是",
+   "start": 49.878,
+   "end": 50.056
+  },
+  {
+   "line": 6,
+   "text": "原始",
+   "start": 50.08,
+   "end": 50.425
+  },
+  {
+   "line": 6,
+   "text": "待签",
+   "start": 50.437,
+   "end": 50.782
+  },
+  {
+   "line": 6,
+   "text": "字节",
+   "start": 50.782,
+   "end": 51.259
+  },
+  {
+   "line": 6,
+   "text": "而且",
+   "start": 51.532,
+   "end": 51.854
+  },
+  {
+   "line": 6,
+   "text": "默认",
+   "start": 51.878,
+   "end": 52.247
+  },
+  {
+   "line": 6,
+   "text": "拒绝",
+   "start": 52.259,
+   "end": 52.735
+  },
+  {
+   "line": 6,
+   "text": "没有",
+   "start": 53.268,
+   "end": 53.578
+  },
+  {
+   "line": 6,
+   "text": "明确",
+   "start": 53.59,
+   "end": 53.911
+  },
+  {
+   "line": 6,
+   "text": "规则",
+   "start": 53.923,
+   "end": 54.197
+  },
+  {
+   "line": 6,
+   "text": "的",
+   "start": 54.197,
+   "end": 54.268
+  },
+  {
+   "line": 6,
+   "text": "交易",
+   "start": 54.292,
+   "end": 54.542
+  },
+  {
+   "line": 6,
+   "text": "类型",
+   "start": 54.554,
+   "end": 55.054
+  },
+  {
+   "line": 6,
+   "text": "一律",
+   "start": 55.244,
+   "end": 55.578
+  },
+  {
+   "line": 6,
+   "text": "不",
+   "start": 55.59,
+   "end": 55.72
+  },
+  {
+   "line": 6,
+   "text": "签",
+   "start": 55.72,
+   "end": 56.042
+  },
+  {
+   "line": 7,
+   "text": "比如",
+   "start": 57.19,
+   "end": 57.666
+  },
+  {
+   "line": 7,
+   "text": "Safe",
+   "start": 57.773,
+   "end": 58.202
+  },
+  {
+   "line": 7,
+   "text": "多",
+   "start": 58.202,
+   "end": 58.321
+  },
+  {
+   "line": 7,
+   "text": "签",
+   "start": 58.321,
+   "end": 58.642
+  },
+  {
+   "line": 7,
+   "text": "operation",
+   "start": 58.928,
+   "end": 59.713
+  },
+  {
+   "line": 7,
+   "text": "只",
+   "start": 59.809,
+   "end": 60.011
+  },
+  {
+   "line": 7,
+   "text": "允许",
+   "start": 60.011,
+   "end": 60.416
+  },
+  {
+   "line": 7,
+   "text": "等于 0",
+   "start": 60.44,
+   "end": 60.963
+  },
+  {
+   "line": 8,
+   "text": "要",
+   "start": 62.115,
+   "end": 62.283
+  },
+  {
+   "line": 8,
+   "text": "用",
+   "start": 62.283,
+   "end": 62.428
+  },
+  {
+   "line": 8,
+   "text": "1",
+   "start": 62.428,
+   "end": 62.729
+  },
+  {
+   "line": 8,
+   "text": "只能",
+   "start": 62.91,
+   "end": 63.211
+  },
+  {
+   "line": 8,
+   "text": "指向",
+   "start": 63.223,
+   "end": 63.524
+  },
+  {
+   "line": 8,
+   "text": "官方",
+   "start": 63.548,
+   "end": 63.897
+  },
+  {
+   "line": 8,
+   "text": "的",
+   "start": 63.897,
+   "end": 64.066
+  },
+  {
+   "line": 8,
+   "text": "批量",
+   "start": 64.09,
+   "end": 64.403
+  },
+  {
+   "line": 8,
+   "text": "调用",
+   "start": 64.403,
+   "end": 64.644
+  },
+  {
+   "line": 8,
+   "text": "合约",
+   "start": 64.656,
+   "end": 65.041
+  },
+  {
+   "line": 8,
+   "text": "链上",
+   "start": 65.27,
+   "end": 65.595
+  },
+  {
+   "line": 8,
+   "text": "还有",
+   "start": 65.607,
+   "end": 65.884
+  },
+  {
+   "line": 8,
+   "text": "Guard",
+   "start": 65.908,
+   "end": 66.245
+  },
+  {
+   "line": 8,
+   "text": "合约",
+   "start": 66.245,
+   "end": 66.667
+  },
+  {
+   "line": 8,
+   "text": "再",
+   "start": 66.763,
+   "end": 67.04
+  },
+  {
+   "line": 8,
+   "text": "拦",
+   "start": 67.04,
+   "end": 67.184
+  },
+  {
+   "line": 8,
+   "text": "一次",
+   "start": 67.197,
+   "end": 67.473
+  },
+  {
+   "line": 9,
+   "text": "Bybit",
+   "start": 68.646,
+   "end": 69.134
+  },
+  {
+   "line": 9,
+   "text": "那",
+   "start": 69.146,
+   "end": 69.312
+  },
+  {
+   "line": 9,
+   "text": "笔",
+   "start": 69.312,
+   "end": 69.467
+  },
+  {
+   "line": 9,
+   "text": "operation",
+   "start": 69.491,
+   "end": 70.229
+  },
+  {
+   "line": 9,
+   "text": "等于 1",
+   "start": 70.324,
+   "end": 70.669
+  },
+  {
+   "line": 9,
+   "text": "的",
+   "start": 70.669,
+   "end": 70.741
+  },
+  {
+   "line": 9,
+   "text": "交易",
+   "start": 70.753,
+   "end": 71.134
+  },
+  {
+   "line": 9,
+   "text": "在",
+   "start": 71.3,
+   "end": 71.467
+  },
+  {
+   "line": 9,
+   "text": "这里",
+   "start": 71.467,
+   "end": 71.765
+  },
+  {
+   "line": 9,
+   "text": "会",
+   "start": 71.788,
+   "end": 71.896
+  },
+  {
+   "line": 9,
+   "text": "被",
+   "start": 71.896,
+   "end": 72.003
+  },
+  {
+   "line": 9,
+   "text": "拒绝",
+   "start": 72.015,
+   "end": 72.467
+  },
+  {
+   "line": 10,
+   "text": "再",
+   "start": 73.618,
+   "end": 73.82
+  },
+  {
+   "line": 10,
+   "text": "比如",
+   "start": 73.82,
+   "end": 74.106
+  },
+  {
+   "line": 10,
+   "text": "热钱包",
+   "start": 74.13,
+   "end": 74.713
+  },
+  {
+   "line": 10,
+   "text": "EIP",
+   "start": 75.01,
+   "end": 75.653
+  },
+  {
+   "line": 10,
+   "text": "7702",
+   "start": 75.76,
+   "end": 76.344
+  },
+  {
+   "line": 10,
+   "text": "授权",
+   "start": 76.356,
+   "end": 76.879
+  },
+  {
+   "line": 10,
+   "text": "一律",
+   "start": 76.903,
+   "end": 77.213
+  },
+  {
+   "line": 10,
+   "text": "拒签",
+   "start": 77.225,
+   "end": 77.629
+  },
+  {
+   "line": 10,
+   "text": "策略",
+   "start": 78.175,
+   "end": 78.603
+  },
+  {
+   "line": 10,
+   "text": "如果",
+   "start": 78.627,
+   "end": 78.818
+  },
+  {
+   "line": 10,
+   "text": "覆盖",
+   "start": 78.83,
+   "end": 79.091
+  },
+  {
+   "line": 10,
+   "text": "了",
+   "start": 79.091,
+   "end": 79.151
+  },
+  {
+   "line": 10,
+   "text": "这",
+   "start": 79.163,
+   "end": 79.258
+  },
+  {
+   "line": 10,
+   "text": "一条",
+   "start": 79.258,
+   "end": 79.699
+  },
+  {
+   "line": 10,
+   "text": "Binance",
+   "start": 79.972,
+   "end": 80.496
+  },
+  {
+   "line": 10,
+   "text": "那",
+   "start": 80.508,
+   "end": 80.627
+  },
+  {
+   "line": 10,
+   "text": "批",
+   "start": 80.627,
+   "end": 80.734
+  },
+  {
+   "line": 10,
+   "text": "委托",
+   "start": 80.746,
+   "end": 81.246
+  },
+  {
+   "line": 10,
+   "text": "就",
+   "start": 81.353,
+   "end": 81.484
+  },
+  {
+   "line": 10,
+   "text": "签",
+   "start": 81.496,
+   "end": 81.699
+  },
+  {
+   "line": 10,
+   "text": "不",
+   "start": 81.699,
+   "end": 81.77
+  },
+  {
+   "line": 10,
+   "text": "出来",
+   "start": 81.77,
+   "end": 82.115
+  },
+  {
+   "line": 11,
+   "text": "第三",
+   "start": 83.27,
+   "end": 83.734
+  },
+  {
+   "line": 11,
+   "text": "分",
+   "start": 84.067,
+   "end": 84.329
+  },
+  {
+   "line": 11,
+   "text": "链",
+   "start": 84.329,
+   "end": 84.496
+  },
+  {
+   "line": 11,
+   "text": "熔断",
+   "start": 84.508,
+   "end": 84.924
+  },
+  {
+   "line": 11,
+   "text": "某",
+   "start": 85.47,
+   "end": 85.672
+  },
+  {
+   "line": 11,
+   "text": "条链",
+   "start": 85.672,
+   "end": 86.029
+  },
+  {
+   "line": 11,
+   "text": "流出",
+   "start": 86.053,
+   "end": 86.315
+  },
+  {
+   "line": 11,
+   "text": "异常",
+   "start": 86.327,
+   "end": 86.862
+  },
+  {
+   "line": 11,
+   "text": "就",
+   "start": 87.124,
+   "end": 87.291
+  },
+  {
+   "line": 11,
+   "text": "停",
+   "start": 87.291,
+   "end": 87.41
+  },
+  {
+   "line": 11,
+   "text": "这",
+   "start": 87.434,
+   "end": 87.517
+  },
+  {
+   "line": 11,
+   "text": "条链",
+   "start": 87.517,
+   "end": 87.779
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 87.779,
+   "end": 87.851
+  },
+  {
+   "line": 11,
+   "text": "广播",
+   "start": 87.862,
+   "end": 88.267
+  },
+  {
+   "line": 12,
+   "text": "发现",
+   "start": 89.418,
+   "end": 89.787
+  },
+  {
+   "line": 12,
+   "text": "账本",
+   "start": 89.81,
+   "end": 90.12
+  },
+  {
+   "line": 12,
+   "text": "里",
+   "start": 90.12,
+   "end": 90.394
+  },
+  {
+   "line": 12,
+   "text": "没有",
+   "start": 90.418,
+   "end": 90.68
+  },
+  {
+   "line": 12,
+   "text": "对应",
+   "start": 90.691,
+   "end": 90.953
+  },
+  {
+   "line": 12,
+   "text": "订单",
+   "start": 90.965,
+   "end": 91.239
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 91.239,
+   "end": 91.31
+  },
+  {
+   "line": 12,
+   "text": "流出",
+   "start": 91.322,
+   "end": 91.763
+  },
+  {
+   "line": 12,
+   "text": "所有",
+   "start": 92.084,
+   "end": 92.537
+  },
+  {
+   "line": 12,
+   "text": "链",
+   "start": 92.537,
+   "end": 92.656
+  },
+  {
+   "line": 12,
+   "text": "一起",
+   "start": 92.68,
+   "end": 92.87
+  },
+  {
+   "line": 12,
+   "text": "停",
+   "start": 92.87,
+   "end": 93.144
+  },
+  {
+   "line": 12,
+   "text": "熔断",
+   "start": 93.677,
+   "end": 94.022
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 94.022,
+   "end": 94.082
+  },
+  {
+   "line": 12,
+   "text": "开关",
+   "start": 94.094,
+   "end": 94.641
+  },
+  {
+   "line": 12,
+   "text": "不能",
+   "start": 94.939,
+   "end": 95.177
+  },
+  {
+   "line": 12,
+   "text": "依赖",
+   "start": 95.189,
+   "end": 95.487
+  },
+  {
+   "line": 12,
+   "text": "已经",
+   "start": 95.51,
+   "end": 95.689
+  },
+  {
+   "line": 12,
+   "text": "被",
+   "start": 95.689,
+   "end": 95.796
+  },
+  {
+   "line": 12,
+   "text": "攻击",
+   "start": 95.808,
+   "end": 96.106
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 96.106,
+   "end": 96.165
+  },
+  {
+   "line": 12,
+   "text": "系统",
+   "start": 96.177,
+   "end": 96.522
+  },
+  {
+   "line": 13,
+   "text": "第",
+   "start": 97.678,
+   "end": 97.856
+  },
+  {
+   "line": 13,
+   "text": "四",
+   "start": 97.856,
+   "end": 98.154
+  },
+  {
+   "line": 13,
+   "text": "紧急",
+   "start": 98.451,
+   "end": 98.868
+  },
+  {
+   "line": 13,
+   "text": "撤销",
+   "start": 98.88,
+   "end": 99.344
+  },
+  {
+   "line": 13,
+   "text": "7702",
+   "start": 99.89,
+   "end": 100.782
+  },
+  {
+   "line": 13,
+   "text": "委托",
+   "start": 100.794,
+   "end": 101.306
+  },
+  {
+   "line": 13,
+   "text": "要",
+   "start": 101.556,
+   "end": 101.687
+  },
+  {
+   "line": 13,
+   "text": "用",
+   "start": 101.687,
+   "end": 101.782
+  },
+  {
+   "line": 13,
+   "text": "一",
+   "start": 101.794,
+   "end": 101.901
+  },
+  {
+   "line": 13,
+   "text": "笔",
+   "start": 101.901,
+   "end": 102.056
+  },
+  {
+   "line": 13,
+   "text": "新",
+   "start": 102.08,
+   "end": 102.282
+  },
+  {
+   "line": 13,
+   "text": "的",
+   "start": 102.282,
+   "end": 102.342
+  },
+  {
+   "line": 13,
+   "text": "授权",
+   "start": 102.354,
+   "end": 102.901
+  },
+  {
+   "line": 13,
+   "text": "把",
+   "start": 103.116,
+   "end": 103.247
+  },
+  {
+   "line": 13,
+   "text": "委托",
+   "start": 103.259,
+   "end": 103.592
+  },
+  {
+   "line": 13,
+   "text": "地址",
+   "start": 103.604,
+   "end": 104.009
+  },
+  {
+   "line": 13,
+   "text": "设成",
+   "start": 104.032,
+   "end": 104.366
+  },
+  {
+   "line": 13,
+   "text": "零",
+   "start": 104.366,
+   "end": 104.532
+  },
+  {
+   "line": 13,
+   "text": "地址",
+   "start": 104.532,
+   "end": 104.913
+  },
+  {
+   "line": 13,
+   "text": "才能",
+   "start": 105.092,
+   "end": 105.39
+  },
+  {
+   "line": 13,
+   "text": "清掉",
+   "start": 105.401,
+   "end": 105.83
+  },
+  {
+   "line": 14,
+   "text": "MPC",
+   "start": 106.994,
+   "end": 107.517
+  },
+  {
+   "line": 14,
+   "text": "钱包",
+   "start": 107.529,
+   "end": 107.994
+  },
+  {
+   "line": 14,
+   "text": "没有",
+   "start": 108.017,
+   "end": 108.184
+  },
+  {
+   "line": 14,
+   "text": "一",
+   "start": 108.196,
+   "end": 108.303
+  },
+  {
+   "line": 14,
+   "text": "把",
+   "start": 108.303,
+   "end": 108.434
+  },
+  {
+   "line": 14,
+   "text": "单独",
+   "start": 108.458,
+   "end": 108.72
+  },
+  {
+   "line": 14,
+   "text": "的",
+   "start": 108.72,
+   "end": 108.803
+  },
+  {
+   "line": 14,
+   "text": "私钥",
+   "start": 108.815,
+   "end": 109.22
+  },
+  {
+   "line": 14,
+   "text": "能",
+   "start": 109.315,
+   "end": 109.505
+  },
+  {
+   "line": 14,
+   "text": "立刻",
+   "start": 109.517,
+   "end": 109.803
+  },
+  {
+   "line": 14,
+   "text": "做",
+   "start": 109.815,
+   "end": 109.922
+  },
+  {
+   "line": 14,
+   "text": "这",
+   "start": 109.922,
+   "end": 110.029
+  },
+  {
+   "line": 14,
+   "text": "件",
+   "start": 110.029,
+   "end": 110.172
+  },
+  {
+   "line": 14,
+   "text": "事",
+   "start": 110.172,
+   "end": 110.446
+  },
+  {
+   "line": 14,
+   "text": "所以",
+   "start": 110.979,
+   "end": 111.586
+  },
+  {
+   "line": 14,
+   "text": "要",
+   "start": 111.694,
+   "end": 111.86
+  },
+  {
+   "line": 14,
+   "text": "有",
+   "start": 111.86,
+   "end": 111.944
+  },
+  {
+   "line": 14,
+   "text": "一条",
+   "start": 111.956,
+   "end": 112.206
+  },
+  {
+   "line": 14,
+   "text": "独立",
+   "start": 112.229,
+   "end": 112.575
+  },
+  {
+   "line": 14,
+   "text": "的",
+   "start": 112.575,
+   "end": 112.682
+  },
+  {
+   "line": 14,
+   "text": "撤销",
+   "start": 112.706,
+   "end": 113.086
+  },
+  {
+   "line": 14,
+   "text": "路径",
+   "start": 113.098,
+   "end": 113.479
+  },
+  {
+   "line": 14,
+   "text": "预先",
+   "start": 113.741,
+   "end": 114.122
+  },
+  {
+   "line": 14,
+   "text": "批准",
+   "start": 114.134,
+   "end": 114.575
+  },
+  {
+   "line": 14,
+   "text": "每",
+   "start": 114.908,
+   "end": 115.17
+  },
+  {
+   "line": 14,
+   "text": "季度",
+   "start": 115.17,
+   "end": 115.42
+  },
+  {
+   "line": 14,
+   "text": "演练",
+   "start": 115.432,
+   "end": 115.86
+  },
+  {
+   "line": 14,
+   "text": "记",
+   "start": 116.098,
+   "end": 116.301
+  },
+  {
+   "line": 14,
+   "text": "下",
+   "start": 116.301,
+   "end": 116.432
+  },
+  {
+   "line": 14,
+   "text": "用",
+   "start": 116.444,
+   "end": 116.598
+  },
+  {
+   "line": 14,
+   "text": "时",
+   "start": 116.598,
+   "end": 116.967
+  },
+  {
+   "line": 15,
+   "text": "最后",
+   "start": 118.11,
+   "end": 118.395
+  },
+  {
+   "line": 15,
+   "text": "查",
+   "start": 118.419,
+   "end": 118.598
+  },
+  {
+   "line": 15,
+   "text": "一下",
+   "start": 118.598,
+   "end": 118.8
+  },
+  {
+   "line": 15,
+   "text": "账户",
+   "start": 118.824,
+   "end": 119.086
+  },
+  {
+   "line": 15,
+   "text": "代码",
+   "start": 119.098,
+   "end": 119.514
+  },
+  {
+   "line": 15,
+   "text": "结果",
+   "start": 119.752,
+   "end": 120.074
+  },
+  {
+   "line": 15,
+   "text": "为",
+   "start": 120.086,
+   "end": 120.217
+  },
+  {
+   "line": 15,
+   "text": "空",
+   "start": 120.217,
+   "end": 120.491
+  },
+  {
+   "line": 15,
+   "text": "才",
+   "start": 120.681,
+   "end": 120.871
+  },
+  {
+   "line": 15,
+   "text": "算",
+   "start": 120.872,
+   "end": 121.014
+  },
+  {
+   "line": 15,
+   "text": "完成",
+   "start": 121.026,
+   "end": 121.479
+  },
+  {
+   "line": 16,
+   "text": "也",
+   "start": 122.65,
+   "end": 122.816
+  },
+  {
+   "line": 16,
+   "text": "要",
+   "start": 122.816,
+   "end": 122.9
+  },
+  {
+   "line": 16,
+   "text": "说",
+   "start": 122.912,
+   "end": 123.066
+  },
+  {
+   "line": 16,
+   "text": "清",
+   "start": 123.066,
+   "end": 123.233
+  },
+  {
+   "line": 16,
+   "text": "局限",
+   "start": 123.245,
+   "end": 123.673
+  },
+  {
+   "line": 16,
+   "text": "架构",
+   "start": 124.219,
+   "end": 124.623
+  },
+  {
+   "line": 16,
+   "text": "挡",
+   "start": 124.647,
+   "end": 124.814
+  },
+  {
+   "line": 16,
+   "text": "不住",
+   "start": 124.814,
+   "end": 125.04
+  },
+  {
+   "line": 16,
+   "text": "所有",
+   "start": 125.064,
+   "end": 125.385
+  },
+  {
+   "line": 16,
+   "text": "内部",
+   "start": 125.397,
+   "end": 125.588
+  },
+  {
+   "line": 16,
+   "text": "人",
+   "start": 125.588,
+   "end": 125.695
+  },
+  {
+   "line": 16,
+   "text": "作恶",
+   "start": 125.707,
+   "end": 126.135
+  },
+  {
+   "line": 16,
+   "text": "它",
+   "start": 126.683,
+   "end": 126.897
+  },
+  {
+   "line": 16,
+   "text": "做",
+   "start": 126.897,
+   "end": 127.1
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 127.1,
+   "end": 127.373
+  },
+  {
+   "line": 16,
+   "text": "是",
+   "start": 127.576,
+   "end": 127.742
+  },
+  {
+   "line": 16,
+   "text": "把",
+   "start": 127.742,
+   "end": 127.838
+  },
+  {
+   "line": 16,
+   "text": "一个",
+   "start": 127.85,
+   "end": 128.016
+  },
+  {
+   "line": 16,
+   "text": "人",
+   "start": 128.016,
+   "end": 128.147
+  },
+  {
+   "line": 16,
+   "text": "作恶",
+   "start": 128.159,
+   "end": 128.659
+  },
+  {
+   "line": 16,
+   "text": "变成",
+   "start": 128.838,
+   "end": 129.123
+  },
+  {
+   "line": 16,
+   "text": "需要",
+   "start": 129.147,
+   "end": 129.373
+  },
+  {
+   "line": 16,
+   "text": "多",
+   "start": 129.397,
+   "end": 129.552
+  },
+  {
+   "line": 16,
+   "text": "人",
+   "start": 129.552,
+   "end": 129.683
+  },
+  {
+   "line": 16,
+   "text": "共谋",
+   "start": 129.695,
+   "end": 130.052
+  }
+ ],
+ "captions": [
+  {
+   "text": "下面是手册给出的一套示例架构",
+   "start": 1.648,
+   "end": 4.353,
+   "id": "c0"
+  },
+  {
+   "text": "它综合了公开事件的教训",
+   "start": 4.729,
+   "end": 6.601,
+   "id": "c1"
+  },
+  {
+   "text": "不是哪家交易所公布的方案",
+   "start": 6.752,
+   "end": 8.506,
+   "id": "c2"
+  },
+  {
+   "text": "账本意图签发",
+   "start": 9.5,
+   "end": 11.301,
+   "id": "c3"
+  },
+  {
+   "text": "策略引擎审批",
+   "start": 11.369,
+   "end": 13.253,
+   "id": "c4"
+  },
+  {
+   "text": "签名集群广播链上",
+   "start": 13.321,
+   "end": 15.967,
+   "id": "c5"
+  },
+  {
+   "text": "再加一套独立监控",
+   "start": 16.059,
+   "end": 17.658,
+   "id": "c6"
+  },
+  {
+   "text": "开发电脑到签名集群",
+   "start": 18.648,
+   "end": 20.532,
+   "id": "c7"
+  },
+  {
+   "text": "这条线是禁止的",
+   "start": 20.731,
+   "end": 22.127,
+   "id": "c8"
+  },
+  {
+   "text": "网络上根本不该有这条路由",
+   "start": 22.49,
+   "end": 24.601,
+   "id": "c9"
+  },
+  {
+   "text": "我们挑四个重点",
+   "start": 25.588,
+   "end": 26.96,
+   "id": "c10"
+  },
+  {
+   "text": "第一账本绑定签名",
+   "start": 27.335,
+   "end": 29.612,
+   "id": "c11"
+  },
+  {
+   "text": "签名服务只为账本里存在",
+   "start": 30.609,
+   "end": 32.849,
+   "id": "c12"
+  },
+  {
+   "text": "状态正确",
+   "start": 32.872,
+   "end": 33.884,
+   "id": "c13"
+  },
+  {
+   "text": "金额一致的提现单签名",
+   "start": 33.979,
+   "end": 36.039,
+   "id": "c14"
+  },
+  {
+   "text": "同一张单",
+   "start": 36.421,
+   "end": 37.325,
+   "id": "c15"
+  },
+  {
+   "text": "只能签一次",
+   "start": 37.504,
+   "end": 38.529,
+   "id": "c16"
+  },
+  {
+   "text": "目标和金额",
+   "start": 39.516,
+   "end": 40.721,
+   "id": "c17"
+  },
+  {
+   "text": "要从原始交易里解析出来",
+   "start": 40.778,
+   "end": 42.697,
+   "id": "c18"
+  },
+  {
+   "text": "不读上游写的描述",
+   "start": 42.813,
+   "end": 44.233,
+   "id": "c19"
+  },
+  {
+   "text": "伪造的提现指令",
+   "start": 44.608,
+   "end": 46.005,
+   "id": "c20"
+  },
+  {
+   "text": "在这里对不上账",
+   "start": 46.12,
+   "end": 47.35,
+   "id": "c21"
+  },
+  {
+   "text": "第二策略读的是原始待签字节",
+   "start": 48.328,
+   "end": 51.379,
+   "id": "c22"
+  },
+  {
+   "text": "而且默认拒绝",
+   "start": 51.482,
+   "end": 52.855,
+   "id": "c23"
+  },
+  {
+   "text": "没有明确规则的交易类型",
+   "start": 53.218,
+   "end": 55.174,
+   "id": "c24"
+  },
+  {
+   "text": "一律不签",
+   "start": 55.194,
+   "end": 56.162,
+   "id": "c25"
+  },
+  {
+   "text": "比如 Safe 多签",
+   "start": 57.14,
+   "end": 58.762,
+   "id": "c26"
+  },
+  {
+   "text": "operation 只允许等于 0",
+   "start": 58.878,
+   "end": 61.083,
+   "id": "c27"
+  },
+  {
+   "text": "要用 1 只能指向官方的批量调用合约",
+   "start": 62.065,
+   "end": 65.161,
+   "id": "c28"
+  },
+  {
+   "text": "链上还有 Guard 合约再拦一次",
+   "start": 65.22,
+   "end": 67.593,
+   "id": "c29"
+  },
+  {
+   "text": "Bybit 那笔 operation 等于 1 的交易",
+   "start": 68.596,
+   "end": 71.23,
+   "id": "c30"
+  },
+  {
+   "text": "在这里会被拒绝",
+   "start": 71.25,
+   "end": 72.587,
+   "id": "c31"
+  },
+  {
+   "text": "再比如热钱包",
+   "start": 73.568,
+   "end": 74.833,
+   "id": "c32"
+  },
+  {
+   "text": "EIP-7702 授权一律拒签",
+   "start": 74.96,
+   "end": 77.749,
+   "id": "c33"
+  },
+  {
+   "text": "策略如果覆盖了这一条",
+   "start": 78.125,
+   "end": 79.819,
+   "id": "c34"
+  },
+  {
+   "text": "Binance 那批委托就签不出来",
+   "start": 79.922,
+   "end": 82.235,
+   "id": "c35"
+  },
+  {
+   "text": "第三分链熔断",
+   "start": 83.22,
+   "end": 85.044,
+   "id": "c36"
+  },
+  {
+   "text": "某条链流出异常",
+   "start": 85.42,
+   "end": 86.982,
+   "id": "c37"
+  },
+  {
+   "text": "就停这条链的广播",
+   "start": 87.074,
+   "end": 88.387,
+   "id": "c38"
+  },
+  {
+   "text": "发现账本里没有对应订单的流出",
+   "start": 89.368,
+   "end": 91.883,
+   "id": "c39"
+  },
+  {
+   "text": "所有链一起停",
+   "start": 92.034,
+   "end": 93.264,
+   "id": "c40"
+  },
+  {
+   "text": "熔断的开关",
+   "start": 93.627,
+   "end": 94.761,
+   "id": "c41"
+  },
+  {
+   "text": "不能依赖已经被攻击的系统",
+   "start": 94.889,
+   "end": 96.642,
+   "id": "c42"
+  },
+  {
+   "text": "第四紧急撤销",
+   "start": 97.628,
+   "end": 99.464,
+   "id": "c43"
+  },
+  {
+   "text": "7702 委托",
+   "start": 99.84,
+   "end": 101.426,
+   "id": "c44"
+  },
+  {
+   "text": "要用一笔新的授权",
+   "start": 101.506,
+   "end": 103.021,
+   "id": "c45"
+  },
+  {
+   "text": "把委托地址设成零地址",
+   "start": 103.066,
+   "end": 105.022,
+   "id": "c46"
+  },
+  {
+   "text": "才能清掉",
+   "start": 105.042,
+   "end": 105.95,
+   "id": "c47"
+  },
+  {
+   "text": "MPC 钱包没有一把单独的私钥能立刻做这件事",
+   "start": 106.944,
+   "end": 110.566,
+   "id": "c48"
+  },
+  {
+   "text": "所以要有一条独立的撤销路径",
+   "start": 110.929,
+   "end": 113.599,
+   "id": "c49"
+  },
+  {
+   "text": "预先批准",
+   "start": 113.691,
+   "end": 114.695,
+   "id": "c50"
+  },
+  {
+   "text": "每季度演练",
+   "start": 114.858,
+   "end": 115.98,
+   "id": "c51"
+  },
+  {
+   "text": "记下用时",
+   "start": 116.048,
+   "end": 117.087,
+   "id": "c52"
+  },
+  {
+   "text": "最后查一下账户代码",
+   "start": 118.06,
+   "end": 119.634,
+   "id": "c53"
+  },
+  {
+   "text": "结果为空",
+   "start": 119.702,
+   "end": 120.611,
+   "id": "c54"
+  },
+  {
+   "text": "才算完成",
+   "start": 120.631,
+   "end": 121.599,
+   "id": "c55"
+  },
+  {
+   "text": "也要说清局限",
+   "start": 122.6,
+   "end": 123.793,
+   "id": "c56"
+  },
+  {
+   "text": "架构挡不住所有内部人作恶",
+   "start": 124.169,
+   "end": 126.255,
+   "id": "c57"
+  },
+  {
+   "text": "它做的是把一个人作恶",
+   "start": 126.633,
+   "end": 128.768,
+   "id": "c58"
+  },
+  {
+   "text": "变成需要多人共谋",
+   "start": 128.788,
+   "end": 130.172,
+   "id": "c59"
+  }
+ ]
+}

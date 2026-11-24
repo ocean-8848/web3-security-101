@@ -1,0 +1,147 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="proxy" data-duration="50.74" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="p-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="p-ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#58C4DD" /></marker>
+      </defs>
+      <g id="p-all">
+        <!-- 代理合约：保存数据和资金 -->
+        <g id="p-px" class="h">
+          <rect x="300" y="260" width="560" height="540" rx="24" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+          <text x="580" y="330" font-size="42" fill="#58C4DD" text-anchor="middle" font-weight="700">代理合约</text>
+        </g>
+        <g id="p-rows" class="h" font-size="30">
+          <rect id="p-r0" x="340" y="380" width="480" height="64" rx="10" fill="#161a22" stroke="#8a8f99" stroke-width="2" />
+          <text x="364" y="423" fill="#e8e6df">实现地址</text>
+          <text id="p-v1t" x="796" y="423" fill="#58C4DD" text-anchor="end" font-weight="700">→ V1</text>
+          <text id="p-v2t" class="h" x="796" y="423" fill="#FF9F43" text-anchor="end" font-weight="700">→ V2</text>
+          <rect x="340" y="460" width="480" height="64" rx="10" fill="#161a22" stroke="#8a8f99" stroke-width="2" />
+          <text x="364" y="503" fill="#e8e6df">owner</text><text x="796" y="503" fill="#8a8f99" text-anchor="end">团队</text>
+          <rect id="p-r2" x="340" y="540" width="480" height="64" rx="10" fill="#161a22" stroke="#8a8f99" stroke-width="2" />
+          <text x="364" y="583" fill="#e8e6df">余额记录</text>
+          <text id="p-b100" x="796" y="583" fill="#F0B90B" text-anchor="end">100</text>
+          <text id="p-b80" class="h" x="796" y="583" fill="#F0B90B" text-anchor="end" font-weight="700">80</text>
+        </g>
+        <g id="p-coins" class="h" fill="#F0B90B">
+          <circle cx="430" cy="700" r="22" /><circle cx="490" cy="700" r="22" /><circle cx="550" cy="700" r="22" /><circle cx="610" cy="700" r="22" /><circle cx="670" cy="700" r="22" /><circle cx="730" cy="700" r="22" />
+        </g>
+        <text id="p-pxs" class="h" x="580" y="860" font-size="32" fill="#e8e6df" text-anchor="middle">保存<tspan fill="#F0B90B">数据和资金</tspan></text>
+
+        <!-- 实现合约：只有代码 -->
+        <g id="p-v1" class="h">
+          <rect x="1160" y="260" width="480" height="540" rx="24" fill="#121a22" stroke="#58C4DD" stroke-width="4" stroke-opacity=".8" />
+          <text x="1400" y="330" font-size="42" fill="#58C4DD" text-anchor="middle" font-weight="700">实现合约 V1</text>
+          <g stroke="#58C4DD" stroke-width="6" stroke-linecap="round" opacity=".7">
+            <line x1="1220" y1="410" x2="1420" y2="410" /><line x1="1250" y1="460" x2="1560" y2="460" /><line x1="1250" y1="510" x2="1500" y2="510" />
+            <line x1="1220" y1="560" x2="1380" y2="560" /><line x1="1250" y1="610" x2="1540" y2="610" /><line x1="1220" y1="660" x2="1340" y2="660" />
+          </g>
+        </g>
+        <text id="p-v1s" class="h" x="1400" y="860" font-size="32" fill="#e8e6df" text-anchor="middle">只提供<tspan fill="#58C4DD">代码</tspan></text>
+        <g id="p-v2" class="h">
+          <rect x="1160" y="260" width="480" height="540" rx="24" fill="#121a22" stroke="#FF9F43" stroke-width="5" />
+          <text x="1400" y="330" font-size="42" fill="#FF9F43" text-anchor="middle" font-weight="700">实现合约 V2</text>
+          <g stroke="#58C4DD" stroke-width="6" stroke-linecap="round" opacity=".7">
+            <line x1="1220" y1="410" x2="1500" y2="410" /><line x1="1250" y1="460" x2="1380" y2="460" /><line x1="1250" y1="510" x2="1560" y2="510" />
+            <line x1="1220" y1="560" x2="1460" y2="560" /><line x1="1250" y1="610" x2="1400" y2="610" />
+          </g>
+        </g>
+
+        <!-- 调用路径 -->
+        <circle id="p-user" class="h" cx="140" cy="530" r="22" fill="#e8e6df" />
+        <text id="p-usert" class="h" x="140" y="600" font-size="30" fill="#8a8f99" text-anchor="middle">用户</text>
+        <path id="p-call" class="dr h" pathLength="1" d="M170 530 L 290 530" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#p-ah)" />
+        <path id="p-dc" class="dr h" pathLength="1" d="M870 420 L 1148 420" stroke="#8a8f99" stroke-width="4" stroke-dasharray="1" fill="none" marker-end="url(#p-ah)" />
+        <text id="p-dct" class="h mono" x="1010" y="395" font-size="30" fill="#8a8f99" text-anchor="middle">delegatecall</text>
+        <path id="p-back" class="dr h" pathLength="1" d="M1150 600 C 1050 640, 960 610, 830 575" stroke="#58C4DD" stroke-width="4" fill="none" marker-end="url(#p-ahb)" />
+        <circle id="p-pulse" class="h" cx="1150" cy="600" r="12" fill="#58C4DD" />
+        <text id="p-rule" class="h" x="960" y="970" font-size="40" fill="#e8e6df" text-anchor="middle">用<tspan fill="#58C4DD">实现的代码</tspan>，改<tspan fill="#F0B90B">代理的存储</tspan></text>
+
+        <!-- 比方 -->
+        <text id="p-m1" class="h" x="580" y="215" font-size="36" fill="#8a8f99" text-anchor="middle">比方：保险柜</text>
+        <text id="p-m2" class="h" x="1400" y="215" font-size="36" fill="#8a8f99" text-anchor="middle">比方：操作手册</text>
+        <text id="p-swap" class="h" x="960" y="970" font-size="40" fill="#e8e6df" text-anchor="middle">升级 = 改掉代理里记着的<tspan fill="#FF9F43">实现地址</tspan></text>
+
+        <!-- 比方不成立：没有时间锁 -->
+        <g id="p-clock" class="h">
+          <circle cx="960" cy="150" r="44" fill="none" stroke="#8a8f99" stroke-width="4" />
+          <path d="M960 150 L 960 120 M960 150 L 982 162" stroke="#8a8f99" stroke-width="4" stroke-linecap="round" />
+          <line x1="920" y1="110" x2="1000" y2="190" stroke="#FF9F43" stroke-width="5" />
+        </g>
+        <text id="p-noTL" class="h" x="960" y="970" font-size="40" fill="#FF9F43" text-anchor="middle" font-weight="700">没有时间锁：换实现只要一笔交易</text>
+
+        <!-- 钥匙 -->
+        <g id="p-key" class="h" stroke="#FF9F43" stroke-width="6" fill="none" stroke-linecap="round">
+          <circle cx="250" cy="412" r="22" /><path d="M272 412 H 330 M310 412 V 430 M322 412 V 426" />
+        </g>
+        <text id="p-own" class="h" x="960" y="970" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">谁能换<tspan fill="#FF9F43">实现</tspan>，谁就拥有<tspan fill="#F0B90B">全部资金</tspan></text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 50.74, "L": [[0.6, 7.9], [8.35, 13.24], [13.69, 20.89], [21.34, 29.17], [29.62, 35.26], [35.71, 44.23], [44.68, 49.64]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 两份合约
+      IN("#p-px", at(0, 0.45), 0.8, { scale: 0.9, svgOrigin: "580 530" }, { scale: 1, ease: "expo.out" });
+      IN("#p-v1", at(0, 0.7), 0.8, { scale: 0.9, svgOrigin: "1400 530" }, { scale: 1, ease: "expo.out" });
+      // L1 数据和资金 vs 代码
+      IN("#p-rows", at(1, 0.05), 0.6);
+      IN("#p-coins", at(1, 0.2), 0.6, { y: 20 }, { y: 0 });
+      IN("#p-pxs", at(1, 0.25), 0.5);
+      IN("#p-v1s", at(1, 0.65), 0.5);
+      // L2 delegatecall：用实现的代码，改代理的存储
+      OUT(["#p-pxs", "#p-v1s"], at(2, 0), 0.3);
+      IN(["#p-user", "#p-usert"], at(2, 0.02), 0.4);
+      DRAW("#p-call", at(2, 0.1), 0.5);
+      DRAW("#p-dc", at(2, 0.25), 0.7);
+      IN("#p-dct", at(2, 0.3), 0.4);
+      DRAW("#p-back", at(2, 0.55), 0.7);
+      IN("#p-pulse", at(2, 0.55), 0.2);
+      tl.to("#p-pulse", { attr: { cx: 830, cy: 575 }, duration: 0.8, ease: "power2.inOut" }, at(2, 0.57));
+      OUT("#p-pulse", at(2, 0.57) + 0.8, 0.2);
+      tl.to("#p-r2", { stroke: "#F0B90B", strokeWidth: 4, duration: 0.3 }, at(2, 0.62));
+      OUT("#p-b100", at(2, 0.66), 0.2);
+      IN("#p-b80", at(2, 0.68), 0.3);
+      IN("#p-rule", at(2, 0.62), 0.5);
+      // L3 比方
+      IN("#p-m1", at(3, 0.1), 0.5);
+      IN("#p-m2", at(3, 0.3), 0.5);
+      // L4 升级 = 换手册 = 改实现地址
+      OUT(["#p-rule", "#p-back"], at(4, 0), 0.3);
+      tl.to("#p-v1", { opacity: 0, y: -40, duration: 0.5, ease: "power2.in" }, at(4, 0.15));
+      IN("#p-v2", at(4, 0.25), 0.6, { y: 40 }, { y: 0 });
+      tl.to("#p-m2", { opacity: 0.4, duration: 0.3 }, at(4, 0.15));
+      tl.to("#p-r0", { stroke: "#FF9F43", strokeWidth: 4, duration: 0.3 }, at(4, 0.4));
+      OUT("#p-v1t", at(4, 0.4), 0.2);
+      IN("#p-v2t", at(4, 0.42), 0.3);
+      IN("#p-swap", at(4, 0.5), 0.5);
+      // L5 比方不成立
+      OUT("#p-swap", at(5, 0), 0.3);
+      IN("#p-clock", at(5, 0.3), 0.5);
+      IN("#p-noTL", at(5, 0.55), 0.5);
+      // L6 谁能换实现，谁拥有全部资金
+      OUT(["#p-noTL", "#p-clock", "#p-m1", "#p-m2"], at(6, 0), 0.3);
+      IN("#p-key", at(6, 0.1), 0.5, { x: -40 }, { x: 0 });
+      tl.fromTo("#p-coins", { scale: 1, svgOrigin: "580 700" }, { scale: 1.12, duration: 0.3, yoyo: true, repeat: 1 }, at(6, 0.5));
+      IN("#p-own", at(6, 0.2), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+
+      tl.to("#p-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["proxy"] = tl;
+    })();
+  </script>
+</template>

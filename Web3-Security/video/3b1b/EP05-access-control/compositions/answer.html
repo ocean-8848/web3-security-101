@@ -1,0 +1,74 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="45.9" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="r-pin" class="h">
+        <rect x="610" y="70" width="700" height="100" rx="16" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="960" y="136" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">谁有权<tspan fill="#FF9F43">按这个按钮</tspan>？</text>
+      </g>
+      <!-- 按钮 -->
+      <g id="r-btn" class="h">
+        <circle cx="560" cy="460" r="110" fill="#121a22" stroke="#58C4DD" stroke-width="6" />
+        <circle cx="560" cy="460" r="70" fill="#1a2a36" stroke="#58C4DD" stroke-width="3" />
+        <text x="560" y="472" font-size="30" fill="#58C4DD" text-anchor="middle">函数</text>
+      </g>
+      <g id="r-ans" class="h">
+        <text x="760" y="420" font-size="38" fill="#83C167" font-weight="700">答案写在代码里：明确它的调用者</text>
+        <text id="r-ans2" class="h" x="760" y="480" font-size="32" fill="#e8e6df">如果是「任何人」，就证明任何人都安全</text>
+      </g>
+      <g id="r-par" class="h">
+        <text x="760" y="560" font-size="32" fill="#FC6255">Parity 的库没有回答 → 第一个来的人替它回答了</text>
+      </g>
+      <!-- 按钮背后的钥匙 -->
+      <g id="r-keys">
+        <g class="r-k h"><circle cx="440" cy="720" r="22" fill="none" stroke="#B48EF0" stroke-width="6" /><path d="M462 720 H 520 M500 720 v 16" stroke="#B48EF0" stroke-width="6" fill="none" stroke-linecap="round" /></g>
+        <g class="r-k h"><circle cx="560" cy="760" r="22" fill="none" stroke="#B48EF0" stroke-width="6" /><path d="M582 760 H 640 M620 760 v 16" stroke="#B48EF0" stroke-width="6" fill="none" stroke-linecap="round" /></g>
+        <g class="r-k h"><circle cx="680" cy="720" r="22" fill="none" stroke="#B48EF0" stroke-width="6" /><path d="M702 720 H 760 M740 720 v 16" stroke="#B48EF0" stroke-width="6" fill="none" stroke-linecap="round" /></g>
+      </g>
+      <line id="r-link" class="h" x1="560" y1="570" x2="560" y2="690" stroke="#B48EF0" stroke-width="3" stroke-dasharray="8 6" />
+      <text id="r-kt" class="h" x="860" y="745" font-size="34" fill="#B48EF0">钥匙在谁手里 · 有几把 · 能不能撤销</text>
+      <text id="r-kt2" class="h" x="860" y="800" font-size="30" fill="#8a8f99">这也是访问控制</text>
+      <text id="r-tron" class="h" x="960" y="880" font-size="34" fill="#FF9F43" text-anchor="middle">前提：清楚部署链的账户模型</text>
+      <text id="r-tron2" class="h" x="960" y="935" font-size="32" fill="#FF9F43" text-anchor="middle">TRON 上，一个地址不一定只由一把私钥控制</text>
+      <text id="r-next" class="h" x="960" y="1030" font-size="40" fill="#8a8f99" text-anchor="middle">下一集 · <tspan fill="#58C4DD">算术与精度</tspan></text>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 45.9, "L": [[0.6, 5.04], [5.49, 14.54], [14.99, 21.37], [21.82, 30.39], [30.84, 39.22], [39.67, 44.8]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+
+      IN("#r-pin", at(0, 0.05), 0.8, { scale: 0.6, x: -560, y: -10, svgOrigin: "960 120" }, { scale: 1, x: 0, y: 0, ease: "expo.out" });
+      IN("#r-btn", at(0, 0.5), 0.5, { scale: 0.6, svgOrigin: "560 460" }, { scale: 1, ease: "back.out(1.8)" });
+      // L1 答案写在代码里
+      IN("#r-ans", at(1, 0.05), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      IN("#r-ans2", at(1, 0.55), 0.5);
+      // L2 Parity
+      IN("#r-par", at(2, 0.1), 0.5);
+      tl.to("#r-btn circle", { stroke: "#FC6255", duration: 0.3 }, at(2, 0.3));
+      // L3 钥匙
+      tl.to("#r-btn circle", { stroke: "#58C4DD", duration: 0.3 }, at(3, 0.0));
+      IN("#r-link", at(3, 0.05), 0.4);
+      gsap.utils.toArray("#root .r-k").forEach((k, i) => IN(k, at(3, 0.15) + i * 0.12, 0.4, { y: 20 }, { y: 0 }));
+      IN("#r-kt", at(3, 0.4), 0.5);
+      IN("#r-kt2", at(3, 0.75), 0.4);
+      // L4 TRON
+      IN("#r-tron", at(4, 0.1), 0.6);
+      IN("#r-tron2", at(4, 0.5), 0.5);
+      // L5 下一集
+      IN("#r-next", at(5, 0.1), 0.5);
+      tl.to(["#r-pin", "#r-btn", "#r-ans", "#r-par", "#r-keys", "#r-link", "#r-kt", "#r-kt2", "#r-tron", "#r-tron2", "#r-next"], { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

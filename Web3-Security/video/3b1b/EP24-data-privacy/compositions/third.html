@@ -1,0 +1,80 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="third" data-duration="60.35" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="t-all">
+        <g id="t-hub" class="h">
+          <circle cx="960" cy="540" r="120" fill="#1a1708" stroke="#F0B90B" stroke-width="5" />
+          <text x="960" y="530" font-size="36" fill="#F0B90B" text-anchor="middle" font-weight="800">交易所</text>
+          <text x="960" y="575" font-size="28" fill="#B48EF0" text-anchor="middle">用户数据</text>
+        </g>
+        <g id="t-lines" stroke="#B48EF0" stroke-width="3" stroke-opacity=".6"></g>
+        <g id="t-sats" font-size="30" text-anchor="middle"></g>
+        <!-- 案例标注 -->
+        <g id="t-led" font-size="30">
+          <text class="h" x="120" y="890" fill="#8a8f99">2020 · Ledger 电商与营销数据库</text>
+          <text class="h" x="120" y="940" fill="#FF9F43">≈ 100 万邮箱；≈ 27 万条姓名 · 住址 · 电话</text>
+          <text class="h" x="120" y="990" fill="#e8e6df">硬件钱包没被攻破；“谁买了、寄到哪”本身就值钱</text>
+        </g>
+        <g id="t-kro" font-size="30">
+          <text class="h" x="120" y="890" fill="#8a8f99">2023 · 破产案服务商 Kroll：员工手机号被 SIM 劫持</text>
+          <text class="h" x="120" y="940" fill="#FF9F43">FTX 等三案债权人文件：姓名 · 地址 · 账户余额</text>
+        </g>
+        <g id="t-tre" font-size="30">
+          <text class="h" x="120" y="890" fill="#8a8f99">2024 · Trezor 的第三方工单平台</text>
+          <text class="h" x="120" y="940" fill="#FF9F43">冒充者联系约 40 名用户，索要助记词</text>
+        </g>
+        <text id="t-weak" class="h" x="960" y="1010" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="800">安全程度 = 数据流向的<tspan fill="#FC6255">最弱一家</tspan></text>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 60.35, "L": [[0.6, 5.04], [5.49, 17.9], [18.35, 33.92], [34.37, 45.39], [45.84, 54.0], [54.45, 59.25]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const S = [
+        { n: "KYC 服务商", x: 400, y: 240 }, { n: "客服工单系统", x: 960, y: 170 }, { n: "邮件营销", x: 1520, y: 240 },
+        { n: "电商与物流", x: 400, y: 720 }, { n: "破产案服务商", x: 960, y: 780 }, { n: "外包客服", x: 1520, y: 720 },
+      ];
+      const NS = "http://www.w3.org/2000/svg", lh = document.querySelector("#t-lines"), sh = document.querySelector("#t-sats"), G = [], Ln = [];
+      S.forEach((s) => {
+        const ln = document.createElementNS(NS, "line"); ln.setAttribute("x1", 960); ln.setAttribute("y1", 540); ln.setAttribute("x2", s.x); ln.setAttribute("y2", s.y); ln.setAttribute("opacity", "0"); lh.appendChild(ln); Ln.push(ln);
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        g.innerHTML = `<rect x="${s.x - 150}" y="${s.y - 45}" width="300" height="90" rx="14" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="${s.x}" y="${s.y + 11}" fill="#e8e6df">${s.n}</text>`;
+        sh.appendChild(g); G.push(g);
+      });
+      const HL = (i, t) => { tl.to(G[i].querySelector("rect"), { stroke: "#FF9F43", strokeWidth: 6, duration: 0.3 }, t); tl.to(Ln[i], { stroke: "#FF9F43", strokeOpacity: 1, strokeWidth: 6, duration: 0.3 }, t); };
+      const UN = (i, t) => { tl.to(G[i].querySelector("rect"), { stroke: "#8a8f99", strokeWidth: 3, duration: 0.3 }, t); tl.to(Ln[i], { stroke: "#B48EF0", strokeOpacity: 0.6, strokeWidth: 3, duration: 0.3 }, t); };
+      IN("#t-hub", at(0, 0.1), 0.6, { scale: 0.8, transformOrigin: "50% 50%" }, { scale: 1 });
+      tl.fromTo("#t-hub circle", { attr: { r: 120 } }, { attr: { r: 132 }, duration: 0.4, yoyo: true, repeat: 1 }, at(0, 0.6));
+      // L1 六个第三方
+      S.forEach((s, i) => { tl.fromTo(Ln[i], { opacity: 0 }, { opacity: 1, duration: 0.3 }, at(1, 0.05 + i * 0.12)); tl.fromTo(G[i], { opacity: 0 }, { opacity: 1, duration: 0.4 }, at(1, 0.07 + i * 0.12)); });
+      // L2 Ledger
+      HL(3, at(2, 0.05)); gsap.utils.toArray("#t-led text").forEach((e, i) => IN(e, at(2, 0.1 + i * 0.3), 0.4));
+      // L3 Kroll
+      UN(3, at(3, 0)); OUT("#t-led text", at(3, 0), 0.3); HL(4, at(3, 0.05)); gsap.utils.toArray("#t-kro text").forEach((e, i) => IN(e, at(3, 0.1 + i * 0.4), 0.4));
+      // L4 Trezor
+      UN(4, at(4, 0)); OUT("#t-kro text", at(4, 0), 0.3); HL(1, at(4, 0.05)); gsap.utils.toArray("#t-tre text").forEach((e, i) => IN(e, at(4, 0.1 + i * 0.4), 0.4));
+      // L5 最弱一家
+      UN(1, at(5, 0)); OUT("#t-tre text", at(5, 0), 0.3);
+      HL(5, at(5, 0.1)); tl.to(G[5].querySelector("rect"), { stroke: "#FC6255", duration: 0.3 }, at(5, 0.3));
+      IN("#t-weak", at(5, 0.2), 0.5);
+      tl.to("#t-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["third"] = tl;
+    })();
+  </script>
+</template>

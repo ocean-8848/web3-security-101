@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      /* EP14 ZK 与证明系统 · 3b1b 风格。颜色语义全片固定，见 STORYBOARD.md §2。 */
+      @font-face {
+        font-family: "NotoSC";
+        src: url("assets/fonts/noto-sc.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0f1117; }
+      #root { position: relative; width: 100%; height: 100%; background: #0f1117; font-family: "NotoSC", sans-serif; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="417.33" data-width="1920" data-height="1080">
+      <div id="hook" data-composition-id="hook" data-composition-src="compositions/hook.html" data-start="0.0" data-duration="27.74" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="parts" data-composition-id="parts" data-composition-src="compositions/parts.html" data-start="27.74" data-duration="37.89" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="exam" data-composition-id="exam" data-composition-src="compositions/exam.html" data-start="65.63" data-duration="41.63" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="toy" data-composition-id="toy" data-composition-src="compositions/toy.html" data-start="107.26" data-duration="55.57" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="fail" data-composition-id="fail" data-composition-src="compositions/fail.html" data-start="162.83" data-duration="35.85" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="field" data-composition-id="field" data-composition-src="compositions/field.html" data-start="198.68" data-duration="37.29" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="setup" data-composition-id="setup" data-composition-src="compositions/setup.html" data-start="235.97" data-duration="46.0" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="bind" data-composition-id="bind" data-composition-src="compositions/bind.html" data-start="281.97" data-duration="42.45" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="l2" data-composition-id="l2" data-composition-src="compositions/l2.html" data-start="324.42" data-duration="46.86" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="answer" data-composition-id="answer" data-composition-src="compositions/answer.html" data-start="371.28" data-duration="46.05" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <audio id="narration" class="clip" src="assets/narration.wav" data-start="0" data-duration="417.33" data-track-index="2" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

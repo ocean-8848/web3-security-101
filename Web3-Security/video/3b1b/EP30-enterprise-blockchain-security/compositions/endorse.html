@@ -1,0 +1,136 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root text.mono, #root tspan.mono { font-family: "JetBrains Mono", "NotoSC", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="endorse" data-duration="45.33" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="e-all">
+        <!-- 背书策略 -->
+        <g id="e-pol">
+          <text id="e-t" class="h" x="960" y="140" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">背书策略：一笔交易要哪些组织签名</text>
+          <g id="e-orgs">
+            <g class="e-o h"><circle cx="660" cy="320" r="60" fill="#161a22" stroke="#e8e6df" stroke-opacity=".7" stroke-width="3" /><text x="660" y="330" font-size="30" fill="#e8e6df" text-anchor="middle">Org1</text></g>
+            <g class="e-o h"><circle cx="960" cy="320" r="60" fill="#161a22" stroke="#e8e6df" stroke-opacity=".7" stroke-width="3" /><text x="960" y="330" font-size="30" fill="#e8e6df" text-anchor="middle">Org2</text></g>
+            <g class="e-o h"><circle cx="1260" cy="320" r="60" fill="#161a22" stroke="#e8e6df" stroke-opacity=".7" stroke-width="3" /><text x="1260" y="330" font-size="30" fill="#e8e6df" text-anchor="middle">Org3</text></g>
+          </g>
+          <g id="e-tx" class="h"><rect x="840" y="560" width="240" height="110" rx="14" fill="#1a1708" stroke="#F0B90B" stroke-width="3" /><text x="960" y="626" font-size="32" fill="#F0B90B" text-anchor="middle" font-weight="700">交易</text></g>
+          <path id="e-s1" class="dr h" pathLength="1" d="M680 380 L 870 555" stroke="#83C167" stroke-width="4" fill="none" />
+          <path id="e-s2" class="dr h" pathLength="1" d="M960 382 L 960 555" stroke="#83C167" stroke-width="4" fill="none" />
+          <text id="e-def" class="h" x="960" y="760" font-size="34" fill="#e8e6df" text-anchor="middle">默认：通道成员的多数（示例 3 家中的 2 家）</text>
+          <text id="e-ok" class="h" x="1130" y="626" font-size="32" fill="#83C167">✓ 写入</text>
+          <text id="e-or" class="mono h" x="960" y="760" font-size="36" fill="#FF9F43" text-anchor="middle">OR('Org1MSP.peer', 'Org2MSP.peer')</text>
+          <text id="e-bad" class="h" x="960" y="850" font-size="38" fill="#FC6255" text-anchor="middle" font-weight="700">任何一家，就能单独决定写入</text>
+        </g>
+        <!-- 排序：Raft / BFT -->
+        <g id="e-ord">
+          <text id="e-rt" class="h" x="640" y="200" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">Raft 排序 · 崩溃容错</text>
+          <g id="e-ring"></g>
+          <g font-size="38" fill="#e8e6df">
+            <text class="e-k h" x="1120" y="380">5 个节点</text>
+            <text class="e-k h" x="1120" y="460">多数 = 3</text>
+            <text class="e-k h" x="1120" y="540" fill="#83C167" font-weight="700">可容忍 5 − 3 = 2 个宕机</text>
+          </g>
+          <text id="e-nomal" class="h" x="1120" y="640" font-size="34" fill="#FF9F43">但它不防恶意节点</text>
+          <text id="e-lead" class="h" x="640" y="290" font-size="28" fill="#FC6255" text-anchor="middle">被攻破的 leader</text>
+          <text id="e-forge" class="h" x="1120" y="720" font-size="32" fill="#8a8f99">伪造背书 <tspan fill="#83C167">✕ 做不到</tspan></text>
+          <text id="e-can" class="h" x="1120" y="790" font-size="32" fill="#FC6255">决定顺序 · 延迟 · 丢弃交易</text>
+          <g id="e-q"></g>
+          <text id="e-bt" class="h" x="640" y="200" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">BFT 排序 · 拜占庭容错</text>
+          <g font-size="38" fill="#e8e6df">
+            <text class="e-b h mono" x="1120" y="380">n = 3f + 1</text>
+            <text class="e-b h mono" x="1120" y="460">4 = 3 × 1 + 1</text>
+            <text class="e-b h" x="1120" y="540" fill="#83C167" font-weight="700">f = 1：4 个里容忍 1 个作恶</text>
+          </g>
+          <text id="e-ops" class="h" x="640" y="880" font-size="32" fill="#e8e6df" text-anchor="middle">节点分给不同运营方（边框颜色 = 运营方）</text>
+        </g>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 45.33, "L": [[0.6, 7.58], [8.03, 14.27], [14.72, 23.48], [23.93, 33.25], [33.7, 44.23]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, ox, oy, d = 0.4) => IN(s, t, d, { scale: 0.4, svgOrigin: `${ox} ${oy}` }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      // Raft 5 节点
+      const ring = document.querySelector("#e-ring"), R = [];
+      for (let i = 0; i < 5; i++) {
+        const a = (i / 5) * Math.PI * 2 - Math.PI / 2, x = 640 + Math.cos(a) * 200, y = 560 + Math.sin(a) * 200;
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", x.toFixed(1)); c.setAttribute("cy", y.toFixed(1)); c.setAttribute("r", "52");
+        c.setAttribute("fill", "#161a22"); c.setAttribute("stroke", "#e8e6df"); c.setAttribute("stroke-width", "4"); c.setAttribute("opacity", "0");
+        ring.appendChild(c); R.push({ c, x, y });
+      }
+      // BFT 4 节点（四种运营方颜色）
+      const OPC = ["#58C4DD", "#F0B90B", "#B48EF0", "#83C167"], B4 = [];
+      for (let i = 0; i < 4; i++) {
+        const a = (i / 4) * Math.PI * 2 - Math.PI / 4, x = 640 + Math.cos(a) * 190, y = 560 + Math.sin(a) * 190;
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", x.toFixed(1)); c.setAttribute("cy", y.toFixed(1)); c.setAttribute("r", "56");
+        c.setAttribute("fill", "#161a22"); c.setAttribute("stroke", OPC[i]); c.setAttribute("stroke-width", "6"); c.setAttribute("opacity", "0");
+        ring.appendChild(c); B4.push({ c, x, y });
+      }
+      // 交易队列（三个金点）
+      const q = document.querySelector("#e-q"), Q = [];
+      for (let i = 0; i < 3; i++) {
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", 540 + i * 100); c.setAttribute("cy", "860"); c.setAttribute("r", "22"); c.setAttribute("fill", "#F0B90B"); c.setAttribute("opacity", "0");
+        q.appendChild(c); Q.push(c);
+      }
+
+      // L0 默认：多数
+      IN("#e-t", at(0, 0.0), 0.5);
+      gsap.utils.toArray("#root .e-o").forEach((g, i) => IN(g, at(0, 0.15) + i * 0.12, 0.4));
+      IN("#e-tx", at(0, 0.35), 0.4);
+      IN("#e-def", at(0, 0.5), 0.4);
+      DRAW("#e-s1", at(0, 0.65), 0.4); DRAW("#e-s2", at(0, 0.72), 0.4);
+      IN("#e-ok", at(0, 0.85), 0.3);
+      // L1 OR 策略：一家就够
+      OUT(["#e-def", "#e-s2", "#e-ok"], at(1, 0), 0.3);
+      IN("#e-or", at(1, 0.05), 0.4);
+      tl.to("#e-s1", { stroke: "#FC6255", duration: 0.3 }, at(1, 0.4));
+      IN("#e-ok", at(1, 0.5), 0.3);
+      IN("#e-bad", at(1, 0.6), 0.4);
+      // L2 Raft：5 个，多数 3，容忍 2 个宕机
+      tl.to("#e-pol", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(2, 0));
+      IN("#e-rt", at(2, 0.05), 0.4);
+      R.forEach((r, i) => IN(r.c, at(2, 0.1) + i * 0.08, 0.3, { scale: 0.5, svgOrigin: `${r.x} ${r.y}` }, { scale: 1 }));
+      const ks = gsap.utils.toArray("#root .e-k");
+      IN(ks[0], at(2, 0.25), 0.3); IN(ks[1], at(2, 0.45), 0.3);
+      tl.to([R[3].c, R[4].c], { stroke: "#3a3f4a", fill: "#0f1117", duration: 0.3 }, at(2, 0.65));
+      IN(ks[2], at(2, 0.7), 0.4);
+      // L3 恶意 leader
+      tl.to([R[3].c, R[4].c], { stroke: "#e8e6df", fill: "#161a22", duration: 0.3 }, at(3, 0));
+      IN("#e-nomal", at(3, 0.02), 0.3);
+      tl.to(R[0].c, { stroke: "#FC6255", fill: "#2a1414", strokeWidth: 7, duration: 0.3 }, at(3, 0.1));
+      IN("#e-lead", at(3, 0.12), 0.3);
+      IN("#e-forge", at(3, 0.3), 0.4);
+      Q.forEach((c, i) => IN(c, at(3, 0.45) + i * 0.05, 0.25));
+      IN("#e-can", at(3, 0.5), 0.4);
+      tl.to(Q[0], { attr: { cx: 740 }, duration: 0.4 }, at(3, 0.62)); tl.to(Q[2], { attr: { cx: 540 }, duration: 0.4 }, at(3, 0.62));
+      tl.to(Q[1], { y: 80, opacity: 0, fill: "#FC6255", duration: 0.5 }, at(3, 0.8));
+      // L4 BFT：4 = 3×1+1
+      OUT(["#e-rt", "#e-lead", "#root .e-k", "#e-nomal", "#e-forge", "#e-can", "#e-q"], at(4, 0), 0.3);
+      R.forEach((r) => OUT(r.c, at(4, 0), 0.3));
+      IN("#e-bt", at(4, 0.05), 0.4);
+      B4.forEach((r, i) => IN(r.c, at(4, 0.1) + i * 0.08, 0.3, { scale: 0.5, svgOrigin: `${r.x} ${r.y}` }, { scale: 1 }));
+      gsap.utils.toArray("#root .e-b").forEach((s, i) => IN(s, at(4, 0.25) + i * 0.12, 0.35));
+      tl.to(B4[0].c, { fill: "#3a1414", duration: 0.3 }, at(4, 0.55));
+      IN("#e-ops", at(4, 0.75), 0.4);
+      tl.to("#e-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["endorse"] = tl;
+    })();
+  </script>
+</template>

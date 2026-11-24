@@ -1,0 +1,186 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .cap-g { position: absolute; left: 0; right: 0; bottom: var(--cap-bottom, 84px); text-align: center; opacity: 0; visibility: hidden; }
+    .cap-t { display: inline-block; font-family: var(--cap-font, "Noto Sans SC"), sans-serif; font-weight: var(--cap-weight, 700);
+      font-size: var(--cap-size, 46px); line-height: 1.25; color: var(--cap-ink, #111); letter-spacing: 0.02em;
+      padding: var(--cap-pad, 0); background: var(--cap-bg, transparent); border-radius: var(--cap-radius, 0);
+      text-shadow: var(--cap-shadow, none); }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-c0" class="cap-g"><span class="cap-t">再看以太坊这样的 PoS 链</span></div>
+    <div id="cap-c1" class="cap-g"><span class="cap-t">它要求三分之二的质押投票</span></div>
+    <div id="cap-c2" class="cap-g"><span class="cap-t">才能让一个检查点最终确定</span></div>
+    <div id="cap-c3" class="cap-g"><span class="cap-t">最终确定以后</span></div>
+    <div id="cap-c4" class="cap-g"><span class="cap-t">区块不能回滚</span></div>
+    <div id="cap-c5" class="cap-g"><span class="cap-t">除非三分之一的质押被罚没</span></div>
+    <div id="cap-c6" class="cap-g"><span class="cap-t">bug 让大量验证者掉线</span></div>
+    <div id="cap-c7" class="cap-g"><span class="cap-t">链继续出块</span></div>
+    <div id="cap-c8" class="cap-g"><span class="cap-t">但检查点不再最终确定</span></div>
+    <div id="cap-c9" class="cap-g"><span class="cap-t">某个客户端占比超过三分之一</span></div>
+    <div id="cap-c10" class="cap-g"><span class="cap-t">它的 bug 就能让最终性停下</span></div>
+    <div id="cap-c11" class="cap-g"><span class="cap-t">超过三分之二</span></div>
+    <div id="cap-c12" class="cap-g"><span class="cap-t">它的 bug 可能把错误的链最终确定</span></div>
+    <div id="cap-c13" class="cap-g"><span class="cap-t">所以客户端多样性</span></div>
+    <div id="cap-c14" class="cap-g"><span class="cap-t">也是共识安全的一部分</span></div>
+    <div id="cap-c15" class="cap-g"><span class="cap-t">2023 年 5 月</span></div>
+    <div id="cap-c16" class="cap-g"><span class="cap-t">Prysm 和 Teku 处理旧投票时负载过高</span></div>
+    <div id="cap-c17" class="cap-g"><span class="cap-t">主网先后约 25 分钟和约 1 小时</span></div>
+    <div id="cap-c18" class="cap-g"><span class="cap-t">没有最终确定</span></div>
+    <div id="cap-c19" class="cap-g"><span class="cap-t">Lighthouse 没受影响</span></div>
+    <div id="cap-c20" class="cap-g"><span class="cap-t">这次没有资金损失</span></div>
+    <div id="cap-c21" class="cap-g"><span class="cap-t">按攻击者的质押份额看</span></div>
+    <div id="cap-c22" class="cap-g"><span class="cap-t">有四条线</span></div>
+    <div id="cap-c23" class="cap-g"><span class="cap-t">约 33%</span></div>
+    <div id="cap-c24" class="cap-g"><span class="cap-t">能阻止最终性</span></div>
+    <div id="cap-c25" class="cap-g"><span class="cap-t">代价是不活跃惩罚</span></div>
+    <div id="cap-c26" class="cap-g"><span class="cap-t">逐步削减他的质押</span></div>
+    <div id="cap-c27" class="cap-g"><span class="cap-t">约 34%</span></div>
+    <div id="cap-c28" class="cap-g"><span class="cap-t">在能控制消息时序时</span></div>
+    <div id="cap-c29" class="cap-g"><span class="cap-t">造成双重最终性</span></div>
+    <div id="cap-c30" class="cap-g"><span class="cap-t">会被最大比例罚没</span></div>
+    <div id="cap-c31" class="cap-g"><span class="cap-t">约 51%</span></div>
+    <div id="cap-c32" class="cap-g"><span class="cap-t">能主导分叉选择</span></div>
+    <div id="cap-c33" class="cap-g"><span class="cap-t">审查交易</span></div>
+    <div id="cap-c34" class="cap-g"><span class="cap-t">做短程重组</span></div>
+    <div id="cap-c35" class="cap-g"><span class="cap-t">约 66%</span></div>
+    <div id="cap-c36" class="cap-g"><span class="cap-t">能在没有诚实方配合时</span></div>
+    <div id="cap-c37" class="cap-g"><span class="cap-t">最终确定自己的链</span></div>
+    <div id="cap-c38" class="cap-g"><span class="cap-t">只能靠社会层恢复</span></div>
+    <div id="cap-c39" class="cap-g"><span class="cap-t">另一种攻击</span></div>
+    <div id="cap-c40" class="cap-g"><span class="cap-t">用的是旧私钥</span></div>
+    <div id="cap-c41" class="cap-g"><span class="cap-t">已经退出的验证者</span></div>
+    <div id="cap-c42" class="cap-g"><span class="cap-t">取回了质押</span></div>
+    <div id="cap-c43" class="cap-g"><span class="cap-t">不会再被罚没</span></div>
+    <div id="cap-c44" class="cap-g"><span class="cap-t">攻击者买下他们的旧私钥</span></div>
+    <div id="cap-c45" class="cap-g"><span class="cap-t">从很久以前分叉</span></div>
+    <div id="cap-c46" class="cap-g"><span class="cap-t">改写一段历史</span></div>
+    <div id="cap-c47" class="cap-g"><span class="cap-t">一直在线的节点不会接受</span></div>
+    <div id="cap-c48" class="cap-g"><span class="cap-t">它不回滚已经最终确定的区块</span></div>
+    <div id="cap-c49" class="cap-g"><span class="cap-t">刚安装的新节点</span></div>
+    <div id="cap-c50" class="cap-g"><span class="cap-t">要从一个可信的近期检查点开始同步</span></div>
+    <div id="cap-c51" class="cap-g"><span class="cap-t">这叫弱主观性</span></div>
+    <div id="cap-c52" class="cap-g"><span class="cap-t">检查点的来源</span></div>
+    <div id="cap-c53" class="cap-g"><span class="cap-t">就是新节点的信任入口</span></div>
+    <div id="cap-c54" class="cap-g"><span class="cap-t">所以检查点要取自至少两个独立来源</span></div>
+    <div id="cap-c55" class="cap-g"><span class="cap-t">再做比对</span></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      tl.set("#cap-c0", {opacity: 1, visibility: "visible"}, 1.550);
+      tl.set("#cap-c0", {opacity: 0, visibility: "hidden"}, 3.946);
+      tl.set("#cap-c1", {opacity: 1, visibility: "visible"}, 4.170);
+      tl.set("#cap-c1", {opacity: 0, visibility: "hidden"}, 6.722);
+      tl.set("#cap-c2", {opacity: 1, visibility: "visible"}, 6.742);
+      tl.set("#cap-c2", {opacity: 0, visibility: "hidden"}, 8.998);
+      tl.set("#cap-c3", {opacity: 1, visibility: "visible"}, 9.270);
+      tl.set("#cap-c3", {opacity: 0, visibility: "hidden"}, 10.374);
+      tl.set("#cap-c4", {opacity: 1, visibility: "visible"}, 10.526);
+      tl.set("#cap-c4", {opacity: 0, visibility: "hidden"}, 11.850);
+      tl.set("#cap-c5", {opacity: 1, visibility: "visible"}, 11.984);
+      tl.set("#cap-c5", {opacity: 0, visibility: "hidden"}, 14.170);
+      tl.set("#cap-c6", {opacity: 1, visibility: "visible"}, 14.551);
+      tl.set("#cap-c6", {opacity: 0, visibility: "hidden"}, 16.477);
+      tl.set("#cap-c7", {opacity: 1, visibility: "visible"}, 16.617);
+      tl.set("#cap-c7", {opacity: 0, visibility: "hidden"}, 17.686);
+      tl.set("#cap-c8", {opacity: 1, visibility: "visible"}, 17.920);
+      tl.set("#cap-c8", {opacity: 0, visibility: "hidden"}, 19.979);
+      tl.set("#cap-c9", {opacity: 1, visibility: "visible"}, 20.371);
+      tl.set("#cap-c9", {opacity: 0, visibility: "hidden"}, 22.609);
+      tl.set("#cap-c10", {opacity: 1, visibility: "visible"}, 22.789);
+      tl.set("#cap-c10", {opacity: 0, visibility: "hidden"}, 25.039);
+      tl.set("#cap-c11", {opacity: 1, visibility: "visible"}, 25.290);
+      tl.set("#cap-c11", {opacity: 0, visibility: "hidden"}, 26.807);
+      tl.set("#cap-c12", {opacity: 1, visibility: "visible"}, 27.056);
+      tl.set("#cap-c12", {opacity: 0, visibility: "hidden"}, 30.194);
+      tl.set("#cap-c13", {opacity: 1, visibility: "visible"}, 30.470);
+      tl.set("#cap-c13", {opacity: 0, visibility: "hidden"}, 32.190);
+      tl.set("#cap-c14", {opacity: 1, visibility: "visible"}, 32.268);
+      tl.set("#cap-c14", {opacity: 0, visibility: "hidden"}, 34.055);
+      tl.set("#cap-c15", {opacity: 1, visibility: "visible"}, 34.397);
+      tl.set("#cap-c15", {opacity: 0, visibility: "hidden"}, 35.568);
+      tl.set("#cap-c16", {opacity: 1, visibility: "visible"}, 35.793);
+      tl.set("#cap-c16", {opacity: 0, visibility: "hidden"}, 39.336);
+      tl.set("#cap-c17", {opacity: 1, visibility: "visible"}, 39.722);
+      tl.set("#cap-c17", {opacity: 0, visibility: "hidden"}, 43.013);
+      tl.set("#cap-c18", {opacity: 1, visibility: "visible"}, 43.033);
+      tl.set("#cap-c18", {opacity: 0, visibility: "hidden"}, 44.076);
+      tl.set("#cap-c19", {opacity: 1, visibility: "visible"}, 44.432);
+      tl.set("#cap-c19", {opacity: 0, visibility: "hidden"}, 45.782);
+      tl.set("#cap-c20", {opacity: 1, visibility: "visible"}, 46.016);
+      tl.set("#cap-c20", {opacity: 0, visibility: "hidden"}, 47.460);
+      tl.set("#cap-c21", {opacity: 1, visibility: "visible"}, 47.849);
+      tl.set("#cap-c21", {opacity: 0, visibility: "hidden"}, 49.865);
+      tl.set("#cap-c22", {opacity: 1, visibility: "visible"}, 50.125);
+      tl.set("#cap-c22", {opacity: 0, visibility: "hidden"}, 50.926);
+      tl.set("#cap-c23", {opacity: 1, visibility: "visible"}, 51.263);
+      tl.set("#cap-c23", {opacity: 0, visibility: "hidden"}, 52.484);
+      tl.set("#cap-c24", {opacity: 1, visibility: "visible"}, 52.987);
+      tl.set("#cap-c24", {opacity: 0, visibility: "hidden"}, 54.295);
+      tl.set("#cap-c25", {opacity: 1, visibility: "visible"}, 54.536);
+      tl.set("#cap-c25", {opacity: 0, visibility: "hidden"}, 56.285);
+      tl.set("#cap-c26", {opacity: 1, visibility: "visible"}, 56.673);
+      tl.set("#cap-c26", {opacity: 0, visibility: "hidden"}, 58.077);
+      tl.set("#cap-c27", {opacity: 1, visibility: "visible"}, 58.444);
+      tl.set("#cap-c27", {opacity: 0, visibility: "hidden"}, 59.781);
+      tl.set("#cap-c28", {opacity: 1, visibility: "visible"}, 60.467);
+      tl.set("#cap-c28", {opacity: 0, visibility: "hidden"}, 62.262);
+      tl.set("#cap-c29", {opacity: 1, visibility: "visible"}, 62.461);
+      tl.set("#cap-c29", {opacity: 0, visibility: "hidden"}, 64.116);
+      tl.set("#cap-c30", {opacity: 1, visibility: "visible"}, 64.269);
+      tl.set("#cap-c30", {opacity: 0, visibility: "hidden"}, 65.683);
+      tl.set("#cap-c31", {opacity: 1, visibility: "visible"}, 66.023);
+      tl.set("#cap-c31", {opacity: 0, visibility: "hidden"}, 67.281);
+      tl.set("#cap-c32", {opacity: 1, visibility: "visible"}, 67.350);
+      tl.set("#cap-c32", {opacity: 0, visibility: "hidden"}, 68.916);
+      tl.set("#cap-c33", {opacity: 1, visibility: "visible"}, 69.009);
+      tl.set("#cap-c33", {opacity: 0, visibility: "hidden"}, 69.873);
+      tl.set("#cap-c34", {opacity: 1, visibility: "visible"}, 69.991);
+      tl.set("#cap-c34", {opacity: 0, visibility: "hidden"}, 71.276);
+      tl.set("#cap-c35", {opacity: 1, visibility: "visible"}, 71.611);
+      tl.set("#cap-c35", {opacity: 0, visibility: "hidden"}, 72.743);
+      tl.set("#cap-c36", {opacity: 1, visibility: "visible"}, 73.359);
+      tl.set("#cap-c36", {opacity: 0, visibility: "hidden"}, 75.245);
+      tl.set("#cap-c37", {opacity: 1, visibility: "visible"}, 75.384);
+      tl.set("#cap-c37", {opacity: 0, visibility: "hidden"}, 77.152);
+      tl.set("#cap-c38", {opacity: 1, visibility: "visible"}, 77.318);
+      tl.set("#cap-c38", {opacity: 0, visibility: "hidden"}, 79.112);
+      tl.set("#cap-c39", {opacity: 1, visibility: "visible"}, 79.503);
+      tl.set("#cap-c39", {opacity: 0, visibility: "hidden"}, 80.524);
+      tl.set("#cap-c40", {opacity: 1, visibility: "visible"}, 80.623);
+      tl.set("#cap-c40", {opacity: 0, visibility: "hidden"}, 81.912);
+      tl.set("#cap-c41", {opacity: 1, visibility: "visible"}, 82.289);
+      tl.set("#cap-c41", {opacity: 0, visibility: "hidden"}, 83.855);
+      tl.set("#cap-c42", {opacity: 1, visibility: "visible"}, 83.949);
+      tl.set("#cap-c42", {opacity: 0, visibility: "hidden"}, 85.004);
+      tl.set("#cap-c43", {opacity: 1, visibility: "visible"}, 85.238);
+      tl.set("#cap-c43", {opacity: 0, visibility: "hidden"}, 86.396);
+      tl.set("#cap-c44", {opacity: 1, visibility: "visible"}, 86.745);
+      tl.set("#cap-c44", {opacity: 0, visibility: "hidden"}, 88.881);
+      tl.set("#cap-c45", {opacity: 1, visibility: "visible"}, 89.211);
+      tl.set("#cap-c45", {opacity: 0, visibility: "hidden"}, 90.968);
+      tl.set("#cap-c46", {opacity: 1, visibility: "visible"}, 91.248);
+      tl.set("#cap-c46", {opacity: 0, visibility: "hidden"}, 92.597);
+      tl.set("#cap-c47", {opacity: 1, visibility: "visible"}, 92.963);
+      tl.set("#cap-c47", {opacity: 0, visibility: "hidden"}, 94.977);
+      tl.set("#cap-c48", {opacity: 1, visibility: "visible"}, 95.290);
+      tl.set("#cap-c48", {opacity: 0, visibility: "hidden"}, 97.932);
+      tl.set("#cap-c49", {opacity: 1, visibility: "visible"}, 98.308);
+      tl.set("#cap-c49", {opacity: 0, visibility: "hidden"}, 99.730);
+      tl.set("#cap-c50", {opacity: 1, visibility: "visible"}, 99.910);
+      tl.set("#cap-c50", {opacity: 0, visibility: "hidden"}, 103.111);
+      tl.set("#cap-c51", {opacity: 1, visibility: "visible"}, 103.390);
+      tl.set("#cap-c51", {opacity: 0, visibility: "hidden"}, 104.923);
+      tl.set("#cap-c52", {opacity: 1, visibility: "visible"}, 105.168);
+      tl.set("#cap-c52", {opacity: 0, visibility: "hidden"}, 106.312);
+      tl.set("#cap-c53", {opacity: 1, visibility: "visible"}, 106.332);
+      tl.set("#cap-c53", {opacity: 0, visibility: "hidden"}, 108.513);
+      tl.set("#cap-c54", {opacity: 1, visibility: "visible"}, 108.810);
+      tl.set("#cap-c54", {opacity: 0, visibility: "hidden"}, 112.522);
+      tl.set("#cap-c55", {opacity: 1, visibility: "visible"}, 112.542);
+      tl.set("#cap-c55", {opacity: 0, visibility: "hidden"}, 113.333);
+      window.__timelines["captions"] = tl;
+    })();
+  </script>
+</template>

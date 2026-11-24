@@ -1,0 +1,78 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="map" data-duration="46.15" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="m-all">
+        <text id="m-51" class="h" x="960" y="540" font-size="96" fill="#FC6255" text-anchor="middle" font-weight="800">51% 攻击？</text>
+        <line id="m-51x" class="h" x1="680" y1="510" x2="1240" y2="510" stroke="#e8e6df" stroke-width="6" />
+        <g id="m-core" class="h">
+          <circle cx="960" cy="540" r="130" fill="#2a1416" stroke="#FC6255" stroke-width="5" />
+          <text x="960" y="530" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">攻击者</text>
+          <text x="960" y="575" font-size="30" fill="#e8e6df" text-anchor="middle">控制了什么？</text>
+        </g>
+        <g id="m-spokes"></g>
+        <!-- 比方：三样东西 -->
+        <g id="m-ana" class="h">
+          <rect x="160" y="880" width="1600" height="150" rx="20" fill="#0b0e14" stroke="#e8e6df" stroke-opacity=".25" stroke-width="3" />
+          <text x="200" y="935" font-size="30" fill="#8a8f99">小区闯入，先问拿到了什么：</text>
+          <text x="200" y="990" font-size="32" fill="#e8e6df">伪造的门禁卡 · 多数业主的投票 · 旧业主没交回的钥匙</text>
+          <text x="1720" y="990" font-size="32" fill="#83C167" text-anchor="end">→ 换不同的锁</text>
+        </g>
+        <text id="m-dd" class="h" x="1410" y="490" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">＋ DDoS</text>
+        <text id="m-kr" class="h" x="960" y="960" font-size="34" fill="#FF9F43" text-anchor="middle" font-weight="700">2016 · Krypton：多数算力 + DDoS，资源会组合</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 46.15, "L": [[0.6, 6.48], [6.93, 10.84], [11.29, 20.05], [20.5, 33.92], [34.37, 45.05]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      // 六类资源
+      const RES = ["身份与连接", "算力", "单个区块的时机", "权益或旧私钥", "别人的动机", "让链停下的份额"];
+      const host = document.querySelector("#m-spokes"), S = [];
+      RES.forEach((t, i) => {
+        const a = -Math.PI / 2 + (i / 6) * Math.PI * 2, x = 960 + Math.cos(a) * 520, y = 540 + Math.sin(a) * 280;
+        const x0 = 960 + Math.cos(a) * 135, y0 = 540 + Math.sin(a) * 135;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", 0);
+        g.innerHTML = `<line x1="${x0}" y1="${y0}" x2="${x}" y2="${y}" stroke="#FC6255" stroke-width="3" stroke-opacity=".6" />` +
+          `<rect class="box" x="${x - 170}" y="${y - 42}" width="340" height="84" rx="16" fill="#161a22" stroke="#FC6255" stroke-width="3" />` +
+          `<text x="${x}" y="${y + 11}" font-size="32" fill="#e8e6df" text-anchor="middle">${t}</text>`;
+        host.appendChild(g); S.push(g);
+      });
+      // L0 51% 攻击？
+      IN("#m-51", at(0, 0.0), 0.5);
+      tl.fromTo("#m-51x", { opacity: 0, attr: { x2: 680 } }, { opacity: 1, attr: { x2: 1240 }, duration: 0.4 }, at(0, 0.7));
+      // L1 改问：控制了什么
+      OUT(["#m-51", "#m-51x"], at(1, 0.0), 0.3);
+      NODE("#m-core", at(1, 0.15), 0.6);
+      // L2 六类资源
+      S.forEach((g, i) => IN(g, at(2, 0.05 + i * 0.15), 0.4, { scale: 0.85, svgOrigin: "960 540" }, { scale: 1 }));
+      // L3 比方
+      IN("#m-ana", at(3, 0.05), 0.5, { y: 20 }, { y: 0 });
+      // L4 组合：Krypton
+      OUT("#m-ana", at(4, 0.0), 0.3);
+      tl.to(S.filter((_, i) => i !== 1), { opacity: 0.3, duration: 0.4 }, at(4, 0.15));
+      tl.to([S[1].querySelector(".box")], { attr: { fill: "#2a1416" }, strokeWidth: 6, duration: 0.4 }, at(4, 0.2));
+      IN("#m-kr", at(4, 0.3), 0.5);
+      POP("#m-dd", at(4, 0.6));
+      tl.to("#m-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["map"] = tl;
+    })();
+  </script>
+</template>

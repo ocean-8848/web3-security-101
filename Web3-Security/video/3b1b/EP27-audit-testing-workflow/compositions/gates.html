@@ -1,0 +1,110 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="gates" data-duration="47.73" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="g-aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FF9F43" /></marker>
+        <marker id="g-ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#58C4DD" /></marker>
+      </defs>
+      <g id="g-all">
+        <line id="g-line" class="h" x1="120" y1="480" x2="1800" y2="480" stroke="#2a2f3a" stroke-width="6" stroke-linecap="round" />
+        <g id="g-gates"></g>
+        <rect id="g-code" class="h" x="90" y="458" width="64" height="44" rx="8" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+        <text id="g-codet" class="h" x="122" y="440" font-size="28" fill="#58C4DD" text-anchor="middle">代码</text>
+
+        <!-- 修复成本（示意） -->
+        <g id="g-cost"></g>
+        <text id="g-costt" class="h" x="120" y="1010" font-size="30" fill="#8a8f99">修复成本（示意）：越靠右越贵</text>
+        <text id="g-doc" class="h" x="210" y="700" font-size="28" fill="#83C167" text-anchor="middle">改文档</text>
+
+        <!-- 自动化关口 -->
+        <rect id="g-auto" class="h" x="560" y="330" width="584" height="330" rx="20" fill="none" stroke="#58C4DD" stroke-width="3" stroke-dasharray="12 8" />
+        <path id="g-loop" class="dr h" pathLength="1" d="M880 330 C 840 230, 1000 230, 960 322" fill="none" stroke="#58C4DD" stroke-width="4" marker-end="url(#g-ahb)" />
+        <text id="g-autot" class="h" x="920" y="215" font-size="32" fill="#58C4DD" text-anchor="middle" font-weight="700">每次提交自动运行</text>
+
+        <!-- 回流 -->
+        <path id="g-back1" class="dr h" pathLength="1" d="M1280 650 C 1220 820, 920 820, 860 660" fill="none" stroke="#FF9F43" stroke-width="5" marker-end="url(#g-aho)" />
+        <text id="g-back1t" class="h" x="1070" y="850" font-size="32" fill="#FF9F43" text-anchor="middle">审计发现 → 写成测试</text>
+        <path id="g-back2" class="dr h" pathLength="1" d="M1708 380 C 1600 120, 320 120, 214 372" fill="none" stroke="#FF9F43" stroke-width="5" marker-end="url(#g-aho)" />
+        <text id="g-back2t" class="h" x="960" y="150" font-size="32" fill="#FF9F43" text-anchor="middle">监控发现问题 → 回到最左边改规格</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 47.73, "L": [[0.6, 5.23], [5.68, 14.66], [15.11, 23.48], [23.93, 30.56], [31.01, 38.23], [38.68, 46.63]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 八个关口
+      const NAMES = [["① 规格", "威胁模型"], ["② 编码", "规范"], ["③ 静态", "分析"], ["④ 测试", "单元·模糊·不变量"], ["⑤ 形式化", "验证"], ["⑥ 外部", "审计"], ["⑦ 部署", "权限移交"], ["⑧ 监控", "赏金·应急·保险"]];
+      const X = NAMES.map((_, i) => 210 + i * 214);
+      const host = document.querySelector("#g-gates"), G = [];
+      NAMES.forEach((nm, i) => {
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        const col = i === 5 ? "#83C167" : "#e8e6df";
+        g.innerHTML =
+          `<rect x="${X[i] - 8}" y="400" width="16" height="160" rx="6" fill="${col}" />` +
+          `<text x="${X[i]}" y="610" font-size="30" fill="${col}" text-anchor="middle" font-weight="700">${nm[0]}</text>` +
+          `<text x="${X[i]}" y="650" font-size="28" fill="#8a8f99" text-anchor="middle">${nm[1]}</text>`;
+        host.appendChild(g); G.push(g);
+      });
+      // 修复成本条（示意，指数增长）
+      const cost = document.querySelector("#g-cost"), CB = [];
+      X.forEach((x, i) => {
+        const h = 12 * Math.pow(1.55, i);
+        const r = document.createElementNS(NS, "rect");
+        r.setAttribute("x", x - 30); r.setAttribute("y", 960 - h); r.setAttribute("width", 60); r.setAttribute("height", h);
+        r.setAttribute("fill", i < 2 ? "#83C167" : i < 5 ? "#F0B90B" : "#FC6255"); r.setAttribute("opacity", "0");
+        cost.appendChild(r); CB.push(r);
+      });
+      const GATE = (i, t) => { tl.to(G[i], { opacity: 1, duration: 0.4 }, t); tl.fromTo(G[i].querySelector("rect"), { scaleY: 0, svgOrigin: `${X[i]} 480` }, { scaleY: 1, duration: 0.4, ease: "back.out(2)" }, t); };
+      const MOVE = (i, t, d = 0.5) => tl.to("#g-code", { attr: { x: X[i] + 14 }, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 流水线
+      IN("#g-line", at(0, 0.0), 0.6, { scaleX: 0, svgOrigin: "120 480" }, { scaleX: 1 });
+      IN("#g-code", at(0, 0.3), 0.4);
+      IN("#g-codet", at(0, 0.3), 0.4);
+
+      // L1 ①–⑤
+      OUT("#g-codet", at(1, 0.0), 0.3);
+      [0.0, 0.2, 0.38, 0.55, 0.8].forEach((f, i) => { GATE(i, at(1, f)); MOVE(i, at(1, f) + 0.15); });
+      // L2 ⑥–⑧
+      [0.05, 0.4, 0.62].forEach((f, k) => { GATE(5 + k, at(2, f)); MOVE(5 + k, at(2, f) + 0.15); });
+
+      // L3 修复成本
+      CB.forEach((r, i) => tl.fromTo(r, { opacity: 0, scaleY: 0, svgOrigin: `${X[i]} 960` }, { opacity: 0.85, scaleY: 1, duration: 0.5, ease: "expo.out" }, at(3, 0.05) + i * 0.12));
+      IN("#g-costt", at(3, 0.2), 0.4);
+      IN("#g-doc", at(3, 0.6), 0.4);
+
+      // L4 自动化关口
+      tl.to([...CB, "#g-costt", "#g-doc"], { opacity: 0, duration: 0.4 }, at(4, 0.0));
+      IN("#g-auto", at(4, 0.1), 0.5);
+      DRAW("#g-loop", at(4, 0.4), 0.6);
+      IN("#g-autot", at(4, 0.45), 0.4);
+      tl.to("#g-code", { attr: { x: 610 }, duration: 0.01 }, at(4, 0.55));
+      tl.to("#g-code", { attr: { x: 1080 }, duration: 1.0, ease: "power1.inOut", repeat: 1 }, at(4, 0.58));
+
+      // L5 回流
+      OUT(["#g-auto", "#g-loop", "#g-autot"], at(5, 0.0), 0.3);
+      DRAW("#g-back1", at(5, 0.05), 0.8);
+      IN("#g-back1t", at(5, 0.2), 0.4);
+      DRAW("#g-back2", at(5, 0.5), 1.0);
+      IN("#g-back2t", at(5, 0.65), 0.4);
+
+      tl.to("#g-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["gates"] = tl;
+    })();
+  </script>
+</template>

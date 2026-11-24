@@ -1,0 +1,141 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="scale" data-duration="49.98" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="s-p1">
+        <text id="s-title" class="h" x="960" y="140" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="800">误差被<tspan fill="#FC6255">放大</tspan>：先除后乘</text>
+        <text id="s-ex" class="h" x="960" y="235" font-size="44" fill="#e8e6df" text-anchor="middle">7 × 3 ÷ 5 = <tspan fill="#83C167">4.2</tspan>（精确值 · 示例）</text>
+
+        <!-- 先除 -->
+        <text id="s-la" class="h" x="120" y="395" font-size="34" fill="#8a8f99">先除</text>
+        <g id="s-ba" fill="#e8e6df"></g>
+        <rect id="s-ga" class="h" x="262" y="345" width="244" height="72" rx="10" fill="none" stroke="#58C4DD" stroke-width="3" />
+        <text id="s-ra" class="h" x="700" y="395" font-size="38" fill="#e8e6df">7 ÷ 5 = 1，× 3 = <tspan fill="#FC6255" font-weight="800">3</tspan></text>
+
+        <!-- 先乘 -->
+        <text id="s-lb" class="h" x="120" y="575" font-size="34" fill="#8a8f99">先乘</text>
+        <g id="s-bb" fill="#e8e6df"></g>
+        <g id="s-gb" fill="none" stroke="#58C4DD" stroke-width="3"></g>
+        <text id="s-rb" class="h" x="1100" y="575" font-size="38" fill="#e8e6df">21 ÷ 5 = <tspan fill="#83C167" font-weight="800">4</tspan></text>
+
+        <!-- 数轴 -->
+        <g id="s-axis" class="h">
+          <line x1="300" y1="800" x2="1620" y2="800" stroke="#6b6f7a" stroke-width="3" />
+          <g font-size="30" fill="#8a8f99" text-anchor="middle">
+            <line x1="460" y1="790" x2="460" y2="810" stroke="#6b6f7a" stroke-width="3" /><text x="460" y="850">0</text>
+            <line x1="1200" y1="790" x2="1200" y2="810" stroke="#6b6f7a" stroke-width="3" /><text x="1200" y="850">3</text>
+            <line x1="1446.7" y1="790" x2="1446.7" y2="810" stroke="#6b6f7a" stroke-width="3" /><text x="1446.7" y="850">4</text>
+          </g>
+          <line x1="1496" y1="760" x2="1496" y2="800" stroke="#83C167" stroke-width="4" />
+          <text x="1530" y="755" font-size="30" fill="#83C167">4.2</text>
+        </g>
+        <circle id="s-pa" class="h" cx="1200" cy="800" r="13" fill="#FC6255" />
+        <circle id="s-pb" class="h" cx="1446.7" cy="800" r="13" fill="#e8e6df" />
+        <path id="s-ea" class="h" d="M1200 740 H 1496" stroke="#FC6255" stroke-width="5" />
+        <text id="s-eat" class="h" x="1200" y="725" font-size="30" fill="#FC6255">差 1.2</text>
+        <text id="s-fix" class="h mono" x="960" y="960" font-size="38" fill="#58C4DD" text-anchor="middle">mulDiv(a, b, c, Rounding.Floor)</text>
+        <text id="s-fixt" class="h" x="960" y="1010" font-size="30" fill="#8a8f99" text-anchor="middle">先乘后除；中间结果不溢出；写明舍入方向</text>
+      </g>
+
+      <!-- 单位不一致 -->
+      <g id="s-p2">
+        <text id="s-t2" class="h" x="960" y="140" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="800">误差被<tspan fill="#FC6255">放大</tspan>：单位不一致</text>
+        <g id="s-eth" class="h">
+          <circle cx="480" cy="360" r="70" fill="none" stroke="#F0B90B" stroke-width="5" />
+          <text x="480" y="372" font-size="34" fill="#F0B90B" text-anchor="middle" font-weight="700">USDT</text>
+          <text x="480" y="485" font-size="34" fill="#e8e6df" text-anchor="middle">以太坊</text>
+          <text x="480" y="540" font-size="34" fill="#8a8f99" text-anchor="middle" class="mono">decimals = 6</text>
+        </g>
+        <g id="s-bnb" class="h">
+          <circle cx="1440" cy="360" r="70" fill="none" stroke="#F0B90B" stroke-width="5" />
+          <text x="1440" y="372" font-size="34" fill="#F0B90B" text-anchor="middle" font-weight="700">USDT</text>
+          <text x="1440" y="485" font-size="34" fill="#e8e6df" text-anchor="middle">BNB Chain</text>
+          <text x="1440" y="540" font-size="34" fill="#8a8f99" text-anchor="middle" class="mono">decimals = 18</text>
+        </g>
+        <text id="s-u1" class="h mono" x="480" y="640" font-size="32" fill="#e8e6df" text-anchor="middle">1 USDT = 10^6 单位</text>
+        <text id="s-u2" class="h mono" x="1440" y="640" font-size="32" fill="#e8e6df" text-anchor="middle">1 USDT = 10^18 单位</text>
+
+        <text id="s-hard" class="h mono" x="960" y="380" font-size="36" fill="#58C4DD" text-anchor="middle">amount / 1e6</text>
+        <path id="s-move" class="dr h" pathLength="1" d="M760 420 C 900 470, 1020 470, 1160 420" fill="none" stroke="#8a8f99" stroke-width="3" marker-end="url(#s-ah)" />
+        <rect id="s-bar1" class="h" x="300" y="760" width="12" height="60" fill="#F0B90B" />
+        <rect id="s-bar2" x="300" y="860" width="0" height="60" fill="#FC6255" />
+        <text id="s-b1t" class="h" x="330" y="802" font-size="30" fill="#8a8f99">应有金额</text>
+        <text id="s-b2t" class="h" x="1620" y="955" font-size="40" fill="#FC6255" text-anchor="end" font-weight="800">× 10^12 倍</text>
+        <text id="s-read" class="h" x="960" y="1020" font-size="38" fill="#83C167" text-anchor="middle">从合约读取 decimals()，不要写死</text>
+      </g>
+      <defs><marker id="s-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker></defs>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 49.98, "L": [[0.6, 6.94], [7.39, 13.34], [13.79, 21.52], [21.97, 31.25], [31.7, 39.79], [40.24, 48.88]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      const mk = (g, x, y, w, h) => { const r = document.createElementNS(NS, "rect"); r.setAttribute("x", x); r.setAttribute("y", y); r.setAttribute("width", w); r.setAttribute("height", h); r.setAttribute("rx", "6"); r.setAttribute("opacity", "0"); document.querySelector(g).appendChild(r); return r; };
+      // 先除：7 块，5 块一组
+      const A = []; for (let i = 0; i < 7; i++) A.push(mk("#s-ba", 270 + i * 48, 353, 40, 56));
+      // 先乘：21 块，5 块一组，4 组
+      const Bk = []; for (let i = 0; i < 21; i++) Bk.push(mk("#s-bb", 270 + i * 36 + Math.floor(i / 5) * 12, 540, 28, 50));
+      const G = []; for (let g = 0; g < 4; g++) G.push(mk("#s-gb", 264 + g * 192, 532, 184, 66));
+      G.forEach(r => r.setAttribute("rx", "10"));
+
+      // L0
+      IN("#s-title", at(0, 0.05), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      // L1
+      IN("#s-ex", at(1, 0.05), 0.5);
+      // L2 两种顺序
+      IN("#s-la", at(2, 0.0), 0.3);
+      A.forEach((r, i) => IN(r, at(2, 0.02) + i * 0.05, 0.25));
+      IN("#s-ga", at(2, 0.12), 0.3);
+      tl.to(A.slice(5), { fill: "#FF9F43", duration: 0.2 }, at(2, 0.18));
+      tl.to(A.slice(5), { y: 60, opacity: 0, duration: 0.5, ease: "power2.in" }, at(2, 0.24));
+      IN("#s-ra", at(2, 0.2), 0.4);
+      IN("#s-lb", at(2, 0.5), 0.3);
+      Bk.forEach((r, i) => IN(r, at(2, 0.52) + i * 0.025, 0.2));
+      G.forEach((r, i) => IN(r, at(2, 0.66) + i * 0.06, 0.25));
+      tl.to(Bk[20], { fill: "#FF9F43", duration: 0.2 }, at(2, 0.8));
+      tl.to(Bk[20], { y: 60, opacity: 0, duration: 0.5, ease: "power2.in" }, at(2, 0.85));
+      IN("#s-rb", at(2, 0.78), 0.4);
+
+      // L3 数轴上比误差；mulDiv
+      IN("#s-axis", at(3, 0.0), 0.5);
+      IN("#s-pa", at(3, 0.1), 0.3, { scale: 0, transformOrigin: "50% 50%" }, { scale: 1 });
+      IN("#s-pb", at(3, 0.18), 0.3, { scale: 0, transformOrigin: "50% 50%" }, { scale: 1 });
+      IN("#s-ea", at(3, 0.25), 0.4);
+      IN("#s-eat", at(3, 0.25), 0.4);
+      IN("#s-fix", at(3, 0.55), 0.5);
+      IN("#s-fixt", at(3, 0.7), 0.5);
+
+      // L4 单位
+      tl.to("#s-p1", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(4, 0));
+      IN("#s-t2", at(4, 0.05), 0.5);
+      IN("#s-eth", at(4, 0.2), 0.5, { y: 20 }, { y: 0 });
+      IN("#s-u1", at(4, 0.35), 0.4);
+      IN("#s-bnb", at(4, 0.55), 0.5, { y: 20 }, { y: 0 });
+      IN("#s-u2", at(4, 0.7), 0.4);
+
+      // L5 写死 1e6 搬过去
+      IN("#s-hard", at(5, 0.0), 0.4);
+      DRAW("#s-move", at(5, 0.08), 0.6);
+      IN(["#s-bar1", "#s-b1t"], at(5, 0.25), 0.4);
+      tl.fromTo("#s-bar2", { attr: { width: 0 } }, { attr: { width: 1320 }, duration: 1.0, ease: "expo.in" }, at(5, 0.32));
+      IN("#s-b2t", at(5, 0.42), 0.4);
+      IN("#s-read", at(5, 0.68), 0.5);
+
+      tl.to(["#s-p1", "#s-p2"], { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["scale"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,95 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="pause" data-duration="52.07" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="p-all">
+        <g id="p-tl">
+          <text id="p-title" class="h" x="960" y="120" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">10 月 29 日晚 → 30 日凌晨（UTC）</text>
+          <g id="p-axis" class="h">
+            <line x1="200" y1="560" x2="1720" y2="560" stroke="#6b6f7a" stroke-width="4" />
+            <g font-size="28" fill="#6b6f7a" text-anchor="middle">
+              <line x1="200" y1="550" x2="200" y2="570" stroke="#6b6f7a" stroke-width="3" /><text x="200" y="605">20:00</text>
+              <line x1="538" y1="550" x2="538" y2="570" stroke="#6b6f7a" stroke-width="3" /><text x="538" y="605">21:00</text>
+              <line x1="876" y1="550" x2="876" y2="570" stroke="#6b6f7a" stroke-width="3" /><text x="876" y="605">22:00</text>
+              <line x1="1213" y1="550" x2="1213" y2="570" stroke="#6b6f7a" stroke-width="3" /><text x="1213" y="605">23:00</text>
+              <line x1="1551" y1="550" x2="1551" y2="570" stroke="#6b6f7a" stroke-width="3" /><text x="1551" y="605">00:00</text>
+            </g>
+          </g>
+          <!-- 事件 -->
+          <g class="p-e h"><line x1="313" y1="560" x2="313" y2="640" stroke="#FC6255" stroke-width="3" /><circle cx="313" cy="560" r="10" fill="#FC6255" /><text x="325" y="665" font-size="28" fill="#FC6255" text-anchor="end">20:20 委托交易提交</text></g>
+          <g class="p-e h"><line x1="330" y1="560" x2="330" y2="370" stroke="#FC6255" stroke-width="3" /><circle cx="330" cy="560" r="10" fill="#FC6255" /><text x="318" y="355" font-size="28" fill="#FC6255">≈20:23 以太坊热钱包被清空</text></g>
+          <g class="p-e h"><line x1="543" y1="560" x2="543" y2="690" stroke="#83C167" stroke-width="3" /><circle cx="543" cy="560" r="10" fill="#83C167" /><text x="535" y="720" font-size="28" fill="#83C167" text-anchor="end">21:01 Tether 冻结 ≈ 9.7 亿 USDT</text></g>
+          <g class="p-e h"><line x1="560" y1="560" x2="560" y2="750" stroke="#83C167" stroke-width="3" /><circle cx="560" cy="560" r="10" fill="#83C167" /><text x="548" y="780" font-size="28" fill="#83C167">21:04 Circle 冻结 ≈ 8.2 亿 USDC</text></g>
+          <g class="p-e h"><line x1="1529" y1="560" x2="1529" y2="470" stroke="#FC6255" stroke-width="3" /><circle cx="1529" cy="560" r="10" fill="#FC6255" /><text x="1545" y="455" font-size="28" fill="#FC6255" text-anchor="end">23:56 最后一笔未授权转账</text></g>
+          <g class="p-e h"><line x1="1607" y1="560" x2="1607" y2="690" stroke="#83C167" stroke-width="3" /><circle cx="1607" cy="560" r="10" fill="#83C167" /><text x="1620" y="720" font-size="28" fill="#83C167" text-anchor="end">00:10 委托清零</text></g>
+          <!-- 存活跨度 -->
+          <rect id="p-span" class="h" x="313" y="860" width="1294" height="26" rx="13" fill="#FC6255" fill-opacity=".55" />
+          <text id="p-spant" class="h" x="960" y="840" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">恶意委托在链上存活</text>
+          <text id="p-calc" class="h" x="960" y="950" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="800">00:10 − 20:20 = <tspan fill="#FC6255">3 小时 50 分</tspan></text>
+        </g>
+        <!-- 链下 vs 链上 -->
+        <g id="p-off" class="h">
+          <rect x="300" y="260" width="1320" height="200" rx="20" fill="#161a22" stroke="#8a8f99" stroke-width="3" />
+          <text x="360" y="345" font-size="34" fill="#8a8f99">链下</text>
+          <text x="760" y="380" font-size="38" fill="#e8e6df" text-anchor="middle">提现服务</text>
+          <rect x="1260" y="320" width="160" height="72" rx="36" fill="#161a22" stroke="#8a8f99" stroke-width="5" /><circle cx="1296" cy="356" r="26" fill="#8a8f99" />
+          <text x="1340" y="440" font-size="28" fill="#8a8f99" text-anchor="middle">已暂停</text>
+        </g>
+        <g id="p-on" class="h">
+          <rect x="300" y="560" width="1320" height="240" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="360" y="645" font-size="34" fill="#58C4DD">链上</text>
+          <text x="760" y="690" font-size="38" fill="#e8e6df" text-anchor="middle">热钱包账户代码</text>
+          <path d="M960 680 L 1140 680" stroke="#FC6255" stroke-width="5" />
+          <rect x="1150" y="625" width="320" height="110" rx="14" fill="#1d1214" stroke="#FC6255" stroke-width="4" />
+          <text x="1310" y="672" font-size="30" fill="#FC6255" text-anchor="middle" font-weight="700">委托 → 攻击者合约</text>
+          <text x="1310" y="715" font-size="28" fill="#FC6255" text-anchor="middle">仍有效</text>
+        </g>
+        <text id="p-key" class="h" x="960" y="920" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="800">暂停提现 ≠ <tspan fill="#FF9F43">撤销权限</tspan></text>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 52.07, "L": [[0.6, 4.42], [4.87, 14.56], [15.01, 24.32], [24.77, 29.19], [29.64, 39.14], [39.59, 50.97]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      IN("#p-title", at(0, 0.05), 0.5);
+      IN("#p-axis", at(0, 0.3), 0.6);
+      const E = gsap.utils.toArray("#root .p-e");
+      // L1 20:20、20:23
+      IN(E[0], at(1, 0.05), 0.4, { y: 10 }, { y: 0 });
+      IN(E[1], at(1, 0.45), 0.4, { y: 10 }, { y: 0 });
+      // L2 冻结
+      IN(E[2], at(2, 0.1), 0.4, { y: -10 }, { y: 0 });
+      IN(E[3], at(2, 0.5), 0.4, { y: -10 }, { y: 0 });
+      // L3 最后一笔
+      IN(E[4], at(3, 0.1), 0.4, { y: 10 }, { y: 0 });
+      // L4 委托清零；存活时长
+      IN(E[5], at(4, 0.05), 0.4, { y: -10 }, { y: 0 });
+      IN("#p-spant", at(4, 0.4), 0.4);
+      tl.fromTo("#p-span", { opacity: 0, attr: { width: 0 } }, { opacity: 1, attr: { width: 1294 }, duration: 1.2, ease: "power2.inOut" }, at(4, 0.4));
+      IN("#p-calc", at(4, 0.7), 0.5);
+      // L5 链下 vs 链上
+      tl.to("#p-tl", { opacity: 0, duration: 0.5 }, at(5, 0));
+      IN("#p-off", at(5, 0.1), 0.5, { y: -20 }, { y: 0 });
+      IN("#p-on", at(5, 0.35), 0.5, { y: 20 }, { y: 0 });
+      tl.fromTo("#p-on rect:nth-of-type(2)", { strokeWidth: 4 }, { strokeWidth: 8, duration: 0.3, yoyo: true, repeat: 3 }, at(5, 0.55));
+      IN("#p-key", at(5, 0.75), 0.5, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      tl.to("#p-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["pause"] = tl;
+    })();
+  </script>
+</template>

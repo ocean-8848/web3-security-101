@@ -1,0 +1,105 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="signing" data-duration="51.4" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="s-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#58C4DD" /></marker>
+        <marker id="s-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="s-all">
+        <g font-size="32" text-anchor="middle">
+          <g id="s-led" class="h"><rect x="80" y="240" width="260" height="120" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="210" y="312" fill="#58C4DD">账本</text></g>
+          <g id="s-risk" class="h"><rect x="460" y="240" width="260" height="120" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="590" y="312" fill="#58C4DD">风控引擎</text></g>
+          <g id="s-sign" class="h"><rect id="s-signr" x="840" y="210" width="320" height="180" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="6" /><text x="1000" y="312" fill="#58C4DD" font-weight="700" font-size="38">签名服务</text></g>
+          <g id="s-hot" class="h"><rect x="1280" y="240" width="260" height="120" rx="16" fill="#1a1708" stroke="#F0B90B" stroke-width="4" /><text x="1410" y="312" fill="#F0B90B">热钱包</text></g>
+        </g>
+        <path id="s-a1" class="dr h" pathLength="1" d="M345 300 L 450 300" fill="none" stroke="#58C4DD" stroke-width="4" marker-end="url(#s-ah)" />
+        <path id="s-a2" class="dr h" pathLength="1" d="M725 300 L 830 300" fill="none" stroke="#58C4DD" stroke-width="4" marker-end="url(#s-ah)" />
+        <path id="s-a3" class="dr h" pathLength="1" d="M1165 300 L 1270 300" fill="none" stroke="#58C4DD" stroke-width="4" marker-end="url(#s-ah)" />
+        <text id="s-last" class="h" x="1000" y="170" font-size="32" fill="#FF9F43" text-anchor="middle" font-weight="700">最后一道门</text>
+        <!-- 只看格式 -->
+        <g id="s-req" class="h">
+          <rect x="880" y="430" width="240" height="90" rx="12" fill="#161a22" stroke="#e8e6df" stroke-width="3" />
+          <text x="1000" y="487" font-size="30" fill="#e8e6df" text-anchor="middle">格式 ✓</text>
+        </g>
+        <path id="s-fake" class="dr h" pathLength="1" d="M590 470 C 590 560, 760 520, 875 475" fill="none" stroke="#FC6255" stroke-width="5" marker-end="url(#s-ahr)" />
+        <text id="s-faket" class="h" x="590" y="560" font-size="30" fill="#FC6255" text-anchor="middle" font-weight="700">伪造的上游数据</text>
+        <path id="s-out" class="dr h" pathLength="1" d="M1545 300 L 1820 300" fill="none" stroke="#FC6255" stroke-width="6" marker-end="url(#s-ahr)" />
+        <text id="s-outt" class="h" x="1680" y="270" font-size="30" fill="#FC6255" text-anchor="middle">攻击交易</text>
+
+        <!-- Bitget -->
+        <text id="s-bg" class="h" x="960" y="660" font-size="32" fill="#8a8f99" text-anchor="middle">2026 年 9 月 · Bitget（据公开报道）</text>
+        <g font-size="30" text-anchor="middle">
+          <g class="s-b h"><rect x="100" y="710" width="440" height="100" rx="14" fill="#1d1214" stroke="#FC6255" stroke-width="3" /><text x="320" y="770" fill="#FC6255">第三方安全产品的零日漏洞</text></g>
+          <g class="s-b h"><rect x="680" y="710" width="300" height="100" rx="14" fill="#1d1214" stroke="#FC6255" stroke-width="3" /><text x="830" y="770" fill="#FC6255">内部高权限</text></g>
+          <g class="s-b h"><rect x="1120" y="710" width="360" height="100" rx="14" fill="#1d1214" stroke="#FC6255" stroke-width="3" /><text x="1300" y="770" fill="#FC6255">伪造的提现指令</text></g>
+        </g>
+        <path class="s-ba dr h" pathLength="1" d="M545 760 L 670 760" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#s-ahr)" />
+        <path class="s-ba dr h" pathLength="1" d="M985 760 L 1110 760" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#s-ahr)" />
+        <path class="s-ba dr h" pathLength="1" d="M1300 705 C 1300 620, 1150 580, 1080 530" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#s-ahr)" />
+        <text id="s-amt" class="h" x="1680" y="770" font-size="48" fill="#FC6255" text-anchor="middle" font-weight="800">≈ 3.875 亿美元</text>
+        <g id="s-key" class="h">
+          <circle cx="1300" cy="440" r="22" fill="none" stroke="#83C167" stroke-width="6" />
+          <path d="M1322 440 H 1380 M 1364 440 V 458" stroke="#83C167" stroke-width="6" fill="none" />
+          <text x="1400" y="452" font-size="30" fill="#83C167">私钥：项目方称已排除泄露</text>
+        </g>
+
+        <!-- 修复：独立核对 + 不同团队 -->
+        <g id="s-fix" class="h">
+          <rect x="820" y="420" width="360" height="200" rx="16" fill="#13200f" stroke="#83C167" stroke-width="4" />
+          <text x="1000" y="470" font-size="30" fill="#83C167" text-anchor="middle" font-weight="700">独立核对账本订单</text>
+          <text x="1000" y="530" font-size="30" fill="#e8e6df" text-anchor="middle">目标地址 对得上？</text>
+          <text x="1000" y="585" font-size="30" fill="#e8e6df" text-anchor="middle">金额 对得上？</text>
+        </g>
+        <text id="s-ta" class="h" x="590" y="410" font-size="28" fill="#83C167" text-anchor="middle">团队 A</text>
+        <text id="s-tb" class="h" x="1000" y="190" font-size="28" fill="#83C167" text-anchor="middle">团队 B</text>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 51.4, "L": [[0.6, 5.5], [5.95, 15.07], [15.52, 27.66], [28.11, 38.69], [39.14, 50.3]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      // L0 链路
+      POP("#s-led", at(0, 0.0)); DRAW("#s-a1", at(0, 0.1)); POP("#s-risk", at(0, 0.15)); DRAW("#s-a2", at(0, 0.25));
+      POP("#s-sign", at(0, 0.3)); DRAW("#s-a3", at(0, 0.4)); POP("#s-hot", at(0, 0.45));
+      IN("#s-last", at(0, 0.6), 0.4);
+      tl.fromTo("#s-signr", { strokeWidth: 6 }, { strokeWidth: 10, duration: 0.3, yoyo: true, repeat: 1 }, at(0, 0.62));
+      // L1 只看格式；伪造上游
+      IN("#s-req", at(1, 0.05), 0.4);
+      DRAW("#s-fake", at(1, 0.45), 0.7); IN("#s-faket", at(1, 0.48), 0.4);
+      tl.to("#s-req rect", { stroke: "#FC6255", duration: 0.3 }, at(1, 0.6));
+      DRAW("#s-out", at(1, 0.75), 0.6); IN("#s-outt", at(1, 0.78), 0.4);
+      // L2 Bitget
+      IN("#s-bg", at(2, 0.0), 0.4);
+      const Bb = gsap.utils.toArray("#root .s-b"), Ba = gsap.utils.toArray("#root .s-ba");
+      POP(Bb[0], at(2, 0.25)); DRAW(Ba[0], at(2, 0.38)); POP(Bb[1], at(2, 0.42)); DRAW(Ba[1], at(2, 0.55)); POP(Bb[2], at(2, 0.6)); DRAW(Ba[2], at(2, 0.75), 0.7);
+      // L3 金额与私钥
+      IN("#s-amt", at(3, 0.05), 0.5);
+      IN("#s-key", at(3, 0.55), 0.5);
+      tl.fromTo("#s-key circle", { attr: { r: 22 } }, { attr: { r: 28 }, duration: 0.3, yoyo: true, repeat: 3 }, at(3, 0.75));
+      // L4 修复
+      OUT(["#s-bg", "#s-amt", "#s-key", "#s-faket", "#s-fake", "#s-out", "#s-outt", "#s-req", "#s-last", ...Bb, ...Ba], at(4, 0), 0.4);
+      IN("#s-fix", at(4, 0.1), 0.5, { y: 20 }, { y: 0 });
+      tl.to("#s-signr", { stroke: "#83C167", duration: 0.4 }, at(4, 0.15));
+      IN("#s-ta", at(4, 0.7), 0.4); IN("#s-tb", at(4, 0.75), 0.4);
+      tl.to("#s-risk rect", { stroke: "#83C167", duration: 0.4 }, at(4, 0.7));
+      tl.to("#s-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["signing"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,108 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root text.mono, #root tspan.mono { font-family: "JetBrains Mono", "NotoSC", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="compare" data-duration="52.31" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="c-all">
+        <g id="c-table">
+          <text id="c-h1" class="h" x="820" y="200" font-size="44" fill="#8a8f99" text-anchor="middle" font-weight="700">公链</text>
+          <text id="c-h2" class="h" x="1460" y="200" font-size="44" fill="#B48EF0" text-anchor="middle" font-weight="700">许可链</text>
+          <line id="c-div" class="h" x1="1140" y1="160" x2="1140" y2="760" stroke="#2a2f3a" stroke-width="2" />
+          <g id="c-r1" class="h">
+            <text x="140" y="330" font-size="30" fill="#6b6f7a">准入</text>
+            <text x="820" y="330" font-size="32" fill="#e8e6df" text-anchor="middle">开放</text>
+            <text x="1460" y="330" font-size="32" fill="#B48EF0" text-anchor="middle">证书或白名单</text>
+          </g>
+          <g id="c-r2" class="h">
+            <text x="140" y="450" font-size="30" fill="#6b6f7a">主要攻击者</text>
+            <text x="820" y="450" font-size="32" fill="#e8e6df" text-anchor="middle">匿名外部人</text>
+            <text id="c-r2b" x="1460" y="450" font-size="32" fill="#FC6255" text-anchor="middle">成员 · 内部人 · 被攻破的成员</text>
+          </g>
+          <g id="c-r3" class="h">
+            <text x="140" y="570" font-size="30" fill="#6b6f7a">安全来源</text>
+            <text x="820" y="570" font-size="32" fill="#F0B90B" text-anchor="middle">算力或质押的经济成本</text>
+            <text id="c-r3b" class="h" x="1460" y="570" font-size="32" fill="#e8e6df" text-anchor="middle">身份 · 法律合同 · BFT/CFT</text>
+          </g>
+          <g id="c-r4" class="h">
+            <text x="140" y="690" font-size="30" fill="#6b6f7a">单点</text>
+            <text x="820" y="690" font-size="32" fill="#e8e6df" text-anchor="middle">客户端 bug · 矿池 · 质押集中</text>
+          </g>
+          <g id="c-sp" font-size="32" fill="#FF9F43" text-anchor="middle">
+            <text class="c-s h" x="1265" y="690">根 CA</text><text class="c-s h" x="1405" y="690">排序服务</text><text class="c-s h" x="1580" y="690">管理员密钥</text><text class="c-s h" x="1460" y="740">网络运营方</text>
+          </g>
+        </g>
+        <text id="c-old" class="h" x="960" y="840" font-size="40" fill="#6b6f7a" text-anchor="middle">多数算力</text>
+        <line id="c-oldx" class="h" x1="870" y1="826" x2="1050" y2="826" stroke="#FF9F43" stroke-width="5" />
+        <g font-size="40" fill="#FC6255" text-anchor="middle" font-weight="700">
+          <text class="c-n h" x="480" y="940">一张有效证书</text><text class="c-n h" x="960" y="940">一把管理员密钥</text><text class="c-n h" x="1440" y="940">几家成员的共谋</text>
+        </g>
+        <!-- Ronin：9 个验证者，5 个签名 -->
+        <g id="c-ronin">
+          <text id="c-rt" class="h" x="960" y="300" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">Ronin 桥：9 个验证者</text>
+          <g id="c-vs"></g>
+          <text id="c-rc" class="h" x="960" y="700" font-size="56" fill="#FC6255" text-anchor="middle" font-weight="800"><tspan id="c-rn">0</tspan> / 9 签名 → 放行</text>
+          <text id="c-rl" class="h" x="960" y="820" font-size="36" fill="#FF9F43" text-anchor="middle">许可集合越小，攻破的门槛越低</text>
+          <text id="c-rs" class="h" x="960" y="1030" font-size="28" fill="#6b6f7a" text-anchor="middle">见第 12 章 4.1 节</text>
+        </g>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 52.31, "L": [[0.6, 4.39], [4.84, 16.17], [16.62, 25.21], [25.66, 31.59], [32.04, 39.98], [40.43, 51.21]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, ox, oy, d = 0.4) => IN(s, t, d, { scale: 0.4, svgOrigin: `${ox} ${oy}` }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      const vh = document.querySelector("#c-vs"), V = [];
+      for (let i = 0; i < 9; i++) {
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", 560 + i * 100); c.setAttribute("cy", "480"); c.setAttribute("r", "34");
+        c.setAttribute("fill", "#161a22"); c.setAttribute("stroke", "#B48EF0"); c.setAttribute("stroke-width", "4"); c.setAttribute("opacity", "0");
+        vh.appendChild(c); V.push(c);
+      }
+      // L0
+      IN("#c-h1", at(0, 0.1), 0.5); IN("#c-h2", at(0, 0.35), 0.5); IN("#c-div", at(0, 0.5), 0.5);
+      // L1 准入；主要攻击者
+      IN("#c-r1", at(1, 0.02), 0.5, { x: -20 }, { x: 0 });
+      IN("#c-r2", at(1, 0.45), 0.5, { x: -20 }, { x: 0 });
+      tl.fromTo("#c-r2b", { scale: 1 }, { scale: 1.08, svgOrigin: "1460 440", duration: 0.3, yoyo: true, repeat: 1 }, at(1, 0.85));
+      // L2 安全来源
+      IN("#c-r3", at(2, 0.05), 0.5, { x: -20 }, { x: 0 });
+      IN("#c-r3b", at(2, 0.55), 0.5, { x: -20 }, { x: 0 });
+      // L3 单点换了
+      IN("#c-r4", at(3, 0.02), 0.4, { x: -20 }, { x: 0 });
+      gsap.utils.toArray("#root .c-s").forEach((s, i) => POP(s, at(3, 0.2) + i * 0.45, 0, 0, 0.35));
+      // L4 攻击者需要什么
+      tl.to("#c-table", { opacity: 0.2, duration: 0.4 }, at(4, 0));
+      IN("#c-old", at(4, 0.05), 0.4);
+      IN("#c-oldx", at(4, 0.2), 0.1);
+      tl.fromTo("#c-oldx", { attr: { x2: 870 } }, { attr: { x2: 1050 }, duration: 0.3 }, at(4, 0.2));
+      gsap.utils.toArray("#root .c-n").forEach((s, i) => IN(s, at(4, 0.32) + i * 0.7, 0.45, { y: 15 }, { y: 0 }));
+      // L5 Ronin：5 / 9
+      tl.to(["#c-table", "#c-old", "#c-oldx", "#root .c-n"], { opacity: 0, duration: 0.4 }, at(5, 0));
+      IN("#c-rt", at(5, 0.05), 0.5);
+      V.forEach((c, i) => IN(c, at(5, 0.1) + i * 0.06, 0.3, { scale: 0.5, svgOrigin: `${560 + i * 100} 480` }, { scale: 1 }));
+      IN("#c-rs", at(5, 0.1), 0.4);
+      IN("#c-rc", at(5, 0.3), 0.3);
+      const k = { v: 0 }, rn = document.querySelector("#c-rn");
+      [0, 2, 4, 6, 8].forEach((j, n) => tl.to(V[j], { fill: "#FC6255", stroke: "#FC6255", duration: 0.25 }, at(5, 0.32) + n * 0.35));
+      tl.fromTo(k, { v: 0 }, { v: 5, duration: 1.75, ease: "none", onUpdate: () => { rn.textContent = Math.floor(k.v + 0.0001) > 5 ? 5 : Math.floor(k.v + 0.2); } }, at(5, 0.32));
+      IN("#c-rl", at(5, 0.7), 0.5);
+      tl.to("#c-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["compare"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,76 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="36.72" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="r-case">
+        <g id="r-pin" class="h">
+          <rect x="460" y="60" width="1000" height="100" rx="18" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="960" y="127" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">域名对、锁也在、<tspan fill="#58C4DD">合约</tspan>没变，钱怎么没的？</text>
+        </g>
+        <!-- 一条供应链，终点是页面 -->
+        <g id="r-links"></g>
+        <g id="r-page" class="h">
+          <rect id="r-pager" x="1560" y="340" width="220" height="280" rx="14" fill="#161a22" stroke="#e8e6df" stroke-opacity=".7" stroke-width="4" />
+          <text x="1670" y="490" font-size="36" fill="#e8e6df" text-anchor="middle" font-weight="700">页面</text>
+        </g>
+        <g id="r-user" class="h"><circle cx="1670" cy="760" r="44" fill="#2a2f3a" stroke="#e8e6df" stroke-width="3" /><text x="1670" y="772" font-size="28" fill="#e8e6df" text-anchor="middle">用户</text><line x1="1670" y1="712" x2="1670" y2="628" stroke="#8a8f99" stroke-width="3" /></g>
+        <text id="r-trust" class="h" x="1670" y="860" font-size="30" fill="#e8e6df" text-anchor="middle">信的是这一页</text>
+        <g id="r-aud" class="h"><rect x="760" y="760" width="300" height="100" rx="14" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="910" y="822" font-size="30" fill="#58C4DD" text-anchor="middle">合约审计 ✓</text></g>
+        <text id="r-audn" class="h" x="910" y="910" font-size="28" fill="#8a8f99" text-anchor="middle">看不到上面任何一环</text>
+      </g>
+      <g id="r-final">
+        <text id="r-c1" class="h" x="960" y="430" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="700">成立条件：签名前，在<tspan fill="#83C167">页面之外</tspan>核对你签的是什么</text>
+        <text id="r-c2" class="h" x="960" y="570" font-size="64" fill="#e8e6df" text-anchor="middle" font-weight="800">域名正确 ≠ <tspan fill="#FF9F43">页面可信</tspan></text>
+      </g>
+      <text id="r-next" class="h" x="960" y="900" font-size="36" fill="#6b6f7a" text-anchor="middle">下一集 · 21 社工与内部人：攻击者为什么先攻破人</text>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 36.72, "L": [[0.6, 6.07], [6.52, 12.28], [12.73, 22.88], [23.33, 31.49], [31.94, 35.62]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      // 六个环节连成一条链，终点是页面
+      const NS = "http://www.w3.org/2000/svg", lh = document.querySelector("#r-links");
+      const T = ["域名", "依赖", "构建", "托管", "CDN", "第三方脚本"];
+      const G = T.map((t, i) => {
+        const x = 200 + i * 225;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        g.innerHTML = `<rect class="bx" x="${x - 95}" y="440" width="190" height="80" rx="40" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><text x="${x}" y="491" font-size="28" fill="#e8e6df" text-anchor="middle">${t}</text>` +
+          `<line x1="${x + 95}" y1="480" x2="${i === 5 ? 1550 : x + 130}" y2="480" stroke="#8a8f99" stroke-width="3" />`;
+        lh.appendChild(g); return g;
+      });
+
+      // L0 问题回来
+      IN("#r-pin", at(0, 0.0), 0.8, { scale: 0.5, x: -560, y: -10, svgOrigin: "960 110" }, { scale: 1, x: 0, y: 0, ease: "expo.out" });
+      // L1 用户信的是页面；页面是供应链的最后一站
+      IN("#r-page", at(1, 0.0), 0.5);
+      IN("#r-user", at(1, 0.15), 0.4);
+      IN("#r-trust", at(1, 0.25), 0.4);
+      G.forEach((g, i) => IN(g, at(1, 0.45) + i * 0.08, 0.3, { x: -20 }, { x: 0 }));
+      // L2 任何一环被攻破，页面就变了；审计看不到
+      [0, 4, 1].forEach((k, j) => tl.to(G[k].querySelector(".bx"), { stroke: "#FC6255", strokeWidth: 5, duration: 0.25, yoyo: true, repeat: 1 }, at(2, 0.05) + j * 0.5));
+      tl.to("#r-pager", { stroke: "#FC6255", strokeOpacity: 1, duration: 0.25, yoyo: true, repeat: 3 }, at(2, 0.25));
+      IN("#r-aud", at(2, 0.6), 0.4);
+      IN("#r-audn", at(2, 0.72), 0.4);
+      // L3 成立条件
+      tl.to("#r-case", { opacity: 0, duration: 0.5 }, at(3, 0));
+      IN("#r-c1", at(3, 0.05), 0.6);
+      IN("#r-c2", at(3, 0.5), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      // L4 下一集
+      IN("#r-next", at(4, 0.05), 0.5);
+      tl.to(["#r-final", "#r-next"], { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

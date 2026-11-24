@@ -1,0 +1,129 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .cap-g { position: absolute; left: 0; right: 0; bottom: var(--cap-bottom, 84px); text-align: center; opacity: 0; visibility: hidden; }
+    .cap-t { display: inline-block; font-family: var(--cap-font, "Noto Sans SC"), sans-serif; font-weight: var(--cap-weight, 700);
+      font-size: var(--cap-size, 46px); line-height: 1.25; color: var(--cap-ink, #111); letter-spacing: 0.02em;
+      padding: var(--cap-pad, 0); background: var(--cap-bg, transparent); border-radius: var(--cap-radius, 0);
+      text-shadow: var(--cap-shadow, none); }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-c0" class="cap-g"><span class="cap-t">回到开头的节点</span></div>
+    <div id="cap-c1" class="cap-g"><span class="cap-t">它的关键</span></div>
+    <div id="cap-c2" class="cap-g"><span class="cap-t">是按来源区别对待</span></div>
+    <div id="cap-c3" class="cap-g"><span class="cap-t">你从别的 IP 去查</span></div>
+    <div id="cap-c4" class="cap-g"><span class="cap-t">它就给你真数据</span></div>
+    <div id="cap-c5" class="cap-g"><span class="cap-t">所以防线不是多看几次同一个节点</span></div>
+    <div id="cap-c6" class="cap-g"><span class="cap-t">而是比对不同运营方的数据源</span></div>
+    <div id="cap-c7" class="cap-g"><span class="cap-t">第一条 多源校验</span></div>
+    <div id="cap-c8" class="cap-g"><span class="cap-t">充值扫描和跨链放行</span></div>
+    <div id="cap-c9" class="cap-g"><span class="cap-t">至少用两个独立来源</span></div>
+    <div id="cap-c10" class="cap-g"><span class="cap-t">比如自建节点加一家第三方 RPC</span></div>
+    <div id="cap-c11" class="cap-g"><span class="cap-t">独立要按运营方算</span></div>
+    <div id="cap-c12" class="cap-g"><span class="cap-t">同一家服务商的两个节点</span></div>
+    <div id="cap-c13" class="cap-g"><span class="cap-t">只算一个</span></div>
+    <div id="cap-c14" class="cap-g"><span class="cap-t">第二条 不降级</span></div>
+    <div id="cap-c15" class="cap-g"><span class="cap-t">节点超时后</span></div>
+    <div id="cap-c16" class="cap-g"><span class="cap-t">法定数不自动下降</span></div>
+    <div id="cap-c17" class="cap-g"><span class="cap-t">达不到法定数就暂停</span></div>
+    <div id="cap-c18" class="cap-g"><span class="cap-t">人工确认</span></div>
+    <div id="cap-c19" class="cap-g"><span class="cap-t">开头的事件里</span></div>
+    <div id="cap-c20" class="cap-g"><span class="cap-t">干净的 RPC 被打掉</span></div>
+    <div id="cap-c21" class="cap-g"><span class="cap-t">系统自动切到剩下的节点</span></div>
+    <div id="cap-c22" class="cap-g"><span class="cap-t">这就是降级</span></div>
+    <div id="cap-c23" class="cap-g"><span class="cap-t">第三条 结果冲突就暂停入账</span></div>
+    <div id="cap-c24" class="cap-g"><span class="cap-t">不挑一个先用</span></div>
+    <div id="cap-c25" class="cap-g"><span class="cap-t">第四条 节点本身也要比对</span></div>
+    <div id="cap-c26" class="cap-g"><span class="cap-t">链头要和不同网络</span></div>
+    <div id="cap-c27" class="cap-g"><span class="cap-t">不同运营方的来源持续比对</span></div>
+    <div id="cap-c28" class="cap-g"><span class="cap-t">对等连接也要来自不同网络</span></div>
+    <div id="cap-c29" class="cap-g"><span class="cap-t">自建节点可以选少数派客户端</span></div>
+    <div id="cap-c30" class="cap-g"><span class="cap-t">或者两种客户端互相比对</span></div>
+    <div id="cap-c31" class="cap-g"><span class="cap-t">硬分叉前完成升级</span></div>
+    <div id="cap-c32" class="cap-g"><span class="cap-t">这几条 对被替换的节点</span></div>
+    <div id="cap-c33" class="cap-g"><span class="cap-t">被日蚀的节点</span></div>
+    <div id="cap-c34" class="cap-g"><span class="cap-t">停在错误分叉上的节点 都有效</span></div>
+    <div id="cap-c35" class="cap-g"><span class="cap-t">局限是 如果所有来源都接在同一个上游</span></div>
+    <div id="cap-c36" class="cap-g"><span class="cap-t">数量再多也没用</span></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      tl.set("#cap-c0", {opacity: 1, visibility: "visible"}, 1.550);
+      tl.set("#cap-c0", {opacity: 0, visibility: "hidden"}, 3.076);
+      tl.set("#cap-c1", {opacity: 1, visibility: "visible"}, 3.290);
+      tl.set("#cap-c1", {opacity: 0, visibility: "hidden"}, 4.228);
+      tl.set("#cap-c2", {opacity: 1, visibility: "visible"}, 4.386);
+      tl.set("#cap-c2", {opacity: 0, visibility: "hidden"}, 6.251);
+      tl.set("#cap-c3", {opacity: 1, visibility: "visible"}, 6.561);
+      tl.set("#cap-c3", {opacity: 0, visibility: "hidden"}, 7.888);
+      tl.set("#cap-c4", {opacity: 1, visibility: "visible"}, 8.000);
+      tl.set("#cap-c4", {opacity: 0, visibility: "hidden"}, 9.108);
+      tl.set("#cap-c5", {opacity: 1, visibility: "visible"}, 9.422);
+      tl.set("#cap-c5", {opacity: 0, visibility: "hidden"}, 12.911);
+      tl.set("#cap-c6", {opacity: 1, visibility: "visible"}, 13.010);
+      tl.set("#cap-c6", {opacity: 0, visibility: "hidden"}, 15.447);
+      tl.set("#cap-c7", {opacity: 1, visibility: "visible"}, 15.810);
+      tl.set("#cap-c7", {opacity: 0, visibility: "hidden"}, 17.784);
+      tl.set("#cap-c8", {opacity: 1, visibility: "visible"}, 18.184);
+      tl.set("#cap-c8", {opacity: 0, visibility: "hidden"}, 20.201);
+      tl.set("#cap-c9", {opacity: 1, visibility: "visible"}, 20.404);
+      tl.set("#cap-c9", {opacity: 0, visibility: "hidden"}, 22.229);
+      tl.set("#cap-c10", {opacity: 1, visibility: "visible"}, 22.450);
+      tl.set("#cap-c10", {opacity: 0, visibility: "hidden"}, 25.728);
+      tl.set("#cap-c11", {opacity: 1, visibility: "visible"}, 26.089);
+      tl.set("#cap-c11", {opacity: 0, visibility: "hidden"}, 27.705);
+      tl.set("#cap-c12", {opacity: 1, visibility: "visible"}, 27.936);
+      tl.set("#cap-c12", {opacity: 0, visibility: "hidden"}, 29.865);
+      tl.set("#cap-c13", {opacity: 1, visibility: "visible"}, 29.885);
+      tl.set("#cap-c13", {opacity: 0, visibility: "hidden"}, 30.646);
+      tl.set("#cap-c14", {opacity: 1, visibility: "visible"}, 31.026);
+      tl.set("#cap-c14", {opacity: 0, visibility: "hidden"}, 32.523);
+      tl.set("#cap-c15", {opacity: 1, visibility: "visible"}, 32.926);
+      tl.set("#cap-c15", {opacity: 0, visibility: "hidden"}, 33.809);
+      tl.set("#cap-c16", {opacity: 1, visibility: "visible"}, 34.014);
+      tl.set("#cap-c16", {opacity: 0, visibility: "hidden"}, 35.490);
+      tl.set("#cap-c17", {opacity: 1, visibility: "visible"}, 35.863);
+      tl.set("#cap-c17", {opacity: 0, visibility: "hidden"}, 37.882);
+      tl.set("#cap-c18", {opacity: 1, visibility: "visible"}, 37.902);
+      tl.set("#cap-c18", {opacity: 0, visibility: "hidden"}, 38.701);
+      tl.set("#cap-c19", {opacity: 1, visibility: "visible"}, 39.046);
+      tl.set("#cap-c19", {opacity: 0, visibility: "hidden"}, 40.189);
+      tl.set("#cap-c20", {opacity: 1, visibility: "visible"}, 40.446);
+      tl.set("#cap-c20", {opacity: 0, visibility: "hidden"}, 42.156);
+      tl.set("#cap-c21", {opacity: 1, visibility: "visible"}, 42.269);
+      tl.set("#cap-c21", {opacity: 0, visibility: "hidden"}, 44.211);
+      tl.set("#cap-c22", {opacity: 1, visibility: "visible"}, 44.316);
+      tl.set("#cap-c22", {opacity: 0, visibility: "hidden"}, 45.597);
+      tl.set("#cap-c23", {opacity: 1, visibility: "visible"}, 45.903);
+      tl.set("#cap-c23", {opacity: 0, visibility: "hidden"}, 48.534);
+      tl.set("#cap-c24", {opacity: 1, visibility: "visible"}, 48.760);
+      tl.set("#cap-c24", {opacity: 0, visibility: "hidden"}, 49.795);
+      tl.set("#cap-c25", {opacity: 1, visibility: "visible"}, 50.030);
+      tl.set("#cap-c25", {opacity: 0, visibility: "hidden"}, 52.533);
+      tl.set("#cap-c26", {opacity: 1, visibility: "visible"}, 52.810);
+      tl.set("#cap-c26", {opacity: 0, visibility: "hidden"}, 54.867);
+      tl.set("#cap-c27", {opacity: 1, visibility: "visible"}, 55.039);
+      tl.set("#cap-c27", {opacity: 0, visibility: "hidden"}, 57.422);
+      tl.set("#cap-c28", {opacity: 1, visibility: "visible"}, 57.944);
+      tl.set("#cap-c28", {opacity: 0, visibility: "hidden"}, 60.249);
+      tl.set("#cap-c29", {opacity: 1, visibility: "visible"}, 60.550);
+      tl.set("#cap-c29", {opacity: 0, visibility: "hidden"}, 63.503);
+      tl.set("#cap-c30", {opacity: 1, visibility: "visible"}, 63.821);
+      tl.set("#cap-c30", {opacity: 0, visibility: "hidden"}, 66.545);
+      tl.set("#cap-c31", {opacity: 1, visibility: "visible"}, 66.687);
+      tl.set("#cap-c31", {opacity: 0, visibility: "hidden"}, 68.474);
+      tl.set("#cap-c32", {opacity: 1, visibility: "visible"}, 68.866);
+      tl.set("#cap-c32", {opacity: 0, visibility: "hidden"}, 71.055);
+      tl.set("#cap-c33", {opacity: 1, visibility: "visible"}, 71.170);
+      tl.set("#cap-c33", {opacity: 0, visibility: "hidden"}, 72.314);
+      tl.set("#cap-c34", {opacity: 1, visibility: "visible"}, 72.403);
+      tl.set("#cap-c34", {opacity: 0, visibility: "hidden"}, 74.760);
+      tl.set("#cap-c35", {opacity: 1, visibility: "visible"}, 74.990);
+      tl.set("#cap-c35", {opacity: 0, visibility: "hidden"}, 78.366);
+      tl.set("#cap-c36", {opacity: 1, visibility: "visible"}, 78.523);
+      tl.set("#cap-c36", {opacity: 0, visibility: "hidden"}, 79.680);
+      window.__timelines["captions"] = tl;
+    })();
+  </script>
+</template>

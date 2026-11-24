@@ -1,0 +1,84 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="hook" data-duration="31.47" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="h-all">
+        <text id="h-date" class="h" x="200" y="150" font-size="34" fill="#6b6f7a" letter-spacing="2">2026 年 10 月 29 日 · Binance</text>
+        <g id="h-axis" class="h">
+          <line x1="200" y1="300" x2="1700" y2="300" stroke="#6b6f7a" stroke-width="4" />
+          <g font-size="28" fill="#6b6f7a" text-anchor="middle"><text x="200" y="350">0</text><text x="525" y="350">10</text><text x="850" y="350">20</text><text x="1175" y="350">30</text><text x="1500" y="350">40 分钟</text></g>
+        </g>
+        <g id="h-t0" class="h"><circle cx="200" cy="300" r="12" fill="#FC6255" /><text x="200" y="250" font-size="30" fill="#FC6255" text-anchor="middle">主要清扫</text></g>
+        <line id="h-run" x1="200" y1="300" x2="200" y2="300" stroke="#FC6255" stroke-width="6" />
+        <g id="h-t1" class="h"><circle cx="1402" cy="300" r="12" fill="#83C167" /><text x="1402" y="250" font-size="30" fill="#83C167" text-anchor="middle">+37 分钟</text></g>
+        <g id="h-t2" class="h"><circle cx="1500" cy="300" r="12" fill="#83C167" /><text x="1560" y="220" font-size="30" fill="#83C167" text-anchor="middle">+3 分钟</text></g>
+        <!-- 冻结 -->
+        <g id="h-f1" class="h">
+          <rect x="900" y="440" width="760" height="110" rx="16" fill="#13200f" stroke="#83C167" stroke-width="4" />
+          <text x="940" y="510" font-size="38" fill="#83C167" font-weight="800">Tether 冻结 ≈ 9.7 亿 USDT</text>
+        </g>
+        <g id="h-f2" class="h">
+          <rect x="900" y="580" width="760" height="110" rx="16" fill="#13200f" stroke="#83C167" stroke-width="4" />
+          <text x="940" y="650" font-size="38" fill="#83C167" font-weight="800">Circle 冻结 ≈ 8.2 亿 USDC</text>
+        </g>
+        <!-- 抢先换掉 -->
+        <g id="h-coins"></g>
+        <g id="h-sw" class="h">
+          <rect x="200" y="440" width="560" height="250" rx="16" fill="#1d1214" stroke="#FC6255" stroke-width="4" />
+          <text x="480" y="520" font-size="34" fill="#e8e6df" text-anchor="middle">冻结生效之前</text>
+          <text x="480" y="590" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="800">≈ 7.9 亿美元</text>
+          <text x="480" y="650" font-size="30" fill="#FC6255" text-anchor="middle">稳定币 → ETH / TRX</text>
+        </g>
+        <text id="h-src" class="h" x="480" y="740" font-size="28" fill="#6b6f7a" text-anchor="middle">Elliptic 估计</text>
+      </g>
+      <text id="h-q" class="h" x="960" y="560" font-size="68" fill="#e8e6df" text-anchor="middle" font-weight="800">钱被转走之后，还能做什么？</text>
+      <g id="h-pin" class="h">
+        <rect x="80" y="70" width="640" height="84" rx="14" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="400" y="125" font-size="34" fill="#e8e6df" text-anchor="middle">钱被转走之后，还能做什么？</text>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 31.47, "L": [[0.6, 10.03], [10.48, 15.86], [16.31, 24.16], [24.61, 30.37]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      IN("#h-date", at(0, 0), 0.5);
+      IN("#h-axis", at(0, 0.1), 0.5);
+      IN("#h-t0", at(0, 0.2), 0.4);
+      tl.to("#h-run", { attr: { x2: 1402 }, duration: 0.45 * (L[0][1] - L[0][0]), ease: "none" }, at(0, 0.3));
+      IN("#h-t1", at(0, 0.78), 0.4, { y: -10 }, { y: 0 });
+      IN("#h-f1", at(0, 0.82), 0.5, { x: 20 }, { x: 0 });
+      // L1 Circle
+      tl.to("#h-run", { attr: { x2: 1500 }, duration: 0.6, ease: "none" }, at(1, 0.05));
+      IN("#h-t2", at(1, 0.2), 0.4, { y: -10 }, { y: 0 });
+      IN("#h-f2", at(1, 0.3), 0.5, { x: 20 }, { x: 0 });
+      // L2 抢先换掉：金币变红流出
+      const host = document.querySelector("#h-coins"), cs = [];
+      for (let i = 0; i < 12; i++) { const c = document.createElementNS("http://www.w3.org/2000/svg", "circle"); c.setAttribute("cx", 260 + (i % 6) * 90); c.setAttribute("cy", 800 + Math.floor(i / 6) * 60); c.setAttribute("r", "18"); c.setAttribute("fill", "#F0B90B"); c.setAttribute("opacity", "0"); host.appendChild(c); cs.push(c); }
+      cs.forEach((c, i) => { tl.fromTo(c, { opacity: 0 }, { opacity: 1, duration: 0.2 }, at(2, 0.05) + i * 0.04); tl.to(c, { fill: "#FC6255", attr: { cx: -60 }, opacity: 0, duration: 1.0, ease: "power2.in" }, at(2, 0.35) + i * 0.08); });
+      IN("#h-sw", at(2, 0.3), 0.5, { y: 20 }, { y: 0 });
+      IN("#h-src", at(2, 0.6), 0.4);
+      // L3 问题
+      tl.to("#h-all", { opacity: 0, filter: "blur(6px)", duration: 0.5, ease: "power2.in" }, at(3, 0.05));
+      IN("#h-q", at(3, 0.1), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      tl.to("#h-q", { opacity: 0, duration: 0.4 }, at(3, 0.62));
+      IN("#h-pin", at(3, 0.66), 0.4, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1 });
+      tl.to("#h-pin", { opacity: 0, duration: 0.3 }, C.d - 0.35);
+
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>

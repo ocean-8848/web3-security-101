@@ -1,0 +1,265 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; color: #d8dde6; }
+
+    /* ---------- terminal window ---------- */
+    #win { position: absolute; left: 135px; top: 40px; width: 1650px; height: 842px;
+      border-radius: 14px; overflow: hidden; background: #15171c;
+      box-shadow: 0 28px 60px rgba(60, 50, 35, 0.20), 0 4px 14px rgba(60, 50, 35, 0.10);
+      transform-origin: 50% 50%; }
+    #tm-bar { position: absolute; left: 0; top: 0; right: 0; height: 56px; background: #dcd9d3;
+      border-bottom: 1px solid #c4c0b8; text-align: center;
+      font-family: "Inter", sans-serif; font-size: 28px; line-height: 56px; color: #55524c; font-weight: 400; }
+    #tm-body { position: absolute; left: 0; top: 56px; right: 0; bottom: 0;
+      font-family: "JetBrains Mono", "Noto Sans SC", monospace; font-size: 38px; line-height: 54px; font-variant-ligatures: none; font-feature-settings: "calt" 0, "liga" 0; }
+    .scr { position: absolute; left: 44px; top: 30px; right: 44px; opacity: 0; }
+    .row { height: 54px; white-space: pre; }
+    .h { opacity: 0; }
+    .cm { color: #7d8594; }
+    .k { color: #7d8594; }
+    .b { color: #ffffff; font-weight: 700; }
+    .red { color: #ff5a4f; }
+    .amb { color: #ffb020; font-weight: 700; }
+    .ty { display: inline-block; white-space: pre; vertical-align: top; }
+    #tm-cur { position: absolute; left: 44px; top: 35px; width: 23px; height: 44px; background: #d8dde6; opacity: 0; }
+    #c-one { display: inline-block; padding: 0 6px; margin: 0 -6px; border-radius: 3px; }
+    #d-old { display: inline-block; }
+
+    /* ---------- path boxes ---------- */
+    #f-path { display: flex; align-items: center; gap: 0; height: 100px; margin-top: 0; white-space: nowrap; }
+    .bx { position: relative; height: 76px; padding: 0 10px; border: 2px solid #4a505c; border-radius: 6px;
+      font-family: "Noto Sans SC", sans-serif; font-size: 32px; line-height: 72px; color: #7d8594; font-weight: 500; }
+    .bx .n { margin-right: 4px; }
+    .bx .lb { opacity: 0; }
+    .ar { width: 30px; text-align: center; color: #7d8594; font-size: 30px; }
+    #f-b4 .caret { position: absolute; left: 50%; top: 88px; transform: translateX(-50%); white-space: nowrap;
+      font-family: "JetBrains Mono", "Noto Sans SC", monospace; font-size: 32px; line-height: 44px; color: #ffb020; font-weight: 700; opacity: 0; }
+
+    /* ---------- desktop titles ---------- */
+    #e-wrap { position: absolute; left: 1010px; top: 230px; color: #1a1a1a; }
+    .eline { font-family: "Noto Sans SC", sans-serif; font-weight: 900; font-size: 168px; line-height: 1.0; white-space: nowrap; }
+    .esub { font-family: "JetBrains Mono", monospace; font-size: 32px; line-height: 44px; color: #6b675f; margin: 14px 0 52px 6px; }
+    .eline .ch, .gch { opacity: 0; }
+    .mark { display: inline-block; width: 128px; height: 128px; margin-left: 26px; vertical-align: -6px; opacity: 0; }
+    #g-wrap { position: absolute; left: 230px; top: 330px; color: #1a1a1a; }
+    #g-title { font-family: "Noto Sans SC", sans-serif; font-weight: 900; font-size: 156px; line-height: 1.1; white-space: nowrap; }
+    #g-sub { margin-top: 34px; font-family: "Noto Sans SC", sans-serif; font-weight: 500; font-size: 52px; line-height: 1.2; color: #4d4a44; white-space: pre; }
+  </style>
+
+  <div id="root" data-composition-id="story" data-width="1920" data-height="1080">
+    <div id="win" data-layout-allow-overflow>
+      <div id="tm-bar">verify-safe-tx — zsh</div>
+      <div id="tm-body">
+
+        <!-- A · incident + keys (0 – 13.55) -->
+        <div id="sa" class="scr" style="opacity:1">
+          <div class="row cm"># 2025-02-21<span id="a-r0b" class="h"> · Bybit</span><span id="a-r0c" class="h"> 以太坊冷钱包</span></div>
+          <div class="row"><span class="cm">$ </span><span class="ty" id="a-c1">./verify.sh incident</span></div>
+          <div id="a-r2" class="row h"><span class="k">loss          </span>≈ <span class="b">1.5B USD</span></div>
+          <div id="a-r3" class="row h cm"># FBI 口径 · 事发时估值</div>
+          <div id="a-r4" class="row h"><span class="cm">$ </span><span class="ty" id="a-c4">./verify.sh check-keys</span></div>
+          <div id="a-r5" class="row h"><span class="k">private keys  </span><span id="a-r5b" class="b h">NOT leaked</span></div>
+          <div id="a-r6" class="row h cm"># 多签签名人逐一确认（人数从略）</div>
+          <div id="a-r7" class="row h">✓ signer confirmed</div>
+          <div id="a-r8" class="row h">✓ signer confirmed</div>
+          <div id="a-r9" class="row h">✓ signer confirmed</div>
+          <div id="a-r10" class="row h cm">…</div>
+          <div id="a-r11" class="row h"><span class="k">policy        </span>threshold met ✓</div>
+          <div id="a-r12" class="row h"><span class="cm">$ </span></div>
+        </div>
+
+        <!-- B · what the screen showed (13.55 – 17.3) -->
+        <div id="sb" class="scr">
+          <div class="row"><span class="cm">$ </span><span class="ty" id="b-c0">./verify.sh show --ui</span></div>
+          <div id="b-r1" class="row h cm"># 签名人屏幕上显示的内容</div>
+          <div id="b-r2" class="row h"><span class="k">type          </span>token transfer</div>
+          <div id="b-r3" class="row h"><span class="k">operation     </span>0  (CALL)</div>
+          <div id="b-r4" class="row h"><span class="k">to            </span>0x…  <span class="cm">(示例)</span></div>
+          <div class="row"></div>
+          <div id="b-r6" class="row h"><span class="k">verdict       </span><span class="b">普通转账 ✓</span></div>
+          <div id="b-r7" class="row h"><span class="cm">$ </span></div>
+        </div>
+
+        <!-- C · raw decode + diff (17.3 – 23.95) -->
+        <div id="sc" class="scr">
+          <div id="c-r0" class="row"><span class="cm">$ </span><span class="ty" id="c-c0">./verify.sh decode --raw</span></div>
+          <div id="c-r1" class="row h cm"># 实际签下的原始字段</div>
+          <div id="c-r2" class="row h"><span class="k">to            </span>0x…  <span class="red">攻击者合约</span>  <span class="cm">(示例)</span></div>
+          <div id="c-r3" class="row h"><span class="k">data          </span>transfer(address,uint256)</div>
+          <div class="row"></div>
+          <div id="c-r5" class="row h cm">--- 屏幕显示</div>
+          <div id="c-r6" class="row h cm">+++ 实际签名</div>
+          <div id="c-r7" class="row h red">- operation: 0  (CALL)</div>
+          <div id="c-r8" class="row h amb">+ operation: <span id="c-one">1</span>  (DELEGATECALL)</div>
+          <div id="c-r9" class="row h cm"># 正常转账是 0 = CALL</div>
+          <div id="c-r10" class="row h"><span class="cm">$ </span></div>
+        </div>
+
+        <!-- D · storage trace (23.95 – 37.85) -->
+        <div id="sd" class="scr">
+          <div class="row"><span class="cm">$ </span><span class="ty" id="d-c0">./verify.sh trace storage</span></div>
+          <div id="d-r1" class="row h cm"># operation = 1：目标代码在 Safe 的存储上运行</div>
+          <div id="d-r2" class="row h"><span class="k">code          </span><span class="red">攻击者合约</span></div>
+          <div id="d-r3" class="row h"><span class="k">storage       </span>Safe 代理（自身）</div>
+          <div id="d-r4" class="row h"><span class="k">transfer(…)   </span>参数写进 slot[0]</div>
+          <div class="row"></div>
+          <div id="d-r6" class="row h"><span class="k">slot[0] implementation  </span><span id="d-old" class="b">SafeImpl</span><span id="d-new" class="h"> → <span class="red">攻击者合约</span> <span class="cm">(0x… 示例)</span></span></div>
+          <div class="row"></div>
+          <div id="d-r8" class="row h"><span class="cm">$ </span></div>
+        </div>
+
+        <!-- F · signing path (37.85 – 43.2) -->
+        <div id="sf" class="scr">
+          <div class="row"><span class="cm">$ </span><span class="ty" id="f-c0">./verify.sh path</span></div>
+          <div id="f-r1" class="row h cm"># 签名路径：从提出到上链</div>
+          <div class="row"></div>
+          <div id="f-path" class="h">
+            <div class="bx" id="f-b1"><span class="n">①</span><span class="lb">业务意图</span></div><div class="ar">→</div>
+            <div class="bx" id="f-b2"><span class="n">②</span><span class="lb">请求构造</span></div><div class="ar">→</div>
+            <div class="bx" id="f-b3"><span class="n">③</span><span class="lb">风控与审批</span></div><div class="ar">→</div>
+            <div class="bx" id="f-b4"><span class="n">④</span><span class="lb">显示与解码</span><span class="caret">↑ Bybit 断在这里</span></div><div class="ar">→</div>
+            <div class="bx" id="f-b5"><span class="n">⑤</span><span class="lb">签名</span></div><div class="ar">→</div>
+            <div class="bx" id="f-b6"><span class="n">⑥</span><span class="lb">广播</span></div><div class="ar">→</div>
+            <div class="bx" id="f-b7"><span class="n">⑦</span><span class="lb">链上状态</span></div>
+          </div>
+        </div>
+
+        <div id="tm-cur"></div>
+      </div>
+    </div>
+
+    <!-- E · keys vs file (desktop, right side) -->
+    <div id="e-wrap">
+      <div class="eline"><span class="ch">钥</span><span class="ch">匙</span><svg id="e-tick" class="mark" viewBox="0 0 100 100"><path d="M14 54 L40 78 L88 22" fill="none" stroke="#1a1a1a" stroke-width="13" stroke-linecap="square"/></svg></div>
+      <div id="e-s1" class="esub h">private keys · 未泄露</div>
+      <div class="eline"><span class="ch">文</span><span class="ch">件</span><svg id="e-cross" class="mark" viewBox="0 0 100 100"><path d="M20 20 L80 80 M80 20 L20 80" fill="none" stroke="#ff5a4f" stroke-width="13" stroke-linecap="square"/></svg></div>
+      <div id="e-s2" class="esub h">signed payload · 被换掉</div>
+    </div>
+
+    <!-- G · title card -->
+    <div id="g-wrap">
+      <div id="g-title"><span class="gch">攻</span><span class="gch">击</span><span class="gch">者</span><span class="gch">不</span><span class="gch">再</span><span class="gch">偷</span><span class="gch">私</span><span class="gch">钥</span></div>
+      <div id="g-sub"><span class="gch">第</span><span class="gch"> 29 </span><span class="gch">章</span><span class="gch"> · </span><span class="gch">签</span><span class="gch">名</span><span class="gch">路</span><span class="gch">径</span></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const CW = 22.8, LH = 54, TYPE = 0.03, LINE = 0.05;
+      const $ = (id) => document.getElementById(id);
+      const show = (ids, t) => { [].concat(ids).forEach((id, i) => tl.set("#" + id, { opacity: 1 }, t + i * LINE)); };
+
+      /* ---- cursor: position + deterministic blink (no repeat) ---- */
+      const segs = []; // [start, mode] mode: blink | on | off
+      const curAt = (t, row, col) => tl.set("#tm-cur", { x: col * CW, y: row * LH }, t);
+      function type(id, t, row) {
+        const n = $(id).textContent.length, d = n * TYPE;
+        tl.fromTo("#" + id, { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: d, ease: "steps(" + n + ")" }, t);
+        tl.fromTo("#tm-cur", { x: 2 * CW, y: row * LH }, { x: (2 + n) * CW, y: row * LH, duration: d, ease: "steps(" + n + ")", immediateRender: false }, t);
+        segs.push([t, "on"], [t + d, "off"]);
+        return t + d;
+      }
+      const wait = (t, row, col) => { curAt(t, row, col); segs.push([t, "blink"]); };
+
+      /* ===== A · 0 – 13.55 ===== */
+      wait(0, 1, 2);
+      show("a-r0b", 2.46);
+      show("a-r0c", 3.60);
+      type("a-c1", 4.30, 1);
+      show(["a-r2", "a-r3"], 5.23);
+      show("a-r4", 5.60); wait(5.60, 4, 2);
+      type("a-c4", 6.75, 4);
+      show("a-r5", 7.53);
+      show("a-r5b", 8.68);
+      show("a-r6", 9.56);
+      show("a-r7", 10.25); show("a-r8", 10.85); show("a-r9", 11.45); show("a-r10", 11.95);
+      show("a-r11", 12.48);
+      show("a-r12", 12.75); wait(12.75, 12, 2);
+
+      /* ===== B · 13.55 – 17.3 ===== */
+      tl.set("#sa", { opacity: 0 }, 13.55); tl.set("#sb", { opacity: 1 }, 13.55);
+      wait(13.55, 0, 2);
+      type("b-c0", 13.70, 0);
+      show(["b-r1", "b-r2", "b-r3", "b-r4"], 14.40);
+      show("b-r6", 16.09);
+      show("b-r7", 16.45); wait(16.45, 7, 2);
+
+      /* ===== C · 17.3 – 23.95 ===== */
+      tl.set("#sb", { opacity: 0 }, 17.30); tl.set("#sc", { opacity: 1 }, 17.30);
+      wait(17.30, 0, 2);
+      type("c-c0", 17.50, 0);
+      show(["c-r1", "c-r2", "c-r3"], 18.30);
+      show(["c-r5", "c-r6", "c-r7"], 20.08);
+      wait(20.25, 8, 0);                       // pause: cursor waits on the empty row
+      show("c-r8", 20.82); segs.push([20.82, "off"]);
+      tl.set("#win", { transformOrigin: "50% 92%" }, 20.5);
+      tl.to("#win", { scale: 1.08, duration: 0.7, ease: "power3.inOut" }, 20.82);
+      tl.to(["#c-r0", "#c-r1", "#c-r2", "#c-r3", "#c-r5", "#c-r6", "#c-r7"], { opacity: 0.32, duration: 0.3, ease: "power2.out" }, 20.95);
+      tl.set("#c-one", { backgroundColor: "#ffb020", color: "#15171c" }, 21.85);
+      show("c-r9", 22.15);
+      show("c-r10", 22.45); wait(22.45, 10, 2);
+      tl.to("#win", { scale: 1, duration: 0.7, ease: "power3.inOut" }, 23.10);
+      tl.set("#win", { transformOrigin: "50% 50%" }, 23.85);
+
+      /* ===== D · 23.95 – 37.85 ===== */
+      tl.set("#sc", { opacity: 0 }, 23.95); tl.set("#sd", { opacity: 1 }, 23.95);
+      type("d-c0", 23.95, 0);
+      show("d-r1", 24.90);
+      show("d-r2", 26.07); show("d-r3", 26.35);
+      show("d-r4", 27.00);
+      show("d-r6", 27.77);
+      tl.set("#d-old", { color: "#7d8594", textDecoration: "line-through" }, 28.63);
+      show("d-new", 28.63);
+      show("d-r8", 29.30); wait(29.30, 8, 2);
+
+      /* ===== E · window to the left, desktop title on the right ===== */
+      tl.to("#win", { x: -470, scale: 0.5, duration: 0.7, ease: "power3.inOut" }, 30.55);
+      const eCh = gsap.utils.toArray("#e-wrap .ch");
+      tl.set(eCh[0], { opacity: 1 }, 31.40); tl.set(eCh[1], { opacity: 1 }, 31.435);
+      tl.set("#e-s1", { opacity: 1 }, 31.55);
+      tl.fromTo("#e-tick", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: "expo.out" }, 32.53);
+      tl.set(eCh[2], { opacity: 1 }, 33.81); tl.set(eCh[3], { opacity: 1 }, 33.845);
+      tl.set("#e-s2", { opacity: 1 }, 33.95);
+      tl.fromTo("#e-cross", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: "expo.out" }, 35.43);
+      tl.to("#e-wrap", { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, 36.95);
+      tl.to("#win", { x: 0, scale: 1, duration: 0.7, ease: "power3.inOut" }, 37.10);
+
+      /* ===== F · signing path 37.85 – 43.2 ===== */
+      tl.set("#sd", { opacity: 0 }, 37.85); tl.set("#sf", { opacity: 1 }, 37.85);
+      wait(37.85, 0, 2);
+      type("f-c0", 38.00, 0);
+      show("f-r1", 39.58);
+      show("f-path", 39.63);
+      const lbs = gsap.utils.toArray("#f-path .bx");
+      lbs.forEach((b, i) => {
+        const t = 41.13 + i * 0.14;
+        tl.set(b.querySelector(".lb"), { opacity: 1 }, t);
+        tl.set(b, { color: "#d8dde6", borderColor: "#d8dde6" }, t);
+      });
+      tl.set("#f-b4", { backgroundColor: "#ffb020", borderColor: "#ffb020", color: "#15171c", fontWeight: 700 }, 42.36);
+      tl.set("#f-b4 .caret", { opacity: 1 }, 42.36);
+
+      /* ===== G · title card 43.2 – 47.16 ===== */
+      tl.set("#sf", { opacity: 0 }, 43.60);
+      segs.push([43.60, "off"]);
+      tl.to("#win", { opacity: 0, scale: 0.97, duration: 0.35, ease: "power3.in" }, 43.62);
+      gsap.utils.toArray("#g-title .gch").forEach((c, i) => tl.set(c, { opacity: 1 }, 44.00 + i * 0.035));
+      gsap.utils.toArray("#g-sub .gch").forEach((c, i) => tl.set(c, { opacity: 1 }, 44.38 + i * 0.03));
+
+      /* ---- expand cursor segments into deterministic sets ---- */
+      segs.sort((a, b) => a[0] - b[0]);
+      segs.forEach((s, i) => {
+        const end = i + 1 < segs.length ? segs[i + 1][0] : 47.16;
+        if (s[1] === "blink") {
+          for (let k = 0; s[0] + k * 0.5 < end - 0.001; k++) tl.set("#tm-cur", { opacity: k % 2 === 0 ? 1 : 0 }, s[0] + k * 0.5);
+        } else {
+          tl.set("#tm-cur", { opacity: s[1] === "on" ? 1 : 0 }, s[0]);
+        }
+      });
+
+      tl.set({}, {}, 47.16);
+      window.__timelines["story"] = tl;
+    })();
+  </script>
+</template>

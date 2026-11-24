@@ -1,0 +1,171 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="key" data-duration="37.75" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <g id="k-keyshape">
+          <circle cx="-34" cy="0" r="20" fill="none" stroke="#B48EF0" stroke-width="7" />
+          <path d="M-14 0 H 46 M 30 0 V 16 M 44 0 V 13" stroke="#B48EF0" stroke-width="7" stroke-linecap="round" fill="none" />
+        </g>
+        <marker id="k-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="k-all">
+        <!-- 私钥：256 位随机数 -->
+        <g id="k-main"><use href="#k-keyshape" x="960" y="540" /></g>
+        <g id="k-bits" class="h">
+          <text id="k-hex" x="960" y="420" font-size="36" fill="#B48EF0" text-anchor="middle" font-family="JetBrains Mono" letter-spacing="1"></text>
+          <text x="960" y="360" font-size="30" fill="#6b6f7a" text-anchor="middle">私钥 · 256 位随机数</text>
+        </g>
+
+        <!-- 签名 → 链上只认签名 -->
+        <g id="k-tx" class="h">
+          <rect x="1300" y="460" width="360" height="160" rx="16" fill="#1a1708" stroke="#F0B90B" stroke-width="3" />
+          <text x="1480" y="520" font-size="32" fill="#F0B90B" text-anchor="middle" font-weight="700">一笔交易</text>
+          <path id="k-sig" class="dr" pathLength="1" d="M1360 580 C 1390 550, 1410 600, 1440 570 S 1500 560, 1520 585 L 1600 575" fill="none" stroke="#e8e6df" stroke-width="4" stroke-linecap="round" />
+        </g>
+        <path id="k-a1" class="dr h" pathLength="1" d="M1040 540 L 1290 540" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#k-ah)" />
+        <text id="k-chain" class="h" x="1480" y="690" font-size="32" fill="#83C167" text-anchor="middle">链上：签名有效 ✓</text>
+
+        <!-- 持有者：先是你（白），再是攻击者（红） -->
+        <circle id="k-you" class="h" cx="620" cy="540" r="40" fill="#2a2f3a" stroke="#e8e6df" stroke-width="3" />
+        <circle id="k-atk" class="h" cx="620" cy="760" r="40" fill="#2a1416" stroke="#FC6255" stroke-width="4" />
+        <text id="k-atkt" class="h" x="620" y="845" font-size="30" fill="#FC6255" text-anchor="middle">谁拿到，谁签</text>
+        <g id="k-coins" class="h" fill="#F0B90B"><circle cx="1440" cy="800" r="18" /><circle cx="1485" cy="800" r="18" /><circle cx="1530" cy="800" r="18" /></g>
+
+        <!-- 助记词：12 个单词（只画格子，不写词） -->
+        <g id="k-mn"></g>
+        <text id="k-mnt" class="h" x="960" y="200" font-size="34" fill="#e8e6df" text-anchor="middle">助记词 · 12 / 24 个单词 = 种子</text>
+        <g id="k-tree" fill="none" stroke="#B48EF0" stroke-opacity=".6" stroke-width="3">
+          <path class="dr k-br" pathLength="1" d="M960 470 L 600 640" /><path class="dr k-br" pathLength="1" d="M960 470 L 840 640" />
+          <path class="dr k-br" pathLength="1" d="M960 470 L 1080 640" /><path class="dr k-br" pathLength="1" d="M960 470 L 1320 640" />
+        </g>
+        <g id="k-kids">
+          <g class="k-kid h"><use href="#k-keyshape" x="600" y="690" /></g>
+          <g class="k-kid h"><use href="#k-keyshape" x="840" y="690" /></g>
+          <g class="k-kid h"><use href="#k-keyshape" x="1080" y="690" /></g>
+          <g class="k-kid h"><use href="#k-keyshape" x="1320" y="690" /></g>
+        </g>
+        <text id="k-kidt" class="h" x="960" y="790" font-size="32" fill="#B48EF0" text-anchor="middle">推导出一组私钥</text>
+      </g>
+
+      <!-- 比方：保险柜钥匙，可无限复制 -->
+      <g id="k-meta">
+        <g id="k-safe" class="h">
+          <rect x="1180" y="330" width="380" height="380" rx="20" fill="#1a1708" stroke="#F0B90B" stroke-width="4" />
+          <circle cx="1370" cy="520" r="70" fill="none" stroke="#F0B90B" stroke-width="5" />
+          <circle cx="1370" cy="520" r="12" fill="#F0B90B" />
+          <text x="1370" y="770" font-size="34" fill="#F0B90B" text-anchor="middle">保险柜</text>
+        </g>
+        <g id="k-big" class="h"><use href="#k-keyshape" x="700" y="520" /></g>
+        <g id="k-clones">
+          <g class="k-cl h"><use href="#k-keyshape" x="560" y="360" /></g>
+          <g class="k-cl h"><use href="#k-keyshape" x="860" y="360" /></g>
+          <g class="k-cl h"><use href="#k-keyshape" x="560" y="680" /></g>
+          <g class="k-cl h"><use href="#k-keyshape" x="860" y="680" /></g>
+        </g>
+        <text id="k-copy" class="h" x="710" y="820" font-size="34" fill="#e8e6df" text-anchor="middle">可以无限复制</text>
+
+        <!-- 比方不成立：复制留不留痕迹 -->
+        <line id="k-div" class="h" x1="960" y1="250" x2="960" y2="880" stroke="#2a2f3a" stroke-width="2" />
+        <text id="k-lh" class="h" x="480" y="230" font-size="40" fill="#8a8f99" text-anchor="middle" font-weight="700">真钥匙</text>
+        <text id="k-rh" class="h" x="1440" y="230" font-size="40" fill="#B48EF0" text-anchor="middle" font-weight="700">私钥</text>
+        <g id="k-trace" class="h" fill="#FF9F43">
+          <ellipse cx="380" cy="660" rx="16" ry="26" /><ellipse cx="430" cy="610" rx="16" ry="26" /><ellipse cx="480" cy="660" rx="16" ry="26" /><ellipse cx="530" cy="610" rx="16" ry="26" /><ellipse cx="580" cy="660" rx="16" ry="26" />
+          <text x="480" y="760" font-size="32" text-anchor="middle">复制留下痕迹</text>
+        </g>
+        <text id="k-none" class="h" x="1440" y="650" font-size="32" fill="#6b6f7a" text-anchor="middle">复制：什么都没有</text>
+        <g id="k-rcoins" class="h" fill="#F0B90B"><circle cx="1370" cy="480" r="20" /><circle cx="1420" cy="480" r="20" /><circle cx="1470" cy="480" r="20" /><circle cx="1520" cy="480" r="20" /></g>
+        <text id="k-late" class="h" x="1440" y="760" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">直到资产被转走</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 37.75, "L": [[0.6, 4.92], [5.37, 12.62], [13.07, 20.51], [20.96, 25.97], [26.42, 36.65]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.8) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      const DRAWA = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // 64 个十六进制字符（固定种子，示意）
+      let seed = 18; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      let hex = ""; for (let i = 0; i < 64; i++) hex += "0123456789abcdef"[Math.floor(rnd() * 16)];
+      document.querySelector("#k-hex").textContent = hex.slice(0, 32) + "…";
+
+      // 助记词格子：12 个编号空格
+      const NS = "http://www.w3.org/2000/svg", mn = document.querySelector("#k-mn"), pills = [];
+      for (let i = 0; i < 12; i++) {
+        const x = 420 + (i % 6) * 185, y = 270 + Math.floor(i / 6) * 80;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        g.innerHTML = `<rect x="${x}" y="${y}" width="160" height="58" rx="29" fill="#1a1524" stroke="#B48EF0" stroke-width="2" />` +
+          `<text x="${x + 30}" y="${y + 40}" font-size="28" fill="#B48EF0" text-anchor="middle">${i + 1}</text>` +
+          `<line x1="${x + 60}" y1="${y + 36}" x2="${x + 140}" y2="${y + 36}" stroke="#6b6f7a" stroke-width="3" />`;
+        mn.appendChild(g); pills.push(g);
+      }
+
+      // L0 私钥 = 256 位随机数
+      tl.fromTo("#k-main", { scale: 1, svgOrigin: "966 540" }, { scale: 2, duration: 0.8, ease: "expo.out" }, at(0, 0));
+      IN("#k-bits", at(0, 0.25), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      const hx = { v: 0 }, hexEl = document.querySelector("#k-hex");
+      tl.fromTo(hx, { v: 0 }, { v: 32, duration: 1.4, ease: "none", onUpdate: () => { hexEl.textContent = hex.slice(0, Math.round(hx.v)) + (hx.v >= 31.5 ? "…" : ""); } }, at(0, 0.25));
+
+      // L1 链上只认签名；谁拿到私钥，谁签
+      tl.to("#k-main", { x: -40, duration: 0.6, ease: "power2.inOut" }, at(1, 0));
+      IN("#k-you", at(1, 0.02), 0.4);
+      IN("#k-tx", at(1, 0.08), 0.5);
+      DRAWA("#k-a1", at(1, 0.15), 0.5);
+      DRAW("#k-sig", at(1, 0.22), 0.7);
+      IN("#k-chain", at(1, 0.32), 0.4);
+      // 私钥换到攻击者手里，再签一次
+      IN("#k-atk", at(1, 0.5), 0.4);
+      tl.to("#k-main", { y: 220, duration: 0.7, ease: "power2.inOut" }, at(1, 0.55));
+      tl.to("#k-a1", { attr: { d: "M1040 760 L 1300 620" }, duration: 0.7, ease: "power2.inOut" }, at(1, 0.55));
+      IN("#k-atkt", at(1, 0.62), 0.4);
+      IN("#k-coins", at(1, 0.78), 0.3);
+      tl.to("#k-coins", { x: -780, y: -40, fill: "#FC6255", duration: 0.9, ease: "power2.in" }, at(1, 0.8));
+      OUT("#k-coins", at(1, 0.8) + 0.8, 0.3);
+
+      // L2 助记词 → 推导出一组私钥
+      OUT(["#k-tx", "#k-a1", "#k-chain", "#k-you", "#k-atk", "#k-atkt", "#k-bits"], at(2, 0), 0.35);
+      tl.to("#k-main", { x: 0, y: -70, scale: 1.3, duration: 0.7, ease: "power2.inOut" }, at(2, 0.05));
+      tl.to("#k-main", { opacity: 0, duration: 0.3 }, at(2, 0.25));
+      pills.forEach((p, i) => IN(p, at(2, 0.1) + i * 0.06, 0.3, { y: 10 }, { y: 0 }));
+      IN("#k-mnt", at(2, 0.12), 0.5);
+      gsap.utils.toArray("#root .k-br").forEach((p, i) => DRAW(p, at(2, 0.55) + i * 0.1, 0.5));
+      gsap.utils.toArray("#root .k-kid").forEach((p, i) => IN(p, at(2, 0.62) + i * 0.1, 0.4, { scale: 0.5, transformOrigin: "50% 50%" }, { scale: 1 }));
+      IN("#k-kidt", at(2, 0.75), 0.4);
+
+      // L3 保险柜钥匙，可无限复制
+      tl.to("#k-all", { opacity: 0, duration: 0.4 }, at(3, 0));
+      IN("#k-safe", at(3, 0.05), 0.5);
+      IN("#k-big", at(3, 0.1), 0.5, { scale: 0.6, svgOrigin: "706 520" }, { scale: 1.6 });
+      gsap.utils.toArray("#root .k-cl").forEach((g, i) => IN(g, at(3, 0.55) + i * 0.12, 0.35, { x: (i % 2 ? -150 : 150), y: (i < 2 ? 160 : -160) }, { x: 0, y: 0 }));
+      IN("#k-copy", at(3, 0.6), 0.4);
+
+      // L4 比方不成立：真钥匙复制留痕，私钥复制无痕
+      OUT(["#k-safe", "#k-copy"], at(4, 0), 0.3);
+      tl.to("#k-big", { x: -220, y: -60, duration: 0.6, ease: "power2.inOut" }, at(4, 0));
+      tl.to("#root .k-cl", { opacity: 0, duration: 0.3 }, at(4, 0));
+      IN("#k-div", at(4, 0.05), 0.4);
+      IN("#k-lh", at(4, 0.05), 0.4);
+      IN("#k-rh", at(4, 0.3), 0.4);
+      IN("#k-trace", at(4, 0.12), 0.5);
+      IN("#k-none", at(4, 0.35), 0.5);
+      IN("#k-rcoins", at(4, 0.32), 0.3);
+      tl.to("#k-rcoins circle", { x: 420, fill: "#FC6255", opacity: 0, duration: 0.8, stagger: 0.1, ease: "power2.in" }, at(4, 0.68));
+      IN("#k-late", at(4, 0.72), 0.4);
+
+      tl.to(["#k-all", "#k-meta"], { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["key"] = tl;
+    })();
+  </script>
+</template>

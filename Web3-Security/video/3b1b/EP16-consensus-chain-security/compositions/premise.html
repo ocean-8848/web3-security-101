@@ -1,0 +1,94 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="premise" data-duration="30.67" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="p-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="p-all">
+        <!-- 合约立在链上 -->
+        <g id="p-con" class="h">
+          <rect x="760" y="170" width="400" height="150" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+          <text x="960" y="260" font-size="38" fill="#58C4DD" text-anchor="middle" font-weight="700">合约</text>
+        </g>
+        <text id="p-le" class="h" x="960" y="390" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">合约的安全上限 = 链的安全</text>
+        <g id="p-chain"></g>
+        <g id="p-fork"></g>
+        <text id="p-reorg" class="h" x="1100" y="800" font-size="32" fill="#FC6255" text-anchor="middle">重组：已确认的交易消失</text>
+        <circle id="p-tx" class="h" cx="0" cy="0" r="14" fill="#F0B90B" />
+        <!-- 停摆 -->
+        <g id="p-halt" class="h">
+          <rect x="1560" y="490" width="120" height="120" rx="12" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="8 6" />
+          <rect x="1595" y="525" width="16" height="50" fill="#FF9F43" /><rect x="1629" y="525" width="16" height="50" fill="#FF9F43" />
+          <text x="1620" y="680" font-size="30" fill="#FF9F43" text-anchor="middle">停摆</text>
+          <text x="1620" y="720" font-size="28" fill="#8a8f99" text-anchor="middle">提币 · 清算停下</text>
+        </g>
+        <!-- 少数验证者 -->
+        <g id="p-vals" class="h">
+          <circle cx="300" cy="880" r="26" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><circle cx="380" cy="880" r="26" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><circle cx="460" cy="880" r="26" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><circle cx="540" cy="880" r="26" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><circle cx="620" cy="880" r="26" fill="#1a1524" stroke="#B48EF0" stroke-width="3" />
+          <text x="720" y="892" font-size="32" fill="#B48EF0">少数验证者：协调冻结、回滚</text>
+        </g>
+        <g id="p-bet" class="h">
+          <rect x="460" y="960" width="1000" height="90" rx="16" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="960" y="1018" font-size="36" fill="#e8e6df" text-anchor="middle">“已确认” = 对这条链安全假设的<tspan fill="#FF9F43" font-weight="700">赌注</tspan></text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 30.67, "L": [[0.6, 5.11], [5.56, 14.06], [14.51, 18.59], [19.04, 23.79], [24.24, 29.57]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      // 链：10 个区块，后 3 个会被另一条分支替换
+      const ch = document.querySelector("#p-chain"), K = [];
+      for (let i = 0; i < 10; i++) {
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", 0);
+        const x = 120 + i * 120;
+        g.innerHTML = `<rect x="${x}" y="500" width="90" height="90" rx="10" fill="#161a22" stroke="#8a8f99" stroke-width="3" />` + (i ? `<line x1="${x - 30}" y1="545" x2="${x}" y2="545" stroke="#6b6f7a" stroke-width="3" />` : "");
+        ch.appendChild(g); K.push(g);
+      }
+      const fk = document.querySelector("#p-fork"), F = [];
+      for (let i = 0; i < 4; i++) {
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", 0);
+        const x = 120 + (7 + i) * 120;
+        g.innerHTML = `<rect x="${x}" y="650" width="90" height="90" rx="10" fill="#2a1416" stroke="#FC6255" stroke-width="3" />` + `<line x1="${x - 30}" y1="${i ? 695 : 590}" x2="${x}" y2="695" stroke="#FC6255" stroke-width="3" />`;
+        fk.appendChild(g); F.push(g);
+      }
+      const tx = document.querySelector("#p-tx"); tx.setAttribute("cx", 120 + 8 * 120 + 45); tx.setAttribute("cy", 545);
+      // L0 合约在链上
+      K.forEach((g, i) => IN(g, at(0, 0.0) + i * 0.06, 0.3));
+      NODE("#p-con", at(0, 0.3));
+      IN("#p-le", at(0, 0.55), 0.5);
+      // L1 重组
+      POP("#p-tx", at(1, 0.05));
+      F.forEach((g, i) => IN(g, at(1, 0.2) + i * 0.15, 0.35, { x: -20 }, { x: 0 }));
+      tl.to(K.slice(7), { opacity: 0.15, duration: 0.4 }, at(1, 0.75));
+      tl.to("#p-tx", { opacity: 0, scale: 0, transformOrigin: "50% 50%", duration: 0.4 }, at(1, 0.78));
+      IN("#p-reorg", at(1, 0.8), 0.4);
+      // L2 停摆
+      IN("#p-halt", at(2, 0.1), 0.5);
+      // L3 少数验证者
+      IN("#p-vals", at(3, 0.1), 0.5, { y: 20 }, { y: 0 });
+      // L4 赌注
+      IN("#p-bet", at(4, 0.2), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      tl.to("#p-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["premise"] = tl;
+    })();
+  </script>
+</template>

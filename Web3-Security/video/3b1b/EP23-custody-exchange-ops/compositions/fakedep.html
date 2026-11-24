@@ -1,0 +1,136 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="fakedep" data-duration="57.78" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="f-all">
+        <text id="f-title" class="h" x="960" y="110" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="800">入境口：假充值</text>
+        <!-- L0 三种错误转账进账本 -->
+        <g id="f-intro">
+          <g font-size="30" text-anchor="middle">
+            <g class="f-bad h"><circle cx="300" cy="360" r="30" fill="#F0B90B" stroke="#FC6255" stroke-width="5" /><text x="300" y="430" fill="#FC6255">执行失败</text></g>
+            <g class="f-bad h"><circle cx="300" cy="540" r="30" fill="#F0B90B" stroke="#FC6255" stroke-width="5" /><text x="300" y="610" fill="#FC6255">伪造</text></g>
+            <g class="f-bad h"><circle cx="300" cy="720" r="30" fill="#F0B90B" stroke="#FC6255" stroke-width="5" /><text x="300" y="790" fill="#FC6255">金额不符</text></g>
+          </g>
+          <g id="f-led" class="h">
+            <rect x="1200" y="400" width="440" height="280" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+            <text x="1420" y="460" font-size="34" fill="#58C4DD" text-anchor="middle">账本：已入账（笔）</text>
+            <text id="f-bal" x="1420" y="600" font-size="80" fill="#e8e6df" text-anchor="middle" font-weight="800">0</text>
+          </g>
+        </g>
+        <!-- L1–L4 XRP 部分支付 -->
+        <text id="f-case" class="h" x="960" y="200" font-size="32" fill="#8a8f99" text-anchor="middle">2024 年 1 月 · 一笔发给 Bitfinex 的 XRP 部分支付</text>
+        <g id="f-amt" class="h">
+          <text x="200" y="330" font-size="34" fill="#e8e6df" font-family="JetBrains Mono">Amount</text>
+          <text x="200" y="372" font-size="28" fill="#8a8f99">写在请求里的金额</text>
+          <rect id="f-amtbar" x="560" y="300" width="1100" height="70" rx="10" fill="#F0B90B" />
+          <text x="1110" y="348" font-size="36" fill="#0f1117" text-anchor="middle" font-weight="800">≈ 150 亿美元（名义）</text>
+        </g>
+        <g id="f-del" class="h">
+          <text x="200" y="480" font-size="34" fill="#e8e6df" font-family="JetBrains Mono">delivered_amount</text>
+          <text x="200" y="522" font-size="28" fill="#8a8f99">实际到账的金额</text>
+          <rect x="560" y="455" width="4" height="70" fill="#83C167" />
+          <text x="590" y="503" font-size="36" fill="#83C167" font-weight="800">≈ 0.001 美元</text>
+        </g>
+        <g id="f-calc" font-size="44" font-weight="700" fill="#e8e6df">
+          <text class="f-c h" x="200" y="660">150 亿 = 1.5 × 10<tspan baseline-shift="super" font-size="30">10</tspan></text>
+          <text class="f-c h" x="200" y="740">0.001 = 10<tspan baseline-shift="super" font-size="30">−3</tspan></text>
+          <text class="f-c h" x="200" y="820" fill="#FF9F43">相差约 1.5 × 10<tspan baseline-shift="super" font-size="30">13</tspan> 倍</text>
+        </g>
+        <g id="f-wrong" class="h">
+          <rect x="1200" y="600" width="480" height="200" rx="18" fill="#1d1214" stroke="#FC6255" stroke-width="4" />
+          <text x="1440" y="660" font-size="30" fill="#e8e6df" text-anchor="middle">按 Amount 入账</text>
+          <text x="1440" y="750" font-size="56" fill="#FC6255" text-anchor="middle" font-weight="800">+150 亿</text>
+        </g>
+        <g id="f-right" class="h">
+          <rect x="1200" y="600" width="480" height="200" rx="18" fill="#13200f" stroke="#83C167" stroke-width="4" />
+          <text x="1440" y="660" font-size="30" fill="#e8e6df" text-anchor="middle">Bitfinex 按实际到账入账</text>
+          <text x="1440" y="750" font-size="56" fill="#83C167" text-anchor="middle" font-weight="800">+0.001</text>
+        </g>
+        <text id="f-fail" class="h" x="1440" y="870" font-size="36" fill="#83C167" text-anchor="middle" font-weight="700">✓ 攻击没有成功</text>
+
+        <!-- L5 校验链 -->
+        <g id="f-chk" font-size="30" text-anchor="middle">
+          <g class="f-k h"><rect x="80" y="420" width="300" height="110" rx="16" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="230" y="485" fill="#e8e6df">执行成功？</text></g>
+          <g class="f-k h"><rect x="440" y="420" width="300" height="110" rx="16" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="590" y="485" fill="#e8e6df">代币合约在白名单？</text></g>
+          <g class="f-k h"><rect x="800" y="420" width="300" height="110" rx="16" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="950" y="485" fill="#e8e6df">真正到账多少？</text></g>
+          <g class="f-k h"><rect x="1160" y="420" width="300" height="110" rx="16" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="1310" y="485" fill="#e8e6df">确认数够了？</text></g>
+          <g class="f-k h"><rect x="1520" y="420" width="320" height="110" rx="16" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="1680" y="485" fill="#e8e6df">第二个节点复核</text></g>
+        </g>
+        <circle id="f-tok" class="h" cx="40" cy="600" r="22" fill="#F0B90B" />
+        <text id="f-rule" class="h" x="960" y="320" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700">以链上执行结果和实际到账金额为准</text>
+
+        <!-- L6 每条链不同 -->
+        <g id="f-chains" font-size="30" fill="#e8e6df">
+          <text class="f-ch h" x="300" y="700"><tspan fill="#FF9F43">XRP</tspan>：读 <tspan>delivered_amount</tspan></text>
+          <text class="f-ch h" x="300" y="760"><tspan fill="#FF9F43">EOS</tspan>：排除 <tspan>hard_fail</tspan> 和延迟交易</text>
+          <text class="f-ch h" x="1060" y="700"><tspan fill="#FF9F43">Omni</tspan>：只认 <tspan>valid = true</tspan></text>
+          <text class="f-ch h" x="1060" y="760"><tspan fill="#FF9F43">EVM</tspan>：校验事件来自哪个合约</text>
+        </g>
+        <text id="f-new" class="h" x="960" y="880" font-size="36" fill="#FF9F43" text-anchor="middle" font-weight="700">新链 = 重新问一遍</text>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 57.78, "L": [[0.6, 9.48], [9.93, 17.47], [17.92, 25.12], [25.57, 34.01], [34.46, 39.1], [39.55, 52.07], [52.52, 56.68]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const bal = document.querySelector("#f-bal"), b = { v: 0 };
+      // L0 错误转账进入账本
+      IN("#f-title", at(0, 0), 0.5);
+      IN("#f-led", at(0, 0.15), 0.5);
+      const B = gsap.utils.toArray("#root .f-bad");
+      B.forEach((g, i) => {
+        IN(g, at(0, 0.3 + i * 0.12), 0.4);
+        tl.to(g.querySelector("circle"), { attr: { cx: 1420, cy: 520 }, opacity: 0, duration: 0.8, ease: "power2.in" }, at(0, 0.6 + i * 0.1));
+      });
+      tl.fromTo(b, { v: 0 }, { v: 3, duration: 1.0, onUpdate: () => { bal.textContent = Math.round(b.v); } }, at(0, 0.68));
+      tl.to("#f-bal", { fill: "#FC6255", duration: 0.3 }, at(0, 0.85));
+      // L1 XRP 部分支付
+      OUT("#f-intro", at(1, 0), 0.4);
+      IN("#f-case", at(1, 0.1), 0.5);
+      IN("#f-amt", at(1, 0.5), 0.5);
+      tl.fromTo("#f-amtbar", { attr: { width: 0 } }, { attr: { width: 1100 }, duration: 1.0, ease: "expo.out" }, at(1, 0.5));
+      // L2 实际到账
+      IN("#f-del", at(2, 0.4), 0.5);
+      // L3 算：差多少
+      const Cc = gsap.utils.toArray("#root .f-c");
+      IN(Cc[0], at(3, 0.02), 0.4); IN(Cc[1], at(3, 0.15), 0.4); IN(Cc[2], at(3, 0.3), 0.4);
+      IN("#f-wrong", at(3, 0.6), 0.5, { y: 20 }, { y: 0 });
+      // L4 Bitfinex 按实际到账
+      OUT("#f-wrong", at(4, 0), 0.3);
+      IN("#f-right", at(4, 0.1), 0.5, { y: 20 }, { y: 0 });
+      IN("#f-fail", at(4, 0.5), 0.4);
+      // L5 校验链
+      OUT(["#f-case", "#f-amt", "#f-del", "#f-calc", "#f-right", "#f-fail"], at(5, 0), 0.4);
+      IN("#f-rule", at(5, 0.05), 0.5, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      const K = gsap.utils.toArray("#root .f-k");
+      IN("#f-tok", at(5, 0.3), 0.3);
+      K.forEach((g, i) => {
+        IN(g, at(5, 0.3 + i * 0.12), 0.4);
+        tl.to(g.querySelector("rect"), { stroke: "#83C167", strokeWidth: 5, duration: 0.3 }, at(5, 0.36 + i * 0.12));
+      });
+      tl.to("#f-tok", { attr: { cx: 1880 }, duration: 0.6 * (L[5][1] - L[5][0]), ease: "none" }, at(5, 0.3));
+      tl.to("#f-tok", { opacity: 0, duration: 0.3 }, at(5, 0.95));
+      // L6 每条链不同
+      tl.to("#f-chk", { opacity: 0.35, duration: 0.4 }, at(6, 0));
+      gsap.utils.toArray("#root .f-ch").forEach((e, i) => IN(e, at(6, 0.05 + i * 0.12), 0.4, { y: 10 }, { y: 0 }));
+      IN("#f-new", at(6, 0.6), 0.5);
+      tl.to("#f-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["fakedep"] = tl;
+    })();
+  </script>
+</template>

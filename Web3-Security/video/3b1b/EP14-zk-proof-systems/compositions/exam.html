@@ -1,0 +1,128 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="exam" data-duration="41.63" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="e-all">
+        <!-- 答题卡 -->
+        <g id="e-sheet" class="h">
+          <rect x="240" y="190" width="620" height="700" rx="20" fill="#161a22" stroke="#e8e6df" stroke-opacity=".5" stroke-width="3" />
+          <text x="550" y="260" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">答题卡</text>
+          <g id="e-grid"></g>
+        </g>
+        <rect id="e-scan" class="h" x="250" y="300" width="600" height="8" rx="4" fill="#58C4DD" />
+        <text id="e-machine" class="h" x="550" y="950" font-size="32" fill="#58C4DD" text-anchor="middle">阅卷机：只核对“是否按规则涂”</text>
+
+        <!-- 规则 -->
+        <g id="e-rules" class="h">
+          <text x="1060" y="300" font-size="38" fill="#e8e6df" font-weight="700">规则</text>
+          <text x="1060" y="370" font-size="32" fill="#8a8f99">· 每题选项 A–D</text>
+          <text x="1060" y="425" font-size="32" fill="#8a8f99">· 第 1–4 题只能涂一个格子</text>
+        </g>
+        <g id="e-miss" class="h">
+          <rect x="1040" y="450" width="660" height="70" rx="12" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="1060" y="497" font-size="32" fill="#FF9F43">· 第 5 题只能涂一个格子（漏写）</text>
+        </g>
+        <text id="e-pass" class="h" x="1060" y="630" font-size="48" fill="#83C167" font-weight="800">✓ 判对</text>
+        <text id="e-name" class="h" x="1060" y="740" font-size="56" fill="#FF9F43" font-weight="800">约束不足</text>
+        <text id="e-name2" class="h" x="1060" y="800" font-size="30" fill="#8a8f99">阅卷机没坏，规则少了一条</text>
+
+        <!-- Circom：一个符号之差 -->
+        <g id="e-code" class="h">
+          <rect x="260" y="300" width="1400" height="420" rx="20" fill="#0b0e14" stroke="#e8e6df" stroke-opacity=".3" stroke-width="3" />
+          <text x="300" y="360" font-size="30" fill="#6b6f7a">Circom</text>
+        </g>
+        <g id="e-c1" class="h">
+          <text class="mono" x="320" y="470" font-size="52" fill="#e8e6df">out <tspan fill="#FC6255">&lt;--</tspan> in * in;</text>
+          <text x="1000" y="468" font-size="34" fill="#FC6255">✕ 只赋值，不约束</text>
+        </g>
+        <g id="e-c2" class="h">
+          <text class="mono" x="320" y="620" font-size="52" fill="#e8e6df">out <tspan fill="#83C167">&lt;==</tspan> in * in;</text>
+          <text x="1000" y="618" font-size="34" fill="#83C167">✓ 赋值 + 约束</text>
+        </g>
+
+        <!-- 成千上万条约束 -->
+        <g id="e-many"></g>
+        <rect id="e-gap" class="h" x="0" y="0" width="34" height="18" fill="none" stroke="#FF9F43" stroke-width="2" />
+        <text id="e-limit" class="h" x="960" y="960" font-size="36" fill="#e8e6df" text-anchor="middle">成千上万条约束里少一条，从外面看不出异常</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 41.63, "L": [[0.6, 6.53], [6.98, 11.83], [12.28, 17.24], [17.69, 23.12], [23.57, 31.7], [32.15, 40.53]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 答题卡：5 题 × 4 格，前 4 题各涂一个
+      const grid = document.querySelector("#e-grid"), row5 = [];
+      const pick = [1, 3, 0, 2];
+      for (let q = 0; q < 5; q++) {
+        const y = 330 + q * 110;
+        const t = document.createElementNS(NS, "text");
+        t.setAttribute("x", 300); t.setAttribute("y", y + 12); t.setAttribute("font-size", 32); t.setAttribute("fill", q === 4 ? "#FF9F43" : "#8a8f99");
+        t.textContent = q + 1; grid.appendChild(t);
+        for (let k = 0; k < 4; k++) {
+          const r = document.createElementNS(NS, "rect");
+          r.setAttribute("x", 380 + k * 115); r.setAttribute("y", y - 25); r.setAttribute("width", 80); r.setAttribute("height", 50); r.setAttribute("rx", 8);
+          r.setAttribute("fill", q < 4 && pick[q] === k ? "#e8e6df" : "#1f242e"); r.setAttribute("stroke", "#6b6f7a"); r.setAttribute("stroke-width", 2);
+          grid.appendChild(r);
+          if (q === 4) row5.push(r);
+        }
+      }
+      // 很多条约束（固定网格），其中一条缺失
+      const many = document.querySelector("#e-many"), dashes = [];
+      for (let r = 0; r < 14; r++) for (let c = 0; c < 26; c++) {
+        if (r === 9 && c === 17) continue;
+        const l = document.createElementNS(NS, "rect");
+        l.setAttribute("x", 180 + c * 60); l.setAttribute("y", 180 + r * 48); l.setAttribute("width", 34); l.setAttribute("height", 18); l.setAttribute("rx", 4);
+        l.setAttribute("fill", "#58C4DD"); l.setAttribute("opacity", "0");
+        many.appendChild(l); dashes.push(l);
+      }
+      document.querySelector("#e-gap").setAttribute("x", 180 + 17 * 60); document.querySelector("#e-gap").setAttribute("y", 180 + 9 * 48);
+
+      // L0 答题卡 + 阅卷机扫描
+      IN("#e-sheet", at(0, 0.0), 0.7, { y: 20 }, { y: 0 });
+      IN("#e-scan", at(0, 0.45), 0.2);
+      tl.fromTo("#e-scan", { y: 0 }, { y: 520, duration: 1.6, ease: "none" }, at(0, 0.45));
+      OUT("#e-scan", at(0, 0.45) + 1.6, 0.2);
+      IN("#e-machine", at(0, 0.5), 0.5);
+      IN("#e-rules", at(0, 0.7), 0.5);
+      // L1 漏写的规则
+      IN("#e-miss", at(1, 0.3), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      // L2 第 5 题全涂，照样判对
+      row5.forEach((r, i) => tl.to(r, { attr: { fill: "#e8e6df" }, duration: 0.2 }, at(2, 0.1) + i * 0.25));
+      IN("#e-scan", at(2, 0.55), 0.15);
+      tl.fromTo("#e-scan", { y: 0 }, { y: 520, duration: 1.2, ease: "none" }, at(2, 0.55));
+      OUT("#e-scan", at(2, 0.55) + 1.2, 0.2);
+      IN("#e-pass", at(2, 0.8), 0.4, { scale: 1.4, svgOrigin: "1130 615" }, { scale: 1, ease: "back.out(2)" });
+      // L3 约束不足
+      IN("#e-name", at(3, 0.35), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      IN("#e-name2", at(3, 0.05), 0.5);
+      // L4 Circom
+      OUT(["#e-sheet", "#e-machine", "#e-rules", "#e-miss", "#e-pass", "#e-name", "#e-name2"], at(4, 0.0), 0.4);
+      IN("#e-code", at(4, 0.1), 0.5);
+      IN("#e-c1", at(4, 0.3), 0.5, { x: -20 }, { x: 0 });
+      IN("#e-c2", at(4, 0.62), 0.5, { x: -20 }, { x: 0 });
+      // L5 成千上万条约束
+      OUT(["#e-code", "#e-c1", "#e-c2"], at(5, 0.0), 0.4);
+      dashes.forEach((d, i) => tl.to(d, { opacity: 0.55, duration: 0.2 }, at(5, 0.05) + (i % 26) * 0.03 + Math.floor(i / 26) * 0.04));
+      IN("#e-gap", at(5, 0.6), 0.4);
+      tl.to("#e-gap", { opacity: 0.2, duration: 0.25, yoyo: true, repeat: 3 }, at(5, 0.7));
+      IN("#e-limit", at(5, 0.45), 0.5);
+
+      tl.to("#e-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["exam"] = tl;
+    })();
+  </script>
+</template>

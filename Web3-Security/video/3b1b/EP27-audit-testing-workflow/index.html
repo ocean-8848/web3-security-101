@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      /* EP27 审计、测试与开发流程 · 3b1b 风格。颜色语义全片固定，见 STORYBOARD.md §2。 */
+      @font-face {
+        font-family: "NotoSC";
+        src: url("assets/fonts/noto-sc.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0f1117; }
+      #root { position: relative; width: 100%; height: 100%; background: #0f1117; font-family: "NotoSC", sans-serif; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="474.64" data-width="1920" data-height="1080">
+      <div id="hook" data-composition-id="hook" data-composition-src="compositions/hook.html" data-start="0.0" data-duration="31.48" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="plane" data-composition-id="plane" data-composition-src="compositions/plane.html" data-start="31.48" data-duration="52.65" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="gates" data-composition-id="gates" data-composition-src="compositions/gates.html" data-start="84.13" data-duration="47.73" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="spec" data-composition-id="spec" data-composition-src="compositions/spec.html" data-start="131.86" data-duration="40.45" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="fuzz" data-composition-id="fuzz" data-composition-src="compositions/fuzz.html" data-start="172.31" data-duration="52.33" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="invariant" data-composition-id="invariant" data-composition-src="compositions/invariant.html" data-start="224.64" data-duration="54.06" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="audit" data-composition-id="audit" data-composition-src="compositions/audit.html" data-start="278.7" data-duration="38.08" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="deploy" data-composition-id="deploy" data-composition-src="compositions/deploy.html" data-start="316.78" data-duration="50.8" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="monitor" data-composition-id="monitor" data-composition-src="compositions/monitor.html" data-start="367.58" data-duration="52.62" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="answer" data-composition-id="answer" data-composition-src="compositions/answer.html" data-start="420.2" data-duration="54.44" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <audio id="narration" class="clip" src="assets/narration.wav" data-start="0" data-duration="474.64" data-track-index="2" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

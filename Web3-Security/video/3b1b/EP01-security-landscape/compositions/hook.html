@@ -1,0 +1,98 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="hook" data-duration="22.78" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="h-all">
+        <text id="h-date" class="h" x="200" y="190" font-size="34" fill="#6b6f7a" letter-spacing="2">2025 年 2 月 · Bybit</text>
+
+        <!-- 签名卡：三位签名人依次点亮，签名笔画画出 -->
+        <g id="h-card" class="h">
+          <rect x="200" y="300" width="560" height="420" rx="22" fill="#161a22" stroke="#e8e6df" stroke-opacity=".5" stroke-width="3" />
+          <text x="480" y="380" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">多签交易</text>
+          <text x="480" y="440" font-size="30" fill="#8a8f99" text-anchor="middle">看起来很日常</text>
+          <circle id="h-s1" cx="370" cy="530" r="26" fill="#2a2f3a" stroke="#e8e6df" stroke-width="3" />
+          <circle id="h-s2" cx="480" cy="530" r="26" fill="#2a2f3a" stroke="#e8e6df" stroke-width="3" />
+          <circle id="h-s3" cx="590" cy="530" r="26" fill="#2a2f3a" stroke="#e8e6df" stroke-width="3" />
+          <text x="480" y="600" font-size="28" fill="#6b6f7a" text-anchor="middle">签名人</text>
+          <path id="h-sig" class="dr" pathLength="1" d="M300 665 C 340 625, 360 700, 400 660 S 460 630, 480 670 S 560 640, 600 660 L 660 650" fill="none" stroke="#e8e6df" stroke-width="4" stroke-linecap="round" />
+        </g>
+
+        <!-- 多签钱包（资产 = 金色） -->
+        <g id="h-vault" class="h">
+          <rect x="1160" y="300" width="560" height="420" rx="22" fill="#1a1708" stroke="#F0B90B" stroke-width="4" />
+          <text x="1440" y="370" font-size="38" fill="#F0B90B" text-anchor="middle" font-weight="700">多签钱包</text>
+          <g id="h-coins" fill="#F0B90B">
+            <circle class="h-coin" cx="1300" cy="470" r="24" /><circle class="h-coin" cx="1370" cy="470" r="24" /><circle class="h-coin" cx="1440" cy="470" r="24" /><circle class="h-coin" cx="1510" cy="470" r="24" /><circle class="h-coin" cx="1580" cy="470" r="24" />
+            <circle class="h-coin" cx="1300" cy="545" r="24" /><circle class="h-coin" cx="1370" cy="545" r="24" /><circle class="h-coin" cx="1440" cy="545" r="24" /><circle class="h-coin" cx="1510" cy="545" r="24" /><circle class="h-coin" cx="1580" cy="545" r="24" />
+            <circle class="h-coin" cx="1300" cy="620" r="24" /><circle class="h-coin" cx="1370" cy="620" r="24" /><circle class="h-coin" cx="1440" cy="620" r="24" /><circle class="h-coin" cx="1510" cy="620" r="24" /><circle class="h-coin" cx="1580" cy="620" r="24" />
+          </g>
+        </g>
+        <path id="h-link" class="dr" pathLength="1" d="M770 510 L 1150 510" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" fill="none" />
+
+        <text id="h-amount" class="h" x="1440" y="830" font-size="92" fill="#F0B90B" text-anchor="middle" font-weight="800">≈ <tspan id="h-num">0</tspan> 亿美元</text>
+
+        <!-- 问题 -->
+        <g id="h-q" class="h">
+          <text x="960" y="930" font-size="64" fill="#e8e6df" text-anchor="middle" font-weight="700"><tspan fill="#58C4DD">合约代码</tspan>，有漏洞吗？</text>
+        </g>
+      </g>
+      <!-- 地图的种子：一个点，下一场景从这里长出合约 -->
+      <circle id="h-seed" class="h" cx="960" cy="540" r="10" fill="#58C4DD" />
+      <text id="h-seedt" class="h" x="960" y="620" font-size="34" fill="#6b6f7a" text-anchor="middle">从头搭一张地图</text>
+      <!-- 钉住的问题：缩到左上角，本集结尾回答 -->
+      <g id="h-pin" class="h">
+        <rect x="80" y="70" width="560" height="84" rx="14" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="360" y="125" font-size="34" fill="#e8e6df" text-anchor="middle"><tspan fill="#58C4DD">合约代码</tspan>有漏洞吗？</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 22.78, "L": [[0.6, 6.48], [6.93, 10.82], [11.27, 15.71], [16.16, 21.68]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const DRAW = (s, t, d = 0.8) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 签名
+      IN("#h-date", at(0, 0), 0.5);
+      IN("#h-card", at(0, 0.08), 0.8, { y: 20 }, { y: 0 });
+      ["#h-s1", "#h-s2", "#h-s3"].forEach((s, i) =>
+        tl.fromTo(s, { fill: "#2a2f3a" }, { fill: "#e8e6df", duration: 0.25, ease: "power2.out" }, at(0, 0.35 + i * 0.12)));
+      DRAW("#h-sig", at(0, 0.72), 1.0);
+      IN("#h-vault", at(0, 0.3), 0.8, { y: 20 }, { y: 0 });
+      DRAW("#h-link", at(0, 0.92), 0.5);
+
+      // L1 资金流出：金币飞向右侧边缘并变红
+      const coins = gsap.utils.toArray("#root .h-coin");
+      coins.forEach((c, i) => {
+        tl.to(c, { x: 520 + (i % 5) * 30, y: (i % 3 - 1) * 60, fill: "#FC6255", opacity: 0, duration: 0.9, ease: "power3.in" }, at(1, 0.05) + i * 0.08);
+      });
+      IN("#h-amount", at(1, 0.15), 0.5);
+      const n = { v: 0 }, num = document.querySelector("#h-num");
+      tl.fromTo(n, { v: 0 }, { v: 15, duration: 1.8, ease: "power2.out", onUpdate: () => { num.textContent = Math.round(n.v); } }, at(1, 0.15));
+
+      // L2 问题：其余变暗
+      tl.to(["#h-card", "#h-date", "#h-link", "#h-amount"], { opacity: 0.22, duration: 0.5 }, at(2, 0));
+      IN("#h-q", at(2, 0.3), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      tl.fromTo("#h-vault rect", { strokeWidth: 4 }, { stroke: "#58C4DD", strokeWidth: 6, duration: 0.5 }, at(2, 0.3));
+
+      // L3 钉住问题，场景退出
+      tl.to("#h-all", { opacity: 0, filter: "blur(6px)", duration: 0.6, ease: "power2.in" }, at(3, 0.25));
+      IN("#h-pin", at(3, 0.32), 0.6, { scale: 1.6, svgOrigin: "360 112" }, { scale: 1 });
+      IN("#h-seed", at(3, 0.5), 0.5, { scale: 0, svgOrigin: "960 540" }, { scale: 1, ease: "back.out(1.6)" });
+      IN("#h-seedt", at(3, 0.55), 0.5);
+      tl.to("#h-seedt", { opacity: 0, duration: 0.3 }, C.d - 0.7);
+      tl.to("#h-seed", { scale: 3, opacity: 0, svgOrigin: "960 540", duration: 0.4, ease: "power3.in" }, C.d - 0.45);
+      tl.to("#h-pin", { opacity: 0, duration: 0.35, ease: "power2.in" }, C.d - 0.45);
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>

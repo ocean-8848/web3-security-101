@@ -1,0 +1,164 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="machine" data-duration="49.14" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="m-all">
+        <!-- 广场地面 -->
+        <ellipse id="m-plaza" class="h" cx="960" cy="790" rx="760" ry="150" fill="#151922" />
+
+        <!-- 合约主体（蓝 = 合约/代码） -->
+        <g id="m-box" class="h">
+          <rect x="780" y="270" width="360" height="480" rx="26" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+        </g>
+        <g id="m-code" class="h" stroke="#58C4DD" stroke-width="6" stroke-linecap="round" opacity=".7">
+          <line x1="820" y1="320" x2="980" y2="320" /><line x1="850" y1="352" x2="1060" y2="352" /><line x1="850" y1="384" x2="1010" y2="384" /><line x1="820" y1="416" x2="940" y2="416" />
+        </g>
+        <g id="m-funds" class="h" fill="#F0B90B">
+          <circle cx="870" cy="640" r="20" /><circle cx="920" cy="640" r="20" /><circle cx="970" cy="640" r="20" /><circle cx="1020" cy="640" r="20" />
+          <circle cx="895" cy="600" r="20" /><circle cx="945" cy="600" r="20" /><circle cx="995" cy="600" r="20" />
+        </g>
+        <text id="m-label" class="h" x="960" y="830" font-size="40" fill="#58C4DD" text-anchor="middle" font-weight="700">智能合约</text>
+        <text id="m-def" class="h" x="960" y="885" font-size="32" fill="#8a8f99" text-anchor="middle">部署在链上 · 按代码自动执行</text>
+        <text id="m-label2" class="h" x="960" y="830" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">广场中央的自动售货机</text>
+
+        <!-- 四个特点 -->
+        <text id="m-t1" class="h" x="960" y="225" font-size="38" fill="#58C4DD" text-anchor="middle">代码公开</text>
+        <text id="m-t2" class="h" x="1190" y="620" font-size="38" fill="#F0B90B">资金在里面</text>
+        <text id="m-t3" class="h" x="730" y="470" font-size="38" fill="#e8e6df" text-anchor="end">任何人都能调用</text>
+        <text id="m-t4" class="h" x="1190" y="380" font-size="38" fill="#e8e6df">交易不能撤回</text>
+
+        <!-- 售货机零件 -->
+        <g id="m-vend" class="h">
+          <rect x="810" y="300" width="230" height="340" rx="10" fill="none" stroke="#58C4DD" stroke-opacity=".55" stroke-width="3" />
+          <rect x="1065" y="320" width="44" height="12" rx="6" fill="#58C4DD" />
+          <circle cx="1087" cy="390" r="15" fill="none" stroke="#58C4DD" stroke-width="3" />
+          <circle cx="1087" cy="440" r="15" fill="none" stroke="#58C4DD" stroke-width="3" />
+          <circle cx="1087" cy="490" r="15" fill="none" stroke="#58C4DD" stroke-width="3" />
+          <rect x="840" y="672" width="240" height="46" rx="8" fill="#0b1016" stroke="#58C4DD" stroke-width="3" />
+        </g>
+        <!-- 外壳上的电路图 -->
+        <g id="m-circuit" fill="none" stroke="#58C4DD" stroke-width="2.5" opacity=".8">
+          <path class="dr m-cr" pathLength="1" d="M780 330 H 700 V 400 H 640" />
+          <path class="dr m-cr" pathLength="1" d="M780 420 H 720 V 520 H 650" />
+          <path class="dr m-cr" pathLength="1" d="M780 560 H 690 V 620 H 620" />
+          <path class="dr m-cr" pathLength="1" d="M1140 560 H 1220 V 640 H 1290" />
+        </g>
+
+        <!-- 全世界的人（灰点） -->
+        <g id="m-people" fill="#8a8f99"></g>
+
+        <!-- 吐错的钱 -->
+        <circle id="m-drop" class="h" cx="960" cy="695" r="18" fill="#F0B90B" />
+        <g id="m-nore" class="h">
+          <text x="1420" y="790" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="700">没有客服帮你追回</text>
+        </g>
+
+        <!-- 比方的局限 -->
+        <circle id="m-one" class="h" cx="960" cy="905" r="16" fill="#e8e6df" />
+        <text id="m-onet" class="h" x="960" y="985" font-size="36" fill="#8a8f99" text-anchor="middle">售货机：一次只服务一个人</text>
+        <g id="m-cross" class="h" stroke="#FF9F43" stroke-width="5"><line x1="740" y1="972" x2="1180" y2="972" /></g>
+
+        <!-- 反复调用、嵌套调用 -->
+        <g fill="none" stroke="#FF9F43" stroke-width="4">
+          <path id="m-re1" class="dr" pathLength="1" d="M1140 300 C 1330 220, 1330 420, 1140 380" />
+          <path id="m-re2" class="dr" pathLength="1" d="M1140 400 C 1380 300, 1380 560, 1140 500" />
+          <path id="m-re3" class="dr" pathLength="1" d="M1140 520 C 1430 400, 1430 700, 1140 620" />
+        </g>
+        <text id="m-ret" class="h" x="1430" y="250" font-size="34" fill="#FF9F43">一笔交易里反复、嵌套调用</text>
+
+        <!-- 可组合：其他合约 -->
+        <g id="m-others" stroke="#58C4DD" stroke-width="3" fill="#121a22">
+          <g class="m-o h"><line x1="780" y1="330" x2="380" y2="200" stroke-opacity=".5" /><rect x="290" y="150" width="150" height="110" rx="14" /></g>
+          <g class="m-o h"><line x1="780" y1="650" x2="380" y2="800" stroke-opacity=".5" /><rect x="290" y="750" width="150" height="110" rx="14" /></g>
+          <g class="m-o h"><line x1="1140" y1="700" x2="1540" y2="830" stroke-opacity=".5" /><rect x="1530" y="780" width="150" height="110" rx="14" /></g>
+          <g class="m-o h"><line x1="960" y1="270" x2="960" y2="130" stroke-opacity=".5" /><rect x="885" y="40" width="150" height="90" rx="14" /></g>
+        </g>
+        <text id="m-comp" class="h" x="365" y="560" font-size="38" fill="#58C4DD" text-anchor="middle" font-weight="700">可组合性</text>
+        <text id="m-bugs" class="h" x="365" y="615" font-size="32" fill="#e8e6df" text-anchor="middle">漏洞常藏在这里</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 49.14, "L": [[0.6, 7.06], [7.51, 14.42], [14.87, 20.36], [20.81, 28.64], [29.09, 32.64], [33.09, 38.15], [38.6, 48.04]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.8) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+
+      // 人群：确定性位置（环形分布）
+      const people = document.querySelector("#m-people");
+      const ppl = [];
+      for (let i = 0; i < 20; i++) {
+        const a = (i / 20) * Math.PI * 2 + 0.13;
+        const r = 470 + (i % 3) * 45;
+        const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        c.setAttribute("cx", (960 + Math.cos(a) * r * 1.35).toFixed(1));
+        c.setAttribute("cy", (510 + Math.sin(a) * r * 0.62).toFixed(1));
+        c.setAttribute("r", "13");
+        c.setAttribute("opacity", "0");
+        people.appendChild(c);
+        ppl.push({ c, dx: Math.cos(a) * 260, dy: Math.sin(a) * 140 });
+      }
+
+      // L0 合约从种子点长出
+      IN("#m-box", at(0, 0), 0.9, { scale: 0.05, svgOrigin: "960 510" }, { scale: 1, ease: "expo.out", duration: 1.1 });
+      IN("#m-code", at(0, 0.35), 0.6);
+      IN("#m-label", at(0, 0.3), 0.5, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+
+      IN("#m-def", at(0, 0.62), 0.5);
+      // L1 四个特点
+      IN("#m-t1", at(1, 0.22), 0.45);
+      IN("#m-t2", at(1, 0.38), 0.45);
+      IN("#m-funds", at(1, 0.38), 0.6, { scale: 0.6, svgOrigin: "945 620" }, { scale: 1 });
+      IN("#m-t3", at(1, 0.55), 0.45);
+      IN("#m-t4", at(1, 0.78), 0.45);
+
+      // L2 变成售货机
+      OUT(["#m-t1", "#m-t2", "#m-t3", "#m-t4", "#m-label", "#m-def"], at(2, 0), 0.3);
+      OUT("#m-code", at(2, 0), 0.3);
+      IN("#m-plaza", at(2, 0.3), 0.8);
+      IN("#m-vend", at(2, 0.35), 0.7);
+      IN("#m-label2", at(2, 0.4), 0.5);
+
+      // L3 电路图 + 人群
+      gsap.utils.toArray("#root .m-cr").forEach((p, i) => DRAW(p, at(3, 0.02) + i * 0.15, 0.7));
+      ppl.forEach((p, i) => tl.fromTo(p.c, { opacity: 0, x: p.dx, y: p.dy }, { opacity: 1, x: 0, y: 0, duration: 0.9, ease: "power3.out" }, at(3, 0.45) + i * 0.05));
+
+      // L4 吐错钱，滚走
+      IN("#m-drop", at(4, 0.05), 0.2);
+      tl.fromTo("#m-drop", { x: 0, y: 0 }, { x: 460, y: 40, duration: 1.2, ease: "power2.in" }, at(4, 0.15));
+      tl.to("#m-drop", { fill: "#FC6255", opacity: 0, duration: 0.4 }, at(4, 0.15) + 1.0);
+      IN("#m-nore", at(4, 0.3), 0.5);
+      OUT("#m-nore", at(5, 0), 0.3);
+
+      // L5 比方的局限：一次一个人
+      ppl.forEach((p, i) => tl.to(p.c, { opacity: 0, duration: 0.3 }, at(5, 0) + i * 0.015));
+      IN("#m-one", at(5, 0.2), 0.4);
+      IN("#m-onet", at(5, 0.25), 0.5);
+      tl.fromTo("#m-cross line", { attr: { x2: 740 } }, { attr: { x2: 1180 }, duration: 0.4, ease: "power2.out" }, at(5, 0.85));
+      IN("#m-cross", at(5, 0.85), 0.1);
+
+      // L6 反复、嵌套调用 + 可组合性
+      OUT(["#m-one", "#m-onet", "#m-cross", "#m-plaza", "#m-circuit"], at(6, 0), 0.3);
+      DRAW("#m-re1", at(6, 0.02), 0.5);
+      DRAW("#m-re2", at(6, 0.1), 0.5);
+      DRAW("#m-re3", at(6, 0.18), 0.5);
+      IN("#m-ret", at(6, 0.12), 0.4);
+      gsap.utils.toArray("#root .m-o").forEach((g, i) => IN(g, at(6, 0.36) + i * 0.12, 0.5));
+      IN("#m-comp", at(6, 0.5), 0.4);
+      IN("#m-bugs", at(6, 0.8), 0.4);
+
+      tl.to("#m-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["machine"] = tl;
+    })();
+  </script>
+</template>

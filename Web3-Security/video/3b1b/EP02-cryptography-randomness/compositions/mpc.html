@@ -1,0 +1,141 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="mpc" data-duration="47.64" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="p-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker></defs>
+      <g id="p-all">
+        <text id="p-title" class="h" x="120" y="130" font-size="48" fill="#e8e6df" font-weight="800">门限签名 <tspan fill="#8a8f99" font-weight="400">· MPC</tspan></text>
+
+        <!-- 一把完整的私钥 -->
+        <g id="p-key" class="h">
+          <circle cx="900" cy="540" r="34" fill="none" stroke="#B48EF0" stroke-width="7" />
+          <path d="M934 540 H 1040 M1005 540 v 26 M1028 540 v 18" stroke="#B48EF0" stroke-width="7" fill="none" stroke-linecap="round" />
+        </g>
+
+        <!-- 连线与证明 -->
+        <g fill="none" stroke="#6b6f7a" stroke-width="3">
+          <path id="p-ab" class="dr" pathLength="1" d="M915 350 L 685 690" />
+          <path id="p-ac" class="dr" pathLength="1" d="M1005 350 L 1235 690" />
+          <path id="p-bc" class="dr" pathLength="1" d="M725 760 L 1195 760" />
+        </g>
+        <g id="p-pab" class="h"><circle cx="800" cy="520" r="30" fill="#121a12" stroke="#83C167" stroke-width="4" /><path d="M786 520 l 9 10 l 18 -22" stroke="#83C167" stroke-width="5" fill="none" stroke-linecap="round" /></g>
+        <g id="p-pbc" class="h"><circle cx="960" cy="760" r="30" fill="#121a12" stroke="#83C167" stroke-width="4" /><path d="M946 760 l 9 10 l 18 -22" stroke="#83C167" stroke-width="5" fill="none" stroke-linecap="round" /></g>
+        <g id="p-pac" class="h"><circle id="p-pacc" cx="1120" cy="520" r="30" fill="#121a12" stroke="#83C167" stroke-width="4" /><path id="p-pack" d="M1106 520 l 9 10 l 18 -22" stroke="#83C167" stroke-width="5" fill="none" stroke-linecap="round" /></g>
+        <text id="p-zk" class="h" x="560" y="500" font-size="30" fill="#83C167" text-anchor="end">零知识证明：对方没有作弊</text>
+
+        <!-- 三个参与方，各持一片 -->
+        <g id="p-A" class="h"><circle cx="960" cy="280" r="80" fill="#161a22" stroke="#8a8f99" stroke-width="4" /><text x="960" y="160" font-size="30" fill="#8a8f99" text-anchor="middle">参与方 A</text></g>
+        <g id="p-B" class="h"><circle cx="640" cy="760" r="80" fill="#161a22" stroke="#8a8f99" stroke-width="4" /><text x="640" y="890" font-size="30" fill="#8a8f99" text-anchor="middle">参与方 B</text></g>
+        <g id="p-C" class="h"><circle id="p-Cc" cx="1280" cy="760" r="80" fill="#161a22" stroke="#8a8f99" stroke-width="4" /><text id="p-Ct" x="1280" y="890" font-size="30" fill="#8a8f99" text-anchor="middle">参与方 C</text></g>
+        <text id="p-evil" class="h" x="1385" y="790" font-size="32" fill="#FC6255" font-weight="700">恶意参与方</text>
+        <g fill="none" stroke="#FC6255" stroke-width="4" stroke-dasharray="1" marker-end="url(#p-ahr)">
+          <path id="p-l1" class="dr h" pathLength="1" d="M1030 300 C 1230 330, 1330 520, 1300 668" />
+          <path id="p-l2" class="dr h" pathLength="1" d="M690 845 C 880 900, 1090 900, 1215 835" />
+        </g>
+        <text id="p-lt" class="h" x="1275" y="345" font-size="30" fill="#FC6255" font-weight="700">分片外流</text>
+        <rect id="p-sA" class="h" x="935" y="255" width="50" height="50" rx="8" fill="#B48EF0" />
+        <rect id="p-sB" class="h" x="615" y="735" width="50" height="50" rx="8" fill="#B48EF0" />
+        <rect id="p-sC" class="h" x="1255" y="735" width="50" height="50" rx="8" fill="#B48EF0" />
+        <text id="p-shard" class="h" x="1100" y="290" font-size="30" fill="#B48EF0">密钥分片</text>
+
+        <!-- 省掉一步：128 → 1 -->
+        <g id="p-iter" class="h">
+          <text x="1400" y="470" font-size="30" fill="#8a8f99">证明的重复次数</text>
+          <text id="p-big" x="1400" y="545" font-size="64" fill="#FF9F43" font-weight="800"><tspan id="p-itn" class="mono">128</tspan> 次</text>
+          <text id="p-big2" opacity="0" x="1400" y="545" font-size="64" fill="#FF9F43" font-weight="800"><tspan fill="#8a8f99">128 →</tspan> 1 次</text>
+          <text x="1400" y="600" font-size="30" fill="#FF9F43">作弊的一方能猜中</text>
+        </g>
+        <g id="p-prob" class="h">
+          <text x="1400" y="665" font-size="30" fill="#e8e6df">猜中概率：约 1/2<tspan dy="-14" font-size="22">128</tspan><tspan dy="14"> → </tspan><tspan fill="#FC6255" font-weight="700">1/2</tspan></text>
+          <text x="1400" y="708" font-size="28" fill="#6b6f7a">按每轮只有两种挑战估算（示意）</text>
+        </g>
+
+        <!-- 分片被一点点提取 -->
+        <g id="p-leak"></g>
+        <text id="p-cases" class="h" x="960" y="1010" font-size="32" fill="#e8e6df" text-anchor="middle">2023 年 8 月披露：<tspan fill="#FC6255" font-weight="700">BitForge</tspan> · <tspan fill="#FC6255" font-weight="700">TSSHOCK</tspan>　影响多家钱包服务商和多个开源库</text>
+        <g id="p-end">
+          <text id="p-end1" class="h" x="960" y="955" font-size="30" fill="#8a8f99" text-anchor="middle">两项披露都没有报告实际资金损失</text>
+          <text id="p-end2" class="h" x="960" y="1020" font-size="40" fill="#FF9F43" text-anchor="middle" font-weight="700">门限签名库，不能按论文随意简化</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 47.64, "L": [[0.6, 7.49], [7.94, 15.38], [15.83, 25.76], [26.21, 37.71], [38.16, 46.54]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      const DRAWA = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // L0 一把私钥拆成三片
+      IN("#p-title", at(0, 0.0), 0.5);
+      IN("#p-key", at(0, 0.05), 0.6, { scale: 0.6, svgOrigin: "960 540" }, { scale: 1 });
+      tl.to("#p-key", { opacity: 0, scale: 0.4, svgOrigin: "960 540", duration: 0.4, ease: "power2.in" }, at(0, 0.45));
+      [["#p-sA", 960, 280], ["#p-sB", 640, 760], ["#p-sC", 1280, 760]].forEach(([s, x, y], i) =>
+        tl.fromTo(s, { opacity: 0, x: 960 - x, y: 540 - y }, { opacity: 1, x: 0, y: 0, duration: 0.8, ease: "power3.out" }, at(0, 0.5) + i * 0.08));
+      IN(["#p-A", "#p-B", "#p-C"], at(0, 0.55), 0.6);
+      IN("#p-shard", at(0, 0.8), 0.4);
+
+      // L1 每一步都有零知识证明
+      DRAW("#p-ab", at(1, 0.0), 0.5); DRAW("#p-ac", at(1, 0.05), 0.5); DRAW("#p-bc", at(1, 0.1), 0.5);
+      OUT("#p-shard", at(1, 0.0), 0.3);
+      IN("#p-pab", at(1, 0.3), 0.4, { scale: 0.3, svgOrigin: "800 520" }, { scale: 1, ease: "back.out(2)" });
+      IN("#p-pac", at(1, 0.38), 0.4, { scale: 0.3, svgOrigin: "1120 520" }, { scale: 1, ease: "back.out(2)" });
+      IN("#p-pbc", at(1, 0.46), 0.4, { scale: 0.3, svgOrigin: "960 760" }, { scale: 1, ease: "back.out(2)" });
+      IN("#p-zk", at(1, 0.55), 0.5);
+
+      // L2 省掉一步：128 → 1
+      IN("#p-iter", at(2, 0.3), 0.5);
+      const o = { v: 128 }, itn = document.querySelector("#p-itn");
+      tl.fromTo(o, { v: 128 }, { v: 1, duration: 1.4, ease: "power2.in", onUpdate: () => { itn.textContent = Math.round(o.v); } }, at(2, 0.5));
+      tl.to(["#p-pacc", "#p-pack"], { stroke: "#FF9F43", duration: 0.4 }, at(2, 0.6));
+      tl.to("#p-pack", { opacity: 0, duration: 0.3 }, at(2, 0.75));
+      tl.to("#p-big", { opacity: 0, duration: 0.2 }, at(2, 0.5) + 1.5);
+      tl.to("#p-big2", { opacity: 1, duration: 0.3 }, at(2, 0.5) + 1.55);
+      IN("#p-prob", at(2, 0.85), 0.5);
+
+      // L3 恶意参与方一点点提取别人的分片
+      OUT("#p-zk", at(3, 0.0), 0.3);
+      tl.to("#p-Cc", { stroke: "#FC6255", fill: "#2a1416", duration: 0.4 }, at(3, 0.0));
+      tl.to("#p-Ct", { fill: "#FC6255", duration: 0.4 }, at(3, 0.0));
+      IN("#p-evil", at(3, 0.05), 0.4);
+      DRAWA("#p-l1", at(3, 0.12), 0.8); DRAWA("#p-l2", at(3, 0.16), 0.8);
+      IN("#p-lt", at(3, 0.3), 0.4);
+      const leak = document.querySelector("#p-leak");
+      const paths = [[960, 280], [640, 760]];
+      for (let k = 0; k < 5; k++) {
+        paths.forEach(([x, y], j) => {
+          const c = document.createElementNS(NS, "rect");
+          c.setAttribute("x", x - 9); c.setAttribute("y", y - 9); c.setAttribute("width", 18); c.setAttribute("height", 18); c.setAttribute("rx", 3);
+          c.setAttribute("fill", "#B48EF0"); c.setAttribute("opacity", "0"); leak.appendChild(c);
+          const t0 = at(3, 0.15) + k * 0.9 + j * 0.3;
+          tl.fromTo(c, { opacity: 0, x: 0, y: 0 }, { opacity: 1, duration: 0.15 }, t0);
+          tl.to(c, { x: 1280 - x, y: 760 - y, fill: "#FC6255", duration: 0.8, ease: "power2.in" }, t0 + 0.1);
+          tl.to(c, { opacity: 0, duration: 0.15 }, t0 + 0.85);
+        });
+      }
+      tl.to(["#p-sA", "#p-sB"], { opacity: 0.25, duration: 4.0, ease: "none" }, at(3, 0.15));
+      IN("#p-cases", at(3, 0.55), 0.5);
+
+      // L4 结论
+      OUT("#p-cases", at(4, 0.0), 0.3);
+      IN("#p-end1", at(4, 0.05), 0.5);
+      IN("#p-end2", at(4, 0.5), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+
+      tl.to("#p-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["mpc"] = tl;
+    })();
+  </script>
+</template>

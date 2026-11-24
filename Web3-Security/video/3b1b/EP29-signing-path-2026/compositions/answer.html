@@ -1,0 +1,97 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="45.01" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="a-all">
+        <g id="a-pin" class="h">
+          <rect x="510" y="70" width="900" height="110" rx="18" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="960" y="142" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="700">不偷私钥，怎样拿到签名？</text>
+        </g>
+
+        <g id="a-two">
+          <!-- 左：钥匙 -->
+          <g id="a-key" class="h">
+            <rect x="180" y="300" width="560" height="380" rx="22" fill="#18141f" stroke="#B48EF0" stroke-width="4" />
+            <circle cx="380" cy="440" r="40" fill="none" stroke="#B48EF0" stroke-width="8" />
+            <path d="M420 440 H 540 M 505 440 V 475 M 535 440 V 465" stroke="#B48EF0" stroke-width="8" fill="none" stroke-linecap="round" />
+            <text x="460" y="570" font-size="36" fill="#e8e6df" text-anchor="middle" font-weight="700">谁拿着钥匙</text>
+            <text x="460" y="625" font-size="30" fill="#8a8f99" text-anchor="middle">私钥保护</text>
+          </g>
+          <text id="a-keyok" class="h" x="460" y="740" font-size="32" fill="#83C167" text-anchor="middle">✓ 钥匙还在</text>
+          <!-- 右：签名路径 -->
+          <g id="a-path" class="h">
+            <rect x="1000" y="300" width="740" height="380" rx="22" fill="#161a22" stroke="#e8e6df" stroke-opacity=".5" stroke-width="3" />
+            <line x1="1070" y1="440" x2="1670" y2="440" stroke="#8a8f99" stroke-width="3" />
+            <g fill="#e8e6df"><circle cx="1070" cy="440" r="14" /><circle cx="1170" cy="440" r="14" /><circle cx="1270" cy="440" r="14" /><circle cx="1370" cy="440" r="14" /><circle cx="1470" cy="440" r="14" fill="#B48EF0" /><circle cx="1570" cy="440" r="14" /><circle cx="1670" cy="440" r="14" /></g>
+            <text x="1370" y="570" font-size="36" fill="#e8e6df" text-anchor="middle" font-weight="700">谁决定钥匙盖在什么文件上</text>
+            <text x="1370" y="625" font-size="30" fill="#8a8f99" text-anchor="middle">签名路径</text>
+          </g>
+          <g id="a-atk" class="h" fill="#FC6255">
+            <circle cx="1170" cy="380" r="16" /><circle cx="1370" cy="380" r="16" /><circle cx="1470" cy="380" r="16" /><circle cx="1670" cy="380" r="16" />
+          </g>
+          <text id="a-atkt" class="h" x="1370" y="740" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">攻击者控制了这一边</text>
+        </g>
+
+        <!-- 三句话 -->
+        <g id="a-rules">
+          <text class="a-r h" x="960" y="390" font-size="52" fill="#83C167" text-anchor="middle" font-weight="700">每一层重新检查</text>
+          <text class="a-r h" x="960" y="490" font-size="52" fill="#83C167" text-anchor="middle" font-weight="700">关键输入多个来源</text>
+          <text class="a-r h" x="960" y="590" font-size="52" fill="#83C167" text-anchor="middle" font-weight="700">响应覆盖链上</text>
+        </g>
+
+        <!-- 前提 -->
+        <g id="a-pre">
+          <text id="a-p1" class="h" x="960" y="740" font-size="36" fill="#e8e6df" text-anchor="middle">前提：<tspan fill="#B48EF0">私钥保护</tspan>仍然必要</text>
+          <g id="a-one" class="h"><circle cx="700" cy="840" r="20" fill="#FC6255" /><text x="740" y="852" font-size="32" fill="#e8e6df">一个人作恶</text></g>
+          <text id="a-arr" class="h" x="960" y="852" font-size="36" fill="#8a8f99" text-anchor="middle">→</text>
+          <g id="a-many" class="h">
+            <g fill="#FC6255"><circle cx="1040" cy="840" r="16" /><circle cx="1085" cy="840" r="16" /><circle cx="1130" cy="840" r="16" /></g>
+            <text x="1165" y="852" font-size="32" fill="#e8e6df">需要多人共谋</text>
+          </g>
+          <text id="a-src" class="h" x="960" y="940" font-size="30" fill="#6b6f7a" text-anchor="middle">多数事件仍是项目方初步说法，细节可能还会变</text>
+        </g>
+      </g>
+      <text id="a-next" class="h" x="960" y="1030" font-size="36" fill="#6b6f7a" text-anchor="middle">下一集 · 30 企业级与许可链安全</text>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 45.01, "L": [[0.6, 4.92], [5.37, 15.04], [15.49, 22.24], [22.69, 32.69], [33.14, 38.93], [39.38, 43.91]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      // L0 钉住的问题回来
+      IN("#a-pin", at(0, 0.05), 0.8, { scale: 0.6, x: -560, y: -20, svgOrigin: "960 125" }, { scale: 1, x: 0, y: 0, ease: "expo.out" });
+      // L1 钥匙 vs 签名路径
+      IN("#a-key", at(1, 0.02), 0.6, { y: 20 }, { y: 0 });
+      IN("#a-keyok", at(1, 0.2), 0.4);
+      IN("#a-path", at(1, 0.38), 0.6, { y: 20 }, { y: 0 });
+      IN("#a-atk", at(1, 0.75), 0.4, { y: -30 }, { y: 0, ease: "back.out(2)" });
+      IN("#a-atkt", at(1, 0.8), 0.4);
+      // L2 三句话
+      tl.to("#a-two", { opacity: 0, filter: "blur(6px)", duration: 0.45 }, at(2, 0));
+      gsap.utils.toArray("#root .a-r").forEach((s, i) => IN(s, at(2, 0.18) + i * 1.6, 0.5, { filter: "blur(6px)" }, { filter: "blur(0px)" }));
+      // L3 前提与局限
+      tl.to("#a-rules", { opacity: 0.35, duration: 0.4 }, at(3, 0));
+      IN("#a-p1", at(3, 0.1), 0.5);
+      IN("#a-one", at(3, 0.5), 0.4);
+      IN("#a-arr", at(3, 0.7), 0.3);
+      IN("#a-many", at(3, 0.75), 0.4, { scale: 0.6, svgOrigin: "1085 840" }, { scale: 1, ease: "back.out(2)" });
+      // L4 来源状态
+      IN("#a-src", at(4, 0.1), 0.5);
+      // L5 下一集
+      IN("#a-next", at(5, 0.1), 0.5);
+      tl.to(["#a-all", "#a-next"], { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

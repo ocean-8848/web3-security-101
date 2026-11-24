@@ -1,0 +1,117 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="readonly" data-duration="44.04" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="r-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+        <marker id="r-aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FF9F43" /></marker>
+      </defs>
+      <g id="r-all">
+        <text id="r-title" class="h" x="960" y="110" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="700">只读重入：在错误的时刻去读</text>
+        <!-- 交易池 -->
+        <g id="r-pool" class="h">
+          <rect x="120" y="200" width="560" height="620" rx="24" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="400" y="260" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">交易池</text>
+          <line x1="180" y1="700" x2="620" y2="700" stroke="#3a3f4a" stroke-width="2" />
+          <text x="280" y="745" font-size="28" fill="#F0B90B" text-anchor="middle">储备</text>
+          <text x="520" y="745" font-size="28" fill="#8a8f99" text-anchor="middle">总量</text>
+        </g>
+        <rect id="r-res" class="h" x="220" y="380" width="120" height="320" fill="#F0B90B" fill-opacity=".7" />
+        <rect id="r-tot" class="h" x="460" y="380" width="120" height="320" fill="#8a8f99" fill-opacity=".7" />
+        <g id="r-price" class="h">
+          <text x="400" y="320" font-size="28" fill="#e8e6df" text-anchor="middle">价格 ∝ 储备 ÷ 总量</text>
+        </g>
+        <g id="r-gauge" class="h">
+          <rect x="180" y="770" width="440" height="24" rx="12" fill="#1c2029" />
+          <rect id="r-gv" x="180" y="770" width="440" height="24" rx="12" fill="#83C167" />
+        </g>
+        <text id="r-skew" class="h" x="400" y="870" font-size="32" fill="#FF9F43" text-anchor="middle" font-weight="700">此刻价格是歪的</text>
+        <text id="r-note" class="h" x="400" y="1010" font-size="28" fill="#6b6f7a" text-anchor="middle">柱高为示意</text>
+
+        <!-- 攻击者 -->
+        <g id="r-atk" class="h"><circle cx="960" cy="330" r="80" fill="#1f1012" stroke="#FC6255" stroke-width="5" /><text x="960" y="342" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">攻击者</text></g>
+        <path id="r-cb" class="dr h" pathLength="1" d="M684 300 L 872 310" stroke="#FF9F43" stroke-width="4" fill="none" marker-end="url(#r-aho)" />
+        <text id="r-cbt" class="h" x="780" y="275" font-size="28" fill="#FF9F43" text-anchor="middle">回调</text>
+        <g id="r-out"></g>
+
+        <!-- 借贷协议 -->
+        <g id="r-lend" class="h">
+          <rect x="1240" y="200" width="560" height="620" rx="24" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="1520" y="260" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">借贷协议</text>
+          <text x="1520" y="320" font-size="28" fill="#8a8f99" text-anchor="middle">按池子的价格估值抵押品</text>
+          <g fill="#F0B90B"><circle cx="1420" cy="560" r="26" /><circle cx="1500" cy="560" r="26" /><circle cx="1580" cy="560" r="26" /><circle class="r-gc" cx="1460" cy="630" r="26" /><circle class="r-gc" cx="1540" cy="630" r="26" /><circle cx="1620" cy="630" r="26" /></g>
+        </g>
+        <path id="r-call" class="dr h" pathLength="1" d="M1044 330 L 1232 330" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#r-ahr)" />
+        <path id="r-read" class="dr h" pathLength="1" d="M1240 450 C 1000 520, 900 560, 690 560" stroke="#FF9F43" stroke-width="4" stroke-dasharray="1" fill="none" marker-end="url(#r-aho)" />
+        <text id="r-readt" class="h" x="960" y="610" font-size="28" fill="#FF9F43" text-anchor="middle">读取池子的价格</text>
+        <g id="r-loan"><circle class="r-lc h" cx="1460" cy="630" r="26" fill="#FC6255" /><circle class="r-lc h" cx="1540" cy="630" r="26" fill="#FC6255" /></g>
+        <text id="r-wrong" class="h" x="1520" y="760" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">按错误的价格放贷</text>
+
+        <g id="r-df" class="h">
+          <rect x="560" y="900" width="800" height="80" rx="16" fill="#1f1012" stroke="#FC6255" stroke-width="2" />
+          <text x="960" y="952" font-size="32" fill="#e8e6df" text-anchor="middle"><tspan fill="#FC6255" font-weight="700">2023 年 2 月 · dForce</tspan> · 约 360 万美元</text>
+        </g>
+        <text id="r-ok" class="h" x="400" y="870" font-size="32" fill="#83C167" text-anchor="middle" font-weight="700">池子最后是对的</text>
+        <text id="r-bad" class="h" x="1520" y="870" font-size="30" fill="#FC6255" text-anchor="middle">出错的是中间时刻读数据的第三方</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 44.04, "L": [[0.6, 8.54], [8.99, 17.73], [18.18, 24.23], [24.68, 31.42], [31.87, 42.94]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAWA = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 转出的代币
+      const out = document.querySelector("#r-out"), oc = [];
+      for (let i = 0; i < 4; i++) { const c = document.createElementNS(NS, "circle"); c.setAttribute("cx", 280); c.setAttribute("cy", 420 + i * 40); c.setAttribute("r", 18); c.setAttribute("fill", "#F0B90B"); c.setAttribute("opacity", "0"); out.appendChild(c); oc.push(c); }
+
+      // L0 标题
+      IN("#r-title", at(0, 0.05), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      IN("#r-atk", at(0, 0.5), 0.5);
+      // L1 池子：先转出代币，后更新总量；转出时回调攻击者
+      IN("#r-pool", at(1, 0.0), 0.6, { x: -30 }, { x: 0 });
+      IN(["#r-res", "#r-tot"], at(1, 0.1), 0.5);
+      IN(["#r-price", "#r-gauge"], at(1, 0.2), 0.4);
+      oc.forEach((c, i) => { IN(c, at(1, 0.45) + i * 0.08, 0.15); tl.to(c, { attr: { cx: 960, cy: 330 }, opacity: 0, duration: 0.7, ease: "power2.in" }, at(1, 0.5) + i * 0.08); });
+      tl.to("#r-res", { attr: { y: 540, height: 160 }, duration: 0.7, ease: "power2.inOut" }, at(1, 0.5));
+      DRAWA("#r-cb", at(1, 0.75), 0.5);
+      IN("#r-cbt", at(1, 0.78), 0.3);
+      // L2 储备已减，总量未减：价格歪了
+      tl.fromTo("#r-tot", { stroke: "#FF9F43", strokeWidth: 0 }, { strokeWidth: 5, duration: 0.3 }, at(2, 0.2));
+      tl.to("#r-gv", { attr: { width: 220 }, fill: "#FF9F43", duration: 0.7, ease: "power2.inOut" }, at(2, 0.45));
+      IN("#r-skew", at(2, 0.6), 0.4);
+      // L3 攻击者调用借贷协议，借贷协议读价格，按错误价格放贷
+      IN("#r-lend", at(3, 0.0), 0.6, { x: 30 }, { x: 0 });
+      DRAWA("#r-call", at(3, 0.15), 0.5);
+      DRAWA("#r-read", at(3, 0.35), 0.7);
+      IN("#r-readt", at(3, 0.4), 0.4);
+      gsap.utils.toArray("#root .r-lc").forEach((c, i) => { IN(c, at(3, 0.7) + i * 0.1, 0.15); tl.to(c, { attr: { cx: 960, cy: 330 }, opacity: 0, duration: 0.8, ease: "power2.in" }, at(3, 0.75) + i * 0.1); });
+      tl.to("#root .r-gc", { opacity: 0, duration: 0.2 }, at(3, 0.7));
+      IN("#r-wrong", at(3, 0.75), 0.4);
+      // L4 dForce；池子最后对了，错在第三方
+      IN("#r-df", at(4, 0.05), 0.5, { y: 20 }, { y: 0 });
+      OUT("#r-skew", at(4, 0.4), 0.3);
+      tl.to("#r-tot", { attr: { y: 540, height: 160 }, strokeWidth: 0, duration: 0.7, ease: "power2.inOut" }, at(4, 0.42));
+      tl.to("#r-gv", { attr: { width: 440 }, fill: "#83C167", duration: 0.7 }, at(4, 0.42));
+      IN("#r-ok", at(4, 0.55), 0.4);
+      OUT("#r-wrong", at(4, 0.6), 0.3);
+      IN("#r-bad", at(4, 0.68), 0.4);
+      IN("#r-note", at(4, 0.7), 0.4);
+
+      tl.to("#r-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["readonly"] = tl;
+    })();
+  </script>
+</template>

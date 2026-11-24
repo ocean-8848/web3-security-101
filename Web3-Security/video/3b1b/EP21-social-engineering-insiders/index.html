@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      /* EP21 社工与内部人 · 3b1b 风格。颜色语义全片固定，见 STORYBOARD.md §2。 */
+      @font-face {
+        font-family: "NotoSC";
+        src: url("assets/fonts/noto-sc.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0f1117; }
+      #root { position: relative; width: 100%; height: 100%; background: #0f1117; font-family: "NotoSC", sans-serif; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="399.37" data-width="1920" data-height="1080">
+      <div id="hook" data-composition-id="hook" data-composition-src="compositions/hook.html" data-start="0.0" data-duration="33.74" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="idea" data-composition-id="idea" data-composition-src="compositions/idea.html" data-start="33.74" data-duration="43.94" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="control" data-composition-id="control" data-composition-src="compositions/control.html" data-start="77.68" data-duration="37.53" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="interview" data-composition-id="interview" data-composition-src="compositions/interview.html" data-start="115.21" data-duration="53.32" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="terminal" data-composition-id="terminal" data-composition-src="compositions/terminal.html" data-start="168.53" data-duration="43.44" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="other" data-composition-id="other" data-composition-src="compositions/other.html" data-start="211.97" data-duration="53.56" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="binance" data-composition-id="binance" data-composition-src="compositions/binance.html" data-start="265.53" data-duration="46.0" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="defend" data-composition-id="defend" data-composition-src="compositions/defend.html" data-start="311.53" data-duration="49.44" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="answer" data-composition-id="answer" data-composition-src="compositions/answer.html" data-start="360.97" data-duration="38.4" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <audio id="narration" class="clip" src="assets/narration.wav" data-start="0" data-duration="399.37" data-track-index="2" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

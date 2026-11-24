@@ -1,0 +1,105 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="guard" data-duration="40.07" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <g id="g-keyshape">
+          <circle cx="-34" cy="0" r="20" fill="none" stroke="#B48EF0" stroke-width="7" />
+          <path d="M-14 0 H 46 M 30 0 V 16 M 44 0 V 13" stroke="#B48EF0" stroke-width="7" stroke-linecap="round" fill="none" />
+        </g>
+        <marker id="g-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="g-all">
+        <text id="g-t0" class="h" x="960" y="130" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">共同点</text>
+        <!-- 攻击者够不到的两样 -->
+        <g id="g-atk" class="h"><circle cx="960" cy="290" r="50" fill="#2a1416" stroke="#FC6255" stroke-width="4" /><text x="960" y="300" font-size="28" fill="#FC6255" text-anchor="middle">攻击者</text></g>
+        <g id="g-key" class="h"><use href="#g-keyshape" x="566" y="290" /><text x="560" y="360" font-size="28" fill="#B48EF0" text-anchor="middle">私钥</text></g>
+        <g id="g-con" class="h"><rect x="1270" y="245" width="180" height="90" rx="12" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="1360" y="300" font-size="28" fill="#58C4DD" text-anchor="middle">合约逻辑</text></g>
+        <g id="g-no" class="h" stroke="#8a8f99" stroke-width="3" stroke-dasharray="8 6" fill="none">
+          <path d="M905 290 L 640 290" /><path d="M1015 290 L 1260 290" />
+        </g>
+        <g id="g-nox" class="h" fill="#8a8f99" font-size="40" text-anchor="middle"><text x="770" y="275">✕</text><text x="1140" y="275">✕</text></g>
+
+        <!-- 用户的四个动作 -->
+        <g id="g-acts"></g>
+        <text id="g-int" class="h" x="960" y="660" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700">每个动作，都是一个拦截点</text>
+
+        <!-- 钱包层：解码 + 模拟 -->
+        <g id="g-wal" class="h">
+          <rect x="120" y="720" width="820" height="280" rx="18" fill="#141e14" stroke="#83C167" stroke-width="3" />
+          <text x="160" y="775" font-size="32" fill="#83C167" font-weight="700">钱包</text>
+          <text x="160" y="835" font-size="30" fill="#e8e6df">授权给：0x5c1e…（陌生合约）</text>
+          <text x="160" y="885" font-size="30" fill="#e8e6df">数额：无限　期限：不过期</text>
+          <text x="160" y="945" font-size="30" fill="#e8e6df">模拟：签完余额 <tspan fill="#FC6255" font-weight="700">−1,000 USDC</tspan></text>
+          <text x="900" y="985" font-size="28" fill="#6b6f7a" text-anchor="end">示例</text>
+        </g>
+        <!-- 交易所层 -->
+        <g id="g-cex" class="h">
+          <rect x="980" y="720" width="820" height="280" rx="18" fill="#141e14" stroke="#83C167" stroke-width="3" />
+          <text x="1020" y="775" font-size="32" fill="#83C167" font-weight="700">交易所</text>
+          <text x="1020" y="835" font-size="30" fill="#e8e6df">提币地址：白名单 + 冷却期</text>
+          <text x="1020" y="885" font-size="30" fill="#e8e6df">比对：首尾相同、中间不同 → 强提示</text>
+          <text x="1020" y="945" font-size="30" fill="#e8e6df">记录：默认折叠零额转账</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 40.07, "L": [[0.6, 4.13], [4.58, 9.02], [9.47, 16.31], [16.76, 20.07], [20.52, 29.69], [30.14, 38.97]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      // 四个动作：点击、签名、复制、粘贴；每个下方一道绿色闸门
+      const NS = "http://www.w3.org/2000/svg", ah = document.querySelector("#g-acts");
+      const A = ["点击", "签名", "复制", "粘贴"];
+      const nodes = A.map((a, i) => {
+        const x = 330 + i * 420;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        g.innerHTML = `<circle cx="${x}" cy="500" r="56" fill="#2a2f3a" stroke="#e8e6df" stroke-width="3" /><text x="${x}" y="512" font-size="32" fill="#e8e6df" text-anchor="middle">${a}</text>` +
+          (i < 3 ? `<path d="M${x + 62} 500 L ${x + 352} 500" stroke="#8a8f99" stroke-width="3" marker-end="url(#g-ah)" />` : "");
+        ah.appendChild(g);
+        const gate = document.createElementNS(NS, "rect");
+        gate.setAttribute("x", (x - 70).toString()); gate.setAttribute("y", "432"); gate.setAttribute("width", "140"); gate.setAttribute("height", "136"); gate.setAttribute("rx", "20");
+        gate.setAttribute("fill", "none"); gate.setAttribute("stroke", "#83C167"); gate.setAttribute("stroke-width", "4"); gate.setAttribute("opacity", "0");
+        ah.appendChild(gate);
+        return { g, gate };
+      });
+
+      // L0 共同点
+      IN("#g-t0", at(0, 0.1), 0.5, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      // L1 攻击者够不到私钥和合约逻辑
+      IN("#g-atk", at(1, 0.0), 0.4);
+      IN("#g-key", at(1, 0.15), 0.4);
+      IN("#g-con", at(1, 0.4), 0.4);
+      IN("#g-no", at(1, 0.3), 0.4);
+      IN("#g-nox", at(1, 0.55), 0.3);
+      // L2 四个动作
+      nodes.forEach((n, i) => IN(n.g, at(2, 0.3) + i * 0.15 * (L[2][1] - L[2][0]), 0.4, { y: 20 }, { y: 0 }));
+      // L3 每一个都是拦截点
+      nodes.forEach((n, i) => IN(n.gate, at(3, 0.05) + i * 0.15, 0.3, { scale: 1.3, svgOrigin: `${330 + i * 420} 500` }, { scale: 1 }));
+      IN("#g-int", at(3, 0.3), 0.5);
+      // L4 钱包
+      tl.to(nodes[1].gate, { strokeWidth: 8, duration: 0.3 }, at(4, 0.0));
+      IN("#g-wal", at(4, 0.05), 0.6, { y: 20 }, { y: 0 });
+      tl.fromTo("#g-wal text:nth-of-type(n+2)", { opacity: 0 }, { opacity: 1, duration: 0.4, stagger: 0.22 * (L[4][1] - L[4][0]) }, at(4, 0.15));
+      // L5 交易所
+      tl.to(nodes[1].gate, { strokeWidth: 4, duration: 0.3 }, at(5, 0.0));
+      tl.to([nodes[2].gate, nodes[3].gate], { strokeWidth: 8, duration: 0.3 }, at(5, 0.0));
+      IN("#g-cex", at(5, 0.05), 0.6, { y: 20 }, { y: 0 });
+      tl.fromTo("#g-cex text:nth-of-type(n+2)", { opacity: 0 }, { opacity: 1, duration: 0.4, stagger: 0.25 * (L[5][1] - L[5][0]) }, at(5, 0.15));
+
+      tl.to("#g-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["guard"] = tl;
+    })();
+  </script>
+</template>

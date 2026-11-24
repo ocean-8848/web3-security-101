@@ -1,0 +1,122 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="fork" data-duration="47.97" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="k-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker></defs>
+      <g id="k-all">
+        <g id="k-p1">
+          <text id="k-case" class="h" x="960" y="140" font-size="34" fill="#6b6f7a" text-anchor="middle">Uranium Finance · 2021 年 4 月 · BNB Chain</text>
+          <g id="k-uni" class="h"><rect x="520" y="200" width="320" height="100" rx="16" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="680" y="262" font-size="36" fill="#8a8f99" text-anchor="middle">Uniswap V2</text></g>
+          <path id="k-farrow" class="dr h" pathLength="1" d="M850 250 L 1070 250" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#k-ah)" />
+          <text id="k-ft" class="h" x="960" y="232" font-size="28" fill="#8a8f99" text-anchor="middle">分叉</text>
+          <g id="k-ura" class="h"><rect x="1080" y="200" width="320" height="100" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="1240" y="262" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">Uranium</text></g>
+
+          <!-- 余额检查的两边 -->
+          <text id="k-chk" class="h" x="960" y="420" font-size="32" fill="#8a8f99" text-anchor="middle">swap() 里的余额检查</text>
+          <g id="k-left" class="h">
+            <rect x="260" y="480" width="560" height="150" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="3" />
+            <text x="540" y="545" font-size="34" fill="#e8e6df" text-anchor="middle">左边：调整后余额相乘</text>
+            <text id="k-l1000" x="540" y="600" font-size="40" fill="#58C4DD" text-anchor="middle" class="mono">每边 × 1000</text>
+            <text id="k-l10000" x="540" y="600" font-size="40" fill="#FF9F43" text-anchor="middle" class="mono" opacity="0">每边 × 10000</text>
+          </g>
+          <text id="k-ge" class="h" x="960" y="590" font-size="90" fill="#83C167" text-anchor="middle" font-weight="800">≥</text>
+          <g id="k-right" class="h">
+            <rect id="k-rr" x="1100" y="480" width="560" height="150" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="3" />
+            <text x="1380" y="545" font-size="34" fill="#e8e6df" text-anchor="middle">右边：k</text>
+            <text id="k-r" x="1380" y="600" font-size="40" fill="#58C4DD" text-anchor="middle" class="mono">× 1000²</text>
+          </g>
+          <text id="k-ok" class="h" x="960" y="720" font-size="34" fill="#83C167" text-anchor="middle">两边都放大 1000²：量纲一致</text>
+          <text id="k-fee" class="h" x="960" y="720" font-size="34" fill="#e8e6df" text-anchor="middle">手续费 0.3% → <tspan fill="#FF9F43">0.16%</tspan>：左边改了，右边<tspan fill="#FC6255">没改</tspan></text>
+          <text id="k-ratio" class="h" x="960" y="820" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="700">10000² ÷ 1000² = 左边多放大 100 倍</text>
+        </g>
+
+        <!-- 退化的不变量 -->
+        <g id="k-p2">
+          <text id="k-inv" class="h" x="960" y="150" font-size="56" fill="#e8e6df" text-anchor="middle" font-weight="800">x · y ≥ k <tspan fill="#FC6255">→ x · y ≥ k / 100</tspan></text>
+          <g id="k-axes" class="h" stroke="#6b6f7a" stroke-width="3">
+            <line x1="600" y1="900" x2="1420" y2="900" /><line x1="600" y1="900" x2="600" y2="260" />
+          </g>
+          <text id="k-xl" class="h" x="1430" y="910" font-size="30" fill="#8a8f99">x 储备</text>
+          <text id="k-yl" class="h" x="600" y="240" font-size="30" fill="#8a8f99" text-anchor="middle">y 储备</text>
+          <path id="k-c1" class="dr" pathLength="1" fill="none" stroke="#83C167" stroke-width="5" />
+          <path id="k-c2" class="dr" pathLength="1" fill="none" stroke="#FC6255" stroke-width="5" />
+          <text id="k-c1t" class="h" x="1260" y="680" font-size="32" fill="#83C167">x · y = k</text>
+          <text id="k-c2t" class="h" x="1290" y="860" font-size="32" fill="#FC6255">x · y = k / 100</text>
+          <circle id="k-pt" class="h" cx="900" cy="500" r="16" fill="#F0B90B" />
+          <line id="k-drop" class="h" x1="900" y1="500" x2="900" y2="896" stroke="#F0B90B" stroke-width="3" stroke-dasharray="8 6" />
+          <text id="k-out" class="h" x="920" y="800" font-size="34" fill="#F0B90B">约 99% 的储备被换出</text>
+          <text id="k-loss" class="h" x="1620" y="420" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="800">损失 ≈ 5,000 万美元</text>
+          <text id="k-lsrc" class="h" x="1620" y="470" font-size="28" fill="#6b6f7a" text-anchor="middle">公开报道 · 事发时估值</text>
+        </g>
+      </g>
+      <text id="k-lesson" class="h" x="960" y="1010" font-size="44" fill="#FF9F43" text-anchor="middle" font-weight="800">修改过的分叉代码 = 新代码</text>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 47.97, "L": [[0.6, 10.92], [11.37, 18.23], [18.68, 28.02], [28.47, 35.98], [36.43, 46.87]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.8) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+
+      // 两条双曲线：u·v = K，原点 (600, 900)
+      const curve = (K, u0, u1) => { let d = ""; for (let i = 0; i <= 80; i++) { const u = u0 * Math.pow(u1 / u0, i / 80), v = K / u; d += (i ? " L " : "M ") + (600 + u).toFixed(1) + " " + (900 - v).toFixed(1); } return d; };
+      document.querySelector("#k-c1").setAttribute("d", curve(120000, 200, 800));
+      document.querySelector("#k-c2").setAttribute("d", curve(1200, 4, 800));
+
+      // L0 分叉
+      IN("#k-case", at(0, 0.05), 0.5);
+      IN("#k-uni", at(0, 0.4), 0.5);
+      tl.fromTo("#k-farrow", { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: 0.6 }, at(0, 0.6));
+      IN("#k-ft", at(0, 0.62), 0.4);
+      IN("#k-ura", at(0, 0.72), 0.5);
+
+      // L1 原版两边量纲一致
+      IN("#k-chk", at(1, 0.0), 0.4);
+      IN("#k-left", at(1, 0.1), 0.5);
+      IN("#k-ge", at(1, 0.4), 0.4);
+      IN("#k-right", at(1, 0.55), 0.5);
+      IN("#k-ok", at(1, 0.8), 0.4);
+
+      // L2 左边改成 10000，右边没改
+      OUT("#k-ok", at(2, 0.0), 0.3);
+      IN("#k-fee", at(2, 0.05), 0.4);
+      tl.to("#k-l1000", { opacity: 0, duration: 0.3 }, at(2, 0.4));
+      tl.to("#k-l10000", { opacity: 1, duration: 0.3 }, at(2, 0.45));
+      tl.to("#k-rr", { stroke: "#FC6255", duration: 0.25, yoyo: true, repeat: 3 }, at(2, 0.72));
+
+      // L3 不变量退化
+      tl.to("#k-ge", { fill: "#FC6255", duration: 0.3 }, at(3, 0.0));
+      IN("#k-ratio", at(3, 0.05), 0.4);
+      tl.to("#k-p1", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(3, 0.42));
+      IN("#k-inv", at(3, 0.48), 0.5);
+      IN(["#k-axes", "#k-xl", "#k-yl"], at(3, 0.5), 0.4);
+      DRAW("#k-c1", at(3, 0.55), 0.6);
+      IN("#k-c1t", at(3, 0.6), 0.3);
+      DRAW("#k-c2", at(3, 0.75), 0.6);
+      IN("#k-c2t", at(3, 0.8), 0.3);
+
+      // L4 换出约 99% 储备
+      IN("#k-pt", at(4, 0.0), 0.3, { scale: 0, transformOrigin: "50% 50%" }, { scale: 1 });
+      IN("#k-drop", at(4, 0.08), 0.2);
+      tl.fromTo("#k-drop", { attr: { y2: 500 } }, { attr: { y2: 896 }, duration: 1.0, ease: "power2.in" }, at(4, 0.08));
+      tl.to("#k-pt", { attr: { cy: 896 }, fill: "#FC6255", duration: 1.0, ease: "power2.in" }, at(4, 0.08));
+      IN("#k-out", at(4, 0.2), 0.4);
+      IN(["#k-loss", "#k-lsrc"], at(4, 0.4), 0.5);
+      IN("#k-lesson", at(4, 0.68), 0.5, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+
+      tl.to(["#k-all", "#k-lesson"], { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["fork"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,100 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="hook" data-duration="40.53" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="h-all">
+        <text id="h-date" class="h" x="120" y="110" font-size="34" fill="#6b6f7a" letter-spacing="2">2026 年 2 月 15 日 · Moonwell · Base</text>
+        <g id="h-prop" class="h"><rect x="120" y="170" width="520" height="100" rx="16" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="380" y="232" font-size="32" fill="#e8e6df" text-anchor="middle">治理提案 MIP-X43 执行</text></g>
+        <!-- 价格公式 -->
+        <text id="h-f" class="h" x="960" y="380" font-size="40" fill="#e8e6df" text-anchor="middle"><tspan fill="#F0B90B">cbETH 美元价</tspan> = cbETH/ETH 汇率 <tspan id="h-miss" fill="#8a8f99">× ETH/USD</tspan></text>
+        <line id="h-missx" class="h" x1="1170" y1="368" x2="1420" y2="368" stroke="#FC6255" stroke-width="5" />
+        <text id="h-only" class="h" x="1300" y="440" font-size="30" fill="#FC6255" text-anchor="middle">只用了汇率</text>
+        <!-- 价格柱 -->
+        <line id="h-base" class="h" x1="300" y1="880" x2="1000" y2="880" stroke="#2a2f3a" stroke-width="3" />
+        <rect id="h-real" class="h" x="380" y="500" width="160" height="380" fill="#F0B90B" opacity=".85" />
+        <text id="h-realt" class="h" x="460" y="930" font-size="32" fill="#F0B90B" text-anchor="middle">真实 ≈ 2,200 美元</text>
+        <rect id="h-fake" class="h" x="720" y="870" width="160" height="10" fill="#FC6255" />
+        <text id="h-faket" class="h" x="800" y="930" font-size="32" fill="#FC6255" text-anchor="middle">报价 ≈ 1.12 美元</text>
+        <!-- 清算与坏账 -->
+        <g id="h-liq" class="h"><text x="1460" y="600" font-size="36" fill="#e8e6df" text-anchor="middle">清算 <tspan fill="#F0B90B" font-weight="700">1,096.317</tspan> 枚 cbETH</text></g>
+        <g id="h-coins" fill="#F0B90B"></g>
+        <text id="h-bad" class="h" x="1460" y="840" font-size="52" fill="#FC6255" text-anchor="middle" font-weight="800">坏账 ≈ 178 万美元</text>
+        <text id="h-badsrc" class="h" x="1460" y="890" font-size="28" fill="#6b6f7a" text-anchor="middle">公开报道（The Block）</text>
+        <!-- 两项检查 -->
+        <g id="h-chk" class="h">
+          <rect x="1160" y="160" width="640" height="130" rx="16" fill="#121a22" stroke="#83C167" stroke-width="3" />
+          <text x="1200" y="215" font-size="34" fill="#83C167">✓ 价格 &gt; 0</text>
+          <text x="1200" y="265" font-size="34" fill="#83C167">✓ 刚刚更新</text>
+        </g>
+      </g>
+      <text id="h-new" class="h" x="960" y="540" font-size="72" fill="#e8e6df" text-anchor="middle" font-weight="800">它是<tspan fill="#83C167">新的</tspan>，也是<tspan fill="#FC6255">错的</tspan></text>
+      <g id="h-q" class="h">
+        <text x="960" y="500" font-size="68" fill="#e8e6df" text-anchor="middle" font-weight="800">合约读到的<tspan fill="#F0B90B">价格</tspan>，能信吗？</text>
+        <text x="960" y="600" font-size="44" fill="#FF9F43" text-anchor="middle">尤其是：一笔交易里就能改写的价格</text>
+      </g>
+      <g id="h-pin" class="h">
+        <rect x="70" y="60" width="700" height="84" rx="14" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="420" y="115" font-size="34" fill="#e8e6df" text-anchor="middle">合约读到的<tspan fill="#F0B90B">价格</tspan>，能信吗？</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 40.53, "L": [[0.6, 5.74], [6.19, 16.55], [17.0, 24.56], [25.01, 31.01], [31.46, 39.43]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      const cg = document.querySelector("#h-coins"), coins = [];
+      for (let i = 0; i < 14; i++) {
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", 1250 + (i % 7) * 70); c.setAttribute("cy", 680 + Math.floor(i / 7) * 60); c.setAttribute("r", "22"); c.setAttribute("opacity", "0");
+        cg.appendChild(c); coins.push(c);
+      }
+      // L0 治理提案
+      IN("#h-date", at(0, 0), 0.5);
+      IN("#h-prop", at(0, 0.4), 0.5, { y: 20 }, { y: 0 });
+      // L1 只用了汇率：2,200 → 1.12
+      IN("#h-f", at(1, 0.0), 0.5);
+      IN("#h-missx", at(1, 0.2), 0.3);
+      tl.fromTo("#h-missx", { attr: { x2: 1170 } }, { attr: { x2: 1420 }, duration: 0.4 }, at(1, 0.2));
+      IN("#h-only", at(1, 0.3), 0.4);
+      IN("#h-base", at(1, 0.4), 0.3);
+      tl.fromTo("#h-real", { opacity: 0, scaleY: 0, transformOrigin: "50% 100%" }, { opacity: 0.85, scaleY: 1, duration: 0.7, ease: "expo.out" }, at(1, 0.45));
+      IN("#h-realt", at(1, 0.5), 0.3);
+      IN("#h-fake", at(1, 0.72), 0.3);
+      IN("#h-faket", at(1, 0.75), 0.3);
+      // L2 清算 → 坏账
+      IN("#h-liq", at(2, 0.0), 0.4);
+      coins.forEach((c, i) => {
+        tl.fromTo(c, { opacity: 0 }, { opacity: 1, duration: 0.15 }, at(2, 0.1) + i * 0.08);
+        tl.to(c, { x: 300, fill: "#FC6255", opacity: 0, duration: 0.6, ease: "power2.in" }, at(2, 0.35) + i * 0.06);
+      });
+      IN("#h-bad", at(2, 0.6), 0.5);
+      IN("#h-badsrc", at(2, 0.7), 0.4);
+      // L3 两项检查都通过
+      IN("#h-chk", at(3, 0.0), 0.5);
+      tl.to("#h-all", { opacity: 0.15, duration: 0.4 }, at(3, 0.55));
+      IN("#h-new", at(3, 0.58), 0.5, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      // L4 问题
+      OUT("#h-new", at(4, 0), 0.3);
+      IN("#h-q", at(4, 0.05), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      tl.fromTo("#h-q > text:nth-of-type(2)", { opacity: 0 }, { opacity: 1, duration: 0.5 }, at(4, 0.5));
+      tl.to("#h-all", { opacity: 0, duration: 0.4 }, at(4, 1) + 0.05);
+      OUT("#h-q", at(4, 1) + 0.05, 0.4);
+      IN("#h-pin", at(4, 1) + 0.15, 0.5, { scale: 1.5, svgOrigin: "420 102" }, { scale: 1 });
+      tl.to("#h-pin", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>

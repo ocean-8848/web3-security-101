@@ -1,0 +1,110 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="56.13" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="r-all">
+        <g id="r-pin" class="h">
+          <rect x="460" y="70" width="1000" height="110" rx="18" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="960" y="142" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="700">代码没错，<tspan fill="#FF9F43">规则</tspan>错了，怎么发现？</text>
+        </g>
+
+        <!-- 第一步：不变量 + 不变量测试 -->
+        <text id="r-s1" class="h" x="200" y="280" font-size="34" fill="#8a8f99">第一步 · 写不变量</text>
+        <g id="r-inv" class="h">
+          <text x="960" y="560" font-size="46" fill="#83C167" text-anchor="middle" font-weight="700">每个账户：健康因子 ≥ 1</text>
+          <text x="960" y="650" font-size="46" fill="#83C167" text-anchor="middle" font-weight="700">整个协议：资产 ≥ 债权</text>
+        </g>
+        <g id="r-fuzz" fill="#58C4DD"></g>
+        <text id="r-fz" class="h" x="960" y="790" font-size="34" fill="#58C4DD" text-anchor="middle">不变量测试：让工具找打破它的调用顺序</text>
+
+        <!-- 第二步：入口 × 检查表 -->
+        <text id="r-s2" class="h" x="200" y="280" font-size="34" fill="#8a8f99">第二步 · 入口逐行核对</text>
+        <g id="r-tab" class="h" font-size="36">
+          <text x="560" y="400" fill="#e8e6df">取款</text><text x="1360" y="400" fill="#83C167" text-anchor="middle">✓</text>
+          <text x="560" y="480" fill="#e8e6df">借款</text><text x="1360" y="480" fill="#83C167" text-anchor="middle">✓</text>
+          <text x="560" y="560" fill="#e8e6df">杠杆铸造</text><text x="1360" y="560" fill="#83C167" text-anchor="middle">✓</text>
+          <text x="560" y="640" fill="#e8e6df">捐赠</text>
+        </g>
+        <rect id="r-cell" class="h" x="1290" y="595" width="140" height="66" rx="10" fill="#1f1214" stroke="#FF9F43" stroke-width="5" />
+        <text id="r-cellx" class="h" x="1360" y="642" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="800">✕</text>
+        <text id="r-one" class="h" x="960" y="770" font-size="38" fill="#FF9F43" text-anchor="middle">Euler 缺的，就是表里的一格</text>
+
+        <!-- 第三步：风险参数 -->
+        <text id="r-s3" class="h" x="200" y="280" font-size="34" fill="#8a8f99">第三步 · 每个模块列风险参数</text>
+        <g font-size="34">
+          <g class="r-p h"><text x="360" y="380" fill="#58C4DD">治理</text><text x="620" y="380" fill="#e8e6df">投票快照 + 执行时间锁</text></g>
+          <g class="r-p h"><text x="360" y="460" fill="#58C4DD">奖励</text><text x="620" y="460" fill="#e8e6df">不读一笔交易内可变的数据</text></g>
+          <g class="r-p h"><text x="360" y="540" fill="#58C4DD">赎回</text><text x="620" y="540" fill="#e8e6df">延迟多长 · 延迟期内谁能暂停</text></g>
+          <g class="r-p h"><text x="360" y="620" fill="#F0B90B">抵押品</text><text x="620" y="620" fill="#e8e6df">低流动性：供应上限 · 更低抵押率</text></g>
+          <g class="r-p h"><text x="360" y="700" fill="#B48EF0">稳定币</text><text x="620" y="700" fill="#e8e6df">储备 · 赎回规则 · 铸币权限</text></g>
+        </g>
+
+        <!-- 成立条件 -->
+        <g id="r-cond">
+          <text class="r-cl h" x="960" y="330" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700">成立条件</text>
+          <text class="r-cl h" x="960" y="430" font-size="36" fill="#e8e6df" text-anchor="middle">不变量只覆盖你<tspan fill="#FF9F43">写下来</tspan>的东西</text>
+          <text class="r-cl h" x="960" y="510" font-size="36" fill="#e8e6df" text-anchor="middle">多种抵押品之间的相关性：单独评估</text>
+          <text class="r-cl h" x="960" y="590" font-size="36" fill="#e8e6df" text-anchor="middle">治理本身被攻击：单独评估</text>
+        </g>
+        <text id="r-next" class="h" x="960" y="900" font-size="36" fill="#6b6f7a" text-anchor="middle">下一集 · 12 跨链桥安全：损失最大的一类事故</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 56.13, "L": [[0.6, 5.4], [5.85, 16.55], [17.0, 27.68], [28.13, 41.05], [41.5, 50.21], [50.66, 55.03]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      // 不变量测试的输入点：固定种子
+      let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      const fz = document.querySelector("#r-fuzz"), dots = [];
+      for (let i = 0; i < 40; i++) {
+        const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        const x = 400 + rnd() * 1120, y = 320 + rnd() * 80;
+        c.setAttribute("cx", x.toFixed(1)); c.setAttribute("cy", y.toFixed(1)); c.setAttribute("r", "7"); c.setAttribute("opacity", "0");
+        fz.appendChild(c); dots.push({ c, dx: (960 - x) * 0.7, dy: 190 + rnd() * 40 });
+      }
+
+      IN("#r-pin", at(0, 0.05), 0.8, { scale: 0.5, x: -560, y: -10, svgOrigin: "960 125" }, { scale: 1, x: 0, y: 0, ease: "expo.out" });
+      // L1 不变量
+      IN("#r-s1", at(1, 0.02), 0.4);
+      IN("#r-inv", at(1, 0.08), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      dots.forEach((d, i) => {
+        const t0 = at(1, 0.55) + i * 0.05;
+        tl.fromTo(d.c, { opacity: 0, x: 0, y: 0 }, { opacity: 0.9, duration: 0.15 }, t0);
+        tl.to(d.c, { x: d.dx, y: d.dy, opacity: 0, duration: 0.7, ease: "power2.in" }, t0 + 0.1);
+      });
+      IN("#r-fz", at(1, 0.6), 0.5);
+      // L2 入口表
+      OUT(["#r-s1", "#r-inv", "#r-fz"], at(2, 0), 0.35);
+      IN("#r-s2", at(2, 0.05), 0.4);
+      IN("#r-tab", at(2, 0.1), 0.6);
+      IN(["#r-cell", "#r-cellx"], at(2, 0.55), 0.4, { scale: 1.3, svgOrigin: "1360 628" }, { scale: 1 });
+      IN("#r-one", at(2, 0.7), 0.5);
+      // L3 风险参数
+      OUT(["#r-s2", "#r-tab", "#r-cell", "#r-cellx", "#r-one"], at(3, 0), 0.35);
+      IN("#r-s3", at(3, 0.03), 0.4);
+      const ps = gsap.utils.toArray("#root .r-p");
+      [0.12, 0.28, 0.44, 0.6, 0.76].forEach((f, i) => IN(ps[i], at(3, f), 0.4, { x: -20 }, { x: 0 }));
+      // L4 成立条件
+      OUT(["#r-s3", ...ps], at(4, 0), 0.35);
+      const cl = gsap.utils.toArray("#root .r-cl");
+      [0.03, 0.1, 0.5, 0.75].forEach((f, i) => IN(cl[i], at(4, f), 0.5, { filter: "blur(6px)" }, { filter: "blur(0px)" }));
+      // L5 预告
+      IN("#r-next", at(5, 0.1), 0.5);
+      tl.to("#r-all", { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

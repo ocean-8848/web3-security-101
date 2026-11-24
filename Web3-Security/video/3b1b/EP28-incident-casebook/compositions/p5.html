@@ -1,0 +1,103 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="p5" data-duration="54.66" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="u-all">
+        <text id="u-t" class="h" x="120" y="120" font-size="44" fill="#58C4DD" font-weight="800">⑤ 改动过的分叉 / 没审计的新版本</text>
+        <text id="u-sig" class="h" x="1800" y="120" font-size="40" fill="#FF9F43" text-anchor="end" font-weight="700">信号：「只改了一行」</text>
+
+        <!-- 分叉改手续费 -->
+        <g id="u-fork" class="h">
+          <rect x="120" y="180" width="480" height="110" rx="14" fill="#161a22" stroke="#8a8f99" stroke-width="3" />
+          <text x="360" y="232" font-size="30" fill="#8a8f99" text-anchor="middle">Uniswap V2</text>
+          <text x="360" y="272" font-size="30" fill="#e8e6df" text-anchor="middle">手续费 3 / 1,000</text>
+        </g>
+        <g id="u-ur" class="h">
+          <rect x="760" y="180" width="560" height="110" rx="14" fill="#121a22" stroke="#58C4DD" stroke-width="3" />
+          <text x="1040" y="232" font-size="30" fill="#58C4DD" text-anchor="middle">Uranium（2021 年分叉）</text>
+          <text x="1040" y="272" font-size="30" fill="#e8e6df" text-anchor="middle">手续费 16 / 10,000</text>
+        </g>
+        <text id="u-arr" class="h" x="680" y="250" font-size="44" fill="#8a8f99" text-anchor="middle">→</text>
+
+        <!-- 交换后的检查 -->
+        <text id="u-rule" class="h" x="960" y="380" font-size="32" fill="#83C167" text-anchor="middle">检查：交换后两边余额相乘 ≥ 原来的乘积</text>
+        <g id="u-left" class="h">
+          <rect x="140" y="420" width="760" height="200" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="3" />
+          <text x="520" y="480" font-size="30" fill="#8a8f99" text-anchor="middle">左边：每个余额 × 10,000（已改）</text>
+          <text x="520" y="550" font-size="34" fill="#e8e6df" text-anchor="middle">10,000 × 10,000</text>
+          <text x="520" y="600" font-size="34" fill="#F0B90B" text-anchor="middle" font-weight="700">= 1 亿倍</text>
+        </g>
+        <text id="u-ge" class="h" x="960" y="560" font-size="80" fill="#e8e6df" text-anchor="middle" font-weight="800">≥</text>
+        <g id="u-right" class="h">
+          <rect x="1020" y="420" width="760" height="200" rx="16" fill="#2a1414" stroke="#FC6255" stroke-width="3" />
+          <text x="1400" y="480" font-size="30" fill="#8a8f99" text-anchor="middle">右边：仍按 1,000 的平方（漏改）</text>
+          <text x="1400" y="550" font-size="34" fill="#e8e6df" text-anchor="middle">1,000 × 1,000</text>
+          <text x="1400" y="600" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">= 100 万倍</text>
+        </g>
+        <g id="u-div" class="h">
+          <text x="960" y="710" font-size="44" fill="#e8e6df" text-anchor="middle">1 亿 ÷ 100 万 = <tspan fill="#FC6255" font-weight="800">100</tspan></text>
+          <text x="960" y="770" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">检查放宽了 100 倍</text>
+        </g>
+
+        <!-- 储备被换走 -->
+        <g id="u-res">
+          <rect id="u-resbar" class="h" x="1180" y="840" width="600" height="60" fill="#F0B90B" />
+          <text id="u-rest" class="h" x="1180" y="825" font-size="28" fill="#e8e6df">每个交易对的储备</text>
+          <text id="u-rest2" class="h" x="1180" y="950" font-size="30" fill="#FC6255" font-weight="700">约 99% 被换走 · 损失 ≈ 5,000 万美元</text>
+          <text id="u-tiny" class="h" x="140" y="880" font-size="30" fill="#e8e6df">攻击者投入：极少量代币</text>
+        </g>
+
+        <!-- 防御 -->
+        <g id="u-fix">
+          <rect class="u-f h" x="140" y="830" width="1640" height="190" rx="16" fill="#132013" stroke="#83C167" stroke-width="3" />
+          <text class="u-f h" x="180" y="890" font-size="32" fill="#83C167" font-family="JetBrains Mono">uint constant FEE_DENOMINATOR = 10000;   // 常数集中定义</text>
+          <text class="u-f h" x="180" y="960" font-size="32" fill="#e8e6df">改动即重审 · 差异审计 · 每次交换后测试乘积不变量</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 54.66, "L": [[0.6, 8.5], [8.95, 16.87], [17.32, 27.2], [27.65, 35.26], [35.71, 43.15], [43.6, 53.56]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      // L0 标题 + 信号
+      IN("#u-t", at(0, 0.0), 0.5);
+      IN("#u-sig", at(0, 0.6), 0.5, { scale: 1.2, svgOrigin: "1600 110" }, { scale: 1 });
+      // L1 分叉改手续费
+      IN("#u-fork", at(1, 0.1), 0.5);
+      IN("#u-arr", at(1, 0.35), 0.3);
+      IN("#u-ur", at(1, 0.45), 0.5, { x: -20 }, { x: 0 });
+      // L2 检查规则 + 左边
+      IN("#u-rule", at(2, 0.0), 0.5);
+      IN("#u-left", at(2, 0.45), 0.5, { y: 20 }, { y: 0 });
+      // L3 右边 + 相除
+      IN("#u-ge", at(3, 0.0), 0.3);
+      IN("#u-right", at(3, 0.1), 0.5, { y: 20 }, { y: 0 });
+      IN("#u-div", at(3, 0.6), 0.5, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      // L4 储备被换走
+      IN("#u-tiny", at(4, 0.0), 0.4);
+      IN("#u-rest", at(4, 0.1), 0.3);
+      IN("#u-resbar", at(4, 0.1), 0.3);
+      tl.to("#u-resbar", { attr: { width: 6 }, fill: "#FC6255", duration: 1.4, ease: "power2.in" }, at(4, 0.3));
+      IN("#u-rest2", at(4, 0.65), 0.4);
+      // L5 防御
+      tl.to("#u-res", { opacity: 0, duration: 0.4 }, at(5, 0.0));
+      gsap.utils.toArray("#root .u-f").forEach((t, i) => IN(t, at(5, [0.05, 0.1, 0.5][i]), 0.5));
+      tl.to("#u-right rect", { stroke: "#83C167", fill: "#132013", duration: 0.5 }, at(5, 0.25));
+
+      tl.to("#u-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["p5"] = tl;
+    })();
+  </script>
+</template>

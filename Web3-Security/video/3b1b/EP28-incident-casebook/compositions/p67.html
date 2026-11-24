@@ -1,0 +1,111 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="p67" data-duration="46.19" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="k-all">
+        <!-- 代码之外 -->
+        <g id="k-intro" class="h">
+          <text x="960" y="460" font-size="56" fill="#B48EF0" text-anchor="middle" font-weight="800">后三种：代码之外</text>
+          <g font-size="48" fill="#B48EF0" text-anchor="middle" font-weight="700"><text x="800" y="580">⑥</text><text x="960" y="580">⑦</text><text x="1120" y="580">⑧</text></g>
+        </g>
+
+        <!-- ⑥ 盲签 -->
+        <g id="k-6">
+          <text id="k-6t" class="h" x="120" y="120" font-size="44" fill="#B48EF0" font-weight="800">⑥ 签名人看不懂所签内容</text>
+          <g id="k-dev" class="h">
+            <rect x="120" y="170" width="440" height="300" rx="24" fill="#161a22" stroke="#e8e6df" stroke-width="3" />
+            <text x="340" y="230" font-size="28" fill="#8a8f99" text-anchor="middle">签名界面</text>
+            <text x="340" y="310" font-size="32" fill="#e8e6df" text-anchor="middle" font-family="JetBrains Mono">0x8f3a…e21c</text>
+            <rect x="240" y="370" width="200" height="60" rx="30" fill="#2a2f3a" /><text x="340" y="410" font-size="28" fill="#e8e6df" text-anchor="middle">签名</text>
+          </g>
+          <text id="k-sig6" class="h" x="340" y="520" font-size="28" fill="#FF9F43" text-anchor="middle">信号：只显示哈希或摘要</text>
+          <g id="k-real" class="h">
+            <rect x="700" y="170" width="520" height="140" rx="16" fill="#2a1414" stroke="#FC6255" stroke-width="3" />
+            <text x="960" y="225" font-size="30" fill="#FC6255" text-anchor="middle">Bybit：实际签下的</text>
+            <text x="960" y="280" font-size="30" fill="#e8e6df" text-anchor="middle" font-family="JetBrains Mono">delegatecall → …</text>
+          </g>
+          <g id="k-tron" class="h">
+            <rect x="700" y="330" width="520" height="140" rx="16" fill="#2a1414" stroke="#FC6255" stroke-width="3" />
+            <text x="960" y="385" font-size="30" fill="#FC6255" text-anchor="middle">TRON 权限诈骗：实际签下的</text>
+            <text x="960" y="440" font-size="30" fill="#e8e6df" text-anchor="middle">修改账户权限</text>
+          </g>
+          <g id="k-fix6" font-size="30" fill="#83C167">
+            <text class="k-f6 h" x="1300" y="230">✓ 独立解码交易</text>
+            <text class="k-f6 h" x="1300" y="320">✓ 硬件钱包上核对</text>
+            <text class="k-f6 h" x="1300" y="410">✓ delegatecall 目标白名单</text>
+          </g>
+        </g>
+        <line id="k-div" class="h" x1="120" y1="570" x2="1800" y2="570" stroke="#2a2f3a" stroke-width="2" />
+
+        <!-- ⑦ 密钥集中 -->
+        <g id="k-7">
+          <text id="k-7t" class="h" x="120" y="650" font-size="44" fill="#B48EF0" font-weight="800">⑦ 少数密钥控制全部资产</text>
+          <g id="k-vals"></g>
+          <text id="k-ron" class="h" x="660" y="900" font-size="30" fill="#e8e6df" text-anchor="middle">Ronin：9 个验证者，签够 5 个就能放行</text>
+          <text id="k-cnt" class="h" x="660" y="960" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="800">被控制：<tspan id="k-n">0</tspan> / 9</text>
+          <g id="k-fix7">
+            <text class="k-f7 h" x="1300" y="730" font-size="28" fill="#FF9F43">信号：签名人少 · 没有时间锁</text>
+            <text class="k-f7 h" x="1300" y="800" font-size="30" fill="#83C167">✓ 提高阈值</text>
+            <text class="k-f7 h" x="1300" y="860" font-size="30" fill="#83C167">✓ 签名人真正独立</text>
+            <text class="k-f7 h" x="1300" y="920" font-size="30" fill="#83C167">✓ 时间锁 + 速率限制</text>
+          </g>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 46.19, "L": [[0.6, 3.43], [3.88, 11.71], [12.16, 19.76], [20.21, 27.01], [27.46, 34.97], [35.42, 45.09]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 9 个验证者
+      const vh = document.querySelector("#k-vals"), V = [];
+      for (let i = 0; i < 9; i++) {
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", 260 + i * 100); c.setAttribute("cy", 790); c.setAttribute("r", 34);
+        c.setAttribute("fill", "#161a22"); c.setAttribute("stroke", "#B48EF0"); c.setAttribute("stroke-width", 4); c.setAttribute("opacity", "0");
+        vh.appendChild(c); V.push(c);
+      }
+
+      // L0 代码之外
+      IN("#k-intro", at(0, 0.0), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      // L1 ⑥ 签名界面只显示哈希
+      tl.to("#k-intro", { opacity: 0, duration: 0.3 }, at(1, 0.0));
+      IN("#k-6t", at(1, 0.05), 0.5);
+      IN("#k-dev", at(1, 0.25), 0.5, { y: 20 }, { y: 0 });
+      IN("#k-sig6", at(1, 0.65), 0.4);
+      // L2 两个例子
+      IN("#k-real", at(2, 0.05), 0.5, { x: -20 }, { x: 0 });
+      IN("#k-tron", at(2, 0.55), 0.5, { x: -20 }, { x: 0 });
+      // L3 防御
+      gsap.utils.toArray("#root .k-f6").forEach((t, i) => IN(t, at(3, 0.1 + i * 0.3), 0.4));
+
+      // L4 ⑦ Ronin 5/9
+      tl.to("#k-6", { opacity: 0.35, duration: 0.4 }, at(4, 0.0));
+      IN("#k-div", at(4, 0.0), 0.4);
+      IN("#k-7t", at(4, 0.05), 0.5);
+      V.forEach((c, i) => tl.to(c, { opacity: 1, duration: 0.2 }, at(4, 0.2) + i * 0.06));
+      IN("#k-ron", at(4, 0.3), 0.4);
+      IN("#k-cnt", at(4, 0.45), 0.4);
+      const n = { v: 0 }, num = document.querySelector("#k-n");
+      V.slice(0, 5).forEach((c, i) => tl.to(c, { fill: "#FC6255", stroke: "#FC6255", duration: 0.25 }, at(4, 0.5) + i * 0.3));
+      tl.fromTo(n, { v: 0 }, { v: 5, duration: 1.5, ease: "none", onUpdate: () => { num.textContent = Math.floor(n.v + 0.001); } }, at(4, 0.5));
+      // L5 信号与防御
+      gsap.utils.toArray("#root .k-f7").forEach((t, i) => IN(t, at(5, 0.05 + i * 0.22), 0.4));
+
+      tl.to("#k-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["p67"] = tl;
+    })();
+  </script>
+</template>

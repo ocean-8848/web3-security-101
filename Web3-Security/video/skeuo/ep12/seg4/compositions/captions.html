@@ -1,0 +1,270 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .cap-g { position: absolute; left: 0; right: 0; bottom: var(--cap-bottom, 84px); text-align: center; opacity: 0; visibility: hidden; }
+    .cap-t { display: inline-block; font-family: var(--cap-font, "Noto Sans SC"), sans-serif; font-weight: var(--cap-weight, 700);
+      font-size: var(--cap-size, 46px); line-height: 1.25; color: var(--cap-ink, #111); letter-spacing: 0.02em;
+      padding: var(--cap-pad, 0); background: var(--cap-bg, transparent); border-radius: var(--cap-radius, 0);
+      text-shadow: var(--cap-shadow, none); }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-c0" class="cap-g"><span class="cap-t">跨链桥事故的根因</span></div>
+    <div id="cap-c1" class="cap-g"><span class="cap-t">大致分四类</span></div>
+    <div id="cap-c2" class="cap-g"><span class="cap-t">私钥 验证逻辑 初始化</span></div>
+    <div id="cap-c3" class="cap-g"><span class="cap-t">存款伪造</span></div>
+    <div id="cap-c4" class="cap-g"><span class="cap-t">第一类 私钥与运营</span></div>
+    <div id="cap-c5" class="cap-g"><span class="cap-t">Ronin 那 5 把私钥里</span></div>
+    <div id="cap-c6" class="cap-g"><span class="cap-t">4 把属于同一机构</span></div>
+    <div id="cap-c7" class="cap-g"><span class="cap-t">1 把来自一项本应撤销的授权</span></div>
+    <div id="cap-c8" class="cap-g"><span class="cap-t">公开报道称</span></div>
+    <div id="cap-c9" class="cap-g"><span class="cap-t">私钥是通过社会工程拿到的</span></div>
+    <div id="cap-c10" class="cap-g"><span class="cap-t">门限的意义</span></div>
+    <div id="cap-c11" class="cap-g"><span class="cap-t">取决于签名人是否独立</span></div>
+    <div id="cap-c12" class="cap-g"><span class="cap-t">4 把钥匙放在同一个地方</span></div>
+    <div id="cap-c13" class="cap-g"><span class="cap-t">等于 1 把</span></div>
+    <div id="cap-c14" class="cap-g"><span class="cap-t">第二类 验证逻辑</span></div>
+    <div id="cap-c15" class="cap-g"><span class="cap-t">2022 年 10 月</span></div>
+    <div id="cap-c16" class="cap-g"><span class="cap-t">BNB Chain 的 Token Hub</span></div>
+    <div id="cap-c17" class="cap-g"><span class="cap-t">被一份伪造的 IAVL Merkle</span></div>
+    <div id="cap-c18" class="cap-g"><span class="cap-t">证明骗过了校验</span></div>
+    <div id="cap-c19" class="cap-g"><span class="cap-t">凭空铸出 200 万枚 BNB</span></div>
+    <div id="cap-c20" class="cap-g"><span class="cap-t">约 5.7 亿美元</span></div>
+    <div id="cap-c21" class="cap-g"><span class="cap-t">其中约 1 亿美元以上</span></div>
+    <div id="cap-c22" class="cap-g"><span class="cap-t">被转到其他链</span></div>
+    <div id="cap-c23" class="cap-g"><span class="cap-t">没有私钥被偷</span></div>
+    <div id="cap-c24" class="cap-g"><span class="cap-t">被利用的</span></div>
+    <div id="cap-c25" class="cap-g"><span class="cap-t">是证明验证代码</span></div>
+    <div id="cap-c26" class="cap-g"><span class="cap-t">BSC 验证者约 3 小时后暂停了全链</span></div>
+    <div id="cap-c27" class="cap-g"><span class="cap-t">再用 Moran 硬分叉修复了校验</span></div>
+    <div id="cap-c28" class="cap-g"><span class="cap-t">2022 年 2 月的 Wormhole</span></div>
+    <div id="cap-c29" class="cap-g"><span class="cap-t">Solana 一侧的合约</span></div>
+    <div id="cap-c30" class="cap-g"><span class="cap-t">没有核对传进来的系统账户是不是真的</span></div>
+    <div id="cap-c31" class="cap-g"><span class="cap-t">伪造的账户绕过了守护者的签名验证</span></div>
+    <div id="cap-c32" class="cap-g"><span class="cap-t">铸出约 12 万枚 wETH</span></div>
+    <div id="cap-c33" class="cap-g"><span class="cap-t">约 3.2 亿美元</span></div>
+    <div id="cap-c34" class="cap-g"><span class="cap-t">2021 年 8 月的 Poly Network</span></div>
+    <div id="cap-c35" class="cap-g"><span class="cap-t">跨链消息可以调用任意合约的函数</span></div>
+    <div id="cap-c36" class="cap-g"><span class="cap-t">其中包括一个替换验证者公钥的特权函数</span></div>
+    <div id="cap-c37" class="cap-g"><span class="cap-t">公钥被换掉</span></div>
+    <div id="cap-c38" class="cap-g"><span class="cap-t">伪造的提款就能签出来</span></div>
+    <div id="cap-c39" class="cap-g"><span class="cap-t">损失约 6.1 亿美元</span></div>
+    <div id="cap-c40" class="cap-g"><span class="cap-t">后来攻击者归还了资产</span></div>
+    <div id="cap-c41" class="cap-g"><span class="cap-t">所以 跨链消息的执行器</span></div>
+    <div id="cap-c42" class="cap-g"><span class="cap-t">不能调用持有特权的合约</span></div>
+    <div id="cap-c43" class="cap-g"><span class="cap-t">目标地址和函数</span></div>
+    <div id="cap-c44" class="cap-g"><span class="cap-t">都要列白名单</span></div>
+    <div id="cap-c45" class="cap-g"><span class="cap-t">第三类 初始化</span></div>
+    <div id="cap-c46" class="cap-g"><span class="cap-t">2022 年 8 月</span></div>
+    <div id="cap-c47" class="cap-g"><span class="cap-t">Nomad 升级时</span></div>
+    <div id="cap-c48" class="cap-g"><span class="cap-t">把可信根设成了零值</span></div>
+    <div id="cap-c49" class="cap-g"><span class="cap-t">结果任何消息</span></div>
+    <div id="cap-c50" class="cap-g"><span class="cap-t">都被当作已经证明过</span></div>
+    <div id="cap-c51" class="cap-g"><span class="cap-t">第四类 存款伪造</span></div>
+    <div id="cap-c52" class="cap-g"><span class="cap-t">2022 年 1 月的 Qubit</span></div>
+    <div id="cap-c53" class="cap-g"><span class="cap-t">对零地址调用转账函数</span></div>
+    <div id="cap-c54" class="cap-g"><span class="cap-t">返回了成功</span></div>
+    <div id="cap-c55" class="cap-g"><span class="cap-t">桥就记下了一笔不存在的 ETH 存款</span></div>
+    <div id="cap-c56" class="cap-g"><span class="cap-t">另有一种情况</span></div>
+    <div id="cap-c57" class="cap-g"><span class="cap-t">合约代码完全正确</span></div>
+    <div id="cap-c58" class="cap-g"><span class="cap-t">2026 年 4 月 18 日</span></div>
+    <div id="cap-c59" class="cap-g"><span class="cap-t">一条伪造的 LayerZero 消息</span></div>
+    <div id="cap-c60" class="cap-g"><span class="cap-t">让 Ethereum 上的适配器放</span></div>
+    <div id="cap-c61" class="cap-g"><span class="cap-t">出约 11.65 万枚 rsETH</span></div>
+    <div id="cap-c62" class="cap-g"><span class="cap-t">约 2.92 亿美元</span></div>
+    <div id="cap-c63" class="cap-g"><span class="cap-t">这条路径只有一个验证者</span></div>
+    <div id="cap-c64" class="cap-g"><span class="cap-t">LayerZero 称</span></div>
+    <div id="cap-c65" class="cap-g"><span class="cap-t">攻击者控制了它依赖的两个 RPC 节点</span></div>
+    <div id="cap-c66" class="cap-g"><span class="cap-t">让验证者看到假数据</span></div>
+    <div id="cap-c67" class="cap-g"><span class="cap-t">桥只相信验证者</span></div>
+    <div id="cap-c68" class="cap-g"><span class="cap-t">验证者只相信 RPC</span></div>
+    <div id="cap-c69" class="cap-g"><span class="cap-t">没有第二个独立来源可以比对</span></div>
+    <div id="cap-c70" class="cap-g"><span class="cap-t">责任仍有争议</span></div>
+    <div id="cap-c71" class="cap-g"><span class="cap-t">LayerZero 称问题</span></div>
+    <div id="cap-c72" class="cap-g"><span class="cap-t">限于 KelpDAO 的配置</span></div>
+    <div id="cap-c73" class="cap-g"><span class="cap-t">KelpDAO 称单个验证者来自默认设置</span></div>
+    <div id="cap-c74" class="cap-g"><span class="cap-t">按 Chainalysis 的分析</span></div>
+    <div id="cap-c75" class="cap-g"><span class="cap-t">KelpDAO 暂停合约</span></div>
+    <div id="cap-c76" class="cap-g"><span class="cap-t">拦下了第二次约 4 万枚 rsETH 的伪造消息</span></div>
+    <div id="cap-c77" class="cap-g"><span class="cap-t">按 The Block 报道</span></div>
+    <div id="cap-c78" class="cap-g"><span class="cap-t">LayerZero 后来道歉</span></div>
+    <div id="cap-c79" class="cap-g"><span class="cap-t">承认不应允许它的验证者单独验证高价值交易</span></div>
+    <div id="cap-c80" class="cap-g"><span class="cap-t">合约没有错</span></div>
+    <div id="cap-c81" class="cap-g"><span class="cap-t">桥一样会被掏空</span></div>
+    <div id="cap-c82" class="cap-g"><span class="cap-t">验证者的数量和数据来源</span></div>
+    <div id="cap-c83" class="cap-g"><span class="cap-t">都要有冗余</span></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      tl.set("#cap-c0", {opacity: 1, visibility: "visible"}, 1.647);
+      tl.set("#cap-c0", {opacity: 0, visibility: "hidden"}, 4.580);
+      tl.set("#cap-c1", {opacity: 1, visibility: "visible"}, 4.832);
+      tl.set("#cap-c1", {opacity: 0, visibility: "hidden"}, 5.525);
+      tl.set("#cap-c2", {opacity: 1, visibility: "visible"}, 5.750);
+      tl.set("#cap-c2", {opacity: 0, visibility: "hidden"}, 7.988);
+      tl.set("#cap-c3", {opacity: 1, visibility: "visible"}, 8.008);
+      tl.set("#cap-c3", {opacity: 0, visibility: "hidden"}, 9.335);
+      tl.set("#cap-c4", {opacity: 1, visibility: "visible"}, 9.707);
+      tl.set("#cap-c4", {opacity: 0, visibility: "hidden"}, 11.959);
+      tl.set("#cap-c5", {opacity: 1, visibility: "visible"}, 12.323);
+      tl.set("#cap-c5", {opacity: 0, visibility: "hidden"}, 14.112);
+      tl.set("#cap-c6", {opacity: 1, visibility: "visible"}, 14.132);
+      tl.set("#cap-c6", {opacity: 0, visibility: "hidden"}, 15.847);
+      tl.set("#cap-c7", {opacity: 1, visibility: "visible"}, 16.035);
+      tl.set("#cap-c7", {opacity: 0, visibility: "hidden"}, 18.717);
+      tl.set("#cap-c8", {opacity: 1, visibility: "visible"}, 19.023);
+      tl.set("#cap-c8", {opacity: 0, visibility: "hidden"}, 19.977);
+      tl.set("#cap-c9", {opacity: 1, visibility: "visible"}, 20.161);
+      tl.set("#cap-c9", {opacity: 0, visibility: "hidden"}, 22.650);
+      tl.set("#cap-c10", {opacity: 1, visibility: "visible"}, 22.910);
+      tl.set("#cap-c10", {opacity: 0, visibility: "hidden"}, 24.143);
+      tl.set("#cap-c11", {opacity: 1, visibility: "visible"}, 24.268);
+      tl.set("#cap-c11", {opacity: 0, visibility: "hidden"}, 26.439);
+      tl.set("#cap-c12", {opacity: 1, visibility: "visible"}, 26.621);
+      tl.set("#cap-c12", {opacity: 0, visibility: "hidden"}, 28.566);
+      tl.set("#cap-c13", {opacity: 1, visibility: "visible"}, 28.677);
+      tl.set("#cap-c13", {opacity: 0, visibility: "hidden"}, 29.565);
+      tl.set("#cap-c14", {opacity: 1, visibility: "visible"}, 29.944);
+      tl.set("#cap-c14", {opacity: 0, visibility: "hidden"}, 31.648);
+      tl.set("#cap-c15", {opacity: 1, visibility: "visible"}, 32.014);
+      tl.set("#cap-c15", {opacity: 0, visibility: "hidden"}, 33.471);
+      tl.set("#cap-c16", {opacity: 1, visibility: "visible"}, 33.611);
+      tl.set("#cap-c16", {opacity: 0, visibility: "hidden"}, 35.631);
+      tl.set("#cap-c17", {opacity: 1, visibility: "visible"}, 35.769);
+      tl.set("#cap-c17", {opacity: 0, visibility: "hidden"}, 38.138);
+      tl.set("#cap-c18", {opacity: 1, visibility: "visible"}, 38.158);
+      tl.set("#cap-c18", {opacity: 0, visibility: "hidden"}, 39.967);
+      tl.set("#cap-c19", {opacity: 1, visibility: "visible"}, 40.210);
+      tl.set("#cap-c19", {opacity: 0, visibility: "hidden"}, 42.707);
+      tl.set("#cap-c20", {opacity: 1, visibility: "visible"}, 43.016);
+      tl.set("#cap-c20", {opacity: 0, visibility: "hidden"}, 44.522);
+      tl.set("#cap-c21", {opacity: 1, visibility: "visible"}, 44.733);
+      tl.set("#cap-c21", {opacity: 0, visibility: "hidden"}, 46.446);
+      tl.set("#cap-c22", {opacity: 1, visibility: "visible"}, 46.502);
+      tl.set("#cap-c22", {opacity: 0, visibility: "hidden"}, 47.680);
+      tl.set("#cap-c23", {opacity: 1, visibility: "visible"}, 48.043);
+      tl.set("#cap-c23", {opacity: 0, visibility: "hidden"}, 49.235);
+      tl.set("#cap-c24", {opacity: 1, visibility: "visible"}, 49.659);
+      tl.set("#cap-c24", {opacity: 0, visibility: "hidden"}, 50.525);
+      tl.set("#cap-c25", {opacity: 1, visibility: "visible"}, 50.579);
+      tl.set("#cap-c25", {opacity: 0, visibility: "hidden"}, 52.093);
+      tl.set("#cap-c26", {opacity: 1, visibility: "visible"}, 52.428);
+      tl.set("#cap-c26", {opacity: 0, visibility: "hidden"}, 56.289);
+      tl.set("#cap-c27", {opacity: 1, visibility: "visible"}, 56.485);
+      tl.set("#cap-c27", {opacity: 0, visibility: "hidden"}, 59.164);
+      tl.set("#cap-c28", {opacity: 1, visibility: "visible"}, 59.430);
+      tl.set("#cap-c28", {opacity: 0, visibility: "hidden"}, 61.393);
+      tl.set("#cap-c29", {opacity: 1, visibility: "visible"}, 61.429);
+      tl.set("#cap-c29", {opacity: 0, visibility: "hidden"}, 62.761);
+      tl.set("#cap-c30", {opacity: 1, visibility: "visible"}, 62.781);
+      tl.set("#cap-c30", {opacity: 0, visibility: "hidden"}, 65.626);
+      tl.set("#cap-c31", {opacity: 1, visibility: "visible"}, 65.890);
+      tl.set("#cap-c31", {opacity: 0, visibility: "hidden"}, 70.456);
+      tl.set("#cap-c32", {opacity: 1, visibility: "visible"}, 70.476);
+      tl.set("#cap-c32", {opacity: 0, visibility: "hidden"}, 72.770);
+      tl.set("#cap-c33", {opacity: 1, visibility: "visible"}, 73.265);
+      tl.set("#cap-c33", {opacity: 0, visibility: "hidden"}, 74.988);
+      tl.set("#cap-c34", {opacity: 1, visibility: "visible"}, 75.230);
+      tl.set("#cap-c34", {opacity: 0, visibility: "hidden"}, 77.776);
+      tl.set("#cap-c35", {opacity: 1, visibility: "visible"}, 77.901);
+      tl.set("#cap-c35", {opacity: 0, visibility: "hidden"}, 80.851);
+      tl.set("#cap-c36", {opacity: 1, visibility: "visible"}, 81.223);
+      tl.set("#cap-c36", {opacity: 0, visibility: "hidden"}, 84.762);
+      tl.set("#cap-c37", {opacity: 1, visibility: "visible"}, 84.866);
+      tl.set("#cap-c37", {opacity: 0, visibility: "hidden"}, 86.064);
+      tl.set("#cap-c38", {opacity: 1, visibility: "visible"}, 86.226);
+      tl.set("#cap-c38", {opacity: 0, visibility: "hidden"}, 88.190);
+      tl.set("#cap-c39", {opacity: 1, visibility: "visible"}, 88.470);
+      tl.set("#cap-c39", {opacity: 0, visibility: "hidden"}, 90.877);
+      tl.set("#cap-c40", {opacity: 1, visibility: "visible"}, 91.097);
+      tl.set("#cap-c40", {opacity: 0, visibility: "hidden"}, 93.033);
+      tl.set("#cap-c41", {opacity: 1, visibility: "visible"}, 93.342);
+      tl.set("#cap-c41", {opacity: 0, visibility: "hidden"}, 95.587);
+      tl.set("#cap-c42", {opacity: 1, visibility: "visible"}, 95.681);
+      tl.set("#cap-c42", {opacity: 0, visibility: "hidden"}, 97.782);
+      tl.set("#cap-c43", {opacity: 1, visibility: "visible"}, 98.325);
+      tl.set("#cap-c43", {opacity: 0, visibility: "hidden"}, 99.815);
+      tl.set("#cap-c44", {opacity: 1, visibility: "visible"}, 99.906);
+      tl.set("#cap-c44", {opacity: 0, visibility: "hidden"}, 101.142);
+      tl.set("#cap-c45", {opacity: 1, visibility: "visible"}, 101.390);
+      tl.set("#cap-c45", {opacity: 0, visibility: "hidden"}, 102.987);
+      tl.set("#cap-c46", {opacity: 1, visibility: "visible"}, 103.583);
+      tl.set("#cap-c46", {opacity: 0, visibility: "hidden"}, 105.003);
+      tl.set("#cap-c47", {opacity: 1, visibility: "visible"}, 105.200);
+      tl.set("#cap-c47", {opacity: 0, visibility: "hidden"}, 106.363);
+      tl.set("#cap-c48", {opacity: 1, visibility: "visible"}, 106.526);
+      tl.set("#cap-c48", {opacity: 0, visibility: "hidden"}, 108.528);
+      tl.set("#cap-c49", {opacity: 1, visibility: "visible"}, 108.810);
+      tl.set("#cap-c49", {opacity: 0, visibility: "hidden"}, 110.186);
+      tl.set("#cap-c50", {opacity: 1, visibility: "visible"}, 110.206);
+      tl.set("#cap-c50", {opacity: 0, visibility: "hidden"}, 112.024);
+      tl.set("#cap-c51", {opacity: 1, visibility: "visible"}, 112.310);
+      tl.set("#cap-c51", {opacity: 0, visibility: "hidden"}, 114.249);
+      tl.set("#cap-c52", {opacity: 1, visibility: "visible"}, 114.493);
+      tl.set("#cap-c52", {opacity: 0, visibility: "hidden"}, 116.840);
+      tl.set("#cap-c53", {opacity: 1, visibility: "visible"}, 117.032);
+      tl.set("#cap-c53", {opacity: 0, visibility: "hidden"}, 119.482);
+      tl.set("#cap-c54", {opacity: 1, visibility: "visible"}, 119.538);
+      tl.set("#cap-c54", {opacity: 0, visibility: "hidden"}, 120.504);
+      tl.set("#cap-c55", {opacity: 1, visibility: "visible"}, 120.702);
+      tl.set("#cap-c55", {opacity: 0, visibility: "hidden"}, 124.513);
+      tl.set("#cap-c56", {opacity: 1, visibility: "visible"}, 124.864);
+      tl.set("#cap-c56", {opacity: 0, visibility: "hidden"}, 125.937);
+      tl.set("#cap-c57", {opacity: 1, visibility: "visible"}, 126.227);
+      tl.set("#cap-c57", {opacity: 0, visibility: "hidden"}, 127.910);
+      tl.set("#cap-c58", {opacity: 1, visibility: "visible"}, 128.292);
+      tl.set("#cap-c58", {opacity: 0, visibility: "hidden"}, 130.182);
+      tl.set("#cap-c59", {opacity: 1, visibility: "visible"}, 130.431);
+      tl.set("#cap-c59", {opacity: 0, visibility: "hidden"}, 133.300);
+      tl.set("#cap-c60", {opacity: 1, visibility: "visible"}, 133.320);
+      tl.set("#cap-c60", {opacity: 0, visibility: "hidden"}, 135.952);
+      tl.set("#cap-c61", {opacity: 1, visibility: "visible"}, 135.972);
+      tl.set("#cap-c61", {opacity: 0, visibility: "hidden"}, 138.649);
+      tl.set("#cap-c62", {opacity: 1, visibility: "visible"}, 138.852);
+      tl.set("#cap-c62", {opacity: 0, visibility: "hidden"}, 140.721);
+      tl.set("#cap-c63", {opacity: 1, visibility: "visible"}, 141.068);
+      tl.set("#cap-c63", {opacity: 0, visibility: "hidden"}, 142.989);
+      tl.set("#cap-c64", {opacity: 1, visibility: "visible"}, 143.205);
+      tl.set("#cap-c64", {opacity: 0, visibility: "hidden"}, 144.238);
+      tl.set("#cap-c65", {opacity: 1, visibility: "visible"}, 144.490);
+      tl.set("#cap-c65", {opacity: 0, visibility: "hidden"}, 147.805);
+      tl.set("#cap-c66", {opacity: 1, visibility: "visible"}, 147.968);
+      tl.set("#cap-c66", {opacity: 0, visibility: "hidden"}, 149.873);
+      tl.set("#cap-c67", {opacity: 1, visibility: "visible"}, 150.150);
+      tl.set("#cap-c67", {opacity: 0, visibility: "hidden"}, 152.056);
+      tl.set("#cap-c68", {opacity: 1, visibility: "visible"}, 152.171);
+      tl.set("#cap-c68", {opacity: 0, visibility: "hidden"}, 153.472);
+      tl.set("#cap-c69", {opacity: 1, visibility: "visible"}, 153.492);
+      tl.set("#cap-c69", {opacity: 0, visibility: "hidden"}, 156.515);
+      tl.set("#cap-c70", {opacity: 1, visibility: "visible"}, 156.865);
+      tl.set("#cap-c70", {opacity: 0, visibility: "hidden"}, 158.250);
+      tl.set("#cap-c71", {opacity: 1, visibility: "visible"}, 158.489);
+      tl.set("#cap-c71", {opacity: 0, visibility: "hidden"}, 160.168);
+      tl.set("#cap-c72", {opacity: 1, visibility: "visible"}, 160.188);
+      tl.set("#cap-c72", {opacity: 0, visibility: "hidden"}, 162.348);
+      tl.set("#cap-c73", {opacity: 1, visibility: "visible"}, 162.573);
+      tl.set("#cap-c73", {opacity: 0, visibility: "hidden"}, 166.137);
+      tl.set("#cap-c74", {opacity: 1, visibility: "visible"}, 166.444);
+      tl.set("#cap-c74", {opacity: 0, visibility: "hidden"}, 168.212);
+      tl.set("#cap-c75", {opacity: 1, visibility: "visible"}, 168.417);
+      tl.set("#cap-c75", {opacity: 0, visibility: "hidden"}, 170.480);
+      tl.set("#cap-c76", {opacity: 1, visibility: "visible"}, 170.601);
+      tl.set("#cap-c76", {opacity: 0, visibility: "hidden"}, 174.959);
+      tl.set("#cap-c77", {opacity: 1, visibility: "visible"}, 175.130);
+      tl.set("#cap-c77", {opacity: 0, visibility: "hidden"}, 176.363);
+      tl.set("#cap-c78", {opacity: 1, visibility: "visible"}, 176.572);
+      tl.set("#cap-c78", {opacity: 0, visibility: "hidden"}, 178.150);
+      tl.set("#cap-c79", {opacity: 1, visibility: "visible"}, 178.255);
+      tl.set("#cap-c79", {opacity: 0, visibility: "hidden"}, 182.349);
+      tl.set("#cap-c80", {opacity: 1, visibility: "visible"}, 182.630);
+      tl.set("#cap-c80", {opacity: 0, visibility: "hidden"}, 183.744);
+      tl.set("#cap-c81", {opacity: 1, visibility: "visible"}, 184.089);
+      tl.set("#cap-c81", {opacity: 0, visibility: "hidden"}, 185.652);
+      tl.set("#cap-c82", {opacity: 1, visibility: "visible"}, 186.265);
+      tl.set("#cap-c82", {opacity: 0, visibility: "hidden"}, 188.403);
+      tl.set("#cap-c83", {opacity: 1, visibility: "visible"}, 188.606);
+      tl.set("#cap-c83", {opacity: 0, visibility: "hidden"}, 189.634);
+      window.__timelines["captions"] = tl;
+    })();
+  </script>
+</template>

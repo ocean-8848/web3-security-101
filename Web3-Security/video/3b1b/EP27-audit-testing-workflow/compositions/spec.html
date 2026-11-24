@@ -1,0 +1,116 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="spec" data-duration="40.45" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="s-all">
+        <g id="s-p1">
+          <!-- 关口 ①：规格文档 -->
+          <g id="s-doc" class="h">
+            <rect x="160" y="160" width="620" height="760" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+            <text x="200" y="225" font-size="36" fill="#e8e6df" font-weight="700">① 规格与威胁模型</text>
+          </g>
+          <g id="s-l1" class="h">
+            <text x="200" y="300" font-size="30" fill="#8a8f99">deposit()</text>
+            <text x="220" y="345" font-size="28" fill="#e8e6df">前置：amount &gt; 0</text>
+            <text x="220" y="385" font-size="28" fill="#e8e6df">后置：余额 += amount</text>
+          </g>
+          <g id="s-l2" class="h">
+            <rect x="190" y="420" width="560" height="64" rx="10" fill="#132013" stroke="#83C167" stroke-width="2" />
+            <text x="210" y="462" font-size="30" fill="#83C167" font-weight="700">不变量：余额 ≥ 存款之和</text>
+          </g>
+          <g id="s-l3" class="h"><text x="200" y="545" font-size="30" fill="#8a8f99">外部依赖</text></g>
+          <g id="s-l4" class="h">
+            <text x="200" y="745" font-size="30" fill="#8a8f99">特权角色 → 最大破坏力</text>
+            <text x="220" y="795" font-size="28" fill="#e8e6df">owner</text>
+            <rect x="380" y="772" width="320" height="28" fill="#FC6255" />
+            <text x="220" y="845" font-size="28" fill="#e8e6df">pauser</text>
+            <rect x="380" y="822" width="90" height="28" fill="#FF9F43" />
+            <text x="220" y="895" font-size="28" fill="#e8e6df">keeper</text>
+            <rect x="380" y="872" width="40" height="28" fill="#FF9F43" />
+          </g>
+          <!-- 外部依赖（文档外的节点） -->
+          <g id="s-deps" font-size="30" text-anchor="middle"></g>
+        </g>
+
+        <!-- 静态分析 -->
+        <g id="s-p2">
+          <g id="s-src" class="h">
+            <rect x="1000" y="200" width="760" height="620" rx="16" fill="#12151c" stroke="#58C4DD" stroke-width="3" />
+            <text x="1040" y="255" font-size="32" fill="#58C4DD" font-weight="700">③ 静态分析：只读源码，不运行</text>
+          </g>
+          <g id="s-code" stroke="#58C4DD" stroke-width="10" stroke-linecap="round" opacity=".55"></g>
+          <rect id="s-scan" class="h" x="1000" y="290" width="6" height="500" fill="#e8e6df" />
+          <g id="s-flags"></g>
+          <text id="s-goal" class="h" x="1380" y="900" font-size="36" fill="#e8e6df" text-anchor="middle">目标：不是<tspan fill="#8a8f99">零告警</tspan>，而是<tspan fill="#83C167" font-weight="700">每条告警都有结论</tspan></text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 40.45, "L": [[0.6, 4.18], [4.63, 10.84], [11.29, 18.18], [18.63, 23.79], [24.24, 32.81], [33.26, 39.35]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 外部依赖：文档里一排小标签
+      const deps = ["代币", "预言机", "交易所", "跨链桥", "目标链"], dh = document.querySelector("#s-deps"), D = [];
+      deps.forEach((d, i) => {
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        const x = 250 + (i % 3) * 185, y = 600 + Math.floor(i / 3) * 70;
+        g.innerHTML = `<rect x="${x - 80}" y="${y - 40}" width="160" height="56" rx="28" fill="#1b1f29" stroke="#8a8f99" stroke-width="2" /><text x="${x}" y="${y - 2}" fill="#e8e6df">${d}</text>`;
+        dh.appendChild(g); D.push(g);
+      });
+      // 源码行
+      const code = document.querySelector("#s-code");
+      const LW = [380, 520, 300, 460, 560, 240, 420, 500, 330, 470, 280];
+      LW.forEach((w, i) => { const l = document.createElementNS(NS, "line"); const ind = (i % 3) * 30; l.setAttribute("x1", 1050 + ind); l.setAttribute("x2", 1050 + ind + w); l.setAttribute("y1", 310 + i * 44); l.setAttribute("y2", 310 + i * 44); code.appendChild(l); });
+      // 告警：三条，各带一个结论
+      const FL = [{ y: 354, t: "重入模式", c: "已修复", col: "#83C167" }, { y: 530, t: "返回值未检查", c: "已修复", col: "#83C167" }, { y: 706, t: "可见性", c: "误报：已说明", col: "#8a8f99" }];
+      const fh = document.querySelector("#s-flags"), F = [];
+      FL.forEach((f) => {
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        g.innerHTML = `<rect x="1450" y="${f.y - 30}" width="290" height="44" rx="8" fill="#2a1f10" stroke="#FF9F43" stroke-width="2" /><text x="1470" y="${f.y + 2}" font-size="28" fill="#FF9F43">⚠ ${f.t}</text>`;
+        const c = document.createElementNS(NS, "text"); c.setAttribute("x", 1470); c.setAttribute("y", f.y + 48); c.setAttribute("font-size", 28); c.setAttribute("fill", f.col); c.setAttribute("opacity", "0"); c.textContent = "→ " + f.c;
+        fh.appendChild(g); fh.appendChild(c); F.push({ g, c });
+      });
+
+      // L0 文档
+      IN("#s-doc", at(0, 0.0), 0.7, { y: 20 }, { y: 0 });
+      // L1 前后置条件 + 不变量
+      IN("#s-l1", at(1, 0.0), 0.5);
+      IN("#s-l2", at(1, 0.5), 0.5, { scale: 1.06, svgOrigin: "470 452" }, { scale: 1 });
+      // L2 外部依赖
+      IN("#s-l3", at(2, 0.0), 0.4);
+      D.forEach((g, i) => IN(g, at(2, 0.12 + i * 0.13), 0.4, { y: 10 }, { y: 0 }));
+      // L3 特权角色
+      IN("#s-l4", at(3, 0.0), 0.4);
+      tl.fromTo("#s-l4 rect", { scaleX: 0, svgOrigin: "380 0" }, { scaleX: 1, duration: 0.6, stagger: 0.2, ease: "expo.out" }, at(3, 0.3));
+
+      // L4 静态分析
+      tl.to("#s-p1", { opacity: 0.25, duration: 0.4 }, at(4, 0.0));
+      IN("#s-src", at(4, 0.05), 0.5);
+      tl.fromTo("#s-code", { opacity: 0 }, { opacity: 0.55, duration: 0.5 }, at(4, 0.1));
+      IN("#s-scan", at(4, 0.25), 0.2);
+      tl.fromTo("#s-scan", { x: 0 }, { x: 760, duration: 2.2, ease: "none" }, at(4, 0.25));
+      OUT("#s-scan", at(4, 0.25) + 2.2, 0.2);
+      F.forEach((f, i) => IN(f.g, at(4, 0.4) + i * 0.4, 0.3, { x: 20 }, { x: 0 }));
+
+      // L5 每条告警都有结论
+      F.forEach((f, i) => tl.to(f.c, { opacity: 1, duration: 0.4 }, at(5, 0.15) + i * 0.35));
+      IN("#s-goal", at(5, 0.55), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+
+      tl.to("#s-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["spec"] = tl;
+    })();
+  </script>
+</template>

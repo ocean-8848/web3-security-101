@@ -1,0 +1,116 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="idea" data-duration="57.88" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="i-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker></defs>
+      <g id="i-p1">
+        <line id="i-mid" class="h" x1="960" y1="160" x2="960" y2="760" stroke="#2a2f3a" stroke-width="2" />
+        <text id="i-lt" class="h" x="480" y="190" font-size="40" fill="#F0B90B" text-anchor="middle" font-weight="800">顺序可以被买</text>
+        <g id="i-cards">
+          <g class="i-c h"><rect x="330" y="260" width="300" height="80" rx="12" fill="#1a1708" stroke="#F0B90B" stroke-width="3" /><text x="480" y="312" font-size="30" fill="#F0B90B" text-anchor="middle">交易 A</text></g>
+          <g class="i-c h"><rect x="330" y="370" width="300" height="80" rx="12" fill="#1a1708" stroke="#F0B90B" stroke-width="3" /><text x="480" y="422" font-size="30" fill="#F0B90B" text-anchor="middle">你的交易</text></g>
+          <g class="i-c h"><rect x="330" y="480" width="300" height="80" rx="12" fill="#2a1414" stroke="#FC6255" stroke-width="3" /><text x="480" y="532" font-size="30" fill="#FC6255" text-anchor="middle">别人插队</text></g>
+        </g>
+        <text id="i-l1" class="h" x="480" y="660" font-size="32" fill="#e8e6df" text-anchor="middle">打包之前公开 · 顺序由别人决定</text>
+        <text id="i-rt" class="h" x="1440" y="190" font-size="40" fill="#B48EF0" text-anchor="middle" font-weight="800">签名可以被重放</text>
+        <g id="i-sig" class="h"><rect x="1290" y="330" width="300" height="160" rx="12" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><text x="1440" y="400" font-size="32" fill="#e8e6df" text-anchor="middle">签名</text><path d="M1340 450 C 1380 420, 1400 470, 1440 440 S 1500 430, 1540 445" fill="none" stroke="#B48EF0" stroke-width="3" /></g>
+        <g id="i-copies" fill="none" stroke="#B48EF0" stroke-width="2" stroke-dasharray="8 6">
+          <rect class="i-cp h" x="1290" y="330" width="300" height="160" rx="12" />
+          <rect class="i-cp h" x="1290" y="330" width="300" height="160" rx="12" />
+        </g>
+        <text id="i-r1" class="h" x="1440" y="660" font-size="32" fill="#e8e6df" text-anchor="middle">用过之后仍在 · 能用几次看你签了什么</text>
+        <text id="i-mev" class="h" x="960" y="830" font-size="40" fill="#e8e6df" text-anchor="middle"><tspan fill="#FC6255" font-weight="700">MEV</tspan>：最大可提取价值</text>
+        <text id="i-mev2" class="h" x="960" y="900" font-size="32" fill="#e8e6df" text-anchor="middle">区块生产者或搜索者，通过调整、插入、排除交易获得的额外收益</text>
+      </g>
+      <g id="i-p2">
+        <!-- 拍卖会 -->
+        <g id="i-auc" class="h">
+          <circle cx="300" cy="420" r="60" fill="#161a22" stroke="#e8e6df" stroke-width="4" /><text x="300" y="432" font-size="32" fill="#e8e6df" text-anchor="middle">你</text>
+          <rect x="390" y="300" width="380" height="80" rx="40" fill="#161a22" stroke="#e8e6df" stroke-width="2" /><text x="580" y="352" font-size="30" fill="#e8e6df" text-anchor="middle">"我最高出 100！"</text>
+          <rect x="820" y="370" width="260" height="120" rx="14" fill="#1a1708" stroke="#F0B90B" stroke-width="3" /><text x="950" y="440" font-size="32" fill="#F0B90B" text-anchor="middle">拍品</text>
+          <circle cx="620" cy="600" r="54" fill="#2a1414" stroke="#FC6255" stroke-width="4" /><text x="620" y="612" font-size="30" fill="#FC6255" text-anchor="middle">旁人</text>
+        </g>
+        <path id="i-buy" class="dr h" pathLength="1" d="M680 590 C 780 560, 840 530, 900 495" fill="none" stroke="#FC6255" stroke-width="3" marker-end="url(#i-ah)" />
+        <text id="i-buyt" class="h" x="820" y="610" font-size="28" fill="#FC6255">先低价买下</text>
+        <path id="i-sell" class="dr h" pathLength="1" d="M880 500 C 700 540, 450 540, 340 480" fill="none" stroke="#FC6255" stroke-width="3" marker-end="url(#i-ah)" />
+        <text id="i-sellt" class="h" x="430" y="560" font-size="28" fill="#FC6255">再加价卖给你</text>
+        <!-- 支票 -->
+        <g id="i-chq" class="h">
+          <rect x="1180" y="300" width="560" height="260" rx="14" fill="#1a1524" stroke="#B48EF0" stroke-width="3" />
+          <text x="1220" y="360" font-size="34" fill="#e8e6df" font-weight="700">支付 100 元</text>
+          <text x="1220" y="420" font-size="28" fill="#8a8f99">日期：____</text>
+          <text x="1220" y="465" font-size="28" fill="#8a8f99">收款银行：____</text>
+          <text x="1220" y="510" font-size="28" fill="#8a8f99">编号：____</text>
+        </g>
+        <g id="i-banks" font-size="28" fill="#e8e6df" text-anchor="middle">
+          <g class="i-b h"><rect x="1100" y="700" width="200" height="90" rx="10" fill="#161a22" stroke="#8a8f99" stroke-width="2" /><text x="1200" y="755">银行 1</text></g>
+          <g class="i-b h"><rect x="1360" y="700" width="200" height="90" rx="10" fill="#161a22" stroke="#8a8f99" stroke-width="2" /><text x="1460" y="755">银行 2</text></g>
+          <g class="i-b h"><rect x="1620" y="700" width="200" height="90" rx="10" fill="#161a22" stroke="#8a8f99" stroke-width="2" /><text x="1720" y="755">银行 3</text></g>
+        </g>
+        <g id="i-mini" fill="#1a1524" stroke="#B48EF0" stroke-width="2"></g>
+      </g>
+      <g id="i-p3">
+        <g id="i-see" class="h"><text x="960" y="420" font-size="40" fill="#8a8f99" text-anchor="middle">拍卖会：你看得到谁插了队</text><line id="i-seex" x1="720" y1="407" x2="720" y2="407" stroke="#FF9F43" stroke-width="5" /></g>
+        <text id="i-chain" class="h" x="960" y="560" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="800">链上：同一个区块里，你只看到<tspan fill="#FC6255">成交价变差</tspan></text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 57.88, "L": [[0.6, 7.54], [7.99, 14.11], [14.56, 23.63], [24.08, 33.92], [34.37, 44.54], [44.99, 56.78]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      const cards = gsap.utils.toArray("#root .i-c");
+      // L0 顺序
+      IN("#i-mid", at(0, 0.0), 0.4);
+      IN("#i-lt", at(0, 0.05), 0.5);
+      cards.forEach((c, i) => IN(c, at(0, 0.2) + i * 0.15, 0.4, { x: -40 }, { x: 0 }));
+      tl.to(cards[2], { y: -220, duration: 0.6, ease: "power2.inOut" }, at(0, 0.6));
+      tl.to(cards.slice(0, 2), { y: 110, duration: 0.6, ease: "power2.inOut" }, at(0, 0.6));
+      IN("#i-l1", at(0, 0.75), 0.4);
+      // L1 签名
+      IN("#i-rt", at(1, 0.05), 0.5);
+      IN("#i-sig", at(1, 0.15), 0.5);
+      gsap.utils.toArray("#root .i-cp").forEach((c, i) => IN(c, at(1, 0.45) + i * 0.2, 0.4, { x: 0, y: 0 }, { x: (i ? 60 : -60), y: 40 + i * 30 }));
+      IN("#i-r1", at(1, 0.65), 0.4);
+      // L2 MEV 定义
+      IN("#i-mev", at(2, 0.05), 0.5);
+      IN("#i-mev2", at(2, 0.4), 0.5);
+      tl.to(cards[2], { x: 20, duration: 0.15, yoyo: true, repeat: 3 }, at(2, 0.8));
+      // L3 拍卖比方
+      tl.to("#i-p1", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(3, 0));
+      IN("#i-auc", at(3, 0.05), 0.5);
+      DRAW("#i-buy", at(3, 0.55), 0.5); IN("#i-buyt", at(3, 0.6), 0.3);
+      DRAW("#i-sell", at(3, 0.8), 0.5); IN("#i-sellt", at(3, 0.85), 0.3);
+      // L4 支票
+      IN("#i-chq", at(4, 0.05), 0.5);
+      gsap.utils.toArray("#root .i-b").forEach((b, i) => IN(b, at(4, 0.45) + i * 0.1, 0.3));
+      const mg = document.querySelector("#i-mini");
+      [1200, 1460, 1720].forEach((x, i) => {
+        const r = document.createElementNS(NS, "rect");
+        r.setAttribute("x", "1400"); r.setAttribute("y", "400"); r.setAttribute("width", "120"); r.setAttribute("height", "56"); r.setAttribute("rx", "6"); r.setAttribute("opacity", "0");
+        mg.appendChild(r);
+        tl.fromTo(r, { opacity: 0, x: 0, y: 0 }, { opacity: 1, x: x - 1460, y: 230, duration: 0.6, ease: "power2.inOut" }, at(4, 0.65) + i * 0.15);
+      });
+      // L5 局限
+      tl.to("#i-p2", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(5, 0));
+      IN("#i-see", at(5, 0.05), 0.4);
+      tl.fromTo("#i-seex", { attr: { x2: 720 } }, { attr: { x2: 1200 }, duration: 0.4 }, at(5, 0.28));
+      IN("#i-chain", at(5, 0.5), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      tl.to("#i-p3", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["idea"] = tl;
+    })();
+  </script>
+</template>

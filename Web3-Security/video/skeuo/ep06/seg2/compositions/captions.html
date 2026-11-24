@@ -1,0 +1,255 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .cap-g { position: absolute; left: 0; right: 0; bottom: var(--cap-bottom, 84px); text-align: center; opacity: 0; visibility: hidden; }
+    .cap-t { display: inline-block; font-family: var(--cap-font, "Noto Sans SC"), sans-serif; font-weight: var(--cap-weight, 700);
+      font-size: var(--cap-size, 46px); line-height: 1.25; color: var(--cap-ink, #111); letter-spacing: 0.02em;
+      padding: var(--cap-pad, 0); background: var(--cap-bg, transparent); border-radius: var(--cap-radius, 0);
+      text-shadow: var(--cap-shadow, none); }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-c0" class="cap-g"><span class="cap-t">合约里的数学缺陷</span></div>
+    <div id="cap-c1" class="cap-g"><span class="cap-t">可以分成五类</span></div>
+    <div id="cap-c2" class="cap-g"><span class="cap-t">溢出 截断</span></div>
+    <div id="cap-c3" class="cap-g"><span class="cap-t">先除后乘</span></div>
+    <div id="cap-c4" class="cap-g"><span class="cap-t">舍入方向</span></div>
+    <div id="cap-c5" class="cap-g"><span class="cap-t">单位不一致</span></div>
+    <div id="cap-c6" class="cap-g"><span class="cap-t">第一类 溢出</span></div>
+    <div id="cap-c7" class="cap-g"><span class="cap-t">整数有上限</span></div>
+    <div id="cap-c8" class="cap-g"><span class="cap-t">超过上限</span></div>
+    <div id="cap-c9" class="cap-g"><span class="cap-t">结果会回绕</span></div>
+    <div id="cap-c10" class="cap-g"><span class="cap-t">2018 年 4 月</span></div>
+    <div id="cap-c11" class="cap-g"><span class="cap-t">以太坊上的 BEC 代币</span></div>
+    <div id="cap-c12" class="cap-g"><span class="cap-t">栽在批量转账上</span></div>
+    <div id="cap-c13" class="cap-g"><span class="cap-t">合约用 0.4 版的 Solidity 写成</span></div>
+    <div id="cap-c14" class="cap-g"><span class="cap-t">没有溢出检查</span></div>
+    <div id="cap-c15" class="cap-g"><span class="cap-t">函数先算总额</span></div>
+    <div id="cap-c16" class="cap-g"><span class="cap-t">接收人数</span></div>
+    <div id="cap-c17" class="cap-g"><span class="cap-t">乘以每人的金额</span></div>
+    <div id="cap-c18" class="cap-g"><span class="cap-t">攻击者填了 2 个接收地址</span></div>
+    <div id="cap-c19" class="cap-g"><span class="cap-t">每人 2 的 255 次方</span></div>
+    <div id="cap-c20" class="cap-g"><span class="cap-t">2 乘以 2 的 255 次方</span></div>
+    <div id="cap-c21" class="cap-g"><span class="cap-t">是 2 的 256 次方</span></div>
+    <div id="cap-c22" class="cap-g"><span class="cap-t">它刚好超出 256 位整数的上限</span></div>
+    <div id="cap-c23" class="cap-g"><span class="cap-t">回绕成了 0</span></div>
+    <div id="cap-c24" class="cap-g"><span class="cap-t">余额检查比较的是 0</span></div>
+    <div id="cap-c25" class="cap-g"><span class="cap-t">直接通过</span></div>
+    <div id="cap-c26" class="cap-g"><span class="cap-t">发送者被扣掉的 也是 0</span></div>
+    <div id="cap-c27" class="cap-g"><span class="cap-t">两个接收者</span></div>
+    <div id="cap-c28" class="cap-g"><span class="cap-t">却各自收到 2 的 255 次方</span></div>
+    <div id="cap-c29" class="cap-g"><span class="cap-t">代币凭空出现</span></div>
+    <div id="cap-c30" class="cap-g"><span class="cap-t">按公开报道</span></div>
+    <div id="cap-c31" class="cap-g"><span class="cap-t">多家交易所暂停了 BEC 充提</span></div>
+    <div id="cap-c32" class="cap-g"><span class="cap-t">到了 0.8 版以后</span></div>
+    <div id="cap-c33" class="cap-g"><span class="cap-t">算术默认检查溢出</span></div>
+    <div id="cap-c34" class="cap-g"><span class="cap-t">但有三处</span></div>
+    <div id="cap-c35" class="cap-g"><span class="cap-t">仍会静默回绕</span></div>
+    <div id="cap-c36" class="cap-g"><span class="cap-t">unchecked 块</span></div>
+    <div id="cap-c37" class="cap-g"><span class="cap-t">内联汇编</span></div>
+    <div id="cap-c38" class="cap-g"><span class="cap-t">类型转换</span></div>
+    <div id="cap-c39" class="cap-g"><span class="cap-t">移位运算也不检查溢出</span></div>
+    <div id="cap-c40" class="cap-g"><span class="cap-t">第二类 截断</span></div>
+    <div id="cap-c41" class="cap-g"><span class="cap-t">大类型转成小类型</span></div>
+    <div id="cap-c42" class="cap-g"><span class="cap-t">高位被丢掉 不报错</span></div>
+    <div id="cap-c43" class="cap-g"><span class="cap-t">第三类 先除后乘</span></div>
+    <div id="cap-c44" class="cap-g"><span class="cap-t">看一组小数字 7 乘 3 除以 5</span></div>
+    <div id="cap-c45" class="cap-g"><span class="cap-t">先除 7 除以 5 等于 1</span></div>
+    <div id="cap-c46" class="cap-g"><span class="cap-t">余数丢掉</span></div>
+    <div id="cap-c47" class="cap-g"><span class="cap-t">再乘 3 结果是 3</span></div>
+    <div id="cap-c48" class="cap-g"><span class="cap-t">先乘 7 乘 3 等于 21</span></div>
+    <div id="cap-c49" class="cap-g"><span class="cap-t">再除以 5</span></div>
+    <div id="cap-c50" class="cap-g"><span class="cap-t">结果是 4</span></div>
+    <div id="cap-c51" class="cap-g"><span class="cap-t">先除的结果少了 1</span></div>
+    <div id="cap-c52" class="cap-g"><span class="cap-t">丢掉的误差</span></div>
+    <div id="cap-c53" class="cap-g"><span class="cap-t">被后面的乘法放大了</span></div>
+    <div id="cap-c54" class="cap-g"><span class="cap-t">所以要先乘后除</span></div>
+    <div id="cap-c55" class="cap-g"><span class="cap-t">更好的做法</span></div>
+    <div id="cap-c56" class="cap-g"><span class="cap-t">是用 mulDiv</span></div>
+    <div id="cap-c57" class="cap-g"><span class="cap-t">它的中间结果有 512 位</span></div>
+    <div id="cap-c58" class="cap-g"><span class="cap-t">不会溢出</span></div>
+    <div id="cap-c59" class="cap-g"><span class="cap-t">并且能指定舍入方向</span></div>
+    <div id="cap-c60" class="cap-g"><span class="cap-t">第四类舍入方向</span></div>
+    <div id="cap-c61" class="cap-g"><span class="cap-t">下一段讲</span></div>
+    <div id="cap-c62" class="cap-g"><span class="cap-t">先看第五类</span></div>
+    <div id="cap-c63" class="cap-g"><span class="cap-t">单位不一致</span></div>
+    <div id="cap-c64" class="cap-g"><span class="cap-t">同样叫 USDT</span></div>
+    <div id="cap-c65" class="cap-g"><span class="cap-t">以太坊上是 6 位小数</span></div>
+    <div id="cap-c66" class="cap-g"><span class="cap-t">TRON 上也是 6 位</span></div>
+    <div id="cap-c67" class="cap-g"><span class="cap-t">BNB Chain 上的 BSC-USD</span></div>
+    <div id="cap-c68" class="cap-g"><span class="cap-t">却是 18 位</span></div>
+    <div id="cap-c69" class="cap-g"><span class="cap-t">把以太坊的代码原样搬过去</span></div>
+    <div id="cap-c70" class="cap-g"><span class="cap-t">又写死了 6 位精度</span></div>
+    <div id="cap-c71" class="cap-g"><span class="cap-t">USDT 金额</span></div>
+    <div id="cap-c72" class="cap-g"><span class="cap-t">就会被放大 10 的 12 次方倍</span></div>
+    <div id="cap-c73" class="cap-g"><span class="cap-t">规则只有一句</span></div>
+    <div id="cap-c74" class="cap-g"><span class="cap-t">永远从合约读取 decimals</span></div>
+    <div id="cap-c75" class="cap-g"><span class="cap-t">不要写死</span></div>
+    <div id="cap-c76" class="cap-g"><span class="cap-t">跨链桥两端精度不同时</span></div>
+    <div id="cap-c77" class="cap-g"><span class="cap-t">要显式换算</span></div>
+    <div id="cap-c78" class="cap-g"><span class="cap-t">并处理换算后的余数</span></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      tl.set("#cap-c0", {opacity: 1, visibility: "visible"}, 1.550);
+      tl.set("#cap-c0", {opacity: 0, visibility: "hidden"}, 3.230);
+      tl.set("#cap-c1", {opacity: 1, visibility: "visible"}, 3.349);
+      tl.set("#cap-c1", {opacity: 0, visibility: "hidden"}, 4.440);
+      tl.set("#cap-c2", {opacity: 1, visibility: "visible"}, 4.970);
+      tl.set("#cap-c2", {opacity: 0, visibility: "hidden"}, 6.610);
+      tl.set("#cap-c3", {opacity: 1, visibility: "visible"}, 6.869);
+      tl.set("#cap-c3", {opacity: 0, visibility: "hidden"}, 8.082);
+      tl.set("#cap-c4", {opacity: 1, visibility: "visible"}, 8.298);
+      tl.set("#cap-c4", {opacity: 0, visibility: "hidden"}, 9.293);
+      tl.set("#cap-c5", {opacity: 1, visibility: "visible"}, 9.557);
+      tl.set("#cap-c5", {opacity: 0, visibility: "hidden"}, 10.464);
+      tl.set("#cap-c6", {opacity: 1, visibility: "visible"}, 10.807);
+      tl.set("#cap-c6", {opacity: 0, visibility: "hidden"}, 12.159);
+      tl.set("#cap-c7", {opacity: 1, visibility: "visible"}, 12.825);
+      tl.set("#cap-c7", {opacity: 0, visibility: "hidden"}, 14.020);
+      tl.set("#cap-c8", {opacity: 1, visibility: "visible"}, 14.235);
+      tl.set("#cap-c8", {opacity: 0, visibility: "hidden"}, 15.065);
+      tl.set("#cap-c9", {opacity: 1, visibility: "visible"}, 15.085);
+      tl.set("#cap-c9", {opacity: 0, visibility: "hidden"}, 16.086);
+      tl.set("#cap-c10", {opacity: 1, visibility: "visible"}, 16.461);
+      tl.set("#cap-c10", {opacity: 0, visibility: "hidden"}, 17.800);
+      tl.set("#cap-c11", {opacity: 1, visibility: "visible"}, 18.119);
+      tl.set("#cap-c11", {opacity: 0, visibility: "hidden"}, 20.135);
+      tl.set("#cap-c12", {opacity: 1, visibility: "visible"}, 20.196);
+      tl.set("#cap-c12", {opacity: 0, visibility: "hidden"}, 21.724);
+      tl.set("#cap-c13", {opacity: 1, visibility: "visible"}, 21.950);
+      tl.set("#cap-c13", {opacity: 0, visibility: "hidden"}, 24.966);
+      tl.set("#cap-c14", {opacity: 1, visibility: "visible"}, 25.125);
+      tl.set("#cap-c14", {opacity: 0, visibility: "hidden"}, 26.388);
+      tl.set("#cap-c15", {opacity: 1, visibility: "visible"}, 26.650);
+      tl.set("#cap-c15", {opacity: 0, visibility: "hidden"}, 28.321);
+      tl.set("#cap-c16", {opacity: 1, visibility: "visible"}, 28.476);
+      tl.set("#cap-c16", {opacity: 0, visibility: "hidden"}, 29.399);
+      tl.set("#cap-c17", {opacity: 1, visibility: "visible"}, 29.547);
+      tl.set("#cap-c17", {opacity: 0, visibility: "hidden"}, 31.250);
+      tl.set("#cap-c18", {opacity: 1, visibility: "visible"}, 31.510);
+      tl.set("#cap-c18", {opacity: 0, visibility: "hidden"}, 33.496);
+      tl.set("#cap-c19", {opacity: 1, visibility: "visible"}, 33.812);
+      tl.set("#cap-c19", {opacity: 0, visibility: "hidden"}, 35.871);
+      tl.set("#cap-c20", {opacity: 1, visibility: "visible"}, 36.230);
+      tl.set("#cap-c20", {opacity: 0, visibility: "hidden"}, 38.608);
+      tl.set("#cap-c21", {opacity: 1, visibility: "visible"}, 38.725);
+      tl.set("#cap-c21", {opacity: 0, visibility: "hidden"}, 40.879);
+      tl.set("#cap-c22", {opacity: 1, visibility: "visible"}, 41.150);
+      tl.set("#cap-c22", {opacity: 0, visibility: "hidden"}, 44.272);
+      tl.set("#cap-c23", {opacity: 1, visibility: "visible"}, 44.360);
+      tl.set("#cap-c23", {opacity: 0, visibility: "hidden"}, 45.489);
+      tl.set("#cap-c24", {opacity: 1, visibility: "visible"}, 45.866);
+      tl.set("#cap-c24", {opacity: 0, visibility: "hidden"}, 47.611);
+      tl.set("#cap-c25", {opacity: 1, visibility: "visible"}, 47.673);
+      tl.set("#cap-c25", {opacity: 0, visibility: "hidden"}, 48.472);
+      tl.set("#cap-c26", {opacity: 1, visibility: "visible"}, 48.990);
+      tl.set("#cap-c26", {opacity: 0, visibility: "hidden"}, 51.159);
+      tl.set("#cap-c27", {opacity: 1, visibility: "visible"}, 51.521);
+      tl.set("#cap-c27", {opacity: 0, visibility: "hidden"}, 52.678);
+      tl.set("#cap-c28", {opacity: 1, visibility: "visible"}, 52.741);
+      tl.set("#cap-c28", {opacity: 0, visibility: "hidden"}, 55.769);
+      tl.set("#cap-c29", {opacity: 1, visibility: "visible"}, 56.150);
+      tl.set("#cap-c29", {opacity: 0, visibility: "hidden"}, 57.574);
+      tl.set("#cap-c30", {opacity: 1, visibility: "visible"}, 57.805);
+      tl.set("#cap-c30", {opacity: 0, visibility: "hidden"}, 58.818);
+      tl.set("#cap-c31", {opacity: 1, visibility: "visible"}, 58.966);
+      tl.set("#cap-c31", {opacity: 0, visibility: "hidden"}, 61.657);
+      tl.set("#cap-c32", {opacity: 1, visibility: "visible"}, 61.961);
+      tl.set("#cap-c32", {opacity: 0, visibility: "hidden"}, 63.479);
+      tl.set("#cap-c33", {opacity: 1, visibility: "visible"}, 63.644);
+      tl.set("#cap-c33", {opacity: 0, visibility: "hidden"}, 65.517);
+      tl.set("#cap-c34", {opacity: 1, visibility: "visible"}, 65.871);
+      tl.set("#cap-c34", {opacity: 0, visibility: "hidden"}, 66.793);
+      tl.set("#cap-c35", {opacity: 1, visibility: "visible"}, 66.878);
+      tl.set("#cap-c35", {opacity: 0, visibility: "hidden"}, 68.333);
+      tl.set("#cap-c36", {opacity: 1, visibility: "visible"}, 68.546);
+      tl.set("#cap-c36", {opacity: 0, visibility: "hidden"}, 69.495);
+      tl.set("#cap-c37", {opacity: 1, visibility: "visible"}, 69.730);
+      tl.set("#cap-c37", {opacity: 0, visibility: "hidden"}, 70.682);
+      tl.set("#cap-c38", {opacity: 1, visibility: "visible"}, 70.831);
+      tl.set("#cap-c38", {opacity: 0, visibility: "hidden"}, 71.667);
+      tl.set("#cap-c39", {opacity: 1, visibility: "visible"}, 71.910);
+      tl.set("#cap-c39", {opacity: 0, visibility: "hidden"}, 74.025);
+      tl.set("#cap-c40", {opacity: 1, visibility: "visible"}, 74.383);
+      tl.set("#cap-c40", {opacity: 0, visibility: "hidden"}, 75.767);
+      tl.set("#cap-c41", {opacity: 1, visibility: "visible"}, 75.921);
+      tl.set("#cap-c41", {opacity: 0, visibility: "hidden"}, 77.806);
+      tl.set("#cap-c42", {opacity: 1, visibility: "visible"}, 78.006);
+      tl.set("#cap-c42", {opacity: 0, visibility: "hidden"}, 80.053);
+      tl.set("#cap-c43", {opacity: 1, visibility: "visible"}, 80.350);
+      tl.set("#cap-c43", {opacity: 0, visibility: "hidden"}, 82.272);
+      tl.set("#cap-c44", {opacity: 1, visibility: "visible"}, 82.292);
+      tl.set("#cap-c44", {opacity: 0, visibility: "hidden"}, 86.560);
+      tl.set("#cap-c45", {opacity: 1, visibility: "visible"}, 86.810);
+      tl.set("#cap-c45", {opacity: 0, visibility: "hidden"}, 90.022);
+      tl.set("#cap-c46", {opacity: 1, visibility: "visible"}, 90.276);
+      tl.set("#cap-c46", {opacity: 0, visibility: "hidden"}, 91.134);
+      tl.set("#cap-c47", {opacity: 1, visibility: "visible"}, 91.335);
+      tl.set("#cap-c47", {opacity: 0, visibility: "hidden"}, 93.482);
+      tl.set("#cap-c48", {opacity: 1, visibility: "visible"}, 93.842);
+      tl.set("#cap-c48", {opacity: 0, visibility: "hidden"}, 96.735);
+      tl.set("#cap-c49", {opacity: 1, visibility: "visible"}, 97.009);
+      tl.set("#cap-c49", {opacity: 0, visibility: "hidden"}, 98.068);
+      tl.set("#cap-c50", {opacity: 1, visibility: "visible"}, 98.295);
+      tl.set("#cap-c50", {opacity: 0, visibility: "hidden"}, 99.098);
+      tl.set("#cap-c51", {opacity: 1, visibility: "visible"}, 99.330);
+      tl.set("#cap-c51", {opacity: 0, visibility: "hidden"}, 101.347);
+      tl.set("#cap-c52", {opacity: 1, visibility: "visible"}, 101.575);
+      tl.set("#cap-c52", {opacity: 0, visibility: "hidden"}, 102.612);
+      tl.set("#cap-c53", {opacity: 1, visibility: "visible"}, 102.664);
+      tl.set("#cap-c53", {opacity: 0, visibility: "hidden"}, 104.354);
+      tl.set("#cap-c54", {opacity: 1, visibility: "visible"}, 104.590);
+      tl.set("#cap-c54", {opacity: 0, visibility: "hidden"}, 106.358);
+      tl.set("#cap-c55", {opacity: 1, visibility: "visible"}, 106.378);
+      tl.set("#cap-c55", {opacity: 0, visibility: "hidden"}, 108.568);
+      tl.set("#cap-c56", {opacity: 1, visibility: "visible"}, 108.630);
+      tl.set("#cap-c56", {opacity: 0, visibility: "hidden"}, 109.659);
+      tl.set("#cap-c57", {opacity: 1, visibility: "visible"}, 110.021);
+      tl.set("#cap-c57", {opacity: 0, visibility: "hidden"}, 112.314);
+      tl.set("#cap-c58", {opacity: 1, visibility: "visible"}, 112.483);
+      tl.set("#cap-c58", {opacity: 0, visibility: "hidden"}, 113.216);
+      tl.set("#cap-c59", {opacity: 1, visibility: "visible"}, 113.457);
+      tl.set("#cap-c59", {opacity: 0, visibility: "hidden"}, 115.150);
+      tl.set("#cap-c60", {opacity: 1, visibility: "visible"}, 115.529);
+      tl.set("#cap-c60", {opacity: 0, visibility: "hidden"}, 116.894);
+      tl.set("#cap-c61", {opacity: 1, visibility: "visible"}, 116.931);
+      tl.set("#cap-c61", {opacity: 0, visibility: "hidden"}, 117.669);
+      tl.set("#cap-c62", {opacity: 1, visibility: "visible"}, 117.767);
+      tl.set("#cap-c62", {opacity: 0, visibility: "hidden"}, 118.768);
+      tl.set("#cap-c63", {opacity: 1, visibility: "visible"}, 118.850);
+      tl.set("#cap-c63", {opacity: 0, visibility: "hidden"}, 119.740);
+      tl.set("#cap-c64", {opacity: 1, visibility: "visible"}, 119.970);
+      tl.set("#cap-c64", {opacity: 0, visibility: "hidden"}, 121.775);
+      tl.set("#cap-c65", {opacity: 1, visibility: "visible"}, 121.909);
+      tl.set("#cap-c65", {opacity: 0, visibility: "hidden"}, 123.866);
+      tl.set("#cap-c66", {opacity: 1, visibility: "visible"}, 124.116);
+      tl.set("#cap-c66", {opacity: 0, visibility: "hidden"}, 126.009);
+      tl.set("#cap-c67", {opacity: 1, visibility: "visible"}, 126.374);
+      tl.set("#cap-c67", {opacity: 0, visibility: "hidden"}, 129.102);
+      tl.set("#cap-c68", {opacity: 1, visibility: "visible"}, 129.122);
+      tl.set("#cap-c68", {opacity: 0, visibility: "hidden"}, 130.420);
+      tl.set("#cap-c69", {opacity: 1, visibility: "visible"}, 130.827);
+      tl.set("#cap-c69", {opacity: 0, visibility: "hidden"}, 133.145);
+      tl.set("#cap-c70", {opacity: 1, visibility: "visible"}, 133.268);
+      tl.set("#cap-c70", {opacity: 0, visibility: "hidden"}, 134.798);
+      tl.set("#cap-c71", {opacity: 1, visibility: "visible"}, 135.030);
+      tl.set("#cap-c71", {opacity: 0, visibility: "hidden"}, 136.500);
+      tl.set("#cap-c72", {opacity: 1, visibility: "visible"}, 136.724);
+      tl.set("#cap-c72", {opacity: 0, visibility: "hidden"}, 140.061);
+      tl.set("#cap-c73", {opacity: 1, visibility: "visible"}, 140.290);
+      tl.set("#cap-c73", {opacity: 0, visibility: "hidden"}, 141.483);
+      tl.set("#cap-c74", {opacity: 1, visibility: "visible"}, 141.548);
+      tl.set("#cap-c74", {opacity: 0, visibility: "hidden"}, 143.554);
+      tl.set("#cap-c75", {opacity: 1, visibility: "visible"}, 143.663);
+      tl.set("#cap-c75", {opacity: 0, visibility: "hidden"}, 144.548);
+      tl.set("#cap-c76", {opacity: 1, visibility: "visible"}, 144.847);
+      tl.set("#cap-c76", {opacity: 0, visibility: "hidden"}, 146.950);
+      tl.set("#cap-c77", {opacity: 1, visibility: "visible"}, 147.137);
+      tl.set("#cap-c77", {opacity: 0, visibility: "hidden"}, 148.411);
+      tl.set("#cap-c78", {opacity: 1, visibility: "visible"}, 148.565);
+      tl.set("#cap-c78", {opacity: 0, visibility: "hidden"}, 150.333);
+      window.__timelines["captions"] = tl;
+    })();
+  </script>
+</template>

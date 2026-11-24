@@ -1,0 +1,82 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="sources" data-duration="56.32" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="s-all">
+        <g id="s-head" class="h" font-size="30" fill="#8a8f99" text-anchor="middle">
+          <text x="900" y="180">抗单笔操纵</text><text x="1250" y="180">抗多区块操纵</text><text x="1620" y="180">主要风险</text>
+          <line x1="160" y1="205" x2="1800" y2="205" stroke="#2a2f3a" stroke-width="2" />
+        </g>
+        <g id="s-r1" class="h"><text x="180" y="270" font-size="36" fill="#e8e6df">AMM 现货价</text><text x="900" y="272" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="800">✗</text><text x="1250" y="272" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="800">✗</text><text x="1620" y="268" font-size="30" fill="#FC6255" text-anchor="middle">闪电贷操纵</text></g>
+        <g id="s-r2" class="h"><text x="180" y="355" font-size="36" fill="#e8e6df">AMM TWAP</text><text x="900" y="357" font-size="44" fill="#83C167" text-anchor="middle" font-weight="800">✓</text><text x="1250" y="353" font-size="30" fill="#FF9F43" text-anchor="middle">取决于窗口和深度</text><text x="1620" y="353" font-size="30" fill="#FF9F43" text-anchor="middle">窗口越长越滞后</text></g>
+        <g id="s-r3" class="h"><text x="180" y="440" font-size="36" fill="#e8e6df">链下聚合价格</text><text x="900" y="442" font-size="44" fill="#83C167" text-anchor="middle" font-weight="800">✓</text><text x="1250" y="442" font-size="44" fill="#83C167" text-anchor="middle" font-weight="800">✓</text><text x="1620" y="438" font-size="30" fill="#FF9F43" text-anchor="middle">过时 · 上下限 · 节点失效</text></g>
+        <!-- Inverse Finance：多区块推价 -->
+        <g id="s-inv">
+          <text id="s-it" class="h" x="200" y="570" font-size="32" fill="#6b6f7a">2022 年 4 月 · Inverse Finance</text>
+          <g id="s-iax" class="h" stroke="#6b6f7a" stroke-width="3"><line x1="300" y1="960" x2="1320" y2="960" /><line x1="300" y1="960" x2="300" y2="620" /></g>
+          <text id="s-ixl" class="h" x="1320" y="1005" font-size="28" fill="#8a8f99" text-anchor="end">连续多个区块 →</text>
+          <path id="s-spot" class="dr" pathLength="1" d="M300 920 L 420 920 L 420 680 L 1300 680" fill="none" stroke="#FC6255" stroke-width="5" />
+          <text id="s-spt" class="h" x="1300" y="665" font-size="28" fill="#FC6255" text-anchor="end">浅池现货价（被持续推高）</text>
+          <path id="s-twap" class="dr" pathLength="1" d="M300 920 L 420 920 C 700 905, 1000 800, 1300 710" fill="none" stroke="#FF9F43" stroke-width="5" />
+          <text id="s-twt" class="h" x="1300" y="840" font-size="28" fill="#FF9F43" text-anchor="end">TWAP 跟着变高</text>
+          <g id="s-inote" class="h" font-size="30">
+            <text x="1380" y="700" fill="#e8e6df">没有用闪电贷</text>
+            <text x="1380" y="750" fill="#e8e6df">自有资金 · 多个区块</text>
+            <text x="1380" y="800" fill="#e8e6df">垃圾交易压制套利</text>
+            <text x="1380" y="870" fill="#FC6255" font-size="36" font-weight="800">借走 ≈ 1,560 万美元</text>
+          </g>
+        </g>
+      </g>
+      <g id="s-qs" class="h">
+        <text x="960" y="500" font-size="60" fill="#e8e6df" text-anchor="middle" font-weight="800">价格<tspan fill="#FC6255">错了</tspan>会怎样？</text>
+        <text id="s-q2" x="960" y="620" font-size="60" fill="#e8e6df" text-anchor="middle" font-weight="800">价格<tspan fill="#FF9F43">停了</tspan>会怎样？</text>
+        <text x="960" y="740" font-size="34" fill="#8a8f99" text-anchor="middle">没有完美的预言机</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 56.32, "L": [[0.6, 4.66], [5.11, 9.52], [9.97, 20.99], [21.44, 37.69], [38.14, 46.01], [46.46, 55.22]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      const KID = (sel, n, t) => tl.fromTo(sel + " > text:nth-of-type(" + n + ")", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, t);
+      // L0 表头
+      IN("#s-head", at(0, 0.1), 0.5);
+      // L1 现货价
+      IN("#s-r1", at(1, 0.05), 0.5, { x: -30 }, { x: 0 });
+      // L2 TWAP
+      IN("#s-r2", at(2, 0.05), 0.5, { x: -30 }, { x: 0 });
+      KID("#s-r2", 3, at(2, 0.35)); KID("#s-r2", 4, at(2, 0.75));
+      // L3 Inverse Finance
+      IN(["#s-it", "#s-iax", "#s-ixl"], at(3, 0.02), 0.4);
+      tl.fromTo("#s-spot", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.4, ease: "power1.inOut" }, at(3, 0.2));
+      IN("#s-spt", at(3, 0.3), 0.4);
+      tl.fromTo("#s-twap", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 3.0, ease: "none" }, at(3, 0.35));
+      IN("#s-twt", at(3, 0.55), 0.4);
+      IN("#s-inote", at(3, 0.45), 0.5);
+      [2, 3, 4].forEach((n, i) => KID("#s-inote", n, at(3, 0.6 + i * 0.12)));
+      // L4 链下聚合
+      tl.to("#s-inv", { opacity: 0.25, duration: 0.4 }, at(4, 0));
+      IN("#s-r3", at(4, 0.05), 0.5, { x: -30 }, { x: 0 });
+      KID("#s-r3", 3, at(4, 0.3)); KID("#s-r3", 4, at(4, 0.6));
+      // L5 两个问题
+      tl.to("#s-all", { opacity: 0.08, duration: 0.4 }, at(5, 0));
+      IN("#s-qs", at(5, 0.25), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      IN("#s-q2", at(5, 0.55), 0.4);
+      tl.to(["#s-all", "#s-qs"], { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["sources"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,109 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="chain" data-duration="45.54" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="c-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker></defs>
+      <g id="c-all">
+        <text id="c-title" class="h" x="960" y="110" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="700">一把私钥：从生成到使用</text>
+
+        <!-- 节点 -->
+        <g id="c-src" class="h"><rect x="80" y="365" width="240" height="110" rx="16" fill="#1f170c" stroke="#FF9F43" stroke-width="4" /><text x="200" y="415" font-size="32" fill="#FF9F43" text-anchor="middle" font-weight="700">随机数源</text><text x="200" y="455" font-size="28" fill="#8a8f99" text-anchor="middle">提供熵</text></g>
+        <g id="c-mn" class="h"><rect class="c-sec" x="380" y="365" width="240" height="110" rx="16" fill="#1b1626" stroke="#B48EF0" stroke-width="4" /><text x="500" y="415" font-size="32" fill="#B48EF0" text-anchor="middle" font-weight="700">助记词</text><text x="500" y="455" font-size="28" fill="#8a8f99" text-anchor="middle">BIP-39</text></g>
+        <g id="c-sd" class="h"><rect id="c-sdr" class="c-sec" x="680" y="365" width="240" height="110" rx="16" fill="#1b1626" stroke="#B48EF0" stroke-width="4" /><text x="800" y="432" font-size="34" fill="#B48EF0" text-anchor="middle" font-weight="700">种子</text></g>
+        <g id="c-hd" class="h"><rect class="c-dn" x="980" y="365" width="240" height="110" rx="16" fill="#161a22" stroke="#8a8f99" stroke-width="4" /><text x="1100" y="415" font-size="32" fill="#e8e6df" text-anchor="middle" font-weight="700">分层派生</text><text x="1100" y="455" font-size="28" fill="#8a8f99" text-anchor="middle">BIP-32 / 44</text></g>
+        <g id="c-k1" class="h"><rect class="c-dn" x="1290" y="245" width="220" height="100" rx="16" fill="#1b1626" stroke="#B48EF0" stroke-width="4" /><text x="1400" y="307" font-size="32" fill="#B48EF0" text-anchor="middle" font-weight="700">私钥 1</text></g>
+        <g id="c-k2" class="h"><rect class="c-dn" x="1290" y="495" width="220" height="100" rx="16" fill="#1b1626" stroke="#B48EF0" stroke-width="4" /><text x="1400" y="557" font-size="32" fill="#B48EF0" text-anchor="middle" font-weight="700">私钥 2</text></g>
+        <g id="c-a1" class="h"><rect class="c-dn" x="1590" y="245" width="240" height="100" rx="16" fill="#1a1708" stroke="#F0B90B" stroke-width="4" /><text x="1710" y="292" font-size="28" fill="#F0B90B" text-anchor="middle" font-weight="700">公钥 → 地址 1</text><text x="1710" y="330" font-size="28" fill="#8a8f99" text-anchor="middle">公开</text></g>
+        <g id="c-a2" class="h"><rect class="c-dn" x="1590" y="495" width="240" height="100" rx="16" fill="#1a1708" stroke="#F0B90B" stroke-width="4" /><text x="1710" y="542" font-size="28" fill="#F0B90B" text-anchor="middle" font-weight="700">公钥 → 地址 2</text><text x="1710" y="580" font-size="28" fill="#8a8f99" text-anchor="middle">公开</text></g>
+
+        <!-- 箭头 -->
+        <g fill="none" stroke="#8a8f99" stroke-width="3" marker-end="url(#c-ah)">
+          <path id="c-e1" class="dr h" pathLength="1" d="M322 420 L 376 420" />
+          <path id="c-e2" class="dr h" pathLength="1" d="M622 420 L 676 420" />
+          <path id="c-e3" class="dr h" pathLength="1" d="M922 420 L 976 420" />
+          <path id="c-e4" class="dr h" pathLength="1" d="M1222 400 C 1250 330, 1260 300, 1286 298" />
+          <path id="c-e5" class="dr h" pathLength="1" d="M1222 440 C 1250 510, 1260 545, 1286 545" />
+          <path id="c-e6" class="dr h" pathLength="1" d="M1512 295 L 1586 295" />
+          <path id="c-e7" class="dr h" pathLength="1" d="M1512 545 L 1586 545" />
+        </g>
+
+        <!-- 确定性 -->
+        <path id="c-det" class="dr" pathLength="1" d="M690 215 L 1820 215" stroke="#83C167" stroke-width="4" fill="none" />
+        <text id="c-dett" class="h" x="1255" y="195" font-size="32" fill="#83C167" text-anchor="middle" font-weight="700">确定性：同一个种子，永远派生出同一组地址</text>
+        <text id="c-leak" class="h" x="1255" y="195" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">种子泄露 = 所有地址一起泄露</text>
+
+        <!-- 签名：私钥 + 消息 + nonce -->
+        <g id="c-sig" class="h"><rect x="1290" y="770" width="220" height="110" rx="16" fill="#161a22" stroke="#e8e6df" stroke-width="4" /><text x="1400" y="837" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">签名</text></g>
+        <g id="c-msg" class="h"><rect x="1600" y="780" width="220" height="90" rx="16" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="1710" y="837" font-size="30" fill="#8a8f99" text-anchor="middle">消息</text></g>
+        <g id="c-nc" class="h"><rect x="980" y="770" width="240" height="110" rx="16" fill="#1f170c" stroke="#FF9F43" stroke-width="4" /><text x="1100" y="820" font-size="32" fill="#FF9F43" text-anchor="middle" font-weight="700">nonce</text><text x="1100" y="858" font-size="28" fill="#8a8f99" text-anchor="middle">一次性随机数</text></g>
+        <g fill="none" stroke="#8a8f99" stroke-width="3" marker-end="url(#c-ah)">
+          <path id="c-e8" class="dr h" pathLength="1" d="M1400 597 L 1400 764" />
+          <path id="c-e9" class="dr h" pathLength="1" d="M1222 825 L 1286 825" />
+          <path id="c-e10" class="dr h" pathLength="1" d="M1598 825 L 1514 825" />
+        </g>
+
+        <!-- 两处随机性 -->
+        <circle id="c-r1" class="h" cx="200" cy="420" r="150" fill="none" stroke="#FF9F43" stroke-width="4" stroke-dasharray="12 9" />
+        <text id="c-r1t" class="h" x="200" y="630" font-size="40" fill="#FF9F43" text-anchor="middle" font-weight="800">① 熵</text>
+        <circle id="c-r2" class="h" cx="1100" cy="825" r="150" fill="none" stroke="#FF9F43" stroke-width="4" stroke-dasharray="12 9" />
+        <text id="c-r2t" class="h" x="1100" y="1035" font-size="40" fill="#FF9F43" text-anchor="middle" font-weight="800">② nonce</text>
+        <text id="c-any" class="h" x="120" y="800" font-size="36" fill="#e8e6df">任何一处出错 → <tspan fill="#FC6255" font-weight="700">私钥能被算出</tspan></text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 45.54, "L": [[0.6, 4.63], [5.08, 12.21], [12.66, 19.91], [20.36, 28.45], [28.9, 34.18], [34.63, 44.44]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      const DRAWA = (s, t, d = 0.45) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t) => IN(s, t, 0.5, { y: 16 }, { y: 0 });
+
+      IN("#c-title", at(0, 0.1), 0.6);
+      // L1 随机数源 → 助记词 → 种子
+      POP("#c-src", at(1, 0.0));
+      DRAWA("#c-e1", at(1, 0.3)); POP("#c-mn", at(1, 0.38));
+      DRAWA("#c-e2", at(1, 0.65)); POP("#c-sd", at(1, 0.72));
+      // L2 分层派生 → 私钥 → 公钥/地址
+      DRAWA("#c-e3", at(2, 0.0)); POP("#c-hd", at(2, 0.08));
+      DRAWA("#c-e4", at(2, 0.3)); DRAWA("#c-e5", at(2, 0.33)); POP("#c-k1", at(2, 0.4)); POP("#c-k2", at(2, 0.45));
+      DRAWA("#c-e6", at(2, 0.7)); DRAWA("#c-e7", at(2, 0.73)); POP("#c-a1", at(2, 0.78)); POP("#c-a2", at(2, 0.82));
+      // L3 确定性；种子泄露 → 全部泄露
+      OUT("#c-title", at(3, 0.0), 0.3);
+      DRAW("#c-det", at(3, 0.02), 0.8);
+      IN("#c-dett", at(3, 0.1), 0.5);
+      tl.to("#c-sdr", { stroke: "#FC6255", duration: 0.3 }, at(3, 0.55));
+      tl.to("#root .c-dn", { stroke: "#FC6255", duration: 0.3, stagger: 0.12 }, at(3, 0.6));
+      tl.to("#c-det", { stroke: "#FC6255", duration: 0.3 }, at(3, 0.55));
+      OUT("#c-dett", at(3, 0.55), 0.25);
+      IN("#c-leak", at(3, 0.6), 0.4);
+      // L4 签名需要 nonce
+      tl.to("#c-sdr", { stroke: "#B48EF0", duration: 0.4 }, at(4, 0.0));
+      tl.to("#root .c-dn", { stroke: (i, el) => el.getAttribute("stroke"), duration: 0.4 }, at(4, 0.0));
+      OUT(["#c-leak", "#c-det"], at(4, 0.0), 0.3);
+      DRAWA("#c-e8", at(4, 0.08)); POP("#c-sig", at(4, 0.18));
+      POP("#c-msg", at(4, 0.3)); DRAWA("#c-e10", at(4, 0.36));
+      POP("#c-nc", at(4, 0.55)); DRAWA("#c-e9", at(4, 0.62));
+      // L5 两处随机性
+      IN("#c-r1", at(5, 0.1), 0.5, { scale: 1.3, svgOrigin: "200 420" }, { scale: 1 });
+      IN("#c-r1t", at(5, 0.12), 0.4);
+      IN("#c-r2", at(5, 0.35), 0.5, { scale: 1.3, svgOrigin: "1100 825" }, { scale: 1 });
+      IN("#c-r2t", at(5, 0.37), 0.4);
+      IN("#c-any", at(5, 0.65), 0.5);
+
+      tl.to("#c-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["chain"] = tl;
+    })();
+  </script>
+</template>

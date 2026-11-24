@@ -1,0 +1,116 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="courier" data-duration="48.35" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="c-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      <marker id="c-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker></defs>
+      <!-- 一次外部调用：四种可能 -->
+      <g id="c-p1">
+        <g id="c-me" class="h"><rect x="300" y="430" width="360" height="180" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="5" /><text x="480" y="533" font-size="40" fill="#58C4DD" text-anchor="middle" font-weight="700">你的合约</text></g>
+        <path id="c-arr" class="dr h" pathLength="1" d="M670 520 L 1240 520" fill="none" stroke="#8a8f99" stroke-width="4" marker-end="url(#c-ah)" />
+        <text id="c-callt" class="h" x="955" y="500" font-size="30" fill="#8a8f99" text-anchor="middle">外部调用</text>
+        <g id="c-other" class="h"><rect x="1260" y="430" width="360" height="180" rx="22" fill="#161a22" stroke="#8a8f99" stroke-width="4" stroke-dasharray="12 8" /><text x="1440" y="533" font-size="40" fill="#8a8f99" text-anchor="middle">对方</text></g>
+        <g font-size="36" fill="#FF9F43" font-weight="700" text-anchor="middle">
+          <text class="c-k h" x="1440" y="380">失败</text><text class="c-k h" x="1700" y="500">撒谎</text><text class="c-k h" x="1700" y="580">拖延</text><text class="c-k h" x="1440" y="680">不存在</text>
+        </g>
+      </g>
+      <!-- 快递员比方 -->
+      <g id="c-p2">
+        <g id="c-book" class="h">
+          <rect x="120" y="230" width="460" height="420" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="350" y="290" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">登记簿</text>
+        </g>
+        <text id="c-e1" class="h" x="160" y="380" font-size="32" fill="#e8e6df">包裹 1：已送达 <tspan fill="#FF9F43">✓</tspan></text>
+        <text id="c-e2" class="h" x="160" y="460" font-size="32" fill="#e8e6df">包裹 2：已送达 <tspan fill="#FF9F43">✓</tspan></text>
+        <text id="c-e3" class="h" x="160" y="540" font-size="32" fill="#e8e6df">包裹 3：已送达 <tspan fill="#FF9F43">100</tspan></text>
+        <!-- 快递员 + 包裹 -->
+        <g id="c-man" class="h"><circle cx="760" cy="520" r="34" fill="#e8e6df" /><rect id="c-pkg" x="800" y="500" width="44" height="44" rx="6" fill="#F0B90B" /></g>
+        <!-- 目的地：房子 / 空地 / 收件人 -->
+        <g id="c-house" class="h"><path d="M1400 420 L 1520 330 L 1640 420 L 1640 600 L 1400 600 Z" fill="none" stroke="#e8e6df" stroke-width="4" /><text x="1520" y="650" font-size="30" fill="#8a8f99" text-anchor="middle">收件地址</text></g>
+        <g id="c-house2" class="h"><path d="M1400 420 L 1520 330 L 1640 420 L 1640 600 L 1400 600 Z" fill="none" stroke="#e8e6df" stroke-width="4" /><text x="1520" y="650" font-size="30" fill="#8a8f99" text-anchor="middle">收件地址</text></g>
+        <text id="c-sil" class="h" x="1000" y="440" font-size="44" fill="#8a8f99" text-anchor="middle">……</text>
+        <g id="c-lot" class="h"><rect x="1400" y="440" width="240" height="160" fill="none" stroke="#8a8f99" stroke-width="3" stroke-dasharray="10 8" /><text x="1520" y="530" font-size="30" fill="#8a8f99" text-anchor="middle">空地</text></g>
+        <text id="c-said" class="h" x="1000" y="440" font-size="34" fill="#e8e6df" text-anchor="middle">"送到了"</text>
+        <g id="c-tax" class="h"><rect x="1460" y="470" width="40" height="44" rx="6" fill="#F0B90B" /><rect x="1508" y="470" width="8" height="44" rx="2" fill="#FC6255" /><text x="1520" y="305" font-size="30" fill="#FC6255" text-anchor="middle">扣下一成</text><text x="1480" y="560" font-size="28" fill="#F0B90B" text-anchor="middle">实到 90</text></g>
+        <text id="c-cap1" class="h" x="960" y="880" font-size="40" fill="#FF9F43" text-anchor="middle" font-weight="700">不检查返回值</text>
+        <text id="c-cap2" class="h" x="960" y="880" font-size="40" fill="#FF9F43" text-anchor="middle" font-weight="700">目标地址没有代码</text>
+        <text id="c-cap3" class="h" x="960" y="880" font-size="40" fill="#FF9F43" text-anchor="middle" font-weight="700">转账收税的代币</text>
+      </g>
+      <!-- 局限 -->
+      <g id="c-p3">
+        <g id="c-one" class="h"><text x="960" y="250" font-size="38" fill="#8a8f99" text-anchor="middle">快递员：一次只出一种错</text><line id="c-onex" x1="760" y1="238" x2="760" y2="238" stroke="#FF9F43" stroke-width="5" /></g>
+        <g id="c-ext" class="h"><rect x="760" y="440" width="400" height="180" rx="22" fill="#161a22" stroke="#FC6255" stroke-width="4" /><text x="960" y="543" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="700">外部合约</text></g>
+        <path class="c-t dr h" pathLength="1" d="M760 500 C 600 440, 520 400, 420 400" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#c-ahr)" />
+        <path class="c-t dr h" pathLength="1" d="M960 630 C 960 700, 960 740, 960 780" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#c-ahr)" />
+        <path class="c-t dr h" pathLength="1" d="M1160 500 C 1320 440, 1400 400, 1500 400" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#c-ahr)" />
+        <g font-size="38" fill="#FC6255" font-weight="700" text-anchor="middle">
+          <text class="c-tt h" x="320" y="410">撒谎</text><text class="c-tt h" x="960" y="840">回调</text><text class="c-tt h" x="1610" y="410">耗尽 gas</text>
+        </g>
+        <text id="c-same" class="h" x="960" y="960" font-size="36" fill="#e8e6df" text-anchor="middle">可以<tspan fill="#FC6255">同时</tspan>发生</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 48.35, "L": [[0.6, 9.34], [9.79, 16.87], [17.32, 22.6], [23.05, 30.61], [31.06, 38.06], [38.51, 47.25]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      // L0 一次外部调用的四种可能
+      IN("#c-me", at(0, 0.0), 0.5);
+      DRAW("#c-arr", at(0, 0.1), 0.6);
+      IN("#c-callt", at(0, 0.15), 0.4);
+      IN("#c-other", at(0, 0.2), 0.5);
+      gsap.utils.toArray("#root .c-k").forEach((k, i) => IN(k, at(0, 0.4) + i * 0.12 * (L[0][1] - L[0][0]), 0.4, { scale: 0.7, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" }));
+      // L1 比方：快递员 + 登记簿
+      tl.to("#c-p1", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(1, 0));
+      IN("#c-book", at(1, 0.1), 0.5);
+      IN("#c-man", at(1, 0.3), 0.4);
+      IN("#c-house", at(1, 0.4), 0.5);
+      tl.fromTo("#c-man", { x: 0 }, { x: 520, duration: 1.2, ease: "power2.inOut" }, at(1, 0.55));
+      // L2 没回话
+      tl.set("#c-man", { x: 0 }, at(2, 0));
+      IN("#c-sil", at(2, 0.1), 0.4);
+      IN("#c-e1", at(2, 0.4), 0.4);
+      IN("#c-cap1", at(2, 0.5), 0.4);
+      OUT("#c-sil", at(3, 0), 0.3);
+      // L3 空地
+      OUT(["#c-house", "#c-cap1"], at(3, 0), 0.3);
+      IN("#c-lot", at(3, 0.08), 0.4);
+      tl.fromTo("#c-man", { x: 0 }, { x: 520, duration: 1.0, ease: "power2.inOut", immediateRender: false }, at(3, 0.15));
+      IN("#c-said", at(3, 0.35), 0.4);
+      IN("#c-e2", at(3, 0.5), 0.4);
+      IN("#c-cap2", at(3, 0.75), 0.4);
+      // L4 收税
+      OUT(["#c-lot", "#c-said", "#c-cap2"], at(4, 0), 0.3);
+      tl.set("#c-man", { x: 0 }, at(4, 0.05));
+      IN("#c-house2", at(4, 0.08), 0.4);
+      tl.fromTo("#c-man", { x: 0 }, { x: 520, duration: 1.0, ease: "power2.inOut", immediateRender: false }, at(4, 0.12));
+      OUT("#c-man", at(4, 0.12) + 1.0, 0.2);
+      IN("#c-tax", at(4, 0.12) + 1.0, 0.4);
+      IN("#c-e3", at(4, 0.6), 0.4);
+      IN("#c-cap3", at(4, 0.7), 0.4);
+      // L5 局限
+      tl.to("#c-p2", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(5, 0));
+      IN("#c-one", at(5, 0.05), 0.4);
+      tl.fromTo("#c-onex", { attr: { x2: 760 } }, { attr: { x2: 1160 }, duration: 0.4 }, at(5, 0.18));
+      IN("#c-ext", at(5, 0.3), 0.5);
+      const ct = gsap.utils.toArray("#root .c-t"), ctt = gsap.utils.toArray("#root .c-tt");
+      [0.42, 0.55, 0.68].forEach((f, i) => { DRAW(ct[i], at(5, f), 0.5); IN(ctt[i], at(5, f) + 0.2, 0.4); });
+      IN("#c-same", at(5, 0.85), 0.4);
+      tl.to("#c-p3", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["courier"] = tl;
+    })();
+  </script>
+</template>

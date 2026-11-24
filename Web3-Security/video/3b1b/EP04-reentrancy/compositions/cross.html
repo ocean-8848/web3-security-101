@@ -1,0 +1,123 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="cross" data-duration="45.36" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="x-aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FF9F43" /></marker>
+        <marker id="x-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+        <g id="x-lock"><rect x="-22" y="-6" width="44" height="36" rx="5" fill="#83C167" /><path d="M-14 -6 v-10 a14 14 0 0 1 28 0 v10" fill="none" stroke="#83C167" stroke-width="5" /></g>
+      </defs>
+      <g id="x-all">
+        <g id="x-one">
+          <g id="x-bank" class="h">
+            <rect x="380" y="180" width="800" height="600" rx="24" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+            <text x="780" y="240" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">银行合约</text>
+            <rect id="x-wd" x="440" y="280" width="680" height="110" rx="14" fill="#161a22" stroke="#58C4DD" stroke-width="3" />
+            <text class="mono" x="480" y="348" font-size="34" fill="#e8e6df">withdraw()</text>
+            <use href="#x-lock" x="1060" y="330" />
+            <text x="980" y="350" font-size="28" fill="#83C167" text-anchor="end">有锁</text>
+            <rect x="440" y="580" width="680" height="110" rx="14" fill="#161a22" stroke="#FF9F43" stroke-width="3" stroke-dasharray="12 8" />
+            <text id="x-tf" class="mono" x="480" y="648" font-size="34" fill="#e8e6df">transfer()</text>
+            <text x="1080" y="650" font-size="28" fill="#FF9F43" text-anchor="end">没加锁</text>
+          </g>
+          <text id="x-em" class="h mono" x="480" y="648" font-size="34" fill="#FF9F43">exitMarket()</text>
+          <g id="x-state" class="h">
+            <rect x="500" y="440" width="560" height="80" rx="40" fill="#121a12" stroke="#83C167" stroke-width="3" />
+            <text x="780" y="492" font-size="30" fill="#83C167" text-anchor="middle">攻击者余额：<tspan id="x-sv" font-weight="800">1</tspan> ETH</text>
+          </g>
+          <g id="x-atk" class="h"><circle cx="1540" cy="330" r="80" fill="#1f1012" stroke="#FC6255" stroke-width="5" /><text x="1540" y="342" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">攻击者</text></g>
+          <g id="x-pal" class="h"><circle cx="1540" cy="660" r="70" fill="#1f1012" stroke="#FC6255" stroke-width="3" stroke-dasharray="8 6" /><text x="1540" y="705" font-size="30" fill="#FC6255" text-anchor="middle">同伙</text></g>
+          <path id="x-out" class="dr h" pathLength="1" d="M1124 320 L 1452 320" stroke="#FF9F43" stroke-width="4" fill="none" marker-end="url(#x-aho)" />
+          <text id="x-outt" class="h" x="1290" y="295" font-size="28" fill="#FF9F43" text-anchor="middle">转 1 ETH</text>
+          <path id="x-in" class="dr h" pathLength="1" d="M1500 405 C 1440 560, 1300 620, 1128 630" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#x-ahr)" />
+          <text id="x-int" class="h" x="1330" y="560" font-size="28" fill="#FC6255" text-anchor="middle">回调里调用</text>
+          <circle id="x-tok" class="h" cx="780" cy="480" r="20" fill="#F0B90B" />
+          <g id="x-tally" class="h">
+            <text x="1540" y="460" font-size="30" fill="#F0B90B" text-anchor="middle">已提走 1 ETH</text>
+            <text x="1540" y="790" font-size="30" fill="#F0B90B" text-anchor="middle">账上多了 1 ETH</text>
+          </g>
+          <text id="x-name" class="h" x="780" y="880" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="800">既被提走，又被转走 · 跨函数重入</text>
+          <g id="x-fei" class="h">
+            <rect x="160" y="840" width="1600" height="150" rx="18" fill="#1f1012" stroke="#FC6255" stroke-width="2" />
+            <text x="200" y="900" font-size="34" fill="#e8e6df"><tspan fill="#FC6255" font-weight="700">2022 年 4 月 · Fei Rari</tspan> · 约 8,000 万美元</text>
+            <text id="x-fei2" class="h" x="200" y="955" font-size="30" fill="#8a8f99">借款：先发 ETH，后写借款记录 → 回调里调用没被锁覆盖的 exitMarket()，取回全部抵押品</text>
+          </g>
+        </g>
+
+        <!-- 跨合约 -->
+        <g id="x-two" class="h">
+          <rect x="260" y="260" width="560" height="320" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="540" y="330" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">合约 A</text>
+          <use href="#x-lock" x="540" y="420" />
+          <rect x="230" y="230" width="620" height="380" rx="28" fill="none" stroke="#83C167" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="540" y="650" font-size="28" fill="#83C167" text-anchor="middle">A 的锁只管 A</text>
+          <rect x="1100" y="260" width="560" height="320" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="1380" y="330" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">合约 B</text>
+          <text x="1380" y="440" font-size="30" fill="#FF9F43" text-anchor="middle">没有共享 A 的锁</text>
+          <rect x="260" y="720" width="1400" height="80" rx="40" fill="#121a12" stroke="#83C167" stroke-width="3" />
+          <text x="960" y="772" font-size="30" fill="#83C167" text-anchor="middle">共享状态（例如金库与份额代币）</text>
+          <line x1="540" y1="580" x2="540" y2="716" stroke="#6b6f7a" stroke-width="3" /><line x1="1380" y1="580" x2="1380" y2="716" stroke="#6b6f7a" stroke-width="3" />
+        </g>
+        <path id="x-tb" class="dr h" pathLength="1" d="M960 160 C 1200 160, 1380 180, 1380 252" stroke="#FC6255" stroke-width="5" fill="none" marker-end="url(#x-ahr)" />
+        <text id="x-tbt" class="h" x="940" y="170" font-size="30" fill="#FC6255" text-anchor="end">攻击者回调 → 进 B</text>
+        <text id="x-two-t" class="h" x="960" y="900" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="800">跨合约重入</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 45.36, "L": [[0.6, 4.34], [4.79, 13.77], [14.22, 22.81], [23.26, 35.79], [36.24, 44.26]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAWA = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const sv = document.querySelector("#x-sv");
+      const SET = (t, a, b) => { const o = { v: 0 }; tl.fromTo(o, { v: 0 }, { v: 1, duration: 0.01, onUpdate: () => { sv.textContent = o.v > 0.5 ? b : a; } }, t); };
+
+      // L0 银行合约：withdraw 有锁，transfer 没有
+      IN("#x-bank", at(0, 0.0), 0.6);
+      IN("#x-state", at(0, 0.3), 0.5);
+      IN("#x-atk", at(0, 0.5), 0.5, { x: 30 }, { x: 0 });
+      // L1 withdraw 转账 → 回调里调用 transfer → 余额转给同伙
+      tl.to("#x-wd", { stroke: "#FF9F43", strokeWidth: 5, duration: 0.3 }, at(1, 0.0));
+      DRAWA("#x-out", at(1, 0.05), 0.5);
+      IN("#x-outt", at(1, 0.1), 0.3);
+      DRAWA("#x-in", at(1, 0.3), 0.6);
+      IN("#x-int", at(1, 0.35), 0.3);
+      tl.fromTo("#x-state rect", { strokeWidth: 3 }, { stroke: "#FF9F43", strokeWidth: 7, duration: 0.25, yoyo: true, repeat: 1 }, at(1, 0.55));
+      IN("#x-pal", at(1, 0.6), 0.4);
+      IN("#x-tok", at(1, 0.68), 0.2);
+      tl.to("#x-tok", { attr: { cx: 1540, cy: 630 }, duration: 0.8, ease: "power2.inOut" }, at(1, 0.72));
+      SET(at(1, 0.72), "1", "0");
+      // L2 外层返回清零：既提走又转走
+      tl.to("#x-wd", { stroke: "#58C4DD", strokeWidth: 3, duration: 0.3 }, at(2, 0.1));
+      IN("#x-tally", at(2, 0.2), 0.5);
+      IN("#x-name", at(2, 0.55), 0.5, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      // L3 Fei Rari
+      OUT("#x-name", at(3, 0.0), 0.3);
+      IN("#x-fei", at(3, 0.05), 0.6, { y: 20 }, { y: 0 });
+      IN("#x-fei2", at(3, 0.35), 0.5);
+      tl.to("#x-tf", { opacity: 0, duration: 0.3 }, at(3, 0.6));
+      IN("#x-em", at(3, 0.62), 0.4);
+      tl.to(["#x-tally", "#x-tok"], { opacity: 0.25, duration: 0.4 }, at(3, 0.6));
+      // L4 跨合约
+      tl.to("#x-one", { opacity: 0, duration: 0.4 }, at(4, 0.0));
+      IN("#x-two", at(4, 0.1), 0.6);
+      DRAWA("#x-tb", at(4, 0.4), 0.6);
+      IN("#x-tbt", at(4, 0.42), 0.4);
+      IN("#x-two-t", at(4, 0.65), 0.5);
+
+      tl.to("#x-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["cross"] = tl;
+    })();
+  </script>
+</template>

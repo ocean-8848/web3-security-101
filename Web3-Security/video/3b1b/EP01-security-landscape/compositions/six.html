@@ -1,0 +1,78 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="six" data-duration="46.94" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="x-all">
+        <text id="x-title" class="h" x="960" y="140" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="700">漏洞六大类</text>
+
+        <!-- ①–⑤ 蓝：代码与设计；⑥ 紫：代码之外 -->
+        <g id="x-c1" class="h"><rect x="190" y="220" width="480" height="250" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="240" y="300" font-size="44" fill="#58C4DD" font-weight="800">① 控制流</text>
+          <text x="240" y="375" font-size="30" fill="#e8e6df">外部调用让攻击者</text><text x="240" y="420" font-size="30" fill="#e8e6df">插队执行</text></g>
+        <g id="x-c2" class="h"><rect x="720" y="220" width="480" height="250" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="770" y="300" font-size="44" fill="#58C4DD" font-weight="800">② 权限</text>
+          <text x="770" y="375" font-size="30" fill="#e8e6df">不该调用的人</text><text x="770" y="420" font-size="30" fill="#e8e6df">调用了</text></g>
+        <g id="x-c3" class="h"><rect x="1250" y="220" width="480" height="250" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="1300" y="300" font-size="44" fill="#58C4DD" font-weight="800">③ 数学</text>
+          <text x="1300" y="375" font-size="30" fill="#e8e6df">数字算错了</text><text x="1300" y="420" font-size="30" fill="#8a8f99">溢出 · 精度 · 舍入</text></g>
+        <g id="x-c4" class="h"><rect x="190" y="520" width="480" height="250" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="240" y="600" font-size="44" fill="#58C4DD" font-weight="800">④ 数据可信度</text>
+          <text x="240" y="675" font-size="30" fill="#e8e6df">相信了可被操纵的数据</text><text x="240" y="720" font-size="30" fill="#8a8f99"><tspan id="x-spot">现货价格</tspan> · 签名重放</text></g>
+        <g id="x-c5" class="h"><rect x="720" y="520" width="480" height="250" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="770" y="600" font-size="44" fill="#58C4DD" font-weight="800">⑤ 经济设计</text>
+          <text x="770" y="675" font-size="30" fill="#e8e6df">代码按规格执行</text><text x="770" y="720" font-size="30" fill="#e8e6df">规格本身<tspan id="x-arb">可被套利</tspan></text></g>
+        <g id="x-c6" class="h"><rect x="1250" y="520" width="480" height="250" rx="22" fill="#1a1524" stroke="#B48EF0" stroke-width="4" />
+          <text x="1300" y="600" font-size="44" fill="#B48EF0" font-weight="800">⑥ 系统与运营</text>
+          <text x="1300" y="675" font-size="30" fill="#e8e6df">代码之外的环节失守</text><text x="1300" y="720" font-size="30" fill="#8a8f99"><tspan class="x-op">私钥</tspan> · <tspan class="x-op">多签</tspan> · <tspan class="x-op">前端</tspan> · <tspan class="x-op">社工</tspan></text></g>
+
+        <!-- 叠加：Euler = ⑤ + ④ -->
+        <g id="x-ring" class="h" fill="none" stroke="#FF9F43" stroke-width="6">
+          <rect x="178" y="508" width="504" height="274" rx="28" /><rect x="708" y="508" width="504" height="274" rx="28" />
+        </g>
+        <text id="x-euler" class="h" x="700" y="860" font-size="40" fill="#FF9F43" text-anchor="middle" font-weight="700">2023 Euler = ⑤ 业务逻辑 + ④ 闪电贷放大</text>
+        <g id="x-check" class="h">
+          <text x="700" y="950" font-size="36" fill="#8a8f99" text-anchor="middle">✓ ✓ ✓ 照清单打勾</text>
+          <line id="x-strike" x1="520" y1="938" x2="880" y2="938" stroke="#FC6255" stroke-width="5" />
+          <text x="1060" y="950" font-size="36" fill="#e8e6df">不够</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 46.94, "L": [[0.6, 4.34], [4.79, 15.19], [15.64, 26.08], [26.53, 33.97], [34.42, 45.84]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const CARD = (s, t) => IN(s, t, 0.6, { y: 24, filter: "blur(6px)" }, { y: 0, filter: "blur(0px)", ease: "expo.out" });
+
+      IN("#x-title", at(0, 0.1), 0.5);
+      CARD("#x-c1", at(1, 0.0));
+      CARD("#x-c2", at(1, 0.4));
+      CARD("#x-c3", at(1, 0.78));
+      CARD("#x-c4", at(2, 0.0));
+      CARD("#x-c5", at(2, 0.55));
+      CARD("#x-c6", at(3, 0.05));
+      tl.fromTo("#x-c6 rect", { strokeWidth: 4 }, { strokeWidth: 8, duration: 0.3, yoyo: true, repeat: 1 }, at(3, 0.3));
+
+      tl.to("#x-spot", { fill: "#F0B90B", duration: 0.3 }, at(2, 0.3));
+      tl.to("#x-arb", { fill: "#F0B90B", duration: 0.3 }, at(2, 0.85));
+      gsap.utils.toArray("#root .x-op").forEach((t, i) => tl.to(t, { fill: "#B48EF0", duration: 0.3 }, at(3, 0.58) + i * 0.45));
+      // L4 叠加
+      tl.to(["#x-c1", "#x-c2", "#x-c3", "#x-c6"], { opacity: 0.25, duration: 0.5 }, at(4, 0.15));
+      IN("#x-ring", at(4, 0.2), 0.5);
+      IN("#x-euler", at(4, 0.22), 0.5);
+      IN("#x-check", at(4, 0.68), 0.4);
+      tl.fromTo("#x-strike", { attr: { x2: 520 } }, { attr: { x2: 880 }, duration: 0.4, ease: "power2.out" }, at(4, 0.75));
+
+      tl.to("#x-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["six"] = tl;
+    })();
+  </script>
+</template>

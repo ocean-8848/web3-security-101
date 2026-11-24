@@ -1,0 +1,88 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="hook" data-duration="44.1" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="h-all">
+        <line id="h-axis" class="h" x1="200" y1="620" x2="1720" y2="620" stroke="#2a2f3a" stroke-width="5" />
+        <g id="h-years" font-size="28" fill="#6b6f7a" text-anchor="middle" class="h">
+          <text x="300" y="670">2016</text><text x="450" y="670">2017</text><text x="600" y="670">2018</text><text x="750" y="670">2019</text>
+          <text x="900" y="670">2020</text><text x="1050" y="670">2021</text><text x="1200" y="670">2022</text><text x="1350" y="670">2023</text><text x="1500" y="670">2024</text>
+        </g>
+        <g id="h-evs"></g>
+        <!-- 同一种错误 -->
+        <g id="h-pat" class="h">
+          <rect x="560" y="80" width="800" height="110" rx="18" fill="#2a1f10" stroke="#FF9F43" stroke-width="4" />
+          <text x="960" y="152" font-size="48" fill="#FF9F43" text-anchor="middle" font-weight="800">先和外部交互，再记账</text>
+        </g>
+        <g id="h-links" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="8 8"></g>
+      </g>
+      <g id="h-q" class="h">
+        <text x="960" y="470" font-size="60" fill="#e8e6df" text-anchor="middle" font-weight="700">旧错误为什么总能<tspan fill="#FF9F43">换个名字</tspan>回来？</text>
+        <text x="960" y="570" font-size="40" fill="#8a8f99" text-anchor="middle">怎样在它换名字之前认出它？</text>
+      </g>
+      <g id="h-pin" class="h">
+        <rect x="80" y="70" width="560" height="84" rx="14" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="360" y="125" font-size="34" fill="#e8e6df" text-anchor="middle">旧错误为何<tspan fill="#FF9F43">换个名字</tspan>回来？</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 44.1, "L": [[0.6, 6.77], [7.22, 14.15], [14.6, 21.64], [22.09, 28.25], [28.7, 34.99], [35.44, 43.0]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 四起事故：位置按年份；卡片上下交替，避免重叠
+      const EV = [
+        { x: 300, n: "The DAO", a: "≈ 6,000 万美元", d: "先转账，后更新余额", up: true },
+        { x: 1200, n: "Fei Rari", a: "≈ 8,000 万美元", d: "先 call 发 ETH，再记账", up: true },
+        { x: 1350, n: "Curve / Vyper", a: "≈ 7,000 万美元", d: "编译器的重入锁错了", up: false },
+        { x: 1500, n: "Penpie", a: "≈ 2,700 万美元", d: "领奖函数没有加锁", up: true },
+      ];
+      const eh = document.querySelector("#h-evs"), lk = document.querySelector("#h-links"), E = [];
+      EV.forEach((e, i) => {
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        const cy = e.up ? 420 : 820, bx = i === 0 ? e.x : (i === 1 ? e.x - 170 : i === 3 ? e.x + 150 : e.x);
+        g.innerHTML =
+          `<line x1="${e.x}" y1="620" x2="${bx}" y2="${e.up ? cy + 70 : cy - 70}" stroke="#FC6255" stroke-width="3" />` +
+          `<circle cx="${e.x}" cy="620" r="16" fill="#FC6255" />` +
+          `<rect x="${bx - 170}" y="${cy - 70}" width="340" height="140" rx="14" fill="#1b1416" stroke="#FC6255" stroke-width="3" />` +
+          `<text x="${bx}" y="${cy - 22}" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">${e.n}</text>` +
+          `<text x="${bx}" y="${cy + 20}" font-size="30" fill="#FC6255" text-anchor="middle">${e.a}</text>` +
+          `<text class="h-d" x="${bx}" y="${cy + 56}" font-size="28" fill="#8a8f99" text-anchor="middle">${e.d}</text>`;
+        eh.appendChild(g);
+        const p = document.createElementNS(NS, "path");
+        p.setAttribute("d", `M${bx} ${e.up ? cy - 72 : cy - 72} L 960 192`); p.setAttribute("opacity", "0");
+        lk.appendChild(p);
+        E.push({ g, p });
+      });
+
+      // L0–L3 四起事故依次出现
+      IN("#h-axis", at(0, 0.0), 0.6, { scaleX: 0, svgOrigin: "200 620" }, { scaleX: 1 });
+      IN("#h-years", at(0, 0.1), 0.5);
+      E.forEach((o, i) => IN(o.g, at(i, i === 0 ? 0.3 : 0.15), 0.6, { y: 20 }, { y: 0 }));
+
+      // L4 同一种错误
+      IN("#h-pat", at(4, 0.3), 0.6, { scale: 1.2, svgOrigin: "960 135" }, { scale: 1, ease: "back.out(1.6)" });
+      E.forEach((o, i) => tl.to(o.p, { opacity: 0.8, duration: 0.4 }, at(4, 0.45) + i * 0.1));
+
+      // L5 问题，钉到左上角
+      tl.to("#h-all", { opacity: 0, filter: "blur(6px)", duration: 0.5, ease: "power2.in" }, at(5, 0.0));
+      IN("#h-q", at(5, 0.1), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      tl.to("#h-q", { opacity: 0, filter: "blur(6px)", duration: 0.5 }, at(5, 0.82));
+      IN("#h-pin", at(5, 0.86), 0.5, { scale: 1.5, svgOrigin: "360 112" }, { scale: 1 });
+      tl.to("#h-pin", { opacity: 0, duration: 0.35, ease: "power2.in" }, C.d - 0.45);
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>

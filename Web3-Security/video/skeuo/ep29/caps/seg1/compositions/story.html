@@ -1,0 +1,16 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: "Noto Serif SC", serif; color: #141414; }
+    #st-title { position: absolute; left: 160px; top: 380px; font-size: 96px; font-weight: 900; }
+  </style>
+  <div id="root" data-composition-id="story" data-width="1920" data-height="1080">
+    <h1 id="st-title" class="clip" data-start="0" data-duration="47.16">签名路径</h1>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#st-title", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.2);
+      window.__timelines["story"] = tl;
+    })();
+  </script>
+</template>

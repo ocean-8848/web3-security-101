@@ -1,0 +1,366 @@
+<template>
+  <!-- Source template: edit this file, then run `node src/build-story.mjs` to regenerate compositions/story.html -->
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; background: #eeece6; font-family: "Noto Sans SC", sans-serif; color: #1b1b1b; }
+    #cam { position: absolute; left: 0; top: 0; width: 4000px; height: 2200px; transform-origin: 0 0; }
+    #world-svg { position: absolute; left: 0; top: 0; }
+    .ff { fill: #ffffff; } .fs { fill: #d8d4cb; } .ft { fill: #fbfaf7; }
+    .gate-red .ff { fill: #d9442e; } .gate-red .fs { fill: #a8341f; } .gate-red .ft { fill: #e8705c; }
+    .pin { position: absolute; width: 0; height: 0; }
+    .bc { position: absolute; left: 0; bottom: 0; transform: translateX(-50%); }
+    .mono { font-family: "JetBrains Mono", monospace; }
+    .hide { opacity: 0; }
+
+    /* highlighter */
+    .kw { position: relative; display: inline-block; }
+    .kw .hl { position: absolute; left: -0.04em; right: -0.04em; bottom: 0.04em; height: 0.38em; background: #ffd84a; transform-origin: 0 50%; }
+    .kw .t { position: relative; }
+
+    /* white world cards */
+    .wcard { background: #ffffff; border-radius: 18px; box-shadow: 0 16px 32px rgba(27,27,27,0.13), 0 2px 0 rgba(27,27,27,0.05); }
+
+    /* gate labels */
+    .lbl { white-space: nowrap; font-weight: 700; font-size: 34px; padding: 8px 20px 10px; background: #fff; border-radius: 14px;
+      box-shadow: 0 10px 22px rgba(27,27,27,0.12); transform-origin: 50% 100%; }
+    .lbl-n { margin-right: 10px; }
+    .lbl-red { background: #d9442e; color: #fff; }
+
+    /* transaction card */
+    #card-shadow { position: absolute; left: -140px; top: -26px; width: 280px; height: 52px; border-radius: 50%; background: rgba(27,27,27,0.10); }
+    #card-anchor { position: absolute; left: -150px; bottom: 26px; width: 300px; height: 204px; perspective: 1400px; }
+    #card-scaler { position: absolute; inset: 0; transform-origin: 50% 100%; }
+    #card-flip { position: absolute; inset: 0; transform-style: preserve-3d; }
+    .face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; background: #fff; border-radius: 18px;
+      box-shadow: 0 16px 30px rgba(27,27,27,0.15), 0 2px 0 rgba(27,27,27,0.05); }
+    .face.back { transform: rotateY(180deg); padding: 14px 18px; }
+    .front-doc { position: absolute; left: 26px; top: 34px; width: 74px; height: 96px; border: 4px solid #1b1b1b; border-radius: 8px; }
+    .front-doc i { position: absolute; left: 12px; right: 12px; height: 5px; background: #1b1b1b; border-radius: 3px; }
+    .front-t { position: absolute; left: 124px; top: 36px; font-size: 40px; font-weight: 900; }
+    .front-s { position: absolute; left: 126px; top: 96px; font-size: 22px; font-weight: 700; color: #6d695f; }
+    .b-head { font-size: 15px; font-weight: 700; color: #6d695f; margin-bottom: 6px; }
+    .row { display: flex; align-items: baseline; justify-content: space-between; height: 38px; border-top: 2px solid #ece9e2; position: relative; }
+    .row .k { font-family: "JetBrains Mono", monospace; font-size: 16px; font-weight: 700; }
+    .row .v { font-size: 16px; font-weight: 700; }
+    .row .v.mono { font-size: 13.5px; }
+    .row.op { height: 70px; align-items: center; }
+    #op-bg { position: absolute; left: -10px; right: -10px; top: 4px; bottom: 0; background: #ffd84a; border-radius: 10px; opacity: 0; }
+    #op-q { font-family: "JetBrains Mono", monospace; font-size: 40px; color: #c9c4b9; }
+    #op-1 { position: absolute; right: 6px; top: 0; font-family: "JetBrains Mono", monospace; font-weight: 800; font-size: 54px; line-height: 70px; color: #d9442e; opacity: 0; transform-origin: 50% 50%; }
+    #card-alarm { position: absolute; inset: -7px; border: 6px solid #d9442e; border-radius: 24px; opacity: 0; }
+    #seal { position: absolute; left: 160px; top: -30px; width: 92px; height: 92px; border-radius: 50%; border: 6px solid #1b1b1b; color: #1b1b1b;
+      font-size: 40px; font-weight: 900; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.85); opacity: 0; }
+    #op-legend { position: absolute; left: 10px; right: 10px; top: 216px; padding: 3px 0 5px; border-radius: 8px; background: #eeece6; text-align: center; font-family: "JetBrains Mono", monospace; font-size: 15px; font-weight: 700; color: #1b1b1b; opacity: 0; white-space: nowrap; }
+
+    /* gate 4 monitor */
+    #mon { width: 380px; transform-origin: 50% 100%; }
+    .mon-screen { background: #fff; border: 5px solid #1b1b1b; border-radius: 16px; overflow: hidden; box-shadow: 0 16px 30px rgba(27,27,27,0.14); }
+    .mon-head { background: #1b1b1b; color: #fff; font-size: 26px; font-weight: 700; padding: 6px 18px 8px; }
+    .mon-body { padding: 12px 18px 16px; position: relative; }
+    .mrow { display: flex; justify-content: space-between; font-size: 28px; font-weight: 700; line-height: 1.5; }
+    .mrow span { color: #6d695f; font-weight: 500; }
+    .mrow .mono { font-size: 24px; }
+    #mon-ok { margin-top: 8px; display: inline-flex; align-items: center; gap: 8px; font-size: 26px; font-weight: 700; padding: 2px 14px 4px; border: 3px solid #1b1b1b; border-radius: 10px; opacity: 0; }
+    .mon-stem { width: 24px; height: 34px; margin: 0 auto; background: #1b1b1b; }
+
+    /* signers */
+    #sign { padding: 18px 24px 22px; transform-origin: 50% 100%; white-space: nowrap; }
+    .wc-h { font-size: 30px; font-weight: 700; margin-bottom: 14px; }
+    .wc-h small { font-size: 22px; color: #8a857a; font-weight: 500; margin-left: 8px; }
+    .checks { display: flex; gap: 18px; align-items: center; }
+    .ck { width: 64px; height: 64px; border-radius: 50%; border: 5px solid #1b1b1b; display: flex; align-items: center; justify-content: center; background: #fff; }
+    .ck svg { opacity: 0; }
+    .dots { font-size: 40px; font-weight: 900; color: #8a857a; }
+
+    /* key tag */
+    #keytag { padding: 14px 22px 16px; display: flex; align-items: center; gap: 14px; white-space: nowrap; transform-origin: 0 100%; }
+    #keytag .kt { font-size: 34px; font-weight: 900; }
+    #key-ok { font-size: 28px; font-weight: 700; padding: 2px 14px 4px; border: 3px solid #1b1b1b; border-radius: 10px; opacity: 0; }
+
+    /* storage panel */
+    #store { width: 560px; padding: 18px 24px 24px; transform-origin: 50% 100%; position: relative; }
+    .slot { position: relative; display: flex; align-items: center; gap: 18px; height: 84px; border: 4px solid #1b1b1b; border-radius: 14px; padding: 0 16px; }
+    .slot-k { font-size: 26px; font-weight: 700; }
+    .slot .kw { font-size: 30px; font-weight: 700; }
+    .chip { position: absolute; right: 12px; top: 12px; height: 52px; padding: 0 16px; border-radius: 10px; display: flex; align-items: center;
+      font-size: 26px; font-weight: 700; white-space: nowrap; }
+    #chip-old { background: #fff; border: 3px solid #1b1b1b; }
+    #atk { position: absolute; right: 12px; top: 12px; width: 190px; height: 52px; }
+    #chip-new { right: 0; top: 0; background: #d9442e; color: #fff; }
+    #atk-label { position: absolute; right: 0; bottom: 62px; font-family: "JetBrains Mono", monospace; font-size: 26px; font-weight: 700; color: #d9442e; white-space: nowrap; }
+
+    /* screen-space titles */
+    .tb { position: absolute; right: 88px; top: 64px; text-align: right; white-space: nowrap; }
+    .t-big { font-weight: 900; font-size: 88px; line-height: 1.12; letter-spacing: 0.01em; }
+    .t-huge { font-weight: 900; font-size: 96px; line-height: 1.12; }
+    .t-tag { font-weight: 700; font-size: 34px; line-height: 1.5; margin: 4px 0 6px; }
+    .t-note { font-weight: 500; font-size: 30px; color: #6d695f; line-height: 1.5; }
+    .w { display: inline-block; }
+
+    /* end card */
+    #end { position: absolute; inset: 0; }
+    #end-title { position: absolute; left: 160px; top: 330px; font-weight: 900; font-size: 120px; line-height: 1.1; white-space: nowrap; }
+    #end-sub { position: absolute; left: 166px; top: 500px; font-weight: 700; font-size: 40px; color: #1b1b1b; white-space: nowrap; }
+    #end-rule { position: absolute; left: 166px; top: 476px; width: 120px; height: 8px; background: #1b1b1b; transform-origin: 0 50%; }
+    #end-gate { position: absolute; left: 1240px; top: 190px; width: 420px; height: 580px; }
+    #end-gate-in { transform-origin: 50% 100%; }
+  </style>
+  <div id="root" data-composition-id="story" data-width="1920" data-height="1080">
+    <div id="cam" data-layout-allow-overflow data-layout-ignore>
+      <svg id="world-svg" width="4000" height="2200" viewBox="0 0 4000 2200" overflow="visible">
+          <path id="grid" d="M-2950.5,1461.1L32.1,3590.8M-2852.2,1426.6L130.4,3556.4M-2753.9,1392.2L228.7,3522M-2655.6,1357.8L327,3487.6M-2557.3,1323.4L425.3,3453.2M-2459,1289L523.6,3418.8M-2360.7,1254.6L621.9,3384.4M-2262.4,1220.2L720.2,3349.9M-2164.1,1185.7L818.5,3315.5M-2065.8,1151.3L916.8,3281.1M-1967.5,1116.9L1015.1,3246.7M-1869.2,1082.5L1113.4,3212.3M-1770.9,1048.1L1211.7,3177.9M-1672.6,1013.7L1310,3143.5M-1574.3,979.2L1408.3,3109M-1476,944.8L1506.6,3074.6M-1377.7,910.4L1604.9,3040.2M-1279.4,876L1703.2,3005.8M-1181.1,841.6L1801.5,2971.4M-1082.8,807.2L1899.8,2937M-984.5,772.8L1998.1,2902.6M-886.2,738.3L2096.4,2868.1M-787.9,703.9L2194.7,2833.7M-689.6,669.5L2293,2799.3M-591.3,635.1L2391.3,2764.9M-493,600.7L2489.6,2730.5M-394.7,566.3L2587.9,2696.1M-296.4,531.9L2686.2,2661.7M-198.1,497.4L2784.5,2627.2M-99.8,463L2882.8,2592.8M-1.5,428.6L2981.1,2558.4M96.8,394.2L3079.4,2524M195.1,359.8L3177.7,2489.6M293.4,325.4L3276,2455.2M391.7,291L3374.3,2420.8M490,256.5L3472.6,2386.3M588.3,222.1L3570.9,2351.9M686.6,187.7L3669.2,2317.5M784.9,153.3L3767.5,2283.1M883.2,118.9L3865.8,2248.7M981.5,84.5L3964.1,2214.3M1079.8,50.1L4062.4,2179.8M1178.1,15.6L4160.7,2145.4M1276.4,-18.8L4259,2111M1374.7,-53.2L4357.3,2076.6M1473,-87.6L4455.6,2042.2M1571.3,-122L4553.9,2007.8M1669.6,-156.4L4652.2,1973.4M1767.9,-190.8L4750.5,1938.9M1866.2,-225.3L4848.8,1904.5M1964.5,-259.7L4947.1,1870.1M2062.8,-294.1L5045.4,1835.7M2161.1,-328.5L5143.6,1801.3M2259.4,-362.9L5241.9,1766.9M2357.6,-397.3L5340.2,1732.5M2455.9,-431.7L5438.5,1698M2554.2,-466.2L5536.8,1663.6M2652.5,-500.6L5635.1,1629.2M2750.8,-535L5733.4,1594.8M2849.1,-569.4L5831.7,1560.4M2947.4,-603.8L5930,1526M3045.7,-638.2L6028.3,1491.6M3144,-672.7L6126.6,1457.1M3242.3,-707.1L6224.9,1422.7M3340.6,-741.5L6323.2,1388.3M3438.9,-775.9L6421.5,1353.9M3537.2,-810.3L6519.8,1319.5M3635.5,-844.7L6618.1,1285.1M3733.8,-879.1L6716.4,1250.7M3832.1,-913.6L6814.7,1216.2M3930.4,-948L6913,1181.8M4028.7,-982.4L7011.3,1147.4M4127,-1016.8L7109.6,1113M-2989.8,1450.4L4136.8,-1044.7M-2921,1499.6L4205.7,-995.5M-2852.1,1548.7L4274.5,-946.4M-2783.3,1597.9L4343.3,-897.2M-2714.5,1647L4412.2,-848.1M-2645.6,1696.2L4481,-798.9M-2576.8,1745.3L4549.8,-749.8M-2508,1794.4L4618.6,-700.6M-2439.1,1843.6L4687.5,-651.5M-2370.3,1892.7L4756.3,-602.3M-2301.5,1941.9L4825.1,-553.2M-2232.7,1991L4894,-504M-2163.8,2040.2L4962.8,-454.9M-2095,2089.3L5031.6,-405.7M-2026.2,2138.5L5100.4,-356.6M-1957.3,2187.6L5169.3,-307.4M-1888.5,2236.8L5238.1,-258.3M-1819.7,2285.9L5306.9,-209.1M-1750.9,2335.1L5375.8,-160M-1682,2384.2L5444.6,-110.8M-1613.2,2433.4L5513.4,-61.7M-1544.4,2482.5L5582.3,-12.5M-1475.5,2531.7L5651.1,36.6M-1406.7,2580.8L5719.9,85.8M-1337.9,2630L5788.7,134.9M-1269.1,2679.1L5857.6,184.1M-1200.2,2728.3L5926.4,233.2M-1131.4,2777.4L5995.2,282.4M-1062.6,2826.6L6064.1,331.5M-993.7,2875.7L6132.9,380.7M-924.9,2924.9L6201.7,429.8M-856.1,2974L6270.5,479M-787.2,3023.2L6339.4,528.1M-718.4,3072.3L6408.2,577.3M-649.6,3121.5L6477,626.4M-580.8,3170.6L6545.9,675.6M-511.9,3219.8L6614.7,724.7M-443.1,3268.9L6683.5,773.9M-374.3,3318.1L6752.3,823M-305.4,3367.2L6821.2,872.2M-236.6,3416.4L6890,921.3M-167.8,3465.5L6958.8,970.5M-99,3514.7L7027.7,1019.6M-30.1,3563.8L7096.5,1068.8M38.7,3613L7165.3,1117.9" stroke="#e2dfd7" stroke-width="2" fill="none"/>
+          <polygon id="road" points="93.9,1909 3141.2,842.1 3278.8,940.4 231.6,2007.3" fill="#f8f7f3" stroke="#cdc8bd" stroke-width="3"/>
+          <path id="road-dash" d="M179.1,1952.4L211.9,1940.9M252.9,1926.6L285.6,1915.1M326.6,1900.8L359.4,1889.3M400.3,1874.9L433.1,1863.5M474,1849.1L506.8,1837.7M547.8,1823.3L580.5,1811.8M621.5,1797.5L654.3,1786M695.2,1771.7L728,1760.2M768.9,1745.9L801.7,1734.4M842.7,1720.1L875.4,1708.6M916.4,1694.3L949.1,1682.8M990.1,1668.5L1022.9,1657M1063.8,1642.6L1096.6,1631.2M1137.6,1616.8L1170.3,1605.4M1211.3,1591L1244,1579.5M1285,1565.2L1317.8,1553.7M1358.7,1539.4L1391.5,1527.9M1432.4,1513.6L1465.2,1502.1M1506.2,1487.8L1538.9,1476.3M1579.9,1462L1612.7,1450.5M1653.6,1436.2L1686.4,1424.7M1727.3,1410.3L1760.1,1398.9M1801.1,1384.5L1833.8,1373.1M1874.8,1358.7L1907.6,1347.3M1948.5,1332.9L1981.3,1321.4M2022.2,1307.1L2055,1295.6M2096,1281.3L2128.7,1269.8M2169.7,1255.5L2202.5,1244M2243.4,1229.7L2276.2,1218.2M2317.1,1203.9L2349.9,1192.4M2390.9,1178L2423.6,1166.6M2464.6,1152.2L2497.3,1140.8M2538.3,1126.4L2571.1,1115M2612,1100.6L2644.8,1089.1M2685.8,1074.8L2718.5,1063.3M2759.5,1049L2792.2,1037.5M2833.2,1023.2L2866,1011.7M2906.9,997.4L2939.7,985.9M2980.6,971.6L3013.4,960.1M3054.4,945.7L3087.1,934.3M3128.1,919.9L3160.9,908.5" stroke="#d6d1c6" stroke-width="5" stroke-linecap="round" fill="none"/>
+          <g id="vault-plinth"><polygon class="fs" points="3288.7,973.6 3550.8,881.8 3550.8,868 3288.7,959.7" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="3082.2,826.1 3288.7,973.6 3288.7,959.7 3082.2,812.3" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="3082.2,812.3 3344.3,720.5 3550.8,868 3288.7,959.7" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/></g><g id="vault"><polygon class="fs" points="3296,938.8 3509,864.3 3509,618.3 3296,692.9" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="3124,816 3296,938.8 3296,692.9 3124,570" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="3124,570 3337,495.4 3509,618.3 3296,692.9" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><g transform="matrix(0.5736,0.4096,0,0.866,3124,570)"><rect x="22" y="22" width="256" height="240" rx="10" fill="#f6f4ef" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><circle cx="96" cy="142" r="54" fill="#ffffff" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><circle cx="96" cy="142" r="14" fill="#1b1b1b"/><path d="M96 92V112M96 172V192M46 142H66M126 142H146" stroke="#1b1b1b" stroke-width="5" stroke-linecap="round"/><rect x="176" y="62" width="78" height="96" rx="8" fill="#ffffff" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><g id="vault-key"><circle cx="198" cy="110" r="13" fill="none" stroke="#1b1b1b" stroke-width="5"/><path d="M211 110H244M232 110V122M242 110V119" stroke="#1b1b1b" stroke-width="5" stroke-linecap="round"/></g><circle id="vault-lamp" cx="215" cy="200" r="16" fill="#ffffff" stroke="#1b1b1b" stroke-width="4"/></g></g>
+          <g id="gate-6" class="gate"><polygon class="fs" points="2868.1,924.3 2897.6,914 2897.6,671.5 2868.1,681.8" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="2847.4,909.6 2868.1,924.3 2868.1,681.8 2847.4,667.1" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="2847.4,667.1 2876.9,656.7 2897.6,671.5 2868.1,681.8" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="fs" points="3051.6,1055.4 3081.1,1045 3081.1,802.5 3051.6,812.9" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="3031,1040.6 3051.6,1055.4 3051.6,812.9 3031,798.1" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="3031,798.1 3060.5,787.8 3081.1,802.5 3051.6,812.9" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="fs" points="3059.3,823.6 3098.6,809.8 3098.6,766.5 3059.3,780.3" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="2829.9,659.8 3059.3,823.6 3059.3,780.3 2829.9,616.5" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="2829.9,616.5 2869.2,602.7 3098.6,766.5 3059.3,780.3" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/></g><g id="gate-5" class="gate"><polygon class="fs" points="2524,1044.7 2553.5,1034.4 2553.5,791.9 2524,802.3" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="2503.4,1030 2524,1044.7 2524,802.3 2503.4,787.5" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="2503.4,787.5 2532.9,777.2 2553.5,791.9 2524,802.3" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="fs" points="2707.6,1175.8 2737.1,1165.5 2737.1,923 2707.6,933.3" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="2686.9,1161.1 2707.6,1175.8 2707.6,933.3 2686.9,918.6" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="2686.9,918.6 2716.4,908.3 2737.1,923 2707.6,933.3" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="fs" points="2715.3,944.1 2754.6,930.3 2754.6,887 2715.3,900.8" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="2485.8,780.2 2715.3,944.1 2715.3,900.8 2485.8,736.9" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="2485.8,736.9 2525.2,723.2 2754.6,887 2715.3,900.8" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/></g><g id="gate-4" class="gate"><polygon class="fs" points="2180,1165.2 2209.5,1154.9 2209.5,912.4 2180,922.7" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="2159.3,1150.5 2180,1165.2 2180,922.7 2159.3,908" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="2159.3,908 2188.8,897.6 2209.5,912.4 2180,922.7" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="fs" points="2363.5,1296.3 2393,1285.9 2393,1043.5 2363.5,1053.8" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="2342.9,1281.5 2363.5,1296.3 2363.5,1053.8 2342.9,1039" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="2342.9,1039 2372.4,1028.7 2393,1043.5 2363.5,1053.8" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="fs" points="2371.2,1064.5 2410.6,1050.7 2410.6,1007.4 2371.2,1021.2" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="2141.8,900.7 2371.2,1064.5 2371.2,1021.2 2141.8,857.4" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="2141.8,857.4 2181.1,843.6 2410.6,1007.4 2371.2,1021.2" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/></g><g id="gate-3" class="gate"><polygon class="fs" points="1835.9,1285.6 1865.4,1275.3 1865.4,1032.8 1835.9,1043.2" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="1815.3,1270.9 1835.9,1285.6 1835.9,1043.2 1815.3,1028.4" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="1815.3,1028.4 1844.8,1018.1 1865.4,1032.8 1835.9,1043.2" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="fs" points="2019.5,1416.7 2049,1406.4 2049,1163.9 2019.5,1174.2" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="1998.8,1402 2019.5,1416.7 2019.5,1174.2 1998.8,1159.5" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="1998.8,1159.5 2028.3,1149.2 2049,1163.9 2019.5,1174.2" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="fs" points="2027.2,1185 2066.5,1171.2 2066.5,1127.9 2027.2,1141.7" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="1797.8,1021.1 2027.2,1185 2027.2,1141.7 1797.8,977.8" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="1797.8,977.8 1837.1,964.1 2066.5,1127.9 2027.2,1141.7" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/></g><g id="gate-2" class="gate"><polygon class="fs" points="1491.9,1406.1 1521.4,1395.8 1521.4,1153.3 1491.9,1163.6" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="1471.2,1391.4 1491.9,1406.1 1491.9,1163.6 1471.2,1148.9" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="1471.2,1148.9 1500.7,1138.5 1521.4,1153.3 1491.9,1163.6" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="fs" points="1675.4,1537.2 1704.9,1526.8 1704.9,1284.4 1675.4,1294.7" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="1654.8,1522.4 1675.4,1537.2 1675.4,1294.7 1654.8,1279.9" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="1654.8,1279.9 1684.3,1269.6 1704.9,1284.4 1675.4,1294.7" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="fs" points="1683.1,1305.4 1722.5,1291.6 1722.5,1248.3 1683.1,1262.1" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="1453.7,1141.6 1683.1,1305.4 1683.1,1262.1 1453.7,1098.3" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="1453.7,1098.3 1493,1084.5 1722.5,1248.3 1683.1,1262.1" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/></g><g id="gate-1" class="gate"><polygon class="fs" points="1147.9,1526.6 1177.3,1516.2 1177.3,1273.7 1147.9,1284.1" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="1127.2,1511.8 1147.9,1526.6 1147.9,1284.1 1127.2,1269.3" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="1127.2,1269.3 1156.7,1259 1177.3,1273.7 1147.9,1284.1" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="fs" points="1331.4,1657.6 1360.9,1647.3 1360.9,1404.8 1331.4,1415.1" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="1310.7,1642.9 1331.4,1657.6 1331.4,1415.1 1310.7,1400.4" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="1310.7,1400.4 1340.2,1390.1 1360.9,1404.8 1331.4,1415.1" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="fs" points="1339.1,1425.9 1378.4,1412.1 1378.4,1368.8 1339.1,1382.6" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="1109.7,1262 1339.1,1425.9 1339.1,1382.6 1109.7,1218.7" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="1109.7,1218.7 1149,1205 1378.4,1368.8 1339.1,1382.6" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/></g><g id="gate-0" class="gate"><polygon class="fs" points="803.8,1647 833.3,1636.7 833.3,1394.2 803.8,1404.5" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="783.2,1632.3 803.8,1647 803.8,1404.5 783.2,1389.8" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="783.2,1389.8 812.6,1379.4 833.3,1394.2 803.8,1404.5" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="fs" points="987.4,1778.1 1016.8,1767.7 1016.8,1525.3 987.4,1535.6" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="966.7,1763.3 987.4,1778.1 987.4,1535.6 966.7,1520.8" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="966.7,1520.8 996.2,1510.5 1016.8,1525.3 987.4,1535.6" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="fs" points="995.1,1546.3 1034.4,1532.5 1034.4,1489.2 995.1,1503" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="765.6,1382.5 995.1,1546.3 995.1,1503 765.6,1339.2" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="765.6,1339.2 804.9,1325.4 1034.4,1489.2 995.1,1503" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/></g>
+        </svg>
+      <div id="world-html">
+        <div class="pin" id="lbl-pin-0" style="left:900px;top:1388.2px"><div class="bc"><div class="lbl" id="lbl-0"><span class="lbl-n">①</span>业务意图</div></div></div>
+        <div class="pin" id="lbl-pin-1" style="left:1244px;top:1267.8px"><div class="bc"><div class="lbl" id="lbl-1"><span class="lbl-n">②</span>请求构造</div></div></div>
+        <div class="pin" id="lbl-pin-2" style="left:1588.1px;top:1147.3px"><div class="bc"><div class="lbl" id="lbl-2"><span class="lbl-n">③</span>风控与审批</div></div></div>
+        <div class="pin" id="lbl-pin-3" style="left:1932.1px;top:1026.9px"><div class="bc"><div class="lbl lbl-red" id="lbl-3"><span class="lbl-n">④</span>显示与解码</div></div></div>
+        <div class="pin" id="lbl-pin-4" style="left:2276.2px;top:906.4px"><div class="bc"><div class="lbl" id="lbl-4"><span class="lbl-n">⑤</span>签名</div></div></div>
+        <div class="pin" id="lbl-pin-5" style="left:2620.2px;top:786px"><div class="bc"><div class="lbl" id="lbl-5"><span class="lbl-n">⑥</span>广播</div></div></div>
+        <div class="pin" id="lbl-pin-6" style="left:2964.3px;top:665.5px"><div class="bc"><div class="lbl" id="lbl-6"><span class="lbl-n">⑦</span>链上状态</div></div></div>
+
+        <div class="pin" id="key-pin" style="left:3509px;top:678.9px">
+          <div id="keytag" class="wcard hide">
+            <svg width="40" height="48" viewBox="0 0 40 48"><rect x="4" y="20" width="32" height="25" rx="5" fill="#1b1b1b"/><path d="M11 21V14a9 9 0 0 1 18 0v7" fill="none" stroke="#1b1b1b" stroke-width="5"/></svg>
+            <span class="kt">私钥</span><span id="key-ok">完好</span>
+          </div>
+        </div>
+
+        <div class="pin" id="sign-pin" style="left:2707px;top:551.2px">
+          <div class="bc"><div id="sign" class="wcard hide">
+            <div class="wc-h">签名人确认<small>示意</small></div>
+            <div class="checks">
+              <span class="ck" id="ck-0"><svg width="34" height="28" viewBox="0 0 34 28"><path d="M3 15l9 9L31 4" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="ck" id="ck-1"><svg width="34" height="28" viewBox="0 0 34 28"><path d="M3 15l9 9L31 4" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="ck" id="ck-2"><svg width="34" height="28" viewBox="0 0 34 28"><path d="M3 15l9 9L31 4" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="dots">…</span>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="pin" id="mon-pin" style="left:1932.1px;top:1048.5px">
+          <div class="bc"><div id="mon" class="hide">
+            <div class="mon-screen">
+              <div class="mon-head">④ 显示与解码</div>
+              <div class="mon-body">
+                <div class="mrow"><span>操作</span>转账</div>
+                <div class="mrow"><span>收款</span><b class="mono">0x…（示例）</b></div>
+                <div id="mon-ok"><svg width="26" height="22" viewBox="0 0 34 28"><path d="M3 15l9 9L31 4" fill="none" stroke="#1b1b1b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>看起来正常</div>
+              </div>
+            </div>
+            <div class="mon-stem"></div>
+          </div></div>
+        </div>
+
+        <div class="pin" id="store-pin" style="left:3316.5px;top:576.8px">
+          <div class="bc"><div id="store" class="wcard hide">
+            <div class="wc-h">Safe 代理 · 存储</div>
+            <div class="slot" id="slot">
+              <span class="mono slot-k">slot 0</span>
+              <span class="kw"><span class="hl" id="impl-hl"></span><span class="t">实现合约</span></span>
+              <span class="chip" id="chip-old">Safe 实现</span>
+              <div id="atk" class="hide">
+                <div id="atk-label">DELEGATECALL</div>
+                <span class="chip" id="chip-new">攻击者合约</span>
+              </div>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="pin" id="card-pin" style="left:809.9px;top:1731.5px">
+          <div id="card-mover" class="hide">
+            <div id="card-shadow"></div>
+            <div id="card-lift">
+              <div id="card-anchor"><div id="card-scaler"><div id="card-flip">
+                <div class="face front">
+                  <div class="front-doc"><i style="top:18px"></i><i style="top:36px"></i><i style="top:54px;right:26px"></i></div>
+                  <div class="front-t">交易单</div>
+                  <div class="front-s">转账 · 示意</div>
+                </div>
+                <div class="face back">
+                  <div class="b-head">实际签下的交易</div>
+                  <div class="row"><span class="k">to</span><span class="v">攻击者合约</span></div>
+                  <div class="row"><span class="k">data</span><span class="v mono">transfer(address,uint256)</span></div>
+                  <div class="row op"><div id="op-bg"></div>
+                    <span class="k kw" style="font-size:22px;position:relative"><span class="hl" id="op-hl"></span><span class="t">operation</span></span>
+                    <span class="v" style="position:relative"><span id="op-q">?</span></span>
+                    <span id="op-1">1</span>
+                  </div>
+                  <div id="card-alarm"></div>
+                  <div id="seal">签</div>
+                </div>
+              </div></div>
+              <div id="op-legend">0 = CALL　·　1 = DELEGATECALL</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="titles">
+      <div class="tb" id="t1">
+        <div class="t-big"><span class="w" id="t1-w0">2025 年</span> <span class="w" id="t1-w1">2 月</span> <span class="w" id="t1-w2">21 日</span></div>
+        <div class="t-tag hide" id="t1-tag">Bybit · 以太坊冷钱包</div>
+        <div class="t-huge hide" id="t1-amt">约 <span class="kw"><span class="hl" id="t1-hl"></span><span class="t">15 亿美元</span></span></div>
+        <div class="t-note hide" id="t1-note">FBI 口径 · 事发时估值</div>
+      </div>
+      <div class="tb" id="t2">
+        <div class="t-big"><span class="w hide" id="t2-a">私钥</span> <span class="w hide kw" id="t2-b"><span class="hl" id="t2-hl"></span><span class="t">未泄露</span></span></div>
+        <div class="t-tag hide" id="t2-tag">签名人 · 按流程逐个确认</div>
+      </div>
+      <div class="tb" id="t6">
+        <div class="t-big hide" id="t6-a">钥匙没丢</div>
+        <div class="t-big hide" id="t6-b"><span class="kw"><span class="hl" id="t6-hl"></span><span class="t">文件</span></span>被换了</div>
+      </div>
+      <div class="tb" id="t7">
+        <div class="t-huge hide" id="t7-a">签名路径 · <span class="kw"><span class="hl" id="t7-hl"></span><span class="t">七道关</span></span></div>
+        <div class="t-tag hide" id="t7-tag">从提出到上链</div>
+      </div>
+    </div>
+
+    <div id="end">
+      <div id="end-title"><span class="w hide" id="e-w0">攻击者</span><span class="w hide" id="e-w1">不再偷</span><span class="w hide kw" id="e-w2"><span class="hl" id="end-hl"></span><span class="t">私钥</span></span></div>
+      <div id="end-rule"></div>
+      <div id="end-sub" class="hide">第 29 章 · 签名路径</div>
+      <div id="end-gate"><div id="end-gate-in" class="hide"><svg id="end-gate-svg" width="420" height="580" viewBox="730 1340 340 470"><g class="gate-red"><polygon class="fs" points="803.8,1647 833.3,1636.7 833.3,1394.2 803.8,1404.5" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="783.2,1632.3 803.8,1647 803.8,1404.5 783.2,1389.8" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="783.2,1389.8 812.6,1379.4 833.3,1394.2 803.8,1404.5" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="fs" points="987.4,1778.1 1016.8,1767.7 1016.8,1525.3 987.4,1535.6" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="966.7,1763.3 987.4,1778.1 987.4,1535.6 966.7,1520.8" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="966.7,1520.8 996.2,1510.5 1016.8,1525.3 987.4,1535.6" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="fs" points="995.1,1546.3 1034.4,1532.5 1034.4,1489.2 995.1,1503" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ff" points="765.6,1382.5 995.1,1546.3 995.1,1503 765.6,1339.2" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/><polygon class="ft" points="765.6,1339.2 804.9,1325.4 1034.4,1489.2 995.1,1503" stroke="#1b1b1b" stroke-width="2.4" stroke-linejoin="round"/></g></svg></div></div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const D = Math.PI / 180, CA = Math.cos(35 * D), SA = Math.sin(35 * D), SE = 0.5, CE = Math.cos(30 * D);
+      const W = (u, v, z) => [900 + u * CA + v * SA, 1700 - u * SA * SE + v * CA * SE - (z || 0) * CE];
+      const cam = (u, v, z, sx, sy, k) => { const p = W(u, v, z); return { x: sx - k * p[0], y: sy - k * p[1], scale: k }; };
+      const cardAt = (u) => ({ x: (u + 110) * CA, y: -(u + 110) * SA * SE });
+      const GU = (i) => i * 420;
+      const IO = "power2.inOut";
+      const tl = gsap.timeline({ paused: true });
+
+      const blurIn = (s, t, d) => tl.fromTo(s, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: d || 0.18, ease: "power2.out" }, t);
+      const blurOut = (s, t) => tl.to(s, { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, t);
+      const pop = (s, t) => tl.fromTo(s, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.5, ease: "expo.out" }, t);
+      const hl = (s, t) => tl.fromTo(s, { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: "power2.out" }, t);
+      const camTo = (t, d, a) => tl.to("#cam", Object.assign({ duration: d, ease: IO }, cam.apply(null, a)), t);
+      const hop = (t, u, d) => tl.to("#card-mover", Object.assign({ duration: d || 0.6, ease: "expo.out" }, cardAt(u)), t);
+
+      tl.set(".hl", { scaleX: 0 }, 0);
+      tl.set("#cam", cam(1350, 0, 150, 700, 690, 0.5), 0);
+      tl.set("#card-mover", cardAt(310), 0);
+
+      // ---------- l1 · 0–7.4: the road, then the cold wallet and the loss
+      ["#t1-w0", "#t1-w1", "#t1-w2"].forEach((s, i) => blurIn(s, 0.70 + i * 0.067, 0.14));
+      blurIn("#t1-tag", 2.46);
+      const vo = W(2950, 150, 0);
+      tl.fromTo("#vault", { scaleY: 0, svgOrigin: vo[0] + " " + vo[1] }, { scaleY: 1, svgOrigin: vo[0] + " " + vo[1], duration: 0.6, ease: "expo.out" }, 3.60);
+      camTo(3.55, 1.2, [2950, 0, 150, 960, 620, 0.9]);
+      blurIn("#t1-amt", 5.23);
+      hl("#t1-hl", 5.40);
+      blurIn("#t1-note", 5.45);
+      blurOut("#t1", 7.30);
+
+      // ---------- l2 · 7.4–13: key intact, signers confirm
+      camTo(7.40, 1.1, [2820, 0, 170, 1010, 640, 1.3]);
+      blurIn("#t2-a", 7.53);
+      pop("#keytag", 7.62);
+      blurIn("#t2-b", 8.68);
+      hl("#t2-hl", 8.80);
+      tl.to("#vault-lamp", { attr: { fill: "#1b1b1b" }, duration: 0.15 }, 8.68);
+      pop("#key-ok", 8.75);
+      pop("#sign", 9.56);
+      blurIn("#t2-tag", 9.62);
+      [10.55, 11.45, 12.48].forEach((t, i) => {
+        tl.to("#ck-" + i, { backgroundColor: "#1b1b1b", duration: 0.15 }, t);
+        tl.to("#ck-" + i + " svg", { opacity: 1, duration: 0.15 }, t);
+        tl.fromTo("#ck-" + i, { scale: 1.18 }, { scale: 1, duration: 0.4, ease: "expo.out" }, t);
+      });
+      blurOut("#t2", 12.85);
+      tl.to(["#sign", "#keytag"], { opacity: 0, duration: 0.2 }, 12.85);
+
+      // ---------- l3 · 13–18: the slip walks the road to gate 4
+      camTo(12.85, 1.0, [560, 0, 150, 760, 600, 0.9]);
+      tl.fromTo("#card-mover", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 13.35);
+      tl.fromTo("#card-scaler", { scale: 0.7 }, { scale: 1, duration: 0.5, ease: "expo.out" }, 13.35);
+      hop(13.85, 730, 0.55); hop(14.42, 1150, 0.6);
+      camTo(14.30, 1.1, [1150, 0, 260, 840, 590, 1.3]);
+      tl.fromTo("#mon", { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, duration: 0.45, ease: "expo.out" }, 14.40);
+      tl.fromTo("#mon-ok", { opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1, duration: 0.35, ease: "expo.out" }, 16.09);
+
+      // ---------- l4 · 18–23.7: flip the slip — operation = 1
+      const cb = W(1150, 0, 0);
+      const cc = [cb[0] - 300, cb[1] - 40 - 26 - 102 * 1.5];
+      tl.to("#cam", { x: 760 - 1.45 * cc[0], y: 590 - 1.45 * cc[1], scale: 1.45, duration: 1.0, ease: IO }, 18.15);
+      tl.to("#card-lift", { x: -300, y: -40, duration: 0.9, ease: IO }, 18.30);
+      tl.to("#card-scaler", { scale: 1.5, duration: 0.9, ease: IO }, 18.30);
+      tl.to("#card-flip", { rotationY: 180, duration: 0.6, ease: IO }, 20.08);
+      hl("#op-hl", 20.82);
+      // 20.95–21.85 hold, then the one strong moment
+      tl.set("#op-q", { opacity: 0 }, 21.85);
+      tl.fromTo("#op-1", { opacity: 0, scale: 2.2 }, { opacity: 1, scale: 1, duration: 0.4, ease: "expo.out" }, 21.85);
+      tl.to("#op-bg", { opacity: 1, duration: 0.12 }, 21.85);
+      tl.to("#gate-3 .ff", { fill: "#d9442e", duration: 0.3 }, 21.90);
+      tl.to("#gate-3 .fs", { fill: "#a8341f", duration: 0.3 }, 21.90);
+      tl.to("#gate-3 .ft", { fill: "#e8705c", duration: 0.3 }, 21.90);
+      tl.to("#cam", { x: 760 - 1.62 * cc[0], y: 600 - 1.62 * cc[1], scale: 1.62, duration: 0.5, ease: IO }, 21.85);
+      blurIn("#op-legend", 22.45, 0.2);
+
+      // ---------- l5 · 23.7–31: slip enters the wallet, the implementation is swapped
+      tl.to(["#op-legend", "#mon"], { opacity: 0, duration: 0.2 }, 23.75);
+      tl.to("#card-lift", { x: 0, y: 0, duration: 0.6, ease: IO }, 23.80);
+      tl.to("#card-scaler", { scale: 1, duration: 0.6, ease: IO }, 23.80);
+      camTo(23.90, 1.2, [2350, 0, 150, 900, 620, 0.85]);
+      hop(24.30, 1570, 0.45); hop(24.75, 1990, 0.45); hop(25.20, 2410, 0.45);
+      hop(25.65, 2790, 0.5);
+      tl.to("#card-scaler", { scale: 0.3, duration: 0.45, ease: "power3.in" }, 25.70);
+      tl.to("#card-mover", { opacity: 0, duration: 0.2 }, 25.95);
+      camTo(25.90, 1.1, [2950, 0, 470, 900, 560, 1.15]);
+      tl.fromTo("#store", { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, duration: 0.5, ease: "expo.out" }, 26.00);
+      tl.fromTo("#atk", { opacity: 0, x: 380 }, { opacity: 1, x: 300, duration: 0.6, ease: "expo.out" }, 26.30);
+      hl("#impl-hl", 27.77);
+      tl.to("#chip-old", { x: -40, y: 70, opacity: 0, duration: 0.35, ease: "power3.in" }, 28.63);
+      tl.to("#atk-label", { opacity: 0, duration: 0.2 }, 28.63);
+      tl.to("#atk", { x: 0, duration: 0.6, ease: "expo.out" }, 28.80);
+      tl.to("#slot", { borderColor: "#d9442e", duration: 0.25 }, 29.05);
+
+      // ---------- l6 · 31–37.9: the key never left; the paper changed
+      camTo(31.30, 1.2, [2700, 0, 250, 780, 640, 1.0]);
+      blurIn("#t6-a", 31.40);
+      tl.to("#keytag", { opacity: 1, duration: 0.25 }, 31.45);
+      tl.fromTo("#key-ok", { scale: 1.3 }, { scale: 1, duration: 0.35, ease: "expo.out" }, 32.53);
+      tl.set("#card-mover", cardAt(2790), 33.70);
+      tl.to("#card-mover", Object.assign({ opacity: 1, duration: 0.6, ease: "expo.out" }, cardAt(2440)), 33.81);
+      tl.to("#card-scaler", { scale: 1.15, duration: 0.6, ease: "expo.out" }, 33.81);
+      tl.to("#card-lift", { y: -40, duration: 0.6, ease: "expo.out" }, 33.81);
+      tl.to("#card-alarm", { opacity: 1, duration: 0.2 }, 34.10);
+      blurIn("#t6-b", 33.85);
+      hl("#t6-hl", 35.43);
+      tl.fromTo("#seal", { opacity: 0, scale: 1.7 }, { opacity: 1, scale: 1, duration: 0.35, ease: "expo.out" }, 35.50);
+      blurOut("#t6", 37.75);
+      tl.to(["#keytag", "#store", "#card-mover"], { opacity: 0, duration: 0.25 }, 37.75);
+
+      // ---------- l7 · 38–43.2: dolly along the seven gates
+      camTo(38.05, 1.0, [-60, 0, 200, 700, 640, 0.95]);
+      tl.to("#cam", Object.assign({ duration: 3.4, ease: IO }, cam(2620, 0, 200, 1000, 660, 0.95)), 39.10);
+      for (let i = 0; i < 7; i++) {
+        tl.fromTo("#lbl-" + i, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.4, ease: "expo.out" }, 38.70 + i * 0.5);
+      }
+      blurIn("#t7-a", 39.58);
+      blurIn("#t7-tag", 41.13);
+      hl("#t7-hl", 42.36);
+
+      // ---------- end card · 43.2–47.16
+      blurOut("#t7", 43.15);
+      tl.to("#cam", { opacity: 0, duration: 0.45, ease: IO }, 43.20);
+      ["#e-w0", "#e-w1", "#e-w2"].forEach((s, i) => blurIn(s, 43.50 + i * 0.1, 0.16));
+      tl.fromTo("#end-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "expo.out" }, 43.85);
+      tl.fromTo("#end-gate-in", { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, duration: 0.6, ease: "expo.out" }, 43.55);
+      hl("#end-hl", 44.00);
+      blurIn("#end-sub", 44.15, 0.2);
+      // everything is still from 44.4 to 47.16
+
+      window.__timelines["story"] = tl;
+    })();
+  </script>
+</template>

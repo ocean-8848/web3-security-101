@@ -1,0 +1,374 @@
+<template>
+  <style>
+/* kit.css — ep29 统一 HTML 组件样式（沿用 s7-vivid 规格）
+ * 用法：在 composition 的 template 内 style 块里内联（iso.kitCss()），再写本场景自己的 #root 样式。
+ * 字体：Noto Sans SC（index.html 里 @font-face）、JetBrains Mono（HyperFrames 内置）。
+ * 颜色语义：绿 #1f9d55 正常/通过；红 #e0453a 失败/攻击者；青蓝 #2aa3c9（实底 #1d93ba）中性；墨 #1c1c1c。没有黄色。
+ */
+
+/* ---------- world / camera scaffolding ---------- */
+.k-stage { position: absolute; inset: 0; }
+#cam { position: absolute; left: 0; top: 0; width: 10px; height: 10px; transform-origin: 0 0; }
+.k-layer { position: absolute; left: 0; top: 0; width: 10px; height: 10px; }
+.wsvg { position: absolute; overflow: visible; }
+.pin { position: absolute; width: 0; height: 0; }
+.wl { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+.ctr { position: absolute; left: 0; top: 0; white-space: nowrap; }
+.a-b { transform: translate(-50%, -100%); }
+.a-t { transform: translate(-50%, 0); }
+.a-l { transform: translate(0, -50%); }
+.a-r { transform: translate(-100%, -50%); }
+.a-c { transform: translate(-50%, -50%); }
+.hide { opacity: 0; }
+
+/* ---------- labels (world labels via iso.wlab) ---------- */
+.lab { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; font-family: "Noto Sans SC", sans-serif; font-weight: 700;
+  font-size: 32px; line-height: 1.2; padding: 5px 18px 7px; border-radius: 12px; background: #ffffff; border: 3px solid #2aa3c9; color: #17809f;
+  box-shadow: 0 6px 14px rgba(70, 60, 40, 0.10); }
+.lab-sm { font-size: 28px; padding: 3px 14px 5px; border-radius: 10px; }
+.lab-cs { background: #1d93ba; border-color: #1d93ba; color: #ffffff; }   /* 青蓝实底 */
+.lab-gs { background: #1f9d55; border-color: #1f9d55; color: #ffffff; }   /* 绿底 = 正常/通过 */
+.lab-rs { background: #e0453a; border-color: #e0453a; color: #ffffff; }   /* 红底 = 失败/攻击者 */
+.lab-r { border-color: #e0453a; color: #c3352b; }                         /* 红描边 */
+.lab-g { border-color: #cfc7b8; color: #1c1c1c; font-size: 30px; }        /* 灰描边（关卡名） */
+.lab-ink { background: #1c1c1c; border-color: #1c1c1c; color: #ffffff; }  /* 墨底 */
+.lab .gn { margin-right: 2px; }
+.lab svg { flex: none; }
+
+/* ---------- badges / icons ---------- */
+.badge { border-radius: 50%; background: #e0453a; display: flex; align-items: center; justify-content: center;
+  border: 4px solid #ffffff; box-shadow: 0 6px 14px rgba(160, 40, 30, 0.28); }
+.badge-g { background: #1f9d55; box-shadow: 0 6px 14px rgba(20, 110, 60, 0.25); border-width: 3px; }
+.env { position: relative; width: 64px; height: 44px; }
+.env svg { display: block; }
+.env-red { position: absolute; left: 0; top: 0; }
+
+/* ---------- chapter pills (pills.mjs) ---------- */
+.k-pills { position: absolute; right: 48px; top: 30px; display: flex; gap: 10px; align-items: center; font-family: "Noto Sans SC", sans-serif; }
+.k-pill { font-size: 28px; font-weight: 700; line-height: 1.2; padding: 6px 20px 8px; border-radius: 999px; background: #ffffff; color: #1c1c1c;
+  border: 2px solid #e2ddd3; box-shadow: 0 4px 12px rgba(70, 60, 40, 0.08); white-space: nowrap; opacity: 0.5; }
+.k-pill.is-on { background: #1c1c1c; color: #ffffff; border-color: #1c1c1c; opacity: 1; }
+.k-pill.is-num { padding: 6px 0 8px; width: 50px; text-align: center; }
+
+/* ---------- code card ---------- */
+.k-code { position: absolute; width: 800px; background: #ffffff; border-radius: 18px; padding: 24px 34px; font-family: "Noto Sans SC", sans-serif;
+  color: #1c1c1c; box-shadow: 0 14px 30px rgba(70, 60, 40, 0.12); }
+.k-code .c-head { height: 56px; display: flex; align-items: center; gap: 12px; font-size: 34px; font-weight: 900; white-space: nowrap; }
+.k-code .c-tag { margin-left: auto; font-size: 28px; font-weight: 700; color: #7d776b; background: #f1ede5; border-radius: 8px; padding: 2px 12px 4px; }
+.k-code .c-row { position: relative; height: 50px; line-height: 50px; font-family: "JetBrains Mono", "Noto Sans SC", monospace; font-size: 30px;
+  font-weight: 500; white-space: pre; }
+.k-code .c-cm { color: #8a8478; }
+.k-code .c-hot { font-weight: 700; margin: 0 -16px; padding: 0 16px; border-radius: 10px; background: #fdeae7; }
+.k-code .c-red { color: #e0453a; font-weight: 800; }
+.k-code .c-chip { display: inline-block; margin-left: 16px; font-family: "JetBrains Mono", monospace; font-size: 28px; font-weight: 800; color: #ffffff;
+  background: #e0453a; border-radius: 8px; padding: 0 12px; line-height: 38px; vertical-align: 3px; }
+.k-code .c-bar { position: absolute; left: -4px; top: 8px; width: 6px; height: 34px; background: #2aa3c9; border-radius: 3px; transform-origin: 50% 100%; }
+
+/* ---------- dot matrix (每个点 = N) ---------- */
+.k-mx { position: absolute; width: 530px; height: 640px; font-family: "Noto Sans SC", sans-serif; color: #1c1c1c; }
+.k-mx .mx-title { font-size: 40px; font-weight: 900; white-space: nowrap; }
+.k-mx .mx-legend { position: absolute; left: 0; top: 64px; display: flex; gap: 12px; }
+.k-mx .lg { display: inline-flex; align-items: center; gap: 8px; font-size: 28px; font-weight: 700; padding: 3px 16px 5px; background: #ffffff;
+  border-radius: 999px; box-shadow: 0 3px 10px rgba(70, 60, 40, 0.08); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.k-mx .lgd { width: 20px; height: 20px; border-radius: 50%; display: inline-block; }
+.k-mx .mx-t { position: absolute; left: 0; font-size: 28px; font-weight: 700; white-space: nowrap; }
+.k-mx .mx-line { position: absolute; height: 0; border-top: 3px dashed #2aa3c9; }
+.k-mx .slot { position: absolute; width: 56px; height: 56px; border-radius: 50%; border: 3px dashed #d3ccbf; }
+.k-mx .dot { position: absolute; width: 56px; height: 56px; border-radius: 50%; background: #1f9d55; }
+.k-mx .dot.is-red { background: #e0453a; }
+
+/* ---------- title card / end card ---------- */
+.k-veil { position: absolute; inset: 0; background: #efebe3; }
+.k-title { position: absolute; left: 460px; top: 290px; width: 1000px; min-height: 320px; background: #fffdf8; border-radius: 28px;
+  box-shadow: 0 18px 40px rgba(70, 60, 40, 0.14); text-align: center; padding: 70px 40px 60px; font-family: "Noto Sans SC", sans-serif; }
+.k-title .t-main { font-size: 96px; font-weight: 900; line-height: 1.1; white-space: nowrap; color: #1c1c1c; }
+.k-title .t-sub { margin-top: 22px; font-size: 40px; font-weight: 700; color: #1d93ba; white-space: nowrap; }
+.k-big { font-family: "Noto Sans SC", sans-serif; font-size: 92px; font-weight: 900; line-height: 1.08; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.k-note { font-family: "Noto Sans SC", sans-serif; font-size: 30px; font-weight: 700; color: #6d685e; }
+
+/* ---------- caption card (字幕卡；底部 84 px，物件与标签不进底部 160 px) ---------- */
+.k-cap { position: absolute; left: 0; right: 0; bottom: 84px; text-align: center; pointer-events: none; }
+.k-cap > span { display: inline-block; font-family: "Noto Sans SC", sans-serif; font-weight: 900; font-size: 46px; line-height: 1.25; color: #1c1c1c;
+  letter-spacing: 0.02em; padding: 10px 28px; background: #fffdf8; border-radius: 14px; }
+
+/* ---------- shadows (reference) ---------- */
+.k-shadow-card { box-shadow: 0 14px 30px rgba(70, 60, 40, 0.12); }
+.k-shadow-lab { box-shadow: 0 6px 14px rgba(70, 60, 40, 0.10); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; background: #efebe3; font-family: "Noto Sans SC", sans-serif; color: #1c1c1c; }
+    .ttl { position: absolute; left: 56px; top: 34px; white-space: nowrap; font-size: 40px; font-weight: 900; }
+    #kit-sub { position: absolute; left: 56px; top: 96px; font-size: 28px; font-weight: 700; color: #6d685e; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="showcase" data-width="1920" data-height="1080">
+    <div class="k-stage" id="stage">
+      <div id="cam" data-layout-allow-overflow data-layout-ignore>
+        <svg id="world-svg" class="wsvg" width="2400" height="2000" viewBox="-400 -600 2400 2000" style="left:-400px;top:-600px"><defs>
+  <radialGradient id="gglow"><stop offset="0" stop-color="#1f9d55" stop-opacity="0.42"/><stop offset="0.55" stop-color="#1f9d55" stop-opacity="0.16"/><stop offset="1" stop-color="#1f9d55" stop-opacity="0"/></radialGradient>
+  <radialGradient id="rglow"><stop offset="0" stop-color="#e0453a" stop-opacity="0.36"/><stop offset="0.55" stop-color="#e0453a" stop-opacity="0.13"/><stop offset="1" stop-color="#e0453a" stop-opacity="0"/></radialGradient>
+  <radialGradient id="shadowG"><stop offset="0" stop-color="#5a5040" stop-opacity="0.20"/><stop offset="1" stop-color="#5a5040" stop-opacity="0"/></radialGradient>
+</defs><path d="M-2785.5,-245.6L82.4,1802.3M-2719.9,-268.5L148,1779.4M-2654.4,-291.5L213.5,1756.4M-2588.9,-314.4L279,1733.5M-2523.3,-337.3L344.6,1710.5M-2457.8,-360.3L410.1,1687.6M-2392.3,-383.2L475.6,1664.6M-2326.7,-406.2L541.2,1641.7M-2261.2,-429.1L606.7,1618.8M-2195.7,-452.1L672.2,1595.8M-2130.1,-475L737.7,1572.9M-2064.6,-497.9L803.3,1549.9M-1999.1,-520.9L868.8,1527M-1933.5,-543.8L934.3,1504M-1868,-566.8L999.9,1481.1M-1802.5,-589.7L1065.4,1458.2M-1736.9,-612.7L1130.9,1435.2M-1671.4,-635.6L1196.5,1412.3M-1605.9,-658.6L1262,1389.3M-1540.3,-681.5L1327.5,1366.4M-1474.8,-704.4L1393.1,1343.4M-1409.3,-727.4L1458.6,1320.5M-1343.7,-750.3L1524.1,1297.6M-1278.2,-773.3L1589.7,1274.6M-1212.7,-796.2L1655.2,1251.7M-1147.2,-819.2L1720.7,1228.7M-1081.6,-842.1L1786.3,1205.8M-1016.1,-865L1851.8,1182.8M-950.6,-888L1917.3,1159.9M-885,-910.9L1982.9,1137M-819.5,-933.9L2048.4,1114M-754,-956.8L2113.9,1091.1M-688.4,-979.8L2179.5,1068.1M-622.9,-1002.7L2245,1045.2M-557.4,-1025.6L2310.5,1022.2M-491.8,-1048.6L2376.1,999.3M-426.3,-1071.5L2441.6,976.4M-360.8,-1094.5L2507.1,953.4M-295.2,-1117.4L2572.6,930.5M-229.7,-1140.4L2638.2,907.5M-164.2,-1163.3L2703.7,884.6M-98.6,-1186.2L2769.2,861.6M-33.1,-1209.2L2834.8,838.7M32.4,-1232.1L2900.3,815.8M98,-1255.1L2965.8,792.8M163.5,-1278L3031.4,769.9M229,-1301L3096.9,746.9M294.6,-1323.9L3162.4,724M360.1,-1346.8L3228,701M425.6,-1369.8L3293.5,678.1M491.2,-1392.7L3359,655.2M556.7,-1415.7L3424.6,632.2M622.2,-1438.6L3490.1,609.3M687.7,-1461.6L3555.6,586.3M753.3,-1484.5L3621.2,563.4M818.8,-1507.4L3686.7,540.4M884.3,-1530.4L3752.2,517.5M949.9,-1553.3L3817.8,494.6M1015.4,-1576.3L3883.3,471.6M1080.9,-1599.2L3948.8,448.7M1146.5,-1622.2L4014.4,425.7M1212,-1645.1L4079.9,402.8M1277.5,-1668L4145.4,379.8M-2785.5,-245.6L1310.3,-1679.5M-2739.6,-212.8L1356.2,-1646.8M-2693.7,-180L1402.1,-1614M-2647.8,-147.3L1448,-1581.2M-2601.9,-114.5L1493.8,-1548.5M-2556,-81.7L1539.7,-1515.7M-2510.1,-49L1585.6,-1482.9M-2464.3,-16.2L1631.5,-1450.2M-2418.4,16.6L1677.4,-1417.4M-2372.5,49.3L1723.3,-1384.6M-2326.6,82.1L1769.2,-1351.9M-2280.7,114.9L1815.1,-1319.1M-2234.8,147.6L1860.9,-1286.3M-2188.9,180.4L1906.8,-1253.6M-2143.1,213.1L1952.7,-1220.8M-2097.2,245.9L1998.6,-1188M-2051.3,278.7L2044.5,-1155.3M-2005.4,311.4L2090.4,-1122.5M-1959.5,344.2L2136.3,-1089.7M-1913.6,377L2182.1,-1057M-1867.7,409.7L2228,-1024.2M-1821.8,442.5L2273.9,-991.4M-1776,475.3L2319.8,-958.7M-1730.1,508L2365.7,-925.9M-1684.2,540.8L2411.6,-893.1M-1638.3,573.6L2457.5,-860.4M-1592.4,606.3L2503.3,-827.6M-1546.5,639.1L2549.2,-794.8M-1500.6,671.9L2595.1,-762.1M-1454.8,704.6L2641,-729.3M-1408.9,737.4L2686.9,-696.5M-1363,770.2L2732.8,-663.8M-1317.1,802.9L2778.7,-631M-1271.2,835.7L2824.5,-598.2M-1225.3,868.5L2870.4,-565.5M-1179.4,901.2L2916.3,-532.7M-1133.6,934L2962.2,-499.9M-1087.7,966.8L3008.1,-467.2M-1041.8,999.5L3054,-434.4M-995.9,1032.3L3099.9,-401.6M-950,1065.1L3145.7,-368.9M-904.1,1097.8L3191.6,-336.1M-858.2,1130.6L3237.5,-303.3M-812.4,1163.4L3283.4,-270.6M-766.5,1196.1L3329.3,-237.8M-720.6,1228.9L3375.2,-205M-674.7,1261.7L3421.1,-172.3M-628.8,1294.4L3467,-139.5M-582.9,1327.2L3512.8,-106.7M-537,1360L3558.7,-74M-491.2,1392.7L3604.6,-41.2M-445.3,1425.5L3650.5,-8.4M-399.4,1458.3L3696.4,24.3M-353.5,1491L3742.3,57.1M-307.6,1523.8L3788.2,89.9M-261.7,1556.6L3834,122.6M-215.8,1589.3L3879.9,155.4M-169.9,1622.1L3925.8,188.1M-124.1,1654.9L3971.7,220.9M-78.2,1687.6L4017.6,253.7M-32.3,1720.4L4063.5,286.4M13.6,1753.2L4109.4,319.2M59.5,1785.9L4155.2,352" stroke="#e2ddd3" stroke-width="2" fill="none"/><g id="m2" class="kobj" data-ox="490" data-oy="470" data-state="attacker" data-k="0.8" ><g id="m2-mv" data-k="0.8"><g transform="translate(490 470) scale(0.8) translate(-490 -470)"><g id="m2-glow" opacity="0"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,490,470)"><circle id="m2-gl" class="" cx="0" cy="0" r="60" fill="url(#gglow)"/></g></g>
+  <g id="m2-solid" opacity="1"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,490,470)"><ellipse cx="0" cy="0" rx="40" ry="22" fill="url(#shadowG)"/></g><polygon points="452.7,473.9 469.9,486.2 469.9,475.8 452.7,463.5" fill="#34363b" stroke="#141518" stroke-width="1.4" stroke-linejoin="round"/><polygon points="469.9,486.2 527.3,466.1 527.3,455.7 469.9,475.8" fill="#25272b" stroke="#141518" stroke-width="1.4" stroke-linejoin="round"/><polygon points="452.7,463.5 510.1,443.4 527.3,455.7 469.9,475.8" fill="#4a4d53" stroke="#141518" stroke-width="1.4" stroke-linejoin="round"/><polygon points="481.8,456.4 485.2,458.8 485.2,417.3 481.8,414.8" fill="#34363b" stroke="#141518" stroke-width="1.2" stroke-linejoin="round"/><polygon points="485.2,458.8 490.2,457.1 490.2,415.5 485.2,417.3" fill="#25272b" stroke="#141518" stroke-width="1.2" stroke-linejoin="round"/><polygon points="481.8,414.8 486.7,413.1 490.2,415.5 485.2,417.3" fill="#4a4d53" stroke="#141518" stroke-width="1.2" stroke-linejoin="round"/><polygon points="474.4,420.8 477.9,423.3 477.9,418.1 474.4,415.7" fill="#34363b" stroke="#141518" stroke-width="1.2" stroke-linejoin="round"/><polygon points="477.9,423.3 497.5,416.4 497.5,411.2 477.9,418.1" fill="#25272b" stroke="#141518" stroke-width="1.2" stroke-linejoin="round"/><polygon points="474.4,415.7 494.1,408.8 497.5,411.2 477.9,418.1" fill="#4a4d53" stroke="#141518" stroke-width="1.2" stroke-linejoin="round"/><g transform="matrix(0.8192,-0.2868,0,0.866,479.9,473.7)"><rect x="0" y="0" width="46" height="9" rx="1.5" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="0.8"/><text x="23" y="7" font-family="Noto Sans SC, sans-serif" font-size="8" font-weight="900" fill="#1c1c1c" text-anchor="middle">AI 生成</text></g><g id="m2-mask" data-k="0.8"><g transform="matrix(0.8192,-0.2868,0,0.866,488.3,406.4)"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" transform="scale(1.1)" fill="#23262b" stroke="#141518" stroke-width="1.2"/><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" transform="scale(1.05)" fill="none" stroke="#2aa3c9" stroke-width="1.3" stroke-dasharray="7 3 2 3"/><circle cx="-31" cy="-20" r="1.8" fill="#2aa3c9"/><circle cx="31" cy="-20" r="1.8" fill="#2aa3c9"/><circle cx="-30" cy="6" r="1.8" fill="#2aa3c9"/><circle cx="30" cy="6" r="1.8" fill="#2aa3c9"/><circle cx="-18" cy="30" r="1.8" fill="#2aa3c9"/><circle cx="18" cy="30" r="1.8" fill="#2aa3c9"/><circle cx="-12" cy="-42" r="1.8" fill="#2aa3c9"/><circle cx="12" cy="-42" r="1.8" fill="#2aa3c9"/><circle cx="0" cy="38" r="1.8" fill="#2aa3c9"/><path d="M-31 -20L-33 -10" stroke="#2aa3c9" stroke-width="1.1"/><path d="M31 -20L33 -10" stroke="#2aa3c9" stroke-width="1.1"/><path d="M-18 30L-24 26" stroke="#2aa3c9" stroke-width="1.1"/><path d="M18 30L24 26" stroke="#2aa3c9" stroke-width="1.1"/><g id="m2-circ-hi" opacity="0"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" transform="scale(1.06)" fill="none" stroke="#7fdcf5" stroke-width="5" opacity="0.75"/><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" transform="scale(1.06)" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-dasharray="7 3 2 3"/></g></g><g transform="matrix(0.8192,-0.2868,0,0.866,488.9,406.8)"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" fill="#d9d4ca" stroke="#b8b0a1" stroke-width="0.8"/></g><g transform="matrix(0.8192,-0.2868,0,0.866,489.7,407.4)"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" fill="#d9d4ca" stroke="#b8b0a1" stroke-width="0.8"/></g><g transform="matrix(0.8192,-0.2868,0,0.866,490.6,408.1)"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" fill="#d9d4ca" stroke="#b8b0a1" stroke-width="0.8"/></g><g transform="matrix(0.8192,-0.2868,0,0.866,491.4,408.7)"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" fill="#d9d4ca" stroke="#b8b0a1" stroke-width="0.8"/></g><g transform="matrix(0.8192,-0.2868,0,0.866,492.3,409.3)"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" fill="#fbfaf6" stroke="#b8b0a1" stroke-width="1.4"/><path d="M14 -34C26 -32 28 -20 27 0C26 14 18 24 8 30C18 18 22 4 21 -12C20 -24 18 -30 14 -34Z" fill="#e9e5dc" opacity="0.9"/><ellipse cx="-12" cy="-9" rx="7.5" ry="4.2" fill="#2a2e33"/><ellipse cx="12" cy="-9" rx="7.5" ry="4.2" fill="#2a2e33"/><path d="M-19 -9Q-12 -15 -5 -9" fill="none" stroke="#d6d0c4" stroke-width="1.2"/><path d="M5 -9Q12 -15 19 -9" fill="none" stroke="#d6d0c4" stroke-width="1.2"/><path d="M0 -20C-1.6 -8 -2.4 6 -1 20" fill="none" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round"/><path d="M1.8 -18C1.2 -6 1.8 8 4 19" fill="none" stroke="#e2ddd2" stroke-width="1.4" stroke-linecap="round"/><ellipse cx="-17" cy="-28" rx="7" ry="2.6" fill="#ffffff" opacity="0.9" transform="rotate(-12 -17 -28)"/><g id="m2-red" opacity="1"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" fill="none" stroke="#e0453a" stroke-width="3.2"/></g></g></g></g>
+  <path id="m2-wire" d="" fill="rgba(224,69,58,0.05)" stroke="#e0453a" stroke-width="3" stroke-dasharray="10 7" stroke-linejoin="round" stroke-linecap="round" opacity="0"/>
+  <g id="m2-x" opacity="0"><circle cx="492.3" cy="411.6" r="29" fill="rgba(160,40,30,0.18)"/><circle cx="492.3" cy="407.6" r="25" fill="#e0453a" stroke="#ffffff" stroke-width="4"/><path d="M482.8 398.1L501.8 417.1M501.8 398.1L482.8 417.1" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/></g></g></g></g>
+<g id="ph" class="kobj" data-ox="760" data-oy="470" data-state="normal"><g id="ph-glow" opacity="0"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,760,470)"><circle id="ph-gl" class="" cx="0" cy="0" r="120" fill="url(#gglow)"/></g></g>
+  <g id="ph-solid" opacity="1"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,760,470)"><ellipse cx="0" cy="0" rx="80" ry="50" fill="url(#shadowG)"/></g><polygon points="696.3,471.6 729.5,495.3 729.5,486.7 696.3,452.5" fill="#34363b" stroke="#141518" stroke-width="1.6" stroke-linejoin="round"/><polygon points="729.5,495.3 818,464.3 818,455.7 729.5,486.7" fill="#25272b" stroke="#141518" stroke-width="1.6" stroke-linejoin="round"/><polygon points="696.3,452.5 784.7,421.5 818,455.7 729.5,486.7" fill="#4a4d53" stroke="#141518" stroke-width="1.6" stroke-linejoin="round"/><g transform="translate(-4.4,-5.1)"><g transform="matrix(0.8192,-0.2868,0.1581,0.9454,694.1,305.1)" ><rect x="0" y="0" width="86" height="172" rx="14" fill="#7d828a" stroke="#4b4f56" stroke-width="1.6"/></g></g><g transform="translate(-3.9,-4.4)"><g transform="matrix(0.8192,-0.2868,0.1581,0.9454,694.1,305.1)" ><rect x="0" y="0" width="86" height="172" rx="14" fill="#7d828a" stroke="#4b4f56" stroke-width="1.6"/></g></g><g transform="translate(-3.3,-3.8)"><g transform="matrix(0.8192,-0.2868,0.1581,0.9454,694.1,305.1)" ><rect x="0" y="0" width="86" height="172" rx="14" fill="#7d828a" stroke="#4b4f56" stroke-width="1.6"/></g></g><g transform="translate(-2.8,-3.2)"><g transform="matrix(0.8192,-0.2868,0.1581,0.9454,694.1,305.1)" ><rect x="0" y="0" width="86" height="172" rx="14" fill="#7d828a" stroke="#4b4f56" stroke-width="1.6"/></g></g><g transform="translate(-2.2,-2.5)"><g transform="matrix(0.8192,-0.2868,0.1581,0.9454,694.1,305.1)" ><rect x="0" y="0" width="86" height="172" rx="14" fill="#7d828a" stroke="#4b4f56" stroke-width="1.6"/></g></g><g transform="translate(-1.7,-1.9)"><g transform="matrix(0.8192,-0.2868,0.1581,0.9454,694.1,305.1)" ><rect x="0" y="0" width="86" height="172" rx="14" fill="#7d828a" stroke="#4b4f56" stroke-width="1.6"/></g></g><g transform="translate(-1.1,-1.3)"><g transform="matrix(0.8192,-0.2868,0.1581,0.9454,694.1,305.1)" ><rect x="0" y="0" width="86" height="172" rx="14" fill="#7d828a" stroke="#4b4f56" stroke-width="1.6"/></g></g><g transform="translate(-0.6,-0.6)"><g transform="matrix(0.8192,-0.2868,0.1581,0.9454,694.1,305.1)" ><rect x="0" y="0" width="86" height="172" rx="14" fill="#7d828a" stroke="#4b4f56" stroke-width="1.6"/></g></g><g transform="matrix(0.8192,-0.2868,0.1581,0.9454,694.1,305.1)" ><rect x="0" y="0" width="86" height="172" rx="14" fill="#26272a" stroke="#141518" stroke-width="1.6"/><defs><clipPath id="ph-sc"><rect x="0" y="0" width="76" height="150" rx="9"/></clipPath></defs>
+    <g transform="translate(5,11)" clip-path="url(#ph-sc)"><rect x="0" y="0" width="76" height="150" fill="#ffffff"/>
+    <g id="ph-scr"><rect x="0" y="0" width="76" height="26" fill="#ece7dd"/><rect x="8" y="40" width="60" height="7" rx="3.5" fill="#ddd6c9"/><rect x="8" y="56" width="44" height="7" rx="3.5" fill="#ddd6c9"/><rect x="8" y="110" width="60" height="26" rx="7" fill="#1d93ba"/></g>
+    <g id="ph-scr2" opacity="0"></g></g><rect x="29" y="4" width="28" height="5" rx="2.5" fill="#141518"/></g><polygon points="729.4,491.7 736.2,496.6 736.2,474.1 729.4,469.2" fill="#34363b" stroke="#141518" stroke-width="1.4" stroke-linejoin="round"/><polygon points="736.2,496.6 818.2,467.9 818.2,445.4 736.2,474.1" fill="#25272b" stroke="#141518" stroke-width="1.4" stroke-linejoin="round"/><polygon points="729.4,469.2 811.3,440.5 818.2,445.4 736.2,474.1" fill="#4a4d53" stroke="#141518" stroke-width="1.4" stroke-linejoin="round"/></g>
+  <path id="ph-wire" d="M690.7,458L761.1,433.3L795.2,457.7L724.8,482.3ZM690.7,302.7L761.1,278L795.2,302.4L724.8,327ZM690.7,458L690.7,302.7M761.1,433.3L761.1,278M795.2,457.7L795.2,302.4M724.8,482.3L724.8,327" fill="rgba(224,69,58,0.05)" stroke="#e0453a" stroke-width="3" stroke-dasharray="10 7" stroke-linejoin="round" stroke-linecap="round" opacity="0"/>
+  <g id="ph-x" opacity="0"><circle cx="748.5" cy="387.9" r="30" fill="rgba(160,40,30,0.18)"/><circle cx="748.5" cy="383.9" r="26" fill="#e0453a" stroke="#ffffff" stroke-width="4"/><path d="M738.6 374L758.4 393.7M758.4 374L738.6 393.7" stroke="#ffffff" stroke-width="5.2" stroke-linecap="round"/></g></g>
+<g id="m1" class="kobj" data-ox="360" data-oy="520" data-state="normal" data-k="1" ><g id="m1-mv" data-k="1"><g id="m1-glow" opacity="0"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,360,520)"><circle id="m1-gl" class="" cx="0" cy="0" r="60" fill="url(#gglow)"/></g></g>
+  <g id="m1-solid" opacity="1"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,360,520)"><ellipse cx="0" cy="0" rx="40" ry="22" fill="url(#shadowG)"/></g><polygon points="322.7,523.9 339.9,536.2 339.9,525.8 322.7,513.5" fill="#34363b" stroke="#141518" stroke-width="1.4" stroke-linejoin="round"/><polygon points="339.9,536.2 397.3,516.1 397.3,505.7 339.9,525.8" fill="#25272b" stroke="#141518" stroke-width="1.4" stroke-linejoin="round"/><polygon points="322.7,513.5 380.1,493.4 397.3,505.7 339.9,525.8" fill="#4a4d53" stroke="#141518" stroke-width="1.4" stroke-linejoin="round"/><polygon points="351.8,506.4 355.2,508.8 355.2,467.3 351.8,464.8" fill="#34363b" stroke="#141518" stroke-width="1.2" stroke-linejoin="round"/><polygon points="355.2,508.8 360.2,507.1 360.2,465.5 355.2,467.3" fill="#25272b" stroke="#141518" stroke-width="1.2" stroke-linejoin="round"/><polygon points="351.8,464.8 356.7,463.1 360.2,465.5 355.2,467.3" fill="#4a4d53" stroke="#141518" stroke-width="1.2" stroke-linejoin="round"/><polygon points="344.4,470.8 347.9,473.3 347.9,468.1 344.4,465.7" fill="#34363b" stroke="#141518" stroke-width="1.2" stroke-linejoin="round"/><polygon points="347.9,473.3 367.5,466.4 367.5,461.2 347.9,468.1" fill="#25272b" stroke="#141518" stroke-width="1.2" stroke-linejoin="round"/><polygon points="344.4,465.7 364.1,458.8 367.5,461.2 347.9,468.1" fill="#4a4d53" stroke="#141518" stroke-width="1.2" stroke-linejoin="round"/><g transform="matrix(0.8192,-0.2868,0,0.866,349.9,523.7)"><rect x="0" y="0" width="46" height="9" rx="1.5" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="0.8"/><text x="23" y="7" font-family="Noto Sans SC, sans-serif" font-size="8" font-weight="900" fill="#1c1c1c" text-anchor="middle">换脸</text></g><g id="m1-mask" data-k="1"><g transform="matrix(0.8192,-0.2868,0,0.866,358.3,456.4)"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" transform="scale(1.1)" fill="#23262b" stroke="#141518" stroke-width="1.2"/><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" transform="scale(1.05)" fill="none" stroke="#2aa3c9" stroke-width="1.3" stroke-dasharray="7 3 2 3"/><circle cx="-31" cy="-20" r="1.8" fill="#2aa3c9"/><circle cx="31" cy="-20" r="1.8" fill="#2aa3c9"/><circle cx="-30" cy="6" r="1.8" fill="#2aa3c9"/><circle cx="30" cy="6" r="1.8" fill="#2aa3c9"/><circle cx="-18" cy="30" r="1.8" fill="#2aa3c9"/><circle cx="18" cy="30" r="1.8" fill="#2aa3c9"/><circle cx="-12" cy="-42" r="1.8" fill="#2aa3c9"/><circle cx="12" cy="-42" r="1.8" fill="#2aa3c9"/><circle cx="0" cy="38" r="1.8" fill="#2aa3c9"/><path d="M-31 -20L-33 -10" stroke="#2aa3c9" stroke-width="1.1"/><path d="M31 -20L33 -10" stroke="#2aa3c9" stroke-width="1.1"/><path d="M-18 30L-24 26" stroke="#2aa3c9" stroke-width="1.1"/><path d="M18 30L24 26" stroke="#2aa3c9" stroke-width="1.1"/><g id="m1-circ-hi" opacity="0"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" transform="scale(1.06)" fill="none" stroke="#7fdcf5" stroke-width="5" opacity="0.75"/><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" transform="scale(1.06)" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-dasharray="7 3 2 3"/></g></g><g transform="matrix(0.8192,-0.2868,0,0.866,358.9,456.8)"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" fill="#d9d4ca" stroke="#b8b0a1" stroke-width="0.8"/></g><g transform="matrix(0.8192,-0.2868,0,0.866,359.7,457.4)"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" fill="#d9d4ca" stroke="#b8b0a1" stroke-width="0.8"/></g><g transform="matrix(0.8192,-0.2868,0,0.866,360.6,458.1)"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" fill="#d9d4ca" stroke="#b8b0a1" stroke-width="0.8"/></g><g transform="matrix(0.8192,-0.2868,0,0.866,361.4,458.7)"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" fill="#d9d4ca" stroke="#b8b0a1" stroke-width="0.8"/></g><g transform="matrix(0.8192,-0.2868,0,0.866,362.3,459.3)"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" fill="#fbfaf6" stroke="#b8b0a1" stroke-width="1.4"/><path d="M14 -34C26 -32 28 -20 27 0C26 14 18 24 8 30C18 18 22 4 21 -12C20 -24 18 -30 14 -34Z" fill="#e9e5dc" opacity="0.9"/><ellipse cx="-12" cy="-9" rx="7.5" ry="4.2" fill="#2a2e33"/><ellipse cx="12" cy="-9" rx="7.5" ry="4.2" fill="#2a2e33"/><path d="M-19 -9Q-12 -15 -5 -9" fill="none" stroke="#d6d0c4" stroke-width="1.2"/><path d="M5 -9Q12 -15 19 -9" fill="none" stroke="#d6d0c4" stroke-width="1.2"/><path d="M0 -20C-1.6 -8 -2.4 6 -1 20" fill="none" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round"/><path d="M1.8 -18C1.2 -6 1.8 8 4 19" fill="none" stroke="#e2ddd2" stroke-width="1.4" stroke-linecap="round"/><ellipse cx="-17" cy="-28" rx="7" ry="2.6" fill="#ffffff" opacity="0.9" transform="rotate(-12 -17 -28)"/><g id="m1-red" opacity="0"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" fill="none" stroke="#e0453a" stroke-width="3.2"/></g></g></g></g>
+  <path id="m1-wire" d="" fill="rgba(224,69,58,0.05)" stroke="#e0453a" stroke-width="3" stroke-dasharray="10 7" stroke-linejoin="round" stroke-linecap="round" opacity="0"/>
+  <g id="m1-x" opacity="0"><circle cx="362.3" cy="461.6" r="24" fill="rgba(160,40,30,0.18)"/><circle cx="362.3" cy="457.6" r="20" fill="#e0453a" stroke="#ffffff" stroke-width="4"/><path d="M354.7 450L369.9 465.2M369.9 450L354.7 465.2" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/></g></g></g>
+<g id="m3" class="kobj" data-ox="600" data-oy="560" data-state="normal" data-k="0.8" ><g id="m3-mv" data-k="0.8"><g transform="translate(600 560) scale(0.8) translate(-600 -560)"><g id="m3-glow" opacity="0"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,600,560)"><circle id="m3-gl" class="" cx="0" cy="0" r="60" fill="url(#gglow)"/></g></g>
+  <g id="m3-solid" opacity="1"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,600,560)"><ellipse cx="0" cy="0" rx="40" ry="22" fill="url(#shadowG)"/></g><polygon points="562.7,563.9 579.9,576.2 579.9,565.8 562.7,553.5" fill="#34363b" stroke="#141518" stroke-width="1.4" stroke-linejoin="round"/><polygon points="579.9,576.2 637.3,556.1 637.3,545.7 579.9,565.8" fill="#25272b" stroke="#141518" stroke-width="1.4" stroke-linejoin="round"/><polygon points="562.7,553.5 620.1,533.4 637.3,545.7 579.9,565.8" fill="#4a4d53" stroke="#141518" stroke-width="1.4" stroke-linejoin="round"/><polygon points="591.8,546.4 595.2,548.8 595.2,507.3 591.8,504.8" fill="#34363b" stroke="#141518" stroke-width="1.2" stroke-linejoin="round"/><polygon points="595.2,548.8 600.2,547.1 600.2,505.5 595.2,507.3" fill="#25272b" stroke="#141518" stroke-width="1.2" stroke-linejoin="round"/><polygon points="591.8,504.8 596.7,503.1 600.2,505.5 595.2,507.3" fill="#4a4d53" stroke="#141518" stroke-width="1.2" stroke-linejoin="round"/><polygon points="584.4,510.8 587.9,513.3 587.9,508.1 584.4,505.7" fill="#34363b" stroke="#141518" stroke-width="1.2" stroke-linejoin="round"/><polygon points="587.9,513.3 607.5,506.4 607.5,501.2 587.9,508.1" fill="#25272b" stroke="#141518" stroke-width="1.2" stroke-linejoin="round"/><polygon points="584.4,505.7 604.1,498.8 607.5,501.2 587.9,508.1" fill="#4a4d53" stroke="#141518" stroke-width="1.2" stroke-linejoin="round"/><g transform="matrix(0.8192,-0.2868,0,0.866,589.9,563.7)"><rect x="0" y="0" width="46" height="9" rx="1.5" fill="#f6f3ec" stroke="#b8b0a1" stroke-width="0.8"/><text x="23" y="7" font-family="Noto Sans SC, sans-serif" font-size="8" font-weight="900" fill="#1c1c1c" text-anchor="middle">换脸</text></g><g id="m3-mask" data-k="0.8"><g transform="matrix(0.8192,-0.2868,0,0.866,598.3,496.4)"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" transform="scale(1.1)" fill="#23262b" stroke="#141518" stroke-width="1.2"/><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" transform="scale(1.05)" fill="none" stroke="#2aa3c9" stroke-width="1.3" stroke-dasharray="7 3 2 3"/><circle cx="-31" cy="-20" r="1.8" fill="#2aa3c9"/><circle cx="31" cy="-20" r="1.8" fill="#2aa3c9"/><circle cx="-30" cy="6" r="1.8" fill="#2aa3c9"/><circle cx="30" cy="6" r="1.8" fill="#2aa3c9"/><circle cx="-18" cy="30" r="1.8" fill="#2aa3c9"/><circle cx="18" cy="30" r="1.8" fill="#2aa3c9"/><circle cx="-12" cy="-42" r="1.8" fill="#2aa3c9"/><circle cx="12" cy="-42" r="1.8" fill="#2aa3c9"/><circle cx="0" cy="38" r="1.8" fill="#2aa3c9"/><path d="M-31 -20L-33 -10" stroke="#2aa3c9" stroke-width="1.1"/><path d="M31 -20L33 -10" stroke="#2aa3c9" stroke-width="1.1"/><path d="M-18 30L-24 26" stroke="#2aa3c9" stroke-width="1.1"/><path d="M18 30L24 26" stroke="#2aa3c9" stroke-width="1.1"/><g id="m3-circ-hi" opacity="0"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" transform="scale(1.06)" fill="none" stroke="#7fdcf5" stroke-width="5" opacity="0.75"/><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" transform="scale(1.06)" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-dasharray="7 3 2 3"/></g></g><g transform="matrix(0.8192,-0.2868,0,0.866,598.9,496.8)"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" fill="#d9d4ca" stroke="#b8b0a1" stroke-width="0.8"/></g><g transform="matrix(0.8192,-0.2868,0,0.866,599.7,497.4)"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" fill="#d9d4ca" stroke="#b8b0a1" stroke-width="0.8"/></g><g transform="matrix(0.8192,-0.2868,0,0.866,600.6,498.1)"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" fill="#d9d4ca" stroke="#b8b0a1" stroke-width="0.8"/></g><g transform="matrix(0.8192,-0.2868,0,0.866,601.4,498.7)"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" fill="#d9d4ca" stroke="#b8b0a1" stroke-width="0.8"/></g><g transform="matrix(0.8192,-0.2868,0,0.866,602.3,499.3)"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" fill="#fbfaf6" stroke="#b8b0a1" stroke-width="1.4"/><path d="M14 -34C26 -32 28 -20 27 0C26 14 18 24 8 30C18 18 22 4 21 -12C20 -24 18 -30 14 -34Z" fill="#e9e5dc" opacity="0.9"/><ellipse cx="-12" cy="-9" rx="7.5" ry="4.2" fill="#2a2e33"/><ellipse cx="12" cy="-9" rx="7.5" ry="4.2" fill="#2a2e33"/><path d="M-19 -9Q-12 -15 -5 -9" fill="none" stroke="#d6d0c4" stroke-width="1.2"/><path d="M5 -9Q12 -15 19 -9" fill="none" stroke="#d6d0c4" stroke-width="1.2"/><path d="M0 -20C-1.6 -8 -2.4 6 -1 20" fill="none" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round"/><path d="M1.8 -18C1.2 -6 1.8 8 4 19" fill="none" stroke="#e2ddd2" stroke-width="1.4" stroke-linecap="round"/><ellipse cx="-17" cy="-28" rx="7" ry="2.6" fill="#ffffff" opacity="0.9" transform="rotate(-12 -17 -28)"/><g id="m3-red" opacity="0"><path d="M-30 -26C-30 -40 -16 -38 0 -38C16 -38 30 -40 30 -26L29 2C28 18 14 30 0 34C-14 30 -28 18 -29 2Z" fill="none" stroke="#e0453a" stroke-width="3.2"/></g></g></g></g>
+  <path id="m3-wire" d="" fill="rgba(224,69,58,0.05)" stroke="#e0453a" stroke-width="3" stroke-dasharray="10 7" stroke-linejoin="round" stroke-linecap="round" opacity="0"/>
+  <g id="m3-x" opacity="0"><circle cx="602.3" cy="501.6" r="29" fill="rgba(160,40,30,0.18)"/><circle cx="602.3" cy="497.6" r="25" fill="#e0453a" stroke="#ffffff" stroke-width="4"/><path d="M592.8 488.1L611.8 507.1M611.8 488.1L592.8 507.1" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/></g></g></g></g>
+<g id="ps" class="kobj" data-ox="420" data-oy="660" data-state="normal"><g id="ps-glow" opacity="0"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,420,660)"><circle id="ps-gl" class="" cx="0" cy="0" r="49.5" fill="url(#gglow)"/></g></g>
+  <g id="ps-solid" opacity="1"><g transform="matrix(0.8192,-0.2868,0.5736,0.4096,420,660)"><ellipse cx="0" cy="0" rx="28.8" ry="21.6" fill="url(#shadowG)"/></g><polygon points="429.9,660.2 429.4,661 429.4,635.3 429.9,634.5" fill="#8f2c25" stroke="#8f2c25" stroke-width="0.8" stroke-linejoin="round"/><polygon points="429.4,661 428.5,661.8 428.5,636 429.4,635.3" fill="#912d25" stroke="#912d25" stroke-width="0.8" stroke-linejoin="round"/><polygon points="428.5,661.8 427,662.2 427,636.5 428.5,636" fill="#9b3028" stroke="#9b3028" stroke-width="0.8" stroke-linejoin="round"/><polygon points="427,662.2 425.4,662.5 425.4,636.7 427,636.5" fill="#a1322a" stroke="#a1322a" stroke-width="0.8" stroke-linejoin="round"/><polygon points="425.4,662.5 423.7,662.4 423.7,636.7 425.4,636.7" fill="#a8342c" stroke="#a8342c" stroke-width="0.8" stroke-linejoin="round"/><polygon points="423.7,662.4 422.1,662 422.1,636.3 423.7,636.7" fill="#ae362d" stroke="#ae362d" stroke-width="0.8" stroke-linejoin="round"/><polygon points="422.1,662 420.9,661.4 420.9,635.7 422.1,636.3" fill="#b5382f" stroke="#b5382f" stroke-width="0.8" stroke-linejoin="round"/><polygon points="420.9,661.4 420.2,660.6 420.2,634.9 420.9,635.7" fill="#ba3e36" stroke="#ba3e36" stroke-width="0.8" stroke-linejoin="round"/><polygon points="420.2,660.6 420,659.8 420,634.1 420.2,634.9" fill="#bd4840" stroke="#bd4840" stroke-width="0.8" stroke-linejoin="round"/><path d="M429.9,660.2L429.4,661M429.9,660.2L429.9,634.5M429.4,661L428.5,661.8M428.5,661.8L427,662.2M427,662.2L425.4,662.5M425.4,662.5L423.7,662.4M423.7,662.4L422.1,662M422.1,662L420.9,661.4M420.9,661.4L420.2,660.6M420.2,660.6L420,659.8M420,659.8L420,634.1" fill="none" stroke="#70231d" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/><polygon points="429,632.9 429.7,633.6 429.9,634.5 429.4,635.3 428.5,636 427,636.5 425.4,636.7 423.7,636.7 422.1,636.3 420.9,635.7 420.2,634.9 420,634.1 420.5,633.2 421.4,632.5 422.9,632 424.5,631.8 426.2,631.9 427.8,632.3" fill="#cc706a" stroke="#70231d" stroke-width="1.4" stroke-linejoin="round"/><polygon points="420,660.2 419.5,661 419.5,635.3 420,634.5" fill="#8f2c25" stroke="#8f2c25" stroke-width="0.8" stroke-linejoin="round"/><polygon points="419.5,661 418.6,661.8 418.6,636 419.5,635.3" fill="#912d25" stroke="#912d25" stroke-width="0.8" stroke-linejoin="round"/><polygon points="418.6,661.8 417.1,662.2 417.1,636.5 418.6,636" fill="#9b3028" stroke="#9b3028" stroke-width="0.8" stroke-linejoin="round"/><polygon points="417.1,662.2 415.5,662.5 415.5,636.7 417.1,636.5" fill="#a1322a" stroke="#a1322a" stroke-width="0.8" stroke-linejoin="round"/><polygon points="415.5,662.5 413.8,662.4 413.8,636.7 415.5,636.7" fill="#a8342c" stroke="#a8342c" stroke-width="0.8" stroke-linejoin="round"/><polygon points="413.8,662.4 412.2,662 412.2,636.3 413.8,636.7" fill="#ae362d" stroke="#ae362d" stroke-width="0.8" stroke-linejoin="round"/><polygon points="412.2,662 411,661.4 411,635.7 412.2,636.3" fill="#b5382f" stroke="#b5382f" stroke-width="0.8" stroke-linejoin="round"/><polygon points="411,661.4 410.3,660.6 410.3,634.9 411,635.7" fill="#ba3f36" stroke="#ba3f36" stroke-width="0.8" stroke-linejoin="round"/><polygon points="410.3,660.6 410.1,659.8 410.1,634.1 410.3,634.9" fill="#bd4840" stroke="#bd4840" stroke-width="0.8" stroke-linejoin="round"/><path d="M420,660.2L419.5,661M420,660.2L420,634.5M419.5,661L418.6,661.8M418.6,661.8L417.1,662.2M417.1,662.2L415.5,662.5M415.5,662.5L413.8,662.4M413.8,662.4L412.2,662M412.2,662L411,661.4M411,661.4L410.3,660.6M410.3,660.6L410.1,659.8M410.1,659.8L410.1,634.1" fill="none" stroke="#70231d" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/><polygon points="419.1,632.9 419.8,633.6 420,634.5 419.5,635.3 418.6,636 417.1,636.5 415.5,636.7 413.8,636.7 412.2,636.3 411,635.7 410.3,634.9 410.1,634.1 410.6,633.2 411.5,632.5 413,632 414.6,631.8 416.3,631.9 417.9,632.3" fill="#cc706a" stroke="#70231d" stroke-width="1.4" stroke-linejoin="round"/><polygon points="438.9,631.9 438.6,632.7 437.8,609.4 438.2,608.6" fill="#ae362d" stroke="#ae362d" stroke-width="0.8" stroke-linejoin="round"/><polygon points="438.6,632.7 437.7,633.4 436.8,610.1 437.8,609.4" fill="#af362e" stroke="#af362e" stroke-width="0.8" stroke-linejoin="round"/><polygon points="437.7,633.4 436.4,633.8 435.4,610.6 436.8,610.1" fill="#bc3a31" stroke="#bc3a31" stroke-width="0.8" stroke-linejoin="round"/><polygon points="436.4,633.8 434.8,634 433.7,610.8 435.4,610.6" fill="#c63d33" stroke="#c63d33" stroke-width="0.8" stroke-linejoin="round"/><polygon points="434.8,634 433.3,633.8 431.9,610.6 433.7,610.8" fill="#cf4036" stroke="#cf4036" stroke-width="0.8" stroke-linejoin="round"/><polygon points="433.3,633.8 432,633.4 430.5,610.1 431.9,610.6" fill="#d74238" stroke="#d74238" stroke-width="0.8" stroke-linejoin="round"/><polygon points="432,633.4 431.1,632.7 429.5,609.4 430.5,610.1" fill="#e0463b" stroke="#e0463b" stroke-width="0.8" stroke-linejoin="round"/><polygon points="431.1,632.7 430.8,631.9 429.2,608.6 429.5,609.4" fill="#e25147" stroke="#e25147" stroke-width="0.8" stroke-linejoin="round"/><path d="M438.9,631.9L438.6,632.7M438.9,631.9L438.2,608.6M438.6,632.7L437.7,633.4M437.7,633.4L436.4,633.8M436.4,633.8L434.8,634M434.8,634L433.3,633.8M433.3,633.8L432,633.4M432,633.4L431.1,632.7M431.1,632.7L430.8,631.9M430.8,631.9L429.2,608.6" fill="none" stroke="#8f2620" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/><polygon points="409.2,631.9 408.9,632.7 410.5,609.4 410.8,608.6" fill="#ae362d" stroke="#ae362d" stroke-width="0.8" stroke-linejoin="round"/><polygon points="408.9,632.7 408,633.4 409.5,610.1 410.5,609.4" fill="#af362e" stroke="#af362e" stroke-width="0.8" stroke-linejoin="round"/><polygon points="408,633.4 406.7,633.8 408.1,610.6 409.5,610.1" fill="#bd3a31" stroke="#bd3a31" stroke-width="0.8" stroke-linejoin="round"/><polygon points="406.7,633.8 405.1,634 406.3,610.8 408.1,610.6" fill="#c53d33" stroke="#c53d33" stroke-width="0.8" stroke-linejoin="round"/><polygon points="405.1,634 403.6,633.8 404.6,610.6 406.3,610.8" fill="#cf4036" stroke="#cf4036" stroke-width="0.8" stroke-linejoin="round"/><polygon points="403.6,633.8 402.3,633.4 403.2,610.1 404.6,610.6" fill="#d74238" stroke="#d74238" stroke-width="0.8" stroke-linejoin="round"/><polygon points="402.3,633.4 401.4,632.7 402.2,609.4 403.2,610.1" fill="#e0463b" stroke="#e0463b" stroke-width="0.8" stroke-linejoin="round"/><polygon points="401.4,632.7 401.1,631.9 401.8,608.6 402.2,609.4" fill="#e25147" stroke="#e25147" stroke-width="0.8" stroke-linejoin="round"/><path d="M409.2,631.9L408.9,632.7M409.2,631.9L410.8,608.6M408.9,632.7L408,633.4M408,633.4L406.7,633.8M406.7,633.8L405.1,634M405.1,634L403.6,633.8M403.6,633.8L402.3,633.4M402.3,633.4L401.4,632.7M401.4,632.7L401.1,631.9M401.1,631.9L401.8,608.6" fill="none" stroke="#8f2620" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/><polygon points="431.7,636.6 431.5,637.4 434.6,611 434.9,610.1" fill="#ae362d" stroke="#ae362d" stroke-width="0.8" stroke-linejoin="round"/><polygon points="431.5,637.4 430.8,638.2 433.7,611.9 434.6,611" fill="#ae362d" stroke="#ae362d" stroke-width="0.8" stroke-linejoin="round"/><polygon points="430.8,638.2 429.7,638.9 432.3,612.7 433.7,611.9" fill="#b1372e" stroke="#b1372e" stroke-width="0.8" stroke-linejoin="round"/><polygon points="429.7,638.9 428.3,639.5 430.5,613.5 432.3,612.7" fill="#b93930" stroke="#b93930" stroke-width="0.8" stroke-linejoin="round"/><polygon points="428.3,639.5 426.5,640 428.3,614 430.5,613.5" fill="#be3b32" stroke="#be3b32" stroke-width="0.8" stroke-linejoin="round"/><polygon points="426.5,640 424.5,640.4 425.7,614.5 428.3,614" fill="#c23c32" stroke="#c23c32" stroke-width="0.8" stroke-linejoin="round"/><polygon points="424.5,640.4 422.3,640.6 422.9,614.8 425.7,614.5" fill="#c53d33" stroke="#c53d33" stroke-width="0.8" stroke-linejoin="round"/><polygon points="422.3,640.6 420,640.7 420,614.8 422.9,614.8" fill="#c83e34" stroke="#c83e34" stroke-width="0.8" stroke-linejoin="round"/><polygon points="420,640.7 417.7,640.6 417.1,614.8 420,614.8" fill="#cc3f35" stroke="#cc3f35" stroke-width="0.8" stroke-linejoin="round"/><polygon points="417.7,640.6 415.5,640.4 414.3,614.5 417.1,614.8" fill="#cf4036" stroke="#cf4036" stroke-width="0.8" stroke-linejoin="round"/><polygon points="415.5,640.4 413.5,640 411.7,614 414.3,614.5" fill="#d24137" stroke="#d24137" stroke-width="0.8" stroke-linejoin="round"/><polygon points="413.5,640 411.7,639.5 409.5,613.5 411.7,614" fill="#d64237" stroke="#d64237" stroke-width="0.8" stroke-linejoin="round"/><polygon points="411.7,639.5 410.3,638.9 407.7,612.7 409.5,613.5" fill="#da4339" stroke="#da4339" stroke-width="0.8" stroke-linejoin="round"/><polygon points="410.3,638.9 409.2,638.2 406.3,611.9 407.7,612.7" fill="#df453a" stroke="#df453a" stroke-width="0.8" stroke-linejoin="round"/><polygon points="409.2,638.2 408.5,637.4 405.4,611 406.3,611.9" fill="#e14b40" stroke="#e14b40" stroke-width="0.8" stroke-linejoin="round"/><polygon points="408.5,637.4 408.3,636.6 405.2,610.1 405.4,611" fill="#e25349" stroke="#e25349" stroke-width="0.8" stroke-linejoin="round"/><path d="M431.7,636.6L431.5,637.4M431.7,636.6L434.9,610.1M431.5,637.4L430.8,638.2M430.8,638.2L429.7,638.9M429.7,638.9L428.3,639.5M428.3,639.5L426.5,640M426.5,640L424.5,640.4M424.5,640.4L422.3,640.6M422.3,640.6L420,640.7M420,640.7L417.7,640.6M417.7,640.6L415.5,640.4M415.5,640.4L413.5,640M413.5,640L411.7,639.5M411.7,639.5L410.3,638.9M410.3,638.9L409.2,638.2M409.2,638.2L408.5,637.4M408.5,637.4L408.3,636.6M408.3,636.6L405.2,610.1" fill="none" stroke="#8f2620" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><polygon points="434.9,610.1 434.6,611 433.7,611.9 432.3,612.7 430.5,613.5 428.3,614 425.7,614.5 422.9,614.8 420,614.8 417.1,614.8 414.3,614.5 411.7,614 409.5,613.5 407.7,612.7 406.3,611.9 405.4,611 405.2,610.1 405.4,609.2 406.3,608.3 407.7,607.5 409.5,606.8 411.7,606.2 414.3,605.8 417.1,605.5 420,605.4 422.9,605.5 425.7,605.8 428.3,606.2 430.5,606.8 432.3,607.5 433.7,608.3 434.6,609.2" fill="#e97971" stroke="#8f2620" stroke-width="1.8" stroke-linejoin="round"/><polygon points="434.9,610.1 434.6,611 426.6,604.4 426.7,603.9" fill="#ae362d" stroke="#ae362d" stroke-width="0.8" stroke-linejoin="round"/><polygon points="434.6,611 433.7,611.9 426.2,604.8 426.6,604.4" fill="#ae362d" stroke="#ae362d" stroke-width="0.8" stroke-linejoin="round"/><polygon points="433.7,611.9 432.3,612.7 425.6,605.3 426.2,604.8" fill="#b3372f" stroke="#b3372f" stroke-width="0.8" stroke-linejoin="round"/><polygon points="432.3,612.7 430.5,613.5 424.8,605.6 425.6,605.3" fill="#ba3931" stroke="#ba3931" stroke-width="0.8" stroke-linejoin="round"/><polygon points="430.5,613.5 428.3,614 423.8,605.9 424.8,605.6" fill="#bf3b32" stroke="#bf3b32" stroke-width="0.8" stroke-linejoin="round"/><polygon points="428.3,614 425.7,614.5 422.6,606.2 423.8,605.9" fill="#c23c33" stroke="#c23c33" stroke-width="0.8" stroke-linejoin="round"/><polygon points="425.7,614.5 422.9,614.8 421.3,606.3 422.6,606.2" fill="#c63d33" stroke="#c63d33" stroke-width="0.8" stroke-linejoin="round"/><polygon points="422.9,614.8 420,614.8 420,606.4 421.3,606.3" fill="#c93e34" stroke="#c93e34" stroke-width="0.8" stroke-linejoin="round"/><polygon points="420,614.8 417.1,614.8 418.7,606.3 420,606.4" fill="#cb3f35" stroke="#cb3f35" stroke-width="0.8" stroke-linejoin="round"/><polygon points="417.1,614.8 414.3,614.5 417.4,606.2 418.7,606.3" fill="#ce4036" stroke="#ce4036" stroke-width="0.8" stroke-linejoin="round"/><polygon points="414.3,614.5 411.7,614 416.2,605.9 417.4,606.2" fill="#d24136" stroke="#d24136" stroke-width="0.8" stroke-linejoin="round"/><polygon points="411.7,614 409.5,613.5 415.2,605.6 416.2,605.9" fill="#d54237" stroke="#d54237" stroke-width="0.8" stroke-linejoin="round"/><polygon points="409.5,613.5 407.7,612.7 414.4,605.3 415.2,605.6" fill="#d94338" stroke="#d94338" stroke-width="0.8" stroke-linejoin="round"/><polygon points="407.7,612.7 406.3,611.9 413.8,604.8 414.4,605.3" fill="#de4439" stroke="#de4439" stroke-width="0.8" stroke-linejoin="round"/><polygon points="406.3,611.9 405.4,611 413.4,604.4 413.8,604.8" fill="#e14a3f" stroke="#e14a3f" stroke-width="0.8" stroke-linejoin="round"/><polygon points="405.4,611 405.2,610.1 413.2,603.9 413.4,604.4" fill="#e25348" stroke="#e25348" stroke-width="0.8" stroke-linejoin="round"/><path d="M434.9,610.1L434.6,611M434.9,610.1L426.7,603.9M434.6,611L433.7,611.9M433.7,611.9L432.3,612.7M432.3,612.7L430.5,613.5M430.5,613.5L428.3,614M428.3,614L425.7,614.5M425.7,614.5L422.9,614.8M422.9,614.8L420,614.8M420,614.8L417.1,614.8M417.1,614.8L414.3,614.5M414.3,614.5L411.7,614M411.7,614L409.5,613.5M409.5,613.5L407.7,612.7M407.7,612.7L406.3,611.9M406.3,611.9L405.4,611M405.4,611L405.2,610.1M405.2,610.1L413.2,603.9" fill="none" stroke="#8f2620" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><polygon points="426.7,603.9 426.6,604.4 426.2,604.8 425.6,605.3 424.8,605.6 423.8,605.9 422.6,606.2 421.3,606.3 420,606.4 418.7,606.3 417.4,606.2 416.2,605.9 415.2,605.6 414.4,605.3 413.8,604.8 413.4,604.4 413.2,603.9 413.4,603.4 413.8,602.9 414.4,602.5 415.2,602.1 416.2,601.8 417.4,601.6 418.7,601.5 420,601.4 421.3,601.5 422.6,601.6 423.8,601.8 424.8,602.1 425.6,602.5 426.2,602.9 426.6,603.4" fill="#e97971" stroke="#8f2620" stroke-width="1.8" stroke-linejoin="round"/><path d="M404.7 605.4C402 587.4 411 573.9 420.9 573.9C432.6 574.8 438 588.3 435.7 605.4Q420 609 404.7 605.4Z" fill="#c23a30" stroke="#8f2620" stroke-width="2.4" stroke-linejoin="round"/><ellipse cx="422.7" cy="594.6" rx="8.6" ry="10.4" fill="#3a1714"/><path d="M415.6 627.9H432.7L434.5 636.9H413.8Z" fill="#ce3f35" stroke="#8f2620" stroke-width="2"/><path d="M423.9 612.6v9.9M430.2 611.3v9.9" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round"/></g>
+  <path id="ps-wire" d="M432.5,655.6L434,656.9 434.9,658.3 435.3,659.8 435.1,661.3 434.3,662.8 432.9,664.1 431.1,665.3 428.8,666.3 426.2,667 423.3,667.5 420.3,667.6 417.3,667.5 414.5,667.1 411.8,666.5 409.4,665.5 407.5,664.4 406,663.1 405.1,661.7 404.7,660.2 404.9,658.7 405.7,657.2 407.1,655.9 408.9,654.7 411.2,653.7 413.8,653 416.7,652.5 419.7,652.4 422.7,652.5 425.5,652.9 428.2,653.5 430.6,654.5ZM432.5,599.5L434,600.8 434.9,602.2 435.3,603.7 435.1,605.2 434.3,606.7 432.9,608 431.1,609.2 428.8,610.1 426.2,610.9 423.3,611.4 420.3,611.5 417.3,611.4 414.5,611 411.8,610.3 409.4,609.4 407.5,608.3 406,607 405.1,605.5 404.7,604 404.9,602.6 405.7,601.1 407.1,599.8 408.9,598.6 411.2,597.6 413.8,596.9 416.7,596.4 419.7,596.2 422.7,596.3 425.5,596.8 428.2,597.4 430.6,598.4ZM435.3,660L435.3,603.9M404.7,660L404.7,603.9M406.2,602.7L422.4,597L433.8,605.1L417.6,610.8ZM406.2,582.4L422.4,576.7L433.8,584.8L417.6,590.5ZM406.2,602.7L406.2,582.4M422.4,597L422.4,576.7M433.8,605.1L433.8,584.8M417.6,610.8L417.6,590.5" fill="rgba(224,69,58,0.05)" stroke="#e0453a" stroke-width="3" stroke-dasharray="10 7" stroke-linejoin="round" stroke-linecap="round" opacity="0"/>
+  <g id="ps-x" opacity="0"><circle cx="420" cy="627" r="30" fill="rgba(160,40,30,0.18)"/><circle cx="420" cy="623" r="26" fill="#e0453a" stroke="#ffffff" stroke-width="4"/><path d="M410.1 613.1L429.9 632.9M429.9 613.1L410.1 632.9" stroke="#ffffff" stroke-width="5.2" stroke-linecap="round"/></g></g><circle cx="362.29430574540413" cy="457.55242420852943" r="2.2" fill="#e0453a"/><circle cx="368.60364654526563" cy="520.9474879094607" r="2.2" fill="#1f9d55"/><circle cx="362.29430574540413" cy="414.2511540193075" r="2.2" fill="#2aa3c9"/><circle cx="491.8" cy="420" r="2.2" fill="#e0453a"/><circle cx="496.9" cy="470.8" r="2.2" fill="#1f9d55"/><circle cx="491.8" cy="385.4" r="2.2" fill="#2aa3c9"/><circle cx="601.8" cy="510" r="2.2" fill="#e0453a"/><circle cx="606.9" cy="560.8" r="2.2" fill="#1f9d55"/><circle cx="601.8" cy="475.4" r="2.2" fill="#2aa3c9"/></svg>
+        <div class="k-layer" id="labels"><div class="pin " id="lb-m1-pin" style="left:362.3px;top:414.3px"><div class="wl"><div class="ctr a-b"><div class="lab  lab-sm" id="lb-m1">faceMask</div></div></div></div><div class="pin " id="lb-m2-pin" style="left:491.8px;top:385.4px"><div class="wl"><div class="ctr a-b"><div class="lab lab-r lab-sm" id="lb-m2">attacker 0.8</div></div></div></div><div class="pin " id="lb-m3-pin" style="left:601.8px;top:475.4px"><div class="wl"><div class="ctr a-b"><div class="lab  lab-sm" id="lb-m3">0.8 · maskMove</div></div></div></div><div class="pin " id="lb-ph-pin" style="left:729.4px;top:270.3px"><div class="wl"><div class="ctr a-b"><div class="lab  lab-sm" id="lb-ph">phone</div></div></div></div><div class="pin " id="lb-ps-pin" style="left:420px;top:578.2px"><div class="wl"><div class="ctr a-b"><div class="lab  lab-sm" id="lb-ps">person 0.45</div></div></div></div></div>
+      </div>
+      <div class="ttl" id="ttl-0">换脸面具 · 电路纹闪 · 贴到屏幕前 · 红描边</div>
+      <div id="kit-sub">ep26 补充拟物物件 · 与 phone / person 比例对照（锚点：红 mask · 绿 plate · 蓝 top）</div>
+    </div>
+  </div>
+  <script>
+/* ep29 kit runtime — browser side helpers for objects built with objects.mjs.
+ * Inline once per composition (iso.runtimeJs()) before the scene script.
+ * Every helper schedules tweens on a GSAP timeline `tl` at time `t`; all motion is a
+ * function of timeline time (seek-safe, no timers, no repeat:-1).
+ */
+(function () {
+  if (window.KIT) return;
+  var D = Math.PI / 180;
+  var CA = Math.cos(35 * D), SA = Math.sin(35 * D), SE = 0.5, CE = Math.cos(30 * D);
+  var $ = function (id) { return document.getElementById(id); };
+  var last = {}; // last scheduled value per animated part (lets helpers chain without a "from")
+  var num = function (el, k, d) { var v = el && el.getAttribute("data-" + k); return v == null ? d : +v; };
+  var r1 = function (n) { return Math.round(n * 100) / 100; };
+
+  // ---------- in-plane rotators (barrier arm, switch blades, clock hands, beacon beam)
+  function setRot(id, deg) {
+    var el = $(id); if (!el) return;
+    var m = el.getAttribute("data-m"), px = num(el, "px", 0), py = num(el, "py", 0);
+    el.setAttribute("transform", "matrix(" + m + ") translate(" + px + " " + py + ") rotate(" + r1(deg) + ") translate(" + -px + " " + -py + ")");
+    if (el.__onrot) el.__onrot(deg);
+  }
+  function rotPoint(id, deg, lx, ly) { // local point of a rotator → world-canvas px
+    var el = $(id), m = el.getAttribute("data-m").split(",").map(Number), px = num(el, "px", 0), py = num(el, "py", 0);
+    var a = deg * D, x = lx - px, y = ly - py, rx = px + x * Math.cos(a) - y * Math.sin(a), ry = py + x * Math.sin(a) + y * Math.cos(a);
+    return [m[0] * rx + m[2] * ry + m[4], m[1] * rx + m[3] * ry + m[5]];
+  }
+  function tweenVal(tl, key, t, to, dur, ease, apply) {
+    var from = key in last ? last[key] : apply.initial();
+    last[key] = to;
+    var o = { a: from };
+    tl.fromTo(o, { a: from }, { a: to, duration: dur, ease: ease || "power2.inOut", immediateRender: false, onUpdate: function () { apply(o.a); } }, t);
+  }
+  function rot(tl, id, t, toDeg, dur, ease) {
+    var f = function (a) { setRot(id, a); }; f.initial = function () { return num($(id), "a", 0); };
+    tweenVal(tl, "rot:" + id, t, toDeg, dur == null ? 0.6 : dur, ease, f);
+  }
+
+  // ---------- safe door (rotates about a vertical hinge; true 3D, recomputed per frame)
+  function setDoor(p, deg) {
+    var g = $(p + "-door"); if (!g) return;
+    var hx = num(g, "hx"), hy = num(g, "hy"), w = num(g, "w"), h = num(g, "h"), T = num(g, "t");
+    var a = deg * D, du = -Math.cos(a), dv = Math.sin(a), nu = Math.sin(a), nv = Math.cos(a);
+    var dS = [du * CA + dv * SA, -du * SA * SE + dv * CA * SE], nS = [nu * CA + nv * SA, -nu * SA * SE + nv * CA * SE];
+    var Fx = hx + w * dS[0], Fy = hy + w * dS[1];
+    var out = $(p + "-door-out"), inn = $(p + "-door-in"), edge = $(p + "-door-edge"), top = $(p + "-door-top");
+    out.setAttribute("transform", "matrix(" + [-dS[0], -dS[1], 0, CE, Fx, Fy].map(r1).join(",") + ")");
+    inn.setAttribute("transform", "matrix(" + [dS[0], dS[1], 0, CE, hx - T * nS[0], hy - T * nS[1]].map(r1).join(",") + ")");
+    var showOut = nS[1] > 0;
+    out.setAttribute("opacity", showOut ? 1 : 0); inn.setAttribute("opacity", showOut ? 0 : 1);
+    var P = function (x, y) { return r1(x) + "," + r1(y); };
+    var Ix = Fx - T * nS[0], Iy = Fy - T * nS[1], H = h * CE;
+    edge.setAttribute("points", [P(Fx, Fy), P(Ix, Iy), P(Ix, Iy + H), P(Fx, Fy + H)].join(" "));
+    top.setAttribute("points", [P(hx, hy), P(Fx, Fy), P(Ix, Iy), P(hx - T * nS[0], hy - T * nS[1])].join(" "));
+    var vis = deg > 1.5 ? 1 : 0; edge.setAttribute("opacity", vis); top.setAttribute("opacity", vis);
+  }
+  function door(tl, p, t, toDeg, dur, ease) {
+    var f = function (a) { setDoor(p, a); }; f.initial = function () { return num($(p + "-door"), "a", 0); };
+    tweenVal(tl, "door:" + p, t, toDeg, dur == null ? 1.0 : dur, ease || "power2.inOut", f);
+  }
+
+  // ---------- knife switch (two blades + handle bar)
+  function setSwitch(p, deg) {
+    setRot(p + "-blade-0", deg); setRot(p + "-blade-1", deg);
+    var g = $(p + "-sw"), L = num(g, "l"), px = num($(p + "-blade-0"), "px", 0), py = num($(p + "-blade-0"), "py", 0);
+    var a = rotPoint(p + "-blade-0", deg, px, py - L), b = rotPoint(p + "-blade-1", deg, px, py - L);
+    var bar = $(p + "-bar"), barHi = $(p + "-bar-hi");
+    [bar, barHi].forEach(function (el) { el.setAttribute("x1", r1(a[0])); el.setAttribute("y1", r1(a[1])); el.setAttribute("x2", r1(b[0])); el.setAttribute("y2", r1(b[1])); });
+  }
+  function toggle(tl, p, t, on, dur) { // on = closed (blades up in the clips)
+    var g = $(p + "-sw"); var to = on ? num(g, "on", 0) : num(g, "off", -115);
+    var f = function (a) { setSwitch(p, a); }; f.initial = function () { return num(g, "a", 0); };
+    tweenVal(tl, "sw:" + p, t, to, dur == null ? 0.5 : dur, on ? "power3.in" : "back.out(1.3)", f);
+    var lamp = $(p + "-lamp");
+    if (lamp) tl.to(lamp, { attr: { fill: on ? lamp.getAttribute("data-on") : lamp.getAttribute("data-off") }, duration: 0.12 }, t + (dur == null ? 0.5 : dur) * 0.8);
+  }
+
+  // ---------- simple state changes
+  function broke(tl, p, t, o) {
+    o = o || {};
+    tl.to("#" + p + "-solid", { opacity: o.ghost == null ? 0.18 : o.ghost, duration: 0.3, ease: "power1.out" }, t);
+    if ($(p + "-glow")) tl.to("#" + p + "-glow", { opacity: 0, duration: 0.3 }, t);
+    tl.fromTo("#" + p + "-wire", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out", immediateRender: false }, t);
+    if (o.badge !== false && $(p + "-x")) tl.fromTo("#" + p + "-x", { opacity: 0, scale: 0.5, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)", immediateRender: false }, t + 0.08);
+  }
+  function fixed(tl, p, t) {
+    tl.to("#" + p + "-solid", { opacity: 1, duration: 0.3 }, t);
+    tl.to("#" + p + "-wire", { opacity: 0, duration: 0.25 }, t);
+    if ($(p + "-x")) tl.to("#" + p + "-x", { opacity: 0, duration: 0.2 }, t);
+    if ($(p + "-glow")) tl.to("#" + p + "-glow", { opacity: 1, duration: 0.3 }, t);
+  }
+  var LEDC = { green: "#2bd46f", red: "#ff4a3d", off: "#3c3f45", blue: "#5cc0e0" };
+  function led(tl, id, t, color) { // id of an LED circle; its halo is id+"-h"
+    var c = LEDC[color] || color;
+    tl.to("#" + id, { attr: { fill: c }, duration: 0.15, ease: "none" }, t);
+    if ($(id + "-h")) tl.to("#" + id + "-h", { attr: { fill: c }, opacity: color === "off" ? 0 : 0.35, duration: 0.15, ease: "none" }, t);
+  }
+  function swap(tl, a, b, t, dur) { // crossfade selector a → selector b
+    tl.to(a, { opacity: 0, duration: dur || 0.25, ease: "power1.inOut" }, t);
+    tl.fromTo(b, { opacity: 0 }, { opacity: 1, duration: dur || 0.25, ease: "power1.inOut", immediateRender: false }, t);
+  }
+  function pop(tl, sel, t, d) {
+    tl.fromTo(sel, { opacity: 0, scale: 0.8, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: d || 0.25, ease: "back.out(1.4)", immediateRender: false }, t);
+  }
+  function grow(tl, p, t, d) { // object rises from its ground origin
+    var g = $(p), o = g.getAttribute("data-ox") + " " + g.getAttribute("data-oy");
+    tl.fromTo("#" + p, { scaleY: 0, opacity: 1, svgOrigin: o }, { scaleY: 1, svgOrigin: o, duration: d || 0.45, ease: "back.out(1.4)", immediateRender: false }, t);
+  }
+  function draw(tl, id, t, dur) { // reveal an iso.dashCurve
+    var m = $(id + "-m"), L = +m.getAttribute("stroke-dasharray").split(" ")[0];
+    tl.fromTo(m, { attr: { "stroke-dashoffset": L } }, { attr: { "stroke-dashoffset": 0 }, duration: dur || 0.6, ease: "power2.inOut", immediateRender: false }, t);
+    pop(tl, "#" + id + "-a", t, 0.2);
+    pop(tl, "#" + id + "-b", t + (dur || 0.6) * 0.9, 0.25);
+  }
+  function cam(tl, t, c, dur, ease) {
+    tl.to("#cam", { x: c.x, y: c.y, scale: c.scale, duration: dur || 1.0, ease: ease || "power2.inOut" }, t);
+    tl.to(".wl", { scale: 1 / c.scale, duration: dur || 1.0, ease: ease || "power2.inOut" }, t);
+  }
+  function camSet(tl, c) { tl.set("#cam", { x: c.x, y: c.y, scale: c.scale }, 0); tl.set(".wl", { scale: 1 / c.scale }, 0); }
+
+  // ---------- object-specific
+  function arm(tl, p, t, up, dur) { var el = $(p + "-arm"); rot(tl, p + "-arm", t, up ? num(el, "up", -78) : 0, dur == null ? 0.7 : dur, up ? "power2.inOut" : "power2.in"); }
+  function beacon(tl, p, t, dur, period) { // rotating alarm light, deterministic in time
+    period = period || 0.9;
+    var lit = $(p + "-lit"), beam = $(p + "-beamg"), o = { k: 0 };
+    tl.fromTo(o, { k: 0 }, { k: 1, duration: dur, ease: "none", immediateRender: false, onUpdate: function () {
+      var s = o.k * dur, on = o.k > 0 && o.k < 1;
+      setRot(p + "-beam", (360 * s) / period);
+      beam.setAttribute("opacity", on ? 1 : 0);
+      lit.setAttribute("opacity", on ? r1(0.55 + 0.45 * Math.cos((2 * Math.PI * s) / period)) : 0);
+    } }, t);
+  }
+  function sand(tl, p, t, dur) { // hourglass top drains, bottom fills
+    var g = $(p + "-hg"), y0 = num(g, "y0"), y1 = num(g, "y1");
+    tl.fromTo("#" + p + "-sandT", { attr: { y: y0, height: y1 - y0 + 4 } }, { attr: { y: y1 - 2, height: 6 }, duration: dur, ease: "none", immediateRender: false }, t);
+    tl.fromTo("#" + p + "-sandB", { scaleY: 0.35, svgOrigin: g.getAttribute("data-bot") }, { scaleY: 1, svgOrigin: g.getAttribute("data-bot"), duration: dur, ease: "none", immediateRender: false }, t);
+    tl.fromTo("#" + p + "-stream", { opacity: 0 }, { opacity: 1, duration: 0.1, immediateRender: false }, t);
+    tl.to("#" + p + "-stream", { opacity: 0, duration: 0.1 }, t + dur - 0.1);
+  }
+  function clock(tl, p, t, dur, minutes) { // advance the hands by `minutes`
+    var mh = p + "-mh", hh = p + "-hh";
+    var m0 = "rot:" + mh in last ? last["rot:" + mh] : num($(mh), "a", 0), h0 = "rot:" + hh in last ? last["rot:" + hh] : num($(hh), "a", 0);
+    rot(tl, mh, t, m0 + minutes * 6, dur, "power1.inOut"); rot(tl, hh, t, h0 + minutes * 0.5, dur, "power1.inOut");
+  }
+  function stamp(tl, p, t) { // seal lifts over the mark, presses, mark appears, seal returns aside
+    var g = $(p + "-stamp"), ax = num(g, "ax", 0), ay = num(g, "ay", 0);
+    tl.fromTo("#" + p + "-stamp", { x: ax, y: ay }, { x: 0, y: -90, duration: 0.45, ease: "power2.inOut", immediateRender: false }, t);
+    tl.to("#" + p + "-stamp", { y: 0, duration: 0.16, ease: "power3.in" }, t + 0.5);
+    tl.fromTo("#" + p + "-mark", { opacity: 0, scale: 1.15, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out", immediateRender: false }, t + 0.66);
+    tl.to("#" + p + "-stamp", { x: ax, y: ay, duration: 0.5, ease: "power2.inOut" }, t + 0.86);
+  }
+
+  window.KIT = { setRot: setRot, rotPoint: rotPoint, rot: rot, setDoor: setDoor, door: door, setSwitch: setSwitch, toggle: toggle,
+    broke: broke, fixed: fixed, led: led, swap: swap, pop: pop, grow: grow, draw: draw, cam: cam, camSet: camSet,
+    arm: arm, beacon: beacon, sand: sand, clock: clock, stamp: stamp, LEDC: LEDC };
+})();
+
+/* ep26 kit-ext runtime — browser helpers for objects built with ep26/kit-ext/objects-ext.mjs (faceMask).
+ * Inline after kit's runtimeJs() (and after other chapters' runtime-ext if any):  ${runtimeJs()}\n${runtimeExtJs()}
+ * API: window.KITX26. Also merged into window.KITX WITHOUT overwriting any name another chapter already put there
+ * (so always call KITX26.xxx when several chapter libraries are loaded).
+ * Every helper takes (tl, id, t, …) and schedules tweens on a GSAP timeline `tl` at time `t`; all motion is a pure
+ * function of timeline time (seek-safe, no timers, no Math.random, no repeat:-1). Same part animated several times:
+ * call in time order — each call starts from the previous call's end value.
+ * Parts whose transform is rewritten here (do NOT also tween them with GSAP x/y/rotation/scale):
+ *   faceMask ID-mask.  (ID-mv stays free: GSAP x/y on it is fine.)
+ */
+(function () {
+  if (window.KITX26) return;
+  var $ = function (id) { return document.getElementById(id); };
+  var last = {};
+  var r2 = function (n) { return Math.round(n * 100) / 100; };
+
+  function tw(tl, key, t, to, dur, ease, apply, init) {
+    var from = key in last ? last[key] : init();
+    last[key] = to;
+    var o = { a: 0 };
+    tl.fromTo(o, { a: 0 }, { a: 1, duration: dur, ease: ease || "power2.inOut", immediateRender: false, onUpdate: function () { apply(from, to, o.a); } }, t);
+    return from;
+  }
+  function op(tl, el, t, to, dur, ease) {
+    if (typeof el === "string") el = $(el); if (!el) return;
+    var key = "op:" + el.id, cur = el.getAttribute("opacity");
+    var from = key in last ? last[key] : (cur == null ? 1 : +cur);
+    last[key] = to;
+    tl.fromTo(el, { opacity: from }, { opacity: to, duration: dur == null ? 0.2 : dur, ease: ease || "power1.inOut", immediateRender: false }, t);
+  }
+
+  // =================================================================== faceMask
+  /** move the mask (with its back shell) by screen offset d=[dx,dy] in world-canvas px from its rest place
+   *  (absolute, not cumulative: [0,0] puts it back). Scale-aware. Returns end time. */
+  function maskMove(tl, p, t, d, dur) {
+    var el = $(p + "-mask"); if (!el) return t;
+    dur = dur == null ? 0.8 : dur;
+    var k = +(el.getAttribute("data-k") || 1) || 1;
+    var to = [d[0] / k, d[1] / k];
+    tw(tl, "mv:" + p, t, to, dur, "power2.inOut", function (a, b, q) {
+      var x = a[0] + (b[0] - a[0]) * q, y = a[1] + (b[1] - a[1]) * q;
+      el.setAttribute("transform", x === 0 && y === 0 ? "" : "translate(" + r2(x) + " " + r2(y) + ")");
+    }, function () { return [0, 0]; });
+    return t + dur;
+  }
+  /** circuit ring on the back shell flashes bright (one pulse, `n` times). Returns end time. */
+  function circuit(tl, p, t, dur, n) {
+    var el = $(p + "-circ-hi"); if (!el) return t;
+    dur = dur == null ? 0.9 : dur; n = n == null ? 1 : n;
+    var o = { q: 0 };
+    tl.fromTo(o, { q: 0 }, { q: 1, duration: dur, ease: "none", immediateRender: false, onUpdate: function () {
+      var q = o.q, v = q <= 0 || q >= 1 ? 0 : Math.sin(q * Math.PI * n);
+      el.setAttribute("opacity", r2(Math.abs(v)));
+    } }, t);
+    return t + dur;
+  }
+  /** red outline on the mask edge on / off */
+  function maskRed(tl, p, t, on, dur) { op(tl, p + "-red", t, on === false ? 0 : 1, dur == null ? 0.25 : dur); }
+
+  var api = { maskMove: maskMove, circuit: circuit, maskRed: maskRed };
+  window.KITX26 = api;
+  // 合并进 window.KITX：已存在的名字（别章的通用或同名助手）一律不覆盖；多章同时加载时请用 KITX26.xxx
+  var K = window.KITX || {};
+  Object.keys(api).forEach(function (k) { if (!(k in K)) K[k] = api[k]; });
+  window.KITX = K;
+})();
+
+    (function () {
+      const CAMS = {"s1":{"x":-104,"y":-273,"scale":1.9}};
+      const tl = gsap.timeline({ paused: true });
+      KIT.camSet(tl, CAMS.s1);
+      KITX26.circuit(tl, "m1", 0.6, 1.2, 2);
+      KITX26.maskMove(tl, "m3", 1.8, [121.16201944626607,-125.88376079594997], 1.0);
+      KITX26.maskRed(tl, "m3", 3.0, true);
+      KITX26.circuit(tl, "m3", 3.3, 0.9);
+      tl.to({}, { duration: 0.01 }, 5.9);
+      window.__timelines["showcase"] = tl;
+    })();
+  </script>
+</template>

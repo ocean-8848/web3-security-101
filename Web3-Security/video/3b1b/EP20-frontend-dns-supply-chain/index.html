@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      /* EP20 前端、DNS 与供应链 · 3b1b 风格。颜色语义全片固定，见 STORYBOARD.md §2。 */
+      @font-face {
+        font-family: "NotoSC";
+        src: url("assets/fonts/noto-sc.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0f1117; }
+      #root { position: relative; width: 100%; height: 100%; background: #0f1117; font-family: "NotoSC", sans-serif; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="411.3" data-width="1920" data-height="1080">
+      <div id="hook" data-composition-id="hook" data-composition-src="compositions/hook.html" data-start="0.0" data-duration="31.58" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="idea" data-composition-id="idea" data-composition-src="compositions/idea.html" data-start="31.58" data-duration="39.07" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="chain" data-composition-id="chain" data-composition-src="compositions/chain.html" data-start="70.65" data-duration="47.15" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="dns" data-composition-id="dns" data-composition-src="compositions/dns.html" data-start="117.8" data-duration="53.49" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="deps" data-composition-id="deps" data-composition-src="compositions/deps.html" data-start="171.29" data-duration="52.2" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="cdn" data-composition-id="cdn" data-composition-src="compositions/cdn.html" data-start="223.49" data-duration="42.96" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="target" data-composition-id="target" data-composition-src="compositions/target.html" data-start="266.45" data-duration="62.73" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="defend" data-composition-id="defend" data-composition-src="compositions/defend.html" data-start="329.18" data-duration="45.4" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="answer" data-composition-id="answer" data-composition-src="compositions/answer.html" data-start="374.58" data-duration="36.72" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <audio id="narration" class="clip" src="assets/narration.wav" data-start="0" data-duration="411.3" data-track-index="2" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

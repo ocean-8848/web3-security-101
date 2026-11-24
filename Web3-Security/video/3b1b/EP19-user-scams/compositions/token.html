@@ -1,0 +1,118 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="token" data-duration="52.1" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="t-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#83C167" /></marker>
+        <marker id="t-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="t-all">
+        <!-- 代币合约（蓝）与价格曲线 -->
+        <g id="t-tok" class="h">
+          <rect x="120" y="200" width="300" height="200" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+          <text x="270" y="290" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">新代币</text>
+          <text x="270" y="345" font-size="28" fill="#8a8f99" text-anchor="middle">合约本身是陷阱</text>
+        </g>
+        <line id="t-ax" class="h" x1="560" y1="480" x2="1800" y2="480" stroke="#2a2f3a" stroke-width="3" />
+        <path id="t-up" class="dr" pathLength="1" d="M560 460 C 800 450, 1000 400, 1200 300 S 1350 200, 1400 180" stroke="#83C167" stroke-width="5" fill="none" />
+        <path id="t-down" class="dr" pathLength="1" d="M1400 180 L 1440 478 L 1800 478" stroke="#FC6255" stroke-width="5" fill="none" />
+        <text id="t-rug" class="h" x="1460" y="250" font-size="32" fill="#FC6255" font-weight="700">卷款：撤走流动性 → 归零</text>
+        <!-- 貔貅盘：能买不能卖 -->
+        <g id="t-hp">
+          <path id="t-buy" class="dr h" pathLength="1" d="M200 640 L 520 640" stroke="#83C167" stroke-width="5" fill="none" marker-end="url(#t-ahg)" />
+          <text id="t-buyt" class="h" x="360" y="615" font-size="30" fill="#83C167" text-anchor="middle">买入 ✓</text>
+          <rect id="t-pot" class="h" x="540" y="580" width="200" height="120" rx="14" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <path id="t-sell" class="dr h" pathLength="1" d="M760 640 L 900 640" stroke="#FC6255" stroke-width="5" fill="none" marker-end="url(#t-ahr)" />
+          <text id="t-sellx" class="h" x="960" y="655" font-size="48" fill="#FC6255" font-weight="800">✕ 卖出</text>
+          <text id="t-hpt" class="h" x="540" y="750" font-size="30" fill="#e8e6df">貔貅盘</text>
+        </g>
+        <!-- 隐藏增发 -->
+        <g id="t-mint">
+          <rect id="t-supply" class="h" x="1240" y="600" width="80" height="100" fill="#F0B90B" />
+          <text id="t-mintt" class="h" x="1360" y="660" font-size="30" fill="#e8e6df">隐藏增发：owner 无限铸造</text>
+        </g>
+        <!-- 内部人抛售 -->
+        <g id="t-ins">
+          <g class="t-in h" fill="#FC6255"><circle cx="1280" cy="860" r="18" /><circle cx="1340" cy="860" r="18" /><circle cx="1400" cy="860" r="18" /></g>
+          <text class="t-in h" x="1450" y="872" font-size="30" fill="#e8e6df">内部人：上线即卖</text>
+        </g>
+      </g>
+
+      <!-- SQUID -->
+      <g id="t-sq" class="h">
+        <text x="960" y="200" font-size="36" fill="#6b6f7a" text-anchor="middle">2021 · SQUID 代币</text>
+        <text x="960" y="320" font-size="40" fill="#e8e6df" text-anchor="middle">合约限制卖出 → 开发者撤走流动性 → 几分钟内归零</text>
+        <text x="960" y="430" font-size="72" fill="#FC6255" text-anchor="middle" font-weight="800">≈ 338 万美元</text>
+      </g>
+      <!-- 979 个貔貅盘 -->
+      <g id="t-grid"></g>
+      <text id="t-gt" class="h" x="960" y="200" font-size="36" fill="#e8e6df" text-anchor="middle">一个地址 · 三个月 · <tspan fill="#FC6255" font-weight="800"><tspan id="t-gn">0</tspan> 个貔貅盘</tspan> · 约每 30 分钟一个</text>
+      <g id="t-chk">
+        <text class="t-q h" x="380" y="960" font-size="44" fill="#83C167" text-anchor="middle" font-weight="700">能不能卖？</text>
+        <text class="t-q h" x="960" y="960" font-size="44" fill="#83C167" text-anchor="middle" font-weight="700">谁持有？</text>
+        <text class="t-q h" x="1540" y="960" font-size="44" fill="#83C167" text-anchor="middle" font-weight="700">谁能增发？</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 52.1, "L": [[0.6, 6.98], [7.43, 15.64], [16.09, 25.33], [25.78, 36.17], [36.62, 51.0]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.8) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      const DRAWA = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // 979 个小方块：确定性网格
+      const NS = "http://www.w3.org/2000/svg", gh = document.querySelector("#t-grid"), cells = [];
+      for (let i = 0; i < 979; i++) {
+        const r = document.createElementNS(NS, "rect");
+        r.setAttribute("x", (240 + (i % 55) * 26).toString()); r.setAttribute("y", (260 + Math.floor(i / 55) * 30).toString());
+        r.setAttribute("width", "18"); r.setAttribute("height", "22"); r.setAttribute("rx", "3"); r.setAttribute("fill", "#58C4DD"); r.setAttribute("opacity", "0");
+        gh.appendChild(r); cells.push(r);
+      }
+
+      // L0 代币本身是陷阱；价格上涨
+      IN("#t-tok", at(0, 0.1), 0.5);
+      IN("#t-ax", at(0, 0.4), 0.4);
+      DRAW("#t-up", at(0, 0.45), 1.6);
+      // L1 卷款 + 貔貅盘
+      DRAW("#t-down", at(1, 0.05), 0.6);
+      IN("#t-rug", at(1, 0.1), 0.4);
+      DRAWA("#t-buy", at(1, 0.5), 0.5); IN("#t-buyt", at(1, 0.5), 0.4);
+      IN("#t-pot", at(1, 0.55), 0.4); IN("#t-hpt", at(1, 0.55), 0.4);
+      DRAWA("#t-sell", at(1, 0.75), 0.3);
+      IN("#t-sellx", at(1, 0.8), 0.3, { scale: 1.4, svgOrigin: "1020 640" }, { scale: 1 });
+      // L2 隐藏增发 + 内部人
+      IN("#t-supply", at(2, 0.05), 0.3);
+      tl.fromTo("#t-supply", { attr: { y: 600, height: 100 } }, { attr: { y: 560, height: 140 }, duration: 0.25, yoyo: true, repeat: 3, ease: "power1.inOut" }, at(2, 0.1));
+      tl.to("#t-supply", { attr: { y: 520, height: 180 }, duration: 0.8, ease: "power2.out" }, at(2, 0.25));
+      IN("#t-mintt", at(2, 0.1), 0.4);
+      gsap.utils.toArray("#root .t-in").forEach((g, i) => IN(g, at(2, 0.6) + i * 0.2, 0.4));
+      tl.to("#root .t-in circle", { x: 300, opacity: 0, duration: 0.7, stagger: 0.1, ease: "power2.in" }, at(2, 0.85));
+      // L3 SQUID
+      tl.to("#t-all", { opacity: 0, duration: 0.4 }, at(3, 0));
+      IN("#t-sq", at(3, 0.05), 0.4);
+      tl.fromTo("#t-sq text", { opacity: 0 }, { opacity: 1, duration: 0.5, stagger: 0.3 * (L[3][1] - L[3][0]) }, at(3, 0.08));
+      // L4 979 个貔貅盘；三个问题
+      OUT("#t-sq", at(4, 0), 0.4);
+      IN("#t-gt", at(4, 0.03), 0.5);
+      const n = { v: 0 }, gn = document.querySelector("#t-gn");
+      tl.fromTo(n, { v: 0 }, { v: 979, duration: 2.4, ease: "none", onUpdate: () => { gn.textContent = Math.round(n.v); } }, at(4, 0.06));
+      cells.forEach((c, i) => tl.to(c, { opacity: 0.85, duration: 0.05 }, at(4, 0.06) + (i / 979) * 2.4));
+      tl.to("#t-grid", { opacity: 0.25, duration: 0.4 }, at(4, 0.55));
+      gsap.utils.toArray("#root .t-q").forEach((q, i) => IN(q, at(4, 0.62) + i * 0.1 * (L[4][1] - L[4][0]), 0.5, { y: 20 }, { y: 0 }));
+
+      tl.to(["#t-grid", "#t-gt", "#t-chk"], { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["token"] = tl;
+    })();
+  </script>
+</template>

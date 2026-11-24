@@ -1,0 +1,98 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="erase" data-duration="61.26" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="e-all">
+        <g id="e-chain" class="h">
+          <g fill="#121a22" stroke="#58C4DD" stroke-width="3">
+            <rect x="200" y="160" width="260" height="140" rx="12" /><rect x="520" y="160" width="260" height="140" rx="12" /><rect x="840" y="160" width="260" height="140" rx="12" /><rect x="1160" y="160" width="260" height="140" rx="12" /><rect x="1480" y="160" width="260" height="140" rx="12" />
+          </g>
+          <g stroke="#58C4DD" stroke-width="3"><line x1="460" y1="230" x2="520" y2="230" /><line x1="780" y1="230" x2="840" y2="230" /><line x1="1100" y1="230" x2="1160" y2="230" /><line x1="1420" y1="230" x2="1480" y2="230" /></g>
+          <text x="970" y="350" font-size="32" fill="#8a8f99" text-anchor="middle">写上去，每个节点都留一份</text>
+        </g>
+        <g id="e-rec" class="h"><rect x="860" y="190" width="220" height="80" rx="10" fill="#2a2240" stroke="#B48EF0" stroke-width="3" /><text x="970" y="242" font-size="28" fill="#B48EF0" text-anchor="middle">个人数据</text></g>
+        <!-- 枚举比对 -->
+        <g id="e-hash" class="h">
+          <text x="200" y="470" font-size="34" fill="#e8e6df">链上存：</text>
+          <text x="360" y="470" font-size="34" fill="#58C4DD">keccak256(email) = 0x9c…41</text>
+        </g>
+        <g font-size="30">
+          <g class="e-g h"><text x="200" y="570" fill="#e8e6df">alice@mail.com</text><text x="640" y="570" fill="#8a8f99">→ 0x3d…a0</text><text x="900" y="570" fill="#6b6f7a">✕</text></g>
+          <g class="e-g h"><text x="200" y="630" fill="#e8e6df">bob@mail.com</text><text x="640" y="630" fill="#8a8f99">→ 0x71…5e</text><text x="900" y="630" fill="#6b6f7a">✕</text></g>
+          <g class="e-g h"><text x="200" y="690" fill="#e8e6df">carol@mail.com</text><text x="640" y="690" fill="#FC6255">→ 0x9c…41</text><text x="900" y="690" fill="#FC6255" font-weight="800">✓ 比对出来</text></g>
+        </g>
+        <text id="e-enum" class="h" x="200" y="770" font-size="28" fill="#6b6f7a">候选邮箱与哈希值均为示例</text>
+        <!-- EDPB -->
+        <g id="e-edpb" class="h">
+          <rect x="1120" y="400" width="680" height="380" rx="18" fill="#1d1710" stroke="#FF9F43" stroke-width="3" />
+          <text x="1460" y="460" font-size="30" fill="#FF9F43" text-anchor="middle" font-weight="700">EDPB 指南 02/2025（2.0 版）</text>
+          <text class="e-b" opacity="0" x="1160" y="540" font-size="30" fill="#e8e6df">· 不加盐、不带密钥的哈希：</text>
+          <text class="e-b" opacity="0" x="1190" y="590" font-size="30" fill="#e8e6df">公链上通常不够</text>
+          <text class="e-b" opacity="0" x="1160" y="660" font-size="30" fill="#e8e6df">· 技术上做不到删除，</text>
+          <text class="e-b" opacity="0" x="1190" y="710" font-size="30" fill="#e8e6df">不能当作不遵守的理由</text>
+        </g>
+        <!-- 加盐承诺 -->
+        <g id="e-com">
+          <g id="e-c1" class="h"><rect x="200" y="440" width="700" height="110" rx="14" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="550" y="485" font-size="28" fill="#8a8f99" text-anchor="middle">链上</text><text x="550" y="528" font-size="32" fill="#58C4DD" text-anchor="middle">H( salt ‖ 记录 )</text></g>
+          <g id="e-c2" class="h"><rect x="200" y="640" width="700" height="150" rx="14" fill="#161a22" stroke="#B48EF0" stroke-width="3" /><text x="550" y="685" font-size="28" fill="#8a8f99" text-anchor="middle">链下 · 可删除的系统</text><text x="400" y="750" font-size="32" fill="#B48EF0" text-anchor="middle">原文</text><text id="e-salt" x="700" y="750" font-size="32" fill="#83C167" text-anchor="middle">salt（随机数）</text></g>
+          <line id="e-link" class="h" x1="700" y1="720" x2="700" y2="555" stroke="#83C167" stroke-width="4" stroke-dasharray="8 6" />
+          <text id="e-cut" class="h" x="960" y="640" font-size="32" fill="#83C167" font-weight="700">删掉 salt → 关联不回这个人</text>
+        </g>
+        <!-- 密钥销毁的三个漏洞 -->
+        <g id="e-shred" font-size="30">
+          <text class="e-s h" x="200" y="500" fill="#e8e6df">加密上链，再销毁密钥：</text>
+          <text class="e-s h" x="240" y="580" fill="#FC6255">✕ 密文还在每个节点、归档和索引里</text>
+          <text class="e-s h" x="240" y="650" fill="#FC6255">✕ 密钥可能早已泄露</text>
+          <text class="e-s h" x="240" y="720" fill="#FC6255">✕ 算法可能被破解，公链没有保留期上限</text>
+        </g>
+        <text id="e-legal" class="h" x="960" y="960" font-size="34" fill="#FF9F43" text-anchor="middle">工程整理，不是法律意见 · 上线前请法务判断</text>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 61.26, "L": [[0.6, 5.71], [6.16, 18.64], [19.09, 29.7], [30.15, 43.4], [43.85, 52.66], [53.11, 60.16]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      IN("#e-chain", at(0, 0.05), 0.6);
+      IN("#e-rec", at(0, 0.4), 0.5, { y: -20 }, { y: 0 });
+      // L1 哈希也能枚举
+      IN("#e-hash", at(1, 0.05), 0.5);
+      gsap.utils.toArray("#root .e-g").forEach((g, i) => IN(g, at(1, 0.45 + i * 0.15), 0.35, { x: -10 }, { x: 0 }));
+      IN("#e-enum", at(1, 0.9), 0.3);
+      tl.to("#e-rec rect", { stroke: "#FC6255", duration: 0.3 }, at(1, 0.8));
+      // L2 EDPB
+      IN("#e-edpb", at(2, 0.05), 0.5, { x: 20 }, { x: 0 });
+      gsap.utils.toArray("#root .e-b").forEach((e, i) => tl.to(e, { opacity: 1, duration: 0.35 }, at(2, 0.15 + i * 0.2)));
+      // L3 加盐承诺
+      OUT(["#e-hash", "#root .e-g", "#e-enum", "#e-edpb"], at(3, 0), 0.35);
+      tl.to("#e-rec rect", { stroke: "#58C4DD", duration: 0.3 }, at(3, 0));
+      IN("#e-c1", at(3, 0.05), 0.4);
+      IN("#e-c2", at(3, 0.3), 0.4);
+      IN("#e-link", at(3, 0.5), 0.3);
+      tl.to("#e-salt", { opacity: 0, x: 60, duration: 0.5 }, at(3, 0.75));
+      tl.to("#e-link", { opacity: 0, duration: 0.4 }, at(3, 0.78));
+      IN("#e-cut", at(3, 0.8), 0.4);
+      // L4 密钥销毁
+      OUT("#e-com", at(4, 0), 0.35);
+      gsap.utils.toArray("#root .e-s").forEach((e, i) => IN(e, at(4, 0.05 + i * 0.2), 0.35, { x: -10 }, { x: 0 }));
+      // L5
+      IN("#e-legal", at(5, 0.1), 0.5);
+      tl.to("#e-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["erase"] = tl;
+    })();
+  </script>
+</template>

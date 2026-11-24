@@ -1,0 +1,114 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="session" data-duration="48.13" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="s-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#B48EF0" /></marker>
+      </defs>
+      <g id="s-all">
+        <g id="s-intro">
+          <g id="s-main" class="h"><circle cx="300" cy="300" r="70" fill="#1a1524" stroke="#B48EF0" stroke-width="5" /><text x="300" y="312" font-size="32" fill="#B48EF0" text-anchor="middle" font-weight="700">主密钥</text></g>
+          <path id="s-a1" class="dr h" pathLength="1" d="M375 300 L 590 300" stroke="#B48EF0" stroke-width="4" fill="none" marker-end="url(#s-ah)" />
+          <g id="s-sk" class="h"><circle cx="660" cy="300" r="52" fill="#1a1524" stroke="#B48EF0" stroke-width="3" stroke-dasharray="8 6" /><text x="660" y="310" font-size="28" fill="#B48EF0" text-anchor="middle">临时</text></g>
+          <text id="s-skt" class="h" x="660" y="395" font-size="30" fill="#8a8f99" text-anchor="middle">Session Key</text>
+          <!-- 四个维度 -->
+          <g font-size="34">
+            <g class="s-dim h"><rect x="860" y="200" width="900" height="90" rx="14" fill="#12200f" stroke="#83C167" stroke-width="3" /><text x="900" y="258" fill="#83C167" font-weight="700">合约</text><text x="1100" y="258" fill="#e8e6df">只能调用某个游戏合约</text></g>
+            <g class="s-dim h"><rect x="860" y="310" width="900" height="90" rx="14" fill="#12200f" stroke="#83C167" stroke-width="3" /><text x="900" y="368" fill="#83C167" font-weight="700">函数</text><text class="mono" x="1100" y="368" fill="#e8e6df">只能调用 play()</text></g>
+            <g class="s-dim h"><rect id="s-capr" x="860" y="420" width="900" height="90" rx="14" fill="#12200f" stroke="#83C167" stroke-width="3" /><text x="900" y="478" fill="#83C167" font-weight="700">累计额度</text><text x="1100" y="478" fill="#e8e6df">例：累计最多 0.1 ETH</text></g>
+            <g class="s-dim h"><rect x="860" y="530" width="900" height="90" rx="14" fill="#12200f" stroke="#83C167" stroke-width="3" /><text x="900" y="588" fill="#83C167" font-weight="700">有效期</text><text x="1100" y="588" fill="#e8e6df">例：24 小时后失效</text></g>
+          </g>
+        </g>
+        <!-- 每笔 vs 累计：一步步算 -->
+        <g id="s-calc">
+          <text id="s-rule" class="h" x="160" y="720" font-size="36" fill="#FF9F43" font-weight="700">若只限制“每笔 ≤ 0.1 ETH”（示例）</text>
+          <rect id="s-track" class="h" x="160" y="790" width="1600" height="40" rx="20" fill="#2a2f3a" />
+          <rect id="s-fill" class="h" x="160" y="790" width="0" height="40" rx="20" fill="#F0B90B" />
+          <text id="s-c1" class="h mono" x="160" y="900" font-size="40" fill="#e8e6df">10 笔 × 0.1 = <tspan fill="#F0B90B">1 ETH</tspan></text>
+          <text id="s-c2" class="h mono" x="960" y="900" font-size="40" fill="#e8e6df">100 笔 × 0.1 = <tspan fill="#FC6255">10 ETH</tspan></text>
+        </g>
+        <!-- Cardex -->
+        <g id="s-cx">
+          <text id="s-cxt" class="h" x="960" y="110" font-size="42" fill="#e8e6df" text-anchor="middle" font-weight="700">Cardex · 2025 年 2 月 · Abstract L2</text>
+          <g id="s-users"></g>
+          <g id="s-fe" class="h">
+            <rect x="760" y="440" width="400" height="200" rx="18" fill="#2a1416" stroke="#FC6255" stroke-width="4" />
+            <text x="960" y="510" font-size="32" fill="#e8e6df" text-anchor="middle">前端代码</text>
+            <text x="960" y="575" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">共用的 session 私钥</text>
+          </g>
+          <text id="s-n1" class="h" x="480" y="960" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="800">≈ 9,000 个钱包</text>
+          <text id="s-n2" class="h" x="1440" y="960" font-size="48" fill="#FC6255" text-anchor="middle" font-weight="800">≈ 40 万美元</text>
+        </g>
+        <!-- 范围起了作用 -->
+        <g id="s-scope">
+          <rect id="s-fence" class="h" x="200" y="300" width="640" height="420" rx="30" fill="none" stroke="#83C167" stroke-width="5" stroke-dasharray="14 10" />
+          <g id="s-game" class="h"><rect x="300" y="420" width="440" height="180" rx="18" fill="#2a1416" stroke="#FC6255" stroke-width="3" /><text x="520" y="500" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">游戏合约</text><text x="520" y="555" font-size="28" fill="#8a8f99" text-anchor="middle">权限只到这里</text></g>
+          <g id="s-safe" class="h"><rect x="1080" y="360" width="560" height="300" rx="18" fill="#12200f" stroke="#83C167" stroke-width="3" /><text x="1360" y="470" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">ERC-20 · NFT</text><text x="1360" y="550" font-size="34" fill="#83C167" text-anchor="middle">✓ 未受影响</text></g>
+          <text id="s-ok" class="h" x="960" y="820" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700">范围限制起了作用</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 48.13, "L": [[0.6, 7.32], [7.77, 14.03], [14.48, 24.9], [25.35, 32.91], [33.36, 38.14], [38.59, 47.03]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      // 用户点阵（示意，不代表数量）
+      const uh = document.querySelector("#s-users"), U = [];
+      for (let r = 0; r < 6; r++) for (let c = 0; c < 16; c++) {
+        if (r >= 2 && r <= 3 && c >= 5 && c <= 10) continue;
+        const e = document.createElementNS(NS, "circle");
+        e.setAttribute("cx", 360 + c * 80); e.setAttribute("cy", 250 + r * 100); e.setAttribute("r", 12); e.setAttribute("fill", "#8a8f99"); e.setAttribute("opacity", 0);
+        uh.appendChild(e); U.push(e);
+      }
+      // L0 主密钥 → 临时密钥
+      NODE("#s-main", at(0, 0.0));
+      DRAW("#s-a1", at(0, 0.3), 0.5);
+      NODE("#s-sk", at(0, 0.45));
+      IN("#s-skt", at(0, 0.5), 0.4);
+      // L1 四个维度
+      gsap.utils.toArray("#root .s-dim").forEach((g, i) => IN(g, at(1, 0.15) + i * 0.18, 0.4, { x: 20 }, { x: 0 }));
+      // L2 累计：一步步算
+      tl.to("#s-capr", { stroke: "#FF9F43", strokeWidth: 6, duration: 0.3 }, at(2, 0.0));
+      IN("#s-rule", at(2, 0.1), 0.4);
+      IN(["#s-track", "#s-fill"], at(2, 0.25), 0.3);
+      tl.fromTo("#s-fill", { attr: { width: 0 } }, { attr: { width: 160 } , duration: 0.8, ease: "power1.inOut" }, at(2, 0.3));
+      IN("#s-c1", at(2, 0.33), 0.4);
+      tl.to("#s-fill", { attr: { width: 1600 }, fill: "#FC6255", duration: 1.4, ease: "power1.inOut" }, at(2, 0.55));
+      IN("#s-c2", at(2, 0.6), 0.4);
+      // L3 Cardex：所有用户共用一把密钥，写在前端
+      OUT(["#s-intro", "#s-calc"], at(3, 0.0), 0.35);
+      IN("#s-cxt", at(3, 0.05), 0.5);
+      U.forEach((e, i) => tl.to(e, { opacity: 1, duration: 0.2 }, at(3, 0.15) + i * 0.012));
+      NODE("#s-fe", at(3, 0.5));
+      // L4 数字
+      U.forEach((e, i) => tl.to(e, { attr: { fill: "#FC6255" }, duration: 0.2 }, at(4, 0.05) + i * 0.008));
+      IN("#s-n1", at(4, 0.1), 0.5);
+      IN("#s-n2", at(4, 0.5), 0.5);
+      // L5 范围起了作用
+      OUT("#s-cx", at(5, 0.0), 0.35);
+      IN("#s-game", at(5, 0.1), 0.5);
+      IN("#s-safe", at(5, 0.3), 0.5);
+      tl.fromTo("#s-fence", { opacity: 0, scale: 1.15, svgOrigin: "520 510" }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(2)" }, at(5, 0.6));
+      IN("#s-ok", at(5, 0.7), 0.5);
+      tl.to("#s-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["session"] = tl;
+    })();
+  </script>
+</template>

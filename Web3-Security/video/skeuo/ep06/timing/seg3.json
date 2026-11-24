@@ -1,0 +1,2806 @@
+{
+ "id": "seg3",
+ "title": "舍入方向",
+ "pill": 3,
+ "total": 159.29,
+ "lines": [
+  {
+   "id": "seg3-00",
+   "text": "整数除法会丢掉余数。问题是，余数归谁。",
+   "spoken": "整数除法会丢掉余数。问题是，余数归谁。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-00.mp3",
+   "start": 1.6,
+   "dur": 5.4,
+   "speechStart": 1.698,
+   "speechEnd": 6.16
+  },
+  {
+   "id": "seg3-01",
+   "text": "规则只有一条：余数归协议，不归调用者。",
+   "spoken": "规则只有一条：余数归协议，不归掉用者。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-01.mp3",
+   "start": 7.22,
+   "dur": 4.56,
+   "speechStart": 7.318,
+   "speechEnd": 10.96
+  },
+  {
+   "id": "seg3-02",
+   "text": "拿 ERC-4626 金库来看，四个函数，四个方向。",
+   "spoken": "拿 ERC-4626 金库来看，四个函数，四个方向。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-02.mp3",
+   "start": 12.0,
+   "dur": 5.112,
+   "speechStart": 12.098,
+   "speechEnd": 16.276
+  },
+  {
+   "id": "seg3-03",
+   "text": "deposit，用户给资产，拿份额。份额向下取整，少给。",
+   "spoken": "deposit，用户给资产，拿份额。份额向下取整，少给。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-03.mp3",
+   "start": 17.332,
+   "dur": 6.36,
+   "speechStart": 17.43,
+   "speechEnd": 22.868
+  },
+  {
+   "id": "seg3-04",
+   "text": "mint，用户指定份额，算要付多少资产。资产向上取整，多收。",
+   "spoken": "mint，用户指定份额，算要付多少资产。资产向上取整，多收。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-04.mp3",
+   "start": 23.912,
+   "dur": 6.84,
+   "speechStart": 24.01,
+   "speechEnd": 29.924
+  },
+  {
+   "id": "seg3-05",
+   "text": "withdraw，用户指定资产，算要扣多少份额。份额向上取整，多扣。",
+   "spoken": "withdraw，用户指定资产，算要扣多少份额。份额向上取整，多扣。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-05.mp3",
+   "start": 30.972,
+   "dur": 7.296,
+   "speechStart": 31.07,
+   "speechEnd": 37.424
+  },
+  {
+   "id": "seg3-06",
+   "text": "redeem，用户交出份额，拿资产。资产向下取整，少给。",
+   "spoken": "redeem，用户交出份额，拿资产。资产向下取整，少给。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-06.mp3",
+   "start": 38.488,
+   "dur": 6.648,
+   "speechStart": 38.586,
+   "speechEnd": 44.309
+  },
+  {
+   "id": "seg3-07",
+   "text": "记成一句话：给出去的，向下；收进来的，向上。",
+   "spoken": "记成一句话：给出去的，向下；收进来的，向上。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-07.mp3",
+   "start": 45.356,
+   "dur": 5.736,
+   "speechStart": 45.454,
+   "speechEnd": 50.251
+  },
+  {
+   "id": "seg3-08",
+   "text": "方向反了会怎样？攻击者可以做往返套利。",
+   "spoken": "方向反了会怎样？攻击者可以做往返套利。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-08.mp3",
+   "start": 51.312,
+   "dur": 4.32,
+   "speechStart": 51.41,
+   "speechEnd": 54.8
+  },
+  {
+   "id": "seg3-09",
+   "text": "反复 mint 1 份额，再 redeem，每次净赚 1 个单位的舍入误差。",
+   "spoken": "反复 mint 1 份额，再 redeem，每次净赚 1 个单位的舍入误差。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-09.mp3",
+   "start": 55.852,
+   "dur": 5.328,
+   "speechStart": 55.95,
+   "speechEnd": 60.342
+  },
+  {
+   "id": "seg3-10",
+   "text": "单次很小。但在没有手续费的场景下，可以循环上千次。",
+   "spoken": "单次很小。但在没有手续费的场景下，可以循环上千次。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-10.mp3",
+   "start": 61.4,
+   "dur": 5.64,
+   "speechStart": 61.498,
+   "speechEnd": 66.186
+  },
+  {
+   "id": "seg3-11",
+   "text": "打个比方。披萨店按块卖，一张披萨切 8 块。",
+   "spoken": "打个比方。披萨店按块卖，一张披萨切 8 块。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-11.mp3",
+   "start": 67.26,
+   "dur": 4.992,
+   "speechStart": 67.358,
+   "speechEnd": 71.415
+  },
+  {
+   "id": "seg3-12",
+   "text": "你付三分之一张的钱，店员要决定，给你 2 块还是 3 块。",
+   "spoken": "你付三分之一张的钱，店员要决定，给你 2 块还是 3 块。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-12.mp3",
+   "start": 72.472,
+   "dur": 5.352,
+   "speechStart": 72.57,
+   "speechEnd": 76.998
+  },
+  {
+   "id": "seg3-13",
+   "text": "如果店员总往多了给，聪明的顾客，就反复买三分之一张。",
+   "spoken": "如果店员总往多了给，聪明的顾客，就反复买三分之一张。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-13.mp3",
+   "start": 78.044,
+   "dur": 5.136,
+   "speechStart": 78.142,
+   "speechEnd": 82.344
+  },
+  {
+   "id": "seg3-14",
+   "text": "比方在这里不成立：披萨店会被投诉。",
+   "spoken": "比方在这里不成立：披萨店会被投诉。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-14.mp3",
+   "start": 83.4,
+   "dur": 3.72,
+   "speechStart": 83.498,
+   "speechEnd": 86.283
+  },
+  {
+   "id": "seg3-15",
+   "text": "合约里，多拿 1 wei 的操作，可以在一笔交易里重复几千次。",
+   "spoken": "合约里，多拿 1 wei 的操作，可以在一笔交易里虫复几千次。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-15.mp3",
+   "start": 87.34,
+   "dur": 5.256,
+   "speechStart": 87.438,
+   "speechEnd": 91.759
+  },
+  {
+   "id": "seg3-16",
+   "text": "回到 Balancer。按公开分析，问题出在稳定池的批量交换里。",
+   "spoken": "回到 Balancer。按公开分析，问题出在稳定池的批亮交换里。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-16.mp3",
+   "start": 92.816,
+   "dur": 6.24,
+   "speechStart": 92.914,
+   "speechEnd": 98.233
+  },
+  {
+   "id": "seg3-17",
+   "text": "攻击者串联大量小额交换，让每一步的舍入，都朝自己累积。",
+   "spoken": "攻击者串联大量小额交换，让每一步的舍入，都朝自己垒积。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-17.mp3",
+   "start": 99.276,
+   "dur": 5.544,
+   "speechStart": 99.374,
+   "speechEnd": 103.981
+  },
+  {
+   "id": "seg3-18",
+   "text": "池子的不变量和份额价格，因此被操纵。",
+   "spoken": "池子的不变量和份额价格，因此被操纵。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-18.mp3",
+   "start": 105.04,
+   "dur": 4.2,
+   "speechStart": 105.138,
+   "speechEnd": 108.423
+  },
+  {
+   "id": "seg3-19",
+   "text": "官方估算的约 9480 万美元，按事发时估值，只算 Balancer 部署的池子。",
+   "spoken": "官方估算的约 9480 万美元，按事发时估值，只算 Balancer 部署的池子。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-19.mp3",
+   "start": 109.46,
+   "dur": 6.744,
+   "speechStart": 109.558,
+   "speechEnd": 115.367
+  },
+  {
+   "id": "seg3-20",
+   "text": "早期第三方分析的数字是约 1.28 亿美元。引用时要写明口径。",
+   "spoken": "早期第三方分析的数字是约 1.28 亿美元。引用时要写明口径。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-20.mp3",
+   "start": 116.424,
+   "dur": 6.336,
+   "speechStart": 116.522,
+   "speechEnd": 121.924
+  },
+  {
+   "id": "seg3-21",
+   "text": "再往前，2023 年 11 月，KyberSwap Elastic 也栽在方向上。",
+   "spoken": "再往前，2023 年 11 月，KyberSwap Elastic 也栽在方向上。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-21.mp3",
+   "start": 122.98,
+   "dur": 5.832,
+   "speechStart": 123.078,
+   "speechEnd": 127.97
+  },
+  {
+   "id": "seg3-22",
+   "text": "一个本该向上取整的值，被写成了向下取整。",
+   "spoken": "一个本该向上取整的值，被写成了向下取整。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-22.mp3",
+   "start": 129.032,
+   "dur": 4.272,
+   "speechStart": 129.13,
+   "speechEnd": 132.463
+  },
+  {
+   "id": "seg3-23",
+   "text": "池子误判价格没有跨过 tick，同一段流动性，被计算了两次。",
+   "spoken": "池子误判价格没有跨过 tick，同一段流动性，被计算了两次。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-23.mp3",
+   "start": 133.524,
+   "dur": 5.256,
+   "speechStart": 133.622,
+   "speechEnd": 137.943
+  },
+  {
+   "id": "seg3-24",
+   "text": "官方复盘称，受影响资产约 5620 万美元。",
+   "spoken": "官方复盘称，受影响资产约 5620 万美元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-24.mp3",
+   "start": 139.0,
+   "dur": 4.944,
+   "speechStart": 139.098,
+   "speechEnd": 143.098
+  },
+  {
+   "id": "seg3-25",
+   "text": "教训是：单步测试里，误差可以忽略。",
+   "spoken": "教训是：单步测试里，误差可以忽略。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-25.mp3",
+   "start": 144.164,
+   "dur": 4.176,
+   "speechStart": 144.262,
+   "speechEnd": 147.488
+  },
+  {
+   "id": "seg3-26",
+   "text": "在能批量，能循环的路径里，它会被放大。",
+   "spoken": "在能批亮，能循环的路径里，它会被放大。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-26.mp3",
+   "start": 148.56,
+   "dur": 4.656,
+   "speechStart": 148.658,
+   "speechEnd": 152.384
+  },
+  {
+   "id": "seg3-27",
+   "text": "所以，要对同一操作重复 N 次，做模糊测试。",
+   "spoken": "所以，要对同一操作虫复 N 次，做模糊测试。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep06/audio/lines/seg3-27.mp3",
+   "start": 153.436,
+   "dur": 4.656,
+   "speechStart": 153.534,
+   "speechEnd": 157.248
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "整数",
+   "start": 1.698,
+   "end": 2.102
+  },
+  {
+   "line": 0,
+   "text": "除法",
+   "start": 2.114,
+   "end": 2.65
+  },
+  {
+   "line": 0,
+   "text": "会",
+   "start": 2.757,
+   "end": 2.96
+  },
+  {
+   "line": 0,
+   "text": "丢掉",
+   "start": 2.971,
+   "end": 3.245
+  },
+  {
+   "line": 0,
+   "text": "余数",
+   "start": 3.257,
+   "end": 3.721
+  },
+  {
+   "line": 0,
+   "text": "问题",
+   "start": 4.267,
+   "end": 4.624
+  },
+  {
+   "line": 0,
+   "text": "是",
+   "start": 4.624,
+   "end": 4.981
+  },
+  {
+   "line": 0,
+   "text": "余数",
+   "start": 5.279,
+   "end": 5.66
+  },
+  {
+   "line": 0,
+   "text": "归",
+   "start": 5.671,
+   "end": 5.85
+  },
+  {
+   "line": 0,
+   "text": "谁",
+   "start": 5.85,
+   "end": 6.16
+  },
+  {
+   "line": 1,
+   "text": "规则",
+   "start": 7.318,
+   "end": 7.734
+  },
+  {
+   "line": 1,
+   "text": "只有",
+   "start": 7.758,
+   "end": 7.913
+  },
+  {
+   "line": 1,
+   "text": "一条",
+   "start": 7.925,
+   "end": 8.437
+  },
+  {
+   "line": 1,
+   "text": "余数",
+   "start": 8.841,
+   "end": 9.222
+  },
+  {
+   "line": 1,
+   "text": "归",
+   "start": 9.222,
+   "end": 9.401
+  },
+  {
+   "line": 1,
+   "text": "协议",
+   "start": 9.413,
+   "end": 9.841
+  },
+  {
+   "line": 1,
+   "text": "不",
+   "start": 10.044,
+   "end": 10.21
+  },
+  {
+   "line": 1,
+   "text": "归",
+   "start": 10.21,
+   "end": 10.389
+  },
+  {
+   "line": 1,
+   "text": "调用",
+   "start": 10.401,
+   "end": 10.71
+  },
+  {
+   "line": 1,
+   "text": "者",
+   "start": 10.71,
+   "end": 10.96
+  },
+  {
+   "line": 2,
+   "text": "拿",
+   "start": 12.098,
+   "end": 12.431
+  },
+  {
+   "line": 2,
+   "text": "ERC",
+   "start": 12.431,
+   "end": 12.788
+  },
+  {
+   "line": 2,
+   "text": "4626",
+   "start": 12.895,
+   "end": 13.633
+  },
+  {
+   "line": 2,
+   "text": "金库",
+   "start": 13.645,
+   "end": 13.955
+  },
+  {
+   "line": 2,
+   "text": "来看",
+   "start": 13.967,
+   "end": 14.336
+  },
+  {
+   "line": 2,
+   "text": "四",
+   "start": 14.621,
+   "end": 14.871
+  },
+  {
+   "line": 2,
+   "text": "个",
+   "start": 14.871,
+   "end": 14.931
+  },
+  {
+   "line": 2,
+   "text": "函数",
+   "start": 14.943,
+   "end": 15.383
+  },
+  {
+   "line": 2,
+   "text": "四",
+   "start": 15.574,
+   "end": 15.824
+  },
+  {
+   "line": 2,
+   "text": "个",
+   "start": 15.824,
+   "end": 15.883
+  },
+  {
+   "line": 2,
+   "text": "方向",
+   "start": 15.895,
+   "end": 16.276
+  },
+  {
+   "line": 3,
+   "text": "deposit",
+   "start": 17.43,
+   "end": 18.096
+  },
+  {
+   "line": 3,
+   "text": "用户",
+   "start": 18.334,
+   "end": 18.644
+  },
+  {
+   "line": 3,
+   "text": "给",
+   "start": 18.656,
+   "end": 18.775
+  },
+  {
+   "line": 3,
+   "text": "资产",
+   "start": 18.787,
+   "end": 19.239
+  },
+  {
+   "line": 3,
+   "text": "拿",
+   "start": 19.561,
+   "end": 19.739
+  },
+  {
+   "line": 3,
+   "text": "份额",
+   "start": 19.751,
+   "end": 20.18
+  },
+  {
+   "line": 3,
+   "text": "份额",
+   "start": 20.713,
+   "end": 21.189
+  },
+  {
+   "line": 3,
+   "text": "向下",
+   "start": 21.213,
+   "end": 21.546
+  },
+  {
+   "line": 3,
+   "text": "取整",
+   "start": 21.558,
+   "end": 22.022
+  },
+  {
+   "line": 3,
+   "text": "少",
+   "start": 22.308,
+   "end": 22.642
+  },
+  {
+   "line": 3,
+   "text": "给",
+   "start": 22.642,
+   "end": 22.868
+  },
+  {
+   "line": 4,
+   "text": "mint",
+   "start": 24.01,
+   "end": 24.486
+  },
+  {
+   "line": 4,
+   "text": "用户",
+   "start": 24.783,
+   "end": 25.164
+  },
+  {
+   "line": 4,
+   "text": "指定",
+   "start": 25.188,
+   "end": 25.462
+  },
+  {
+   "line": 4,
+   "text": "份额",
+   "start": 25.474,
+   "end": 25.95
+  },
+  {
+   "line": 4,
+   "text": "算",
+   "start": 26.141,
+   "end": 26.343
+  },
+  {
+   "line": 4,
+   "text": "要",
+   "start": 26.343,
+   "end": 26.474
+  },
+  {
+   "line": 4,
+   "text": "付",
+   "start": 26.486,
+   "end": 26.676
+  },
+  {
+   "line": 4,
+   "text": "多少",
+   "start": 26.7,
+   "end": 27.01
+  },
+  {
+   "line": 4,
+   "text": "资产",
+   "start": 27.022,
+   "end": 27.402
+  },
+  {
+   "line": 4,
+   "text": "资产",
+   "start": 27.948,
+   "end": 28.436
+  },
+  {
+   "line": 4,
+   "text": "向上",
+   "start": 28.46,
+   "end": 28.805
+  },
+  {
+   "line": 4,
+   "text": "取整",
+   "start": 28.817,
+   "end": 29.221
+  },
+  {
+   "line": 4,
+   "text": "多",
+   "start": 29.495,
+   "end": 29.638
+  },
+  {
+   "line": 4,
+   "text": "收",
+   "start": 29.638,
+   "end": 29.924
+  },
+  {
+   "line": 5,
+   "text": "withdraw",
+   "start": 31.07,
+   "end": 31.855
+  },
+  {
+   "line": 5,
+   "text": "用户",
+   "start": 32.129,
+   "end": 32.498
+  },
+  {
+   "line": 5,
+   "text": "指定",
+   "start": 32.522,
+   "end": 32.784
+  },
+  {
+   "line": 5,
+   "text": "资产",
+   "start": 32.796,
+   "end": 33.26
+  },
+  {
+   "line": 5,
+   "text": "算",
+   "start": 33.534,
+   "end": 33.748
+  },
+  {
+   "line": 5,
+   "text": "要",
+   "start": 33.748,
+   "end": 33.903
+  },
+  {
+   "line": 5,
+   "text": "扣",
+   "start": 33.915,
+   "end": 34.153
+  },
+  {
+   "line": 5,
+   "text": "多少",
+   "start": 34.177,
+   "end": 34.462
+  },
+  {
+   "line": 5,
+   "text": "份额",
+   "start": 34.474,
+   "end": 34.891
+  },
+  {
+   "line": 5,
+   "text": "份额",
+   "start": 35.436,
+   "end": 35.936
+  },
+  {
+   "line": 5,
+   "text": "向上",
+   "start": 35.96,
+   "end": 36.305
+  },
+  {
+   "line": 5,
+   "text": "取整",
+   "start": 36.317,
+   "end": 36.746
+  },
+  {
+   "line": 5,
+   "text": "多",
+   "start": 37.008,
+   "end": 37.174
+  },
+  {
+   "line": 5,
+   "text": "扣",
+   "start": 37.174,
+   "end": 37.424
+  },
+  {
+   "line": 6,
+   "text": "redeem",
+   "start": 38.586,
+   "end": 39.181
+  },
+  {
+   "line": 6,
+   "text": "用户",
+   "start": 39.562,
+   "end": 39.967
+  },
+  {
+   "line": 6,
+   "text": "交出",
+   "start": 39.99,
+   "end": 40.324
+  },
+  {
+   "line": 6,
+   "text": "份额",
+   "start": 40.336,
+   "end": 40.788
+  },
+  {
+   "line": 6,
+   "text": "拿",
+   "start": 40.978,
+   "end": 41.169
+  },
+  {
+   "line": 6,
+   "text": "资产",
+   "start": 41.169,
+   "end": 41.609
+  },
+  {
+   "line": 6,
+   "text": "资产",
+   "start": 42.143,
+   "end": 42.619
+  },
+  {
+   "line": 6,
+   "text": "向下",
+   "start": 42.643,
+   "end": 42.976
+  },
+  {
+   "line": 6,
+   "text": "取整",
+   "start": 42.988,
+   "end": 43.464
+  },
+  {
+   "line": 6,
+   "text": "少",
+   "start": 43.702,
+   "end": 44.048
+  },
+  {
+   "line": 6,
+   "text": "给",
+   "start": 44.048,
+   "end": 44.309
+  },
+  {
+   "line": 7,
+   "text": "记成",
+   "start": 45.454,
+   "end": 45.811
+  },
+  {
+   "line": 7,
+   "text": "一句话",
+   "start": 45.823,
+   "end": 46.43
+  },
+  {
+   "line": 7,
+   "text": "给",
+   "start": 46.704,
+   "end": 46.894
+  },
+  {
+   "line": 7,
+   "text": "出去",
+   "start": 46.894,
+   "end": 47.204
+  },
+  {
+   "line": 7,
+   "text": "的",
+   "start": 47.204,
+   "end": 47.43
+  },
+  {
+   "line": 7,
+   "text": "向下",
+   "start": 47.656,
+   "end": 48.287
+  },
+  {
+   "line": 7,
+   "text": "收",
+   "start": 48.585,
+   "end": 48.918
+  },
+  {
+   "line": 7,
+   "text": "进来",
+   "start": 48.918,
+   "end": 49.192
+  },
+  {
+   "line": 7,
+   "text": "的",
+   "start": 49.192,
+   "end": 49.442
+  },
+  {
+   "line": 7,
+   "text": "向上",
+   "start": 49.716,
+   "end": 50.251
+  },
+  {
+   "line": 8,
+   "text": "方向",
+   "start": 51.41,
+   "end": 51.814
+  },
+  {
+   "line": 8,
+   "text": "反",
+   "start": 51.826,
+   "end": 51.969
+  },
+  {
+   "line": 8,
+   "text": "了",
+   "start": 51.969,
+   "end": 52.041
+  },
+  {
+   "line": 8,
+   "text": "会",
+   "start": 52.041,
+   "end": 52.124
+  },
+  {
+   "line": 8,
+   "text": "怎样",
+   "start": 52.136,
+   "end": 52.469
+  },
+  {
+   "line": 8,
+   "text": "攻击者",
+   "start": 53.014,
+   "end": 53.586
+  },
+  {
+   "line": 8,
+   "text": "可以",
+   "start": 53.61,
+   "end": 53.836
+  },
+  {
+   "line": 8,
+   "text": "做",
+   "start": 53.848,
+   "end": 53.991
+  },
+  {
+   "line": 8,
+   "text": "往返",
+   "start": 54.014,
+   "end": 54.36
+  },
+  {
+   "line": 8,
+   "text": "套利",
+   "start": 54.372,
+   "end": 54.8
+  },
+  {
+   "line": 9,
+   "text": "反复",
+   "start": 55.95,
+   "end": 56.354
+  },
+  {
+   "line": 9,
+   "text": "mint",
+   "start": 56.366,
+   "end": 56.652
+  },
+  {
+   "line": 9,
+   "text": "1 份",
+   "start": 56.652,
+   "end": 56.902
+  },
+  {
+   "line": 9,
+   "text": "额",
+   "start": 56.902,
+   "end": 57.188
+  },
+  {
+   "line": 9,
+   "text": "再",
+   "start": 57.342,
+   "end": 57.545
+  },
+  {
+   "line": 9,
+   "text": "redeem",
+   "start": 57.545,
+   "end": 58.009
+  },
+  {
+   "line": 9,
+   "text": "每次",
+   "start": 58.283,
+   "end": 58.712
+  },
+  {
+   "line": 9,
+   "text": "净",
+   "start": 58.723,
+   "end": 58.878
+  },
+  {
+   "line": 9,
+   "text": "赚",
+   "start": 58.878,
+   "end": 58.997
+  },
+  {
+   "line": 9,
+   "text": "1 个",
+   "start": 59.009,
+   "end": 59.152
+  },
+  {
+   "line": 9,
+   "text": "单位",
+   "start": 59.164,
+   "end": 59.45
+  },
+  {
+   "line": 9,
+   "text": "的",
+   "start": 59.45,
+   "end": 59.592
+  },
+  {
+   "line": 9,
+   "text": "舍入",
+   "start": 59.616,
+   "end": 59.926
+  },
+  {
+   "line": 9,
+   "text": "误差",
+   "start": 59.938,
+   "end": 60.342
+  },
+  {
+   "line": 10,
+   "text": "单次",
+   "start": 61.498,
+   "end": 61.926
+  },
+  {
+   "line": 10,
+   "text": "很",
+   "start": 61.938,
+   "end": 62.129
+  },
+  {
+   "line": 10,
+   "text": "小",
+   "start": 62.129,
+   "end": 62.486
+  },
+  {
+   "line": 10,
+   "text": "但",
+   "start": 63.019,
+   "end": 63.198
+  },
+  {
+   "line": 10,
+   "text": "在",
+   "start": 63.198,
+   "end": 63.293
+  },
+  {
+   "line": 10,
+   "text": "没有",
+   "start": 63.305,
+   "end": 63.495
+  },
+  {
+   "line": 10,
+   "text": "手续费",
+   "start": 63.507,
+   "end": 63.959
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 63.96,
+   "end": 64.019
+  },
+  {
+   "line": 10,
+   "text": "场景",
+   "start": 64.031,
+   "end": 64.34
+  },
+  {
+   "line": 10,
+   "text": "下",
+   "start": 64.34,
+   "end": 64.662
+  },
+  {
+   "line": 10,
+   "text": "可以",
+   "start": 64.912,
+   "end": 65.138
+  },
+  {
+   "line": 10,
+   "text": "循环",
+   "start": 65.15,
+   "end": 65.507
+  },
+  {
+   "line": 10,
+   "text": "上千次",
+   "start": 65.531,
+   "end": 66.186
+  },
+  {
+   "line": 11,
+   "text": "打",
+   "start": 67.358,
+   "end": 67.608
+  },
+  {
+   "line": 11,
+   "text": "个",
+   "start": 67.608,
+   "end": 67.691
+  },
+  {
+   "line": 11,
+   "text": "比方",
+   "start": 67.703,
+   "end": 68.143
+  },
+  {
+   "line": 11,
+   "text": "披萨店",
+   "start": 68.677,
+   "end": 69.177
+  },
+  {
+   "line": 11,
+   "text": "按",
+   "start": 69.2,
+   "end": 69.308
+  },
+  {
+   "line": 11,
+   "text": "块",
+   "start": 69.308,
+   "end": 69.45
+  },
+  {
+   "line": 11,
+   "text": "卖",
+   "start": 69.462,
+   "end": 69.689
+  },
+  {
+   "line": 11,
+   "text": "一",
+   "start": 70.01,
+   "end": 70.177
+  },
+  {
+   "line": 11,
+   "text": "张",
+   "start": 70.177,
+   "end": 70.367
+  },
+  {
+   "line": 11,
+   "text": "披",
+   "start": 70.379,
+   "end": 70.617
+  },
+  {
+   "line": 11,
+   "text": "萨切",
+   "start": 70.617,
+   "end": 70.986
+  },
+  {
+   "line": 11,
+   "text": "8 块",
+   "start": 70.998,
+   "end": 71.415
+  },
+  {
+   "line": 12,
+   "text": "你",
+   "start": 72.57,
+   "end": 72.701
+  },
+  {
+   "line": 12,
+   "text": "付",
+   "start": 72.701,
+   "end": 72.82
+  },
+  {
+   "line": 12,
+   "text": "三分之一",
+   "start": 72.843,
+   "end": 73.355
+  },
+  {
+   "line": 12,
+   "text": "张",
+   "start": 73.367,
+   "end": 73.51
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 73.51,
+   "end": 73.593
+  },
+  {
+   "line": 12,
+   "text": "钱",
+   "start": 73.593,
+   "end": 73.962
+  },
+  {
+   "line": 12,
+   "text": "店员",
+   "start": 74.332,
+   "end": 74.593
+  },
+  {
+   "line": 12,
+   "text": "要",
+   "start": 74.605,
+   "end": 74.724
+  },
+  {
+   "line": 12,
+   "text": "决定",
+   "start": 74.736,
+   "end": 75.165
+  },
+  {
+   "line": 12,
+   "text": "给",
+   "start": 75.474,
+   "end": 75.617
+  },
+  {
+   "line": 12,
+   "text": "你",
+   "start": 75.617,
+   "end": 75.701
+  },
+  {
+   "line": 12,
+   "text": "2 块",
+   "start": 75.712,
+   "end": 76.26
+  },
+  {
+   "line": 12,
+   "text": "还是",
+   "start": 76.284,
+   "end": 76.582
+  },
+  {
+   "line": 12,
+   "text": "3 块",
+   "start": 76.593,
+   "end": 76.998
+  },
+  {
+   "line": 13,
+   "text": "如果",
+   "start": 78.142,
+   "end": 78.392
+  },
+  {
+   "line": 13,
+   "text": "店员",
+   "start": 78.404,
+   "end": 78.796
+  },
+  {
+   "line": 13,
+   "text": "总往",
+   "start": 78.82,
+   "end": 79.07
+  },
+  {
+   "line": 13,
+   "text": "多",
+   "start": 79.07,
+   "end": 79.225
+  },
+  {
+   "line": 13,
+   "text": "了",
+   "start": 79.225,
+   "end": 79.308
+  },
+  {
+   "line": 13,
+   "text": "给",
+   "start": 79.32,
+   "end": 79.594
+  },
+  {
+   "line": 13,
+   "text": "聪明",
+   "start": 79.904,
+   "end": 80.213
+  },
+  {
+   "line": 13,
+   "text": "的",
+   "start": 80.213,
+   "end": 80.284
+  },
+  {
+   "line": 13,
+   "text": "顾客",
+   "start": 80.296,
+   "end": 80.737
+  },
+  {
+   "line": 13,
+   "text": "就",
+   "start": 80.868,
+   "end": 81.011
+  },
+  {
+   "line": 13,
+   "text": "反复",
+   "start": 81.023,
+   "end": 81.344
+  },
+  {
+   "line": 13,
+   "text": "买",
+   "start": 81.356,
+   "end": 81.511
+  },
+  {
+   "line": 13,
+   "text": "三分之一",
+   "start": 81.534,
+   "end": 82.094
+  },
+  {
+   "line": 13,
+   "text": "张",
+   "start": 82.094,
+   "end": 82.344
+  },
+  {
+   "line": 14,
+   "text": "比方",
+   "start": 83.498,
+   "end": 83.807
+  },
+  {
+   "line": 14,
+   "text": "在",
+   "start": 83.807,
+   "end": 83.902
+  },
+  {
+   "line": 14,
+   "text": "这里",
+   "start": 83.914,
+   "end": 84.081
+  },
+  {
+   "line": 14,
+   "text": "不",
+   "start": 84.093,
+   "end": 84.2
+  },
+  {
+   "line": 14,
+   "text": "成立",
+   "start": 84.2,
+   "end": 84.676
+  },
+  {
+   "line": 14,
+   "text": "披",
+   "start": 85.021,
+   "end": 85.2
+  },
+  {
+   "line": 14,
+   "text": "萨",
+   "start": 85.2,
+   "end": 85.367
+  },
+  {
+   "line": 14,
+   "text": "店",
+   "start": 85.367,
+   "end": 85.617
+  },
+  {
+   "line": 14,
+   "text": "会",
+   "start": 85.64,
+   "end": 85.759
+  },
+  {
+   "line": 14,
+   "text": "被",
+   "start": 85.76,
+   "end": 85.855
+  },
+  {
+   "line": 14,
+   "text": "投诉",
+   "start": 85.867,
+   "end": 86.283
+  },
+  {
+   "line": 15,
+   "text": "合约",
+   "start": 87.438,
+   "end": 87.771
+  },
+  {
+   "line": 15,
+   "text": "里",
+   "start": 87.771,
+   "end": 88.057
+  },
+  {
+   "line": 15,
+   "text": "多",
+   "start": 88.39,
+   "end": 88.557
+  },
+  {
+   "line": 15,
+   "text": "拿",
+   "start": 88.557,
+   "end": 88.676
+  },
+  {
+   "line": 15,
+   "text": "1",
+   "start": 88.688,
+   "end": 88.783
+  },
+  {
+   "line": 15,
+   "text": "wei",
+   "start": 88.783,
+   "end": 88.938
+  },
+  {
+   "line": 15,
+   "text": "的",
+   "start": 88.938,
+   "end": 89.009
+  },
+  {
+   "line": 15,
+   "text": "操作",
+   "start": 89.021,
+   "end": 89.473
+  },
+  {
+   "line": 15,
+   "text": "可以",
+   "start": 89.64,
+   "end": 89.854
+  },
+  {
+   "line": 15,
+   "text": "在",
+   "start": 89.866,
+   "end": 89.973
+  },
+  {
+   "line": 15,
+   "text": "一",
+   "start": 89.985,
+   "end": 90.057
+  },
+  {
+   "line": 15,
+   "text": "笔",
+   "start": 90.057,
+   "end": 90.164
+  },
+  {
+   "line": 15,
+   "text": "交易",
+   "start": 90.176,
+   "end": 90.438
+  },
+  {
+   "line": 15,
+   "text": "里重",
+   "start": 90.45,
+   "end": 90.878
+  },
+  {
+   "line": 15,
+   "text": "复",
+   "start": 90.961,
+   "end": 91.199
+  },
+  {
+   "line": 15,
+   "text": "几千",
+   "start": 91.2,
+   "end": 91.545
+  },
+  {
+   "line": 15,
+   "text": "次",
+   "start": 91.545,
+   "end": 91.759
+  },
+  {
+   "line": 16,
+   "text": "回到",
+   "start": 92.914,
+   "end": 93.426
+  },
+  {
+   "line": 16,
+   "text": "Balancer",
+   "start": 93.521,
+   "end": 94.128
+  },
+  {
+   "line": 16,
+   "text": "按",
+   "start": 94.673,
+   "end": 94.911
+  },
+  {
+   "line": 16,
+   "text": "公开",
+   "start": 94.935,
+   "end": 95.221
+  },
+  {
+   "line": 16,
+   "text": "分析",
+   "start": 95.233,
+   "end": 95.721
+  },
+  {
+   "line": 16,
+   "text": "问题",
+   "start": 96.054,
+   "end": 96.352
+  },
+  {
+   "line": 16,
+   "text": "出",
+   "start": 96.352,
+   "end": 96.495
+  },
+  {
+   "line": 16,
+   "text": "在",
+   "start": 96.506,
+   "end": 96.625
+  },
+  {
+   "line": 16,
+   "text": "稳定",
+   "start": 96.649,
+   "end": 97.006
+  },
+  {
+   "line": 16,
+   "text": "池",
+   "start": 97.006,
+   "end": 97.173
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 97.173,
+   "end": 97.328
+  },
+  {
+   "line": 16,
+   "text": "批量",
+   "start": 97.352,
+   "end": 97.661
+  },
+  {
+   "line": 16,
+   "text": "交换",
+   "start": 97.673,
+   "end": 98.054
+  },
+  {
+   "line": 16,
+   "text": "里",
+   "start": 98.054,
+   "end": 98.233
+  },
+  {
+   "line": 17,
+   "text": "攻击",
+   "start": 99.374,
+   "end": 99.743
+  },
+  {
+   "line": 17,
+   "text": "者",
+   "start": 99.743,
+   "end": 99.897
+  },
+  {
+   "line": 17,
+   "text": "串联",
+   "start": 99.921,
+   "end": 100.243
+  },
+  {
+   "line": 17,
+   "text": "大量",
+   "start": 100.266,
+   "end": 100.576
+  },
+  {
+   "line": 17,
+   "text": "小额",
+   "start": 100.6,
+   "end": 100.897
+  },
+  {
+   "line": 17,
+   "text": "交换",
+   "start": 100.909,
+   "end": 101.35
+  },
+  {
+   "line": 17,
+   "text": "让",
+   "start": 101.695,
+   "end": 101.862
+  },
+  {
+   "line": 17,
+   "text": "每",
+   "start": 101.874,
+   "end": 102.04
+  },
+  {
+   "line": 17,
+   "text": "一",
+   "start": 102.04,
+   "end": 102.136
+  },
+  {
+   "line": 17,
+   "text": "步",
+   "start": 102.136,
+   "end": 102.231
+  },
+  {
+   "line": 17,
+   "text": "的",
+   "start": 102.231,
+   "end": 102.29
+  },
+  {
+   "line": 17,
+   "text": "舍入",
+   "start": 102.302,
+   "end": 102.731
+  },
+  {
+   "line": 17,
+   "text": "都",
+   "start": 102.969,
+   "end": 103.159
+  },
+  {
+   "line": 17,
+   "text": "朝",
+   "start": 103.159,
+   "end": 103.338
+  },
+  {
+   "line": 17,
+   "text": "自己",
+   "start": 103.35,
+   "end": 103.576
+  },
+  {
+   "line": 17,
+   "text": "累积",
+   "start": 103.588,
+   "end": 103.981
+  },
+  {
+   "line": 18,
+   "text": "池子",
+   "start": 105.138,
+   "end": 105.507
+  },
+  {
+   "line": 18,
+   "text": "的",
+   "start": 105.507,
+   "end": 105.59
+  },
+  {
+   "line": 18,
+   "text": "不",
+   "start": 105.614,
+   "end": 105.733
+  },
+  {
+   "line": 18,
+   "text": "变量",
+   "start": 105.733,
+   "end": 106.221
+  },
+  {
+   "line": 18,
+   "text": "和",
+   "start": 106.328,
+   "end": 106.483
+  },
+  {
+   "line": 18,
+   "text": "份额",
+   "start": 106.495,
+   "end": 106.816
+  },
+  {
+   "line": 18,
+   "text": "价格",
+   "start": 106.828,
+   "end": 107.292
+  },
+  {
+   "line": 18,
+   "text": "因此",
+   "start": 107.542,
+   "end": 107.888
+  },
+  {
+   "line": 18,
+   "text": "被",
+   "start": 107.911,
+   "end": 108.03
+  },
+  {
+   "line": 18,
+   "text": "操纵",
+   "start": 108.03,
+   "end": 108.423
+  },
+  {
+   "line": 19,
+   "text": "官方",
+   "start": 109.558,
+   "end": 109.891
+  },
+  {
+   "line": 19,
+   "text": "估算",
+   "start": 109.903,
+   "end": 110.189
+  },
+  {
+   "line": 19,
+   "text": "的",
+   "start": 110.189,
+   "end": 110.439
+  },
+  {
+   "line": 19,
+   "text": "约",
+   "start": 110.522,
+   "end": 110.748
+  },
+  {
+   "line": 19,
+   "text": "9480 万",
+   "start": 110.76,
+   "end": 111.724
+  },
+  {
+   "line": 19,
+   "text": "美元",
+   "start": 111.736,
+   "end": 112.141
+  },
+  {
+   "line": 19,
+   "text": "按",
+   "start": 112.379,
+   "end": 112.558
+  },
+  {
+   "line": 19,
+   "text": "事发",
+   "start": 112.57,
+   "end": 112.843
+  },
+  {
+   "line": 19,
+   "text": "时",
+   "start": 112.843,
+   "end": 113.034
+  },
+  {
+   "line": 19,
+   "text": "估值",
+   "start": 113.046,
+   "end": 113.546
+  },
+  {
+   "line": 19,
+   "text": "只",
+   "start": 113.712,
+   "end": 113.879
+  },
+  {
+   "line": 19,
+   "text": "算",
+   "start": 113.879,
+   "end": 114.093
+  },
+  {
+   "line": 19,
+   "text": "Balancer",
+   "start": 114.117,
+   "end": 114.593
+  },
+  {
+   "line": 19,
+   "text": "部署",
+   "start": 114.617,
+   "end": 114.879
+  },
+  {
+   "line": 19,
+   "text": "的",
+   "start": 114.879,
+   "end": 114.939
+  },
+  {
+   "line": 19,
+   "text": "池子",
+   "start": 114.95,
+   "end": 115.367
+  },
+  {
+   "line": 20,
+   "text": "早期",
+   "start": 116.522,
+   "end": 117.069
+  },
+  {
+   "line": 20,
+   "text": "第三方",
+   "start": 117.093,
+   "end": 117.486
+  },
+  {
+   "line": 20,
+   "text": "分析",
+   "start": 117.51,
+   "end": 117.736
+  },
+  {
+   "line": 20,
+   "text": "的",
+   "start": 117.736,
+   "end": 117.795
+  },
+  {
+   "line": 20,
+   "text": "数字",
+   "start": 117.807,
+   "end": 118.224
+  },
+  {
+   "line": 20,
+   "text": "是",
+   "start": 118.319,
+   "end": 118.51
+  },
+  {
+   "line": 20,
+   "text": "约",
+   "start": 118.51,
+   "end": 118.676
+  },
+  {
+   "line": 20,
+   "text": "1.28 亿",
+   "start": 118.688,
+   "end": 119.355
+  },
+  {
+   "line": 20,
+   "text": "美元",
+   "start": 119.367,
+   "end": 119.843
+  },
+  {
+   "line": 20,
+   "text": "引用",
+   "start": 120.388,
+   "end": 120.71
+  },
+  {
+   "line": 20,
+   "text": "时",
+   "start": 120.71,
+   "end": 121.019
+  },
+  {
+   "line": 20,
+   "text": "要",
+   "start": 121.043,
+   "end": 121.162
+  },
+  {
+   "line": 20,
+   "text": "写",
+   "start": 121.174,
+   "end": 121.341
+  },
+  {
+   "line": 20,
+   "text": "明",
+   "start": 121.341,
+   "end": 121.46
+  },
+  {
+   "line": 20,
+   "text": "口径",
+   "start": 121.472,
+   "end": 121.924
+  },
+  {
+   "line": 21,
+   "text": "再",
+   "start": 123.078,
+   "end": 123.22
+  },
+  {
+   "line": 21,
+   "text": "往前",
+   "start": 123.22,
+   "end": 123.685
+  },
+  {
+   "line": 21,
+   "text": "2023",
+   "start": 124.125,
+   "end": 124.661
+  },
+  {
+   "line": 21,
+   "text": "年",
+   "start": 124.661,
+   "end": 124.816
+  },
+  {
+   "line": 21,
+   "text": "11 月",
+   "start": 124.84,
+   "end": 125.363
+  },
+  {
+   "line": 21,
+   "text": "KyberSwap",
+   "start": 125.625,
+   "end": 126.351
+  },
+  {
+   "line": 21,
+   "text": "Elastic",
+   "start": 126.363,
+   "end": 126.947
+  },
+  {
+   "line": 21,
+   "text": "也",
+   "start": 127.042,
+   "end": 127.209
+  },
+  {
+   "line": 21,
+   "text": "栽",
+   "start": 127.209,
+   "end": 127.34
+  },
+  {
+   "line": 21,
+   "text": "在",
+   "start": 127.351,
+   "end": 127.447
+  },
+  {
+   "line": 21,
+   "text": "方向",
+   "start": 127.459,
+   "end": 127.756
+  },
+  {
+   "line": 21,
+   "text": "上",
+   "start": 127.756,
+   "end": 127.97
+  },
+  {
+   "line": 22,
+   "text": "一个",
+   "start": 129.13,
+   "end": 129.368
+  },
+  {
+   "line": 22,
+   "text": "本该",
+   "start": 129.392,
+   "end": 129.749
+  },
+  {
+   "line": 22,
+   "text": "向上",
+   "start": 129.772,
+   "end": 130.13
+  },
+  {
+   "line": 22,
+   "text": "取整",
+   "start": 130.142,
+   "end": 130.475
+  },
+  {
+   "line": 22,
+   "text": "的",
+   "start": 130.475,
+   "end": 130.558
+  },
+  {
+   "line": 22,
+   "text": "值",
+   "start": 130.558,
+   "end": 130.903
+  },
+  {
+   "line": 22,
+   "text": "被",
+   "start": 131.082,
+   "end": 131.225
+  },
+  {
+   "line": 22,
+   "text": "写成",
+   "start": 131.225,
+   "end": 131.534
+  },
+  {
+   "line": 22,
+   "text": "了",
+   "start": 131.534,
+   "end": 131.63
+  },
+  {
+   "line": 22,
+   "text": "向下",
+   "start": 131.653,
+   "end": 132.011
+  },
+  {
+   "line": 22,
+   "text": "取整",
+   "start": 132.022,
+   "end": 132.463
+  },
+  {
+   "line": 23,
+   "text": "池子",
+   "start": 133.622,
+   "end": 133.943
+  },
+  {
+   "line": 23,
+   "text": "误判",
+   "start": 133.955,
+   "end": 134.276
+  },
+  {
+   "line": 23,
+   "text": "价格",
+   "start": 134.288,
+   "end": 134.681
+  },
+  {
+   "line": 23,
+   "text": "没有",
+   "start": 134.705,
+   "end": 134.907
+  },
+  {
+   "line": 23,
+   "text": "跨过",
+   "start": 134.919,
+   "end": 135.193
+  },
+  {
+   "line": 23,
+   "text": "tick",
+   "start": 135.193,
+   "end": 135.633
+  },
+  {
+   "line": 23,
+   "text": "同",
+   "start": 135.907,
+   "end": 136.098
+  },
+  {
+   "line": 23,
+   "text": "一段",
+   "start": 136.098,
+   "end": 136.3
+  },
+  {
+   "line": 23,
+   "text": "流动性",
+   "start": 136.312,
+   "end": 136.848
+  },
+  {
+   "line": 23,
+   "text": "被",
+   "start": 137.038,
+   "end": 137.181
+  },
+  {
+   "line": 23,
+   "text": "计算",
+   "start": 137.193,
+   "end": 137.419
+  },
+  {
+   "line": 23,
+   "text": "了",
+   "start": 137.419,
+   "end": 137.479
+  },
+  {
+   "line": 23,
+   "text": "两",
+   "start": 137.491,
+   "end": 137.681
+  },
+  {
+   "line": 23,
+   "text": "次",
+   "start": 137.681,
+   "end": 137.943
+  },
+  {
+   "line": 24,
+   "text": "官方",
+   "start": 139.098,
+   "end": 139.455
+  },
+  {
+   "line": 24,
+   "text": "复盘",
+   "start": 139.467,
+   "end": 139.729
+  },
+  {
+   "line": 24,
+   "text": "称",
+   "start": 139.729,
+   "end": 140.05
+  },
+  {
+   "line": 24,
+   "text": "受",
+   "start": 140.288,
+   "end": 140.586
+  },
+  {
+   "line": 24,
+   "text": "影响",
+   "start": 140.598,
+   "end": 140.907
+  },
+  {
+   "line": 24,
+   "text": "资产",
+   "start": 140.919,
+   "end": 141.395
+  },
+  {
+   "line": 24,
+   "text": "约",
+   "start": 141.479,
+   "end": 141.693
+  },
+  {
+   "line": 24,
+   "text": "5620 万",
+   "start": 141.705,
+   "end": 142.669
+  },
+  {
+   "line": 24,
+   "text": "美元",
+   "start": 142.681,
+   "end": 143.098
+  },
+  {
+   "line": 25,
+   "text": "教训",
+   "start": 144.262,
+   "end": 144.631
+  },
+  {
+   "line": 25,
+   "text": "是",
+   "start": 144.631,
+   "end": 144.964
+  },
+  {
+   "line": 25,
+   "text": "单步",
+   "start": 145.25,
+   "end": 145.559
+  },
+  {
+   "line": 25,
+   "text": "测试",
+   "start": 145.571,
+   "end": 145.928
+  },
+  {
+   "line": 25,
+   "text": "里",
+   "start": 145.928,
+   "end": 146.143
+  },
+  {
+   "line": 25,
+   "text": "误差",
+   "start": 146.416,
+   "end": 146.881
+  },
+  {
+   "line": 25,
+   "text": "可以",
+   "start": 146.904,
+   "end": 147.071
+  },
+  {
+   "line": 25,
+   "text": "忽略",
+   "start": 147.083,
+   "end": 147.488
+  },
+  {
+   "line": 26,
+   "text": "在",
+   "start": 148.658,
+   "end": 148.824
+  },
+  {
+   "line": 26,
+   "text": "能",
+   "start": 148.836,
+   "end": 148.979
+  },
+  {
+   "line": 26,
+   "text": "批量",
+   "start": 148.979,
+   "end": 149.491
+  },
+  {
+   "line": 26,
+   "text": "能",
+   "start": 149.86,
+   "end": 150.039
+  },
+  {
+   "line": 26,
+   "text": "循环",
+   "start": 150.05,
+   "end": 150.419
+  },
+  {
+   "line": 26,
+   "text": "的",
+   "start": 150.42,
+   "end": 150.491
+  },
+  {
+   "line": 26,
+   "text": "路径",
+   "start": 150.503,
+   "end": 150.812
+  },
+  {
+   "line": 26,
+   "text": "里",
+   "start": 150.812,
+   "end": 151.098
+  },
+  {
+   "line": 26,
+   "text": "它",
+   "start": 151.515,
+   "end": 151.729
+  },
+  {
+   "line": 26,
+   "text": "会",
+   "start": 151.729,
+   "end": 151.848
+  },
+  {
+   "line": 26,
+   "text": "被",
+   "start": 151.86,
+   "end": 151.943
+  },
+  {
+   "line": 26,
+   "text": "放大",
+   "start": 151.955,
+   "end": 152.384
+  },
+  {
+   "line": 27,
+   "text": "所以",
+   "start": 153.534,
+   "end": 154.069
+  },
+  {
+   "line": 27,
+   "text": "要",
+   "start": 154.45,
+   "end": 154.593
+  },
+  {
+   "line": 27,
+   "text": "对",
+   "start": 154.593,
+   "end": 154.7
+  },
+  {
+   "line": 27,
+   "text": "同一",
+   "start": 154.724,
+   "end": 155.022
+  },
+  {
+   "line": 27,
+   "text": "操作重",
+   "start": 155.034,
+   "end": 155.581
+  },
+  {
+   "line": 27,
+   "text": "复",
+   "start": 155.593,
+   "end": 155.76
+  },
+  {
+   "line": 27,
+   "text": "N",
+   "start": 155.76,
+   "end": 155.903
+  },
+  {
+   "line": 27,
+   "text": "次",
+   "start": 155.903,
+   "end": 156.176
+  },
+  {
+   "line": 27,
+   "text": "做",
+   "start": 156.391,
+   "end": 156.545
+  },
+  {
+   "line": 27,
+   "text": "模糊",
+   "start": 156.557,
+   "end": 156.855
+  },
+  {
+   "line": 27,
+   "text": "测试",
+   "start": 156.867,
+   "end": 157.248
+  }
+ ],
+ "captions": [
+  {
+   "text": "整数除法会丢掉余数",
+   "start": 1.648,
+   "end": 3.841,
+   "id": "c0"
+  },
+  {
+   "text": "问题是 余数归谁",
+   "start": 4.217,
+   "end": 6.28,
+   "id": "c1"
+  },
+  {
+   "text": "规则只有一条",
+   "start": 7.268,
+   "end": 8.557,
+   "id": "c2"
+  },
+  {
+   "text": "余数归协议",
+   "start": 8.791,
+   "end": 9.961,
+   "id": "c3"
+  },
+  {
+   "text": "不归调用者",
+   "start": 9.994,
+   "end": 11.08,
+   "id": "c4"
+  },
+  {
+   "text": "拿 ERC-4626 金库来看",
+   "start": 12.048,
+   "end": 14.456,
+   "id": "c5"
+  },
+  {
+   "text": "四个函数",
+   "start": 14.571,
+   "end": 15.503,
+   "id": "c6"
+  },
+  {
+   "text": "四个方向",
+   "start": 15.524,
+   "end": 16.396,
+   "id": "c7"
+  },
+  {
+   "text": "deposit",
+   "start": 17.38,
+   "end": 18.216,
+   "id": "c8"
+  },
+  {
+   "text": "用户给资产 拿份额",
+   "start": 18.284,
+   "end": 20.3,
+   "id": "c9"
+  },
+  {
+   "text": "份额向下取整 少给",
+   "start": 20.663,
+   "end": 22.988,
+   "id": "c10"
+  },
+  {
+   "text": "mint",
+   "start": 23.96,
+   "end": 24.606,
+   "id": "c11"
+  },
+  {
+   "text": "用户指定份额",
+   "start": 24.733,
+   "end": 26.07,
+   "id": "c12"
+  },
+  {
+   "text": "算要付多少资产",
+   "start": 26.091,
+   "end": 27.522,
+   "id": "c13"
+  },
+  {
+   "text": "资产向上取整 多收",
+   "start": 27.898,
+   "end": 30.044,
+   "id": "c14"
+  },
+  {
+   "text": "withdraw",
+   "start": 31.02,
+   "end": 31.975,
+   "id": "c15"
+  },
+  {
+   "text": "用户指定资产",
+   "start": 32.079,
+   "end": 33.38,
+   "id": "c16"
+  },
+  {
+   "text": "算要扣多少份额",
+   "start": 33.484,
+   "end": 35.011,
+   "id": "c17"
+  },
+  {
+   "text": "份额向上取整 多扣",
+   "start": 35.386,
+   "end": 37.544,
+   "id": "c18"
+  },
+  {
+   "text": "redeem",
+   "start": 38.536,
+   "end": 39.301,
+   "id": "c19"
+  },
+  {
+   "text": "用户交出份额 拿资产",
+   "start": 39.512,
+   "end": 41.729,
+   "id": "c20"
+  },
+  {
+   "text": "资产向下取整 少给",
+   "start": 42.093,
+   "end": 44.429,
+   "id": "c21"
+  },
+  {
+   "text": "记成一句话",
+   "start": 45.404,
+   "end": 46.55,
+   "id": "c22"
+  },
+  {
+   "text": "给出去的 向下",
+   "start": 46.654,
+   "end": 48.407,
+   "id": "c23"
+  },
+  {
+   "text": "收进来的 向上",
+   "start": 48.535,
+   "end": 50.371,
+   "id": "c24"
+  },
+  {
+   "text": "方向反了会怎样",
+   "start": 51.36,
+   "end": 52.589,
+   "id": "c25"
+  },
+  {
+   "text": "攻击者可以做往返套利",
+   "start": 52.964,
+   "end": 54.92,
+   "id": "c26"
+  },
+  {
+   "text": "反复 mint 1 份额",
+   "start": 55.9,
+   "end": 57.272,
+   "id": "c27"
+  },
+  {
+   "text": "再 redeem",
+   "start": 57.292,
+   "end": 58.129,
+   "id": "c28"
+  },
+  {
+   "text": "每次净赚 1 个单位的舍入误差",
+   "start": 58.233,
+   "end": 60.462,
+   "id": "c29"
+  },
+  {
+   "text": "单次很小",
+   "start": 61.448,
+   "end": 62.606,
+   "id": "c30"
+  },
+  {
+   "text": "但在没有手续费的场景下",
+   "start": 62.969,
+   "end": 64.782,
+   "id": "c31"
+  },
+  {
+   "text": "可以循环上千次",
+   "start": 64.862,
+   "end": 66.306,
+   "id": "c32"
+  },
+  {
+   "text": "打个比方",
+   "start": 67.308,
+   "end": 68.263,
+   "id": "c33"
+  },
+  {
+   "text": "披萨店按块卖",
+   "start": 68.627,
+   "end": 69.809,
+   "id": "c34"
+  },
+  {
+   "text": "一张披萨切 8 块",
+   "start": 69.96,
+   "end": 71.535,
+   "id": "c35"
+  },
+  {
+   "text": "你付三分之一张的钱",
+   "start": 72.52,
+   "end": 74.082,
+   "id": "c36"
+  },
+  {
+   "text": "店员要决定",
+   "start": 74.282,
+   "end": 75.285,
+   "id": "c37"
+  },
+  {
+   "text": "给你 2 块还是 3 块",
+   "start": 75.424,
+   "end": 77.118,
+   "id": "c38"
+  },
+  {
+   "text": "如果店员总往多了给",
+   "start": 78.092,
+   "end": 79.714,
+   "id": "c39"
+  },
+  {
+   "text": "聪明的顾客",
+   "start": 79.854,
+   "end": 80.798,
+   "id": "c40"
+  },
+  {
+   "text": "就反复买三分之一张",
+   "start": 80.818,
+   "end": 82.464,
+   "id": "c41"
+  },
+  {
+   "text": "比方在这里不成立",
+   "start": 83.448,
+   "end": 84.796,
+   "id": "c42"
+  },
+  {
+   "text": "披萨店会被投诉",
+   "start": 84.971,
+   "end": 86.403,
+   "id": "c43"
+  },
+  {
+   "text": "合约里 多拿 1 wei 的操作",
+   "start": 87.388,
+   "end": 89.57,
+   "id": "c44"
+  },
+  {
+   "text": "可以在一笔交易里重复几千次",
+   "start": 89.59,
+   "end": 91.879,
+   "id": "c45"
+  },
+  {
+   "text": "回到 Balancer",
+   "start": 92.864,
+   "end": 94.248,
+   "id": "c46"
+  },
+  {
+   "text": "按公开分析",
+   "start": 94.623,
+   "end": 95.841,
+   "id": "c47"
+  },
+  {
+   "text": "问题出在稳定池的批量交换里",
+   "start": 96.004,
+   "end": 98.353,
+   "id": "c48"
+  },
+  {
+   "text": "攻击者串联大量小额交换",
+   "start": 99.324,
+   "end": 101.47,
+   "id": "c49"
+  },
+  {
+   "text": "让每一步的舍入",
+   "start": 101.645,
+   "end": 102.851,
+   "id": "c50"
+  },
+  {
+   "text": "都朝自己累积",
+   "start": 102.919,
+   "end": 104.101,
+   "id": "c51"
+  },
+  {
+   "text": "池子的不变量和份额价格",
+   "start": 105.088,
+   "end": 107.412,
+   "id": "c52"
+  },
+  {
+   "text": "因此被操纵",
+   "start": 107.492,
+   "end": 108.543,
+   "id": "c53"
+  },
+  {
+   "text": "官方估算的约 9480 万美元",
+   "start": 109.508,
+   "end": 112.261,
+   "id": "c54"
+  },
+  {
+   "text": "按事发时估值",
+   "start": 112.329,
+   "end": 113.642,
+   "id": "c55"
+  },
+  {
+   "text": "只算 Balancer 部署的池子",
+   "start": 113.662,
+   "end": 115.487,
+   "id": "c56"
+  },
+  {
+   "text": "早期第三方分析的数字是约 1.28 亿美元",
+   "start": 116.472,
+   "end": 119.963,
+   "id": "c57"
+  },
+  {
+   "text": "引用时要写明口径",
+   "start": 120.338,
+   "end": 122.044,
+   "id": "c58"
+  },
+  {
+   "text": "再往前 2023 年 11 月",
+   "start": 123.028,
+   "end": 125.483,
+   "id": "c59"
+  },
+  {
+   "text": "KyberSwap Elastic 也栽在方向上",
+   "start": 125.575,
+   "end": 128.09,
+   "id": "c60"
+  },
+  {
+   "text": "一个本该向上取整的值",
+   "start": 129.08,
+   "end": 131.012,
+   "id": "c61"
+  },
+  {
+   "text": "被写成了向下取整",
+   "start": 131.032,
+   "end": 132.583,
+   "id": "c62"
+  },
+  {
+   "text": "池子误判价格没有跨过 tick",
+   "start": 133.572,
+   "end": 135.753,
+   "id": "c63"
+  },
+  {
+   "text": "同一段流动性",
+   "start": 135.857,
+   "end": 136.968,
+   "id": "c64"
+  },
+  {
+   "text": "被计算了两次",
+   "start": 136.988,
+   "end": 138.063,
+   "id": "c65"
+  },
+  {
+   "text": "官方复盘称",
+   "start": 139.048,
+   "end": 140.17,
+   "id": "c66"
+  },
+  {
+   "text": "受影响资产约 5620 万美元",
+   "start": 140.238,
+   "end": 143.218,
+   "id": "c67"
+  },
+  {
+   "text": "教训是 单步测试里",
+   "start": 144.212,
+   "end": 146.263,
+   "id": "c68"
+  },
+  {
+   "text": "误差可以忽略",
+   "start": 146.366,
+   "end": 147.608,
+   "id": "c69"
+  },
+  {
+   "text": "在能批量",
+   "start": 148.608,
+   "end": 149.611,
+   "id": "c70"
+  },
+  {
+   "text": "能循环的路径里",
+   "start": 149.81,
+   "end": 151.218,
+   "id": "c71"
+  },
+  {
+   "text": "它会被放大",
+   "start": 151.465,
+   "end": 152.504,
+   "id": "c72"
+  },
+  {
+   "text": "所以 要对同一操作重复 N 次",
+   "start": 153.484,
+   "end": 156.296,
+   "id": "c73"
+  },
+  {
+   "text": "做模糊测试",
+   "start": 156.341,
+   "end": 157.368,
+   "id": "c74"
+  }
+ ]
+}

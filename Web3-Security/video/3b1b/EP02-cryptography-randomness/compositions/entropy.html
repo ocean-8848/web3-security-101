@@ -1,0 +1,116 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="entropy" data-duration="53.59" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="e-all">
+        <text id="e-tag" class="h" x="120" y="130" font-size="48" fill="#FF9F43" font-weight="800">① 熵</text>
+
+        <!-- 熵条：256 位 → 32 位 -->
+        <rect id="e-barbg" class="h" x="300" y="200" width="1320" height="60" rx="10" fill="#1c2029" />
+        <rect id="e-bar" class="h" x="300" y="200" width="1320" height="60" rx="10" fill="#B48EF0" />
+        <text id="e-b256" class="h" x="1640" y="243" font-size="34" fill="#B48EF0" font-weight="700">256 位</text>
+        <text id="e-b32" class="h" x="485" y="243" font-size="34" fill="#FC6255" font-weight="700">32 位</text>
+        <text id="e-bok" class="h" x="1640" y="243" font-size="34" fill="#83C167" font-weight="700">256 位</text>
+
+        <!-- 案例 -->
+        <g id="e-c0" class="h"><circle cx="135" cy="358" r="10" fill="#6b6f7a" /><text x="160" y="370" font-size="32" fill="#8a8f99">Profanity · 2022 年 9 月 · 32 位种子</text></g>
+        <g id="e-c1" class="h"><circle cx="135" cy="423" r="10" fill="#FC6255" /><text x="160" y="435" font-size="32" fill="#e8e6df">Trust Wallet 浏览器扩展 · 2022 年 11 月 · WASM 版：<tspan id="e-c1h">32 位种子的伪随机数生成器</tspan></text></g>
+        <g id="e-c2" class="h"><circle cx="135" cy="488" r="10" fill="#FC6255" /><text x="160" y="500" font-size="32" fill="#e8e6df">Libbitcoin Explorer · 2023 年 · <tspan id="e-c2h">32 位时间值做种子</tspan> <tspan id="e-c2l" fill="#FC6255" font-weight="700" opacity="0">· 7 月 12 日，至少约 90 万美元</tspan></text></g>
+
+        <!-- 比对：算出的地址 vs 链上有余额的地址 -->
+        <g id="e-match">
+          <text id="e-lh" class="h" x="480" y="600" font-size="30" fill="#FC6255" text-anchor="middle" font-weight="700">枚举全部种子，算出的地址</text>
+          <text id="e-rh" class="h" x="1440" y="600" font-size="30" fill="#F0B90B" text-anchor="middle" font-weight="700">链上有余额的地址</text>
+          <g id="e-left"></g>
+          <g id="e-right"></g>
+          <g id="e-lines" fill="none" stroke="#6b6f7a" stroke-width="2"></g>
+          <path id="e-hit" class="dr" pathLength="1" d="M700 863 C 900 863, 1020 791, 1220 791" stroke="#FC6255" stroke-width="5" fill="none" />
+          <text id="e-hitt" class="h" x="960" y="1030" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="800">命中 → 转走</text>
+        </g>
+
+        <!-- 正确做法 -->
+        <g id="e-fix" class="h">
+          <text x="960" y="640" font-size="64" fill="#e8e6df" text-anchor="middle" font-weight="800">输出<tspan fill="#8a8f99">看起来随机</tspan> ≠ 安全</text>
+          <rect x="560" y="740" width="800" height="150" rx="20" fill="#121a12" stroke="#83C167" stroke-width="4" />
+          <text x="960" y="805" font-size="40" fill="#83C167" text-anchor="middle" font-weight="800">CSPRNG · 满 256 位熵</text>
+          <text x="960" y="855" font-size="30" fill="#8a8f99" text-anchor="middle">来自操作系统或硬件的密码学安全随机数</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 53.59, "L": [[0.6, 3.02], [3.47, 16.79], [17.24, 28.96], [29.41, 38.33], [38.78, 52.49]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 地址卡片（示意）
+      const LA = ["0x3b9f…a1", "0x0c41…7d", "0x8e22…f0", "0xa7d5…3c", "0x51e0…9b"];
+      const RA = ["0xf218…6e", "0x77ac…02", "0xa7d5…3c", "0x2d90…e8", "0xc3b4…15"];
+      const mk = (host, x, y, s, col) => {
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        g.innerHTML = `<rect x="${x - 220}" y="${y - 30}" width="440" height="56" rx="10" fill="#161a22" stroke="${col}" stroke-width="2" /><text class="mono" x="${x}" y="${y + 9}" font-size="28" fill="${col}" text-anchor="middle">${s}</text>`;
+        document.querySelector(host).appendChild(g); return g;
+      };
+      const lg = LA.map((s, i) => mk("#e-left", 480, 650 + i * 72, s, "#8a8f99"));
+      const rg = RA.map((s, i) => mk("#e-right", 1440, 650 + i * 72, s, "#F0B90B"));
+      const lines = [];
+      for (let i = 0; i < 5; i++) for (let j = 0; j < 5; j++) {
+        if (i === 3 && j === 2) continue;
+        if ((i + j) % 2) continue;
+        const p = document.createElementNS(NS, "path");
+        p.setAttribute("d", `M700 ${647 + i * 72} C 900 ${647 + i * 72}, 1020 ${647 + j * 72}, 1220 ${647 + j * 72}`);
+        p.setAttribute("pathLength", "1"); p.setAttribute("class", "dr");
+        document.querySelector("#e-lines").appendChild(p); lines.push(p);
+      }
+
+      // L0
+      IN("#e-tag", at(0, 0.0), 0.5, { x: -20 }, { x: 0 });
+      IN("#e-barbg", at(0, 0.1), 0.4);
+      IN("#e-bar", at(0, 0.1), 0.6);
+      IN("#e-b256", at(0, 0.2), 0.4);
+      IN("#e-c0", at(0, 0.5), 0.5);
+      // L1 Trust Wallet：256 → 32
+      IN("#e-c1", at(1, 0.05), 0.5);
+      tl.to("#e-bar", { attr: { width: 165 }, fill: "#FC6255", duration: 1.0, ease: "power3.inOut" }, at(1, 0.6));
+      OUT("#e-b256", at(1, 0.6), 0.3);
+      IN("#e-b32", at(1, 0.75), 0.4);
+      tl.to("#e-c1h", { fill: "#FF9F43", duration: 0.4 }, at(1, 0.3));
+      // L2 Milk Sad
+      IN("#e-c2", at(2, 0.05), 0.5);
+      tl.to("#e-c2h", { fill: "#FF9F43", duration: 0.4 }, at(2, 0.3));
+      tl.to("#e-c2l", { opacity: 1, duration: 0.5 }, at(2, 0.55));
+      // L3 枚举 + 比对
+      IN("#e-lh", at(3, 0.0), 0.4);
+      lg.forEach((g, i) => IN(g, at(3, 0.05) + i * 0.1, 0.3, { x: -30 }, { x: 0 }));
+      IN("#e-rh", at(3, 0.35), 0.4);
+      rg.forEach((g, i) => IN(g, at(3, 0.4) + i * 0.1, 0.3, { x: 30 }, { x: 0 }));
+      lines.forEach((p, i) => DRAW(p, at(3, 0.55) + i * 0.05, 0.4));
+      DRAW("#e-hit", at(3, 0.75), 0.5);
+      tl.to([lg[3].querySelector("rect"), rg[2].querySelector("rect")], { stroke: "#FC6255", strokeWidth: 4, duration: 0.3 }, at(3, 0.8));
+      IN("#e-hitt", at(3, 0.82), 0.4);
+      // L4 CSPRNG
+      tl.to("#e-match", { opacity: 0, duration: 0.4 }, at(4, 0.0));
+      IN("#e-fix", at(4, 0.08), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      tl.to("#e-bar", { attr: { width: 1320 }, fill: "#83C167", duration: 1.0, ease: "power3.inOut" }, at(4, 0.55));
+      OUT("#e-b32", at(4, 0.55), 0.3);
+      IN("#e-bok", at(4, 0.8), 0.4);
+      tl.to(["#e-c0", "#e-c1", "#e-c2"], { opacity: 0.3, duration: 0.4 }, at(4, 0.55));
+
+      tl.to("#e-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["entropy"] = tl;
+    })();
+  </script>
+</template>

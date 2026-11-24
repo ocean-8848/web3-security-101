@@ -1,0 +1,130 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="amplify" data-duration="41.2" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="m-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="m-all">
+        <g id="m-sides">
+          <!-- 中线与 AI -->
+          <line id="m-mid" class="h" x1="960" y1="230" x2="960" y2="980" stroke="#2a2f3a" stroke-width="3" />
+          <g id="m-ai" class="h">
+            <circle cx="960" cy="150" r="62" fill="#161a22" stroke="#e8e6df" stroke-width="4" />
+            <text x="960" y="166" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="800">AI</text>
+          </g>
+          <text id="m-lt" class="h" x="480" y="190" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="700">攻击者</text>
+          <text id="m-rt" class="h" x="1440" y="190" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700">防御者</text>
+
+          <!-- 攻击者一边：短条（之前）→ 长条（之后），长度为示意 -->
+          <g font-size="32">
+            <g class="m-l h"><text x="900" y="290" fill="#e8e6df" text-anchor="end">写钓鱼</text><rect class="m-bar" x="560" y="310" width="340" height="26" fill="#FC6255" /></g>
+            <g class="m-l h"><text x="900" y="410" fill="#e8e6df" text-anchor="end">伪造视频</text><rect class="m-bar" x="560" y="430" width="340" height="26" fill="#FC6255" /></g>
+            <g class="m-l h"><text x="900" y="530" fill="#e8e6df" text-anchor="end">找漏洞</text><rect class="m-bar" x="560" y="550" width="340" height="26" fill="#FC6255" /></g>
+          </g>
+          <g font-size="28" fill="#FC6255">
+            <text class="m-lw h" x="160" y="330">更快</text><text class="m-lw h" x="160" y="450">更像</text><text class="m-lw h" x="160" y="570">更便宜</text>
+          </g>
+          <!-- 防御者一边 -->
+          <g font-size="32">
+            <g class="m-r h"><text x="1020" y="290" fill="#e8e6df">审计初筛</text><rect class="m-bar2" x="1020" y="310" width="340" height="26" fill="#83C167" /></g>
+            <g class="m-r h"><text x="1020" y="410" fill="#e8e6df">监控告警</text><rect class="m-bar2" x="1020" y="430" width="340" height="26" fill="#83C167" /></g>
+          </g>
+          <g font-size="28" fill="#83C167">
+            <text class="m-rw h" x="1760" y="330" text-anchor="end">更广</text><text class="m-rw h" x="1760" y="450" text-anchor="end">更快</text>
+          </g>
+          <text id="m-note" class="h" x="960" y="1040" font-size="28" fill="#6b6f7a" text-anchor="middle">条长为示意</text>
+
+          <!-- 替代不了 -->
+          <g id="m-no" class="h">
+            <text x="1020" y="560" font-size="32" fill="#8a8f99">替代不了：</text>
+            <text class="m-ni" x="1060" y="615" font-size="30" fill="#e8e6df" opacity="0">业务逻辑与经济模型审查</text>
+            <text class="m-ni" x="1060" y="665" font-size="30" fill="#e8e6df" opacity="0">判断发现是否真能利用（误报多）</text>
+            <text class="m-ni" x="1060" y="715" font-size="30" fill="#e8e6df" opacity="0">对结论负责</text>
+          </g>
+          <!-- 流程早期的初筛 -->
+          <g id="m-pipe" class="h">
+            <rect x="1020" y="800" width="230" height="90" rx="14" fill="#132013" stroke="#83C167" stroke-width="4" />
+            <text x="1135" y="855" font-size="30" fill="#83C167" text-anchor="middle" font-weight="700">AI 初筛</text>
+            <line x1="1255" y1="845" x2="1325" y2="845" stroke="#8a8f99" stroke-width="3" marker-end="url(#m-ah)" />
+            <rect x="1335" y="800" width="190" height="90" rx="14" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+            <text x="1430" y="855" font-size="30" fill="#e8e6df" text-anchor="middle">人工审计</text>
+            <line x1="1530" y1="845" x2="1600" y2="845" stroke="#8a8f99" stroke-width="3" marker-end="url(#m-ah)" />
+            <rect x="1610" y="800" width="190" height="90" rx="14" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+            <text x="1705" y="855" font-size="30" fill="#e8e6df" text-anchor="middle">外部审计</text>
+          </g>
+        </g>
+
+        <!-- 结论 -->
+        <g id="m-end" class="h">
+          <text x="960" y="430" font-size="64" fill="#e8e6df" text-anchor="middle" font-weight="800">AI 不是一类新漏洞</text>
+          <text x="960" y="540" font-size="64" fill="#e8e6df" text-anchor="middle" font-weight="800">是一个<tspan fill="#FF9F43">放大器</tspan></text>
+        </g>
+        <g id="m-new" class="h">
+          <rect x="720" y="660" width="160" height="140" rx="28" fill="#161a22" stroke="#e8e6df" stroke-opacity=".7" stroke-width="4" />
+          <circle cx="770" cy="715" r="10" fill="#e8e6df" /><circle cx="830" cy="715" r="10" fill="#e8e6df" />
+          <rect x="840" y="760" width="80" height="54" rx="8" fill="#F0B90B" />
+          <text x="1200" y="720" font-size="40" fill="#e8e6df" text-anchor="middle">新的只有一件事：</text>
+          <text x="1200" y="785" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="700">说服它 = 转走资产</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 41.2, "L": [[0.6, 2.66], [3.11, 8.92], [9.37, 14.34], [14.79, 26.07], [26.52, 32.88], [33.33, 40.1]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      // L0 AI 在中间
+      IN("#m-ai", at(0, 0.0), 0.5, { scale: 0.5, svgOrigin: "960 150" }, { scale: 1, ease: "back.out(2)" });
+      IN("#m-mid", at(0, 0.3), 0.5);
+      IN("#m-lt", at(0, 0.5), 0.4);
+      IN("#m-rt", at(0, 0.6), 0.4);
+
+      // L1 攻击者一边被放大：条从中线向左拉长
+      const ls = gsap.utils.toArray("#root .m-l"), lw = gsap.utils.toArray("#root .m-lw");
+      ls.forEach((g, i) => {
+        const t = at(1, 0.15 + i * 0.25);
+        tl.fromTo(g, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t);
+        tl.fromTo(g.querySelector(".m-bar"), { attr: { x: 820, width: 80 } }, { attr: { x: 300, width: 600 }, duration: 0.8, ease: "expo.out" }, t + 0.2);
+        IN(lw[i], t + 0.5, 0.3);
+      });
+      IN("#m-note", at(1, 0.4), 0.4);
+
+      // L2 防御者一边
+      const rs = gsap.utils.toArray("#root .m-r"), rw = gsap.utils.toArray("#root .m-rw");
+      rs.forEach((g, i) => {
+        const t = at(2, 0.1 + i * 0.35);
+        tl.fromTo(g, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t);
+        tl.fromTo(g.querySelector(".m-bar2"), { attr: { width: 80 } }, { attr: { width: 600 }, duration: 0.8, ease: "expo.out" }, t + 0.2);
+        IN(rw[i], t + 0.5, 0.3);
+      });
+
+      // L3 替代不了 + 早期初筛
+      IN("#m-no", at(3, 0.0), 0.4);
+      gsap.utils.toArray("#root .m-ni").forEach((t, i) => tl.to(t, { opacity: 1, duration: 0.4 }, at(3, 0.08 + i * 0.2)));
+      IN("#m-pipe", at(3, 0.72), 0.6, { y: 20 }, { y: 0 });
+
+      // L4 放大器
+      tl.to("#m-sides", { opacity: 0.1, filter: "blur(4px)", duration: 0.5 }, at(4, 0.0));
+      IN("#m-end", at(4, 0.1), 0.7, { filter: "blur(10px)" }, { filter: "blur(0px)" });
+
+      // L5 新的只有一件事
+      tl.to("#m-end", { y: -100, duration: 0.6, ease: "power2.inOut" }, at(5, 0.0));
+      IN("#m-new", at(5, 0.2), 0.6, { y: 20 }, { y: 0 });
+
+      tl.to("#m-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["amplify"] = tl;
+    })();
+  </script>
+</template>

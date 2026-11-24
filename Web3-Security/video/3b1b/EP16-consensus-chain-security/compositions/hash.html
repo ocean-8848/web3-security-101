@@ -1,0 +1,109 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="hash" data-duration="61.69" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="a-all">
+        <text id="a-title" class="h" x="960" y="100" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">算力 · PoW 链上的双花</text>
+        <g id="a-pub"></g>
+        <g id="a-priv"></g>
+        <text id="a-pubt" class="h" x="140" y="230" font-size="30" fill="#8a8f99">公开链</text>
+        <text id="a-privt" class="h" x="140" y="470" font-size="30" fill="#FC6255">攻击者私下挖的链（不含那笔充值）</text>
+        <circle id="a-dep" class="h" cx="0" cy="0" r="16" fill="#F0B90B" />
+        <text id="a-cred" class="h" x="1500" y="230" font-size="32" fill="#83C167" font-weight="700">交易所：k 个确认，入账 ✓</text>
+        <text id="a-gone" class="h" x="1500" y="230" font-size="32" fill="#FC6255" font-weight="700">重组后：充值消失</text>
+        <!-- 概率：算力过半时 -->
+        <g id="a-plot" class="h">
+          <line x1="300" y1="900" x2="1100" y2="900" stroke="#6b6f7a" stroke-width="3" />
+          <line x1="300" y1="900" x2="300" y2="600" stroke="#6b6f7a" stroke-width="3" />
+          <text x="290" y="625" font-size="28" fill="#8a8f99" text-anchor="end">100%</text>
+          <text x="700" y="950" font-size="28" fill="#8a8f99" text-anchor="middle">确认数</text>
+          <text x="340" y="940" font-size="28" fill="#8a8f99" text-anchor="middle">6</text>
+          <text x="1060" y="940" font-size="28" fill="#8a8f99" text-anchor="middle">600</text>
+          <text x="200" y="770" font-size="28" fill="#8a8f99" text-anchor="middle">双花</text>
+          <text x="200" y="805" font-size="28" fill="#8a8f99" text-anchor="middle">成功率</text>
+        </g>
+        <path id="a-line" class="dr" pathLength="1" d="M340 615 L 1060 615" fill="none" stroke="#FC6255" stroke-width="6" />
+        <text id="a-q" class="h" x="1140" y="625" font-size="32" fill="#FC6255" font-weight="700">算力 ≥ 50%：仍是 100%</text>
+        <!-- 经济题：一步步算 -->
+        <g id="a-econ">
+          <text id="a-e0" class="h" x="960" y="180" font-size="36" fill="#8a8f99" text-anchor="middle">例（示例数字）：租过半算力 <tspan fill="#FC6255">2 万美元 / 小时</tspan></text>
+          <text id="a-e0b" class="h" x="960" y="250" font-size="36" fill="#e8e6df" text-anchor="middle">15 秒一个块</text>
+          <text id="a-e1" class="h mono" x="960" y="380" font-size="46" fill="#e8e6df" text-anchor="middle">5,760 块 × 15 秒 = 86,400 秒 = 24 小时</text>
+          <text id="a-e2" class="h mono" x="960" y="480" font-size="46" fill="#e8e6df" text-anchor="middle">24 小时 × 2 万美元 = <tspan fill="#FC6255">48 万美元</tspan></text>
+          <text id="a-e3" class="h mono" x="960" y="580" font-size="46" fill="#e8e6df" text-anchor="middle"><tspan fill="#FC6255">48 万</tspan> &lt; <tspan fill="#F0B90B">100 万</tspan>（单笔可充）</text>
+          <text id="a-e4" class="h" x="960" y="680" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="700">攻击照样划算</text>
+          <text id="a-fix" class="h" x="960" y="800" font-size="42" fill="#83C167" text-anchor="middle" font-weight="700">降单笔上限，而不只是加确认</text>
+          <text id="a-etc" class="h" x="960" y="930" font-size="34" fill="#e8e6df" text-anchor="middle">2020-08 · Ethereum Classic：一次重组约 3,693 块，双花约 560 万美元</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 61.69, "L": [[0.6, 8.14], [8.59, 16.55], [17.0, 28.28], [28.73, 38.43], [38.88, 48.48], [48.93, 60.59]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      const BLK = (host, n, y, col, fill, x0) => {
+        const h = document.querySelector(host), out = [];
+        for (let i = 0; i < n; i++) {
+          const x = x0 + i * 120, g = document.createElementNS(NS, "g"); g.setAttribute("opacity", 0);
+          g.innerHTML = `<rect x="${x}" y="${y}" width="90" height="90" rx="10" fill="${fill}" stroke="${col}" stroke-width="3" />` + (i ? `<line x1="${x - 30}" y1="${y + 45}" x2="${x}" y2="${y + 45}" stroke="${col}" stroke-width="3" />` : "");
+          h.appendChild(g); out.push(g);
+        }
+        return out;
+      };
+      const PUB = BLK("#a-pub", 8, 260, "#8a8f99", "#161a22", 140);
+      const PRV = BLK("#a-priv", 10, 500, "#FC6255", "#2a1416", 140);
+      const dep = document.querySelector("#a-dep"); dep.setAttribute("cx", 140 + 3 * 120 + 45); dep.setAttribute("cy", 305);
+      // L0 两条链
+      IN("#a-title", at(0, 0.0), 0.5);
+      IN("#a-pubt", at(0, 0.1), 0.4);
+      PUB.slice(0, 3).forEach((g, i) => IN(g, at(0, 0.15) + i * 0.08, 0.3));
+      IN(PUB[3], at(0, 0.35), 0.3); POP("#a-dep", at(0, 0.4));
+      IN("#a-privt", at(0, 0.55), 0.4);
+      PRV.slice(0, 6).forEach((g, i) => IN(g, at(0, 0.6) + i * 0.08, 0.25));
+      // L1 入账 → 放出更长私链 → 充值消失
+      PUB.slice(4).forEach((g, i) => IN(g, at(1, 0.0) + i * 0.1, 0.3));
+      IN("#a-cred", at(1, 0.2), 0.4);
+      PRV.slice(6).forEach((g, i) => IN(g, at(1, 0.4) + i * 0.08, 0.25));
+      OUT("#a-cred", at(1, 0.65), 0.2);
+      tl.to(PUB.slice(3), { opacity: 0.15, duration: 0.4 }, at(1, 0.7));
+      tl.to("#a-dep", { opacity: 0, scale: 0, transformOrigin: "50% 50%", duration: 0.4 }, at(1, 0.72));
+      IN("#a-gone", at(1, 0.75), 0.4);
+      // L2 加确认数没用
+      OUT(["#a-pub", "#a-priv", "#a-pubt", "#a-privt", "#a-gone"], at(2, 0.0), 0.4);
+      IN("#a-plot", at(2, 0.1), 0.5);
+      tl.fromTo("#a-line", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.2, ease: "none" }, at(2, 0.3));
+      IN("#a-q", at(2, 0.45), 0.4);
+      // L3 经济题
+      OUT(["#a-plot", "#a-line", "#a-q", "#a-pub", "#a-priv", "#a-pubt", "#a-privt", "#a-gone", "#a-title"], at(3, 0.0), 0.35);
+      IN("#a-e0", at(3, 0.25), 0.5);
+      IN("#a-e0b", at(3, 0.8), 0.4);
+      // L4 一步步算
+      IN("#a-e1", at(4, 0.0), 0.4);
+      IN("#a-e2", at(4, 0.35), 0.4);
+      IN("#a-e3", at(4, 0.6), 0.4);
+      IN("#a-e4", at(4, 0.85), 0.4);
+      // L5 降上限 + ETC
+      IN("#a-fix", at(5, 0.05), 0.5, { scale: 1.15, svgOrigin: "960 785" }, { scale: 1 });
+      IN("#a-etc", at(5, 0.45), 0.5);
+      tl.to("#a-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["hash"] = tl;
+    })();
+  </script>
+</template>

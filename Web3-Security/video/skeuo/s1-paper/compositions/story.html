@@ -1,0 +1,355 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; color: #161616; font-family: "Noto Sans SC", sans-serif; overflow: hidden; }
+    #root .abs { position: absolute; white-space: nowrap; }
+    #root .ink { opacity: 0; color: #c9c1b2; filter: blur(3px); }
+    #root svg .stroke { fill: none; stroke: #161616; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #paper { position: absolute; inset: 0; width: 1920px; height: 1080px; pointer-events: none; }
+
+    .serif { font-family: "Noto Serif SC", serif; font-weight: 900; }
+    .hand { font-family: "LXGW WenKai", "Noto Serif SC", serif; font-weight: 500; }
+    .mono { font-family: "JetBrains Mono", "Noto Sans SC", monospace; font-weight: 500; }
+    .title { font-size: 88px; line-height: 1.1; letter-spacing: 0.02em; }
+    .cap { font-family: "Noto Serif SC", serif; font-weight: 500; font-size: 30px; }
+
+    /* opening page */
+    #open { position: absolute; left: 120px; top: 120px; width: 820px; height: 720px; }
+    #o-date { left: 0; top: 0; font-size: 160px; line-height: 1; opacity: 1; color: #a39b8c; }
+    #o-bybit { left: 4px; top: 230px; font-size: 92px; line-height: 1; }
+    #o-cold { left: 330px; top: 268px; font-size: 44px; line-height: 1; font-weight: 500; }
+    #o-amt { left: 0; top: 380px; font-size: 170px; line-height: 1; }
+    #o-amt small { font-size: 68px; margin-left: 18px; }
+    #o-ul { position: absolute; left: 0; top: 570px; width: 760px; height: 40px; }
+    #o-note { left: 4px; top: 626px; font-size: 30px; }
+
+    /* key + lock */
+    #key { position: absolute; left: 1040px; top: 200px; width: 760px; height: 620px; }
+    #key svg { position: absolute; left: 0; top: 0; }
+    #k-lab { left: 70px; top: 400px; font-size: 64px; }
+    #k-ok { left: 260px; top: 410px; font-size: 52px; }
+    #k-sign { left: 70px; top: 520px; font-size: 48px; }
+    #k-conf { left: 260px; top: 512px; font-size: 56px; }
+
+    /* field table */
+    #tb { position: absolute; left: 560px; top: 250px; width: 1240px; height: 500px; }
+    #tb .rule { position: absolute; left: 0; width: 1240px; background: #161616; transform-origin: 0 50%; }
+    #tb .row { position: absolute; left: 0; width: 1240px; height: 100px; }
+    #tb .f { left: 0; top: 26px; font-size: 40px; }
+    #tb .v { left: 340px; top: 26px; font-size: 40px; }
+    #tb .strike { position: absolute; height: 5px; background: #161616; transform-origin: 0 50%; }
+    #opbox { position: absolute; left: 330px; top: 8px; width: 80px; height: 84px; perspective: 500px; }
+    #op0, #op1 { position: absolute; left: 0; top: 0; width: 80px; height: 84px; text-align: center; font-size: 64px; line-height: 84px; transform-origin: 50% 50%; backface-visibility: hidden; }
+    #op0 { opacity: 0; }
+    #op1 { color: #c8321e; opacity: 0; }
+    #op-circ { position: absolute; left: 290px; top: -14px; }
+    #ar-op { position: absolute; left: -170px; top: 320px; }
+
+    /* storage */
+    #store { position: absolute; left: 1110px; top: 320px; width: 690px; height: 360px; }
+    #store .rule { position: absolute; left: 0; width: 690px; background: #161616; transform-origin: 0 50%; }
+    #ar-st { position: absolute; left: 1000px; top: 380px; }
+
+    /* document */
+    #doc { position: absolute; left: 1160px; top: 260px; width: 520px; height: 560px; opacity: 0; }
+    #doc svg { position: absolute; left: 0; top: 0; }
+
+    /* path */
+    .cell { position: absolute; top: 470px; width: 220px; height: 170px; border: 3px solid #161616; background: #f1ece1; opacity: 0; }
+    .cell .n { position: absolute; left: 0; right: 0; top: 14px; text-align: center; font-size: 60px; line-height: 1; }
+    .cell .l { position: absolute; left: 0; right: 0; top: 104px; text-align: center; font-size: 32px; font-weight: 700; line-height: 1; }
+
+    #fin1 { left: 0; width: 1920px; top: 210px; text-align: center; font-size: 104px; line-height: 1.1; }
+    #fin1 span { opacity: 0; color: #c9c1b2; filter: blur(3px); }
+    #fin2 { left: 0; width: 1920px; top: 360px; text-align: center; font-size: 48px; }
+  </style>
+
+  <div id="root" data-composition-id="story" data-width="1920" data-height="1080">
+    <!-- paper fibre texture: static, ~2% -->
+    <svg id="paper" viewBox="0 0 1920 1080" data-layout-ignore>
+      <filter id="pn" x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="4" seed="7" result="g" />
+        <feColorMatrix in="g" type="matrix" values="0 0 0 0 0.32  0 0 0 0 0.28  0 0 0 0 0.20  0 0 0 -2.2 1.25" />
+      </filter>
+      <filter id="pf" x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.55" numOctaves="3" seed="3" result="f" />
+        <feColorMatrix in="f" type="matrix" values="0 0 0 0 0.35  0 0 0 0 0.30  0 0 0 0 0.22  0 0 0 -3 1.6" />
+      </filter>
+      <rect width="1920" height="1080" filter="url(#pn)" opacity="0.10" />
+      <rect width="1920" height="1080" filter="url(#pf)" opacity="0.06" />
+    </svg>
+
+    <!-- ========== opening page ========== -->
+    <div id="open">
+      <div id="o-date" class="abs hand">2025.2.21</div>
+      <div id="o-bybit" class="abs serif ink">Bybit</div>
+      <div id="o-cold" class="abs ink">以太坊 · 冷钱包</div>
+      <div id="o-amt" class="abs hand ink">约 15 亿<small>美元</small></div>
+      <svg id="o-ul" viewBox="0 0 760 40" width="760" height="40">
+        <path id="o-ulp" class="stroke" pathLength="1" stroke-width="7" d="M6 24 C 160 12, 380 30, 560 18 S 720 22, 752 14" />
+      </svg>
+      <div id="o-note" class="abs ink">FBI 口径 · 事发时估值</div>
+    </div>
+
+    <!-- ========== key + lock ========== -->
+    <div id="key">
+      <svg viewBox="0 0 760 380" width="760" height="380">
+        <path id="k-shk" class="stroke" pathLength="1" stroke-width="10" d="M120 172 V112 A70 70 0 0 1 260 112 V172" />
+        <rect id="k-body" class="stroke" pathLength="1" stroke-width="9" x="80" y="172" width="220" height="176" rx="14" />
+        <path id="k-hole" class="stroke" pathLength="1" stroke-width="8" d="M190 228 a16 16 0 1 1 0.1 0 M190 260 V302" />
+        <circle id="k-ring" class="stroke" pathLength="1" stroke-width="9" cx="300" cy="130" r="48" />
+        <path id="k-shaft" class="stroke" pathLength="1" stroke-width="9" d="M348 130 H724 M640 130 V186 H668 V130 M690 130 V168 H718 V130" />
+      </svg>
+      <div id="k-lab" class="abs hand ink">私钥</div>
+      <div id="k-ok" class="abs hand ink">未泄露 ✓</div>
+      <div id="k-sign" class="abs serif ink">签名人</div>
+      <div id="k-conf" class="abs hand ink">逐个 ✓ 确认</div>
+    </div>
+
+    <!-- ========== titles ========== -->
+    <div id="t1" class="abs serif title ink" style="left:560px; top:96px;">屏幕上的交易</div>
+    <div id="n-plain" class="abs hand ink" style="left:1300px; top:118px; font-size:52px;">→ 一笔普通转账</div>
+    <div id="t2" class="abs serif title ink" style="left:560px; top:96px;">实际签下的交易</div>
+    <div id="t3" class="abs serif title ink" style="left:120px; top:110px;">Safe 代理 · 存储 slot 0</div>
+    <div id="t4" class="abs serif title ink" style="left:180px; top:110px;">钥匙没变，文件变了</div>
+    <div id="t5" class="abs serif title ink" style="left:130px; top:150px;">签名路径 · 七道关</div>
+
+    <!-- ========== field table ========== -->
+    <div id="tb">
+      <div class="rule" id="ru0" style="top:0; height:4px;"></div>
+      <div class="rule" id="ru1" style="top:100px; height:1.5px;"></div>
+      <div class="rule" id="ru2" style="top:200px; height:1.5px;"></div>
+      <div class="rule" id="ru3" style="top:300px; height:1.5px;"></div>
+      <div class="rule" id="ru4" style="top:400px; height:1.5px;"></div>
+      <div class="rule" id="ru5" style="top:496px; height:4px;"></div>
+
+      <div class="row" style="top:0;">
+        <div id="r0f" class="abs mono f ink">to</div>
+        <div id="r0v" class="abs mono v ink">0x…（示例）</div>
+        <div id="r0s" class="strike" style="left:336px; top:52px; width:290px;"></div>
+        <div id="r0w" class="abs hand ink" style="left:660px; top:18px; font-size:54px;">攻击者合约</div>
+      </div>
+      <div class="row" style="top:100px;">
+        <div id="r1f" class="abs mono f ink">value</div>
+        <div id="r1v" class="abs v ink">示例金额</div>
+      </div>
+      <div class="row" style="top:200px;">
+        <div id="r2f" class="abs mono f ink">data</div>
+        <div id="r2v" class="abs mono v ink">0x</div>
+        <div id="r2s" class="strike" style="left:336px; top:52px; width:62px;"></div>
+        <div id="r2w" class="abs mono ink" style="left:440px; top:28px; font-size:38px;">transfer(address,uint256)</div>
+      </div>
+      <div class="row" style="top:300px;">
+        <div id="r3f" class="abs mono f ink">operation</div>
+        <div id="opbox"><div id="op0" class="mono">0</div><div id="op1" class="mono">1</div></div>
+        <div id="r3n" class="abs hand ink" style="left:450px; top:24px; font-size:44px;">CALL</div>
+        <div id="r3d" class="abs hand ink" style="left:450px; top:18px; font-size:54px;">DELEGATECALL</div>
+        <div id="r3e" class="abs hand ink" style="left:840px; top:30px; font-size:36px;">（正常转账是 0）</div>
+        <svg id="op-circ" viewBox="0 0 160 128" width="160" height="128">
+          <path id="op-cp" class="stroke" pathLength="1" stroke-width="6" style="stroke:#c8321e" d="M98 10 C 40 4, 6 34, 10 70 C 14 108, 70 124, 116 112 C 152 100, 158 52, 128 26 C 108 10, 76 8, 60 14" />
+        </svg>
+      </div>
+      <div class="row" style="top:400px;">
+        <div id="r4f" class="abs mono f ink">nonce</div>
+        <div id="r4v" class="abs v ink">示例</div>
+      </div>
+      <svg id="ar-op" viewBox="0 0 150 60" width="150" height="60">
+        <path id="ar-opp" class="stroke" pathLength="1" stroke-width="6" d="M8 34 C 50 24, 90 36, 132 30 M112 14 L136 30 L112 46" />
+      </svg>
+      <div id="cap1" class="abs cap ink" style="left:0; top:530px;">图 1　签名人屏幕上看到的交易（示意）</div>
+      <div id="cap2" class="abs cap ink" style="left:0; top:530px;">图 1　实际签下的交易（示意）</div>
+    </div>
+
+    <!-- ========== Safe proxy storage ========== -->
+    <svg id="ar-st" viewBox="0 0 120 160" width="120" height="160">
+      <path id="ar-stp" class="stroke" pathLength="1" stroke-width="6" d="M10 130 C 50 130, 70 80, 104 62 M84 52 L106 60 L96 82" />
+    </svg>
+    <div id="store">
+      <div id="s-h" class="abs serif ink" style="left:0; top:0; font-size:44px;">Safe 代理合约 · 存储</div>
+      <div class="rule" id="su0" style="top:76px; height:4px;"></div>
+      <div id="s0k" class="abs mono ink" style="left:0; top:100px; font-size:38px;">slot 0</div>
+      <div id="s0n" class="abs ink" style="left:190px; top:102px; font-size:34px; font-weight:500;">实现合约地址</div>
+      <div id="s0v" class="abs mono ink" style="left:190px; top:166px; font-size:38px;">0x…（示例）</div>
+      <div id="s0s" class="strike" style="position:absolute; left:186px; top:192px; width:270px; height:5px; background:#161616; transform-origin:0 50%;"></div>
+      <div id="s0w" class="abs hand ink" style="left:480px; top:152px; font-size:56px;">攻击者合约</div>
+      <div class="rule" id="su1" style="top:246px; height:1.5px;"></div>
+      <div id="s1k" class="abs mono ink" style="left:0; top:270px; font-size:38px;">slot 1 …</div>
+      <div class="rule" id="su2" style="top:340px; height:4px;"></div>
+    </div>
+
+    <!-- ========== key vs document ========== -->
+    <div id="doc">
+      <svg viewBox="0 0 520 560" width="520" height="560">
+        <path d="M4 4 H440 L516 80 V556 H4 Z" fill="#f6f2e9" stroke="#161616" stroke-width="4" stroke-linejoin="round" />
+        <path d="M440 4 V80 H516" fill="none" stroke="#161616" stroke-width="4" stroke-linejoin="round" />
+        <line x1="40" y1="128" x2="480" y2="128" stroke="#161616" stroke-width="3" />
+        <line x1="40" y1="388" x2="480" y2="388" stroke="#161616" stroke-width="3" />
+      </svg>
+      <div class="abs serif" style="left:40px; top:44px; font-size:44px;">交易内容</div>
+      <div class="abs mono" style="left:40px; top:158px; font-size:32px;">to&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hand" style="font-size:36px;">攻击者合约</span></div>
+      <div class="abs mono" style="left:40px; top:230px; font-size:32px;">data&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transfer(…)</div>
+      <div class="abs mono" style="left:40px; top:302px; font-size:32px;">operation&nbsp;<span style="color:#c8321e; font-size:40px;">1</span></div>
+      <svg id="seal" viewBox="0 0 130 130" width="130" height="130" style="position:absolute; left:350px; top:408px;">
+        <circle id="seal-c" class="stroke" pathLength="1" stroke-width="6" cx="65" cy="65" r="56" />
+      </svg>
+      <div id="seal-t" class="abs serif ink" style="left:383px; top:438px; font-size:64px; line-height:1;">签</div>
+    </div>
+    <div id="k6" class="abs hand ink" style="left:250px; top:690px; font-size:52px;">锁完好 ✓</div>
+    <svg id="ar-kd" viewBox="0 0 300 120" width="300" height="120" style="position:absolute; left:850px; top:470px;">
+      <path id="ar-kdp" class="stroke" pathLength="1" stroke-width="7" d="M10 70 C 90 40, 190 40, 280 64 M254 44 L282 64 L256 88" />
+    </svg>
+    <div id="kd-lab" class="abs hand ink" style="left:930px; top:400px; font-size:48px;">盖在</div>
+
+    <!-- ========== seven gates ========== -->
+    <svg id="p-line" viewBox="0 0 1920 20" width="1920" height="20" style="position:absolute; left:0; top:545px;">
+      <path id="p-lp" class="stroke" pathLength="1" stroke-width="4" d="M130 10 H1790" />
+    </svg>
+    <div id="c1" class="cell" style="left:130px;"><div class="n hand">①</div><div class="l">业务意图</div></div>
+    <div id="c2" class="cell" style="left:370px;"><div class="n hand">②</div><div class="l">请求构造</div></div>
+    <div id="c3" class="cell" style="left:610px;"><div class="n hand">③</div><div class="l">风控与审批</div></div>
+    <div id="c4" class="cell" style="left:850px;"><div class="n hand">④</div><div class="l">显示与解码</div></div>
+    <div id="c5" class="cell" style="left:1090px;"><div class="n hand">⑤</div><div class="l">签名</div></div>
+    <div id="c6" class="cell" style="left:1330px;"><div class="n hand">⑥</div><div class="l">广播</div></div>
+    <div id="c7" class="cell" style="left:1570px;"><div class="n hand">⑦</div><div class="l">链上状态</div></div>
+    <div id="c4n" class="abs hand ink" style="left:842px; top:662px; font-size:40px;">Bybit 断在这里</div>
+
+    <!-- ========== end card ========== -->
+    <div id="fin1" class="abs serif"><span>攻</span><span>击</span><span>者</span><span>不</span><span>再</span><span>偷</span><span>私</span><span>钥</span></div>
+    <div id="fin2" class="abs hand ink">第 29 章 · 签名路径</div>
+  </div>
+
+  <script>
+    (function () {
+      const INK = "#161616", RED = "#c8321e", PENCIL = "#8b857b", NOTE = "#6f685d";
+      const tl = gsap.timeline({ paused: true });
+
+      // initial transforms / states (set inside the timeline so every seek agrees)
+      gsap.set("#op1", { rotationX: -90, opacity: 0 });
+      gsap.set("#op0", { opacity: 0, color: "#c9c1b2" });
+      gsap.set(["#tb .rule", "#store .rule"], { scaleX: 0 });
+      gsap.set(".strike", { scaleX: 0 });
+      gsap.set(".cell", { color: "#c9c1b2", borderColor: "#c9c1b2" });
+
+      // ink: appear as ink soaking in — pencil grey to colour, no translation
+      function ink(sel, t, c, d) {
+        c = c || INK; d = d || 0.6;
+        tl.to(sel, { opacity: 1, filter: "blur(0px)", duration: d * 0.5, ease: "power2.out" }, t);
+        tl.to(sel, { color: c, duration: d, ease: "power2.out" }, t);
+      }
+      function draw(sel, t, d, c) {
+        tl.to(sel, { strokeDashoffset: 0, duration: d || 0.7, ease: "power2.inOut" }, t);
+        if (c) tl.to(sel, { stroke: c, duration: 0.01 }, t);
+      }
+      function out(sel, t, d) {
+        tl.to(sel, { opacity: 0, filter: "blur(6px)", duration: d || 0.3, ease: "power2.in" }, t);
+      }
+      function strike(sel, t) {
+        tl.to(sel, { scaleX: 1, duration: 0.35, ease: "power2.in" }, t);
+      }
+      const MOVE = "power3.inOut";
+
+      // ---------- l1: date / Bybit / 15 亿 ----------
+      tl.to("#o-date", { color: INK, duration: 0.6, ease: "power2.out" }, 0.70);
+      ink("#o-bybit", 2.46);
+      ink("#o-cold", 3.60);
+      ink("#o-amt", 5.23);
+      draw("#o-ulp", 5.55, 0.6);
+      ink("#o-note", 5.9, NOTE);
+
+      // ---------- l2: key, locked ----------
+      draw("#k-shk", 7.53, 0.6);
+      draw("#k-body", 7.63, 0.6);
+      draw("#k-hole", 7.85, 0.4);
+      draw("#k-ring", 7.95, 0.5);
+      draw("#k-shaft", 8.15, 0.7);
+      ink("#k-lab", 7.75);
+      ink("#k-ok", 8.68);
+      ink("#k-sign", 9.56);
+      ink("#k-conf", 12.40);
+
+      // ---------- l3: page reorganises, field table grows ----------
+      out(["#o-note", "#o-cold", "#k-lab", "#k-ok", "#k-sign", "#k-conf"], 13.40, 0.25);
+      tl.to("#open", { x: -40, y: 150, scale: 0.4, transformOrigin: "0 0", duration: 0.9, ease: MOVE }, 13.50);
+      tl.to("#key", { x: -960, y: 400, scale: 0.4, transformOrigin: "0 0", duration: 0.9, ease: MOVE }, 13.60);
+      ink("#t1", 14.40);
+      tl.to(["#ru0", "#ru5"], { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, 14.55);
+      tl.to(["#ru1", "#ru2", "#ru3", "#ru4"], { scaleX: 1, duration: 0.6, ease: "power2.inOut", stagger: 0.06 }, 14.75);
+      [["#r0f", "#r0v"], ["#r1f", "#r1v"], ["#r2f", "#r2v"], ["#r3f", "#op0", "#r3n"], ["#r4f", "#r4v"]].forEach(function (r, i) {
+        ink(r, 15.0 + i * 0.12);
+      });
+      tl.to("#r3n", { color: NOTE, duration: 0.3 }, 15.7);
+      ink("#cap1", 15.5, NOTE);
+      ink("#n-plain", 16.09);
+
+      // ---------- l4: what was really signed; operation 0 -> 1 ----------
+      out(["#t1", "#n-plain", "#cap1"], 18.10, 0.25);
+      ink("#t2", 18.30);
+      ink("#cap2", 18.45, NOTE);
+      tl.to(["#r0f", "#r0v", "#r1f", "#r1v", "#r2f", "#r2v", "#r4f", "#r4v"], { color: PENCIL, duration: 0.5, ease: "power2.out" }, 20.08);
+      draw("#ar-opp", 20.10, 0.5);
+      // 20.6 – 20.82: still
+      tl.to("#op0", { rotationX: 90, duration: 0.22, ease: "power3.in" }, 20.82);
+      tl.to("#op1", { opacity: 1, duration: 0.01 }, 21.04);
+      tl.to("#op1", { rotationX: 0, duration: 0.35, ease: "power3.out" }, 21.04);
+      tl.to("#op0", { opacity: 0, duration: 0.01 }, 21.04);
+      draw("#op-cp", 21.10, 0.55);
+      out("#r3n", 21.20, 0.2);
+      ink("#r3d", 21.35, RED);
+      ink("#r3e", 21.85, NOTE);
+
+      // ---------- l5: attacker's code rewrites slot 0 ----------
+      tl.to(["#r0f", "#r0v", "#r2f", "#r2v"], { color: INK, duration: 0.5, ease: "power2.out" }, 23.95);
+      out("#r3e", 23.95, 0.3);
+      strike("#r0s", 26.07);
+      ink("#r0w", 26.30);
+      strike("#r2s", 26.55);
+      ink("#r2w", 26.75);
+      out(["#open", "#key", "#ar-op", "#t2"], 27.55, 0.3);
+      tl.to("#tb", { x: -440, y: 70, scale: 0.75, transformOrigin: "0 0", duration: 0.9, ease: MOVE }, 27.70);
+      ink("#t3", 27.95);
+      ink("#s-h", 28.10);
+      tl.to(["#su0", "#su1", "#su2"], { scaleX: 1, duration: 0.6, ease: "power2.inOut", stagger: 0.06 }, 28.10);
+      ink(["#s0k", "#s0n", "#s0v"], 28.25);
+      ink("#s1k", 28.40, PENCIL);
+      draw("#ar-stp", 28.35, 0.5);
+      strike("#s0s", 28.63);
+      ink("#s0w", 28.90);
+
+      // ---------- l6: the key is fine; the document changed ----------
+      out(["#t3", "#ar-stp"], 31.20, 0.25);
+      tl.to(["#tb", "#store"], { x: "+=200", y: "+=20", scale: 0.45, transformOrigin: "0 0", duration: 0.8, ease: MOVE }, 31.30);
+      tl.to(["#tb", "#store"], { opacity: 0, filter: "blur(5px)", duration: 0.35, ease: "power2.in" }, 31.30);
+      tl.fromTo("#doc", { opacity: 0, filter: "blur(4px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.6, ease: "power2.out", immediateRender: false }, 31.85);
+      tl.set("#key", { filter: "blur(0px)" }, 31.39);
+      tl.to("#key", { x: -860, y: 120, scale: 0.9, opacity: 1, duration: 0.9, ease: MOVE }, 31.40);
+      ink("#k6", 32.53);
+      ink("#t4", 33.81);
+      draw("#ar-kdp", 35.43, 0.6);
+      ink("#kd-lab", 35.55);
+      draw("#seal-c", 35.90, 0.5);
+      ink("#seal-t", 36.05);
+
+      // ---------- l7: seven gates ----------
+      out(["#t4", "#key", "#k6", "#ar-kd", "#kd-lab"], 37.90, 0.3);
+      ink("#t5", 38.10);
+      tl.to("#doc", { x: -1010, y: 80, scale: 0.2, transformOrigin: "0 0", duration: 0.9, ease: MOVE }, 39.58);
+      draw("#p-lp", 40.0, 1.0);
+      ["#c1", "#c2", "#c3", "#c4", "#c5", "#c6", "#c7"].forEach(function (c, i) {
+        const t = 41.13 + i * 0.17;
+        tl.to(c, { opacity: 1, duration: 0.25, ease: "power2.out" }, t);
+        tl.to(c, { color: INK, borderColor: INK, duration: 0.5, ease: "power2.out" }, t);
+      });
+      tl.to("#doc", { x: -1010 + 6 * 240, duration: 1.7, ease: MOVE }, 41.20);
+      tl.to("#c4", { color: RED, borderColor: RED, borderWidth: 5, duration: 0.4, ease: "power2.out" }, 42.36);
+      ink("#c4n", 42.50, RED);
+
+      // ---------- end card ----------
+      out(["#t5", "#doc"], 43.10, 0.3);
+      tl.to("#fin1 span", { opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power2.out", stagger: 0.08 }, 43.30);
+      tl.to("#fin1 span", { color: INK, duration: 0.6, ease: "power2.out", stagger: 0.08 }, 43.30);
+      ink("#fin2", 44.0);
+      tl.set({}, {}, 47.16);
+
+      window.__timelines["story"] = tl;
+    })();
+  </script>
+</template>

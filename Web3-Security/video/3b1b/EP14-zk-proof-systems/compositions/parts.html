@@ -1,0 +1,124 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="parts" data-duration="37.89" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="p-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="p-aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#FF9F43" /></marker>
+      </defs>
+      <g id="p-all">
+        <!-- 第一部分：证明者与验证者 -->
+        <g id="p-intro">
+          <g id="p-pv" class="h">
+            <circle cx="520" cy="500" r="80" fill="#161a22" stroke="#e8e6df" stroke-width="4" />
+            <text x="520" y="512" font-size="36" fill="#e8e6df" text-anchor="middle" font-weight="700">证明者</text>
+          </g>
+          <g id="p-vf" class="h">
+            <circle cx="1400" cy="500" r="80" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+            <text x="1400" y="512" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">验证者</text>
+          </g>
+          <path id="p-claim" class="dr h" pathLength="1" d="M610 500 L 1305 500" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#p-ah)" />
+          <text id="p-claimt" class="h" x="960" y="470" font-size="36" fill="#e8e6df" text-anchor="middle">“这个计算的结果是对的”</text>
+          <g id="p-secret" class="h">
+            <rect x="420" y="640" width="200" height="110" rx="14" fill="#161a22" stroke="#6b6f7a" stroke-width="3" stroke-dasharray="8 6" />
+            <text x="520" y="705" font-size="30" fill="#8a8f99" text-anchor="middle">秘密输入</text>
+          </g>
+          <text id="p-no1" class="h" x="1400" y="660" font-size="32" fill="#8a8f99" text-anchor="middle">不重算</text>
+          <text id="p-no2" class="h" x="1400" y="710" font-size="32" fill="#8a8f99" text-anchor="middle">看不到秘密输入</text>
+        </g>
+
+        <!-- 第二部分：三个组件 -->
+        <line id="p-div" class="h" x1="1250" y1="230" x2="1250" y2="860" stroke="#2a2f3a" stroke-width="4" stroke-dasharray="14 10" />
+        <text id="p-off" class="h" x="660" y="345" font-size="32" fill="#6b6f7a" text-anchor="middle">链下</text>
+        <text id="p-on" class="h" x="1730" y="345" font-size="32" fill="#6b6f7a" text-anchor="middle">链上</text>
+
+        <g id="p-circ" class="h">
+          <rect id="p-circr" x="140" y="380" width="380" height="280" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+          <text x="330" y="440" font-size="40" fill="#58C4DD" text-anchor="middle" font-weight="700">电路</text>
+          <text class="mono" x="330" y="510" font-size="30" fill="#e8e6df" text-anchor="middle">a × b = c</text>
+          <text class="mono" x="330" y="555" font-size="30" fill="#e8e6df" text-anchor="middle">c + d = e</text>
+          <text class="mono" x="330" y="600" font-size="30" fill="#6b6f7a" text-anchor="middle">…</text>
+        </g>
+        <text id="p-circt" class="h" x="330" y="710" font-size="30" fill="#8a8f99" text-anchor="middle">约束 = 规则</text>
+
+        <path id="p-a1" class="dr h" pathLength="1" d="M530 520 L 650 520" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#p-ah)" />
+        <g id="p-prv" class="h">
+          <rect x="660" y="420" width="320" height="200" rx="20" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="4" />
+          <text x="820" y="510" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">证明器</text>
+          <text x="820" y="565" font-size="30" fill="#8a8f99" text-anchor="middle">生成证明</text>
+        </g>
+        <g id="p-proof" class="h">
+          <rect x="1040" y="460" width="90" height="120" rx="10" fill="#161a22" stroke="#e8e6df" stroke-width="3" />
+          <line x1="1058" y1="492" x2="1112" y2="492" stroke="#8a8f99" stroke-width="5" stroke-linecap="round" />
+          <line x1="1058" y1="515" x2="1100" y2="515" stroke="#8a8f99" stroke-width="5" stroke-linecap="round" />
+          <text x="1085" y="560" font-size="28" fill="#e8e6df" text-anchor="middle">证明</text>
+        </g>
+        <path id="p-a2" class="dr h" pathLength="1" d="M1140 520 L 1360 520" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#p-ah)" />
+        <g id="p-ver" class="h">
+          <rect x="1370" y="400" width="420" height="240" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+          <text x="1580" y="470" font-size="38" fill="#58C4DD" text-anchor="middle" font-weight="700">验证器合约</text>
+          <text x="1580" y="545" font-size="32" fill="#e8e6df" text-anchor="middle">证明 满足 电路？</text>
+        </g>
+        <text id="p-ok" class="h" x="1580" y="610" font-size="40" fill="#83C167" text-anchor="middle" font-weight="800">✓</text>
+
+        <path id="p-back" class="dr h" pathLength="1" d="M1580 395 C 1500 160, 500 160, 360 370" stroke="#FF9F43" stroke-width="4" fill="none" stroke-dasharray="1" marker-end="url(#p-aho)" />
+        <g id="p-qbox" class="h">
+          <rect x="560" y="830" width="800" height="100" rx="18" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="960" y="895" font-size="44" fill="#FF9F43" text-anchor="middle" font-weight="700">不检查：电路本身写对了吗？</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 37.89, "L": [[0.6, 6.14], [6.59, 10.96], [11.41, 18.3], [18.75, 23.29], [23.74, 31.58], [32.03, 36.79]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t) => IN(s, t, 0.6, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+
+      // L0 证明者 → 验证者
+      NODE("#p-pv", at(0, 0.0));
+      NODE("#p-vf", at(0, 0.2));
+      DRAW("#p-claim", at(0, 0.45), 0.7);
+      IN("#p-claimt", at(0, 0.55), 0.5);
+      // L1 不重算、看不到秘密
+      IN("#p-secret", at(1, 0.0), 0.5, { y: 20 }, { y: 0 });
+      IN("#p-no1", at(1, 0.2), 0.4);
+      IN("#p-no2", at(1, 0.55), 0.4);
+      // L2 电路
+      OUT("#p-intro", at(2, 0.0), 0.4);
+      IN("#p-div", at(2, 0.15), 0.5);
+      IN("#p-off", at(2, 0.15), 0.5);
+      IN("#p-on", at(2, 0.15), 0.5);
+      NODE("#p-circ", at(2, 0.35));
+      IN("#p-circt", at(2, 0.6), 0.4);
+      // L3 证明器
+      DRAW("#p-a1", at(3, 0.0), 0.4);
+      NODE("#p-prv", at(3, 0.1));
+      IN("#p-proof", at(3, 0.55), 0.5, { x: -120 }, { x: 0, ease: "power2.out" });
+      // L4 验证器
+      DRAW("#p-a2", at(4, 0.0), 0.5);
+      NODE("#p-ver", at(4, 0.08));
+      tl.to("#p-proof", { x: 400, opacity: 0, duration: 0.7, ease: "power2.in" }, at(4, 0.5));
+      IN("#p-ok", at(4, 0.8), 0.4, { scale: 1.5, svgOrigin: "1580 595" }, { scale: 1, ease: "back.out(2)" });
+      // L5 不检查电路本身
+      tl.to("#p-circr", { stroke: "#FF9F43", duration: 0.4 }, at(5, 0.1));
+      DRAW("#p-back", at(5, 0.05), 0.9);
+      IN("#p-qbox", at(5, 0.35), 0.5, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+
+      tl.to("#p-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["parts"] = tl;
+    })();
+  </script>
+</template>

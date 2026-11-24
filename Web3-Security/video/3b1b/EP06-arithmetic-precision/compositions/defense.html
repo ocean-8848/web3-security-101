@@ -1,0 +1,131 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="defense" data-duration="49.72" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="d-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#F0B90B" /></marker>
+        <marker id="d-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="d-p1">
+        <text id="d-title" class="h" x="960" y="140" font-size="48" fill="#83C167" text-anchor="middle" font-weight="800">虚拟份额 + 偏移</text>
+        <text id="d-oz" class="h" x="960" y="195" font-size="30" fill="#6b6f7a" text-anchor="middle">OpenZeppelin ≥ 4.9</text>
+        <text id="d-eq" class="h" x="960" y="310" font-size="44" fill="#e8e6df" text-anchor="middle"><tspan fill="#58C4DD">份额</tspan> = 资产 × (总份额 <tspan fill="#83C167" font-weight="700">+ 10^offset</tspan>) ÷ (总资产 <tspan fill="#83C167" font-weight="700">+ 1</tspan>)</text>
+
+        <text id="d-off" class="h" x="960" y="420" font-size="36" fill="#83C167" text-anchor="middle">同样的攻击，offset = 3（按公式计算的示例）</text>
+        <text id="d-att" class="h" x="200" y="510" font-size="32" fill="#8a8f99">攻击者存 1 wei：1 × (0 + 1,000) ÷ (0 + 1) = 1,000 份额</text>
+        <text id="d-vic" class="h" x="200" y="580" font-size="34" fill="#e8e6df">受害者存 9,999 USDC：9,999 × 2,000 ÷ 10,000.000002 ≈ 1,999.8 → <tspan fill="#83C167" font-weight="800">1,999 份额</tspan></text>
+        <g id="d-was" class="h"><text x="1720" y="660" font-size="34" fill="#8a8f99" text-anchor="end">原来：0 份额</text><line x1="1500" y1="648" x2="1725" y2="648" stroke="#FF9F43" stroke-width="4" /></g>
+
+        <!-- 结果条：投入 vs 取回 -->
+        <g id="d-bars" class="h">
+          <text x="200" y="790" font-size="32" fill="#FC6255">攻击者</text>
+          <rect x="360" y="750" width="1000" height="56" rx="6" fill="none" stroke="#F0B90B" stroke-width="3" stroke-dasharray="8 6" />
+          <text x="200" y="910" font-size="32" fill="#e8e6df">受害者</text>
+          <rect x="360" y="870" width="999.9" height="56" rx="6" fill="none" stroke="#F0B90B" stroke-width="3" stroke-dasharray="8 6" />
+          <text x="1380" y="745" font-size="28" fill="#6b6f7a">投入 10,000</text>
+          <text x="1380" y="865" font-size="28" fill="#6b6f7a">投入 9,999</text>
+        </g>
+        <rect id="d-ba" x="360" y="750" width="0" height="56" rx="6" fill="#F0B90B" />
+        <rect id="d-bv" x="360" y="870" width="0" height="56" rx="6" fill="#F0B90B" />
+        <text id="d-bat" class="h" x="1380" y="790" font-size="32" fill="#e8e6df">取回 ≈ 5,001 · <tspan fill="#83C167" font-weight="700">净亏 ≈ 5,000</tspan></text>
+        <text id="d-bvt" class="h" x="1380" y="910" font-size="32" fill="#e8e6df">取回 ≈ 9,997 · 少 ≈ 2</text>
+      </g>
+
+      <!-- 另外三种做法 -->
+      <g id="d-p2">
+        <text id="d-t2" class="h" x="960" y="160" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="800">另外三种做法</text>
+        <!-- 死份额 -->
+        <g id="d-m1" class="h">
+          <rect x="240" y="380" width="240" height="220" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <rect x="265" y="520" width="190" height="60" rx="6" fill="#F0B90B" opacity=".7" />
+          <text x="360" y="680" font-size="32" fill="#e8e6df" text-anchor="middle">部署时先存一笔</text>
+          <text x="360" y="730" font-size="30" fill="#8a8f99" text-anchor="middle">份额发给死地址</text>
+          <text x="610" y="330" font-size="28" fill="#6b6f7a" text-anchor="middle" class="mono">0x…dEaD</text>
+        </g>
+        <rect id="d-dead" class="h" x="335" y="440" width="50" height="34" rx="6" fill="#58C4DD" />
+        <text id="d-m1t" class="h" x="360" y="800" font-size="32" fill="#83C167" text-anchor="middle" font-weight="700">金库永远不空</text>
+        <!-- 内部记账 -->
+        <g id="d-m2" class="h">
+          <rect x="840" y="380" width="240" height="220" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="960" y="460" font-size="28" fill="#8a8f99" text-anchor="middle">记账 totalAssets</text>
+          <text x="960" y="530" font-size="44" fill="#83C167" text-anchor="middle" font-weight="800" class="mono">100</text>
+          <text x="960" y="680" font-size="32" fill="#e8e6df" text-anchor="middle">状态变量自己记账</text>
+          <text x="960" y="730" font-size="30" fill="#8a8f99" text-anchor="middle">不读 balanceOf</text>
+        </g>
+        <path id="d-don" class="dr h" pathLength="1" d="M960 250 L 960 370" fill="none" stroke="#F0B90B" stroke-width="5" marker-end="url(#d-ah)" />
+        <text id="d-dont" class="h" x="985" y="290" font-size="28" fill="#F0B90B">捐赠</text>
+        <text id="d-m2t" class="h" x="960" y="800" font-size="32" fill="#83C167" text-anchor="middle" font-weight="700">捐赠不改变价格</text>
+        <!-- 份额为 0 就回滚 -->
+        <g id="d-m3" class="h">
+          <rect x="1440" y="380" width="240" height="220" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="1560" y="500" font-size="30" fill="#58C4DD" text-anchor="middle" class="mono">shares == 0</text>
+          <text x="1560" y="680" font-size="32" fill="#e8e6df" text-anchor="middle">份额为 0 就回滚</text>
+          <text x="1560" y="730" font-size="30" fill="#8a8f99" text-anchor="middle">而不是收下 0</text>
+        </g>
+        <path id="d-in3" class="dr h" pathLength="1" d="M1800 300 L 1690 410" fill="none" stroke="#F0B90B" stroke-width="5" marker-end="url(#d-ah)" />
+        <path id="d-back" class="dr h" pathLength="1" d="M1690 440 C 1760 420, 1800 380, 1820 320" fill="none" stroke="#FC6255" stroke-width="5" marker-end="url(#d-ahr)" />
+        <text id="d-m3t" class="h" x="1560" y="800" font-size="32" fill="#83C167" text-anchor="middle" font-weight="700">交易回滚，资产退回</text>
+
+        <text id="d-user" class="h" x="960" y="960" font-size="36" fill="#e8e6df" text-anchor="middle">用户：设置<tspan fill="#83C167">最少份额</tspan> · 尽量不做第一个存款人</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 49.72, "L": [[0.6, 6.86], [7.31, 12.93], [13.38, 21.59], [22.04, 30.75], [31.2, 42.53], [42.98, 48.62]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0
+      IN("#d-title", at(0, 0.2), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      IN("#d-oz", at(0, 0.6), 0.5);
+      // L1 公式
+      IN("#d-eq", at(1, 0.05), 0.6);
+      tl.fromTo("#d-eq tspan[fill='#83C167']", { opacity: 0.2 }, { opacity: 1, duration: 0.3, stagger: 0.6 }, at(1, 0.4));
+      // L2 offset = 3
+      IN("#d-off", at(2, 0.0), 0.4);
+      IN("#d-att", at(2, 0.2), 0.4);
+      IN("#d-vic", at(2, 0.45), 0.5);
+      IN("#d-was", at(2, 0.8), 0.4);
+      // L3 结果条
+      IN("#d-bars", at(3, 0.0), 0.4);
+      tl.fromTo("#d-ba", { attr: { width: 0 } }, { attr: { width: 500.1 }, duration: 0.8, ease: "power2.out" }, at(3, 0.1));
+      IN("#d-bat", at(3, 0.2), 0.4);
+      tl.fromTo("#d-bv", { attr: { width: 0 } }, { attr: { width: 999.7 }, duration: 0.8, ease: "power2.out" }, at(3, 0.6));
+      IN("#d-bvt", at(3, 0.7), 0.4);
+
+      // L4 另外三种
+      tl.to("#d-p1", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(4, 0));
+      IN("#d-t2", at(4, 0.03), 0.4);
+      IN("#d-m1", at(4, 0.06), 0.5);
+      IN("#d-dead", at(4, 0.1), 0.2);
+      tl.to("#d-dead", { x: 250, y: -80, duration: 0.7, ease: "power2.inOut" }, at(4, 0.14));
+      IN("#d-m1t", at(4, 0.22), 0.4);
+      IN("#d-m2", at(4, 0.38), 0.5);
+      DRAW("#d-don", at(4, 0.45), 0.5);
+      IN("#d-dont", at(4, 0.45), 0.3);
+      tl.to("#d-m2 text:nth-of-type(2)", { fill: "#e8e6df", duration: 0.15, yoyo: true, repeat: 1 }, at(4, 0.5));
+      IN("#d-m2t", at(4, 0.55), 0.4);
+      IN("#d-m3", at(4, 0.7), 0.5);
+      DRAW("#d-in3", at(4, 0.75), 0.4);
+      DRAW("#d-back", at(4, 0.83), 0.5);
+      IN("#d-m3t", at(4, 0.88), 0.4);
+      // L5 用户侧
+      IN("#d-user", at(5, 0.05), 0.5);
+
+      tl.to("#d-p2", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["defense"] = tl;
+    })();
+  </script>
+</template>

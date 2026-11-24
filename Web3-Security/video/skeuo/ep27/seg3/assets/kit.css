@@ -1,0 +1,94 @@
+/* kit.css — ep29 统一 HTML 组件样式（沿用 s7-vivid 规格）
+ * 用法：在 composition 的 template 内 style 块里内联（iso.kitCss()），再写本场景自己的 #root 样式。
+ * 字体：Noto Sans SC（index.html 里 @font-face）、JetBrains Mono（HyperFrames 内置）。
+ * 颜色语义：绿 #1f9d55 正常/通过；红 #e0453a 失败/攻击者；青蓝 #2aa3c9（实底 #1d93ba）中性；墨 #1c1c1c。没有黄色。
+ */
+
+/* ---------- world / camera scaffolding ---------- */
+.k-stage { position: absolute; inset: 0; }
+#cam { position: absolute; left: 0; top: 0; width: 10px; height: 10px; transform-origin: 0 0; }
+.k-layer { position: absolute; left: 0; top: 0; width: 10px; height: 10px; }
+.wsvg { position: absolute; overflow: visible; }
+.pin { position: absolute; width: 0; height: 0; }
+.wl { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+.ctr { position: absolute; left: 0; top: 0; white-space: nowrap; }
+.a-b { transform: translate(-50%, -100%); }
+.a-t { transform: translate(-50%, 0); }
+.a-l { transform: translate(0, -50%); }
+.a-r { transform: translate(-100%, -50%); }
+.a-c { transform: translate(-50%, -50%); }
+.hide { opacity: 0; }
+
+/* ---------- labels (world labels via iso.wlab) ---------- */
+.lab { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; font-family: "Noto Sans SC", sans-serif; font-weight: 700;
+  font-size: 32px; line-height: 1.2; padding: 5px 18px 7px; border-radius: 12px; background: #ffffff; border: 3px solid #2aa3c9; color: #17809f;
+  box-shadow: 0 6px 14px rgba(70, 60, 40, 0.10); }
+.lab-sm { font-size: 28px; padding: 3px 14px 5px; border-radius: 10px; }
+.lab-cs { background: #1d93ba; border-color: #1d93ba; color: #ffffff; }   /* 青蓝实底 */
+.lab-gs { background: #1f9d55; border-color: #1f9d55; color: #ffffff; }   /* 绿底 = 正常/通过 */
+.lab-rs { background: #e0453a; border-color: #e0453a; color: #ffffff; }   /* 红底 = 失败/攻击者 */
+.lab-r { border-color: #e0453a; color: #c3352b; }                         /* 红描边 */
+.lab-g { border-color: #cfc7b8; color: #1c1c1c; font-size: 30px; }        /* 灰描边（关卡名） */
+.lab-ink { background: #1c1c1c; border-color: #1c1c1c; color: #ffffff; }  /* 墨底 */
+.lab .gn { margin-right: 2px; }
+.lab svg { flex: none; }
+
+/* ---------- badges / icons ---------- */
+.badge { border-radius: 50%; background: #e0453a; display: flex; align-items: center; justify-content: center;
+  border: 4px solid #ffffff; box-shadow: 0 6px 14px rgba(160, 40, 30, 0.28); }
+.badge-g { background: #1f9d55; box-shadow: 0 6px 14px rgba(20, 110, 60, 0.25); border-width: 3px; }
+.env { position: relative; width: 64px; height: 44px; }
+.env svg { display: block; }
+.env-red { position: absolute; left: 0; top: 0; }
+
+/* ---------- chapter pills (pills.mjs) ---------- */
+.k-pills { position: absolute; right: 48px; top: 30px; display: flex; gap: 10px; align-items: center; font-family: "Noto Sans SC", sans-serif; }
+.k-pill { font-size: 28px; font-weight: 700; line-height: 1.2; padding: 6px 20px 8px; border-radius: 999px; background: #ffffff; color: #1c1c1c;
+  border: 2px solid #e2ddd3; box-shadow: 0 4px 12px rgba(70, 60, 40, 0.08); white-space: nowrap; opacity: 0.5; }
+.k-pill.is-on { background: #1c1c1c; color: #ffffff; border-color: #1c1c1c; opacity: 1; }
+.k-pill.is-num { padding: 6px 0 8px; width: 50px; text-align: center; }
+
+/* ---------- code card ---------- */
+.k-code { position: absolute; width: 800px; background: #ffffff; border-radius: 18px; padding: 24px 34px; font-family: "Noto Sans SC", sans-serif;
+  color: #1c1c1c; box-shadow: 0 14px 30px rgba(70, 60, 40, 0.12); }
+.k-code .c-head { height: 56px; display: flex; align-items: center; gap: 12px; font-size: 34px; font-weight: 900; white-space: nowrap; }
+.k-code .c-tag { margin-left: auto; font-size: 28px; font-weight: 700; color: #7d776b; background: #f1ede5; border-radius: 8px; padding: 2px 12px 4px; }
+.k-code .c-row { position: relative; height: 50px; line-height: 50px; font-family: "JetBrains Mono", "Noto Sans SC", monospace; font-size: 30px;
+  font-weight: 500; white-space: pre; }
+.k-code .c-cm { color: #8a8478; }
+.k-code .c-hot { font-weight: 700; margin: 0 -16px; padding: 0 16px; border-radius: 10px; background: #fdeae7; }
+.k-code .c-red { color: #e0453a; font-weight: 800; }
+.k-code .c-chip { display: inline-block; margin-left: 16px; font-family: "JetBrains Mono", monospace; font-size: 28px; font-weight: 800; color: #ffffff;
+  background: #e0453a; border-radius: 8px; padding: 0 12px; line-height: 38px; vertical-align: 3px; }
+.k-code .c-bar { position: absolute; left: -4px; top: 8px; width: 6px; height: 34px; background: #2aa3c9; border-radius: 3px; transform-origin: 50% 100%; }
+
+/* ---------- dot matrix (每个点 = N) ---------- */
+.k-mx { position: absolute; width: 530px; height: 640px; font-family: "Noto Sans SC", sans-serif; color: #1c1c1c; }
+.k-mx .mx-title { font-size: 40px; font-weight: 900; white-space: nowrap; }
+.k-mx .mx-legend { position: absolute; left: 0; top: 64px; display: flex; gap: 12px; }
+.k-mx .lg { display: inline-flex; align-items: center; gap: 8px; font-size: 28px; font-weight: 700; padding: 3px 16px 5px; background: #ffffff;
+  border-radius: 999px; box-shadow: 0 3px 10px rgba(70, 60, 40, 0.08); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.k-mx .lgd { width: 20px; height: 20px; border-radius: 50%; display: inline-block; }
+.k-mx .mx-t { position: absolute; left: 0; font-size: 28px; font-weight: 700; white-space: nowrap; }
+.k-mx .mx-line { position: absolute; height: 0; border-top: 3px dashed #2aa3c9; }
+.k-mx .slot { position: absolute; width: 56px; height: 56px; border-radius: 50%; border: 3px dashed #d3ccbf; }
+.k-mx .dot { position: absolute; width: 56px; height: 56px; border-radius: 50%; background: #1f9d55; }
+.k-mx .dot.is-red { background: #e0453a; }
+
+/* ---------- title card / end card ---------- */
+.k-veil { position: absolute; inset: 0; background: #efebe3; }
+.k-title { position: absolute; left: 460px; top: 290px; width: 1000px; min-height: 320px; background: #fffdf8; border-radius: 28px;
+  box-shadow: 0 18px 40px rgba(70, 60, 40, 0.14); text-align: center; padding: 70px 40px 60px; font-family: "Noto Sans SC", sans-serif; }
+.k-title .t-main { font-size: 96px; font-weight: 900; line-height: 1.1; white-space: nowrap; color: #1c1c1c; }
+.k-title .t-sub { margin-top: 22px; font-size: 40px; font-weight: 700; color: #1d93ba; white-space: nowrap; }
+.k-big { font-family: "Noto Sans SC", sans-serif; font-size: 92px; font-weight: 900; line-height: 1.08; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.k-note { font-family: "Noto Sans SC", sans-serif; font-size: 30px; font-weight: 700; color: #6d685e; }
+
+/* ---------- caption card (字幕卡；底部 84 px，物件与标签不进底部 160 px) ---------- */
+.k-cap { position: absolute; left: 0; right: 0; bottom: 84px; text-align: center; pointer-events: none; }
+.k-cap > span { display: inline-block; font-family: "Noto Sans SC", sans-serif; font-weight: 900; font-size: 46px; line-height: 1.25; color: #1c1c1c;
+  letter-spacing: 0.02em; padding: 10px 28px; background: #fffdf8; border-radius: 14px; }
+
+/* ---------- shadows (reference) ---------- */
+.k-shadow-card { box-shadow: 0 14px 30px rgba(70, 60, 40, 0.12); }
+.k-shadow-lab { box-shadow: 0 6px 14px rgba(70, 60, 40, 0.10); }

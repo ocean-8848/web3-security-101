@@ -1,0 +1,77 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="p8" data-duration="37.31" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="n-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="n-all">
+        <text id="n-t" class="h" x="120" y="120" font-size="44" fill="#B48EF0" font-weight="800">⑧ 人是入口</text>
+        <!-- 人 + 设备 -->
+        <g id="n-man" class="h">
+          <circle cx="1400" cy="400" r="60" fill="none" stroke="#B48EF0" stroke-width="5" />
+          <path d="M1290 600 C 1290 490, 1510 490, 1510 600 Z" fill="none" stroke="#B48EF0" stroke-width="5" />
+          <rect x="1560" y="500" width="200" height="120" rx="10" fill="#161a22" stroke="#e8e6df" stroke-width="3" />
+          <text x="1660" y="570" font-size="28" fill="#e8e6df" text-anchor="middle">电脑</text>
+          <text x="1400" y="680" font-size="32" fill="#B48EF0" text-anchor="middle">员工 / 开发者 / 客服</text>
+        </g>
+        <!-- 三个入口 -->
+        <g id="n-e1" class="h">
+          <rect x="120" y="230" width="640" height="120" rx="16" fill="#2a1414" stroke="#FC6255" stroke-width="3" />
+          <text x="150" y="282" font-size="32" fill="#e8e6df">DMM Bitcoin 2024</text>
+          <text x="150" y="328" font-size="28" fill="#FC6255">假招聘测试题 → 控制供应商员工电脑</text>
+        </g>
+        <path id="n-a1" class="dr h" pathLength="1" d="M770 290 C 1100 290, 1300 420, 1550 540" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#n-ahr)" />
+        <g id="n-e2" class="h">
+          <rect x="120" y="420" width="640" height="120" rx="16" fill="#2a1414" stroke="#FC6255" stroke-width="3" />
+          <text x="150" y="472" font-size="32" fill="#e8e6df">Radiant 2024</text>
+          <text x="150" y="518" font-size="28" fill="#FC6255">伪装成 PDF 的后门 → 控制 3 名开发者设备</text>
+        </g>
+        <path id="n-a2" class="dr h" pathLength="1" d="M770 480 C 1100 480, 1300 560, 1550 570" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#n-ahr)" />
+        <g id="n-e3" class="h">
+          <rect x="120" y="610" width="640" height="120" rx="16" fill="#2a1414" stroke="#FC6255" stroke-width="3" />
+          <text x="150" y="662" font-size="32" fill="#e8e6df">Coinbase 2025</text>
+          <text x="150" y="708" font-size="28" fill="#FC6255">外包客服被收买 → 导出用户数据</text>
+        </g>
+        <path id="n-a3" class="dr h" pathLength="1" d="M770 670 C 1050 670, 1200 620, 1300 590" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#n-ahr)" />
+        <text id="n-sig" class="h" x="960" y="820" font-size="32" fill="#FF9F43" text-anchor="middle">信号：招聘测试题 · 外部文件 · 会议软件 · 被收买的员工</text>
+        <!-- 防御 -->
+        <g id="n-fix" font-size="32" text-anchor="middle">
+          <g class="n-f h"><rect x="120" y="880" width="380" height="110" rx="16" fill="#132013" stroke="#83C167" stroke-width="3" /><text x="310" y="946" fill="#83C167">签名与开发设备隔离</text></g>
+          <g class="n-f h"><rect x="540" y="880" width="380" height="110" rx="16" fill="#132013" stroke="#83C167" stroke-width="3" /><text x="730" y="946" fill="#83C167">双人原则</text></g>
+          <g class="n-f h"><rect x="960" y="880" width="380" height="110" rx="16" fill="#132013" stroke="#83C167" stroke-width="3" /><text x="1150" y="946" fill="#83C167">离职即回收权限</text></g>
+          <g class="n-f h"><rect x="1380" y="880" width="380" height="110" rx="16" fill="#132013" stroke="#83C167" stroke-width="3" /><text x="1570" y="946" fill="#83C167">数据只给需要的人</text></g>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 37.31, "L": [[0.6, 3.36], [3.81, 9.59], [10.04, 15.78], [16.23, 20.79], [21.24, 27.5], [27.95, 36.21]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      IN("#n-t", at(0, 0.0), 0.5);
+      IN("#n-man", at(0, 0.3), 0.6, { y: 20 }, { y: 0 });
+      IN("#n-e1", at(1, 0.05), 0.5, { x: -20 }, { x: 0 }); DRAW("#n-a1", at(1, 0.45), 0.6);
+      tl.to("#n-man rect", { stroke: "#FC6255", duration: 0.3 }, at(1, 0.8));
+      IN("#n-e2", at(2, 0.05), 0.5, { x: -20 }, { x: 0 }); DRAW("#n-a2", at(2, 0.45), 0.6);
+      IN("#n-e3", at(3, 0.05), 0.5, { x: -20 }, { x: 0 }); DRAW("#n-a3", at(3, 0.45), 0.6);
+      IN("#n-sig", at(4, 0.1), 0.5);
+      gsap.utils.toArray("#root .n-f").forEach((g, i) => IN(g, at(5, 0.05 + i * 0.18), 0.4, { y: 20 }, { y: 0 }));
+
+      tl.to("#n-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["p8"] = tl;
+    })();
+  </script>
+</template>

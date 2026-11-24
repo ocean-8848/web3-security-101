@@ -1,0 +1,88 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="health" data-duration="47.01" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="f-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker></defs>
+      <g id="f-all">
+        <text id="f-title" class="h" x="960" y="130" font-size="52" fill="#83C167" text-anchor="middle" font-weight="800">规则必须守住：偿付能力</text>
+        <g id="f-eq1" class="h">
+          <text x="200" y="240" font-size="32" fill="#8a8f99">每个账户</text>
+          <text x="420" y="240" font-size="38" fill="#e8e6df"><tspan fill="#F0B90B">抵押品价值</tspan> × 清算阈值  <tspan fill="#83C167" font-weight="800">≥</tspan>  借款价值</text>
+        </g>
+        <text id="f-hf" class="h" x="420" y="305" font-size="32" fill="#8a8f99">两边之比 = 健康因子；<tspan fill="#FF9F43">小于 1 → 可被清算</tspan></text>
+        <g id="f-eq2" class="h">
+          <text x="200" y="385" font-size="32" fill="#8a8f99">整个协议</text>
+          <text x="420" y="385" font-size="38" fill="#e8e6df"><tspan fill="#F0B90B">所有资产</tspan>  <tspan fill="#83C167" font-weight="800">≥</tspan>  所有存款人的债权</text>
+        </g>
+
+        <!-- 示例：100 抵押 / 90 债务 -->
+        <line id="f-base" class="h" x1="500" y1="940" x2="1420" y2="940" stroke="#6b6f7a" stroke-width="3" />
+        <rect id="f-col" class="h" x="620" y="540" width="160" height="400" fill="#F0B90B" />
+        <rect id="f-chunk" class="h" x="620" y="540" width="160" height="120" fill="#F0B90B" />
+        <rect id="f-debt" class="h" x="1140" y="580" width="160" height="360" fill="#e8e6df" opacity=".85" />
+        <text id="f-c100" class="h" x="700" y="520" font-size="44" fill="#F0B90B" text-anchor="middle" font-weight="800">100</text>
+        <text id="f-c70" class="h" x="700" y="640" font-size="44" fill="#F0B90B" text-anchor="middle" font-weight="800">70</text>
+        <text id="f-d90" class="h" x="1220" y="560" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="800">90</text>
+        <text id="f-lc" class="h" x="700" y="990" font-size="30" fill="#F0B90B" text-anchor="middle">抵押品（示例，美元）</text>
+        <text id="f-ld" class="h" x="1220" y="990" font-size="30" fill="#e8e6df" text-anchor="middle">债务</text>
+        <line id="f-lvl" class="h" x1="600" y1="580" x2="1320" y2="580" stroke="#e8e6df" stroke-width="2" stroke-dasharray="8 8" />
+        <text id="f-don" class="h" x="1640" y="560" font-size="34" fill="#F0B90B" text-anchor="middle">捐出 30</text>
+        <rect id="f-gap" class="h" x="620" y="580" width="160" height="80" fill="#FC6255" fill-opacity=".25" stroke="#FC6255" stroke-width="4" stroke-dasharray="10 6" />
+        <text id="f-gapt" class="h" x="420" y="635" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="800">缺口 20</text>
+        <text id="f-bad" class="h" x="420" y="690" font-size="32" fill="#FC6255" text-anchor="middle">= 坏账</text>
+        <path id="f-arrow" class="dr h" pathLength="1" d="M800 760 C 950 760, 1450 760, 1540 820" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#f-ah)" />
+        <text id="f-who" class="h" x="1600" y="870" font-size="32" fill="#e8e6df" text-anchor="middle">存款人或保险基金承担</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 47.01, "L": [[0.6, 8.02], [8.47, 19.05], [19.5, 24.85], [25.3, 30.77], [31.22, 38.62], [39.07, 45.91]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      IN("#f-title", at(0, 0.3), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      // L1 账户不变量
+      IN("#f-eq1", at(1, 0.05), 0.6);
+      IN("#f-hf", at(1, 0.55), 0.5);
+      // L2 协议不变量
+      IN("#f-eq2", at(2, 0.1), 0.6);
+      // L3 示例
+      tl.to(["#f-eq1", "#f-hf", "#f-eq2"], { opacity: 0.4, duration: 0.4 }, at(3, 0));
+      IN("#f-base", at(3, 0.05), 0.4);
+      IN("#f-col", at(3, 0.2), 0.7, { scaleY: 0, svgOrigin: "700 940" }, { scaleY: 1, ease: "expo.out" });
+      IN(["#f-c100", "#f-lc"], at(3, 0.35), 0.4);
+      IN("#f-debt", at(3, 0.6), 0.7, { scaleY: 0, svgOrigin: "1220 940" }, { scaleY: 1, ease: "expo.out" });
+      IN(["#f-d90", "#f-ld"], at(3, 0.72), 0.4);
+      // L4 捐出 30
+      tl.set("#f-chunk", { opacity: 1 }, at(4, 0.1));
+      tl.set("#f-col", { attr: { y: 660, height: 280 } }, at(4, 0.1));
+      tl.to("#f-chunk", { x: 860, y: -60, opacity: 0.2, duration: 1.0, ease: "power2.inOut" }, at(4, 0.12));
+      OUT("#f-chunk", at(4, 0.12) + 1.0, 0.2);
+      IN("#f-don", at(4, 0.2), 0.4);
+      OUT("#f-c100", at(4, 0.12), 0.2);
+      IN("#f-c70", at(4, 0.45), 0.4);
+      IN("#f-lvl", at(4, 0.7), 0.4);
+      // L5 缺口 = 坏账
+      OUT(["#f-don", "#f-c70"], at(5, 0), 0.3);
+      IN("#f-gap", at(5, 0.05), 0.4);
+      IN(["#f-gapt", "#f-bad"], at(5, 0.15), 0.4);
+      DRAW("#f-arrow", at(5, 0.5), 0.6);
+      IN("#f-who", at(5, 0.6), 0.4);
+
+      tl.to("#f-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["health"] = tl;
+    })();
+  </script>
+</template>

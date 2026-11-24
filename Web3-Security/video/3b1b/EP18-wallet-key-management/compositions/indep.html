@@ -1,0 +1,134 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="indep" data-duration="52.0" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="d-all">
+        <text id="d-pre" class="h" x="960" y="140" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">前提：几方<tspan fill="#83C167">真的互相独立</tspan></text>
+        <text id="d-ex" class="h" x="200" y="140" font-size="30" fill="#6b6f7a">示例</text>
+
+        <!-- 办公室（同一地点） -->
+        <rect id="d-office" class="h" x="150" y="210" width="560" height="760" rx="24" fill="none" stroke="#8a8f99" stroke-width="3" stroke-dasharray="12 8" />
+        <text id="d-officet" class="h" x="430" y="1010" font-size="30" fill="#8a8f99" text-anchor="middle">同一个办公室 · 同一个浏览器插件</text>
+
+        <!-- 五个签名人 + 硬件钱包 -->
+        <g id="d-signers"></g>
+
+        <!-- 每人一条独立的线 → 多签合约 -->
+        <g id="d-direct" fill="none" stroke="#8a8f99" stroke-opacity=".6" stroke-width="3"></g>
+        <!-- 共用前端 -->
+        <g id="d-fe" class="h">
+          <rect id="d-fer" x="900" y="460" width="300" height="160" rx="16" fill="#161a22" stroke="#FF9F43" stroke-width="4" />
+          <text x="1050" y="530" font-size="32" fill="#e8e6df" text-anchor="middle">多签前端</text>
+          <text id="d-fet" x="1050" y="580" font-size="28" fill="#8a8f99" text-anchor="middle">五人共用</text>
+        </g>
+        <g id="d-via" fill="none" stroke="#FF9F43" stroke-opacity=".8" stroke-width="3"></g>
+        <path id="d-out" class="dr" pathLength="1" d="M1205 540 L 1440 540" stroke="#8a8f99" stroke-width="3" fill="none" />
+
+        <g id="d-safe" class="h">
+          <rect x="1450" y="420" width="340" height="240" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+          <text x="1620" y="490" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">多签合约</text>
+          <text id="d-thr" x="1620" y="580" font-size="56" fill="#e8e6df" text-anchor="middle" font-weight="800">3-of-5</text>
+        </g>
+        <text id="d-eff" class="h" x="1620" y="760" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="800">实际：1 把锁</text>
+      </g>
+
+      <!-- MPC：Multichain -->
+      <g id="d-mpc">
+        <text id="d-mct" class="h" x="960" y="160" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">Multichain · MPC</text>
+        <rect id="d-cloud" class="h" x="560" y="300" width="800" height="400" rx="40" fill="none" stroke="#FC6255" stroke-width="4" stroke-dasharray="14 8" />
+        <text id="d-cloudt" class="h" x="960" y="760" font-size="36" fill="#FC6255" text-anchor="middle" font-weight="700">全部节点：CEO 的个人云账户</text>
+        <g id="d-nodes">
+          <g class="d-nd h"><rect x="640" y="420" width="180" height="160" rx="14" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><text x="730" y="510" font-size="30" fill="#B48EF0" text-anchor="middle">分片 1</text></g>
+          <g class="d-nd h"><rect x="870" y="420" width="180" height="160" rx="14" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><text x="960" y="510" font-size="30" fill="#B48EF0" text-anchor="middle">分片 2</text></g>
+          <g class="d-nd h"><rect x="1100" y="420" width="180" height="160" rx="14" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><text x="1190" y="510" font-size="30" fill="#B48EF0" text-anchor="middle">分片 3</text></g>
+        </g>
+        <g id="d-lock" class="h">
+          <rect x="1440" y="470" width="80" height="70" rx="8" fill="#8a8f99" />
+          <path d="M1455 470 v-22 a25 25 0 0 1 50 0 v22" fill="none" stroke="#8a8f99" stroke-width="7" />
+          <text x="1480" y="600" font-size="30" fill="#8a8f99" text-anchor="middle">团队无法登录</text>
+        </g>
+        <text id="d-amt" class="h" x="960" y="880" font-size="44" fill="#e8e6df" text-anchor="middle">约 <tspan fill="#FC6255" font-weight="800">1.26 亿美元</tspan> 异常转出 · <tspan fill="#8a8f99" font-size="34">定性有争议</tspan></text>
+        <text id="d-nom" class="h" x="960" y="980" font-size="40" fill="#FF9F43" text-anchor="middle" font-weight="700">分片在同一个人手里 → 门限只是名义上的</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 52.0, "L": [[0.6, 7.85], [8.3, 14.44], [14.89, 21.13], [21.58, 29.17], [29.62, 40.7], [41.15, 50.9]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.8) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 五个签名人（灰 = 人），每人一台硬件钱包，屏幕可变色
+      const host = document.querySelector("#d-signers"), dh = document.querySelector("#d-direct"), vh = document.querySelector("#d-via");
+      const S = [];
+      for (let i = 0; i < 5; i++) {
+        const y = 300 + i * 140, x = 300;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        g.innerHTML = `<circle cx="${x}" cy="${y}" r="34" fill="#2a2f3a" stroke="#e8e6df" stroke-width="3" />` +
+          `<rect x="${x + 80}" y="${y - 40}" width="140" height="80" rx="12" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />` +
+          `<rect class="scr" x="${x + 95}" y="${y - 25}" width="110" height="50" rx="5" fill="#1d222c" />`;
+        host.appendChild(g);
+        const p = document.createElementNS(NS, "path");
+        p.setAttribute("d", `M${x + 225} ${y} C ${x + 600} ${y}, ${x + 800} 540, 1440 540`);
+        p.setAttribute("pathLength", "1"); p.setAttribute("class", "dr");
+        dh.appendChild(p);
+        const q = document.createElementNS(NS, "path");
+        q.setAttribute("d", `M${x + 225} ${y} C ${x + 450} ${y}, ${x + 450} 540, 895 540`);
+        q.setAttribute("pathLength", "1"); q.setAttribute("class", "dr");
+        vh.appendChild(q);
+        S.push({ g, p, q, scr: g.querySelector(".scr") });
+      }
+
+      // L0 前提：独立
+      IN("#d-pre", at(0, 0.1), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+
+      // L1 示例：3-of-5，五人五台硬件钱包
+      tl.to("#d-pre", { opacity: 0.3, duration: 0.3 }, at(1, 0));
+      IN("#d-ex", at(1, 0), 0.4);
+      S.forEach((s, i) => IN(s.g, at(1, 0.1) + i * 0.12, 0.4, { x: -30 }, { x: 0 }));
+      IN("#d-safe", at(1, 0.4), 0.5);
+      S.forEach((s, i) => DRAW(s.p, at(1, 0.55) + i * 0.06, 0.6));
+
+      // L2 同一个办公室、同一个插件、同一个前端
+      IN("#d-office", at(2, 0.05), 0.6);
+      IN("#d-officet", at(2, 0.2), 0.5);
+      tl.to(S.map((s) => s.p), { opacity: 0, duration: 0.4 }, at(2, 0.5));
+      IN("#d-fe", at(2, 0.55), 0.5);
+      S.forEach((s, i) => DRAW(s.q, at(2, 0.6) + i * 0.05, 0.5));
+      DRAW("#d-out", at(2, 0.8), 0.4);
+
+      // L3 前端被篡改：五块屏幕同时变成同一个假画面
+      tl.to("#d-fer", { stroke: "#FC6255", duration: 0.3 }, at(3, 0.1));
+      tl.to("#d-via path", { stroke: "#FC6255", duration: 0.3 }, at(3, 0.15));
+      tl.to(S.map((s) => s.scr), { fill: "#FC6255", duration: 0.3 }, at(3, 0.3));
+      tl.to("#d-thr", { opacity: 0.35, duration: 0.3 }, at(3, 0.6));
+      IN("#d-eff", at(3, 0.65), 0.5, { scale: 1.3, svgOrigin: "1620 745" }, { scale: 1 });
+
+      // L4 MPC 也一样：Multichain
+      tl.to("#d-all", { opacity: 0, duration: 0.4 }, at(4, 0));
+      IN("#d-mct", at(4, 0.05), 0.5);
+      gsap.utils.toArray("#root .d-nd").forEach((n, i) => IN(n, at(4, 0.12) + i * 0.1, 0.4, { y: 20 }, { y: 0 }));
+      IN("#d-cloud", at(4, 0.35), 0.6, { scale: 1.1, svgOrigin: "960 500" }, { scale: 1 });
+      IN("#d-cloudt", at(4, 0.42), 0.5);
+      IN("#d-lock", at(4, 0.75), 0.5);
+
+      // L5 约 1.26 亿美元，门限名义上
+      IN("#d-amt", at(5, 0.05), 0.5);
+      IN("#d-nom", at(5, 0.55), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+
+      tl.to(["#d-all", "#d-mpc"], { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["indep"] = tl;
+    })();
+  </script>
+</template>

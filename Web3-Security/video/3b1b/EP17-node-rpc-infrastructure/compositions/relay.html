@@ -1,0 +1,97 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="relay" data-duration="51.83" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="m-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="m-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="m-all">
+        <g id="m-a">
+          <text id="m-title" class="h" x="960" y="100" font-size="42" fill="#e8e6df" text-anchor="middle" font-weight="700">MEV-Boost：谁信任谁</text>
+          <g id="m-bd" class="h"><rect x="120" y="300" width="340" height="160" rx="18" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="290" y="370" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">构建者</text><text x="290" y="420" font-size="28" fill="#8a8f99" text-anchor="middle">组装完整区块</text></g>
+          <path id="m-a1" class="dr h" pathLength="1" d="M465 380 L 640 380" fill="none" stroke="#8a8f99" stroke-width="4" marker-end="url(#m-ah)" />
+          <g id="m-rl" class="h"><rect x="650" y="260" width="460" height="240" rx="20" fill="#1a1524" stroke="#B48EF0" stroke-width="4" /><text x="880" y="320" font-size="36" fill="#B48EF0" text-anchor="middle" font-weight="700">Relay</text></g>
+          <g id="m-blk" class="h"><rect x="760" y="350" width="240" height="120" rx="10" fill="#161a22" stroke="#F0B90B" stroke-width="3" /><rect x="760" y="350" width="240" height="34" rx="10" fill="#F0B90B" fill-opacity=".35" /><text x="880" y="376" font-size="28" fill="#e8e6df" text-anchor="middle">区块头</text><text x="880" y="440" font-size="28" fill="#F0B90B" text-anchor="middle">区块体（交易）</text></g>
+          <path id="m-a2" class="dr h" pathLength="1" d="M1115 320 L 1310 320" fill="none" stroke="#8a8f99" stroke-width="4" marker-end="url(#m-ah)" />
+          <g id="m-pr" class="h"><rect x="1320" y="260" width="460" height="240" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="1550" y="320" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">提议者</text></g>
+          <g id="m-hdr" class="h"><rect x="1380" y="340" width="240" height="40" rx="8" fill="#F0B90B" fill-opacity=".35" stroke="#F0B90B" stroke-width="2" /><text x="1500" y="370" font-size="28" fill="#e8e6df" text-anchor="middle">区块头</text></g>
+          <text id="m-blind" class="h" x="1550" y="460" font-size="30" fill="#FF9F43" text-anchor="middle">看不到内容，先签名</text>
+          <path id="m-a3" class="dr h" pathLength="1" d="M1310 440 L 1115 440" fill="none" stroke="#58C4DD" stroke-width="4" marker-end="url(#m-ah)" />
+          <text id="m-pub" class="h" x="880" y="560" font-size="30" fill="#e8e6df" text-anchor="middle">签名后，relay 发布完整区块</text>
+          <!-- 2023 事件 -->
+          <g id="m-ev" class="h">
+            <text x="960" y="680" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">2023 年 4 月：恶意提议者签了一个<tspan fill="#FC6255">无效</tspan>的区块头</text>
+            <text id="m-ev2" x="960" y="740" font-size="32" fill="#8a8f99" text-anchor="middle">旧代码：签了就返回区块体 → 拆开三明治机器人的交易包</text>
+          </g>
+          <text id="m-loss" class="h" x="960" y="840" font-size="56" fill="#FC6255" text-anchor="middle" font-weight="800">≈ 2,000 万美元</text>
+          <text id="m-fix" class="h" x="960" y="930" font-size="34" fill="#83C167" text-anchor="middle" font-weight="700">修复：relay 先广播区块，再把区块交给提议者</text>
+        </g>
+        <!-- 集中度 -->
+        <g id="m-b">
+          <text id="m-ct" class="h" x="960" y="200" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">构建者区块份额（2026-11-08 单日快照）</text>
+          <rect id="m-bar0" class="h" x="200" y="300" width="1520" height="90" rx="12" fill="#2a2f3a" />
+          <rect id="m-bar1" class="h" x="200" y="300" width="0" height="90" rx="12" fill="#FF9F43" />
+          <text id="m-74" class="h" x="1324.8" y="440" font-size="40" fill="#FF9F43" text-anchor="middle" font-weight="800">前两大 ≈ 74%</text>
+          <g id="m-epbs" class="h">
+            <rect x="360" y="600" width="1200" height="200" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="3" stroke-dasharray="12 8" />
+            <text x="960" y="680" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">ePBS（EIP-7732）：协议内的提议者与构建者分离</text>
+            <text id="m-ep2" x="960" y="745" font-size="32" fill="#8a8f99" text-anchor="middle">随 Glamsterdam 计划上线 · 截至 2026 年 11 月无主网日期</text>
+          </g>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 51.83, "L": [[0.6, 6.62], [7.07, 14.9], [15.35, 26.34], [26.79, 32.36], [32.81, 41.06], [41.51, 50.73]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      // L0 构建者 → relay
+      IN("#m-title", at(0, 0.0), 0.4);
+      NODE("#m-bd", at(0, 0.1));
+      DRAW("#m-a1", at(0, 0.4), 0.4);
+      NODE("#m-rl", at(0, 0.5));
+      IN("#m-blk", at(0, 0.6), 0.4, { x: -40 }, { x: 0 });
+      // L1 只给区块头；盲签；发布
+      NODE("#m-pr", at(1, 0.0));
+      DRAW("#m-a2", at(1, 0.1), 0.4);
+      IN("#m-hdr", at(1, 0.2), 0.4, { x: -60 }, { x: 0 });
+      IN("#m-blind", at(1, 0.35), 0.4);
+      DRAW("#m-a3", at(1, 0.6), 0.4);
+      IN("#m-pub", at(1, 0.75), 0.4);
+      // L2 2023 事件
+      IN("#m-ev", at(2, 0.05), 0.5);
+      tl.fromTo("#m-ev2", { opacity: 0 }, { opacity: 1, duration: 0.4 }, at(2, 0.4));
+      tl.to("#m-a3", { stroke: "#FC6255", duration: 0.3 }, at(2, 0.1));
+      IN("#m-loss", at(2, 0.7), 0.5, { scale: 1.3, svgOrigin: "960 820" }, { scale: 1 });
+      // L3 修复
+      IN("#m-fix", at(3, 0.1), 0.5);
+      // L4 集中度
+      OUT("#m-a", at(4, 0.0), 0.35);
+      IN(["#m-ct", "#m-bar0", "#m-bar1"], at(4, 0.1), 0.4);
+      tl.to("#m-bar1", { attr: { width: 1520 * 0.74 }, duration: 1.0, ease: "power2.out" }, at(4, 0.3));
+      IN("#m-74", at(4, 0.6), 0.4);
+      // L5 ePBS
+      IN("#m-epbs", at(5, 0.1), 0.5, { y: 20 }, { y: 0 });
+      tl.fromTo("#m-ep2", { opacity: 0 }, { opacity: 1, duration: 0.4 }, at(5, 0.5));
+      tl.to("#m-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["relay"] = tl;
+    })();
+  </script>
+</template>

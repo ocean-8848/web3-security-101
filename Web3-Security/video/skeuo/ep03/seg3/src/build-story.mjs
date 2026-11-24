@@ -1,0 +1,665 @@
+// Generates compositions/story.html for ep03/seg3「③ 存储槽」(one isometric world, one camera).
+// Run: node src/build-story.mjs
+import fs from "node:fs";
+import { at, Wp, f, CE, U, V, box, M, camAt, toScreen, gridSvg, worldSvg, wlab, wpin, dashCurve, kitCss, runtimeJs } from "../../../kit/iso.mjs";
+import * as O from "../../../kit/objects.mjs";
+import { pills } from "../../../kit/pills.mjs";
+import { loadTiming, wordAt, lineAt } from "../../../kit/timing.mjs";
+import { wordAt as _wa } from "../../../kit/timing.mjs";
+import { termCss, termHtml, termJs } from "../../kit-ext/termcards.mjs";
+import { contractMachine, slotCabinet, cabinetCell, byteBlock, hashFunnel, manual, runtimeExtJs } from "../../kit-ext/objects-ext.mjs";
+import { numSign, ghostColumn, pipeU, groundLine, vRuler, liftY } from "./props.mjs";
+
+const T = loadTiming(new URL("../timing.json", import.meta.url));
+// 术语卡（RETROFIT-deps 第 2 节）
+const TERMS = [
+  { id: 'tm1', term: 'mapping', def: '键值映射表 · 例如 地址 → 余额', at: _wa(T, 'mapping', { line: 11 }).start },
+  { id: 'tm2', term: '哈希（keccak256）', def: '把输入算成 32 字节、看似随机的值', at: _wa(T, '哈希', { line: 11 }).start },
+  { id: 'tm3', term: '实现合约', def: '提供代码逻辑、由代理来执行的合约', at: _wa(T, '实现合约', { line: 15 }).start },
+  { id: 'tm4', term: 'RPC 节点', def: '对外提供链上数据读取接口的节点', at: _wa(T, 'RPC', { line: 17 }).start, until: lineAt(T, 18).start + 0.45 },
+];
+const SCRIPT = JSON.parse(fs.readFileSync(new URL("../../script.json", import.meta.url), "utf8"));
+const TOTAL = T.total;
+const L = (i) => lineAt(T, i);
+const w = (term, line, o = {}) => wordAt(T, term, { line, ...o }).start;
+const we = (term, line, o = {}) => wordAt(T, term, { line, ...o }).end;
+
+// ================================================================ world layout (u, v world units)
+const CAB = { u: 0, v: 0 };
+const MA = { u: 560, v: 40 };
+const FUN = { u: -660, v: 200 };
+const OLD = { u: -470, v: -300 };
+const QV = 270, QZ = 56;                                   // queue row (ground) in front of the cabinet
+const Q = { owner: -560, paused: -300, fee: -230, total: -40 };
+const SOPEN = { 0: 104, 1: 64, 2: 30 };           // stair-step openings so every tray stays visible
+const Z = { arr: 760, map: 1320, eip: 1960 };      // far chunks of the same storage column
+
+const cabOpts = {
+  id: "cab", n: 6,
+  fill: {
+    0: [{ bytes: 20, color: "teal", at: 0 }, { bytes: 1, color: "green", at: 20 }, { bytes: 11, color: "ink", at: 21 }],
+    1: [{ bytes: 12, color: "ink", at: 0 }, { bytes: 32, color: "gray", at: 0 }],
+    2: [{ bytes: 32, color: "gray", at: 0 }],
+    4: [{ bytes: 32, color: "teal", at: 0 }],
+  },
+};
+const oldOpts = { id: "old", n: 4, open: { 0: SOPEN[0], 1: SOPEN[1], 2: SOPEN[2] },
+  fill: { 0: [{ bytes: 20, color: "teal" }, { bytes: 1, color: "green" }], 1: [{ bytes: 12, color: "ink" }], 2: [{ bytes: 32, color: "gray" }] } };
+
+// stations for the four scenarios, along +u behind the main cabinet
+const ST = [0, 1, 2, 3].map((i) => ({ u: 2100 + 1700 * i, v: 420 }));
+
+const items = [];
+const add = (o, svg, dy = 0) => items.push({ y: at(o)[1] + dy, svg });
+const A = {};
+const lift = (z, svg, id) => `<g ${id ? `id="${id}" ` : ""}transform="translate(0,${f(liftY(z))})">${svg}</g>`;
+const liftP = (p, z) => [p[0], p[1] + liftY(z)];
+
+// ---- main: machine A + pipe + cabinet + ghost column + far chunks
+const ma = contractMachine(MA, { id: "ma", name: "A" }); A.ma = ma.anchors; add(MA, ma.svg);
+add({ u: 300, v: 20 }, pipeU(CAB, { id: "pipe", u0: MA.u - 112, u1: 150, v: 20, z: 110 }));
+const cab = slotCabinet(CAB, cabOpts); A.cab = cab.anchors; add(CAB, cab.svg);
+const ghost = ghostColumn(CAB, { id: "ghost" });
+const chunkArr = slotCabinet(CAB, { id: "carr", n: 3, labels: ["i=0", "i=1", "i=2"], title: "a[i]", fill: { 0: [{ bytes: 32, color: "gray" }], 1: [{ bytes: 32, color: "gray" }], 2: [{ bytes: 32, color: "gray" }] } });
+const chunkMap = slotCabinet(CAB, { id: "cmap", n: 1, labels: ["…"], title: "bal[k]", fill: { 0: [{ bytes: 32, color: "gray" }] } });
+const chunkEip = slotCabinet(CAB, { id: "ceip", n: 1, labels: ["0x3608…"], title: "EIP-1967", fill: { 0: [{ bytes: 20, color: "teal" }] } });
+items.push({ y: at(CAB)[1] + 0.5, svg: ghost.svg + lift(Z.arr, chunkArr.svg, "carr-lift") + lift(Z.map, chunkMap.svg, "cmap-lift") + lift(Z.eip, chunkEip.svg, "ceip-lift") });
+const old = slotCabinet(OLD, oldOpts); A.old = old.anchors; add(OLD, old.svg);
+// funnels (same spot, one at a time)
+const hfMap = hashFunnel(FUN, { id: "hfm", inputs: ["键 k", "槽 3"], output: "哈希位置" });
+const hfArr = hashFunnel(FUN, { id: "hfa", inputs: ["槽 4"], output: "起点" });
+const hfEip = hashFunnel(FUN, { id: "hfe", inputs: ["eip1967.proxy.implementation"], output: "0x3608…bbc" });
+A.hfm = hfMap.anchors; A.hfa = hfArr.anchors; A.hfe = hfEip.anchors;
+add(FUN, hfMap.svg + hfArr.svg + hfEip.svg);
+// constants barrier
+const gline = groundLine(CAB, { id: "gline", u0: -560, u1: 120, v: 240 });
+items.push({ y: at(CAB, -200, 240)[1], svg: gline });
+
+{ const bo = { u: 0, v: QV }; const b0 = Q.owner - 40, b1 = Q.total + 360;
+  add(bo, `<g id="bench" data-ox="${f(at(bo, (b0 + b1) / 2)[0])}" data-oy="${f(at(bo, (b0 + b1) / 2)[1])}">` + box(bo, b0, b1, -34, 34, 0, QZ - 6, M.plinth, 1.4) + box(bo, b0 - 6, b1 + 6, -38, 38, QZ - 6, QZ, M.steel, 1.4) + `</g>`); }
+// ---- station 1: proxy storage vs implementation manual
+const S1 = ST[0];
+const pcO = { u: S1.u - 260, v: S1.v - 100 }, imO = { u: S1.u + 380, v: S1.v - 180 }, mnO = { u: S1.u + 430, v: S1.v + 150 };
+const pc = slotCabinet(pcO, { id: "pc", n: 3, title: "代理合约", fill: { 0: [{ bytes: 20, color: "teal", at: 0 }, { bytes: 20, color: "red", at: 0 }] } });
+const im = contractMachine(imO, { id: "im", name: "实现" });
+const mn = manual(mnO, { id: "mn", title: "实现合约", sub: "变量布局", pageTitle: "§ 布局", pageText: "0 号槽 = owner" });
+A.pc = pc.anchors; A.im = im.anchors; A.mn = mn.anchors;
+add(pcO, pc.svg); add(imO, im.svg);
+const mnTo = { u: pcO.u + 300, v: pcO.v + 330 };
+items.push({ y: 1e6, svg: `<g id="mn-mv">${mn.svg}</g>` }); // manual flies over everything
+// ---- station 2: insert a variable in the middle
+const S2 = ST[1];
+const s2O = { u: S2.u - 40, v: S2.v - 100 };
+const S2OPEN = { 0: 104, 1: 74, 2: 44, 3: 14 };
+const s2 = slotCabinet(s2O, { id: "s2", n: 4, title: "升级后的存储", fill: { 0: [{ bytes: 20, color: "teal" }], 1: [{ bytes: 20, color: "teal" }], 2: [{ bytes: 32, color: "gray" }] } });
+A.s2 = s2.anchors; add(s2O, s2.svg);
+// ---- station 3: private on a glass cabinet, read through RPC
+const S3 = ST[2];
+const s3O = { u: S3.u - 220, v: S3.v - 120 }, rpO = { u: S3.u + 360, v: S3.v - 160 }, peO = { u: S3.u + 330, v: S3.v + 170 }, mgO = { u: S3.u - 140, v: S3.v + 120 };
+const s3 = slotCabinet(s3O, { id: "s3", n: 3, glass: true, tags: { 1: "private" }, title: "Storage" });
+const rp = O.rpc(rpO, { id: "rp" }), pe = O.person(peO, { id: "pe", role: "signer" }), mg = O.magnifier(mgO, { id: "mg", z: 120 });
+A.s3 = s3.anchors; A.rp = rp.anchors; A.pe = pe.anchors; A.mg = mg.anchors;
+add(s3O, s3.svg); add(rpO, rp.svg); add(peO, pe.svg); items.push({ y: 1e6 - 1, svg: `<g id="mg-mv">${mg.svg}</g>` });
+// ---- station 4: delegatecall into an untrusted contract
+const S4 = ST[3];
+const s4O = { u: S4.u - 300, v: S4.v - 120 }, ymO = { u: S4.u + 220, v: S4.v - 60 }, amO = { u: S4.u + 660, v: S4.v + 60 }, mrO = { u: S4.u + 660, v: S4.v + 330 };
+const S4OPEN = { 0: 104, 1: 74, 2: 44, 3: 14 };
+const s4 = slotCabinet(s4O, { id: "s4", n: 4, title: "你的存储",
+  fill: { 0: [{ bytes: 20, color: "teal" }, { bytes: 1, color: "green" }, { bytes: 32, color: "red", at: 0 }], 1: [{ bytes: 32, color: "gray" }, { bytes: 32, color: "red", at: 0 }],
+    2: [{ bytes: 12, color: "ink" }, { bytes: 32, color: "red", at: 0 }], 3: [{ bytes: 20, color: "teal" }, { bytes: 32, color: "red", at: 0 }] } });
+const ym = contractMachine(ymO, { id: "ym", name: "你的" });
+const am = contractMachine(amO, { id: "am", name: "不可信", state: "attacker" });
+const mr = manual(mrO, { id: "mr", title: "对方的代码", sub: "不可信", state: "attacker", pageTitle: "§ 执行", pageText: "改写所有槽位" });
+A.s4 = s4.anchors; A.ym = ym.anchors; A.am = am.anchors; A.mr = mr.anchors;
+add(s4O, s4.svg); add(ymO, ym.svg); add(amO, am.svg);
+const mrTo = { u: ymO.u - 20, v: ymO.v + 310 };
+items.push({ y: 1e6 + 1, svg: `<g id="mr-mv">${mr.svg}</g>` });
+// ---- number signs
+const SIGN = [0, 1, 2, 3].map((i) => ({ u: 400 + 250 * i, v: 380 }));
+const signs = SIGN.map((o, i) => { const r = numSign(o, { id: "sg" + i, n: String(i + 1) }); add(o, r.svg); return r; });
+
+items.sort((a, b) => a.y - b.y);
+
+// ---- flying byte blocks (drawn on top; land → swap to the cabinet's own block)
+const BLK = { depth: 22, h: 10, z: QZ };
+const qO = (u) => ({ u, v: QV });
+const fOwner = byteBlock(qO(Q.owner), { id: "fOwner", bytes: 20, color: "teal", ...BLK });
+const fPaused = byteBlock(qO(Q.paused), { id: "fPaused", bytes: 1, color: "green", ...BLK });
+const fFee = byteBlock(qO(Q.fee), { id: "fFee", bytes: 12, color: "ink", over: 1, ...BLK });
+const fTotal = byteBlock(qO(Q.total), { id: "fTotal", bytes: 32, color: "gray", ...BLK });
+const c11 = cabinetCell(CAB, cabOpts, 1, 0, SOPEN[1]);
+const fFee11 = byteBlock({ u: c11.u, v: c11.v }, { id: "fFee11", bytes: 11, color: "ink", ...BLK, z: c11.z });
+// constants
+const KQ = [{ u: -560, v: 520 }, { u: -330, v: 560 }];
+const fK = [byteBlock(KQ[0], { id: "fK0", bytes: 10, color: "ink", ...BLK, h: 16, depth: 30 }), byteBlock(KQ[1], { id: "fK1", bytes: 10, color: "teal", ...BLK, h: 16, depth: 30 })];
+const flyers = [fOwner, fPaused, fFee, fTotal, fFee11, ...fK].map((b) => b.svg).join("");
+// delta from a block's built origin (u,v,z) to a target {u,v,z}
+const dUV = (o, z0, t) => [t.u - o.u, t.v - o.v, t.z - z0];
+const cell = (i, k, s) => cabinetCell(CAB, cabOpts, i, k, s);
+const MV = {
+  owner: dUV(qO(Q.owner), QZ, cell(0, 0, SOPEN[0])),
+  paused: dUV(qO(Q.paused), QZ, cell(0, 20, SOPEN[0])),
+  fee0: dUV(qO(Q.fee), QZ, cell(0, 21, SOPEN[0])),
+  feeBack: dUV(qO(Q.fee), QZ, { u: Q.fee + 120, v: QV - 40, z: 150 }),
+  fee1: dUV(qO(Q.fee), QZ, cell(1, 0, SOPEN[1])),
+  total2: dUV(qO(Q.total), QZ, cell(2, 0, SOPEN[2])),
+  total1: dUV(qO(Q.total), QZ, cell(1, 0, SOPEN[1])),
+  fee11: dUV({ u: c11.u, v: c11.v }, c11.z, cell(0, 21, SOPEN[0])),
+  k0stop: [60, -250, 0], k1stop: [60, -250, 0],
+  k0mach: [MA.u - 90 - KQ[0].u, MA.v + 50 - KQ[0].v, 188], k1mach: [MA.u + 10 - KQ[1].u, MA.v + 50 - KQ[1].v, 188],
+};
+const Wv = (d) => [d[0] * U[0] + d[1] * V[0], d[0] * U[1] + d[1] * V[1] - d[2] * CE]; // world delta → canvas px
+
+// ---- world-space curves
+const ctr = (c, k, s) => { const q = cell(c, k, s); return Wp(q.u, q.v, q.z + 6); };
+const oldTot = (() => { const q = cabinetCell(OLD, oldOpts, 2, 16, SOPEN[2]); return Wp(q.u, q.v, q.z + 6); })();
+const newTot = ctr(1, 16, SOPEN[1]);
+const cvShift = dashCurve("cv-shift", oldTot, newTot, { c1: [oldTot[0] + 160, oldTot[1] - 200], c2: [newTot[0] - 200, newTot[1] - 220] });
+// hash output → far drawers (teal)
+const chunkDrawer = (ch, z, i) => liftP(ch.anchors.drawers[i], z);
+const pMap = chunkDrawer(chunkMap, Z.map, 0), pArr0 = chunkDrawer(chunkArr, Z.arr, 0), pEip = chunkDrawer(chunkEip, Z.eip, 0);
+const cvMap = dashCurve("cv-map", A.hfm.out, pMap, { color: "#1d93ba", c1: [A.hfm.out[0] - 160, A.hfm.out[1] - 420], c2: [pMap[0] + 300, pMap[1] + 260] });
+const cvArr = dashCurve("cv-arr", A.hfa.out, pArr0, { color: "#1d93ba", c1: [A.hfa.out[0] - 160, A.hfa.out[1] - 360], c2: [pArr0[0] + 300, pArr0[1] + 220] });
+const cvEip = dashCurve("cv-eip", A.hfe.out, pEip, { color: "#1d93ba", c1: [A.hfe.out[0] - 160, A.hfe.out[1] - 500], c2: [pEip[0] + 320, pEip[1] + 300] });
+// station curves
+const rpTop = A.rp.top, s3d1 = A.s3.drawers[1];
+const cvRpc = dashCurve("cv-rpc", [rpTop[0], rpTop[1] + 60], [s3d1[0] + 80, s3d1[1]], { color: "#1d93ba", c1: [rpTop[0] - 60, rpTop[1] - 120], c2: [s3d1[0] + 260, s3d1[1] - 120] });
+// EIP ruler: from the 1967 drawer down to the top of the main cabinet
+const ruX = Wp(CAB.u + 250, CAB.v + 75, 0)[0];
+const rul = vRuler([ruX, Wp(250, 75, Z.eip + 60)[1]], [ruX, Wp(250, 75, 200)[1]], { id: "rul" });
+
+const world = worldSvg("wsvg", gridSvg({ u0: -2600, u1: 7600, v0: -2600, v1: 3200 }) + items.map((x) => x.svg).join("\n") + flyers +
+  cvShift.svg + cvMap.svg + cvArr.svg + cvEip.svg + cvRpc.svg + rul, [-2400, -4200, 9000, 6000]);
+
+// ================================================================ labels (world, counter-scaled)
+const cd = A.cab.drawers, cdl = A.cab.drawerLabels;
+const openP = (anc, i, s) => [anc[i][0] + s * V[0], anc[i][1] + s * V[1]];
+let labels = "";
+labels += wlab("lb-ma", A.ma.top, "合约 A · 代码", "hide");
+labels += wlab("lb-cab", A.cab.top, "A 的存储", "lab-cs hide");
+labels += wlab("lb-kv", liftP(A.cab.top, 360), "巨大的键值表", "hide");
+labels += wlab("lb-key", [cdl[2][0] - 20, cdl[2][1]], "键 = 槽位", "lab-cs hide", "r");
+labels += wlab("lb-val", [cd[3][0] + 210, cd[3][1] - 20], "值 = 32 字节", "lab-cs hide", "l");
+labels += wlab("lb-32", [A.cab.cells[0][0] + 30, A.cab.cells[0][1] + 70], "32 格 = 32 字节", "lab-cs hide", "t");
+labels += wlab("lb-no0", [openP(cdl, 0, 104)[0] - 20, openP(cdl, 0, 104)[1]], "从 0 号开始", "hide", "r");
+const qLab = (id, u, len, txt, dn) => dn ? wlab(id, Wp(u + len / 2, QV + 40, QZ - 4), txt, "lab-sm hide", "t") : wlab(id, Wp(u + len / 2, QV, QZ + 30), txt, "lab-sm hide");
+labels += qLab("lq-owner", Q.owner, 200, "owner · 20") + qLab("lq-paused", Q.paused, 10, "paused · 1", 1) + qLab("lq-fee", Q.fee, 120, "fee · 12") + qLab("lq-total", Q.total, 320, "total · 32", 1);
+const c0 = ctr(0, 26, 104);
+labels += wlab("lb-free", [c0[0], c0[1] + 26], "剩 11 格", "lab-sm hide", "t");
+const ov = ctr(0, 32, 104);
+labels += wlab("lb-over", [ov[0] + 40, ov[1] - 20], "超出 1 格", "lab-rs lab-sm hide", "l");
+labels += wlab("lb-old", liftP(A.old.top, 0), "旧布局 · uint96", "lab-g hide");
+labels += wlab("lb-new", A.cab.top, "新布局 · uint88", "lab-cs hide");
+labels += wlab("lb-shift", [(oldTot[0] + newTot[0]) / 2, Math.min(oldTot[1], newTot[1]) - 200], "升级后全部错位", "lab-rs hide");
+labels += wlab("lb-ot", [oldTot[0] - 180, oldTot[1] + 20], "total 在 2 号", "lab-sm hide", "t");
+labels += wlab("lb-nt", [newTot[0] + 60, newTot[1] + 30], "新代码到 1 号读 total", "lab-r lab-sm hide", "t");
+labels += wlab("lb-m3", [openP(cd, 3, 104)[0], openP(cd, 3, 104)[1] + 40], "mapping 本身 · 空", "hide", "t");
+labels += wlab("lb-kmap", [pMap[0] + 240, pMap[1]], "keccak256(k, 3)", "lab-cs hide", "l");
+labels += wlab("lb-len", [openP(cd, 4, 104)[0], openP(cd, 4, 104)[1] + 40], "槽 4 · 存长度", "hide", "t");
+labels += wlab("lb-karr", [pArr0[0] + 240, pArr0[1] - 58], "keccak256(4) + i", "lab-cs hide", "l");
+labels += wlab("lb-k0", Wp(KQ[0].u + 30, KQ[0].v, 40), "constant", "lab-ink lab-sm hide");
+labels += wlab("lb-k1", Wp(KQ[1].u + 30, KQ[1].v, 40), "immutable", "lab-ink lab-sm hide");
+labels += wlab("lb-gl", Wp(-560, 240, 60), "不占槽", "lab-g hide", "r");
+labels += wlab("lb-code", [A.ma.top[0] + 40, A.ma.top[1] - 10], "constant · immutable → 写在代码里", "lab-cs hide", "l");
+// stations
+const stTitle = ["代理与实现 · 顺序不一致", "升级时中间插入新变量", "private 存密码", "delegatecall 不可信合约"];
+
+labels += wlab("lb-pc0", [openP(A.pc.drawers, 0, 104)[0] + 210, openP(A.pc.drawers, 0, 104)[1]], "0 号槽 = implementation", "lab-cs lab-sm hide", "l");
+labels += wlab("lb-mn", A.mn.top, "实现合约：0 号槽 = owner", "lab-sm hide");
+labels += wlab("lb-dc1", [(A.mn.center[0] + Wp(mnTo.u, mnTo.v)[0]) / 2, Wp(mnTo.u, mnTo.v)[1] - 220], "delegatecall", "lab-cs lab-sm hide");
+labels += wlab("lb-pcx", [openP(A.pc.drawers, 0, 104)[0] + 210, openP(A.pc.drawers, 0, 104)[1]], "implementation 被覆盖", "lab-rs lab-sm hide", "l");
+labels += wlab("lb-ch10", liftP(A.pc.top, 70), "这就是存储冲突", "lab-g lab-sm hide");
+// station 2 code tags (left of each open drawer)
+const tagP = (i) => { const p = A.s2.drawerLabels[i], s = S2OPEN[i] ?? 0; return [p[0] + s * V[0] - 30, p[1] + s * V[1]]; };
+labels += wlab("t2-hd", [tagP(3)[0], tagP(3)[1] - 70], "新代码读作", "lab-g lab-sm hide", "r");
+labels += wlab("t2-0", tagP(0), "owner", "lab-sm hide", "r");
+labels += wlab("t2-a", tagP(1), "地址", "lab-sm hide", "r");
+labels += wlab("t2-b", tagP(2), "余额", "lab-sm hide", "r");
+labels += wlab("t2-n", tagP(1), "新变量", "lab-cs lab-sm hide", "r");
+const s2d2 = [A.s2.drawers[2][0] + 44 * V[0], A.s2.drawers[2][1] + 44 * V[1]];
+labels += wlab("lb-s2x", [s2d2[0] + 220, s2d2[1]], "余额被当成地址读", "lab-rs hide", "l");
+labels += wlab("lb-s3pw", [s3d1[0] + 30, s3d1[1] - 10], "读出：密码", "lab-ink hide", "b");
+labels += wlab("lb-rpc", A.rp.top, "RPC 读存储", "hide");
+labels += wlab("lb-s3priv", [s3d1[0] + 30, s3d1[1] - 10], "private · 存着密码", "lab-sm hide", "b");
+labels += wlab("lb-pub", liftP(A.s3.top, 0), "存储完全公开", "lab-r hide");
+labels += wlab("lb-am", A.am.top, "不受信任的合约", "lab-rs lab-sm hide");
+labels += wlab("lb-dc4", [(A.mr.center[0] + Wp(mrTo.u, mrTo.v)[0]) / 2, Wp(mrTo.u, mrTo.v)[1] - 230], "delegatecall", "lab-cs lab-sm hide");
+labels += wlab("lb-any", liftP(A.s4.top, 0), "任何槽位都能改", "lab-rs hide");
+labels += wlab("lb-sd", A.ym.top, "甚至自毁", "lab-rs hide");
+// EIP-1967
+labels += wlab("lb-rand", [A.hfe.out[0] + 150, A.hfe.out[1] - 130], "看起来随机", "lab-g lab-sm hide", "l");
+labels += wlab("lb-eip", [pEip[0] + 240, pEip[1]], "实现地址槽 · 固定", "lab-cs hide", "l");
+labels += wlab("lb-far", [ruX + 30, (Wp(250, 75, Z.eip + 60)[1] + Wp(250, 75, 200)[1]) / 2], "离 0、1、2 号槽很远 · 不冲突", "lab-gs hide", "l");
+// flying cards (counter-scaled HTML; the -pin is moved)
+const fcard = (id, p, txt) => wpin(id, p, `<div class="fcard" id="${id}">${txt}</div>`, "c");
+labels += fcard("fc-map", A.hfm.out, "哈希位置") + fcard("fc-arr", A.hfa.out, "起点") + fcard("fc-eip", A.hfe.out, "0x3608…bbc");
+const FC = { map: [pMap[0] - A.hfm.out[0], pMap[1] - A.hfm.out[1]], arr: [pArr0[0] - A.hfa.out[0], pArr0[1] - A.hfa.out[1]], eip: [pEip[0] - A.hfe.out[0], pEip[1] - A.hfe.out[1]] };
+
+// ================================================================ cameras
+const C = (u, v, z, k, sx = 960, sy = 520) => camAt(Wp(u, v, z), sx, sy, k);
+const CAMS = {
+  start: C(240, 40, 200, 0.72, 900, 560),
+  cab: C(-60, 100, 200, 1.2, 600, 470),
+  tall: C(0, 60, 700, 0.62, 640, 560),
+  d0: C(-20, 150, 60, 1.55, 760, 560),
+  cmp: C(-235, -60, 200, 0.98, 760, 480),
+  up: (z, k = 0.9) => C(0, 100, z, k, 700, 480),
+  cabL: C(-300, 120, 200, 1.1, 820, 470),
+  cons: C(60, 230, 120, 1.0, 860, 560),
+  signs: C(450, 200, 150, 0.85, 960, 560),
+  over: (() => { const P = [Wp(-300, 0, 0), Wp(0, 0, 500), ...SIGN.map((o) => Wp(o.u, o.v, 330)), ...ST.map((o) => Wp(o.u + 600, o.v + 300, 0))];
+    const x0 = Math.min(...P.map((p) => p[0])), x1 = Math.max(...P.map((p) => p[0])), y0 = Math.min(...P.map((p) => p[1])), y1 = Math.max(...P.map((p) => p[1]));
+    const k = Math.min(1700 / (x1 - x0), 760 / (y1 - y0)); return camAt([(x0 + x1) / 2, (y0 + y1) / 2], 960, 560, f(k)); })(),
+  st: [C(ST[0].u + 20, ST[0].v + 60, 150, 1.08, 960, 540), C(ST[1].u - 60, ST[1].v - 60, 200, 1.35, 1000, 520), C(ST[2].u + 20, ST[2].v + 20, 150, 1.1, 960, 540), C(ST[3].u + 120, ST[3].v + 60, 150, 1.0, 960, 540)],
+  eipWide: C(80, 60, (Z.eip + 160) / 2, 0.47, 820, 500),
+};
+CAMS.mapUp = CAMS.up(Z.map, 0.9);
+CAMS.arrUp = CAMS.up(Z.arr + 60, 0.9);
+CAMS.eipUp = CAMS.up(Z.eip, 0.9);
+for (const k of ["up"]) delete CAMS[k];
+
+// ---------------------------------------------------------------- code card (screen) + curves from rows
+const CARD = { x: 1000, y: 150, w: 880 };
+const rowY = (i) => CARD.y + 24 + 56 + i * 50 + 25;
+const ROWP = (i) => [CARD.x - 4, rowY(i)];
+const scrCurve = (id, i, worldPt, cam) => { const P3 = toScreen(cam, worldPt), P0 = ROWP(i);
+  return dashCurve(id, P0, P3, { c1: [P0[0] - 160, P0[1] + 60], c2: [P3[0] + 160, P3[1] - 140] }); };
+const blkCtr = (i, k, s) => ctr(i, k, s);
+const cR1 = scrCurve("cr1", 0, blkCtr(0, 10, 104), CAMS.cab);
+const cR2 = scrCurve("cr2", 1, blkCtr(0, 20, 104), CAMS.cab);
+const cR3 = scrCurve("cr3", 2, blkCtr(1, 6, 64), CAMS.cab);
+const cR4 = scrCurve("cr4", 3, blkCtr(2, 16, 30), CAMS.cab);
+const overlay = `<svg id="ov" width="1920" height="1080" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0;overflow:visible">${cR1.svg}${cR2.svg}${cR3.svg}${cR4.svg}</svg>`;
+
+const card = `<div class="k-code hide" id="card" style="left:${CARD.x}px;top:${CARD.y}px;width:${CARD.w}px">
+  <div class="c-head">合约 A 的状态变量<span class="c-tag">按声明顺序</span></div>
+  <div class="c-row" id="r0"><div class="c-cur" id="r0-hl"></div><span>address owner;  </span><span class="c-cm cm" id="cm0">// slot 0 · 20 字节</span></div>
+  <div class="c-row" id="r1"><div class="c-cur" id="r1-hl"></div><span>bool    paused; </span><span class="c-cm cm" id="cm1">// slot 0 · 1 字节</span></div>
+  <div class="c-row" id="r2"><div class="c-cur" id="r2-hl"></div><span class="ty"><span id="ty96">uint96</span><span class="strk" id="ty96s"></span><span class="alt" id="ty88">uint88</span></span><span>  fee;    </span><span class="cmw"><span class="c-cm cm" id="cm2">// slot 1 · 12 字节</span><span class="c-cm cm alt" id="cm2b">// slot 0 · 11 字节</span></span></div>
+  <div class="c-row" id="r3"><div class="c-cur" id="r3-hl"></div><span>uint256 total;  </span><span class="cmw"><span class="c-cm cm" id="cm3">// slot 2</span><span class="c-cm cm alt c-red" id="cm3b">// slot 1</span></span></div>
+  <div class="c-row" id="r4"><div class="c-cur" id="r4-hl"></div><span>mapping(address =&gt; uint256) bal; </span><span class="c-cm cm" id="cm4">// slot 3</span></div>
+</div>`;
+
+const rules = [["一", "按声明顺序"], ["二", "相邻打包"], ["三", "mapping"], ["四", "动态数组"], ["五", "常量不占槽"], ["", "四个场景"], ["", "EIP-1967 · 固定槽位"], ["", "代理与实现 · 变量顺序不一致"], ["", "升级时在中间插入新变量"], ["", "private 变量存密码"], ["", "delegatecall 不受信任的合约"]];
+const ruleHtml = rules.map(([n, t], i) => `<div class="rule hide" id="rule${i}">${n ? `<span class="rn">规则${n}</span>` : i >= 7 ? `<span class="rn">场景${"一二三四"[i - 7]}</span>` : ""}${t}</div>`).join("");
+const kw = `<div class="kw hide" id="kw">相邻 · 合计 ≤ 32 字节 → 同一槽</div>
+  <div class="kw fx hide" id="fx1">20 + 1 + 12 = <b class="r">33</b> &gt; 32</div>
+  <div class="kw fx hide" id="fx2">20 + 1 + 11 = <b class="g">32</b> ✓</div>
+  <div class="kw big hide" id="kw2">存储布局 = 漏洞的藏身处</div>`;
+
+// ================================================================ times
+const TM = {
+  huge: w("巨大", 1), store: w("存储", 1), b32: w("32", 1), slot: w("槽位", 1),
+  cab: w("抽屉柜", 2), each: w("每个抽屉", 2), c32: w("32", 2), no0: w("0号", 2),
+  r1: w("规则一", 3), decl: w("声明顺序", 3), from0: w("0号槽", 3),
+  r2: w("规则二", 4), adj: w("相邻", 4), pack: w("打包", 4), same: w("同一个槽", 4),
+  owner: w("owner", 5), o20: w("20", 5), o0: w("0号槽", 5),
+  paused: w("paused", 6), p1: w("1字节", 6), squeeze: w("挤进", 6),
+  fee: w("fee", 7), f12: w("12字节", 7), f20: w("20加1", 7), f33: w("33", 7), nofit: w("放不下", 7),
+  fee1: w("1号槽", 8), total: w("total", 8), t2: w("2号槽", 8),
+  e88: w("88", 9), e11: w("11", 9), e32: w("32", 9), all0: w("全部挤进", 9),
+  t1: w("挪到", 10), t1e: we("1号槽", 10), proxy: w("代理升级", 10), mis: w("错位", 10),
+  r3: w("规则三", 11), map: w("mapping", 11), empty: w("空的", 11), elem: w("元素", 11), keyslot: w("键和槽号", 11), hash: w("哈希", 11),
+  r4: w("规则四", 12), dyn: w("动态数组", 12), len: w("长度", 12), elem2: w("元素", 12), hash2: w("哈希", 12), seq: w("依次", 12),
+  r5: w("规则五", 13), const: w("常量", 13), immut: w("不可变量", 13), nos: w("不占", 13),
+  why: w("安全问题", 14), four: w("四个场景", 14),
+  s1: w("第一", 15), s1n: w("不一致", 15), s1own: w("owner", 15), s1x: w("实际改写", 15), s1addr: w("实现地址", 15),
+  s2: w("第二", 16), ins: w("插入", 16), s2mis: w("错位", 16), s2bal: w("余额", 16), s2addr: w("地址", 16),
+  s3: w("第三", 17), priv: w("private", 17), pw: w("密码", 17), rpc: w("RPC", 17), see: w("看到", 17),
+  s4: w("第四", 18), dc: w("delegatecall", 18), untr: w("不受信任", 18), any: w("任何槽位", 18), sd: w("自毁", 18),
+  eip: w("EIP-1967", 19), fixed: w("固定", 19), hash3: w("哈希", 19), rand: w("随机", 19), coll: w("冲突", 19),
+};
+const LS = (i) => L(i).start;
+const tm = Object.fromEntries(Object.entries(TM).map(([k, v]) => [k, f(v)]));
+
+const html = `<template>
+  <style>
+${kitCss()}
+    #root { position: absolute; inset: 0; overflow: hidden; background: #efebe3; font-family: "Noto Sans SC", sans-serif; color: #1c1c1c; }
+    .k-code .c-row { font-size: 28px; }
+    .k-code .c-cur { position: absolute; left: -16px; right: -16px; top: 3px; bottom: 3px; border-radius: 10px; background: #e1f2f8; opacity: 0; }
+    .k-code .c-row > span { position: relative; }
+    .k-code .cm { opacity: 0; }
+    .k-code .ty, .k-code .cmw { position: relative; display: inline-block; }
+    .k-code .alt { position: absolute; left: 0; top: 0; opacity: 0; }
+    .k-code .strk { position: absolute; left: -4px; top: 24px; height: 4px; width: 0; background: #e0453a; border-radius: 2px; }
+    .k-code #ty88 { color: #1d93ba; font-weight: 800; }
+    .k-code #cm2b { color: #1f9d55; font-weight: 700; }
+    .rule { position: absolute; left: 56px; top: 36px; white-space: nowrap; font-size: 44px; font-weight: 900; }
+    .rule .rn { display: inline-block; margin-right: 16px; font-size: 32px; color: #ffffff; background: #1d93ba; border-radius: 10px; padding: 2px 14px 4px; vertical-align: 6px; }
+    .kw { position: absolute; left: 1000px; top: 560px; white-space: nowrap; font-size: 40px; font-weight: 900; background: #fffdf8; border-radius: 16px;
+      padding: 14px 30px 18px; box-shadow: 0 10px 24px rgba(70,60,40,0.12); }
+    .kw.fx { font-size: 64px; font-family: "JetBrains Mono", "Noto Sans SC", monospace; font-weight: 800; padding: 10px 34px 14px; }
+    .kw .r { color: #e0453a; } .kw .g { color: #1f9d55; }
+    .kw.big { left: 56px; top: 120px; font-size: 52px; }
+    .fcard { white-space: nowrap; font-size: 30px; font-weight: 900; background: #fffdf8; border: 4px solid #1d93ba; border-left-width: 16px; border-radius: 10px;
+      padding: 6px 18px 8px; box-shadow: 0 8px 18px rgba(70,60,40,0.16); opacity: 0; }
+    #ttl-card { min-height: 0; padding: 56px 40px 50px; }
+${termCss}
+  </style>
+  <div id="root" data-composition-id="story" data-width="1920" data-height="1080">
+    <div class="k-stage" id="stage">
+      <div id="cam" data-layout-allow-overflow data-layout-ignore>
+        ${world}
+        <div class="k-layer" id="labels">${labels}</div>
+      </div>
+      ${overlay}
+      ${card}
+      ${ruleHtml}
+      ${kw}
+      ${termHtml(TERMS)}
+      ${pills(3, { sections: SCRIPT.sections })}
+      <div class="k-title" id="ttl-card"><div class="t-main">③ 存储槽</div><div class="t-sub">数据存在哪里</div></div>
+    </div>
+  </div>
+  <script>
+${runtimeJs()}
+${runtimeExtJs()}
+    (function () {
+      const CAMS = ${JSON.stringify(CAMS)};
+      const MV = ${JSON.stringify(MV)};
+      const FC = ${JSON.stringify(FC)};
+      const TM = ${JSON.stringify(tm)};
+      const LS = ${JSON.stringify(T.lines.map((l) => f(l.start)))};
+      const tl = gsap.timeline({ paused: true });
+      const $ = (id) => document.getElementById(id);
+      const fadeIn = (sel, t, d) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d || 0.25, ease: "power1.out", immediateRender: false }, t);
+      const out = (sel, t, d) => tl.to(sel, { opacity: 0, duration: d || 0.2, ease: "power2.in" }, t);
+      const grown = new Set();
+      const grow = (id, t, d) => { if (!grown.has(id)) { grown.add(id); const g = $(id); tl.set("#" + id, { scaleY: 0, svgOrigin: g.getAttribute("data-ox") + " " + g.getAttribute("data-oy") }, 0); } KIT.grow(tl, id, t, d); };
+      const shrink = (id, t, d) => { const g = $(id); tl.to("#" + id, { scaleY: 0, svgOrigin: g.getAttribute("data-ox") + " " + g.getAttribute("data-oy"), duration: d || 0.3, ease: "power2.in" }, t); };
+      const mv = (id, t, d, dur, lift, ease) => KITX.moveUV(tl, id, t, d[0], d[1], d[2], dur, lift, ease);
+      const hid = (sel) => KITX.fade(tl, sel, 0, 0, 0.01);
+      const show = (sel, t, d) => KITX.fade(tl, sel, t, 1, d == null ? 0.01 : d);
+      const hide = (sel, t, d) => KITX.fade(tl, sel, t, 0, d == null ? 0.01 : d);
+      const ruleTo = (i, t) => { for (let j = 0; j < ${rules.length}; j++) if (j !== i) out("#rule" + j, t, 0.15); KIT.pop(tl, "#rule" + i, t + 0.1, 0.3); };
+      const rowOn = (i, t) => { for (let j = 0; j < 5; j++) tl.to("#r" + j + "-hl", { opacity: j === i ? 1 : 0, duration: 0.2 }, t); };
+      const flyCard = (key, t, dur) => { fadeIn("#fc-" + key, t, 0.15); tl.fromTo("#fc-" + key + "-pin", { x: 0, y: 0 }, { x: FC[key][0], y: FC[key][1], duration: dur, ease: "power2.inOut", immediateRender: false }, t); out("#fc-" + key, t + dur + 0.05, 0.2); };
+      // ---- initial hidden parts
+      ["cab-blk-0-0", "cab-blk-0-1", "cab-blk-0-2", "cab-blk-1-0", "cab-blk-1-1", "cab-blk-2-0", "cab-blk-4-0", "carr-blk-0-0", "carr-blk-1-0", "carr-blk-2-0", "cmap-blk-0-0", "ceip-blk-0-0",
+       "pc-blk-0-1", "s4-blk-0-2", "s4-blk-1-1", "s4-blk-2-1", "s4-blk-3-1", "fFee-over", "fFee11"].forEach((id) => hid("#" + id));
+      ["carr-lift", "cmap-lift", "ceip-lift"].forEach((id) => hid("#" + id));
+      ["fOwner", "fPaused", "fFee", "fTotal", "fK0", "fK1", "old", "hfm", "hfa", "hfe", "pc", "im", "mn", "s2", "s3", "rp", "pe", "mg", "s4", "ym", "am", "mr", "sg0", "sg1", "sg2", "sg3"].forEach((id) => tl.set("#" + id, { scaleY: 0, svgOrigin: $(id).getAttribute("data-ox") + " " + $(id).getAttribute("data-oy") }, 0) && grown.add(id));
+      KIT.camSet(tl, CAMS.start);
+
+      // ===== 0–1.6 title card → pill
+      tl.fromTo("#ttl-card", { x: 0, y: 0, scale: 1, opacity: 1 }, { x: 560, y: -330, scale: 0.32, opacity: 0, duration: 0.45, ease: "power3.in", immediateRender: false }, 1.25);
+      // ===== L0 push from machine A to the cabinet behind it
+      KIT.pop(tl, "#lb-ma", 1.5); KIT.pop(tl, "#lb-cab", 1.8);
+      KITX.spin(tl, "ma", 1.2, 2.2, 1.2);
+      KIT.cam(tl, 2.2, CAMS.cab, 1.6);
+      out("#lb-ma", 3.4);
+      // ===== L1 a huge key-value table: the column goes up forever
+      KIT.cam(tl, TM.huge - 0.5, CAMS.tall, 1.3);
+      tl.set("#ghost", { opacity: 1 }, TM.huge - 0.3);
+      tl.fromTo("#ghost", { scaleY: 0, svgOrigin: $("ghost").getAttribute("data-ox") + " " + $("ghost").getAttribute("data-oy") }, { scaleY: 1, duration: 1.2, ease: "power2.out", immediateRender: false }, TM.huge - 0.3);
+      KIT.pop(tl, "#lb-kv", TM.huge + 0.6);
+      KIT.cam(tl, TM.b32 - 0.5, CAMS.cab, 1.0);
+      out("#lb-kv", TM.b32 - 0.5);
+      for (let i = 0; i < 6; i++) { KITX.mark(tl, "cab", i, TM.b32 + 0.6 + i * 0.1, "teal"); }
+      KIT.pop(tl, "#lb-val", TM.b32 + 0.2);
+      KIT.pop(tl, "#lb-key", TM.slot - 0.2);
+      // ===== L2 drawers: 32 cells each, numbered from 0
+      out("#lb-key, #lb-val", LS[2] - 0.1);
+      for (let i = 0; i < 6; i++) KITX.mark(tl, "cab", i, LS[2] + 0.2, "off");
+      KIT.cam(tl, TM.cab - 0.3, CAMS.d0, 1.1);
+      KITX.drawer(tl, "cab", 0, TM.each - 0.2, 104, 0.8);
+      KIT.pop(tl, "#lb-32", TM.c32);
+      KITX.mark(tl, "cab", 0, TM.no0, "teal");
+      KIT.pop(tl, "#lb-no0", TM.no0);
+      // ===== L3 rule 1: declaration order → card + queue
+      out("#lb-32, #lb-no0, #lb-cab", LS[3] - 0.2);
+      KITX.mark(tl, "cab", 0, LS[3] - 0.2, "off");
+      KIT.cam(tl, LS[3] - 0.3, CAMS.cab, 1.0);
+      ruleTo(0, TM.r1);
+      tl.fromTo("#card", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, TM.r1 + 0.4);
+      tl.set("#r4", { opacity: 0 }, 0);
+      grow("bench", TM.decl - 0.3, 0.4);
+      [["fOwner", "lq-owner"], ["fPaused", "lq-paused"], ["fFee", "lq-fee"], ["fTotal", "lq-total"]].forEach(([b, lb], i) => {
+        const t = TM.decl + i * 0.4; rowOn(i, t); grow(b, t, 0.35); KIT.pop(tl, "#" + lb, t + 0.1); });
+      rowOn(-1, TM.from0 + 0.6);
+      // ===== L4 rule 2: pack neighbours
+      ruleTo(1, TM.r2);
+      KIT.pop(tl, "#kw", TM.adj, 0.3);
+      KITX.mark(tl, "cab", 0, TM.same, "teal");
+      // ===== L5 owner → slot 0
+      KITX.mark(tl, "cab", 0, LS[5], "off");
+      rowOn(0, TM.owner - 0.2);
+      out("#lq-owner", TM.owner + 0.1);
+      mv("fOwner", TM.owner + 0.1, MV.owner, 1.0, 120);
+      hide("#fOwner", TM.owner + 1.12); show("#cab-blk-0-0", TM.owner + 1.1);
+      fadeIn("#cm0", TM.o20, 0.3);
+      KIT.draw(tl, "cr1", TM.o0 - 0.2, 0.6);
+      // ===== L6 paused squeezes in
+      out("#cr1", LS[6] - 0.1, 0.2);
+      rowOn(1, TM.paused - 0.1);
+      out("#lq-paused", TM.squeeze - 0.6);
+      mv("fPaused", TM.squeeze - 0.6, MV.paused, 0.9, 110);
+      hide("#fPaused", TM.squeeze + 0.32); show("#cab-blk-0-1", TM.squeeze + 0.3);
+      fadeIn("#cm1", TM.squeeze + 0.3, 0.3);
+      KIT.draw(tl, "cr2", TM.squeeze + 0.35, 0.5);
+      KIT.pop(tl, "#lb-free", TM.squeeze + 0.5);
+      // ===== L7 fee 12 bytes does not fit
+      out("#cr2, #lb-free", LS[7] - 0.1, 0.2);
+      out("#kw", LS[7] - 0.1, 0.2);
+      rowOn(2, TM.fee - 0.1);
+      out("#lq-fee", TM.f12 - 0.2);
+      mv("fFee", TM.f12 - 0.2, MV.fee0, 1.0, 110);
+      [0, 1, 2, 3, 4].forEach((k) => { show("#fFee-over", TM.f12 + 0.9 + k * 0.6, 0.15); hide("#fFee-over", TM.f12 + 1.2 + k * 0.6, 0.15); });
+      show("#fFee-over", TM.f12 + 0.9 + 5 * 0.6, 0.15);
+      KIT.pop(tl, "#fx1", TM.f20, 0.3);
+      KIT.pop(tl, "#lb-over", TM.f33);
+      KITX.mark(tl, "cab", 0, TM.nofit - 0.1, "red");
+      // ===== L8 fee → slot 1, total → slot 2
+      out("#fx1, #lb-over", LS[8] - 0.05, 0.2);
+      KITX.mark(tl, "cab", 0, LS[8], "off");
+      hide("#fFee-over", LS[8], 0.15);
+      KITX.drawer(tl, "cab", 1, LS[8] - 0.1, ${SOPEN[1]}, 0.6);
+      KITX.drawer(tl, "cab", 2, LS[8] - 0.1, ${SOPEN[2]}, 0.6);
+      mv("fFee", LS[8] + 0.05, MV.feeBack, 0.4, 0, "power2.out");
+      mv("fFee", LS[8] + 0.45, MV.fee1, 0.7, 40);
+      hide("#fFee", LS[8] + 1.17); show("#cab-blk-1-0", LS[8] + 1.15);
+      fadeIn("#cm2", TM.fee1 + 0.2, 0.3);
+      rowOn(3, TM.total - 0.2);
+      out("#lq-total", TM.total);
+      mv("fTotal", TM.total, MV.total2, 0.9, 120);
+      hide("#fTotal", TM.total + 0.92); show("#cab-blk-2-0", TM.total + 0.9);
+      fadeIn("#cm3", TM.t2, 0.3);
+      KIT.draw(tl, "cr3", TM.fee1 + 0.25, 0.5);
+      KIT.draw(tl, "cr4", TM.t2, 0.5);
+      // ===== L9 uint96 → uint88: fee shrinks to 11 and fits in slot 0
+      out("#cr3, #cr4", LS[9], 0.2);
+      rowOn(2, LS[9] + 0.1);
+      tl.to("#ty96s", { width: 108, duration: 0.3, ease: "power2.out" }, TM.e88 - 0.1);
+      KIT.swap(tl, "#ty96, #ty96s", "#ty88", TM.e88 + 0.4, 0.3);
+      hide("#cab-blk-1-0", TM.e11 - 0.1); show("#fFee11", TM.e11 - 0.1);
+      tl.fromTo("#fFee11", { scaleX: 12 / 11, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 0.4, ease: "power2.inOut", immediateRender: false }, TM.e11);
+      mv("fFee11", TM.e32 - 0.6, MV.fee11, 1.0, 60);
+      hide("#fFee11", TM.e32 + 0.42); show("#cab-blk-0-2", TM.e32 + 0.4);
+      KIT.swap(tl, "#cm2", "#cm2b", TM.e32 + 0.4, 0.3);
+      KITX.mark(tl, "cab", 0, TM.all0 - 0.3, "green");
+      KIT.pop(tl, "#fx2", TM.all0 - 0.3, 0.3);
+      shrink("bench", LS[9] + 0.3, 0.35);
+      // ===== L10 total moves to slot 1; side by side: old vs new layout
+      KITX.mark(tl, "cab", 0, LS[10], "off");
+      out("#fx2", LS[10], 0.2);
+      rowOn(3, LS[10]);
+      hide("#cab-blk-2-0", TM.t1 - 0.6); show("#fTotal", TM.t1 - 0.6);
+      mv("fTotal", TM.t1 - 0.6, MV.total1, 0.9, 40);
+      hide("#fTotal", TM.t1 + 0.32); show("#cab-blk-1-1", TM.t1 + 0.3);
+      KIT.swap(tl, "#cm3", "#cm3b", TM.t1 + 0.3, 0.3);
+      tl.to("#card", { opacity: 0, x: 60, duration: 0.35, ease: "power2.in" }, TM.proxy - 0.4);
+      KIT.cam(tl, TM.proxy - 0.3, CAMS.cmp, 1.1);
+      grow("old", TM.proxy - 0.1, 0.5);
+      KIT.pop(tl, "#lb-old", TM.proxy + 0.4); KIT.pop(tl, "#lb-new", TM.proxy + 0.6);
+      KIT.pop(tl, "#lb-ot", TM.proxy + 1.2); KIT.pop(tl, "#lb-nt", TM.proxy + 1.6);
+      KITX.mark(tl, "old", 2, TM.proxy + 1.2, "teal"); KITX.mark(tl, "cab", 1, TM.proxy + 1.6, "red");
+      KIT.draw(tl, "cv-shift", TM.mis - 1.2, 0.8);
+      KIT.pop(tl, "#lb-shift", TM.mis - 0.3);
+      // ===== L11 rule 3: mapping — empty own slot, elements at a hashed position
+      out("#lb-old, #lb-new, #lb-ot, #lb-nt, #lb-shift, #cv-shift", LS[11] - 0.1, 0.25);
+      KITX.mark(tl, "old", 2, LS[11], "off"); KITX.mark(tl, "cab", 1, LS[11], "off");
+      shrink("old", LS[11] + 0.2, 0.35);
+      KIT.cam(tl, LS[11] - 0.1, CAMS.cab, 1.0);
+      KIT.cam(tl, TM.empty - 0.6, CAMS.cabL, 0.9);
+      [0, 1, 2].forEach((i) => KITX.drawer(tl, "cab", i, LS[11] + 0.1 + i * 0.1, 0, 0.5));
+      ruleTo(2, TM.r3);
+      tl.set("#r4", { opacity: 1 }, TM.map - 0.5);
+      tl.to("#card", { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" }, TM.map - 0.5);
+      rowOn(4, TM.map - 0.1);
+      KITX.drawer(tl, "cab", 3, TM.map + 0.6, 104, 0.7);
+      KITX.mark(tl, "cab", 3, TM.empty - 0.2, "teal");
+      KIT.pop(tl, "#lb-m3", TM.empty - 0.2);
+      tl.to("#card", { opacity: 0, x: 60, duration: 0.35, ease: "power2.in" }, TM.empty - 0.6);
+      grow("hfm", TM.elem - 0.2, 0.5);
+      KITX.hash(tl, "hfm", TM.keyslot - 0.2);
+            KITX.fade(tl, "#cmap-lift", TM.hash - 0.3, 1, 0.3);
+      KIT.cam(tl, TM.hash, CAMS.mapUp, 1.4);
+      KIT.draw(tl, "cv-map", TM.hash + 0.05, 1.2);
+      flyCard("map", TM.hash + 0.05, 1.3);
+      KITX.mark(tl, "cmap", 0, TM.hash + 1.3, "teal");
+      KITX.drawer(tl, "cmap", 0, TM.hash + 1.3, 104, 0.5);
+      show("#cmap-blk-0-0", TM.hash + 1.6, 0.25);
+      KIT.pop(tl, "#lb-kmap", TM.hash + 1.5);
+      // ===== L12 rule 4: dynamic array — length in its slot, elements from hash(slot)
+      ruleTo(3, TM.r4);
+      out("#cv-map, #lb-kmap, #lb-m3", LS[12] + 0.4, 0.25);
+      KIT.cam(tl, LS[12] + 0.4, CAMS.cabL, 1.0);
+      KITX.mark(tl, "cab", 3, LS[12] + 0.4, "off");
+      KITX.drawer(tl, "cab", 3, LS[12] + 0.5, 0, 0.5);
+      KITX.drawer(tl, "cab", 4, TM.dyn + 0.2, 104, 0.7);
+      show("#cab-blk-4-0", TM.len - 0.4, 0.25);
+      KITX.mark(tl, "cab", 4, TM.len - 0.3, "teal");
+      KIT.pop(tl, "#lb-len", TM.len - 0.2);
+      shrink("hfm", TM.elem2 - 0.6, 0.3);
+      grow("hfa", TM.elem2 - 0.25, 0.45);
+      KITX.hash(tl, "hfa", TM.elem2 + 0.2);
+      KITX.fade(tl, "#carr-lift", TM.hash2 - 0.2, 1, 0.3);
+      KIT.cam(tl, TM.hash2 + 0.2, CAMS.arrUp, 1.1);
+      out("#lb-len", TM.hash2 + 0.1, 0.2);
+      KIT.draw(tl, "cv-arr", TM.hash2 + 0.25, 0.9);
+      flyCard("arr", TM.hash2 + 0.25, 1.0);
+      [0, 1, 2].forEach((i) => { const t = TM.seq - 0.3 + i * 0.35; KITX.drawer(tl, "carr", i, t, [104, 70, 36][i], 0.45); KITX.mark(tl, "carr", i, t, "teal"); show("#carr-blk-" + i + "-0", t + 0.25, 0.2); });
+      KIT.pop(tl, "#lb-karr", TM.seq + 0.4);
+      // ===== L13 rule 5: constants/immutables do not take a slot
+      ruleTo(4, TM.r5);
+      out("#cv-arr, #lb-karr", LS[13], 0.25);
+      KITX.mark(tl, "cab", 4, LS[13], "off");
+      KITX.drawer(tl, "cab", 4, LS[13] + 0.1, 0, 0.5);
+      shrink("hfa", LS[13] + 0.1, 0.3);
+      KIT.cam(tl, LS[13] - 0.1, CAMS.cons, 1.0);
+      grow("fK0", TM.const, 0.35); KIT.pop(tl, "#lb-k0", TM.const + 0.1);
+      grow("fK1", TM.immut, 0.35); KIT.pop(tl, "#lb-k1", TM.immut + 0.1);
+      fadeIn("#gline", TM.immut - 0.2, 0.3);
+      const KS = ${JSON.stringify([Wv(MV.k0stop), Wv(MV.k0mach), Wv(MV.k1mach)])};
+      mv("fK0", TM.immut + 0.2, MV.k0stop, 0.5, 0, "power2.out"); mv("fK1", TM.immut + 0.3, MV.k1stop, 0.5, 0, "power2.out");
+      KITX.fly(tl, "lb-k0-pin", TM.immut + 0.2, KS[0][0], KS[0][1], 0.5, 0, "power2.out"); KITX.fly(tl, "lb-k1-pin", TM.immut + 0.3, KS[0][0], KS[0][1], 0.5, 0, "power2.out");
+      KIT.pop(tl, "#lb-gl", TM.nos - 0.3);
+      mv("fK0", TM.nos + 0.1, MV.k0mach, 0.8, 140); mv("fK1", TM.nos + 0.25, MV.k1mach, 0.8, 140);
+      KITX.fly(tl, "lb-k0-pin", TM.nos + 0.1, KS[1][0], KS[1][1], 0.8, 140); KITX.fly(tl, "lb-k1-pin", TM.nos + 0.25, KS[2][0], KS[2][1], 0.8, 140);
+      out("#lb-k0, #lb-k1", TM.nos + 0.85, 0.2);
+      KIT.pop(tl, "#lb-code", TM.nos + 1.0);
+      // ===== L14 four scenarios
+      out("#lb-gl, #lb-code, #gline", LS[14] - 0.1, 0.25);
+      ruleTo(5, LS[14]);
+      KIT.cam(tl, LS[14] - 0.1, CAMS.signs, 1.1);
+      KIT.pop(tl, "#kw2", TM.why - 0.2, 0.3);
+      [0, 1, 2, 3].forEach((i) => grow("sg" + i, TM.four - 0.2 + i * 0.15, 0.4));
+      // ===== L15 scenario 1: proxy vs implementation order
+      out("#kw2", LS[15] - 0.2, 0.25);
+      KIT.cam(tl, LS[15] - 0.25, CAMS.st[0], 1.1);
+      ruleTo(7, TM.s1 - 0.2);
+      grow("pc", TM.s1 + 0.6); grow("im", TM.s1 + 0.9); grow("mn", TM.s1 + 1.1);
+      KITX.drawer(tl, "pc", 0, TM.s1n - 0.9, 104, 0.6);
+      KIT.pop(tl, "#lb-pc0", TM.s1n - 0.4);
+      KIT.pop(tl, "#lb-mn", TM.s1n);
+      out("#lb-mn", TM.s1own - 1.2);
+      KIT.pop(tl, "#lb-dc1", TM.s1own - 1.1);
+      KITX.fly(tl, "mn-mv", TM.s1own - 1.1, ${JSON.stringify(Wv([mnTo.u - mnO.u, mnTo.v - mnO.v, 0]))}[0], ${JSON.stringify(Wv([mnTo.u - mnO.u, mnTo.v - mnO.v, 0]))}[1], 1.1, 160);
+      KITX.book(tl, "mn", TM.s1own + 0.1, 175, 0.7);
+      out("#lb-dc1", TM.s1x - 0.2);
+      KITX.mark(tl, "pc", 0, TM.s1x + 0.2, "red");
+      KITX.clearDrawer(tl, "pc", 0, TM.s1x + 0.1);
+      KITX.fillDrawer(tl, "pc", 0, TM.s1x + 0.7, 0.2); hide("#pc-blk-0-0", TM.s1x + 0.6); show("#pc-blk-0-1", TM.s1x + 0.6);
+      KIT.swap(tl, "#lb-pc0", "#lb-pcx", TM.s1addr - 0.3, 0.25);
+      KIT.pop(tl, "#lb-ch10", TM.s1addr + 0.3);
+      // ===== L16 scenario 2: insert a variable in the middle
+      KIT.cam(tl, LS[16] - 0.25, CAMS.st[1], 1.1);
+      out("#lb-pcx, #lb-ch10", LS[16] - 0.25, 0.25);
+      ruleTo(8, TM.s2 - 0.2);
+      grow("s2", TM.s2 + 0.2);
+      [0, 1, 2, 3].forEach((i) => KITX.drawer(tl, "s2", i, TM.s2 + 0.6 + i * 0.08, ${JSON.stringify(S2OPEN)}[i], 0.6));
+      KIT.pop(tl, "#t2-hd", TM.s2 + 1.0); ["#t2-0", "#t2-a", "#t2-b"].forEach((s, i) => KIT.pop(tl, s, TM.s2 + 1.1 + i * 0.12));
+      const TG = ${JSON.stringify([0, 1, 2, 3].map((i) => tagP(i)))};
+      KITX.fly(tl, "t2-a-pin", TM.ins, TG[2][0] - TG[1][0], TG[2][1] - TG[1][1], 0.5); KITX.fly(tl, "t2-b-pin", TM.ins, TG[3][0] - TG[2][0], TG[3][1] - TG[2][1], 0.5);
+      KIT.pop(tl, "#t2-n", TM.ins + 0.4);
+      KITX.mark(tl, "s2", 2, TM.s2bal - 0.3, "red");
+      tl.to("#t2-a", { backgroundColor: "#e0453a", borderColor: "#e0453a", color: "#ffffff", duration: 0.2 }, TM.s2bal - 0.2);
+      KIT.pop(tl, "#lb-s2x", TM.s2addr - 0.3);
+      // ===== L17 scenario 3: private is not secret
+      KIT.cam(tl, LS[17] - 0.25, CAMS.st[2], 1.1);
+      out("#lb-s2x, #t2-hd, #t2-0, #t2-a, #t2-b, #t2-n", LS[17] - 0.25, 0.25);
+      ruleTo(9, TM.s3 - 0.2);
+      grow("s3", TM.s3 + 0.3);
+      KITX.mark(tl, "s3", 1, TM.priv + 0.2, "teal");
+      KIT.pop(tl, "#lb-s3priv", TM.pw);
+      grow("pe", TM.pw - 0.6); grow("rp", TM.pw - 0.3);
+      grow("mg", TM.rpc - 0.4);
+      KIT.pop(tl, "#lb-rpc", TM.rpc);
+      KIT.draw(tl, "cv-rpc", TM.rpc + 0.1, 0.6);
+      tl.fromTo("#mg-mv", { x: 120, y: 40 }, { x: -60, y: -30, duration: 1.0, ease: "power2.inOut", immediateRender: false }, TM.rpc + 0.2);
+      out("#lb-s3priv", TM.rpc - 0.2, 0.2);
+      KIT.pop(tl, "#lb-s3pw", TM.see - 0.8);
+      KIT.pop(tl, "#lb-pub", TM.see - 0.2);
+      // ===== L18 scenario 4: delegatecall into an untrusted contract
+      KIT.cam(tl, LS[18] - 0.25, CAMS.st[3], 1.1);
+      out("#lb-s3pw, #lb-pub, #lb-rpc, #cv-rpc", LS[18] - 0.25, 0.25);
+      ruleTo(10, TM.s4 - 0.2);
+      grow("s4", TM.s4 + 0.3); grow("ym", TM.s4 + 0.5);
+      grow("am", TM.untr - 0.6); grow("mr", TM.untr - 0.4);
+      KIT.pop(tl, "#lb-am", TM.untr);
+      KIT.pop(tl, "#lb-dc4", TM.dc + 0.2);
+      KITX.spin(tl, "am", TM.untr, 3.0, -2);
+      const MR = ${JSON.stringify(Wv([mrTo.u - mrO.u, mrTo.v - mrO.v, 0]))};
+      KITX.fly(tl, "mr-mv", TM.untr + 0.5, MR[0], MR[1], 1.0, 160);
+      out("#lb-dc4", TM.untr + 1.6);
+      KITX.book(tl, "mr", TM.untr + 1.6, 175, 0.6);
+      KITX.spin(tl, "ym", TM.any - 0.8, 2.0, 1.5);
+      [0, 1, 2, 3].forEach((i) => { KITX.drawer(tl, "s4", i, TM.any - 0.6, ${JSON.stringify(S4OPEN)}[i], 0.45); KITX.mark(tl, "s4", i, TM.any - 0.1, "red");
+        tl.set("#s4-flash-" + i, { opacity: 1 }, TM.any); tl.to("#s4-flash-" + i, { opacity: 0, duration: 0.4 }, TM.any + 0.15); });
+      [[0, [0, 1], 2], [1, [0], 1], [2, [0], 1], [3, [0], 1]].forEach(([i, olds, nw]) => { olds.forEach((j) => hide("#s4-blk-" + i + "-" + j, TM.any + 0.1)); show("#s4-blk-" + i + "-" + nw, TM.any + 0.1); });
+      KIT.pop(tl, "#lb-any", TM.any + 0.3);
+      KIT.broke(tl, "ym", TM.sd - 0.4);
+      KIT.pop(tl, "#lb-sd", TM.sd - 0.3);
+      // ===== L19 EIP-1967: a fixed, hashed, far-away slot for the implementation address
+      out("#lb-any, #lb-sd, #lb-am", LS[19] - 0.1, 0.2);
+      tl.to("#pc, #im, #mn-mv, #s2, #s3, #rp, #pe, #mg-mv, #s4, #ym, #am, #mr-mv, #sg0, #sg1, #sg2, #sg3", { opacity: 0.16, duration: 0.6 }, LS[19] + 0.2);
+      ruleTo(6, TM.eip);
+      KIT.cam(tl, LS[19] - 0.1, CAMS.cabL, 1.4);
+      grow("hfe", TM.fixed - 0.3, 0.45);
+      KITX.hash(tl, "hfe", TM.hash3 - 0.4);
+      KIT.pop(tl, "#lb-rand", TM.rand - 0.1);
+      KITX.fade(tl, "#ceip-lift", TM.rand - 0.3, 1, 0.3);
+      out("#lb-rand", TM.rand + 0.5);
+      KIT.cam(tl, TM.rand + 0.2, CAMS.eipUp, 1.2);
+      KIT.draw(tl, "cv-eip", TM.rand + 0.25, 1.0);
+      flyCard("eip", TM.rand + 0.25, 1.05);
+      KITX.mark(tl, "ceip", 0, TM.rand + 1.3, "teal");
+      KITX.drawer(tl, "ceip", 0, TM.rand + 1.3, 104, 0.5); show("#ceip-blk-0-0", TM.rand + 1.6, 0.25);
+      KIT.pop(tl, "#lb-eip", TM.rand + 1.4);
+      KIT.cam(tl, TM.coll - 1.0, CAMS.eipWide, 1.2);
+      out("#cv-eip", TM.coll - 1.0, 0.3);
+      shrink("hfe", TM.coll - 1.0, 0.4);
+      [0, 1, 2].forEach((i) => KITX.mark(tl, "cab", i, TM.coll - 0.4, "green"));
+      tl.fromTo("#rul-p", { attr: { "stroke-dashoffset": $("rul-p").getAttribute("data-l") } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.6, ease: "power2.inOut", immediateRender: false }, TM.coll - 0.3);
+      fadeIn("#rul-ends", TM.coll + 0.2, 0.2);
+      KIT.pop(tl, "#lb-far", TM.coll + 0.2);
+      tl.set({}, {}, ${f(TOTAL)});
+${termJs(TERMS)}
+      window.__timelines["story"] = tl;
+    })();
+  </script>
+</template>
+`;
+fs.writeFileSync(new URL("../compositions/story.html", import.meta.url), html);
+console.log("wrote compositions/story.html", html.length, "bytes");

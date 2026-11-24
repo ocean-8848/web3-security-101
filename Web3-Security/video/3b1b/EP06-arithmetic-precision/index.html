@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      /* EP06 算术与精度 · 3b1b 风格。颜色语义全片固定，见 STORYBOARD.md §2。 */
+      @font-face {
+        font-family: "NotoSC";
+        src: url("assets/fonts/noto-sc.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0f1117; }
+      #root { position: relative; width: 100%; height: 100%; background: #0f1117; font-family: "NotoSC", sans-serif; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="461.04" data-width="1920" data-height="1080">
+      <div id="hook" data-composition-id="hook" data-composition-src="compositions/hook.html" data-start="0.0" data-duration="29.85" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="integer" data-composition-id="integer" data-composition-src="compositions/integer.html" data-start="29.85" data-duration="44.27" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="overflow" data-composition-id="overflow" data-composition-src="compositions/overflow.html" data-start="74.12" data-duration="55.86" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="scale" data-composition-id="scale" data-composition-src="compositions/scale.html" data-start="129.98" data-duration="49.98" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="rounding" data-composition-id="rounding" data-composition-src="compositions/rounding.html" data-start="179.96" data-duration="58.86" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="inflation" data-composition-id="inflation" data-composition-src="compositions/inflation.html" data-start="238.82" data-duration="63.51" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="defense" data-composition-id="defense" data-composition-src="compositions/defense.html" data-start="302.33" data-duration="49.72" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="fork" data-composition-id="fork" data-composition-src="compositions/fork.html" data-start="352.05" data-duration="47.97" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="answer" data-composition-id="answer" data-composition-src="compositions/answer.html" data-start="400.02" data-duration="61.02" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <audio id="narration" class="clip" src="assets/narration.wav" data-start="0" data-duration="461.04" data-track-index="2" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

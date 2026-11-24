@@ -1,0 +1,121 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="deanon" data-duration="60.59" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="d-all">
+        <text id="d-title" class="h" x="960" y="110" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="800">去匿名化：地址 → 真实身份</text>
+        <g id="d-cloud" fill="#58C4DD"></g>
+        <!-- 共同输入 -->
+        <g id="d-tx1">
+          <g font-size="28" fill="#58C4DD">
+            <g class="d-in h"><circle cx="300" cy="320" r="18" /><text x="205" y="330" text-anchor="end">输入 1</text></g>
+            <g class="d-in h"><circle cx="300" cy="420" r="18" /><text x="205" y="430" text-anchor="end">输入 2</text></g>
+            <g class="d-in h"><circle cx="300" cy="520" r="18" /><text x="205" y="530" text-anchor="end">输入 3</text></g>
+          </g>
+          <g id="d-txb" class="h">
+            <rect x="520" y="300" width="160" height="240" rx="14" fill="#121a22" stroke="#58C4DD" stroke-width="3" />
+            <text x="600" y="430" font-size="30" fill="#58C4DD" text-anchor="middle">交易</text>
+            <g stroke="#58C4DD" stroke-width="3"><line x1="318" y1="320" x2="520" y2="380" /><line x1="318" y1="420" x2="520" y2="420" /><line x1="318" y1="520" x2="520" y2="460" /></g>
+          </g>
+          <ellipse id="d-grp" class="h" cx="300" cy="420" rx="60" ry="150" fill="none" stroke="#FF9F43" stroke-width="4" stroke-dasharray="10 8" />
+          <text id="d-grpt" class="h" x="290" y="620" font-size="30" fill="#FF9F43" text-anchor="middle">归为同一个人</text>
+          <g id="d-ex" class="h">
+            <rect x="900" y="360" width="300" height="120" rx="16" fill="#1a1708" stroke="#F0B90B" stroke-width="4" />
+            <text x="1050" y="430" font-size="30" fill="#F0B90B" text-anchor="middle">交易所出入金</text>
+            <line x1="680" y1="420" x2="900" y2="420" stroke="#F0B90B" stroke-width="3" />
+          </g>
+          <g id="d-kyc" class="h">
+            <circle cx="1450" cy="390" r="40" fill="#2a2240" stroke="#B48EF0" stroke-width="4" />
+            <path d="M1390 520 Q 1390 445 1450 445 Q 1510 445 1510 520 Z" fill="#2a2240" stroke="#B48EF0" stroke-width="4" />
+            <text x="1450" y="580" font-size="30" fill="#B48EF0" text-anchor="middle">实名用户</text>
+            <line x1="1200" y1="420" x2="1385" y2="420" stroke="#B48EF0" stroke-width="3" />
+          </g>
+        </g>
+        <!-- CoinJoin -->
+        <g id="d-cj">
+          <g font-size="28" text-anchor="end">
+            <g class="d-p h"><circle cx="400" cy="300" r="20" fill="#B48EF0" /><text x="325" y="310" fill="#B48EF0">甲</text></g>
+            <g class="d-p h"><circle cx="400" cy="420" r="20" fill="#58C4DD" /><text x="325" y="430" fill="#58C4DD">乙</text></g>
+            <g class="d-p h"><circle cx="400" cy="540" r="20" fill="#83C167" /><text x="325" y="550" fill="#83C167">丙</text></g>
+            <g class="d-p h"><circle cx="400" cy="660" r="20" fill="#FF9F43" /><text x="325" y="670" fill="#FF9F43">丁</text></g>
+          </g>
+          <g id="d-cjb" class="h">
+            <rect x="760" y="280" width="200" height="400" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="3" />
+            <text x="860" y="490" font-size="30" fill="#58C4DD" text-anchor="middle">CoinJoin</text>
+            <g stroke="#8a8f99" stroke-width="3"><line x1="420" y1="300" x2="760" y2="380" /><line x1="420" y1="420" x2="760" y2="440" /><line x1="420" y1="540" x2="760" y2="520" /><line x1="420" y1="660" x2="760" y2="580" /></g>
+            <g stroke="#8a8f99" stroke-width="3"><line x1="960" y1="380" x2="1200" y2="300" /><line x1="960" y1="440" x2="1200" y2="420" /><line x1="960" y1="520" x2="1200" y2="540" /><line x1="960" y1="580" x2="1200" y2="660" /></g>
+            <g id="d-outs" class="h" font-size="28" fill="#e8e6df"><text x="1230" y="310">0.1 BTC</text><text x="1230" y="430">0.1 BTC</text><text x="1230" y="550">0.1 BTC</text><text x="1230" y="670">0.1 BTC</text></g>
+            <text x="1300" y="740" font-size="28" fill="#6b6f7a" text-anchor="middle">金额相等（示例）</text>
+          </g>
+          <ellipse id="d-bad" class="h" cx="400" cy="480" rx="55" ry="240" fill="none" stroke="#FC6255" stroke-width="5" stroke-dasharray="10 8" />
+          <text id="d-badt" class="h" x="390" y="800" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">误归为一个人</text>
+          <text id="d-spread" class="h" x="1100" y="860" font-size="32" fill="#FC6255" text-anchor="middle">甲的实名身份 → 扩散到乙、丙、丁</text>
+        </g>
+        <!-- 双刃剑 -->
+        <g id="d-two">
+          <g id="d-two1" class="h"><rect x="160" y="300" width="700" height="260" rx="20" fill="#1d1214" stroke="#FC6255" stroke-width="4" />
+          <text x="510" y="400" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="800">攻击者</text>
+          <text x="510" y="470" font-size="32" fill="#e8e6df" text-anchor="middle">筛选目标</text></g>
+          <g id="d-two2" class="h">
+          <rect x="1060" y="300" width="700" height="260" rx="20" fill="#13200f" stroke="#83C167" stroke-width="4" />
+          <text x="1410" y="400" font-size="40" fill="#83C167" text-anchor="middle" font-weight="800">执法与交易所</text>
+          <text x="1410" y="470" font-size="32" fill="#e8e6df" text-anchor="middle">追踪被盗资金</text></g>
+        </g>
+        <text id="d-fog" class="h" x="960" y="680" font-size="30" fill="#8a8f99" text-anchor="middle">Bitcoin Fog：2024 年定罪（链上分析 + 其他证据印证）· 2026 年 9 月上诉维持</text>
+        <text id="d-end" class="h" x="960" y="820" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="800">混币、换地址 <tspan fill="#FF9F43">≠</tspan> 匿名</text>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 60.59, "L": [[0.6, 6.65], [7.1, 19.65], [20.1, 31.45], [31.9, 39.82], [40.27, 55.78], [56.23, 59.49]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      let seed = 3; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      const cl = document.querySelector("#d-cloud"), dots = [];
+      for (let i = 0; i < 30; i++) { const c = document.createElementNS("http://www.w3.org/2000/svg", "circle"); c.setAttribute("cx", (300 + rnd() * 1320).toFixed(1)); c.setAttribute("cy", (300 + rnd() * 450).toFixed(1)); c.setAttribute("r", "10"); c.setAttribute("opacity", "0"); cl.appendChild(c); dots.push(c); }
+      IN("#d-title", at(0, 0.05), 0.5);
+      dots.forEach((c, i) => tl.fromTo(c, { opacity: 0 }, { opacity: 0.7, duration: 0.2 }, at(0, 0.3) + i * 0.05));
+      // L1 共同输入 + 出入金
+      tl.to(dots, { opacity: 0, duration: 0.4 }, at(1, 0));
+      gsap.utils.toArray("#root .d-in").forEach((g, i) => IN(g, at(1, 0.05 + i * 0.05), 0.3));
+      IN("#d-txb", at(1, 0.15), 0.4);
+      IN("#d-grp", at(1, 0.3), 0.4); IN("#d-grpt", at(1, 0.32), 0.4);
+      IN("#d-ex", at(1, 0.6), 0.4);
+      IN("#d-kyc", at(1, 0.78), 0.4);
+      // L2 CoinJoin
+      OUT("#d-tx1", at(2, 0), 0.4);
+      gsap.utils.toArray("#root .d-p").forEach((g, i) => IN(g, at(2, 0.1 + i * 0.08), 0.3));
+      IN("#d-cjb", at(2, 0.45), 0.5);
+      IN("#d-outs", at(2, 0.72), 0.5, { x: -20 }, { x: 0 });
+      // L3 规则误归
+      IN("#d-bad", at(3, 0.05), 0.4, { scale: 1.2, transformOrigin: "50% 50%" }, { scale: 1 });
+      IN("#d-badt", at(3, 0.15), 0.4);
+      tl.to("#root .d-p circle", { fill: "#B48EF0", duration: 0.3, stagger: 0.25 }, at(3, 0.45));
+      IN("#d-spread", at(3, 0.5), 0.4);
+      // L4 双刃剑
+      OUT("#d-cj", at(4, 0), 0.4);
+      IN("#d-two1", at(4, 0.05), 0.5); IN("#d-two2", at(4, 0.3), 0.5);
+      tl.fromTo("#d-two2 rect", { strokeWidth: 4 }, { strokeWidth: 8, duration: 0.3, yoyo: true, repeat: 1 }, at(4, 0.85));
+      IN("#d-fog", at(4, 0.5), 0.5);
+      tl.to("#d-two1", { opacity: 0.45, duration: 0.5 }, at(4, 0.72));
+      // L5
+      IN("#d-end", at(5, 0.05), 0.5, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      tl.to("#d-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["deanon"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      /* EP19 用户侧诈骗 · 3b1b 风格。颜色语义全片固定，见 STORYBOARD.md §2。 */
+      @font-face {
+        font-family: "NotoSC";
+        src: url("assets/fonts/noto-sc.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0f1117; }
+      #root { position: relative; width: 100%; height: 100%; background: #0f1117; font-family: "NotoSC", sans-serif; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="405.62" data-width="1920" data-height="1080">
+      <div id="hook" data-composition-id="hook" data-composition-src="compositions/hook.html" data-start="0.0" data-duration="33.33" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="idea" data-composition-id="idea" data-composition-src="compositions/idea.html" data-start="33.33" data-duration="40.1" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="sigs" data-composition-id="sigs" data-composition-src="compositions/sigs.html" data-start="73.43" data-duration="43.09" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="offchain" data-composition-id="offchain" data-composition-src="compositions/offchain.html" data-start="116.52" data-duration="45.88" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="drainer" data-composition-id="drainer" data-composition-src="compositions/drainer.html" data-start="162.4" data-duration="55.48" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="poison" data-composition-id="poison" data-composition-src="compositions/poison.html" data-start="217.88" data-duration="53.44" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="token" data-composition-id="token" data-composition-src="compositions/token.html" data-start="271.32" data-duration="52.1" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="guard" data-composition-id="guard" data-composition-src="compositions/guard.html" data-start="323.42" data-duration="40.07" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="answer" data-composition-id="answer" data-composition-src="compositions/answer.html" data-start="363.49" data-duration="42.13" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <audio id="narration" class="clip" src="assets/narration.wav" data-start="0" data-duration="405.62" data-track-index="2" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

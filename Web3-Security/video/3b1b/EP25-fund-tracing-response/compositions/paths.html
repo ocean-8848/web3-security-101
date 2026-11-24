@@ -1,0 +1,68 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="paths" data-duration="55.55" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="p-all">
+        <text id="p-title" class="h" x="960" y="110" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="800">六条追回路径：谁来做，要多久</text>
+        <g id="p-axis" class="h">
+          <line x1="480" y1="900" x2="1800" y2="900" stroke="#6b6f7a" stroke-width="3" />
+          <g font-size="30" fill="#6b6f7a" text-anchor="middle"><text x="540" y="950">分钟</text><text x="790" y="950">小时</text><text x="1040" y="950">天</text><text x="1290" y="950">周</text><text x="1540" y="950">月</text><text x="1760" y="950">年</text></g>
+        </g>
+        <g id="p-rows"></g>
+        <rect id="p-zone" class="h" x="470" y="170" width="430" height="700" rx="16" fill="#83C167" fill-opacity=".08" stroke="#83C167" stroke-width="3" stroke-dasharray="10 8" />
+        <text id="p-zt" class="h" x="685" y="1010" font-size="34" fill="#83C167" text-anchor="middle" font-weight="700">真正能指望的</text>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 55.55, "L": [[0.6, 7.9], [8.35, 18.33], [18.78, 30.78], [31.23, 37.81], [38.26, 47.33], [47.78, 54.45]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const R = [
+        { n: "协议暂停 / 延迟提款", w: "协议方", a: 500, b: 600, c: "#83C167", note: "须提前设计 · 有人值守" },
+        { n: "稳定币发行方冻结", w: "Tether、Circle 等", a: 520, b: 830, c: "#83C167", note: "有门槛 · 可能被法院撤销" },
+        { n: "交易所冻结", w: "中心化交易所", a: 760, b: 860, c: "#83C167", note: "攻击者会绕开合规交易所" },
+        { n: "链级冻结", w: "验证者 / 治理", a: 780, b: 1080, c: "#FF9F43", note: "损害链的中立性" },
+        { n: "谈判与白帽赎回", w: "受害方与攻击者", a: 1020, b: 1320, c: "#8a8f99", note: "结果不可控" },
+        { n: "执法与司法", w: "警方、法院", a: 1500, b: 1790, c: "#8a8f99", note: "返还周期长" },
+      ];
+      const NS = "http://www.w3.org/2000/svg", host = document.querySelector("#p-rows"), G = [];
+      R.forEach((r, i) => {
+        const y = 210 + i * 115, g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        g.innerHTML = `<text x="100" y="${y + 8}" font-size="30" fill="#e8e6df">${r.n}</text><text x="100" y="${y + 46}" font-size="28" fill="#6b6f7a">${r.w}</text>` +
+          `<rect class="bar" x="${r.a}" y="${y - 22}" width="${r.b - r.a}" height="40" rx="20" fill="${r.c}" fill-opacity=".75" />` +
+          `<text x="${r.b + 16}" y="${y + 8}" font-size="28" fill="${r.c}">${r.note}</text>`;
+        host.appendChild(g); G.push(g);
+      });
+      // 备注文字放不下的行（执法）放到条左侧
+      G[5].querySelector("text:last-child").setAttribute("x", "1490"); G[5].querySelector("text:last-child").setAttribute("text-anchor", "end");
+      const ROW = (i, t) => { tl.fromTo(G[i], { opacity: 0 }, { opacity: 1, duration: 0.3 }, t); tl.fromTo(G[i].querySelector(".bar"), { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 0.6, ease: "expo.out" }, t); };
+      IN("#p-title", at(0, 0.05), 0.5);
+      IN("#p-axis", at(0, 0.5), 0.5);
+      ROW(0, at(1, 0.1));
+      tl.fromTo(G[0].querySelector(".bar"), { attr: { height: 40, y: 188 } }, { attr: { height: 52, y: 182 }, duration: 0.3, yoyo: true, repeat: 3, immediateRender: false }, at(1, 0.6));
+      ROW(1, at(2, 0.05)); ROW(2, at(2, 0.55));
+      ROW(3, at(3, 0.1));
+      ROW(4, at(4, 0.05)); ROW(5, at(4, 0.55));
+      // L5 左边那几条
+      tl.to([G[3], G[4], G[5]], { opacity: 0.35, duration: 0.4 }, at(5, 0.2));
+      IN("#p-zone", at(5, 0.25), 0.5); IN("#p-zt", at(5, 0.35), 0.4);
+      tl.to("#p-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["paths"] = tl;
+    })();
+  </script>
+</template>

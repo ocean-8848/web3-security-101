@@ -1,0 +1,104 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="people" data-duration="38.9" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <g id="p-fig">
+          <circle cx="0" cy="-60" r="36" fill="#2a2240" stroke="#B48EF0" stroke-width="4" />
+          <path d="M-60 60 Q -60 -10 0 -10 Q 60 -10 60 60 Z" fill="#2a2240" stroke="#B48EF0" stroke-width="4" />
+        </g>
+      </defs>
+      <g id="p-all">
+        <text id="p-title" class="h" x="960" y="100" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="800">关键人员</text>
+        <g font-size="30" fill="#B48EF0" text-anchor="middle">
+          <g class="p-man h"><use href="#p-fig" x="330" y="280" /><text x="330" y="390">创始人</text></g>
+          <g class="p-man h"><use href="#p-fig" x="750" y="280" /><text x="750" y="390">多签签名人</text></g>
+          <g class="p-man h"><use href="#p-fig" x="1170" y="280" /><text x="1170" y="390">运维负责人</text></g>
+          <g class="p-man h"><use href="#p-fig" x="1590" y="280" /><text x="1590" y="390">官方账号管理员</text></g>
+        </g>
+        <!-- 每人：硬件密钥 + 号码锁（绿） -->
+        <g id="p-gear" stroke="#83C167" fill="none" stroke-width="4">
+          <g class="p-g h"><rect x="280" y="430" width="40" height="52" rx="8" /><path d="M350 452 V 444 A 14 14 0 0 1 378 444 V 452" /><rect x="342" y="452" width="44" height="34" rx="6" /></g>
+          <g class="p-g h"><rect x="700" y="430" width="40" height="52" rx="8" /><path d="M770 452 V 444 A 14 14 0 0 1 798 444 V 452" /><rect x="762" y="452" width="44" height="34" rx="6" /></g>
+          <g class="p-g h"><rect x="1120" y="430" width="40" height="52" rx="8" /><path d="M1190 452 V 444 A 14 14 0 0 1 1218 444 V 452" /><rect x="1182" y="452" width="44" height="34" rx="6" /></g>
+          <g class="p-g h"><rect x="1540" y="430" width="40" height="52" rx="8" /><path d="M1610 452 V 444 A 14 14 0 0 1 1638 444 V 452" /><rect x="1602" y="452" width="44" height="34" rx="6" /></g>
+        </g>
+        <text id="p-gt" class="h" x="960" y="550" font-size="32" fill="#83C167" text-anchor="middle">硬件密钥 · 号码锁 · 数据删除 · 安保咨询</text>
+
+        <!-- 签名人名单不公开 -->
+        <g id="p-name" class="h">
+          <rect x="590" y="600" width="320" height="70" rx="12" fill="#161a22" stroke="#8a8f99" stroke-width="3" />
+          <text x="620" y="646" font-size="30" fill="#e8e6df">姓名</text>
+          <rect x="700" y="622" width="180" height="28" rx="6" fill="#8a8f99" />
+        </g>
+        <circle id="p-ring" class="h" cx="750" cy="270" r="120" fill="none" stroke="#FF9F43" stroke-width="4" stroke-dasharray="10 8" />
+        <g id="p-org" class="h">
+          <rect x="590" y="600" width="320" height="70" rx="12" fill="#13200f" stroke="#83C167" stroke-width="3" />
+          <text x="750" y="646" font-size="30" fill="#83C167" text-anchor="middle">只公开：机构</text>
+        </g>
+
+        <!-- 官方账号：组织账号，发帖与恢复分开 -->
+        <g id="p-acct" class="h">
+          <rect x="1300" y="600" width="520" height="300" rx="20" fill="#1a1524" stroke="#B48EF0" stroke-width="4" />
+          <text x="1560" y="655" font-size="32" fill="#B48EF0" text-anchor="middle" font-weight="700">官方账号 · 组织账号管理</text>
+        </g>
+        <g id="p-post" class="h"><rect x="1340" y="700" width="200" height="70" rx="12" fill="#161a22" stroke="#e8e6df" stroke-width="3" /><text x="1440" y="746" font-size="30" fill="#e8e6df" text-anchor="middle">发帖权限</text></g>
+        <g id="p-rec" class="h"><rect x="1580" y="700" width="200" height="70" rx="12" fill="#161a22" stroke="#83C167" stroke-width="3" /><text x="1680" y="746" font-size="30" fill="#83C167" text-anchor="middle">恢复权限</text></g>
+        <line id="p-split" class="h" x1="1560" y1="690" x2="1560" y2="780" stroke="#FF9F43" stroke-width="4" stroke-dasharray="8 6" />
+        <text id="p-mfa" class="h" x="1560" y="850" font-size="30" fill="#83C167" text-anchor="middle">交接时不关二次验证</text>
+
+        <!-- 预案 -->
+        <g id="p-plan" font-size="34" fill="#e8e6df">
+          <text class="h" x="120" y="660" fill="#FF9F43" font-weight="700">账号被盗预案</text>
+          <text class="h" x="120" y="730">✓ 备用公告渠道</text>
+          <text class="h" x="120" y="795">✓ 平台联系人</text>
+          <text class="h" x="120" y="860">✓ 写好的辟谣声明</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 38.9, "L": [[0.6, 9.38], [9.83, 15.83], [16.28, 21.54], [21.99, 29.36], [29.81, 37.8]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      // L0 名单
+      IN("#p-title", at(0, 0.0), 0.5);
+      gsap.utils.toArray("#root .p-man").forEach((g, i) => IN(g, at(0, 0.38 + i * 0.14), 0.5, { y: 20 }, { y: 0 }));
+      // L1 装备
+      gsap.utils.toArray("#root .p-g").forEach((g, i) => IN(g, at(1, 0.05) + i * 0.15, 0.4, { y: -10 }, { y: 0 }));
+      IN("#p-gt", at(1, 0.45), 0.5);
+      // L2 签名人名单不公开
+      tl.to(gsap.utils.toArray("#root .p-man").filter((_, i) => i !== 1), { opacity: 0.3, duration: 0.4 }, at(2, 0.0));
+      IN("#p-ring", at(2, 0.02), 0.4);
+      IN("#p-name", at(2, 0.15), 0.4);
+      tl.to("#p-name", { opacity: 0, filter: "blur(8px)", duration: 0.5 }, at(2, 0.5));
+      IN("#p-org", at(2, 0.55), 0.5);
+      OUT("#p-ring", at(2, 0.9), 0.4);
+      // L3 官方账号
+      tl.to(gsap.utils.toArray("#root .p-man"), { opacity: 0.3, duration: 0.4 }, at(3, 0.0));
+      tl.to(gsap.utils.toArray("#root .p-man")[3], { opacity: 1, duration: 0.4 }, at(3, 0.0));
+      IN("#p-acct", at(3, 0.05), 0.5);
+      IN("#p-post", at(3, 0.45), 0.4);
+      IN("#p-rec", at(3, 0.6), 0.4);
+      IN("#p-split", at(3, 0.65), 0.3);
+      IN("#p-mfa", at(3, 0.3), 0.4);
+      // L4 预案
+      tl.to(gsap.utils.toArray("#root .p-man"), { opacity: 1, duration: 0.4 }, at(4, 0.0));
+      gsap.utils.toArray("#p-plan text").forEach((e, i) => IN(e, at(4, 0.05 + i * 0.22), 0.5, { x: -20 }, { x: 0 }));
+
+      tl.to("#p-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["people"] = tl;
+    })();
+  </script>
+</template>

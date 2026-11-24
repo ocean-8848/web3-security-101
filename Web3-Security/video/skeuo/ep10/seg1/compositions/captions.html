@@ -1,0 +1,105 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .cap-g { position: absolute; left: 0; right: 0; bottom: var(--cap-bottom, 84px); text-align: center; opacity: 0; visibility: hidden; }
+    .cap-t { display: inline-block; font-family: var(--cap-font, "Noto Sans SC"), sans-serif; font-weight: var(--cap-weight, 700);
+      font-size: var(--cap-size, 46px); line-height: 1.25; color: var(--cap-ink, #111); letter-spacing: 0.02em;
+      padding: var(--cap-pad, 0); background: var(--cap-bg, transparent); border-radius: var(--cap-radius, 0);
+      text-shadow: var(--cap-shadow, none); }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-c0" class="cap-g"><span class="cap-t">2022 年 8 月 1 日</span></div>
+    <div id="cap-c1" class="cap-g"><span class="cap-t">跨链桥 Nomad 被提走约 1.9 亿美元</span></div>
+    <div id="cap-c2" class="cap-g"><span class="cap-t">按事发时估值</span></div>
+    <div id="cap-c3" class="cap-g"><span class="cap-t">起因 是此前的一次升级</span></div>
+    <div id="cap-c4" class="cap-g"><span class="cap-t">这次升级调用了初始化函数</span></div>
+    <div id="cap-c5" class="cap-g"><span class="cap-t">把可信的消息根</span></div>
+    <div id="cap-c6" class="cap-g"><span class="cap-t">设成了全零</span></div>
+    <div id="cap-c7" class="cap-g"><span class="cap-t">桥合约收到一条消息</span></div>
+    <div id="cap-c8" class="cap-g"><span class="cap-t">先查它对应的根</span></div>
+    <div id="cap-c9" class="cap-g"><span class="cap-t">再看这个根是否可信</span></div>
+    <div id="cap-c10" class="cap-g"><span class="cap-t">先猜一道题</span></div>
+    <div id="cap-c11" class="cap-g"><span class="cap-t">一条从没被证明过的消息</span></div>
+    <div id="cap-c12" class="cap-g"><span class="cap-t">查到的根是什么</span></div>
+    <div id="cap-c13" class="cap-g"><span class="cap-t">它能通过吗</span></div>
+    <div id="cap-c14" class="cap-g"><span class="cap-t">它查到的是默认值 全零</span></div>
+    <div id="cap-c15" class="cap-g"><span class="cap-t">而全零 刚刚被这次升级</span></div>
+    <div id="cap-c16" class="cap-g"><span class="cap-t">标记成了可信</span></div>
+    <div id="cap-c17" class="cap-g"><span class="cap-t">所以 任何消息都被视为已经证明</span></div>
+    <div id="cap-c18" class="cap-g"><span class="cap-t">按 Immunefi 的复盘</span></div>
+    <div id="cap-c19" class="cap-g"><span class="cap-t">和 The Block 的报道</span></div>
+    <div id="cap-c20" class="cap-g"><span class="cap-t">第一笔提款成功后</span></div>
+    <div id="cap-c21" class="cap-g"><span class="cap-t">数百个地址复制了这笔交易</span></div>
+    <div id="cap-c22" class="cap-g"><span class="cap-t">只换掉收款地址</span></div>
+    <div id="cap-c23" class="cap-g"><span class="cap-t">升级的代码</span></div>
+    <div id="cap-c24" class="cap-g"><span class="cap-t">可以没有错</span></div>
+    <div id="cap-c25" class="cap-g"><span class="cap-t">错的 是升级时传进去的参数</span></div>
+    <div id="cap-c26" class="cap-g"><span class="cap-t">能升级的合约</span></div>
+    <div id="cap-c27" class="cap-g"><span class="cap-t">是怎么搭起来的</span></div>
+    <div id="cap-c28" class="cap-g"><span class="cap-t">谁能换掉它的代码</span></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      tl.set("#cap-c0", {opacity: 1, visibility: "visible"}, 1.550);
+      tl.set("#cap-c0", {opacity: 0, visibility: "hidden"}, 3.465);
+      tl.set("#cap-c1", {opacity: 1, visibility: "visible"}, 3.683);
+      tl.set("#cap-c1", {opacity: 0, visibility: "hidden"}, 7.250);
+      tl.set("#cap-c2", {opacity: 1, visibility: "visible"}, 7.440);
+      tl.set("#cap-c2", {opacity: 0, visibility: "hidden"}, 8.747);
+      tl.set("#cap-c3", {opacity: 1, visibility: "visible"}, 9.061);
+      tl.set("#cap-c3", {opacity: 0, visibility: "hidden"}, 11.331);
+      tl.set("#cap-c4", {opacity: 1, visibility: "visible"}, 11.685);
+      tl.set("#cap-c4", {opacity: 0, visibility: "hidden"}, 13.964);
+      tl.set("#cap-c5", {opacity: 1, visibility: "visible"}, 14.337);
+      tl.set("#cap-c5", {opacity: 0, visibility: "hidden"}, 15.650);
+      tl.set("#cap-c6", {opacity: 1, visibility: "visible"}, 15.759);
+      tl.set("#cap-c6", {opacity: 0, visibility: "hidden"}, 16.953);
+      tl.set("#cap-c7", {opacity: 1, visibility: "visible"}, 17.260);
+      tl.set("#cap-c7", {opacity: 0, visibility: "hidden"}, 18.920);
+      tl.set("#cap-c8", {opacity: 1, visibility: "visible"}, 19.112);
+      tl.set("#cap-c8", {opacity: 0, visibility: "hidden"}, 20.545);
+      tl.set("#cap-c9", {opacity: 1, visibility: "visible"}, 20.709);
+      tl.set("#cap-c9", {opacity: 0, visibility: "hidden"}, 22.445);
+      tl.set("#cap-c10", {opacity: 1, visibility: "visible"}, 22.670);
+      tl.set("#cap-c10", {opacity: 0, visibility: "hidden"}, 23.641);
+      tl.set("#cap-c11", {opacity: 1, visibility: "visible"}, 23.930);
+      tl.set("#cap-c11", {opacity: 0, visibility: "hidden"}, 26.352);
+      tl.set("#cap-c12", {opacity: 1, visibility: "visible"}, 26.636);
+      tl.set("#cap-c12", {opacity: 0, visibility: "hidden"}, 28.339);
+      tl.set("#cap-c13", {opacity: 1, visibility: "visible"}, 28.642);
+      tl.set("#cap-c13", {opacity: 0, visibility: "hidden"}, 29.578);
+      tl.set("#cap-c14", {opacity: 1, visibility: "visible"}, 30.203);
+      tl.set("#cap-c14", {opacity: 0, visibility: "hidden"}, 33.056);
+      tl.set("#cap-c15", {opacity: 1, visibility: "visible"}, 33.464);
+      tl.set("#cap-c15", {opacity: 0, visibility: "hidden"}, 35.780);
+      tl.set("#cap-c16", {opacity: 1, visibility: "visible"}, 35.859);
+      tl.set("#cap-c16", {opacity: 0, visibility: "hidden"}, 37.057);
+      tl.set("#cap-c17", {opacity: 1, visibility: "visible"}, 37.350);
+      tl.set("#cap-c17", {opacity: 0, visibility: "hidden"}, 40.715);
+      tl.set("#cap-c18", {opacity: 1, visibility: "visible"}, 40.930);
+      tl.set("#cap-c18", {opacity: 0, visibility: "hidden"}, 42.274);
+      tl.set("#cap-c19", {opacity: 1, visibility: "visible"}, 42.294);
+      tl.set("#cap-c19", {opacity: 0, visibility: "hidden"}, 43.828);
+      tl.set("#cap-c20", {opacity: 1, visibility: "visible"}, 44.047);
+      tl.set("#cap-c20", {opacity: 0, visibility: "hidden"}, 45.511);
+      tl.set("#cap-c21", {opacity: 1, visibility: "visible"}, 45.710);
+      tl.set("#cap-c21", {opacity: 0, visibility: "hidden"}, 47.989);
+      tl.set("#cap-c22", {opacity: 1, visibility: "visible"}, 48.215);
+      tl.set("#cap-c22", {opacity: 0, visibility: "hidden"}, 49.769);
+      tl.set("#cap-c23", {opacity: 1, visibility: "visible"}, 50.030);
+      tl.set("#cap-c23", {opacity: 0, visibility: "hidden"}, 51.705);
+      tl.set("#cap-c24", {opacity: 1, visibility: "visible"}, 51.904);
+      tl.set("#cap-c24", {opacity: 0, visibility: "hidden"}, 53.104);
+      tl.set("#cap-c25", {opacity: 1, visibility: "visible"}, 53.460);
+      tl.set("#cap-c25", {opacity: 0, visibility: "hidden"}, 56.124);
+      tl.set("#cap-c26", {opacity: 1, visibility: "visible"}, 56.490);
+      tl.set("#cap-c26", {opacity: 0, visibility: "hidden"}, 57.748);
+      tl.set("#cap-c27", {opacity: 1, visibility: "visible"}, 57.912);
+      tl.set("#cap-c27", {opacity: 0, visibility: "hidden"}, 59.210);
+      tl.set("#cap-c28", {opacity: 1, visibility: "visible"}, 59.627);
+      tl.set("#cap-c28", {opacity: 0, visibility: "hidden"}, 61.145);
+      window.__timelines["captions"] = tl;
+    })();
+  </script>
+</template>

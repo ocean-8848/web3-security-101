@@ -1,0 +1,86 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="meaning" data-duration="28.56" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="m-all">
+        <text id="m-title" class="h" x="960" y="140" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="700">签名的意思</text>
+        <!-- 资产：两组同样的 12 枚金币 -->
+        <g id="m-coins1" class="h" fill="#F0B90B"></g>
+        <g id="m-coins2" class="h" fill="#F0B90B"></g>
+        <!-- 旧模型 -->
+        <g id="m-old" class="h">
+          <text x="480" y="250" font-size="36" fill="#8a8f99" text-anchor="middle">旧模型</text>
+          <circle cx="220" cy="380" r="46" fill="#1a1524" stroke="#B48EF0" stroke-width="4" />
+          <text x="220" y="390" font-size="28" fill="#B48EF0" text-anchor="middle">私钥</text>
+          <rect x="300" y="320" width="420" height="120" rx="14" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+          <text x="510" y="378" font-size="32" fill="#e8e6df" text-anchor="middle">签名：转这笔钱</text>
+          <text x="510" y="420" font-size="28" fill="#6b6f7a" text-anchor="middle">例：转 1 ETH 给 Bob</text>
+        </g>
+        <circle id="m-r1" class="dr" pathLength="1" cx="290" cy="600" r="40" fill="none" stroke="#FF9F43" stroke-width="4" />
+        <!-- 账户抽象 -->
+        <g id="m-aa" class="h">
+          <text x="1440" y="250" font-size="36" fill="#58C4DD" text-anchor="middle">账户抽象</text>
+          <rect x="1200" y="300" width="480" height="160" rx="14" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="1440" y="360" font-size="30" fill="#58C4DD" text-anchor="middle">验证逻辑 + 执行逻辑</text>
+          <text x="1440" y="410" font-size="30" fill="#e8e6df" text-anchor="middle">= 合约代码</text>
+        </g>
+        <g id="m-new" class="h">
+          <rect x="1200" y="300" width="480" height="160" rx="14" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+          <text x="1440" y="370" font-size="32" fill="#e8e6df" text-anchor="middle">签名：允许这段代码</text>
+          <text x="1440" y="420" font-size="32" fill="#e8e6df" text-anchor="middle">替我做事</text>
+        </g>
+        <rect id="m-r2" class="dr" pathLength="1" x="1180" y="540" width="520" height="260" rx="40" fill="none" stroke="#FF9F43" stroke-width="4" />
+        <text id="m-cons" class="h" x="960" y="930" font-size="40" fill="#FF9F43" text-anchor="middle" font-weight="700">签错一次的后果：从一笔，到整个账户</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 28.56, "L": [[0.6, 3.62], [4.07, 10.1], [10.55, 16.16], [16.61, 22.16], [22.61, 27.46]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      // 两组金币：3 行 × 4
+      [["#m-coins1", 300], ["#m-coins2", 1290]].forEach(([sel, x0]) => {
+        const g = document.querySelector(sel);
+        for (let r = 0; r < 3; r++) for (let c = 0; c < 4; c++) {
+          const e = document.createElementNS(NS, "circle");
+          e.setAttribute("cx", x0 + c * 70 + (sel === "#m-coins1" ? -10 : 0)); e.setAttribute("cy", 600 + r * 70); e.setAttribute("r", 24);
+          g.appendChild(e);
+        }
+      });
+      IN("#m-title", at(0, 0.1), 0.5);
+      // L1 旧模型：一把钥匙签一笔
+      IN("#m-old", at(1, 0.0), 0.6, { y: 20 }, { y: 0 });
+      IN("#m-coins1", at(1, 0.4), 0.5);
+      tl.to("#m-coins1 circle:not(:first-child)", { opacity: 0.35, duration: 0.4 }, at(1, 0.7));
+      tl.fromTo("#m-r1", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.6, ease: "power2.inOut" }, at(1, 0.72));
+      // L2 账户抽象：逻辑 = 合约代码
+      IN("#m-aa", at(2, 0.05), 0.6, { y: 20 }, { y: 0 });
+      IN("#m-coins2", at(2, 0.5), 0.5);
+      // L3 新签名：允许代码替我做事
+      OUT("#m-aa", at(3, 0.05), 0.3);
+      IN("#m-new", at(3, 0.15), 0.5);
+      tl.fromTo("#m-r2", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.8, ease: "power2.inOut" }, at(3, 0.55));
+      // L4 后果
+      IN("#m-cons", at(4, 0.15), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      tl.to("#m-r2", { strokeWidth: 8, duration: 0.3, yoyo: true, repeat: 1 }, at(4, 0.3));
+      tl.to("#m-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["meaning"] = tl;
+    })();
+  </script>
+</template>

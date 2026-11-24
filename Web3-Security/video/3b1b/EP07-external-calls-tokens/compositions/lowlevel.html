@@ -1,0 +1,120 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="lowlevel" data-duration="48.71" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="l-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="l-aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FF9F43" /></marker>
+        <marker id="l-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="l-all">
+        <text id="l-code" class="h mono" x="960" y="130" font-size="38" fill="#58C4DD" text-anchor="middle">(bool ok, ) = target.call(data);</text>
+        <g id="l-me" class="h"><rect x="220" y="230" width="380" height="300" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="5" /><text x="410" y="300" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">你的合约</text></g>
+        <g id="l-gas" class="h"><rect x="260" y="460" width="300" height="30" rx="6" fill="none" stroke="#8a8f99" stroke-width="2" /><text x="410" y="445" font-size="28" fill="#8a8f99" text-anchor="middle">gas</text></g>
+        <rect id="l-gasf" class="h" x="262" y="462" width="296" height="26" rx="5" fill="#83C167" />
+        <path id="l-go" class="dr h" pathLength="1" d="M610 330 L 1290 330" fill="none" stroke="#8a8f99" stroke-width="4" marker-end="url(#l-ah)" />
+        <text id="l-got" class="h mono" x="950" y="310" font-size="30" fill="#8a8f99" text-anchor="middle">call</text>
+        <g id="l-tgt" class="h"><rect id="l-tgtr" x="1310" y="230" width="380" height="300" rx="22" fill="#161a22" stroke="#8a8f99" stroke-width="4" /><text id="l-tgtt" x="1500" y="390" font-size="36" fill="#8a8f99" text-anchor="middle">目标合约</text></g>
+        <g id="l-empty" class="h"><rect x="1310" y="230" width="380" height="300" rx="22" fill="#0f1117" stroke="#8a8f99" stroke-width="3" stroke-dasharray="12 8" /><text x="1500" y="375" font-size="34" fill="#8a8f99" text-anchor="middle">没有代码</text><text x="1500" y="425" font-size="28" fill="#6b6f7a" text-anchor="middle" class="mono">code.length = 0</text></g>
+        <path id="l-back" class="dr h" pathLength="1" d="M1290 440 L 610 440" fill="none" stroke="#8a8f99" stroke-width="4" marker-end="url(#l-ah)" />
+        <text id="l-false" class="h mono" x="950" y="490" font-size="34" fill="#FC6255" text-anchor="middle">false</text>
+        <text id="l-true" class="h mono" x="950" y="490" font-size="34" fill="#FF9F43" text-anchor="middle">true，返回数据为空</text>
+        <path id="l-go2" class="dr h" pathLength="1" d="M610 330 L 1290 330" fill="none" stroke="#8a8f99" stroke-width="4" marker-end="url(#l-ah)" />
+        <path id="l-back2" class="dr h" pathLength="1" d="M1290 440 L 610 440" fill="none" stroke="#8a8f99" stroke-width="4" marker-end="url(#l-ah)" />
+        <path id="l-cont2" class="dr h" pathLength="1" d="M410 540 L 410 640" fill="none" stroke="#FF9F43" stroke-width="4" marker-end="url(#l-aho)" />
+        <g id="l-tgt2" class="h"><rect id="l-tgtr2" x="1310" y="230" width="380" height="300" rx="22" fill="#161a22" stroke="#8a8f99" stroke-width="4" /><text x="1500" y="390" font-size="36" fill="#8a8f99" text-anchor="middle">目标合约</text></g>
+        <!-- ① 照常往下走 -->
+        <path id="l-cont" class="dr h" pathLength="1" d="M410 540 L 410 640" fill="none" stroke="#FF9F43" stroke-width="4" marker-end="url(#l-aho)" />
+        <text id="l-contt" class="h" x="440" y="610" font-size="30" fill="#FF9F43">照常往下走</text>
+        <!-- ③ 返回数据炸弹 -->
+        <g id="l-bomb" fill="#FC6255"></g>
+        <!-- ④ 内层失败、外层继续 -->
+        <text id="l-x" class="h" x="1500" y="210" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="800">✕ 内部调用失败</text>
+        <text id="l-outer" class="h" x="440" y="610" font-size="30" fill="#FF9F43">外层继续执行</text>
+
+        <!-- 四个陷阱标签 + 修法 -->
+        <g font-size="34" font-weight="700" fill="#FF9F43" text-anchor="middle">
+          <text class="l-tr h" x="300" y="770">① 不检查返回值</text>
+          <text class="l-tr h" x="740" y="770">② 无代码地址</text>
+          <text class="l-tr h" x="1180" y="770">③ 返回数据炸弹</text>
+          <text class="l-tr h" x="1620" y="770">④ gas 刚好不够</text>
+        </g>
+        <g font-size="30" fill="#83C167" text-anchor="middle">
+          <text class="l-fx h" x="300" y="840">require(ok)</text>
+          <text class="l-fx h" x="740" y="840">先查 code.length &gt; 0</text>
+          <text class="l-fx h" x="1180" y="840">限制复制长度</text>
+          <text class="l-fx h" x="1620" y="840">关键调用失败就回滚</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 48.71, "L": [[0.6, 7.82], [8.27, 14.78], [15.23, 23.29], [23.74, 30.7], [31.15, 38.06], [38.51, 47.61]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      const bg = document.querySelector("#l-bomb"), B = [];
+      for (let i = 0; i < 30; i++) {
+        const r = document.createElementNS(NS, "rect");
+        r.setAttribute("x", 1270 - (i % 10) * 4); r.setAttribute("y", 395 + (i % 3) * 22); r.setAttribute("width", "36"); r.setAttribute("height", "18"); r.setAttribute("rx", "3"); r.setAttribute("opacity", "0");
+        bg.appendChild(r); B.push(r);
+      }
+      const tr = gsap.utils.toArray("#root .l-tr"), fx = gsap.utils.toArray("#root .l-fx");
+      // L0 低级调用：失败只返回 false
+      IN("#l-code", at(0, 0.0), 0.5);
+      IN("#l-me", at(0, 0.15), 0.5);
+      DRAW("#l-go", at(0, 0.3), 0.6);
+      IN("#l-got", at(0, 0.32), 0.3);
+      IN("#l-tgt", at(0, 0.4), 0.5);
+      DRAW("#l-back", at(0, 0.6), 0.6);
+      IN("#l-false", at(0, 0.7), 0.4);
+      // L1 ① 不检查返回值
+      IN(tr[0], at(1, 0.05), 0.4);
+      DRAW("#l-cont", at(1, 0.4), 0.5);
+      IN("#l-contt", at(1, 0.45), 0.4);
+      // L2 ② 无代码地址：返回成功
+      OUT(["#l-cont", "#l-contt", "#l-false", "#l-back"], at(2, 0), 0.3);
+      IN(tr[1], at(2, 0.05), 0.4);
+      OUT("#l-tgt", at(2, 0.2), 0.3);
+      IN("#l-empty", at(2, 0.25), 0.4);
+      DRAW("#l-back2", at(2, 0.5), 0.5);
+      IN("#l-true", at(2, 0.6), 0.4);
+      // L3 ③ 返回数据炸弹
+      OUT(["#l-empty", "#l-true", "#l-back2"], at(3, 0), 0.3);
+      IN("#l-tgt2", at(3, 0.05), 0.3);
+      IN(tr[2], at(3, 0.05), 0.4);
+      IN(["#l-gas", "#l-gasf"], at(3, 0.15), 0.3);
+      B.forEach((r, i) => {
+        tl.fromTo(r, { opacity: 0, x: 0 }, { opacity: 0.9, duration: 0.1 }, at(3, 0.25) + i * 0.06);
+        tl.to(r, { x: -620 - (i % 4) * 20, opacity: 0, duration: 0.7, ease: "power1.in" }, at(3, 0.25) + i * 0.06 + 0.05);
+      });
+      tl.to("#l-gasf", { attr: { width: 0 }, fill: "#FC6255", duration: 30 * 0.06 + 0.5, ease: "none" }, at(3, 0.3));
+      // L4 ④ gas 刚好不够
+      IN(tr[3], at(4, 0.05), 0.4);
+      OUT("#l-go", at(4, 0.08), 0.2);
+      tl.set("#l-gasf", { attr: { width: 296 }, fill: "#83C167" }, at(4, 0.1));
+      DRAW("#l-go2", at(4, 0.15), 0.5);
+      tl.to("#l-gasf", { attr: { width: 40 }, duration: 0.6 }, at(4, 0.2));
+      tl.to("#l-tgtr2", { stroke: "#FC6255", duration: 0.3 }, at(4, 0.4));
+      IN("#l-x", at(4, 0.4), 0.4);
+      DRAW("#l-cont2", at(4, 0.6), 0.5);
+      IN("#l-outer", at(4, 0.65), 0.4);
+      // L5 修法
+      fx.forEach((f, i) => IN(f, at(5, 0.12 + i * 0.2), 0.4));
+      tl.to("#l-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["lowlevel"] = tl;
+    })();
+  </script>
+</template>

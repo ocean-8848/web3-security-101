@@ -1,0 +1,114 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="flow" data-duration="47.2" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="f-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker></defs>
+      <g id="f-all">
+        <text id="f-title" class="h" x="960" y="110" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="700">锁定 → 铸造</text>
+        <!-- 两条链 -->
+        <g id="f-chains" class="h">
+          <rect x="100" y="170" width="660" height="720" rx="24" fill="#13161d" stroke="#2a2f3a" stroke-width="3" />
+          <text x="430" y="225" font-size="40" fill="#8a8f99" text-anchor="middle" font-weight="700">A 链</text>
+          <rect x="1160" y="170" width="660" height="720" rx="24" fill="#13161d" stroke="#2a2f3a" stroke-width="3" />
+          <text x="1490" y="225" font-size="40" fill="#8a8f99" text-anchor="middle" font-weight="700">B 链</text>
+        </g>
+        <!-- A 链：用户、桥合约、事件 -->
+        <circle id="f-ua" class="h" cx="200" cy="360" r="22" fill="#e8e6df" />
+        <text id="f-uat" class="h" x="200" y="420" font-size="28" fill="#8a8f99" text-anchor="middle">用户</text>
+        <g id="f-ba" class="h">
+          <rect x="330" y="290" width="380" height="150" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="520" y="350" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">桥合约</text>
+          <text x="520" y="405" font-size="30" fill="#F0B90B" text-anchor="middle">锁定 100 USDT</text>
+        </g>
+        <circle id="f-coin" class="h" cx="200" cy="360" r="18" fill="#F0B90B" />
+        <g id="f-ev" class="h">
+          <rect x="250" y="520" width="460" height="90" rx="12" fill="#161a22" stroke="#8a8f99" stroke-width="2" />
+          <text class="mono" x="480" y="575" font-size="28" fill="#e8e6df" text-anchor="middle">Deposit(user, 100, nonce)</text>
+        </g>
+        <path id="f-e1" class="dr h" pathLength="1" d="M520 445 L 520 510" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#f-ah)" />
+        <!-- 中继者 -->
+        <rect id="f-band" class="h" x="790" y="170" width="340" height="720" rx="20" fill="#FF9F43" fill-opacity=".06" stroke="#FF9F43" stroke-width="3" stroke-dasharray="12 8" />
+        <g id="f-rel" class="h">
+          <circle cx="960" cy="565" r="56" fill="#1b1f28" stroke="#e8e6df" stroke-width="3" />
+          <text x="960" y="575" font-size="28" fill="#e8e6df" text-anchor="middle">中继者</text>
+          <text x="960" y="660" font-size="28" fill="#8a8f99" text-anchor="middle">等交易不会被回滚</text>
+        </g>
+        <path id="f-e2" class="dr h" pathLength="1" d="M715 565 L 895 565" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#f-ah)" />
+        <g id="f-msg" class="h">
+          <rect x="1190" y="520" width="420" height="90" rx="12" fill="#161a22" stroke="#FF9F43" stroke-width="3" />
+          <text x="1400" y="575" font-size="30" fill="#FF9F43" text-anchor="middle">消息 + 证明</text>
+        </g>
+        <path id="f-e3" class="dr h" pathLength="1" d="M1020 565 L 1180 565" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#f-ah)" />
+        <!-- B 链 -->
+        <g id="f-bb" class="h">
+          <rect x="1210" y="290" width="400" height="150" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="1410" y="350" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">桥合约</text>
+          <text x="1410" y="405" font-size="28" fill="#e8e6df" text-anchor="middle">验证证明 · nonce 未用</text>
+        </g>
+        <path id="f-e4" class="dr h" pathLength="1" d="M1410 515 L 1410 450" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#f-ah)" />
+        <g id="f-mint" class="h">
+          <circle cx="1720" cy="365" r="22" fill="#F0B90B" />
+          <text x="1720" y="430" font-size="28" fill="#F0B90B" text-anchor="middle">铸出 100</text>
+          <text x="1720" y="465" font-size="28" fill="#F0B90B" text-anchor="middle">映射 USDT</text>
+          <path d="M1615 365 L 1690 365" stroke="#F0B90B" stroke-width="3" />
+        </g>
+        <text id="f-tb" class="h" x="960" y="290" font-size="34" fill="#FF9F43" text-anchor="middle" font-weight="700">信任边界</text>
+        <text id="f-see" class="h" x="960" y="340" font-size="28" fill="#e8e6df" text-anchor="middle">B 链看不到 A 链</text>
+        <!-- 三项检查 -->
+        <g font-size="30">
+          <text class="f-ck h" x="1200" y="720" fill="#83C167">✓ 证明有效</text>
+          <text class="f-ck h" x="1200" y="780" fill="#83C167">✓ 消息没被处理过（防重放）</text>
+          <text class="f-ck h" x="1200" y="840" fill="#83C167">✓ 来自正确的源链和源合约</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 47.2, "L": [[0.6, 5.5], [5.95, 13.0], [13.45, 20.6], [21.05, 28.28], [28.73, 38.21], [38.66, 46.1]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      IN("#f-title", at(0, 0.05), 0.5);
+      IN("#f-chains", at(0, 0.35), 0.6);
+      // L1 锁定
+      IN(["#f-ua", "#f-uat"], at(1, 0.02), 0.4);
+      IN("#f-ba", at(1, 0.1), 0.5);
+      IN("#f-coin", at(1, 0.15), 0.2);
+      tl.to("#f-coin", { attr: { cx: 520, cy: 365 }, opacity: 0, duration: 0.8, ease: "power2.in" }, at(1, 0.2));
+      DRAW("#f-e1", at(1, 0.6), 0.4);
+      IN("#f-ev", at(1, 0.65), 0.5);
+      // L2 中继者
+      IN("#f-rel", at(2, 0.05), 0.5);
+      DRAW("#f-e2", at(2, 0.1), 0.5);
+      DRAW("#f-e3", at(2, 0.7), 0.5);
+      IN("#f-msg", at(2, 0.75), 0.5);
+      // L3 B 链验证并铸造
+      IN("#f-bb", at(3, 0.05), 0.5);
+      DRAW("#f-e4", at(3, 0.1), 0.4);
+      IN("#f-mint", at(3, 0.6), 0.5, { x: -20 }, { x: 0 });
+      // L4 信任边界
+      IN("#f-band", at(4, 0.05), 0.6);
+      IN("#f-tb", at(4, 0.1), 0.5);
+      IN("#f-see", at(4, 0.2), 0.5);
+      tl.to(["#f-ba", "#f-ev", "#f-ua", "#f-uat", "#f-mint"], { opacity: 0.3, duration: 0.5 }, at(4, 0.3));
+      tl.to("#f-bb rect", { stroke: "#FF9F43", duration: 0.4 }, at(4, 0.75));
+      // L5 三项检查
+      gsap.utils.toArray("#root .f-ck").forEach((t, i) => IN(t, at(5, [0.15, 0.35, 0.65][i]), 0.4, { x: -20 }, { x: 0 }));
+
+      tl.to("#f-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["flow"] = tl;
+    })();
+  </script>
+</template>

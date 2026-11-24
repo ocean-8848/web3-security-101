@@ -1,0 +1,96 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="qubit" data-duration="58.96" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="u-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="u-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="u-all">
+        <text id="u-cfg" class="h" x="960" y="120" font-size="40" fill="#e8e6df" text-anchor="middle">桥的配置：ETH 的代币地址 = <tspan class="mono" fill="#FF9F43">address(0)</tspan></text>
+        <!-- 第一行 -->
+        <g id="u-att" class="h"><circle cx="160" cy="320" r="62" fill="#2a1414" stroke="#FC6255" stroke-width="4" /><text x="160" y="331" font-size="30" fill="#FC6255" text-anchor="middle" font-weight="700">攻击者</text></g>
+        <path id="u-a1" class="dr h" pathLength="1" d="M228 320 L 300 320" fill="none" stroke="#8a8f99" stroke-width="3" marker-end="url(#u-ah)" />
+        <g id="u-dep" class="h"><rect x="310" y="270" width="270" height="100" rx="14" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="445" y="330" font-size="32" fill="#58C4DD" text-anchor="middle" class="mono">deposit()</text></g>
+        <text id="u-rid" class="h" x="445" y="245" font-size="28" fill="#e8e6df" text-anchor="middle">传入 ETH 资源编号</text>
+        <g id="u-deth" class="h"><rect x="310" y="440" width="270" height="100" rx="14" fill="#121a22" stroke="#83C167" stroke-width="3" opacity=".7" /><text x="445" y="485" font-size="28" fill="#83C167" text-anchor="middle" class="mono">depositETH()</text><text x="445" y="522" font-size="28" fill="#83C167" text-anchor="middle">检查附带的 ETH</text></g>
+        <text id="u-skip" class="h" x="610" y="500" font-size="28" fill="#8a8f99">本该走这里</text>
+        <path id="u-a2" class="dr h" pathLength="1" d="M590 320 L 650 320" fill="none" stroke="#8a8f99" stroke-width="3" marker-end="url(#u-ah)" />
+        <g id="u-wl" class="h"><path d="M730 250 L 800 320 L 730 390 L 660 320 Z" fill="#161a22" stroke="#e8e6df" stroke-width="3" /><text x="730" y="330" font-size="28" fill="#e8e6df" text-anchor="middle">白名单</text><text x="730" y="430" font-size="30" fill="#83C167" text-anchor="middle">✓ 通过</text></g>
+        <path id="u-a3" class="dr h" pathLength="1" d="M810 320 L 870 320" fill="none" stroke="#8a8f99" stroke-width="3" marker-end="url(#u-ah)" />
+        <g id="u-stf" class="h"><rect x="880" y="270" width="520" height="100" rx="14" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="1140" y="330" font-size="28" fill="#58C4DD" text-anchor="middle" class="mono">safeTransferFrom(address(0))</text></g>
+        <path id="u-a4" class="dr h" pathLength="1" d="M1410 320 L 1470 320" fill="none" stroke="#8a8f99" stroke-width="3" marker-end="url(#u-ah)" />
+        <g id="u-zero" class="h"><rect x="1480" y="260" width="320" height="120" rx="14" fill="#0f1117" stroke="#8a8f99" stroke-width="3" stroke-dasharray="10 8" /><text x="1640" y="312" font-size="28" fill="#e8e6df" text-anchor="middle" class="mono">address(0)</text><text x="1640" y="356" font-size="28" fill="#8a8f99" text-anchor="middle">没有代码</text></g>
+        <!-- 第二行（从右往左） -->
+        <path id="u-a5" class="dr h" pathLength="1" d="M1640 390 L 1640 580" fill="none" stroke="#8a8f99" stroke-width="3" marker-end="url(#u-ah)" />
+        <text id="u-ret" class="h" x="1665" y="500" font-size="28" fill="#FF9F43">成功 · 空数据</text>
+        <g id="u-lib" class="h"><rect x="1440" y="590" width="400" height="110" rx="14" fill="#1f1a10" stroke="#FF9F43" stroke-width="3" /><text x="1640" y="638" font-size="28" fill="#FF9F43" text-anchor="middle">旧版安全转账库</text><text x="1640" y="680" font-size="30" fill="#FF9F43" text-anchor="middle" font-weight="700">空返回 = 成功</text></g>
+        <text id="u-why" class="h" x="1640" y="745" font-size="28" fill="#8a8f99" text-anchor="middle">为了兼容不返回值的 USDT</text>
+        <path id="u-a6" class="dr h" pathLength="1" d="M1430 645 L 1330 645" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#u-ahr)" />
+        <g id="u-rec" class="h"><rect x="1010" y="595" width="310" height="100" rx="14" fill="#161a22" stroke="#FC6255" stroke-width="3" /><text x="1165" y="655" font-size="30" fill="#e8e6df" text-anchor="middle">记录 ETH 存款</text></g>
+        <path id="u-a7" class="dr h" pathLength="1" d="M1000 645 L 900 645" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#u-ahr)" />
+        <g id="u-mint" class="h"><rect x="560" y="595" width="330" height="100" rx="14" fill="#161a22" stroke="#FC6255" stroke-width="3" /><text x="725" y="638" font-size="28" fill="#8a8f99" text-anchor="middle">BNB Chain</text><text x="725" y="678" font-size="30" fill="#F0B90B" text-anchor="middle" font-weight="700">铸出 qXETH</text></g>
+        <path id="u-a8" class="dr h" pathLength="1" d="M550 645 L 450 645" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#u-ahr)" />
+        <g id="u-drain" class="h"><rect x="100" y="595" width="340" height="100" rx="14" fill="#2a1414" stroke="#FC6255" stroke-width="4" /><text x="270" y="657" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="800">借空资金池</text></g>
+        <!-- 结论 -->
+        <g id="u-sum" class="h">
+          <text x="960" y="860" font-size="40" fill="#e8e6df" text-anchor="middle"><tspan fill="#FF9F43">零地址</tspan> + <tspan fill="#FF9F43">兼容性妥协</tspan> + <tspan fill="#FF9F43">缺少原生币检查</tspan></text>
+        </g>
+        <text id="u-wlt" class="h" x="960" y="940" font-size="34" fill="#8a8f99" text-anchor="middle">白名单只说明这个编号被允许，不说明它对应什么资产</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 58.96, "L": [[0.6, 7.3], [7.75, 19.53], [19.98, 29.41], [29.86, 36.39], [36.84, 44.38], [44.83, 57.86]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      // L0 配置
+      IN("#u-cfg", at(0, 0.1), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      tl.fromTo("#u-cfg tspan", { fill: "#e8e6df" }, { fill: "#FF9F43", duration: 0.3 }, at(0, 0.7));
+      // L1 本该走 depositETH；攻击者走 deposit，白名单通过
+      IN("#u-deth", at(1, 0.05), 0.5);
+      IN("#u-skip", at(1, 0.12), 0.4);
+      IN("#u-att", at(1, 0.4), 0.5, { scale: 0.7, transformOrigin: "50% 50%" }, { scale: 1 });
+      DRAW("#u-a1", at(1, 0.48), 0.4);
+      IN("#u-dep", at(1, 0.52), 0.4);
+      IN("#u-rid", at(1, 0.6), 0.4);
+      tl.to(["#u-deth", "#u-skip"], { opacity: 0.3, duration: 0.4 }, at(1, 0.65));
+      DRAW("#u-a2", at(1, 0.78), 0.3);
+      IN("#u-wl", at(1, 0.82), 0.4);
+      // L2 对零地址安全转账：无代码 → 成功
+      DRAW("#u-a3", at(2, 0.05), 0.3);
+      IN("#u-stf", at(2, 0.1), 0.4);
+      DRAW("#u-a4", at(2, 0.4), 0.3);
+      IN("#u-zero", at(2, 0.45), 0.4);
+      DRAW("#u-a5", at(2, 0.7), 0.4);
+      IN("#u-ret", at(2, 0.75), 0.4);
+      // L3 旧库：空返回 = 成功
+      IN("#u-lib", at(3, 0.05), 0.5, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1 });
+      IN("#u-why", at(3, 0.5), 0.4);
+      // L4 记账 → 铸币 → 借空
+      DRAW("#u-a6", at(4, 0.02), 0.3); IN("#u-rec", at(4, 0.06), 0.4);
+      DRAW("#u-a7", at(4, 0.35), 0.3); IN("#u-mint", at(4, 0.4), 0.4);
+      DRAW("#u-a8", at(4, 0.7), 0.3); IN("#u-drain", at(4, 0.74), 0.4);
+      // L5 组合
+      tl.to(["#u-zero", "#u-lib", "#u-deth"], { opacity: 1, duration: 0.3 }, at(5, 0.05));
+      tl.to(["#u-zero rect", "#u-deth rect"], { stroke: "#FF9F43", duration: 0.3 }, at(5, 0.1));
+      IN("#u-sum", at(5, 0.12), 0.5);
+      IN("#u-wlt", at(5, 0.6), 0.5);
+      tl.to("#u-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["qubit"] = tl;
+    })();
+  </script>
+</template>

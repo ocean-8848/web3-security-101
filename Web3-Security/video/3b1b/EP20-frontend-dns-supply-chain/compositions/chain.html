@@ -1,0 +1,92 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="chain" data-duration="47.15" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="c-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="c-all">
+        <text id="c-title" class="h" x="960" y="110" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">页面走过的供应链</text>
+        <g id="c-nodes"></g>
+        <g id="c-arrows" fill="none" stroke="#8a8f99" stroke-width="3"></g>
+        <text id="c-bad" class="h" x="1640" y="745" font-size="30" fill="#FC6255" text-anchor="middle" font-weight="700">运行攻击者的代码</text>
+        <!-- 合约审计只覆盖合约本身 -->
+        <g id="c-aud" class="h">
+          <rect x="760" y="880" width="400" height="110" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="960" y="948" font-size="32" fill="#58C4DD" text-anchor="middle" font-weight="700">合约</text>
+          <ellipse cx="960" cy="935" rx="260" ry="90" fill="none" stroke="#58C4DD" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="1260" y="945" font-size="30" fill="#58C4DD">审计范围</text>
+        </g>
+        <text id="c-none" class="h" x="960" y="820" font-size="34" fill="#e8e6df" text-anchor="middle">上面这些方框，审计一个都看不到</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 47.15, "L": [[0.6, 5.26], [5.71, 13.0], [13.45, 21.47], [21.92, 31.01], [31.46, 41.09], [41.54, 46.05]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const DRAWA = (s, t, d = 0.5) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 节点：原文第 2 节的链路图（紫 = 基础设施 / 代码之外）
+      const N = {
+        dev: [200, 300, "开发者电脑"], repo: [500, 300, "代码仓库"], dep: [500, 520, "npm 依赖包"], build: [800, 410, "CI 构建"],
+        host: [1100, 410, "托管 / S3"], cdn: [1380, 410, "CDN / 边缘脚本"], dns: [1380, 620, "域名 + DNS"],
+        tp: [1380, 220, "第三方脚本"], br: [1660, 410, "用户浏览器"], wal: [1660, 640, "钱包签名请求"]
+      };
+      const nodes = {};
+      Object.entries(N).forEach(([k, [x, y, t]]) => {
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        const w = k === "cdn" ? 250 : 210;
+        g.innerHTML = `<rect class="bx" x="${x - w / 2}" y="${y - 45}" width="${w}" height="90" rx="14" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><text x="${x}" y="${y + 10}" font-size="28" fill="#e8e6df" text-anchor="middle">${t}</text>`;
+        document.querySelector("#c-nodes").appendChild(g); nodes[k] = g;
+      });
+      const E = { "dev-repo": "M305 300 L 390 300", "repo-build": "M605 300 L 690 385", "dep-build": "M605 520 L 690 435",
+        "build-host": "M905 410 L 990 410", "host-cdn": "M1205 410 L 1250 410", "dns-cdn": "M1380 575 L 1380 460",
+        "cdn-br": "M1505 410 L 1550 410", "tp-br": "M1485 220 C 1600 220, 1660 260, 1660 360", "br-wal": "M1660 455 L 1660 590" };
+      const ar = {};
+      Object.entries(E).forEach(([k, d]) => {
+        const p = document.createElementNS(NS, "path");
+        p.setAttribute("d", d); p.setAttribute("pathLength", "1"); p.setAttribute("class", "dr h"); p.setAttribute("marker-end", "url(#c-ah)");
+        document.querySelector("#c-arrows").appendChild(p); ar[k] = p;
+      });
+      const NODE = (k, t) => IN(nodes[k], t, 0.4, { scale: 0.85, svgOrigin: `${N[k][0]} ${N[k][1]}` }, { scale: 1 });
+
+      // L0
+      IN("#c-title", at(0, 0.1), 0.5);
+      // L1 开发者 → 仓库；依赖包
+      NODE("dev", at(1, 0.0)); DRAWA(ar["dev-repo"], at(1, 0.2)); NODE("repo", at(1, 0.25));
+      NODE("dep", at(1, 0.6)); NODE("build", at(1, 0.7)); DRAWA(ar["repo-build"], at(1, 0.72)); DRAWA(ar["dep-build"], at(1, 0.78));
+      // L2 托管 → CDN；DNS
+      DRAWA(ar["build-host"], at(2, 0.0)); NODE("host", at(2, 0.05));
+      DRAWA(ar["host-cdn"], at(2, 0.3)); NODE("cdn", at(2, 0.33));
+      NODE("dns", at(2, 0.6)); DRAWA(ar["dns-cdn"], at(2, 0.68));
+      // L3 第三方脚本 → 浏览器 → 钱包
+      DRAWA(ar["cdn-br"], at(3, 0.0)); NODE("br", at(3, 0.02));
+      NODE("tp", at(3, 0.25)); DRAWA(ar["tp-br"], at(3, 0.35));
+      DRAWA(ar["br-wal"], at(3, 0.75)); NODE("wal", at(3, 0.78));
+      // L4 每个方框都是信任环节；任何一个被攻破 → 浏览器运行攻击者代码
+      const order = ["dev", "repo", "dep", "build", "host", "cdn", "dns", "tp"];
+      order.forEach((k, i) => tl.to(nodes[k].querySelector(".bx"), { stroke: "#FF9F43", strokeDasharray: "10 6", duration: 0.25 }, at(4, 0.05) + i * 0.15));
+      tl.to(nodes.dns.querySelector(".bx"), { stroke: "#FC6255", strokeDasharray: "0", strokeWidth: 5, duration: 0.3 }, at(4, 0.5));
+      tl.to([ar["dns-cdn"], ar["cdn-br"]], { stroke: "#FC6255", duration: 0.3 }, at(4, 0.58));
+      tl.to(nodes.br.querySelector(".bx"), { stroke: "#FC6255", strokeWidth: 5, fill: "#2a1416", duration: 0.3 }, at(4, 0.66));
+      IN("#c-bad", at(4, 0.7), 0.4);
+      // L5 合约审计看不到
+      IN("#c-aud", at(5, 0.05), 0.5, { y: 20 }, { y: 0 });
+      IN("#c-none", at(5, 0.35), 0.5);
+
+      tl.to("#c-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["chain"] = tl;
+    })();
+  </script>
+</template>

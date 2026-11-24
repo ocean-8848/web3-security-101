@@ -1,0 +1,78 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="threat" data-duration="42.62" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="t-all">
+        <g id="t-tx" class="h"><rect x="120" y="160" width="1680" height="420" rx="24" fill="none" stroke="#e8e6df" stroke-opacity=".45" stroke-width="3" /><text x="160" y="210" font-size="30" fill="#8a8f99">一笔交易之内</text></g>
+        <g id="t-att" class="h"><circle cx="300" cy="380" r="70" fill="#2a1414" stroke="#FC6255" stroke-width="5" /><text x="300" y="392" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">攻击者</text></g>
+        <rect id="t-loan" x="420" y="460" width="0" height="70" rx="10" fill="#F0B90B" />
+        <text id="t-loant" class="h" x="440" y="440" font-size="30" fill="#F0B90B">闪电贷池的全部流动性</text>
+        <g id="t-amm" class="h"><rect x="1000" y="250" width="340" height="140" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="1170" y="300" font-size="30" fill="#58C4DD" text-anchor="middle">AMM 池</text><text x="1170" y="355" font-size="28" fill="#8a8f99" text-anchor="middle">现货价</text></g>
+        <g id="t-needle" class="h"><line x1="1310" y1="360" x2="1310" y2="300" stroke="#FC6255" stroke-width="5" stroke-linecap="round" /></g>
+        <g id="t-bal" class="h"><rect x="1420" y="250" width="340" height="140" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="1590" y="300" font-size="30" fill="#58C4DD" text-anchor="middle">目标合约</text><text x="1590" y="355" font-size="28" fill="#8a8f99" text-anchor="middle" class="mono">balanceOf</text></g>
+        <text id="t-push" class="h" x="1170" y="440" font-size="28" fill="#FF9F43" text-anchor="middle">推到任意位置（付得起滑点）</text>
+        <text id="t-don" class="h" x="1590" y="440" font-size="28" fill="#FF9F43" text-anchor="middle">直接转入，改变读数</text>
+      </g>
+      <text id="t-law" class="h" x="960" y="380" font-size="56" fill="#e8e6df" text-anchor="middle" font-weight="800">一笔交易内<tspan fill="#FC6255">可变</tspan>的读数 = 攻击者的<tspan fill="#FC6255">输入参数</tspan></text>
+      <!-- 两个分区 -->
+      <g id="t-bins" class="h">
+        <rect x="120" y="470" width="900" height="520" rx="20" fill="#1a1012" stroke="#FC6255" stroke-width="3" />
+        <text x="570" y="530" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">一笔交易内可变</text>
+        <rect x="1080" y="470" width="720" height="520" rx="20" fill="#121a22" stroke="#8a8f99" stroke-width="3" />
+        <text x="1440" y="530" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">一笔交易内基本不可变</text>
+      </g>
+      <g font-size="32" fill="#e8e6df">
+        <text class="t-r h" x="170" y="620">AMM 储备比例</text>
+        <text class="t-r h mono" x="170" y="700" font-size="30">slot0.sqrtPriceX96</text>
+        <text class="t-r h" x="170" y="780">按储备算的 LP 代币价格</text>
+        <text class="t-r h" x="170" y="860">读余额的金库份额价格</text>
+        <text class="t-r h mono" x="170" y="940" font-size="30">balanceOf(合约)</text>
+      </g>
+      <g id="t-g1" class="h"><text x="1130" y="640" font-size="32" fill="#e8e6df">时间加权平均价 TWAP</text><text x="1130" y="690" font-size="28" fill="#FF9F43">当前区块影响很小；多区块可以</text></g>
+      <g id="t-g2" class="h"><text x="1130" y="800" font-size="32" fill="#e8e6df">链下聚合价格</text><text x="1130" y="850" font-size="28" fill="#FF9F43">改不了，但会过时、卡上下限</text></g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 42.62, "L": [[0.6, 8.18], [8.63, 18.11], [18.56, 23.77], [24.22, 31.37], [31.82, 41.52]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      // L0 一笔交易里借到全部流动性
+      IN("#t-tx", at(0, 0.1), 0.5);
+      IN("#t-att", at(0, 0.2), 0.4, { scale: 0.7, svgOrigin: "300 380" }, { scale: 1 });
+      tl.fromTo("#t-loan", { attr: { width: 0 } }, { attr: { width: 480 }, duration: 0.9, ease: "expo.out" }, at(0, 0.5));
+      IN("#t-loant", at(0, 0.55), 0.4);
+      // L1 推现货价、改余额
+      IN("#t-amm", at(1, 0.0), 0.4);
+      IN("#t-needle", at(1, 0.08), 0.3);
+      tl.fromTo("#t-needle", { rotation: -50, svgOrigin: "1310 360" }, { rotation: 60, svgOrigin: "1310 360", duration: 0.8, ease: "power2.inOut" }, at(1, 0.12));
+      IN("#t-push", at(1, 0.2), 0.4);
+      IN("#t-bal", at(1, 0.55), 0.4);
+      IN("#t-don", at(1, 0.65), 0.4);
+      // L2 结论
+      tl.to("#t-all", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(2, 0));
+      IN("#t-law", at(2, 0.05), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      // L3 可变的一边
+      tl.to("#t-law", { y: -200, scale: 0.7, svgOrigin: "960 360", duration: 0.5 }, at(3, 0));
+      IN("#t-bins", at(3, 0.05), 0.4);
+      gsap.utils.toArray("#root .t-r").forEach((r, i) => IN(r, at(3, 0.15) + i * 0.12 * (L[3][1] - L[3][0]), 0.4, { x: -40 }, { x: 0 }));
+      // L4 另一边
+      IN("#t-g1", at(4, 0.05), 0.5, { x: 40 }, { x: 0 });
+      IN("#t-g2", at(4, 0.5), 0.5, { x: 40 }, { x: 0 });
+      tl.to(["#t-law", "#t-bins", "#root .t-r", "#t-g1", "#t-g2"], { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["threat"] = tl;
+    })();
+  </script>
+</template>

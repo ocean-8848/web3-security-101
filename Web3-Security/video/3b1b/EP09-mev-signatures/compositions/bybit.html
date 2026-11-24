@@ -1,0 +1,79 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="bybit" data-duration="61.55" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="b-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker></defs>
+      <g id="b-all">
+        <text id="b-date" class="h" x="120" y="110" font-size="34" fill="#6b6f7a" letter-spacing="2">2025 年 2 月 · Bybit 冷钱包多签</text>
+        <g id="b-fe" class="h"><rect id="b-fer" x="120" y="180" width="700" height="420" rx="22" fill="#1a1524" stroke="#B48EF0" stroke-width="4" /><text x="470" y="245" font-size="36" fill="#B48EF0" text-anchor="middle" font-weight="700">Safe 钱包前端</text></g>
+        <text id="b-tam" class="h" x="470" y="295" font-size="30" fill="#FC6255" text-anchor="middle">已被篡改 · 只针对这个地址</text>
+        <g id="b-see" class="h"><text x="470" y="400" font-size="30" fill="#8a8f99" text-anchor="middle">签名人看到</text><text x="470" y="460" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">一笔普通转账</text></g>
+        <g id="b-real" class="h"><text x="470" y="530" font-size="30" fill="#8a8f99" text-anchor="middle">实际签下</text><text x="470" y="580" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700" class="mono">delegatecall → 攻击者合约</text></g>
+        <path id="b-arr" class="dr h" pathLength="1" d="M830 390 L 1080 390" fill="none" stroke="#8a8f99" stroke-width="4" marker-end="url(#b-ah)" />
+        <g id="b-ms" class="h"><rect x="1100" y="180" width="700" height="420" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="5" /><text x="1450" y="245" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">多签合约</text></g>
+        <g id="b-c1" class="h"><text x="1160" y="330" font-size="32" fill="#83C167">✓ 签名对应交易摘要</text></g>
+        <g id="b-c2" class="h"><text x="1160" y="390" font-size="32" fill="#83C167">✓ 签名数量达到阈值</text></g>
+        <text id="b-c3" class="h" x="1160" y="460" font-size="30" fill="#8a8f99">不知道签名人"以为"签的是什么</text>
+        <g id="b-impl" class="h"><rect x="1160" y="500" width="580" height="70" rx="12" fill="#2a1414" stroke="#FC6255" stroke-width="3" /><text x="1450" y="546" font-size="30" fill="#FC6255" text-anchor="middle">钱包实现被替换成恶意合约</text></g>
+        <text id="b-loss" class="h" x="960" y="720" font-size="52" fill="#FC6255" text-anchor="middle" font-weight="800">≈ 40 万 ETH 及其他资产 · ≈ 15 亿美元</text>
+        <text id="b-lsrc" class="h" x="960" y="775" font-size="28" fill="#6b6f7a" text-anchor="middle">事发时估值 · 公开分析与 FBI 公告</text>
+      </g>
+      <g id="b-p2">
+        <g id="b-yes" class="h"><text x="960" y="250" font-size="40" fill="#83C167" text-anchor="middle">多签防得住：单把私钥被盗</text></g>
+        <g id="b-no" class="h"><text x="960" y="340" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="700">防不了：所有签名人看到同一个假界面</text></g>
+        <g id="b-flag" class="h"><rect x="560" y="410" width="800" height="90" rx="14" fill="#2a1414" stroke="#FC6255" stroke-width="3" /><text x="960" y="468" font-size="34" fill="#FC6255" text-anchor="middle"><tspan class="mono">operation = delegatecall</tspan>：高危信号</text></g>
+        <g font-size="34" fill="#83C167" text-anchor="middle">
+          <text class="b-d h" x="960" y="640">硬件钱包上逐字段核对</text>
+          <text class="b-d h" x="960" y="710">独立工具解码交易数据</text>
+          <text class="b-d h" x="960" y="780">delegatecall、改实现地址：白名单或额外审批</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 61.55, "L": [[0.6, 11.76], [12.21, 20.99], [21.44, 31.88], [32.33, 39.32], [39.77, 49.32], [49.77, 60.45]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      // L0 前端被篡改
+      IN("#b-date", at(0, 0.0), 0.5);
+      IN("#b-fe", at(0, 0.2), 0.6, { y: 20 }, { y: 0 });
+      tl.to("#b-fer", { stroke: "#FC6255", duration: 0.4 }, at(0, 0.6));
+      IN("#b-tam", at(0, 0.62), 0.4);
+      // L1 看到的 vs 签下的
+      IN("#b-see", at(1, 0.05), 0.5);
+      IN("#b-real", at(1, 0.5), 0.5, { y: 20 }, { y: 0 });
+      // L2 多签合约只校验摘要和阈值
+      DRAW("#b-arr", at(2, 0.0), 0.5);
+      IN("#b-ms", at(2, 0.05), 0.5);
+      IN("#b-c1", at(2, 0.25), 0.4);
+      IN("#b-c2", at(2, 0.45), 0.4);
+      IN("#b-c3", at(2, 0.7), 0.4);
+      // L3 损失
+      IN("#b-impl", at(3, 0.0), 0.4);
+      IN("#b-loss", at(3, 0.25), 0.5);
+      IN("#b-lsrc", at(3, 0.5), 0.4);
+      // L4 多签防什么
+      tl.to("#b-all", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(4, 0));
+      IN("#b-yes", at(4, 0.05), 0.4);
+      IN("#b-no", at(4, 0.3), 0.4);
+      IN("#b-flag", at(4, 0.65), 0.5, { scale: 1.1, svgOrigin: "960 455" }, { scale: 1 });
+      // L5 防御
+      gsap.utils.toArray("#root .b-d").forEach((d, i) => IN(d, at(5, 0.05 + i * 0.28), 0.4));
+      tl.to("#b-p2", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["bybit"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,96 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="hook" data-duration="31.58" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="h-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="h-all">
+        <text id="h-date" class="h" x="160" y="140" font-size="34" fill="#6b6f7a" letter-spacing="2">2022 年 8 月 · Curve</text>
+        <!-- 浏览器窗口 -->
+        <g id="h-win" class="h">
+          <rect x="160" y="200" width="980" height="680" rx="20" fill="#161a22" stroke="#e8e6df" stroke-opacity=".5" stroke-width="3" />
+          <line x1="160" y1="290" x2="1140" y2="290" stroke="#2a2f3a" stroke-width="3" />
+          <circle cx="200" cy="245" r="9" fill="#2a2f3a" /><circle cx="230" cy="245" r="9" fill="#2a2f3a" /><circle cx="260" cy="245" r="9" fill="#2a2f3a" />
+          <rect x="300" y="222" width="800" height="46" rx="23" fill="#0f1117" stroke="#2a2f3a" stroke-width="2" />
+        </g>
+        <g id="h-lock" class="h">
+          <rect x="324" y="243" width="20" height="16" rx="3" fill="#e8e6df" />
+          <path d="M328 243 v-6 a6 6 0 0 1 12 0 v6" fill="none" stroke="#e8e6df" stroke-width="3" />
+        </g>
+        <text id="h-url" class="h" x="360" y="256" font-size="28" fill="#e8e6df">https://curve.fi</text>
+        <text id="h-urlok" class="h" x="1090" y="256" font-size="28" fill="#83C167" text-anchor="end">✓ 域名正确</text>
+        <!-- 页面内容 -->
+        <g id="h-page" class="h">
+          <rect x="260" y="360" width="780" height="70" rx="10" fill="#1d222c" />
+          <rect x="260" y="460" width="560" height="40" rx="8" fill="#1d222c" />
+          <rect x="260" y="520" width="680" height="40" rx="8" fill="#1d222c" />
+        </g>
+        <g id="h-btn" class="h">
+          <rect id="h-btnr" x="460" y="640" width="380" height="100" rx="18" fill="#1d222c" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+          <text x="650" y="703" font-size="36" fill="#e8e6df" text-anchor="middle">签名确认</text>
+        </g>
+        <!-- 合约：没变 -->
+        <g id="h-con" class="h">
+          <rect x="1380" y="360" width="380" height="240" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+          <text x="1570" y="450" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">Curve 合约</text>
+          <text x="1570" y="530" font-size="32" fill="#83C167" text-anchor="middle">✓ 没有变化</text>
+        </g>
+        <text id="h-loss" class="h" x="1570" y="760" font-size="72" fill="#FC6255" text-anchor="middle" font-weight="800">≈ <tspan id="h-num">0</tspan> 万美元</text>
+        <text id="h-q" class="h" x="960" y="990" font-size="56" fill="#e8e6df" text-anchor="middle" font-weight="700">域名对、锁也在、<tspan fill="#58C4DD">合约</tspan>没变，钱怎么没的？</text>
+      </g>
+      <!-- 种子：一张页面 -->
+      <rect id="h-seed" class="h" x="930" y="500" width="60" height="80" rx="6" fill="none" stroke="#e8e6df" stroke-width="3" />
+      <text id="h-seedt" class="h" x="960" y="650" font-size="34" fill="#6b6f7a" text-anchor="middle">答案在合约前面那一页</text>
+      <g id="h-pin" class="h">
+        <rect x="80" y="60" width="640" height="84" rx="14" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="400" y="115" font-size="32" fill="#e8e6df" text-anchor="middle"><tspan fill="#58C4DD">合约</tspan>没变，钱怎么没的？</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 31.58, "L": [[0.6, 5.76], [6.21, 12.04], [12.49, 18.9], [19.35, 24.77], [25.22, 30.48]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      // L0 打开 curve.fi
+      IN("#h-date", at(0, 0), 0.5);
+      IN("#h-win", at(0, 0.15), 0.7, { y: 20 }, { y: 0 });
+      IN("#h-page", at(0, 0.5), 0.5);
+      IN("#h-btn", at(0, 0.6), 0.5);
+      // L1 域名对，锁也在
+      IN("#h-url", at(1, 0.05), 0.4);
+      const url = document.querySelector("#h-url"), full = "https://curve.fi", ty = { v: 0 };
+      tl.fromTo(ty, { v: 0 }, { v: full.length, duration: 1.0, ease: "none", onUpdate: () => { url.textContent = full.slice(0, Math.round(ty.v)); } }, at(1, 0.05));
+      IN("#h-urlok", at(1, 0.45), 0.4);
+      IN("#h-lock", at(1, 0.7), 0.4, { scale: 1.6, svgOrigin: "334 250" }, { scale: 1 });
+      // L2 合约没变，签名后损失
+      IN("#h-con", at(2, 0.0), 0.5, { x: 30 }, { x: 0 });
+      tl.to("#h-btnr", { stroke: "#FC6255", strokeOpacity: 1, fill: "#2a1416", duration: 0.3 }, at(2, 0.55));
+      IN("#h-loss", at(2, 0.6), 0.4);
+      const n = { v: 0 }, num = document.querySelector("#h-num");
+      tl.fromTo(n, { v: 0 }, { v: 57, duration: 1.2, ease: "power2.out", onUpdate: () => { num.textContent = Math.round(n.v); } }, at(2, 0.6));
+      // L3 问题
+      tl.to(["#h-win", "#h-page", "#h-btn", "#h-url", "#h-urlok", "#h-lock", "#h-con", "#h-loss", "#h-date"], { opacity: 0.22, duration: 0.5 }, at(3, 0));
+      IN("#h-q", at(3, 0.2), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      // L4 钉住
+      tl.to("#h-all", { opacity: 0, filter: "blur(6px)", duration: 0.6, ease: "power2.in" }, at(4, 0.1));
+      IN("#h-pin", at(4, 0.2), 0.6, { scale: 1.6, svgOrigin: "400 102" }, { scale: 1 });
+      IN("#h-seed", at(4, 0.5), 0.5, { scale: 0, svgOrigin: "960 540" }, { scale: 1, ease: "back.out(1.6)" });
+      IN("#h-seedt", at(4, 0.55), 0.5);
+      OUT("#h-seedt", C.d - 0.7, 0.3);
+      OUT(["#h-pin", "#h-seed"], C.d - 0.45, 0.35);
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>

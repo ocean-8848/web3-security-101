@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      /* EP13 非 EVM 生态 · 3b1b 风格。颜色语义全片固定，见 STORYBOARD.md §2。 */
+      @font-face {
+        font-family: "NotoSC";
+        src: url("assets/fonts/noto-sc.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0f1117; }
+      #root { position: relative; width: 100%; height: 100%; background: #0f1117; font-family: "NotoSC", sans-serif; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="454.16" data-width="1920" data-height="1080">
+      <div id="hook" data-composition-id="hook" data-composition-src="compositions/hook.html" data-start="0.0" data-duration="35.73" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="essence" data-composition-id="essence" data-composition-src="compositions/essence.html" data-start="35.73" data-duration="51.02" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="solana" data-composition-id="solana" data-composition-src="compositions/solana.html" data-start="86.75" data-duration="43.15" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="cashio" data-composition-id="cashio" data-composition-src="compositions/cashio.html" data-start="129.9" data-duration="37.15" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="cetus" data-composition-id="cetus" data-composition-src="compositions/cetus.html" data-start="167.05" data-duration="66.3" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="bitcoin" data-composition-id="bitcoin" data-composition-src="compositions/bitcoin.html" data-start="233.35" data-duration="63.06" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="cosmos" data-composition-id="cosmos" data-composition-src="compositions/cosmos.html" data-start="296.41" data-duration="49.12" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="onboard" data-composition-id="onboard" data-composition-src="compositions/onboard.html" data-start="345.53" data-duration="62.53" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="answer" data-composition-id="answer" data-composition-src="compositions/answer.html" data-start="408.06" data-duration="46.1" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <audio id="narration" class="clip" src="assets/narration.wav" data-start="0" data-duration="454.16" data-track-index="2" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

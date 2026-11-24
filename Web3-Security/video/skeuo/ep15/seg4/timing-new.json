@@ -1,0 +1,2502 @@
+{
+ "id": "seg4",
+ "title": "地址上的委托",
+ "pill": 4,
+ "total": 138.53,
+ "lines": [
+  {
+   "id": "seg4-00",
+   "text": "再看 EIP-7702，它在 2025 年 5 月，随 Pectra 升级上线。",
+   "spoken": "再看 EIP-7702，它在 2025 年 5 月，随 Pectra 升级上线。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-00.mp3",
+   "start": 1.6,
+   "dur": 6.6,
+   "speechStart": 1.698,
+   "speechEnd": 7.364
+  },
+  {
+   "id": "seg4-01",
+   "text": "普通地址可以签一份授权，里面写三样东西。",
+   "spoken": "普通地址可以签一份授权，里面写三样东西。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-01.mp3",
+   "start": 8.42,
+   "dur": 4.104,
+   "speechStart": 8.518,
+   "speechEnd": 11.684
+  },
+  {
+   "id": "seg4-02",
+   "text": "链 ID、委托合约的地址、nonce。",
+   "spoken": "链 ID、委托合约的地址、nonce。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-02.mp3",
+   "start": 12.744,
+   "dur": 4.032,
+   "speechStart": 12.842,
+   "speechEnd": 15.949
+  },
+  {
+   "id": "seg4-03",
+   "text": "签完，这个地址的代码，变成一个指针，指向那个合约。",
+   "spoken": "签完，这个地址的代码，变成一个指针，指向那个合约。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-03.mp3",
+   "start": 16.996,
+   "dur": 5.208,
+   "speechStart": 17.094,
+   "speechEnd": 21.379
+  },
+  {
+   "id": "seg4-04",
+   "text": "从此，这个地址执行的，是那个合约的代码。",
+   "spoken": "从此，这个地址执行的，是那个合约的代码。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-04.mp3",
+   "start": 22.424,
+   "dur": 4.44,
+   "speechStart": 22.522,
+   "speechEnd": 26.022
+  },
+  {
+   "id": "seg4-05",
+   "text": "这就是委托，它是写在地址上的链上状态。",
+   "spoken": "这就是委托，它是写在地址上的链上状态。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-05.mp3",
+   "start": 27.084,
+   "dur": 4.056,
+   "speechStart": 27.182,
+   "speechEnd": 30.301
+  },
+  {
+   "id": "seg4-06",
+   "text": "风险有三层。",
+   "spoken": "风险有三层。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-06.mp3",
+   "start": 31.36,
+   "dur": 2.28,
+   "speechStart": 31.458,
+   "speechEnd": 32.803
+  },
+  {
+   "id": "seg4-07",
+   "text": "第一层，委托给恶意合约，它的代码可以转走全部资产。",
+   "spoken": "第一层，委托给恶意合约，它的代码可以转走全部资产。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-07.mp3",
+   "start": 33.86,
+   "dur": 5.448,
+   "speechStart": 33.958,
+   "speechEnd": 38.47
+  },
+  {
+   "id": "seg4-08",
+   "text": "第二层，链 ID 填 0，授权在所有支持它的 EVM 链上都有效。",
+   "spoken": "第二层，链 ID 填 0，授权在所有支持它的 EVM 链上都有效。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-08.mp3",
+   "start": 39.528,
+   "dur": 6.072,
+   "speechStart": 39.626,
+   "speechEnd": 44.768
+  },
+  {
+   "id": "seg4-09",
+   "text": "前提只是，那条链上这个地址的 nonce 对得上。",
+   "spoken": "前提只是，那条链上这个地址的 nonce 对得上。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-09.mp3",
+   "start": 45.82,
+   "dur": 4.2,
+   "speechStart": 45.918,
+   "speechEnd": 49.191
+  },
+  {
+   "id": "seg4-10",
+   "text": "链 ID 是 0 的授权，钱包应该默认拒绝。",
+   "spoken": "链 ID 是 0 的授权，钱包应该默认拒绝。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-10.mp3",
+   "start": 50.24,
+   "dur": 4.248,
+   "speechStart": 50.338,
+   "speechEnd": 53.647
+  },
+  {
+   "id": "seg4-11",
+   "text": "第三层最常见，委托合约是合法的，用户却签了一个批量执行。",
+   "spoken": "第三层最常见，委托合约是合法的，用户却签了一个批亮执行。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-11.mp3",
+   "start": 54.708,
+   "dur": 6.384,
+   "speechStart": 54.806,
+   "speechEnd": 60.246
+  },
+  {
+   "id": "seg4-12",
+   "text": "批量里的内容，是转走资产。",
+   "spoken": "批亮里的内容，是转走资产。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-12.mp3",
+   "start": 61.312,
+   "dur": 3.216,
+   "speechStart": 61.41,
+   "speechEnd": 63.683
+  },
+  {
+   "id": "seg4-13",
+   "text": "2025 年 5 月，一名用户这样损失了约 14.6 万美元。",
+   "spoken": "2025 年 5 月，一名用户这样损失了约 14.6 万美元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-13.mp3",
+   "start": 64.748,
+   "dur": 5.088,
+   "speechStart": 64.846,
+   "speechEnd": 68.988
+  },
+  {
+   "id": "seg4-14",
+   "text": "2025 年 8 月，ScamSniffer 记录到两起同类钓鱼，约 100 万和 154 万美元。",
+   "spoken": "2025 年 8 月，ScamSniffer 记录到两起同类钓鱼，约 100 万和 154 万美元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-14.mp3",
+   "start": 70.056,
+   "dur": 7.2,
+   "speechStart": 70.154,
+   "speechEnd": 76.416
+  },
+  {
+   "id": "seg4-15",
+   "text": "Wintermute 的统计显示，绝大部分委托，指向同一类复制来的扫币合约。",
+   "spoken": "Wintermute 的统计显示，绝大部分委托，指向同一类复制来的扫币合约。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-15.mp3",
+   "start": 77.476,
+   "dur": 5.904,
+   "speechStart": 77.574,
+   "speechEnd": 82.55
+  },
+  {
+   "id": "seg4-16",
+   "text": "它们专门扫走，私钥已经泄露的地址收到的 ETH。",
+   "spoken": "它们专门扫走，私钥已经泄漏的地址收到的 ETH。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-16.mp3",
+   "start": 83.6,
+   "dur": 4.248,
+   "speechStart": 83.698,
+   "speechEnd": 87.019
+  },
+  {
+   "id": "seg4-17",
+   "text": "主要风险，不在恶意合约，而在对合法合约发出的恶意批量。",
+   "spoken": "主要风险，不在恶意合约，而在对合法合约发出的恶意批亮。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-17.mp3",
+   "start": 88.068,
+   "dur": 5.592,
+   "speechStart": 88.166,
+   "speechEnd": 92.82
+  },
+  {
+   "id": "seg4-18",
+   "text": "钱包必须把批量里的每一步，逐项解码给用户看。",
+   "spoken": "钱包必须把批亮里的每一步，逐项解码给用户看。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-18.mp3",
+   "start": 93.88,
+   "dur": 4.152,
+   "speechStart": 93.978,
+   "speechEnd": 97.204
+  },
+  {
+   "id": "seg4-19",
+   "text": "开发者也有三个坑。",
+   "spoken": "开发者也有三个坑。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-19.mp3",
+   "start": 98.252,
+   "dur": 2.448,
+   "speechStart": 98.35,
+   "speechEnd": 99.862
+  },
+  {
+   "id": "seg4-20",
+   "text": "委托时不运行初始化代码，攻击者可以抢先初始化。",
+   "spoken": "委托时不运行初始化代码，攻击者可以抢先初始化。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-20.mp3",
+   "start": 100.92,
+   "dur": 4.968,
+   "speechStart": 101.018,
+   "speechEnd": 105.053
+  },
+  {
+   "id": "seg4-21",
+   "text": "所以初始化数据，要由这个地址的私钥签名。",
+   "spoken": "所以初始化数据，要由这个地址的私钥签名。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-21.mp3",
+   "start": 106.108,
+   "dur": 4.44,
+   "speechStart": 106.206,
+   "speechEnd": 109.706
+  },
+  {
+   "id": "seg4-22",
+   "text": "换委托合约时，旧存储仍在，新合约会读到错的数据。",
+   "spoken": "换委托合约时，旧存储仍在，新合约会读到错的数据。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-22.mp3",
+   "start": 110.768,
+   "dur": 5.472,
+   "speechStart": 110.866,
+   "speechEnd": 115.389
+  },
+  {
+   "id": "seg4-23",
+   "text": "要用命名空间存储，把两份数据隔开。",
+   "spoken": "要用命名空间存储，把两份数据隔开。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-23.mp3",
+   "start": 116.46,
+   "dur": 3.864,
+   "speechStart": 116.558,
+   "speechEnd": 119.486
+  },
+  {
+   "id": "seg4-24",
+   "text": "交易发起者等于调用者，这个老检查，不再能证明对方是普通地址。",
+   "spoken": "交易发起者等于掉用者，这个老检查，不再能证明对方是普通地址。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-24.mp3",
+   "start": 120.544,
+   "dur": 6.0,
+   "speechStart": 120.642,
+   "speechEnd": 125.701
+  },
+  {
+   "id": "seg4-25",
+   "text": "EIP-7702 原文写明，应用不应该请求用户签署委托授权。",
+   "spoken": "EIP-7702 原文写明，应用不应该请求用户签署委托授权。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-25.mp3",
+   "start": 126.764,
+   "dur": 6.12,
+   "speechStart": 126.862,
+   "speechEnd": 132.04
+  },
+  {
+   "id": "seg4-26",
+   "text": "网站请你升级成智能账户，默认拒绝。",
+   "spoken": "网站请你升级成智能账户，默认拒绝。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep15/audio/lines/seg4-26.mp3",
+   "start": 133.104,
+   "dur": 4.224,
+   "speechStart": 133.202,
+   "speechEnd": 136.475
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "再",
+   "start": 1.698,
+   "end": 1.852
+  },
+  {
+   "line": 0,
+   "text": "看",
+   "start": 1.852,
+   "end": 2.186
+  },
+  {
+   "line": 0,
+   "text": "EIP",
+   "start": 2.293,
+   "end": 3.031
+  },
+  {
+   "line": 0,
+   "text": "7702",
+   "start": 3.138,
+   "end": 3.936
+  },
+  {
+   "line": 0,
+   "text": "它",
+   "start": 4.257,
+   "end": 4.436
+  },
+  {
+   "line": 0,
+   "text": "在",
+   "start": 4.436,
+   "end": 4.555
+  },
+  {
+   "line": 0,
+   "text": "2025",
+   "start": 4.579,
+   "end": 5.055
+  },
+  {
+   "line": 0,
+   "text": "年",
+   "start": 5.055,
+   "end": 5.233
+  },
+  {
+   "line": 0,
+   "text": "5 月",
+   "start": 5.245,
+   "end": 5.65
+  },
+  {
+   "line": 0,
+   "text": "随",
+   "start": 5.829,
+   "end": 6.162
+  },
+  {
+   "line": 0,
+   "text": "Pectra",
+   "start": 6.186,
+   "end": 6.674
+  },
+  {
+   "line": 0,
+   "text": "升级",
+   "start": 6.698,
+   "end": 6.96
+  },
+  {
+   "line": 0,
+   "text": "上线",
+   "start": 6.971,
+   "end": 7.364
+  },
+  {
+   "line": 1,
+   "text": "普通",
+   "start": 8.518,
+   "end": 8.851
+  },
+  {
+   "line": 1,
+   "text": "地址",
+   "start": 8.863,
+   "end": 9.244
+  },
+  {
+   "line": 1,
+   "text": "可以",
+   "start": 9.351,
+   "end": 9.494
+  },
+  {
+   "line": 1,
+   "text": "签",
+   "start": 9.506,
+   "end": 9.708
+  },
+  {
+   "line": 1,
+   "text": "一",
+   "start": 9.708,
+   "end": 9.779
+  },
+  {
+   "line": 1,
+   "text": "份",
+   "start": 9.78,
+   "end": 9.887
+  },
+  {
+   "line": 1,
+   "text": "授权",
+   "start": 9.899,
+   "end": 10.422
+  },
+  {
+   "line": 1,
+   "text": "里面",
+   "start": 10.684,
+   "end": 10.91
+  },
+  {
+   "line": 1,
+   "text": "写",
+   "start": 10.922,
+   "end": 11.053
+  },
+  {
+   "line": 1,
+   "text": "三",
+   "start": 11.053,
+   "end": 11.232
+  },
+  {
+   "line": 1,
+   "text": "样",
+   "start": 11.232,
+   "end": 11.351
+  },
+  {
+   "line": 1,
+   "text": "东西",
+   "start": 11.363,
+   "end": 11.684
+  },
+  {
+   "line": 2,
+   "text": "链",
+   "start": 12.842,
+   "end": 13.092
+  },
+  {
+   "line": 2,
+   "text": "ID",
+   "start": 13.104,
+   "end": 13.675
+  },
+  {
+   "line": 2,
+   "text": "委托",
+   "start": 13.973,
+   "end": 14.294
+  },
+  {
+   "line": 2,
+   "text": "合约",
+   "start": 14.306,
+   "end": 14.592
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 14.592,
+   "end": 14.675
+  },
+  {
+   "line": 2,
+   "text": "地址",
+   "start": 14.687,
+   "end": 15.127
+  },
+  {
+   "line": 2,
+   "text": "nonce",
+   "start": 15.365,
+   "end": 15.949
+  },
+  {
+   "line": 3,
+   "text": "签完",
+   "start": 17.094,
+   "end": 17.653
+  },
+  {
+   "line": 3,
+   "text": "这个",
+   "start": 17.998,
+   "end": 18.248
+  },
+  {
+   "line": 3,
+   "text": "地址",
+   "start": 18.26,
+   "end": 18.498
+  },
+  {
+   "line": 3,
+   "text": "的",
+   "start": 18.498,
+   "end": 18.582
+  },
+  {
+   "line": 3,
+   "text": "代码",
+   "start": 18.594,
+   "end": 19.034
+  },
+  {
+   "line": 3,
+   "text": "变成",
+   "start": 19.213,
+   "end": 19.498
+  },
+  {
+   "line": 3,
+   "text": "一个",
+   "start": 19.522,
+   "end": 19.677
+  },
+  {
+   "line": 3,
+   "text": "指针",
+   "start": 19.689,
+   "end": 20.189
+  },
+  {
+   "line": 3,
+   "text": "指向",
+   "start": 20.439,
+   "end": 20.772
+  },
+  {
+   "line": 3,
+   "text": "那个",
+   "start": 20.796,
+   "end": 20.951
+  },
+  {
+   "line": 3,
+   "text": "合约",
+   "start": 20.963,
+   "end": 21.379
+  },
+  {
+   "line": 4,
+   "text": "从此",
+   "start": 22.522,
+   "end": 23.105
+  },
+  {
+   "line": 4,
+   "text": "这个",
+   "start": 23.462,
+   "end": 23.712
+  },
+  {
+   "line": 4,
+   "text": "地址",
+   "start": 23.724,
+   "end": 23.986
+  },
+  {
+   "line": 4,
+   "text": "执行",
+   "start": 23.998,
+   "end": 24.367
+  },
+  {
+   "line": 4,
+   "text": "的",
+   "start": 24.367,
+   "end": 24.641
+  },
+  {
+   "line": 4,
+   "text": "是",
+   "start": 24.807,
+   "end": 24.998
+  },
+  {
+   "line": 4,
+   "text": "那个",
+   "start": 25.01,
+   "end": 25.2
+  },
+  {
+   "line": 4,
+   "text": "合约",
+   "start": 25.224,
+   "end": 25.545
+  },
+  {
+   "line": 4,
+   "text": "的",
+   "start": 25.545,
+   "end": 25.617
+  },
+  {
+   "line": 4,
+   "text": "代码",
+   "start": 25.629,
+   "end": 26.022
+  },
+  {
+   "line": 5,
+   "text": "这",
+   "start": 27.182,
+   "end": 27.372
+  },
+  {
+   "line": 5,
+   "text": "就",
+   "start": 27.372,
+   "end": 27.479
+  },
+  {
+   "line": 5,
+   "text": "是",
+   "start": 27.479,
+   "end": 27.575
+  },
+  {
+   "line": 5,
+   "text": "委托",
+   "start": 27.586,
+   "end": 28.17
+  },
+  {
+   "line": 5,
+   "text": "它",
+   "start": 28.396,
+   "end": 28.563
+  },
+  {
+   "line": 5,
+   "text": "是",
+   "start": 28.563,
+   "end": 28.67
+  },
+  {
+   "line": 5,
+   "text": "写",
+   "start": 28.682,
+   "end": 28.836
+  },
+  {
+   "line": 5,
+   "text": "在",
+   "start": 28.836,
+   "end": 28.967
+  },
+  {
+   "line": 5,
+   "text": "地址",
+   "start": 28.991,
+   "end": 29.277
+  },
+  {
+   "line": 5,
+   "text": "上",
+   "start": 29.277,
+   "end": 29.432
+  },
+  {
+   "line": 5,
+   "text": "的",
+   "start": 29.432,
+   "end": 29.539
+  },
+  {
+   "line": 5,
+   "text": "链上",
+   "start": 29.563,
+   "end": 29.896
+  },
+  {
+   "line": 5,
+   "text": "状态",
+   "start": 29.908,
+   "end": 30.301
+  },
+  {
+   "line": 6,
+   "text": "风险",
+   "start": 31.458,
+   "end": 32.077
+  },
+  {
+   "line": 6,
+   "text": "有",
+   "start": 32.1,
+   "end": 32.231
+  },
+  {
+   "line": 6,
+   "text": "三",
+   "start": 32.243,
+   "end": 32.481
+  },
+  {
+   "line": 6,
+   "text": "层",
+   "start": 32.481,
+   "end": 32.803
+  },
+  {
+   "line": 7,
+   "text": "第一",
+   "start": 33.958,
+   "end": 34.184
+  },
+  {
+   "line": 7,
+   "text": "层",
+   "start": 34.184,
+   "end": 34.529
+  },
+  {
+   "line": 7,
+   "text": "委托",
+   "start": 34.815,
+   "end": 35.148
+  },
+  {
+   "line": 7,
+   "text": "给",
+   "start": 35.16,
+   "end": 35.279
+  },
+  {
+   "line": 7,
+   "text": "恶意",
+   "start": 35.303,
+   "end": 35.529
+  },
+  {
+   "line": 7,
+   "text": "合约",
+   "start": 35.541,
+   "end": 35.922
+  },
+  {
+   "line": 7,
+   "text": "它",
+   "start": 36.231,
+   "end": 36.398
+  },
+  {
+   "line": 7,
+   "text": "的",
+   "start": 36.398,
+   "end": 36.493
+  },
+  {
+   "line": 7,
+   "text": "代码",
+   "start": 36.505,
+   "end": 36.946
+  },
+  {
+   "line": 7,
+   "text": "可以",
+   "start": 37.041,
+   "end": 37.279
+  },
+  {
+   "line": 7,
+   "text": "转走",
+   "start": 37.291,
+   "end": 37.66
+  },
+  {
+   "line": 7,
+   "text": "全部",
+   "start": 37.684,
+   "end": 38.065
+  },
+  {
+   "line": 7,
+   "text": "资产",
+   "start": 38.077,
+   "end": 38.47
+  },
+  {
+   "line": 8,
+   "text": "第二",
+   "start": 39.626,
+   "end": 39.864
+  },
+  {
+   "line": 8,
+   "text": "层",
+   "start": 39.864,
+   "end": 40.233
+  },
+  {
+   "line": 8,
+   "text": "链",
+   "start": 40.423,
+   "end": 40.768
+  },
+  {
+   "line": 8,
+   "text": "ID",
+   "start": 40.876,
+   "end": 41.268
+  },
+  {
+   "line": 8,
+   "text": "填",
+   "start": 41.28,
+   "end": 41.483
+  },
+  {
+   "line": 8,
+   "text": "0",
+   "start": 41.483,
+   "end": 41.792
+  },
+  {
+   "line": 8,
+   "text": "授权",
+   "start": 41.971,
+   "end": 42.459
+  },
+  {
+   "line": 8,
+   "text": "在",
+   "start": 42.471,
+   "end": 42.59
+  },
+  {
+   "line": 8,
+   "text": "所有",
+   "start": 42.614,
+   "end": 42.935
+  },
+  {
+   "line": 8,
+   "text": "支持",
+   "start": 42.947,
+   "end": 43.173
+  },
+  {
+   "line": 8,
+   "text": "它",
+   "start": 43.185,
+   "end": 43.304
+  },
+  {
+   "line": 8,
+   "text": "的",
+   "start": 43.304,
+   "end": 43.399
+  },
+  {
+   "line": 8,
+   "text": "EVM",
+   "start": 43.423,
+   "end": 43.828
+  },
+  {
+   "line": 8,
+   "text": "链上",
+   "start": 43.84,
+   "end": 44.197
+  },
+  {
+   "line": 8,
+   "text": "都",
+   "start": 44.221,
+   "end": 44.388
+  },
+  {
+   "line": 8,
+   "text": "有效",
+   "start": 44.399,
+   "end": 44.768
+  },
+  {
+   "line": 9,
+   "text": "前提",
+   "start": 45.918,
+   "end": 46.263
+  },
+  {
+   "line": 9,
+   "text": "只是",
+   "start": 46.275,
+   "end": 46.775
+  },
+  {
+   "line": 9,
+   "text": "那",
+   "start": 47.096,
+   "end": 47.251
+  },
+  {
+   "line": 9,
+   "text": "条",
+   "start": 47.251,
+   "end": 47.382
+  },
+  {
+   "line": 9,
+   "text": "链",
+   "start": 47.382,
+   "end": 47.513
+  },
+  {
+   "line": 9,
+   "text": "上",
+   "start": 47.513,
+   "end": 47.656
+  },
+  {
+   "line": 9,
+   "text": "这个",
+   "start": 47.68,
+   "end": 47.834
+  },
+  {
+   "line": 9,
+   "text": "地址",
+   "start": 47.846,
+   "end": 48.108
+  },
+  {
+   "line": 9,
+   "text": "的",
+   "start": 48.108,
+   "end": 48.287
+  },
+  {
+   "line": 9,
+   "text": "nonce",
+   "start": 48.31,
+   "end": 48.715
+  },
+  {
+   "line": 9,
+   "text": "对",
+   "start": 48.739,
+   "end": 48.87
+  },
+  {
+   "line": 9,
+   "text": "得",
+   "start": 48.87,
+   "end": 48.941
+  },
+  {
+   "line": 9,
+   "text": "上",
+   "start": 48.941,
+   "end": 49.191
+  },
+  {
+   "line": 10,
+   "text": "链",
+   "start": 50.338,
+   "end": 50.611
+  },
+  {
+   "line": 10,
+   "text": "ID",
+   "start": 50.611,
+   "end": 51.016
+  },
+  {
+   "line": 10,
+   "text": "是",
+   "start": 51.028,
+   "end": 51.183
+  },
+  {
+   "line": 10,
+   "text": "0",
+   "start": 51.183,
+   "end": 51.29
+  },
+  {
+   "line": 10,
+   "text": "的",
+   "start": 51.29,
+   "end": 51.35
+  },
+  {
+   "line": 10,
+   "text": "授权",
+   "start": 51.361,
+   "end": 51.873
+  },
+  {
+   "line": 10,
+   "text": "钱包",
+   "start": 52.1,
+   "end": 52.611
+  },
+  {
+   "line": 10,
+   "text": "应该",
+   "start": 52.623,
+   "end": 52.861
+  },
+  {
+   "line": 10,
+   "text": "默认",
+   "start": 52.885,
+   "end": 53.171
+  },
+  {
+   "line": 10,
+   "text": "拒绝",
+   "start": 53.183,
+   "end": 53.647
+  },
+  {
+   "line": 11,
+   "text": "第三",
+   "start": 54.806,
+   "end": 55.151
+  },
+  {
+   "line": 11,
+   "text": "层",
+   "start": 55.151,
+   "end": 55.353
+  },
+  {
+   "line": 11,
+   "text": "最",
+   "start": 55.377,
+   "end": 55.532
+  },
+  {
+   "line": 11,
+   "text": "常见",
+   "start": 55.532,
+   "end": 56.032
+  },
+  {
+   "line": 11,
+   "text": "委托",
+   "start": 56.401,
+   "end": 56.746
+  },
+  {
+   "line": 11,
+   "text": "合约",
+   "start": 56.758,
+   "end": 57.103
+  },
+  {
+   "line": 11,
+   "text": "是",
+   "start": 57.127,
+   "end": 57.258
+  },
+  {
+   "line": 11,
+   "text": "合法",
+   "start": 57.258,
+   "end": 57.687
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 57.687,
+   "end": 57.889
+  },
+  {
+   "line": 11,
+   "text": "用户",
+   "start": 58.163,
+   "end": 58.734
+  },
+  {
+   "line": 11,
+   "text": "却",
+   "start": 58.841,
+   "end": 59.008
+  },
+  {
+   "line": 11,
+   "text": "签",
+   "start": 59.02,
+   "end": 59.175
+  },
+  {
+   "line": 11,
+   "text": "了",
+   "start": 59.175,
+   "end": 59.246
+  },
+  {
+   "line": 11,
+   "text": "一个",
+   "start": 59.258,
+   "end": 59.413
+  },
+  {
+   "line": 11,
+   "text": "批量",
+   "start": 59.437,
+   "end": 59.758
+  },
+  {
+   "line": 11,
+   "text": "执行",
+   "start": 59.77,
+   "end": 60.246
+  },
+  {
+   "line": 12,
+   "text": "批量",
+   "start": 61.41,
+   "end": 61.731
+  },
+  {
+   "line": 12,
+   "text": "里",
+   "start": 61.731,
+   "end": 61.802
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 61.802,
+   "end": 61.862
+  },
+  {
+   "line": 12,
+   "text": "内容",
+   "start": 61.874,
+   "end": 62.386
+  },
+  {
+   "line": 12,
+   "text": "是",
+   "start": 62.707,
+   "end": 62.886
+  },
+  {
+   "line": 12,
+   "text": "转走",
+   "start": 62.898,
+   "end": 63.255
+  },
+  {
+   "line": 12,
+   "text": "资产",
+   "start": 63.267,
+   "end": 63.683
+  },
+  {
+   "line": 13,
+   "text": "2025",
+   "start": 64.846,
+   "end": 65.346
+  },
+  {
+   "line": 13,
+   "text": "年",
+   "start": 65.346,
+   "end": 65.512
+  },
+  {
+   "line": 13,
+   "text": "5 月",
+   "start": 65.524,
+   "end": 65.953
+  },
+  {
+   "line": 13,
+   "text": "一",
+   "start": 66.31,
+   "end": 66.429
+  },
+  {
+   "line": 13,
+   "text": "名",
+   "start": 66.429,
+   "end": 66.512
+  },
+  {
+   "line": 13,
+   "text": "用户",
+   "start": 66.524,
+   "end": 66.858
+  },
+  {
+   "line": 13,
+   "text": "这样",
+   "start": 66.881,
+   "end": 67.06
+  },
+  {
+   "line": 13,
+   "text": "损失",
+   "start": 67.072,
+   "end": 67.393
+  },
+  {
+   "line": 13,
+   "text": "了",
+   "start": 67.393,
+   "end": 67.596
+  },
+  {
+   "line": 13,
+   "text": "约",
+   "start": 67.619,
+   "end": 67.81
+  },
+  {
+   "line": 13,
+   "text": "14.6 万",
+   "start": 67.81,
+   "end": 68.512
+  },
+  {
+   "line": 13,
+   "text": "美元",
+   "start": 68.524,
+   "end": 68.988
+  },
+  {
+   "line": 14,
+   "text": "2025",
+   "start": 70.154,
+   "end": 70.606
+  },
+  {
+   "line": 14,
+   "text": "年",
+   "start": 70.606,
+   "end": 70.785
+  },
+  {
+   "line": 14,
+   "text": "8 月",
+   "start": 70.796,
+   "end": 71.225
+  },
+  {
+   "line": 14,
+   "text": "ScamSniffer",
+   "start": 71.427,
+   "end": 72.356
+  },
+  {
+   "line": 14,
+   "text": "记录",
+   "start": 72.451,
+   "end": 72.737
+  },
+  {
+   "line": 14,
+   "text": "到",
+   "start": 72.737,
+   "end": 72.939
+  },
+  {
+   "line": 14,
+   "text": "两",
+   "start": 72.963,
+   "end": 73.154
+  },
+  {
+   "line": 14,
+   "text": "起",
+   "start": 73.154,
+   "end": 73.308
+  },
+  {
+   "line": 14,
+   "text": "同类",
+   "start": 73.332,
+   "end": 73.606
+  },
+  {
+   "line": 14,
+   "text": "钓鱼",
+   "start": 73.618,
+   "end": 74.07
+  },
+  {
+   "line": 14,
+   "text": "约",
+   "start": 74.285,
+   "end": 74.499
+  },
+  {
+   "line": 14,
+   "text": "100 万",
+   "start": 74.511,
+   "end": 75.082
+  },
+  {
+   "line": 14,
+   "text": "和",
+   "start": 75.106,
+   "end": 75.285
+  },
+  {
+   "line": 14,
+   "text": "154 万",
+   "start": 75.296,
+   "end": 76.011
+  },
+  {
+   "line": 14,
+   "text": "美元",
+   "start": 76.023,
+   "end": 76.416
+  },
+  {
+   "line": 15,
+   "text": "Wintermute",
+   "start": 77.574,
+   "end": 78.157
+  },
+  {
+   "line": 15,
+   "text": "的",
+   "start": 78.157,
+   "end": 78.264
+  },
+  {
+   "line": 15,
+   "text": "统计",
+   "start": 78.276,
+   "end": 78.586
+  },
+  {
+   "line": 15,
+   "text": "显示",
+   "start": 78.597,
+   "end": 79.097
+  },
+  {
+   "line": 15,
+   "text": "绝大",
+   "start": 79.431,
+   "end": 79.788
+  },
+  {
+   "line": 15,
+   "text": "部分",
+   "start": 79.8,
+   "end": 80.014
+  },
+  {
+   "line": 15,
+   "text": "委托",
+   "start": 80.026,
+   "end": 80.466
+  },
+  {
+   "line": 15,
+   "text": "指向",
+   "start": 80.621,
+   "end": 80.978
+  },
+  {
+   "line": 15,
+   "text": "同",
+   "start": 81.002,
+   "end": 81.169
+  },
+  {
+   "line": 15,
+   "text": "一类",
+   "start": 81.169,
+   "end": 81.359
+  },
+  {
+   "line": 15,
+   "text": "复制",
+   "start": 81.383,
+   "end": 81.597
+  },
+  {
+   "line": 15,
+   "text": "来",
+   "start": 81.609,
+   "end": 81.728
+  },
+  {
+   "line": 15,
+   "text": "的",
+   "start": 81.728,
+   "end": 81.859
+  },
+  {
+   "line": 15,
+   "text": "扫币",
+   "start": 81.883,
+   "end": 82.193
+  },
+  {
+   "line": 15,
+   "text": "合约",
+   "start": 82.205,
+   "end": 82.55
+  },
+  {
+   "line": 16,
+   "text": "它们",
+   "start": 83.698,
+   "end": 83.971
+  },
+  {
+   "line": 16,
+   "text": "专门",
+   "start": 83.995,
+   "end": 84.257
+  },
+  {
+   "line": 16,
+   "text": "扫",
+   "start": 84.269,
+   "end": 84.471
+  },
+  {
+   "line": 16,
+   "text": "走",
+   "start": 84.471,
+   "end": 84.709
+  },
+  {
+   "line": 16,
+   "text": "私钥",
+   "start": 84.983,
+   "end": 85.4
+  },
+  {
+   "line": 16,
+   "text": "已经",
+   "start": 85.412,
+   "end": 85.602
+  },
+  {
+   "line": 16,
+   "text": "泄露",
+   "start": 85.614,
+   "end": 85.912
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 85.912,
+   "end": 85.995
+  },
+  {
+   "line": 16,
+   "text": "地址",
+   "start": 86.007,
+   "end": 86.257
+  },
+  {
+   "line": 16,
+   "text": "收到",
+   "start": 86.281,
+   "end": 86.543
+  },
+  {
+   "line": 16,
+   "text": "的",
+   "start": 86.543,
+   "end": 86.65
+  },
+  {
+   "line": 16,
+   "text": "ETH",
+   "start": 86.65,
+   "end": 87.019
+  },
+  {
+   "line": 17,
+   "text": "主要",
+   "start": 88.166,
+   "end": 88.428
+  },
+  {
+   "line": 17,
+   "text": "风险",
+   "start": 88.439,
+   "end": 88.927
+  },
+  {
+   "line": 17,
+   "text": "不在",
+   "start": 89.106,
+   "end": 89.392
+  },
+  {
+   "line": 17,
+   "text": "恶意",
+   "start": 89.416,
+   "end": 89.678
+  },
+  {
+   "line": 17,
+   "text": "合约",
+   "start": 89.689,
+   "end": 90.106
+  },
+  {
+   "line": 17,
+   "text": "而",
+   "start": 90.499,
+   "end": 90.666
+  },
+  {
+   "line": 17,
+   "text": "在",
+   "start": 90.666,
+   "end": 90.82
+  },
+  {
+   "line": 17,
+   "text": "对",
+   "start": 90.82,
+   "end": 90.951
+  },
+  {
+   "line": 17,
+   "text": "合法",
+   "start": 90.975,
+   "end": 91.249
+  },
+  {
+   "line": 17,
+   "text": "合约",
+   "start": 91.261,
+   "end": 91.606
+  },
+  {
+   "line": 17,
+   "text": "发出",
+   "start": 91.63,
+   "end": 91.939
+  },
+  {
+   "line": 17,
+   "text": "的",
+   "start": 91.939,
+   "end": 92.094
+  },
+  {
+   "line": 17,
+   "text": "恶意",
+   "start": 92.118,
+   "end": 92.404
+  },
+  {
+   "line": 17,
+   "text": "批量",
+   "start": 92.416,
+   "end": 92.82
+  },
+  {
+   "line": 18,
+   "text": "钱包",
+   "start": 93.978,
+   "end": 94.454
+  },
+  {
+   "line": 18,
+   "text": "必须",
+   "start": 94.478,
+   "end": 94.68
+  },
+  {
+   "line": 18,
+   "text": "把",
+   "start": 94.68,
+   "end": 94.799
+  },
+  {
+   "line": 18,
+   "text": "批量",
+   "start": 94.823,
+   "end": 95.085
+  },
+  {
+   "line": 18,
+   "text": "里",
+   "start": 95.085,
+   "end": 95.156
+  },
+  {
+   "line": 18,
+   "text": "的",
+   "start": 95.156,
+   "end": 95.228
+  },
+  {
+   "line": 18,
+   "text": "每",
+   "start": 95.24,
+   "end": 95.382
+  },
+  {
+   "line": 18,
+   "text": "一",
+   "start": 95.382,
+   "end": 95.489
+  },
+  {
+   "line": 18,
+   "text": "步",
+   "start": 95.49,
+   "end": 95.692
+  },
+  {
+   "line": 18,
+   "text": "逐项",
+   "start": 95.894,
+   "end": 96.287
+  },
+  {
+   "line": 18,
+   "text": "解码",
+   "start": 96.299,
+   "end": 96.62
+  },
+  {
+   "line": 18,
+   "text": "给",
+   "start": 96.62,
+   "end": 96.692
+  },
+  {
+   "line": 18,
+   "text": "用户",
+   "start": 96.704,
+   "end": 96.954
+  },
+  {
+   "line": 18,
+   "text": "看",
+   "start": 96.954,
+   "end": 97.204
+  },
+  {
+   "line": 19,
+   "text": "开发者",
+   "start": 98.35,
+   "end": 98.969
+  },
+  {
+   "line": 19,
+   "text": "也有",
+   "start": 98.992,
+   "end": 99.219
+  },
+  {
+   "line": 19,
+   "text": "三个坑",
+   "start": 99.219,
+   "end": 99.862
+  },
+  {
+   "line": 20,
+   "text": "委托",
+   "start": 101.018,
+   "end": 101.339
+  },
+  {
+   "line": 20,
+   "text": "时",
+   "start": 101.339,
+   "end": 101.625
+  },
+  {
+   "line": 20,
+   "text": "不",
+   "start": 101.649,
+   "end": 101.827
+  },
+  {
+   "line": 20,
+   "text": "运行",
+   "start": 101.827,
+   "end": 102.16
+  },
+  {
+   "line": 20,
+   "text": "初始化",
+   "start": 102.184,
+   "end": 102.541
+  },
+  {
+   "line": 20,
+   "text": "代码",
+   "start": 102.553,
+   "end": 102.97
+  },
+  {
+   "line": 20,
+   "text": "攻击者",
+   "start": 103.303,
+   "end": 103.875
+  },
+  {
+   "line": 20,
+   "text": "可以",
+   "start": 103.899,
+   "end": 104.137
+  },
+  {
+   "line": 20,
+   "text": "抢先",
+   "start": 104.149,
+   "end": 104.553
+  },
+  {
+   "line": 20,
+   "text": "初始化",
+   "start": 104.577,
+   "end": 105.053
+  },
+  {
+   "line": 21,
+   "text": "所以",
+   "start": 106.206,
+   "end": 106.598
+  },
+  {
+   "line": 21,
+   "text": "初始化",
+   "start": 106.622,
+   "end": 107.027
+  },
+  {
+   "line": 21,
+   "text": "数据",
+   "start": 107.039,
+   "end": 107.563
+  },
+  {
+   "line": 21,
+   "text": "要",
+   "start": 107.801,
+   "end": 107.956
+  },
+  {
+   "line": 21,
+   "text": "由",
+   "start": 107.956,
+   "end": 108.087
+  },
+  {
+   "line": 21,
+   "text": "这个",
+   "start": 108.11,
+   "end": 108.301
+  },
+  {
+   "line": 21,
+   "text": "地址",
+   "start": 108.313,
+   "end": 108.61
+  },
+  {
+   "line": 21,
+   "text": "的",
+   "start": 108.61,
+   "end": 108.837
+  },
+  {
+   "line": 21,
+   "text": "私钥",
+   "start": 108.86,
+   "end": 109.229
+  },
+  {
+   "line": 21,
+   "text": "签名",
+   "start": 109.241,
+   "end": 109.706
+  },
+  {
+   "line": 22,
+   "text": "换",
+   "start": 110.866,
+   "end": 111.104
+  },
+  {
+   "line": 22,
+   "text": "委托",
+   "start": 111.104,
+   "end": 111.377
+  },
+  {
+   "line": 22,
+   "text": "合约",
+   "start": 111.389,
+   "end": 111.687
+  },
+  {
+   "line": 22,
+   "text": "时",
+   "start": 111.687,
+   "end": 112.08
+  },
+  {
+   "line": 22,
+   "text": "旧",
+   "start": 112.258,
+   "end": 112.437
+  },
+  {
+   "line": 22,
+   "text": "存储",
+   "start": 112.437,
+   "end": 112.806
+  },
+  {
+   "line": 22,
+   "text": "仍",
+   "start": 112.818,
+   "end": 113.02
+  },
+  {
+   "line": 22,
+   "text": "在",
+   "start": 113.02,
+   "end": 113.235
+  },
+  {
+   "line": 22,
+   "text": "新合",
+   "start": 113.473,
+   "end": 113.889
+  },
+  {
+   "line": 22,
+   "text": "约会",
+   "start": 113.901,
+   "end": 114.413
+  },
+  {
+   "line": 22,
+   "text": "读",
+   "start": 114.52,
+   "end": 114.663
+  },
+  {
+   "line": 22,
+   "text": "到",
+   "start": 114.663,
+   "end": 114.77
+  },
+  {
+   "line": 22,
+   "text": "错",
+   "start": 114.794,
+   "end": 114.973
+  },
+  {
+   "line": 22,
+   "text": "的",
+   "start": 114.973,
+   "end": 115.032
+  },
+  {
+   "line": 22,
+   "text": "数据",
+   "start": 115.044,
+   "end": 115.389
+  },
+  {
+   "line": 23,
+   "text": "要",
+   "start": 116.558,
+   "end": 116.712
+  },
+  {
+   "line": 23,
+   "text": "用",
+   "start": 116.712,
+   "end": 116.843
+  },
+  {
+   "line": 23,
+   "text": "命名",
+   "start": 116.867,
+   "end": 117.153
+  },
+  {
+   "line": 23,
+   "text": "空间",
+   "start": 117.165,
+   "end": 117.522
+  },
+  {
+   "line": 23,
+   "text": "存储",
+   "start": 117.534,
+   "end": 118.01
+  },
+  {
+   "line": 23,
+   "text": "把",
+   "start": 118.272,
+   "end": 118.391
+  },
+  {
+   "line": 23,
+   "text": "两",
+   "start": 118.403,
+   "end": 118.581
+  },
+  {
+   "line": 23,
+   "text": "份",
+   "start": 118.581,
+   "end": 118.736
+  },
+  {
+   "line": 23,
+   "text": "数据",
+   "start": 118.748,
+   "end": 119.046
+  },
+  {
+   "line": 23,
+   "text": "隔开",
+   "start": 119.058,
+   "end": 119.486
+  },
+  {
+   "line": 24,
+   "text": "交易",
+   "start": 120.642,
+   "end": 120.939
+  },
+  {
+   "line": 24,
+   "text": "发起者",
+   "start": 120.951,
+   "end": 121.368
+  },
+  {
+   "line": 24,
+   "text": "等于",
+   "start": 121.392,
+   "end": 121.606
+  },
+  {
+   "line": 24,
+   "text": "调用者",
+   "start": 121.618,
+   "end": 122.189
+  },
+  {
+   "line": 24,
+   "text": "这个",
+   "start": 122.463,
+   "end": 122.665
+  },
+  {
+   "line": 24,
+   "text": "老",
+   "start": 122.677,
+   "end": 122.82
+  },
+  {
+   "line": 24,
+   "text": "检查",
+   "start": 122.82,
+   "end": 123.38
+  },
+  {
+   "line": 24,
+   "text": "不再",
+   "start": 123.594,
+   "end": 123.868
+  },
+  {
+   "line": 24,
+   "text": "能",
+   "start": 123.88,
+   "end": 124.011
+  },
+  {
+   "line": 24,
+   "text": "证明",
+   "start": 124.023,
+   "end": 124.523
+  },
+  {
+   "line": 24,
+   "text": "对方",
+   "start": 124.618,
+   "end": 124.927
+  },
+  {
+   "line": 24,
+   "text": "是",
+   "start": 124.927,
+   "end": 125.046
+  },
+  {
+   "line": 24,
+   "text": "普通",
+   "start": 125.058,
+   "end": 125.392
+  },
+  {
+   "line": 24,
+   "text": "地址",
+   "start": 125.404,
+   "end": 125.701
+  },
+  {
+   "line": 25,
+   "text": "EIP",
+   "start": 126.862,
+   "end": 127.481
+  },
+  {
+   "line": 25,
+   "text": "7702",
+   "start": 127.576,
+   "end": 128.183
+  },
+  {
+   "line": 25,
+   "text": "原文",
+   "start": 128.183,
+   "end": 128.409
+  },
+  {
+   "line": 25,
+   "text": "写明",
+   "start": 128.421,
+   "end": 128.897
+  },
+  {
+   "line": 25,
+   "text": "应用",
+   "start": 129.278,
+   "end": 129.647
+  },
+  {
+   "line": 25,
+   "text": "不",
+   "start": 129.671,
+   "end": 129.778
+  },
+  {
+   "line": 25,
+   "text": "应该",
+   "start": 129.778,
+   "end": 130.016
+  },
+  {
+   "line": 25,
+   "text": "请求",
+   "start": 130.028,
+   "end": 130.326
+  },
+  {
+   "line": 25,
+   "text": "用户",
+   "start": 130.338,
+   "end": 130.695
+  },
+  {
+   "line": 25,
+   "text": "签署",
+   "start": 130.802,
+   "end": 131.231
+  },
+  {
+   "line": 25,
+   "text": "委托",
+   "start": 131.254,
+   "end": 131.552
+  },
+  {
+   "line": 25,
+   "text": "授权",
+   "start": 131.564,
+   "end": 132.04
+  },
+  {
+   "line": 26,
+   "text": "网站",
+   "start": 133.202,
+   "end": 133.749
+  },
+  {
+   "line": 26,
+   "text": "请",
+   "start": 133.844,
+   "end": 134.047
+  },
+  {
+   "line": 26,
+   "text": "你",
+   "start": 134.047,
+   "end": 134.13
+  },
+  {
+   "line": 26,
+   "text": "升级",
+   "start": 134.142,
+   "end": 134.452
+  },
+  {
+   "line": 26,
+   "text": "成",
+   "start": 134.452,
+   "end": 134.678
+  },
+  {
+   "line": 26,
+   "text": "智能",
+   "start": 134.702,
+   "end": 134.952
+  },
+  {
+   "line": 26,
+   "text": "账户",
+   "start": 134.964,
+   "end": 135.38
+  },
+  {
+   "line": 26,
+   "text": "默认",
+   "start": 135.666,
+   "end": 135.987
+  },
+  {
+   "line": 26,
+   "text": "拒绝",
+   "start": 135.999,
+   "end": 136.475
+  }
+ ],
+ "captions": [
+  {
+   "text": "再看 EIP-7702",
+   "start": 1.648,
+   "end": 4.056,
+   "id": "c0"
+  },
+  {
+   "text": "它在 2025 年 5 月",
+   "start": 4.207,
+   "end": 5.759,
+   "id": "c1"
+  },
+  {
+   "text": "随 Pectra 升级上线",
+   "start": 5.779,
+   "end": 7.484,
+   "id": "c2"
+  },
+  {
+   "text": "普通地址可以签一份授权",
+   "start": 8.468,
+   "end": 10.542,
+   "id": "c3"
+  },
+  {
+   "text": "里面写三样东西",
+   "start": 10.634,
+   "end": 11.804,
+   "id": "c4"
+  },
+  {
+   "text": "链 ID 委托合约的地址",
+   "start": 12.792,
+   "end": 15.247,
+   "id": "c5"
+  },
+  {
+   "text": "nonce",
+   "start": 15.315,
+   "end": 16.069,
+   "id": "c6"
+  },
+  {
+   "text": "签完 这个地址的代码",
+   "start": 17.044,
+   "end": 19.143,
+   "id": "c7"
+  },
+  {
+   "text": "变成一个指针",
+   "start": 19.163,
+   "end": 20.309,
+   "id": "c8"
+  },
+  {
+   "text": "指向那个合约",
+   "start": 20.389,
+   "end": 21.499,
+   "id": "c9"
+  },
+  {
+   "text": "从此 这个地址执行的",
+   "start": 22.472,
+   "end": 24.737,
+   "id": "c10"
+  },
+  {
+   "text": "是那个合约的代码",
+   "start": 24.757,
+   "end": 26.142,
+   "id": "c11"
+  },
+  {
+   "text": "这就是委托",
+   "start": 27.132,
+   "end": 28.29,
+   "id": "c12"
+  },
+  {
+   "text": "它是写在地址上的链上状态",
+   "start": 28.346,
+   "end": 30.421,
+   "id": "c13"
+  },
+  {
+   "text": "风险有三层",
+   "start": 31.408,
+   "end": 32.923,
+   "id": "c14"
+  },
+  {
+   "text": "第一层 委托给恶意合约",
+   "start": 33.908,
+   "end": 36.042,
+   "id": "c15"
+  },
+  {
+   "text": "它的代码可以转走全部资产",
+   "start": 36.181,
+   "end": 38.59,
+   "id": "c16"
+  },
+  {
+   "text": "第二层 链 ID 填 0",
+   "start": 39.576,
+   "end": 41.901,
+   "id": "c17"
+  },
+  {
+   "text": "授权在所有支持它的 EVM 链上都有效",
+   "start": 41.921,
+   "end": 44.888,
+   "id": "c18"
+  },
+  {
+   "text": "前提只是",
+   "start": 45.868,
+   "end": 46.895,
+   "id": "c19"
+  },
+  {
+   "text": "那条链上这个地址的 nonce 对得上",
+   "start": 47.046,
+   "end": 49.311,
+   "id": "c20"
+  },
+  {
+   "text": "链 ID 是 0 的授权",
+   "start": 50.288,
+   "end": 51.993,
+   "id": "c21"
+  },
+  {
+   "text": "钱包应该默认拒绝",
+   "start": 52.05,
+   "end": 53.767,
+   "id": "c22"
+  },
+  {
+   "text": "第三层最常见",
+   "start": 54.756,
+   "end": 56.152,
+   "id": "c23"
+  },
+  {
+   "text": "委托合约是合法的",
+   "start": 56.351,
+   "end": 58.009,
+   "id": "c24"
+  },
+  {
+   "text": "用户却签了一个批量执行",
+   "start": 58.113,
+   "end": 60.366,
+   "id": "c25"
+  },
+  {
+   "text": "批量里的内容",
+   "start": 61.36,
+   "end": 62.506,
+   "id": "c26"
+  },
+  {
+   "text": "是转走资产",
+   "start": 62.657,
+   "end": 63.803,
+   "id": "c27"
+  },
+  {
+   "text": "2025 年 5 月",
+   "start": 64.796,
+   "end": 66.073,
+   "id": "c28"
+  },
+  {
+   "text": "一名用户这样损失了约 14.6 万美元",
+   "start": 66.26,
+   "end": 69.108,
+   "id": "c29"
+  },
+  {
+   "text": "2025 年 8 月",
+   "start": 70.104,
+   "end": 71.345,
+   "id": "c30"
+  },
+  {
+   "text": "ScamSniffer 记录到两起同类钓鱼",
+   "start": 71.377,
+   "end": 74.19,
+   "id": "c31"
+  },
+  {
+   "text": "约 100 万和 154 万美元",
+   "start": 74.235,
+   "end": 76.536,
+   "id": "c32"
+  },
+  {
+   "text": "Wintermute 的统计显示",
+   "start": 77.524,
+   "end": 79.217,
+   "id": "c33"
+  },
+  {
+   "text": "绝大部分委托",
+   "start": 79.381,
+   "end": 80.551,
+   "id": "c34"
+  },
+  {
+   "text": "指向同一类复制来的扫币合约",
+   "start": 80.571,
+   "end": 82.67,
+   "id": "c35"
+  },
+  {
+   "text": "它们专门扫走",
+   "start": 83.648,
+   "end": 84.829,
+   "id": "c36"
+  },
+  {
+   "text": "私钥已经泄露的地址收到的 ETH",
+   "start": 84.933,
+   "end": 87.139,
+   "id": "c37"
+  },
+  {
+   "text": "主要风险",
+   "start": 88.116,
+   "end": 89.036,
+   "id": "c38"
+  },
+  {
+   "text": "不在恶意合约",
+   "start": 89.056,
+   "end": 90.226,
+   "id": "c39"
+  },
+  {
+   "text": "而在对合法合约发出的恶意批量",
+   "start": 90.449,
+   "end": 92.94,
+   "id": "c40"
+  },
+  {
+   "text": "钱包必须把批量里的每一步",
+   "start": 93.928,
+   "end": 95.812,
+   "id": "c41"
+  },
+  {
+   "text": "逐项解码给用户看",
+   "start": 95.844,
+   "end": 97.324,
+   "id": "c42"
+  },
+  {
+   "text": "开发者也有三个坑",
+   "start": 98.3,
+   "end": 99.982,
+   "id": "c43"
+  },
+  {
+   "text": "委托时不运行初始化代码",
+   "start": 100.968,
+   "end": 103.09,
+   "id": "c44"
+  },
+  {
+   "text": "攻击者可以抢先初始化",
+   "start": 103.253,
+   "end": 105.173,
+   "id": "c45"
+  },
+  {
+   "text": "所以初始化数据",
+   "start": 106.156,
+   "end": 107.683,
+   "id": "c46"
+  },
+  {
+   "text": "要由这个地址的私钥签名",
+   "start": 107.751,
+   "end": 109.826,
+   "id": "c47"
+  },
+  {
+   "text": "换委托合约时",
+   "start": 110.816,
+   "end": 112.188,
+   "id": "c48"
+  },
+  {
+   "text": "旧存储仍在",
+   "start": 112.208,
+   "end": 113.355,
+   "id": "c49"
+  },
+  {
+   "text": "新合约会读到错的数据",
+   "start": 113.423,
+   "end": 115.509,
+   "id": "c50"
+  },
+  {
+   "text": "要用命名空间存储",
+   "start": 116.508,
+   "end": 118.13,
+   "id": "c51"
+  },
+  {
+   "text": "把两份数据隔开",
+   "start": 118.222,
+   "end": 119.606,
+   "id": "c52"
+  },
+  {
+   "text": "交易发起者等于调用者",
+   "start": 120.592,
+   "end": 122.309,
+   "id": "c53"
+  },
+  {
+   "text": "这个老检查",
+   "start": 122.413,
+   "end": 123.5,
+   "id": "c54"
+  },
+  {
+   "text": "不再能证明对方是普通地址",
+   "start": 123.544,
+   "end": 125.821,
+   "id": "c55"
+  },
+  {
+   "text": "EIP-7702 原文写明",
+   "start": 126.812,
+   "end": 129.017,
+   "id": "c56"
+  },
+  {
+   "text": "应用不应该请求用户签署委托授权",
+   "start": 129.228,
+   "end": 132.16,
+   "id": "c57"
+  },
+  {
+   "text": "网站请你升级成智能账户",
+   "start": 133.152,
+   "end": 135.5,
+   "id": "c58"
+  },
+  {
+   "text": "默认拒绝",
+   "start": 135.616,
+   "end": 136.595,
+   "id": "c59"
+  }
+ ]
+}

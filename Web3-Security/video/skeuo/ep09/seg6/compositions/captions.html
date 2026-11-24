@@ -1,0 +1,129 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .cap-g { position: absolute; left: 0; right: 0; bottom: var(--cap-bottom, 84px); text-align: center; opacity: 0; visibility: hidden; }
+    .cap-t { display: inline-block; font-family: var(--cap-font, "Noto Sans SC"), sans-serif; font-weight: var(--cap-weight, 700);
+      font-size: var(--cap-size, 46px); line-height: 1.25; color: var(--cap-ink, #111); letter-spacing: 0.02em;
+      padding: var(--cap-pad, 0); background: var(--cap-bg, transparent); border-radius: var(--cap-radius, 0);
+      text-shadow: var(--cap-shadow, none); }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-c0" class="cap-g"><span class="cap-t">最后 每个人今天就能做一件事</span></div>
+    <div id="cap-c1" class="cap-g"><span class="cap-t">写合约的人</span></div>
+    <div id="cap-c2" class="cap-g"><span class="cap-t">检查每个交换函数</span></div>
+    <div id="cap-c3" class="cap-g"><span class="cap-t">最小输出和截止时间</span></div>
+    <div id="cap-c4" class="cap-g"><span class="cap-t">是不是由调用者传进来</span></div>
+    <div id="cap-c5" class="cap-g"><span class="cap-t">所有签名</span></div>
+    <div id="cap-c6" class="cap-g"><span class="cap-t">用 EIP-712</span></div>
+    <div id="cap-c7" class="cap-g"><span class="cap-t">带上 nonce 和截止时间</span></div>
+    <div id="cap-c8" class="cap-g"><span class="cap-t">审计的人</span></div>
+    <div id="cap-c9" class="cap-g"><span class="cap-t">拿同一份签名提交第二次</span></div>
+    <div id="cap-c10" class="cap-g"><span class="cap-t">第二次也成功</span></div>
+    <div id="cap-c11" class="cap-g"><span class="cap-t">就是漏洞</span></div>
+    <div id="cap-c12" class="cap-g"><span class="cap-t">修复要两个结果 修复前</span></div>
+    <div id="cap-c13" class="cap-g"><span class="cap-t">重放成功 修复后 被拦下</span></div>
+    <div id="cap-c14" class="cap-g"><span class="cap-t">普通用户</span></div>
+    <div id="cap-c15" class="cap-g"><span class="cap-t">大额兑换设合理的滑点</span></div>
+    <div id="cap-c16" class="cap-g"><span class="cap-t">不用自动的高滑点</span></div>
+    <div id="cap-c17" class="cap-g"><span class="cap-t">可以走私有交易通道</span></div>
+    <div id="cap-c18" class="cap-g"><span class="cap-t">签名前看清链 ID</span></div>
+    <div id="cap-c19" class="cap-g"><span class="cap-t">合约地址</span></div>
+    <div id="cap-c20" class="cap-g"><span class="cap-t">数额和期限</span></div>
+    <div id="cap-c21" class="cap-g"><span class="cap-t">钱包只显示哈希</span></div>
+    <div id="cap-c22" class="cap-g"><span class="cap-t">或者提示盲签 就不签</span></div>
+    <div id="cap-c23" class="cap-g"><span class="cap-t">回到开头</span></div>
+    <div id="cap-c24" class="cap-g"><span class="cap-t">滑点设 5</span></div>
+    <div id="cap-c25" class="cap-g"><span class="cap-t">为什么可能真的付 5</span></div>
+    <div id="cap-c26" class="cap-g"><span class="cap-t">因为交易在打包之前是公开的</span></div>
+    <div id="cap-c27" class="cap-g"><span class="cap-t">滑点就是你公开的最差报价</span></div>
+    <div id="cap-c28" class="cap-g"><span class="cap-t">这在交易走公开内存池时成立</span></div>
+    <div id="cap-c29" class="cap-g"><span class="cap-t">走私有通道</span></div>
+    <div id="cap-c30" class="cap-g"><span class="cap-t">搜索者在打包前看不到它</span></div>
+    <div id="cap-c31" class="cap-g"><span class="cap-t">顺序可以被买</span></div>
+    <div id="cap-c32" class="cap-g"><span class="cap-t">签名可以被重放</span></div>
+    <div id="cap-c33" class="cap-g"><span class="cap-t">签之前看清内容</span></div>
+    <div id="cap-c34" class="cap-g"><span class="cap-t">发之前想好</span></div>
+    <div id="cap-c35" class="cap-g"><span class="cap-t">谁会先看到它</span></div>
+    <div id="cap-c36" class="cap-g"><span class="cap-t">下一集讲可升级合约与代理</span></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      tl.set("#cap-c0", {opacity: 1, visibility: "visible"}, 1.550);
+      tl.set("#cap-c0", {opacity: 0, visibility: "hidden"}, 4.357);
+      tl.set("#cap-c1", {opacity: 1, visibility: "visible"}, 4.570);
+      tl.set("#cap-c1", {opacity: 0, visibility: "hidden"}, 5.699);
+      tl.set("#cap-c2", {opacity: 1, visibility: "visible"}, 5.768);
+      tl.set("#cap-c2", {opacity: 0, visibility: "hidden"}, 7.476);
+      tl.set("#cap-c3", {opacity: 1, visibility: "visible"}, 7.685);
+      tl.set("#cap-c3", {opacity: 0, visibility: "hidden"}, 9.623);
+      tl.set("#cap-c4", {opacity: 1, visibility: "visible"}, 9.733);
+      tl.set("#cap-c4", {opacity: 0, visibility: "hidden"}, 11.718);
+      tl.set("#cap-c5", {opacity: 1, visibility: "visible"}, 11.990);
+      tl.set("#cap-c5", {opacity: 0, visibility: "hidden"}, 13.020);
+      tl.set("#cap-c6", {opacity: 1, visibility: "visible"}, 13.083);
+      tl.set("#cap-c6", {opacity: 0, visibility: "hidden"}, 14.112);
+      tl.set("#cap-c7", {opacity: 1, visibility: "visible"}, 14.132);
+      tl.set("#cap-c7", {opacity: 0, visibility: "hidden"}, 16.849);
+      tl.set("#cap-c8", {opacity: 1, visibility: "visible"}, 17.090);
+      tl.set("#cap-c8", {opacity: 0, visibility: "hidden"}, 17.920);
+      tl.set("#cap-c9", {opacity: 1, visibility: "visible"}, 17.940);
+      tl.set("#cap-c9", {opacity: 0, visibility: "hidden"}, 20.219);
+      tl.set("#cap-c10", {opacity: 1, visibility: "visible"}, 20.353);
+      tl.set("#cap-c10", {opacity: 0, visibility: "hidden"}, 21.698);
+      tl.set("#cap-c11", {opacity: 1, visibility: "visible"}, 21.886);
+      tl.set("#cap-c11", {opacity: 0, visibility: "hidden"}, 22.574);
+      tl.set("#cap-c12", {opacity: 1, visibility: "visible"}, 22.922);
+      tl.set("#cap-c12", {opacity: 0, visibility: "hidden"}, 25.450);
+      tl.set("#cap-c13", {opacity: 1, visibility: "visible"}, 25.470);
+      tl.set("#cap-c13", {opacity: 0, visibility: "hidden"}, 27.989);
+      tl.set("#cap-c14", {opacity: 1, visibility: "visible"}, 28.250);
+      tl.set("#cap-c14", {opacity: 0, visibility: "hidden"}, 29.141);
+      tl.set("#cap-c15", {opacity: 1, visibility: "visible"}, 29.454);
+      tl.set("#cap-c15", {opacity: 0, visibility: "hidden"}, 31.522);
+      tl.set("#cap-c16", {opacity: 1, visibility: "visible"}, 31.796);
+      tl.set("#cap-c16", {opacity: 0, visibility: "hidden"}, 33.210);
+      tl.set("#cap-c17", {opacity: 1, visibility: "visible"}, 33.514);
+      tl.set("#cap-c17", {opacity: 0, visibility: "hidden"}, 35.119);
+      tl.set("#cap-c18", {opacity: 1, visibility: "visible"}, 35.444);
+      tl.set("#cap-c18", {opacity: 0, visibility: "hidden"}, 37.204);
+      tl.set("#cap-c19", {opacity: 1, visibility: "visible"}, 37.374);
+      tl.set("#cap-c19", {opacity: 0, visibility: "hidden"}, 38.258);
+      tl.set("#cap-c20", {opacity: 1, visibility: "visible"}, 38.390);
+      tl.set("#cap-c20", {opacity: 0, visibility: "hidden"}, 39.648);
+      tl.set("#cap-c21", {opacity: 1, visibility: "visible"}, 40.322);
+      tl.set("#cap-c21", {opacity: 0, visibility: "hidden"}, 41.787);
+      tl.set("#cap-c22", {opacity: 1, visibility: "visible"}, 42.079);
+      tl.set("#cap-c22", {opacity: 0, visibility: "hidden"}, 44.119);
+      tl.set("#cap-c23", {opacity: 1, visibility: "visible"}, 44.370);
+      tl.set("#cap-c23", {opacity: 0, visibility: "hidden"}, 45.272);
+      tl.set("#cap-c24", {opacity: 1, visibility: "visible"}, 45.518);
+      tl.set("#cap-c24", {opacity: 0, visibility: "hidden"}, 47.105);
+      tl.set("#cap-c25", {opacity: 1, visibility: "visible"}, 47.224);
+      tl.set("#cap-c25", {opacity: 0, visibility: "hidden"}, 49.524);
+      tl.set("#cap-c26", {opacity: 1, visibility: "visible"}, 50.070);
+      tl.set("#cap-c26", {opacity: 0, visibility: "hidden"}, 52.655);
+      tl.set("#cap-c27", {opacity: 1, visibility: "visible"}, 52.774);
+      tl.set("#cap-c27", {opacity: 0, visibility: "hidden"}, 55.309);
+      tl.set("#cap-c28", {opacity: 1, visibility: "visible"}, 55.570);
+      tl.set("#cap-c28", {opacity: 0, visibility: "hidden"}, 58.277);
+      tl.set("#cap-c29", {opacity: 1, visibility: "visible"}, 58.479);
+      tl.set("#cap-c29", {opacity: 0, visibility: "hidden"}, 59.435);
+      tl.set("#cap-c30", {opacity: 1, visibility: "visible"}, 59.455);
+      tl.set("#cap-c30", {opacity: 0, visibility: "hidden"}, 61.621);
+      tl.set("#cap-c31", {opacity: 1, visibility: "visible"}, 61.870);
+      tl.set("#cap-c31", {opacity: 0, visibility: "hidden"}, 63.749);
+      tl.set("#cap-c32", {opacity: 1, visibility: "visible"}, 64.167);
+      tl.set("#cap-c32", {opacity: 0, visibility: "hidden"}, 65.925);
+      tl.set("#cap-c33", {opacity: 1, visibility: "visible"}, 66.170);
+      tl.set("#cap-c33", {opacity: 0, visibility: "hidden"}, 67.913);
+      tl.set("#cap-c34", {opacity: 1, visibility: "visible"}, 68.103);
+      tl.set("#cap-c34", {opacity: 0, visibility: "hidden"}, 69.379);
+      tl.set("#cap-c35", {opacity: 1, visibility: "visible"}, 69.444);
+      tl.set("#cap-c35", {opacity: 0, visibility: "hidden"}, 70.740);
+      tl.set("#cap-c36", {opacity: 1, visibility: "visible"}, 71.047);
+      tl.set("#cap-c36", {opacity: 0, visibility: "hidden"}, 73.897);
+      window.__timelines["captions"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      /* EP26 AI × Web3 安全 · 3b1b 风格。颜色语义全片固定，见 STORYBOARD.md §2。 */
+      @font-face {
+        font-family: "NotoSC";
+        src: url("assets/fonts/noto-sc.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0f1117; }
+      #root { position: relative; width: 100%; height: 100%; background: #0f1117; font-family: "NotoSC", sans-serif; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="462.72" data-width="1920" data-height="1080">
+      <div id="hook" data-composition-id="hook" data-composition-src="compositions/hook.html" data-start="0.0" data-duration="34.46" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="agent" data-composition-id="agent" data-composition-src="compositions/agent.html" data-start="34.46" data-duration="47.44" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="inputs" data-composition-id="inputs" data-composition-src="compositions/inputs.html" data-start="81.9" data-duration="45.04" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="memory" data-composition-id="memory" data-composition-src="compositions/memory.html" data-start="126.94" data-duration="35.4" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="outside" data-composition-id="outside" data-composition-src="compositions/outside.html" data-start="162.34" data-duration="54.64" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="people" data-composition-id="people" data-composition-src="compositions/people.html" data-start="216.98" data-duration="48.49" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="exploit" data-composition-id="exploit" data-composition-src="compositions/exploit.html" data-start="265.47" data-duration="46.17" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="dev" data-composition-id="dev" data-composition-src="compositions/dev.html" data-start="311.64" data-duration="58.29" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="amplify" data-composition-id="amplify" data-composition-src="compositions/amplify.html" data-start="369.93" data-duration="41.2" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="answer" data-composition-id="answer" data-composition-src="compositions/answer.html" data-start="411.13" data-duration="51.59" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <audio id="narration" class="clip" src="assets/narration.wav" data-start="0" data-duration="462.72" data-track-index="2" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

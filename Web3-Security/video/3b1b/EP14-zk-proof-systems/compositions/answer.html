@@ -1,0 +1,92 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="46.05" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="r-case">
+        <g id="r-pin" class="h">
+          <rect x="560" y="80" width="800" height="110" rx="18" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="960" y="152" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="700"><tspan fill="#83C167">证明全对</tspan>，<tspan fill="#F0B90B">钱</tspan>怎么丢的？</text>
+        </g>
+
+        <g id="r-ver" class="h">
+          <rect x="700" y="360" width="520" height="300" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+          <text x="960" y="430" font-size="38" fill="#58C4DD" text-anchor="middle" font-weight="700">验证器</text>
+          <text x="960" y="520" font-size="34" fill="#e8e6df" text-anchor="middle">这个证明</text>
+          <text x="960" y="575" font-size="34" fill="#e8e6df" text-anchor="middle">对这些公开输入成立 <tspan fill="#83C167" font-weight="800">✓</tspan></text>
+        </g>
+        <g id="r-circ" class="h">
+          <rect x="120" y="400" width="400" height="220" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="3" stroke-opacity=".6" />
+          <text x="320" y="500" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">电路</text>
+          <text x="320" y="560" font-size="30" fill="#8a8f99" text-anchor="middle">写对了吗？</text>
+        </g>
+        <g id="r-biz" class="h">
+          <rect x="1400" y="400" width="400" height="220" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="3" stroke-opacity=".6" />
+          <text x="1600" y="500" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">业务合约</text>
+          <text x="1600" y="560" font-size="30" fill="#8a8f99" text-anchor="middle">用上全部输入了吗？</text>
+        </g>
+        <text id="r-no1" class="h" x="610" y="720" font-size="32" fill="#8a8f99" text-anchor="middle">验证器不管</text>
+        <text id="r-no2" class="h" x="1310" y="720" font-size="32" fill="#8a8f99" text-anchor="middle">验证器不管</text>
+        <path id="r-link1" class="dr" pathLength="1" d="M1225 510 L 1305 510" stroke="#83C167" stroke-width="6" fill="none" />
+        <path id="r-link2" class="dr" pathLength="1" d="M1315 510 L 1395 510" stroke="#FC6255" stroke-width="6" fill="none" stroke-linecap="round" />
+        <text id="r-break" class="h" x="1310" y="490" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="800">✕</text>
+        <text id="r-az" class="h" x="960" y="850" font-size="42" fill="#e8e6df" text-anchor="middle" font-weight="700">Aztec Connect：密码学 <tspan fill="#83C167">✓</tspan>　证明与结算的<tspan fill="#FC6255">绑定 ✕</tspan></text>
+      </g>
+
+      <!-- 四问 -->
+      <g id="r-qs">
+        <text id="r-qh" class="h" x="960" y="250" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="800">审计 ZK 系统，多问四句</text>
+        <g font-size="40" fill="#e8e6df">
+          <text class="r-q h" x="480" y="380"><tspan fill="#58C4DD">①</tspan> 每个信号都有约束吗？</text>
+          <text class="r-q h" x="480" y="480"><tspan fill="#58C4DD">②</tspan> 公开输入都在域内吗？</text>
+          <text class="r-q h" x="480" y="580"><tspan fill="#58C4DD">③</tspan> 数量、索引、长度，被证明覆盖了吗？</text>
+          <text class="r-q h" x="480" y="680"><tspan fill="#58C4DD">④</tspan> 弃用的合约，还有人看着吗？</text>
+        </g>
+      </g>
+      <text id="r-next" class="h" x="960" y="900" font-size="36" fill="#6b6f7a" text-anchor="middle">下一集 · 15 账户抽象与新钱包范式</text>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 46.05, "L": [[0.6, 5.45], [5.9, 11.39], [11.84, 17.08], [17.53, 23.33], [23.78, 38.54], [38.99, 44.95]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.5) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 问题从左上角回来
+      IN("#r-pin", at(0, 0.05), 0.8, { scale: 0.5, x: -560, y: -10, svgOrigin: "960 135" }, { scale: 1, x: 0, y: 0, ease: "expo.out" });
+      // L1 验证器只回答一件事
+      IN("#r-ver", at(1, 0.05), 0.6, { y: 20 }, { y: 0 });
+      // L2 两侧它不管
+      IN("#r-circ", at(2, 0.05), 0.5, { x: -20 }, { x: 0 });
+      IN("#r-no1", at(2, 0.25), 0.4);
+      IN("#r-biz", at(2, 0.45), 0.5, { x: 20 }, { x: 0 });
+      IN("#r-no2", at(2, 0.65), 0.4);
+      // L3 绑定断开
+      OUT(["#r-no1", "#r-no2"], at(3, 0.0), 0.3);
+      DRAW("#r-link1", at(3, 0.05), 0.4);
+      DRAW("#r-link2", at(3, 0.15), 0.4);
+      IN("#r-break", at(3, 0.35), 0.4, { scale: 1.8, svgOrigin: "1310 475" }, { scale: 1, ease: "back.out(2)" });
+      tl.to("#r-circ", { opacity: 0.3, duration: 0.4 }, at(3, 0.35));
+      IN("#r-az", at(3, 0.5), 0.5);
+      // L4 四问
+      tl.to("#r-case", { opacity: 0, scale: 0.9, svgOrigin: "960 540", duration: 0.5, ease: "power2.in" }, at(4, 0.0));
+      IN("#r-qh", at(4, 0.05), 0.5);
+      const qs = gsap.utils.toArray("#root .r-q");
+      [0.1, 0.3, 0.5, 0.78].forEach((f, i) => IN(qs[i], at(4, f), 0.5, { x: -20 }, { x: 0 }));
+      // L5 下一集
+      tl.to("#r-qs", { opacity: 0.35, duration: 0.5 }, at(5, 0.0));
+      IN("#r-next", at(5, 0.1), 0.5);
+      tl.to(["#r-qs", "#r-next"], { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

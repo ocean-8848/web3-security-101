@@ -1,0 +1,89 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="trend" data-duration="49.12" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="t-all">
+        <text id="t-title" class="h" x="960" y="110" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="700">单起事故损失（亿美元，事发时估值约数）</text>
+        <g id="t-legend" class="h" font-size="28">
+          <rect x="150" y="170" width="26" height="26" fill="#58C4DD" /><text x="190" y="193" fill="#58C4DD">① – ⑤ 代码与设计</text>
+          <rect x="480" y="170" width="26" height="26" fill="#B48EF0" /><text x="520" y="193" fill="#B48EF0">⑥ 系统与运营（代码之外）</text>
+        </g>
+        <line id="t-axis" class="h" x1="130" y1="900" x2="1790" y2="900" stroke="#6b6f7a" stroke-width="3" />
+        <g id="t-bars"></g>
+        <circle id="t-ring" class="h" cx="1100" cy="880" r="38" fill="none" stroke="#FF9F43" stroke-width="5" />
+        <text id="t-ringt" class="h" x="1100" y="815" font-size="32" fill="#FF9F43" text-anchor="middle" font-weight="700">舍入方向出错</text>
+        <text id="t-dao" class="h" x="200" y="820" font-size="32" fill="#58C4DD" text-anchor="middle" font-weight="700">重入</text>
+        <text id="t-bn" class="h" x="1460" y="330" font-size="36" fill="#B48EF0" text-anchor="end" font-weight="700">史上最大一起 →</text>
+        <text id="t-src" class="h" x="1790" y="1050" font-size="28" fill="#6b6f7a" text-anchor="end">部分事件 · 来源：手册第 01 章 §5 · Binance 为项目方口径</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 49.12, "L": [[0.6, 3.82], [4.27, 12.21], [12.66, 22.81], [23.26, 30.94], [31.39, 40.63], [41.08, 48.02]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+
+      // 数据：手册 01 章 §5 表（亿美元，事发时估值约数）。k: 0 = ①–⑤ 代码与设计，1 = ⑥ 系统与运营
+      const D = [
+        { n: "The DAO", y: 2016, v: 0.6, k: 0, a: "0.6" },
+        { n: "Poly", y: 2021, v: 6.1, k: 1, a: "6.1" },
+        { n: "Ronin", y: 2022, v: 6.2, k: 1, a: "6.2" },
+        { n: "Euler", y: 2023, v: 1.97, k: 0, a: "2.0" },
+        { n: "DMM", y: 2024, v: 3.05, k: 1, a: "3.1" },
+        { n: "Bybit", y: 2025, v: 15, k: 1, a: "15" },
+        { n: "Balancer", y: 2025, v: 0.948, k: 0, a: "0.95" },
+        { n: "Drift", y: 2026, v: 2.85, k: 1, a: "2.9" },
+        { n: "KelpDAO", y: 2026, v: 2.92, k: 1, a: "2.9" },
+        { n: "Bitget", y: 2026, v: 3.875, k: 1, a: "3.9" },
+        { n: "Binance", y: 2026, v: 63.4, k: 1, a: "63" },
+      ];
+      const PX = 600 / 63.4, NS = "http://www.w3.org/2000/svg", host = document.querySelector("#t-bars");
+      const G = D.map((d, i) => {
+        const x = 200 + i * 150, h = Math.max(4, d.v * PX), col = d.k ? "#B48EF0" : "#58C4DD";
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        g.innerHTML =
+          `<rect class="bar" x="${x - 40}" y="${900 - h}" width="80" height="${h}" fill="${col}" />` +
+          `<text x="${x}" y="${900 - h - 16}" font-size="30" fill="${col}" text-anchor="middle" font-weight="700">${d.a}</text>` +
+          `<text x="${x}" y="944" font-size="28" fill="#e8e6df" text-anchor="middle">${d.n}</text>` +
+          `<text x="${x}" y="982" font-size="28" fill="#6b6f7a" text-anchor="middle">${d.y}</text>`;
+        host.appendChild(g);
+        return { g, x, h };
+      });
+      const BAR = (i, t, d = 0.7) => {
+        tl.fromTo(G[i].g, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t);
+        tl.fromTo(G[i].g.querySelector(".bar"), { scaleY: 0, svgOrigin: `${G[i].x} 900` }, { scaleY: 1, duration: d, ease: "expo.out" }, t);
+      };
+
+      IN("#t-title", at(0, 0.1), 0.5);
+      IN("#t-axis", at(0, 0.3), 0.5);
+      IN("#t-legend", at(0, 0.5), 0.5);
+      BAR(0, at(1, 0.4));
+      BAR(1, at(2, 0.25)); BAR(2, at(2, 0.45)); BAR(3, at(2, 0.8));
+      BAR(4, at(3, 0.15)); BAR(7, at(3, 0.4)); BAR(8, at(3, 0.55)); BAR(9, at(3, 0.7));
+      BAR(5, at(4, 0.0));
+      BAR(10, at(4, 0.32), 1.6);
+      IN("#t-src", at(4, 0.4), 0.5);
+      IN("#t-dao", at(1, 0.72), 0.4);
+      IN("#t-bn", at(4, 0.72), 0.5, { x: -30 }, { x: 0 });
+      tl.to("#t-dao", { opacity: 0.25, duration: 0.5 }, at(5, 0.1));
+      tl.to("#t-bn", { opacity: 0.25, duration: 0.5 }, at(5, 0.1));
+
+      // L5 代码漏洞没有消失
+      tl.to(G.filter((_, i) => i !== 6).map((o) => o.g), { opacity: 0.25, duration: 0.5 }, at(5, 0.1));
+      BAR(6, at(5, 0.15));
+      IN("#t-ring", at(5, 0.35), 0.4, { scale: 1.4, svgOrigin: "1100 880" }, { scale: 1, ease: "back.out(2)" });
+      IN("#t-ringt", at(5, 0.45), 0.4);
+
+      tl.to("#t-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["trend"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,109 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="hook" data-duration="30.43" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <g id="h-keyshape">
+          <circle cx="-34" cy="0" r="20" fill="none" stroke="#B48EF0" stroke-width="7" />
+          <path d="M-14 0 H 46 M 30 0 V 16 M 44 0 V 13" stroke="#B48EF0" stroke-width="7" stroke-linecap="round" fill="none" />
+        </g>
+      </defs>
+      <g id="h-all">
+        <text id="h-date" class="h" x="200" y="170" font-size="34" fill="#6b6f7a" letter-spacing="2">2024 年 7 月 · WazirX</text>
+
+        <!-- 冷钱包（资产 = 金） -->
+        <g id="h-vault" class="h">
+          <rect id="h-vr" x="1160" y="280" width="560" height="440" rx="22" fill="#1a1708" stroke="#F0B90B" stroke-width="4" />
+          <text x="1440" y="345" font-size="38" fill="#F0B90B" text-anchor="middle" font-weight="700">冷钱包 · Safe 多签</text>
+          <g fill="#F0B90B">
+            <circle class="h-coin" cx="1300" cy="440" r="24" /><circle class="h-coin" cx="1370" cy="440" r="24" /><circle class="h-coin" cx="1440" cy="440" r="24" /><circle class="h-coin" cx="1510" cy="440" r="24" /><circle class="h-coin" cx="1580" cy="440" r="24" />
+            <circle class="h-coin" cx="1300" cy="515" r="24" /><circle class="h-coin" cx="1370" cy="515" r="24" /><circle class="h-coin" cx="1440" cy="515" r="24" /><circle class="h-coin" cx="1510" cy="515" r="24" /><circle class="h-coin" cx="1580" cy="515" r="24" />
+            <circle class="h-coin" cx="1300" cy="590" r="24" /><circle class="h-coin" cx="1370" cy="590" r="24" /><circle class="h-coin" cx="1440" cy="590" r="24" /><circle class="h-coin" cx="1510" cy="590" r="24" /><circle class="h-coin" cx="1580" cy="590" r="24" />
+          </g>
+        </g>
+        <text id="h-amount" class="h" x="1440" y="820" font-size="84" fill="#F0B90B" text-anchor="middle" font-weight="800">≈ <tspan id="h-num">0.0</tspan> 亿美元</text>
+
+        <!-- 六把私钥（紫 = 代码之外：私钥、人） -->
+        <g id="h-keys">
+          <g class="h-k h"><use href="#h-keyshape" x="330" y="360" /></g>
+          <g class="h-k h"><use href="#h-keyshape" x="520" y="360" /></g>
+          <g class="h-k h"><use href="#h-keyshape" x="710" y="360" /></g>
+          <g class="h-k h"><use href="#h-keyshape" x="330" y="520" /></g>
+          <g class="h-k h"><use href="#h-keyshape" x="520" y="520" /></g>
+          <g class="h-k h"><use href="#h-keyshape" x="710" y="520" /></g>
+        </g>
+        <g id="h-sigs" fill="none" stroke="#83C167" stroke-width="4">
+          <circle class="h-sg h" cx="330" cy="360" r="62" /><circle class="h-sg h" cx="520" cy="360" r="62" /><circle class="h-sg h" cx="710" cy="360" r="62" /><circle class="h-sg h" cx="330" cy="520" r="62" />
+        </g>
+        <text id="h-cnt" class="h" x="520" y="660" font-size="56" fill="#e8e6df" text-anchor="middle" font-weight="800"><tspan id="h-cn" fill="#83C167">0</tspan> / 6 签名</text>
+        <path id="h-link" class="dr" pathLength="1" d="M800 440 L 1150 440" stroke="#e8e6df" stroke-opacity=".5" stroke-width="3" fill="none" />
+
+        <g id="h-safe" class="h">
+          <text x="520" y="250" font-size="32" fill="#83C167" text-anchor="middle">✓ 私钥未见导出　✓ 按流程签名</text>
+        </g>
+
+        <g id="h-q" class="h">
+          <text x="960" y="950" font-size="64" fill="#e8e6df" text-anchor="middle" font-weight="700"><tspan fill="#B48EF0">多签</tspan>，为什么没有拦住？</text>
+        </g>
+      </g>
+      <!-- 种子：一把私钥，下一场景从这里长出 -->
+      <g id="h-seed" class="h"><use href="#h-keyshape" x="960" y="540" /></g>
+      <text id="h-seedt" class="h" x="960" y="630" font-size="34" fill="#6b6f7a" text-anchor="middle">从一把私钥讲起</text>
+      <g id="h-pin" class="h">
+        <rect x="80" y="60" width="600" height="84" rx="14" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="380" y="115" font-size="34" fill="#e8e6df" text-anchor="middle"><tspan fill="#B48EF0">多签</tspan>为什么没有拦住？</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 30.43, "L": [[0.6, 6.02], [6.47, 12.04], [12.49, 18.8], [19.25, 24.51], [24.96, 29.33]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.8) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 冷钱包损失约 2.3 亿美元
+      IN("#h-date", at(0, 0), 0.5);
+      IN("#h-vault", at(0, 0.1), 0.8, { y: 20 }, { y: 0 });
+      const coins = gsap.utils.toArray("#root .h-coin");
+      coins.forEach((c, i) => tl.to(c, { x: 420 + (i % 5) * 30, y: (i % 3 - 1) * 60, fill: "#FC6255", opacity: 0, duration: 0.9, ease: "power3.in" }, at(0, 0.45) + i * 0.07));
+      IN("#h-amount", at(0, 0.5), 0.5);
+      const n = { v: 0 }, num = document.querySelector("#h-num");
+      tl.fromTo(n, { v: 0 }, { v: 2.3, duration: 1.6, ease: "power2.out", onUpdate: () => { num.textContent = n.v.toFixed(1); } }, at(0, 0.5));
+
+      // L1 六把私钥，凑够四个签名
+      gsap.utils.toArray("#root .h-k").forEach((k, i) => IN(k, at(1, 0.15) + i * 0.1, 0.4, { scale: 0.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" }));
+      DRAW("#h-link", at(1, 0.4), 0.5);
+      IN("#h-cnt", at(1, 0.55), 0.4);
+      const cn = document.querySelector("#h-cn"), cv = { v: 0 };
+      gsap.utils.toArray("#root .h-sg").forEach((g, i) => IN(g, at(1, 0.62) + i * 0.25, 0.3, { scale: 1.3, transformOrigin: "50% 50%" }, { scale: 1 }));
+      tl.fromTo(cv, { v: 0 }, { v: 4, duration: 1.0, ease: "none", onUpdate: () => { cn.textContent = Math.floor(cv.v + 0.001); } }, at(1, 0.62));
+
+      // L2 钥匙没被导出，签名人按流程
+      IN("#h-safe", at(2, 0.1), 0.6);
+
+      // L3 问题
+      tl.to(["#h-vault", "#h-date", "#h-link", "#h-amount", "#h-cnt"], { opacity: 0.22, duration: 0.5 }, at(3, 0));
+      IN("#h-q", at(3, 0.35), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+
+      // L4 钉住问题，留下一把私钥
+      tl.to("#h-all", { opacity: 0, filter: "blur(6px)", duration: 0.6, ease: "power2.in" }, at(4, 0.1));
+      IN("#h-pin", at(4, 0.2), 0.6, { scale: 1.6, svgOrigin: "380 102" }, { scale: 1 });
+      IN("#h-seed", at(4, 0.45), 0.5, { scale: 0, svgOrigin: "960 540" }, { scale: 1, ease: "back.out(1.6)" });
+      IN("#h-seedt", at(4, 0.55), 0.5);
+      OUT("#h-seedt", C.d - 0.7, 0.3);
+      OUT("#h-pin", C.d - 0.45, 0.35);
+      tl.to("#h-seed", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>

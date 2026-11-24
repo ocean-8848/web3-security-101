@@ -1,0 +1,109 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="hook" data-duration="28.1" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="h-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker></defs>
+      <g id="h-all">
+        <text id="h-date" class="h" x="200" y="170" font-size="34" fill="#6b6f7a" letter-spacing="2">2023 年 3 月 13 日 · Euler Finance</text>
+        <text id="h-amount" class="h" x="1400" y="200" font-size="80" fill="#F0B90B" text-anchor="middle" font-weight="800">≈ <tspan id="h-num">0.00</tspan> 亿美元</text>
+
+        <!-- 一个账户：抵押品（金）与债务（白） -->
+        <g id="h-acct" class="h">
+          <rect x="200" y="250" width="560" height="560" rx="22" fill="#14171e" stroke="#8a8f99" stroke-width="3" />
+          <text x="480" y="315" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">一个账户（示意）</text>
+          <line x1="260" y1="720" x2="700" y2="720" stroke="#6b6f7a" stroke-width="3" />
+          <text x="360" y="770" font-size="30" fill="#F0B90B" text-anchor="middle">抵押品</text>
+          <text x="580" y="770" font-size="30" fill="#e8e6df" text-anchor="middle">债务</text>
+          <rect x="520" y="360" width="120" height="360" fill="#e8e6df" opacity=".85" />
+        </g>
+        <rect id="h-col" class="h" x="300" y="320" width="120" height="400" fill="#F0B90B" />
+        <rect id="h-chunk" class="h" x="300" y="320" width="120" height="120" fill="#F0B90B" />
+        <rect id="h-gap" class="h" x="300" y="360" width="120" height="80" fill="none" stroke="#FC6255" stroke-width="4" stroke-dasharray="10 6" />
+
+        <!-- 捐赠函数 -->
+        <g id="h-fn" class="h">
+          <rect x="1040" y="330" width="720" height="160" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text class="mono" x="1400" y="400" font-size="40" fill="#58C4DD" text-anchor="middle">donateToReserves()</text>
+          <text x="1400" y="455" font-size="30" fill="#8a8f99" text-anchor="middle">把自己的存款，捐给协议储备</text>
+        </g>
+        <g id="h-res" class="h">
+          <rect x="1200" y="580" width="400" height="130" rx="18" fill="#1a1708" stroke="#F0B90B" stroke-width="4" />
+          <text x="1400" y="660" font-size="34" fill="#F0B90B" text-anchor="middle">协议储备</text>
+        </g>
+        <g id="h-check" class="h">
+          <rect x="820" y="540" width="300" height="110" rx="14" fill="none" stroke="#FF9F43" stroke-width="4" stroke-dasharray="12 8" />
+          <text x="970" y="607" font-size="32" fill="#FF9F43" text-anchor="middle">健康检查？</text>
+        </g>
+        <g id="h-skip" class="h">
+          <path d="M930 560 l 80 70 M1010 560 l -80 70" stroke="#FC6255" stroke-width="7" />
+          <text x="970" y="700" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">没有检查</text>
+        </g>
+
+        <!-- 其他函数 -->
+        <g id="h-others" font-size="32">
+          <g class="h-o h"><rect x="200" y="860" width="250" height="80" rx="12" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="325" y="912" fill="#e8e6df" text-anchor="middle">取款 <tspan fill="#83C167">✓</tspan></text></g>
+          <g class="h-o h"><rect x="480" y="860" width="250" height="80" rx="12" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="605" y="912" fill="#e8e6df" text-anchor="middle">借款 <tspan fill="#83C167">✓</tspan></text></g>
+          <g class="h-o h"><rect x="760" y="860" width="250" height="80" rx="12" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="885" y="912" fill="#e8e6df" text-anchor="middle">清算 <tspan fill="#83C167">✓</tspan></text></g>
+          <g class="h-o h"><rect x="1040" y="860" width="300" height="80" rx="12" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="1190" y="912" fill="#e8e6df" text-anchor="middle">杠杆铸造 <tspan fill="#83C167">✓</tspan></text></g>
+        </g>
+        <text id="h-oktxt" class="h" x="1400" y="912" font-size="32" fill="#83C167">单独审计都没写错</text>
+      </g>
+
+      <g id="h-qq">
+        <text id="h-q1" class="h" x="960" y="500" font-size="72" fill="#e8e6df" text-anchor="middle" font-weight="800"><tspan fill="#58C4DD">代码</tspan>没错，<tspan fill="#FF9F43">规则</tspan>错了</text>
+        <text id="h-q2" class="h" x="960" y="610" font-size="52" fill="#e8e6df" text-anchor="middle">怎么发现？</text>
+      </g>
+      <g id="h-pin" class="h">
+        <rect x="80" y="70" width="640" height="84" rx="14" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="400" y="125" font-size="34" fill="#e8e6df" text-anchor="middle">代码没错，<tspan fill="#FF9F43">规则</tspan>错了，怎么发现？</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 28.1, "L": [[0.6, 6.5], [6.95, 12.19], [12.64, 17.44], [17.89, 21.41], [21.86, 27.0]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      // L0 损失
+      IN("#h-date", at(0, 0), 0.5);
+      IN("#h-amount", at(0, 0.35), 0.5);
+      const n = { v: 0 }, num = document.querySelector("#h-num");
+      tl.fromTo(n, { v: 0 }, { v: 1.97, duration: 1.6, ease: "power2.out", onUpdate: () => { num.textContent = n.v.toFixed(2); } }, at(0, 0.35));
+      IN("#h-acct", at(0, 0.2), 0.7, { y: 20 }, { y: 0 });
+      IN("#h-col", at(0, 0.3), 0.7, { scaleY: 0, svgOrigin: "360 720" }, { scaleY: 1 });
+      // L1 捐赠函数：一块抵押品移到储备
+      IN("#h-fn", at(1, 0.05), 0.6, { y: 20 }, { y: 0 });
+      IN("#h-res", at(1, 0.35), 0.5);
+      tl.set("#h-chunk", { opacity: 1 }, at(1, 0.55));
+      tl.to("#h-col", { attr: { y: 440, height: 280 }, duration: 0.01 }, at(1, 0.55));
+      tl.to("#h-chunk", { x: 1040, y: 300, duration: 1.0, ease: "power2.inOut" }, at(1, 0.56));
+      OUT("#h-chunk", at(1, 0.56) + 0.9, 0.3);
+      // L2 不检查健康
+      IN("#h-check", at(2, 0.1), 0.5);
+      IN("#h-gap", at(2, 0.4), 0.4);
+      IN("#h-skip", at(2, 0.55), 0.4, { scale: 1.4, svgOrigin: "970 595" }, { scale: 1 });
+      // L3 其他函数都没写错
+      gsap.utils.toArray("#root .h-o").forEach((g, i) => IN(g, at(3, 0.05) + i * 0.15, 0.4, { y: 20 }, { y: 0 }));
+      IN("#h-oktxt", at(3, 0.6), 0.4);
+      // L4 问题
+      tl.to("#h-all", { opacity: 0, filter: "blur(6px)", duration: 0.5, ease: "power2.in" }, at(4, 0));
+      IN("#h-q1", at(4, 0.08), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      IN("#h-q2", at(4, 0.5), 0.5);
+      tl.to("#h-qq", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(4, 0.72));
+      IN("#h-pin", at(4, 0.72) + 0.15, 0.5, { scale: 1.5, svgOrigin: "400 112" }, { scale: 1 });
+      OUT("#h-pin", C.d - 0.45, 0.35);
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>

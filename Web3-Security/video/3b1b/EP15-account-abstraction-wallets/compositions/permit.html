@@ -1,0 +1,101 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="permit" data-duration="46.46" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="p-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="p-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="p-all">
+        <text id="p-title" class="h" x="960" y="110" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">签名含义变大的，还有：意图 · Permit2</text>
+        <!-- 意图 -->
+        <g id="p-int">
+          <g id="p-card" class="h">
+            <rect x="140" y="220" width="620" height="260" rx="18" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+            <text x="180" y="280" font-size="30" fill="#8a8f99">意图（例）</text>
+            <text x="180" y="345" font-size="34" fill="#e8e6df">用 <tspan fill="#F0B90B">1 ETH</tspan> 换</text>
+            <text x="180" y="400" font-size="34" fill="#e8e6df">至少 <tspan id="p-min" fill="#F0B90B">3,000 USDC</tspan></text>
+            <text x="180" y="450" font-size="30" fill="#8a8f99">期限：<tspan id="p-exp">……</tspan></text>
+          </g>
+          <g id="p-solver" class="h"><rect x="1100" y="270" width="320" height="140" rx="18" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="1260" y="352" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">Solver</text></g>
+          <g fill="none" stroke="#8a8f99" stroke-width="3">
+            <path class="p-path dr" pathLength="1" d="M770 340 C 880 260, 980 260, 1090 320" />
+            <path class="p-path dr" pathLength="1" d="M770 350 C 880 350, 980 350, 1090 340" />
+            <path class="p-path dr" pathLength="1" d="M770 360 C 880 440, 980 440, 1090 360" />
+          </g>
+          <text id="p-risk" class="h" x="1100" y="470" font-size="30" fill="#FF9F43">风险：最小成交量太低、期限太长</text>
+        </g>
+        <!-- Permit2 -->
+        <g id="p-p2">
+          <g id="p-tok" class="h"><circle cx="300" cy="700" r="70" fill="#1a1708" stroke="#F0B90B" stroke-width="4" /><text x="300" y="712" font-size="30" fill="#F0B90B" text-anchor="middle" font-weight="700">代币</text></g>
+          <path id="p-a1" class="dr h" pathLength="1" d="M375 700 L 760 700" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#p-ah)" />
+          <text id="p-a1t" class="h" x="568" y="670" font-size="30" fill="#e8e6df" text-anchor="middle">无限授权（曾经一次）</text>
+          <g id="p-c" class="h"><rect x="770" y="620" width="380" height="160" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="960" y="692" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">Permit2</text><text x="960" y="740" font-size="28" fill="#8a8f99" text-anchor="middle">Uniswap 统一授权合约</text></g>
+          <g id="p-sig" class="h"><rect x="770" y="860" width="380" height="90" rx="14" fill="#161a22" stroke="#e8e6df" stroke-width="3" stroke-dasharray="10 8" /><text x="960" y="917" font-size="30" fill="#e8e6df" text-anchor="middle">之后：一个链下签名</text></g>
+          <path id="p-a2" class="dr h" pathLength="1" d="M1160 700 L 1500 700" stroke="#FC6255" stroke-width="5" fill="none" marker-end="url(#p-ahr)" />
+          <text id="p-a2t" class="h" x="1330" y="670" font-size="30" fill="#FC6255" text-anchor="middle">转走代币</text>
+          <g id="p-dest" class="h"><circle cx="1580" cy="700" r="60" fill="#2a1416" stroke="#FC6255" stroke-width="4" /><text x="1580" y="712" font-size="30" fill="#FC6255" text-anchor="middle">他人</text></g>
+        </g>
+        <!-- 案例 -->
+        <g id="p-case" class="h">
+          <text x="960" y="250" font-size="36" fill="#8a8f99" text-anchor="middle">2024 年 10 月 · 一名 PEPE 持有者 · Permit2 钓鱼签名</text>
+          <text x="960" y="370" font-size="80" fill="#FC6255" text-anchor="middle" font-weight="800">≈ 140 万美元</text>
+        </g>
+        <text id="p-ok" class="h" x="960" y="560" font-size="32" fill="#83C167" text-anchor="middle">Permit2 合约本身：未被攻破</text>
+        <g id="p-alert" class="h">
+          <rect x="460" y="280" width="1000" height="200" rx="20" fill="#1f1608" stroke="#FF9F43" stroke-width="4" />
+          <text x="960" y="360" font-size="38" fill="#FF9F43" text-anchor="middle" font-weight="700">钱包：Permit2 签名</text>
+          <text x="960" y="425" font-size="34" fill="#e8e6df" text-anchor="middle">按“授权交易”同一级别解析、告警</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 46.46, "L": [[0.6, 4.58], [5.03, 15.35], [15.8, 26.68], [27.13, 37.73], [38.18, 45.36]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      IN("#p-title", at(0, 0.05), 0.5);
+      // L1 意图
+      IN("#p-card", at(1, 0.0), 0.5, { y: 20 }, { y: 0 });
+      gsap.utils.toArray("#root .p-path").forEach((p, i) => tl.fromTo(p, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.6 }, at(1, 0.3) + i * 0.1));
+      NODE("#p-solver", at(1, 0.35));
+      tl.to(["#p-min", "#p-exp"], { fill: "#FF9F43", duration: 0.3 }, at(1, 0.65));
+      IN("#p-risk", at(1, 0.68), 0.4);
+      // L2 Permit2
+      tl.to("#p-int", { opacity: 0.25, duration: 0.4 }, at(2, 0.0));
+      NODE("#p-tok", at(2, 0.05));
+      NODE("#p-c", at(2, 0.15));
+      DRAW("#p-a1", at(2, 0.3), 0.5); IN("#p-a1t", at(2, 0.35), 0.4);
+      IN("#p-sig", at(2, 0.6), 0.5, { y: 20 }, { y: 0 });
+      DRAW("#p-a2", at(2, 0.78), 0.5); IN("#p-a2t", at(2, 0.8), 0.4);
+      NODE("#p-dest", at(2, 0.85));
+      // L3 案例
+      OUT(["#p-int", "#p-title"], at(3, 0.0), 0.3);
+      tl.to("#p-p2", { y: 120, duration: 0.5, ease: "power2.inOut" }, at(3, 0.0));
+      tl.to(["#p-sig"], { opacity: 0, duration: 0.3 }, at(3, 0.0));
+      IN("#p-case", at(3, 0.15), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      IN("#p-ok", at(3, 0.65), 0.5);
+      // L4 告警
+      OUT(["#p-case", "#p-ok"], at(4, 0.0), 0.3);
+      NODE("#p-alert", at(4, 0.1));
+      tl.to("#p-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["permit"] = tl;
+    })();
+  </script>
+</template>

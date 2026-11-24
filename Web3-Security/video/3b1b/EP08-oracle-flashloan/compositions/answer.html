@@ -1,0 +1,79 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="53.29" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="a-pin" class="h">
+        <rect x="560" y="70" width="800" height="110" rx="18" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="960" y="143" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="700">合约读到的<tspan fill="#F0B90B">价格</tspan>，能信吗？</text>
+      </g>
+      <g id="a-body">
+        <g id="a-left" class="h">
+          <rect x="140" y="260" width="760" height="300" rx="20" fill="#1a1012" stroke="#FC6255" stroke-width="3" />
+          <text x="520" y="320" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">一笔交易内能改写</text>
+          <text x="520" y="390" font-size="32" fill="#e8e6df" text-anchor="middle">现货价 · 储备 · 余额</text>
+          <text x="520" y="450" font-size="32" fill="#e8e6df" text-anchor="middle">= 攻击者的输入参数</text>
+          <text x="520" y="520" font-size="36" fill="#FC6255" text-anchor="middle" font-weight="800">✕ 不能信</text>
+        </g>
+        <g id="a-right" class="h">
+          <rect x="1020" y="260" width="760" height="300" rx="20" fill="#121a22" stroke="#8a8f99" stroke-width="3" />
+          <text x="1400" y="320" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">一笔交易改不了</text>
+          <text x="1400" y="390" font-size="32" fill="#e8e6df" text-anchor="middle">Moonwell：报价 ≈ 1.12 美元</text>
+          <text x="1400" y="450" font-size="32" fill="#83C167" text-anchor="middle">✓ 价格 &gt; 0　✓ 刚刚更新</text>
+          <text x="1400" y="520" font-size="36" fill="#FF9F43" text-anchor="middle" font-weight="800">也要验证</text>
+        </g>
+        <g id="a-fix" class="h">
+          <text x="1400" y="650" font-size="34" fill="#83C167" text-anchor="middle">合理的价格上下限</text>
+          <text x="1400" y="710" font-size="34" fill="#83C167" text-anchor="middle">或：和第二个价格源比较</text>
+        </g>
+        <text id="a-cfg" class="h" x="1400" y="790" font-size="30" fill="#e8e6df" text-anchor="middle">配置变更像代码一样测试，上线前用真实喂价核对</text>
+      </g>
+      <g id="a-cond" class="h">
+        <text x="960" y="420" font-size="40" fill="#FF9F43" text-anchor="middle" font-weight="800">成立条件</text>
+        <text id="a-c1" x="960" y="510" font-size="38" fill="#e8e6df" text-anchor="middle">列出协议读的每一个价格</text>
+        <text id="a-c2" x="960" y="580" font-size="38" fill="#e8e6df" text-anchor="middle">标注：一笔交易内能不能变？</text>
+        <text id="a-c3" x="960" y="650" font-size="38" fill="#e8e6df" text-anchor="middle">再回答：<tspan fill="#FC6255">错了</tspan>怎样？<tspan fill="#FF9F43">停了</tspan>怎样？</text>
+      </g>
+      <text id="a-next" class="h" x="960" y="900" font-size="36" fill="#6b6f7a" text-anchor="middle">下一集 · 09 MEV 与签名安全</text>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 53.29, "L": [[0.6, 5.23], [5.68, 15.88], [16.33, 25.6], [26.05, 38.21], [38.66, 47.14], [47.59, 52.19]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      const KID = (sel, n, t) => tl.fromTo(sel + " > text:nth-of-type(" + n + ")", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, t);
+      // L0 问题回来
+      IN("#a-pin", at(0, 0.05), 0.8, { scale: 0.55, x: -540, y: -10, svgOrigin: "960 125" }, { scale: 1, x: 0, y: 0, ease: "expo.out" });
+      // L1 一笔交易内能改写的：不能信
+      IN("#a-left", at(1, 0.05), 0.6, { y: 20 }, { y: 0 });
+      [2, 3, 4].forEach((n, i) => KID("#a-left", n, at(1, 0.25 + i * 0.25)));
+      // L2 改不了的也要验证
+      IN("#a-right", at(2, 0.05), 0.6, { y: 20 }, { y: 0 });
+      [2, 3, 4].forEach((n, i) => KID("#a-right", n, at(2, 0.3 + i * 0.22)));
+      // L3 上下限 / 第二价格源 / 配置测试
+      IN("#a-fix", at(3, 0.05), 0.5);
+      IN("#a-cfg", at(3, 0.6), 0.5);
+      // L4 成立条件
+      tl.to("#a-body", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(4, 0));
+      IN("#a-cond", at(4, 0.05), 0.5);
+      IN("#a-c2", at(4, 0.35), 0.4);
+      IN("#a-c3", at(4, 0.65), 0.4);
+      // L5 下一集
+      IN("#a-next", at(5, 0.1), 0.5);
+      tl.to(["#a-pin", "#a-cond", "#a-next"], { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

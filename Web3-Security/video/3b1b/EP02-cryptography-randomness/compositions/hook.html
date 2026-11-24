@@ -1,0 +1,139 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="hook" data-duration="37.58" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="h-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker></defs>
+      <g id="h-all">
+        <text id="h-date" class="h" x="120" y="140" font-size="34" fill="#6b6f7a" letter-spacing="2">2022 年 9 月 · Wintermute</text>
+
+        <!-- 金库（资产 = 金） -->
+        <g id="h-vault" class="h">
+          <rect x="1300" y="260" width="480" height="400" rx="22" fill="#1a1708" stroke="#F0B90B" stroke-width="4" />
+          <text x="1540" y="330" font-size="38" fill="#F0B90B" text-anchor="middle" font-weight="700">金库</text>
+          <g fill="#F0B90B">
+            <circle class="h-coin" cx="1420" cy="420" r="24" /><circle class="h-coin" cx="1500" cy="420" r="24" /><circle class="h-coin" cx="1580" cy="420" r="24" /><circle class="h-coin" cx="1660" cy="420" r="24" />
+            <circle class="h-coin" cx="1420" cy="500" r="24" /><circle class="h-coin" cx="1500" cy="500" r="24" /><circle class="h-coin" cx="1580" cy="500" r="24" /><circle class="h-coin" cx="1660" cy="500" r="24" />
+            <circle class="h-coin" cx="1420" cy="580" r="24" /><circle class="h-coin" cx="1500" cy="580" r="24" /><circle class="h-coin" cx="1580" cy="580" r="24" /><circle class="h-coin" cx="1660" cy="580" r="24" />
+          </g>
+        </g>
+        <text id="h-empty" class="h" x="1540" y="510" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="700">已被搬空</text>
+        <text id="h-amount" class="h" x="1540" y="770" font-size="84" fill="#F0B90B" text-anchor="middle" font-weight="800">≈ <tspan id="h-num">0</tspan> 亿美元</text>
+
+        <!-- 金库地址（示意） -->
+        <g id="h-addr" class="h">
+          <rect x="720" y="380" width="470" height="110" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".5" stroke-width="3" />
+          <text class="mono" x="955" y="450" font-size="40" fill="#e8e6df" text-anchor="middle">0x<tspan id="h-zeros" fill="#e8e6df">0000000</tspan>…</text>
+          <text x="955" y="540" font-size="30" fill="#6b6f7a" text-anchor="middle">金库地址（示意）</text>
+        </g>
+        <path id="h-link" class="dr" pathLength="1" d="M1195 435 L 1295 435" stroke="#e8e6df" stroke-opacity=".5" stroke-width="3" fill="none" />
+
+        <!-- 靶号工具（代码 = 蓝） -->
+        <g id="h-tool" class="h">
+          <rect x="120" y="300" width="480" height="270" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text class="mono" x="360" y="380" font-size="44" fill="#58C4DD" text-anchor="middle" font-weight="700">Profanity</text>
+          <text x="360" y="430" font-size="30" fill="#8a8f99" text-anchor="middle">靶号地址工具</text>
+        </g>
+        <path id="h-gen" class="dr h" pathLength="1" d="M605 435 L 712 435" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#h-ah)" />
+        <text id="h-vanity" class="h" x="955" y="330" font-size="30" fill="#e8e6df" text-anchor="middle">开头一串 0</text>
+        <path id="h-under" class="dr" pathLength="1" d="M883 465 L 1051 465" stroke="#e8e6df" stroke-width="3" fill="none" />
+
+        <!-- 32 位种子 -->
+        <g id="h-seed" class="h">
+          <rect x="170" y="470" width="380" height="64" rx="12" fill="#2a1d0c" stroke="#FF9F43" stroke-width="3" />
+          <text x="360" y="513" font-size="32" fill="#FF9F43" text-anchor="middle" font-weight="700">随机数种子：32 位</text>
+        </g>
+
+        <!-- 时间线：披露 → 5 天后被盗 -->
+        <g id="h-tl" class="h">
+          <line x1="200" y1="860" x2="1100" y2="860" stroke="#2a2f3a" stroke-width="3" />
+          <circle cx="260" cy="860" r="14" fill="#FF9F43" />
+          <text x="260" y="820" font-size="30" fill="#FF9F43" text-anchor="middle">9 月 15 日</text>
+          <text x="260" y="915" font-size="30" fill="#8a8f99" text-anchor="middle">1inch 公开披露</text>
+        </g>
+        <path id="h-tlarc" class="dr" pathLength="1" d="M280 845 C 500 760, 820 760, 1020 845" stroke="#8a8f99" stroke-width="3" fill="none" stroke-dasharray="1" />
+        <text id="h-5d" class="h" x="650" y="760" font-size="30" fill="#e8e6df" text-anchor="middle">5 天后</text>
+        <g id="h-tl2" class="h">
+          <circle cx="1040" cy="860" r="14" fill="#FC6255" />
+          <text x="1040" y="820" font-size="30" fill="#FC6255" text-anchor="middle">9 月 20 日</text>
+          <text x="1040" y="915" font-size="30" fill="#FC6255" text-anchor="middle">金库被盗</text>
+        </g>
+
+        <!-- 私钥被算出 -->
+        <g id="h-key" class="h">
+          <circle cx="840" cy="640" r="26" fill="none" stroke="#FC6255" stroke-width="6" />
+          <path d="M866 640 H 960 M930 640 v 22 M950 640 v 16" stroke="#FC6255" stroke-width="6" fill="none" stroke-linecap="round" />
+          <text x="990" y="652" font-size="32" fill="#FC6255" font-weight="700">私钥：被算出</text>
+        </g>
+        <g id="h-algo" class="h">
+          <text x="360" y="640" font-size="30" fill="#83C167" text-anchor="middle">签名算法：没被破解</text>
+        </g>
+
+        <g id="h-q" class="h">
+          <text x="960" y="1010" font-size="62" fill="#e8e6df" text-anchor="middle" font-weight="700">私钥的<tspan fill="#FF9F43">随机性</tspan>，从哪里来？</text>
+        </g>
+      </g>
+      <g id="h-pin" class="h">
+        <rect x="80" y="70" width="620" height="84" rx="14" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="390" y="125" font-size="34" fill="#e8e6df" text-anchor="middle">私钥的<tspan fill="#FF9F43">随机性</tspan>从哪里来？</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 37.58, "L": [[0.6, 6.1], [6.55, 17.27], [17.72, 24.18], [24.63, 32.41], [32.86, 36.48]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.8) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      const DRAWA = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 金库被盗
+      IN("#h-date", at(0, 0), 0.5);
+      IN("#h-vault", at(0, 0.05), 0.8, { y: 20 }, { y: 0 });
+      gsap.utils.toArray("#root .h-coin").forEach((c, i) => {
+        tl.to(c, { x: 360 + (i % 4) * 30, y: (i % 3 - 1) * 70, fill: "#FC6255", opacity: 0, duration: 0.9, ease: "power3.in" }, at(0, 0.35) + i * 0.08);
+      });
+      IN("#h-amount", at(0, 0.4), 0.5);
+      IN("#h-empty", at(0, 0.85), 0.5);
+      const n = { v: 0 }, num = document.querySelector("#h-num");
+      tl.fromTo(n, { v: 0 }, { v: 1.6, duration: 1.6, ease: "power2.out", onUpdate: () => { num.textContent = n.v.toFixed(1); } }, at(0, 0.4));
+
+      // L1 地址由靶号工具生成
+      IN("#h-addr", at(1, 0.0), 0.6, { x: 60 }, { x: 0 });
+      DRAW("#h-link", at(1, 0.05), 0.5);
+      IN("#h-tool", at(1, 0.18), 0.6);
+      DRAWA("#h-gen", at(1, 0.3), 0.5);
+      tl.to("#h-zeros", { fill: "#FF9F43", duration: 0.4 }, at(1, 0.62));
+      DRAW("#h-under", at(1, 0.62), 0.5);
+      IN("#h-vanity", at(1, 0.66), 0.4);
+
+      // L2 披露：32 位种子
+      IN("#h-tl", at(2, 0.0), 0.5);
+      DRAW("#h-tlarc", at(2, 0.15), 0.9);
+      IN("#h-5d", at(2, 0.2), 0.4);
+      IN("#h-tl2", at(2, 0.3), 0.4);
+      IN("#h-seed", at(2, 0.55), 0.5, { scale: 1.3, svgOrigin: "360 502" }, { scale: 1, ease: "back.out(2)" });
+
+      // L3 算法没坏，私钥被算出；问题
+      IN("#h-algo", at(3, 0.0), 0.5);
+      IN("#h-key", at(3, 0.2), 0.5, { x: -30 }, { x: 0 });
+      tl.to(["#h-tl", "#h-tlarc", "#h-5d", "#h-tl2", "#h-date", "#h-vault", "#h-empty", "#h-amount", "#h-link"], { opacity: 0.2, duration: 0.5 }, at(3, 0.45));
+      IN("#h-q", at(3, 0.5), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+
+      // L4 钉住问题
+      tl.to("#h-all", { opacity: 0, filter: "blur(6px)", duration: 0.6, ease: "power2.in" }, at(4, 0.1));
+      IN("#h-pin", at(4, 0.2), 0.6, { scale: 1.5, svgOrigin: "390 112" }, { scale: 1 });
+      OUT("#h-pin", C.d - 0.5, 0.4);
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>

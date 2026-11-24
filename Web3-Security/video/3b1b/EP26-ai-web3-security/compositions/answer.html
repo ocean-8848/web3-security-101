@@ -1,0 +1,103 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="51.59" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="r-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="r-case">
+        <g id="r-pin" class="h">
+          <rect x="460" y="70" width="1000" height="110" rx="18" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="960" y="142" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="700">「绝不转账」写在<tspan fill="#58C4DD">合约</tspan>里，会被转走吗？</text>
+        </g>
+        <!-- 左：写在提示词里；右：写在合约里 -->
+        <g id="r-l" class="h">
+          <rect x="200" y="330" width="560" height="200" rx="18" fill="none" stroke="#8a8f99" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="480" y="400" font-size="30" fill="#6b6f7a" text-anchor="middle">提示词里的规则</text>
+          <text x="480" y="470" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">绝不转账</text>
+        </g>
+        <g id="r-r" class="h">
+          <rect x="1160" y="330" width="560" height="200" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+          <text x="1440" y="400" font-size="30" fill="#58C4DD" text-anchor="middle">合约里的规则</text>
+          <text x="1440" y="470" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700" font-family="JetBrains Mono">require(...)</text>
+        </g>
+        <path id="r-pl" class="dr h" pathLength="1" d="M330 760 L 330 545" fill="none" stroke="#FC6255" stroke-width="5" marker-end="url(#r-ahr)" />
+        <path id="r-pr" class="dr h" pathLength="1" d="M1290 760 L 1290 545" fill="none" stroke="#FC6255" stroke-width="5" marker-end="url(#r-ahr)" />
+        <text id="r-say" class="h" x="960" y="820" font-size="32" fill="#FC6255" text-anchor="middle">说服模型</text>
+        <text id="r-lx" class="h" x="560" y="640" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">被绕过 → 钱转走</text>
+        <text id="r-rx" class="h" x="1520" y="640" font-size="34" fill="#83C167" text-anchor="middle" font-weight="700">✓ 按代码拒绝</text>
+      </g>
+
+      <!-- 边界画在模型之外：三条 -->
+      <g id="r-three">
+        <text id="r-tt" class="h" x="960" y="200" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="700">边界画在<tspan fill="#83C167">模型之外</tspan></text>
+        <g id="r-t1" class="h"><rect x="200" y="300" width="1520" height="120" rx="16" fill="#161a22" stroke="#58C4DD" stroke-width="3" /><text x="260" y="375" font-size="36" fill="#e8e6df">对智能体</text><text x="1660" y="375" font-size="36" fill="#83C167" text-anchor="end" font-weight="700">代码里的额度和白名单</text></g>
+        <g id="r-t2" class="h"><rect x="200" y="460" width="1520" height="120" rx="16" fill="#161a22" stroke="#B48EF0" stroke-width="3" /><text x="260" y="535" font-size="36" fill="#e8e6df">对人</text><text x="1660" y="535" font-size="36" fill="#83C167" text-anchor="end" font-weight="700">换渠道确认的流程</text></g>
+        <g id="r-t3" class="h"><rect x="200" y="620" width="1520" height="120" rx="16" fill="#161a22" stroke="#58C4DD" stroke-width="3" /><text x="260" y="695" font-size="36" fill="#e8e6df">对代码</text><text x="1660" y="695" font-size="36" fill="#83C167" text-anchor="end" font-weight="700">审查和测试</text></g>
+        <!-- 成立条件：防护一直在 -->
+        <g id="r-cond" class="h">
+          <text x="960" y="840" font-size="34" fill="#FF9F43" text-anchor="middle">成立条件：限制真的写在代码里，而且一直都在</text>
+          <text x="960" y="900" font-size="30" fill="#8a8f99" text-anchor="middle">2026 · Grok × Bankr：一道「屏蔽模型间指令」的防护，在重写时被删</text>
+        </g>
+      </g>
+
+      <g id="r-final" class="h">
+        <text x="960" y="500" font-size="80" fill="#e8e6df" text-anchor="middle" font-weight="800">哪一条限制，</text>
+        <text x="960" y="620" font-size="80" fill="#e8e6df" text-anchor="middle" font-weight="800"><tspan fill="#83C167">不依赖</tspan>模型听话？</text>
+      </g>
+      <text id="r-next" class="h" x="960" y="900" font-size="36" fill="#6b6f7a" text-anchor="middle">下一集 · 27 审计、测试与开发流程</text>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 51.59, "L": [[0.6, 7.61], [8.06, 13.29], [13.74, 24.11], [24.56, 36.68], [37.13, 41.54], [41.99, 50.49]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 问题从左上角回来；两种写法
+      IN("#r-pin", at(0, 0.0), 0.8, { scale: 0.5, x: -560, svgOrigin: "960 125" }, { scale: 1, x: 0, ease: "expo.out" });
+      IN("#r-l", at(0, 0.45), 0.5, { y: 20 }, { y: 0 });
+      IN("#r-r", at(0, 0.6), 0.5, { y: 20 }, { y: 0 });
+
+      // L1 说服：左边被绕过，右边按代码拒绝
+      IN("#r-say", at(1, 0.0), 0.3);
+      DRAW("#r-pl", at(1, 0.05), 0.5);
+      DRAW("#r-pr", at(1, 0.05), 0.5);
+      tl.to("#r-l", { opacity: 0.3, duration: 0.3 }, at(1, 0.3));
+      IN("#r-lx", at(1, 0.3), 0.4);
+      tl.to("#r-r rect", { stroke: "#83C167", duration: 0.3 }, at(1, 0.4));
+      IN("#r-rx", at(1, 0.45), 0.4, { scale: 1.3, svgOrigin: "1520 630" }, { scale: 1, ease: "back.out(2)" });
+
+      // L2 三条边界
+      tl.to("#r-case", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(2, 0.0));
+      IN("#r-tt", at(2, 0.05), 0.5);
+      IN("#r-t1", at(2, 0.2), 0.5, { x: -30 }, { x: 0 });
+      IN("#r-t2", at(2, 0.5), 0.5, { x: -30 }, { x: 0 });
+      IN("#r-t3", at(2, 0.75), 0.5, { x: -30 }, { x: 0 });
+
+      // L3 成立条件
+      IN("#r-cond", at(3, 0.05), 0.5);
+      tl.to("#r-t1 rect", { strokeDasharray: "30 18", stroke: "#FF9F43", duration: 0.4 }, at(3, 0.55));
+
+      // L4 带走一个问题
+      tl.to("#r-three", { opacity: 0.1, filter: "blur(4px)", duration: 0.5 }, at(4, 0.0));
+      IN("#r-final", at(4, 0.05), 0.7, { filter: "blur(10px)" }, { filter: "blur(0px)" });
+
+      // L5 下一集
+      OUT("#r-three", at(5, 0.0), 0.4);
+      IN("#r-next", at(5, 0.1), 0.5);
+      tl.to(["#r-final", "#r-next", "#r-three"], { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

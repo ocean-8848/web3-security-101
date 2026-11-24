@@ -1,0 +1,113 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="halt" data-duration="48.48" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="t-all">
+        <g id="t-a">
+          <text id="t-title" class="h" x="960" y="110" font-size="42" fill="#e8e6df" text-anchor="middle" font-weight="700">让链停下的份额，或让多数节点崩溃的 bug</text>
+          <g id="t-strip"></g>
+          <!-- Solana 停机时长（小时） -->
+          <g id="t-sol">
+            <line id="t-axis" class="h" x1="200" y1="880" x2="1100" y2="880" stroke="#6b6f7a" stroke-width="3" />
+            <text id="t-unit" class="h" x="200" y="440" font-size="30" fill="#8a8f99">Solana 全网停止出块（小时）</text>
+          </g>
+          <g id="t-pie" class="h">
+            <circle cx="1480" cy="660" r="150" fill="#2a2f3a" />
+            <path d="M1480 660 L 1480 510 A 150 150 0 1 1 1433.6 517.3 Z" fill="#FF9F43" />
+            <text x="1480" y="672" font-size="40" fill="#0f1117" text-anchor="middle" font-weight="800">&gt; 95%</text>
+            <text x="1480" y="860" font-size="28" fill="#e8e6df" text-anchor="middle">2024-02：质押运行同一版本客户端</text>
+          </g>
+        </g>
+        <!-- BNB Chain -->
+        <g id="t-bnb" class="h">
+          <text x="960" y="200" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">2022 年 10 月 · BNB Chain</text>
+          <g fill="#1a1524" stroke="#B48EF0" stroke-width="3"><circle cx="660" cy="360" r="34" /><circle cx="760" cy="360" r="34" /><circle cx="860" cy="360" r="34" /><circle cx="960" cy="360" r="34" /><circle cx="1060" cy="360" r="34" /><circle cx="1160" cy="360" r="34" /><circle cx="1260" cy="360" r="34" /></g>
+          <text x="960" y="460" font-size="32" fill="#B48EF0" text-anchor="middle">验证者：暂停出块 · 冻结攻击者地址</text>
+        </g>
+        <!-- 客户端份额 -->
+        <g id="t-cl">
+          <text id="t-clt" class="h" x="960" y="600" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">客户端份额（示意）</text>
+          <rect id="t-c2" class="h" x="200" y="640" width="1520" height="80" fill="#2a2f3a" />
+          <rect id="t-c1" class="h" x="200" y="640" width="0" height="80" fill="#FC6255" />
+          <g id="t-13" class="h"><line x1="706.7" y1="620" x2="706.7" y2="740" stroke="#FF9F43" stroke-width="4" stroke-dasharray="8 6" /><text x="706.7" y="780" font-size="28" fill="#FF9F43" text-anchor="middle">1/3：bug 让终局性停止</text></g>
+          <g id="t-23" class="h"><line x1="1213.3" y1="620" x2="1213.3" y2="740" stroke="#FC6255" stroke-width="4" stroke-dasharray="8 6" /><text x="1213.3" y="820" font-size="28" fill="#FC6255" text-anchor="middle">2/3：可能把错误的链最终确定</text></g>
+        </g>
+        <!-- 两种状态 -->
+        <g id="t-two">
+          <g id="t-s1" class="h"><rect x="200" y="300" width="700" height="440" rx="22" fill="#1f1608" stroke="#FF9F43" stroke-width="4" /><text x="550" y="380" font-size="36" fill="#FF9F43" text-anchor="middle" font-weight="700">不最终确定</text><text x="550" y="470" font-size="32" fill="#e8e6df" text-anchor="middle">出块 ✓</text><text x="550" y="530" font-size="32" fill="#e8e6df" text-anchor="middle">最终确定 ✕</text><text x="550" y="640" font-size="30" fill="#8a8f99" text-anchor="middle">“N 个区块”会骗过你</text></g>
+          <g id="t-s2" class="h"><rect x="1020" y="300" width="700" height="440" rx="22" fill="#2a1416" stroke="#FC6255" stroke-width="4" /><text x="1370" y="380" font-size="36" fill="#FC6255" text-anchor="middle" font-weight="700">完全停止</text><text x="1370" y="470" font-size="32" fill="#e8e6df" text-anchor="middle">出块 ✕</text><text x="1370" y="530" font-size="32" fill="#e8e6df" text-anchor="middle">最终确定 ✕</text><text x="1370" y="640" font-size="30" fill="#8a8f99" text-anchor="middle">恢复后逐笔对账</text></g>
+          <text id="t-act" class="h" x="960" y="860" font-size="36" fill="#83C167" text-anchor="middle" font-weight="700">两种状态，各自规定充提动作</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 48.48, "L": [[0.6, 6.62], [7.07, 19.82], [20.27, 26.72], [27.17, 37.4], [37.85, 47.38]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      // 区块流：中途断开
+      const sh = document.querySelector("#t-strip"), ST = [];
+      for (let i = 0; i < 14; i++) {
+        const r = document.createElementNS(NS, "rect");
+        r.setAttribute("x", 200 + i * 110); r.setAttribute("y", 200); r.setAttribute("width", 80); r.setAttribute("height", 80); r.setAttribute("rx", 8);
+        r.setAttribute("fill", i < 8 ? "#161a22" : "none"); r.setAttribute("stroke", i < 8 ? "#8a8f99" : "#FF9F43"); r.setAttribute("stroke-width", 3);
+        if (i >= 8) r.setAttribute("stroke-dasharray", "8 6");
+        r.setAttribute("opacity", 0); sh.appendChild(r); ST.push(r);
+      }
+      const SOL = [{ n: "2021-09", v: 17, a: "≈ 17" }, { n: "2024-02", v: 5, a: "≈ 5" }];
+      const host = document.querySelector("#t-sol"), G = [];
+      SOL.forEach((d, i) => {
+        const x = 420 + i * 420, h = d.v * 22;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", 0);
+        g.innerHTML = `<rect class="bar" x="${x - 70}" y="${880 - h}" width="140" height="${h}" fill="#FF9F43" />` +
+          `<text x="${x}" y="${880 - h - 16}" font-size="36" fill="#FF9F43" text-anchor="middle" font-weight="700">${d.a}</text>` +
+          `<text x="${x}" y="925" font-size="30" fill="#e8e6df" text-anchor="middle">${d.n}</text>`;
+        host.appendChild(g); G.push({ g, x });
+      });
+      const BAR = (i, t) => { tl.to(G[i].g, { opacity: 1, duration: 0.3 }, t); tl.fromTo(G[i].g.querySelector(".bar"), { scaleY: 0, svgOrigin: `${G[i].x} 880` }, { scaleY: 1, duration: 0.8, ease: "expo.out" }, t); };
+      // L0 区块流断开
+      IN("#t-title", at(0, 0.0), 0.5);
+      ST.forEach((r, i) => tl.to(r, { opacity: i < 8 ? 1 : 0.6, duration: 0.15 }, at(0, 0.2) + i * 0.08));
+      // L1 Solana
+      IN(["#t-axis", "#t-unit"], at(1, 0.0), 0.4);
+      BAR(0, at(1, 0.1));
+      BAR(1, at(1, 0.5));
+      IN("#t-pie", at(1, 0.7), 0.5, { scale: 0.8, svgOrigin: "1480 660" }, { scale: 1 });
+      // L2 BNB Chain
+      OUT("#t-a", at(2, 0.0), 0.35);
+      IN("#t-bnb", at(2, 0.1), 0.5);
+      // L3 客户端份额
+      IN("#t-clt", at(3, 0.0), 0.4);
+      IN("#t-c2", at(3, 0.05), 0.3);
+      IN("#t-c1", at(3, 0.05), 0.1);
+      tl.set("#t-c1", { attr: { width: 0 } }, 0);
+      tl.to("#t-c1", { attr: { width: 1520 * 0.4 }, duration: 0.8 }, at(3, 0.15));
+      IN("#t-13", at(3, 0.3), 0.4);
+      tl.to("#t-c1", { attr: { width: 1520 * 0.7 }, duration: 0.8 }, at(3, 0.6));
+      IN("#t-23", at(3, 0.7), 0.4);
+      // L4 两种状态
+      OUT(["#t-bnb", "#t-cl"], at(4, 0.0), 0.35);
+      IN("#t-s1", at(4, 0.1), 0.5, { x: -20 }, { x: 0 });
+      IN("#t-s2", at(4, 0.35), 0.5, { x: 20 }, { x: 0 });
+      IN("#t-act", at(4, 0.7), 0.5);
+      tl.to("#t-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["halt"] = tl;
+    })();
+  </script>
+</template>

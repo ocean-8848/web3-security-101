@@ -1,0 +1,133 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="overflow" data-duration="55.86" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="o-all">
+        <g id="o-p1">
+          <text id="o-title" class="h" x="520" y="150" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="800">溢出：超过上限就<tspan fill="#FF9F43">回绕</tspan></text>
+
+          <!-- uint256 的"里程表" -->
+          <circle id="o-ring" class="dr" pathLength="1" cx="520" cy="560" r="250" fill="none" stroke="#58C4DD" stroke-width="5" />
+          <text id="o-name" class="h mono" x="520" y="575" font-size="44" fill="#58C4DD" text-anchor="middle" font-weight="700">uint256</text>
+          <g id="o-ticks" class="h">
+            <line x1="520" y1="290" x2="520" y2="330" stroke="#e8e6df" stroke-width="4" />
+            <text x="520" y="275" font-size="34" fill="#e8e6df" text-anchor="middle">0</text>
+            <text x="390" y="250" font-size="34" fill="#8a8f99" text-anchor="end">上限 2<tspan dy="-14" font-size="28">256</tspan><tspan dy="14"> − 1</tspan></text>
+          </g>
+          <g id="o-ptr" class="h"><circle cx="520" cy="310" r="16" fill="#e8e6df" /></g>
+          <text id="o-wrap" class="h" x="520" y="400" font-size="30" fill="#FF9F43" text-anchor="middle" font-weight="700">回到 0</text>
+
+          <!-- BEC 的乘法 -->
+          <path id="o-arc1" class="dr" pathLength="1" d="M520 310 A250 250 0 0 1 520 810" fill="none" stroke="#F0B90B" stroke-width="12" stroke-opacity=".8" />
+          <path id="o-arc2" class="dr" pathLength="1" d="M520 810 A250 250 0 0 1 520 310" fill="none" stroke="#F0B90B" stroke-width="12" stroke-opacity=".8" />
+          <text id="o-half" class="h" x="520" y="870" font-size="34" fill="#F0B90B" text-anchor="middle">2<tspan dy="-14" font-size="28">255</tspan><tspan dy="14">（半圈）</tspan></text>
+        </g>
+
+        <g id="o-p2">
+          <text id="o-case" class="h" x="1000" y="250" font-size="32" fill="#6b6f7a">BEC 代币 · 2018 年 4 月 · 批量转账</text>
+          <text id="o-code" class="h mono" x="1000" y="340" font-size="40" fill="#58C4DD">amount = cnt * _value</text>
+          <text id="o-in" class="h mono" x="1000" y="420" font-size="36" fill="#F0B90B">cnt = 2, _value = 2<tspan dy="-14" font-size="28">255</tspan></text>
+          <text id="o-res" class="h mono" x="1000" y="500" font-size="40" fill="#e8e6df">2 × 2<tspan dy="-14" font-size="28">255</tspan><tspan dy="14"> = 2</tspan><tspan dy="-14" font-size="28">256</tspan><tspan dy="14"> → </tspan><tspan fill="#FC6255" font-weight="700">0</tspan></text>
+          <text id="o-req" class="h mono" x="1000" y="590" font-size="34" fill="#e8e6df">require(balance ≥ <tspan fill="#FC6255">0</tspan>)  <tspan fill="#FF9F43">✓ 通过</tspan></text>
+
+          <!-- 余额变化 -->
+          <line id="o-base" class="h" x1="1040" y1="960" x2="1760" y2="960" stroke="#2a2f3a" stroke-width="2" />
+          <rect id="o-snd" class="h" x="1090" y="880" width="120" height="80" fill="#8a8f99" opacity=".7" />
+          <text id="o-sndt" class="h" x="1150" y="1005" font-size="30" fill="#8a8f99" text-anchor="middle">发送者 −0</text>
+          <rect id="o-r1" class="h" x="1340" y="670" width="120" height="290" fill="#F0B90B" />
+          <rect id="o-r2" class="h" x="1560" y="670" width="120" height="290" fill="#F0B90B" />
+          <text id="o-rt" class="h" x="1510" y="1005" font-size="34" fill="#F0B90B" text-anchor="middle">两个接收人：各 +2<tspan dy="-12" font-size="28">255</tspan></text>
+        </g>
+      </g>
+
+      <!-- 0.8 之后仍会回绕的地方 -->
+      <g id="o-p3">
+        <text id="o-t3" class="h" x="960" y="170" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="800">Solidity 0.8 之后</text>
+        <g font-size="38" class="mono">
+          <g id="o-c1" class="h"><text x="260" y="320" fill="#58C4DD" class="mono">a = b * c;</text><text x="1160" y="320" fill="#83C167" font-size="34">// 溢出就回滚</text></g>
+          <g id="o-c2" class="h"><text x="260" y="410" fill="#58C4DD" class="mono">unchecked { a = b * c; }</text><text x="1160" y="410" fill="#FF9F43" font-size="34">// 静默回绕</text></g>
+          <g id="o-c3" class="h"><text x="260" y="500" fill="#58C4DD" class="mono">assembly { a := mul(b, c) }</text><text x="1160" y="500" fill="#FF9F43" font-size="34">// 静默回绕</text></g>
+          <g id="o-c4" class="h"><text x="260" y="590" fill="#58C4DD" class="mono">uint128 s = uint128(a);</text><text x="1160" y="590" fill="#FF9F43" font-size="34">// 截断</text></g>
+        </g>
+        <rect id="o-hl" class="h" x="230" y="360" width="1440" height="164" rx="12" fill="#FF9F43" fill-opacity=".08" stroke="#FF9F43" stroke-width="2" />
+        <!-- 256 位 → 128 位 -->
+        <g id="o-bits" class="h">
+          <rect id="o-hi" x="260" y="720" width="700" height="70" fill="#58C4DD" opacity=".35" stroke="#58C4DD" stroke-width="2" />
+          <rect x="960" y="720" width="700" height="70" fill="#58C4DD" opacity=".75" stroke="#58C4DD" stroke-width="2" />
+          <text x="610" y="830" font-size="30" fill="#8a8f99" text-anchor="middle">高 128 位</text>
+          <text x="1310" y="830" font-size="30" fill="#8a8f99" text-anchor="middle">低 128 位</text>
+        </g>
+        <text id="o-lost" class="h" x="610" y="768" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">被悄悄丢掉</text>
+        <text id="o-audit" class="h" x="960" y="950" font-size="40" fill="#e8e6df" text-anchor="middle">审计：把这些地方<tspan fill="#FF9F43">一个一个</tspan>找出来</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 55.86, "L": [[0.6, 10.37], [10.82, 17.83], [18.28, 26.15], [26.6, 35.84], [36.29, 45.14], [45.59, 54.76]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.8) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 里程表：指针转满一圈回到 0
+      IN("#o-title", at(0, 0), 0.6);
+      DRAW("#o-ring", at(0, 0.1), 1.0);
+      IN("#o-name", at(0, 0.2), 0.5);
+      IN("#o-ticks", at(0, 0.3), 0.5);
+      IN("#o-ptr", at(0, 0.45), 0.3);
+      tl.fromTo("#o-ptr", { rotation: 0, svgOrigin: "520 560" }, { rotation: 330, svgOrigin: "520 560", duration: 2.2, ease: "power1.in" }, at(0, 0.5));
+      tl.to("#o-ptr", { rotation: 380, svgOrigin: "520 560", duration: 0.5, ease: "power1.out" }, at(0, 0.5) + 2.2);
+      tl.to("#o-ptr circle", { fill: "#FF9F43", duration: 0.15 }, at(0, 0.5) + 2.3);
+      IN("#o-wrap", at(0, 0.5) + 2.3, 0.3);
+      OUT("#o-wrap", at(1, 0.0), 0.3);
+      OUT("#o-ptr", at(1, 0.0), 0.3);
+
+      // L1 BEC 的乘法
+      IN("#o-case", at(1, 0.05), 0.5);
+      IN("#o-code", at(1, 0.35), 0.5);
+
+      // L2 2 × 2^255：半圈 + 半圈 = 回到 0
+      IN("#o-in", at(2, 0.05), 0.5);
+      DRAW("#o-arc1", at(2, 0.25), 0.9);
+      IN("#o-half", at(2, 0.35), 0.4);
+      DRAW("#o-arc2", at(2, 0.5), 0.9);
+      IN("#o-res", at(2, 0.65), 0.5);
+      tl.to("#o-ticks line", { stroke: "#FC6255", duration: 0.2, yoyo: true, repeat: 3 }, at(2, 0.72));
+
+      // L3 余额检查通过，接收人凭空到账
+      IN("#o-req", at(3, 0.05), 0.5);
+      IN(["#o-base", "#o-snd", "#o-sndt"], at(3, 0.3), 0.4);
+      tl.fromTo(["#o-r1", "#o-r2"], { opacity: 0, scaleY: 0, transformOrigin: "50% 100%" }, { opacity: 1, scaleY: 1, duration: 0.9, ease: "expo.out", stagger: 0.25 }, at(3, 0.6));
+      IN("#o-rt", at(3, 0.7), 0.4);
+
+      // L4 0.8 之后
+      tl.to("#o-all", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(4, 0));
+      IN("#o-t3", at(4, 0.05), 0.5);
+      IN("#o-c1", at(4, 0.15), 0.4);
+      IN("#o-c2", at(4, 0.5), 0.4);
+      IN("#o-c3", at(4, 0.62), 0.4);
+      IN("#o-hl", at(4, 0.72), 0.4);
+
+      // L5 截断
+      OUT("#o-hl", at(5, 0), 0.3);
+      IN("#o-c4", at(5, 0.05), 0.4);
+      IN("#o-bits", at(5, 0.2), 0.5);
+      tl.to("#o-hi", { opacity: 0.08, stroke: "#FC6255", duration: 0.6 }, at(5, 0.4));
+      IN("#o-lost", at(5, 0.42), 0.4);
+      IN("#o-audit", at(5, 0.7), 0.5);
+
+      tl.to("#o-p3", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["overflow"] = tl;
+    })();
+  </script>
+</template>

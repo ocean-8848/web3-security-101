@@ -1,0 +1,123 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="dns" data-duration="53.49" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="d-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="d-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="d-all">
+        <text id="d-title" class="h" x="960" y="110" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">最外面一环：域名</text>
+        <!-- 用户输入域名 -->
+        <g id="d-user" class="h">
+          <rect x="100" y="380" width="340" height="80" rx="40" fill="#0f1117" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+          <text x="270" y="432" font-size="32" fill="#e8e6df" text-anchor="middle">curve.fi</text>
+          <text x="270" y="510" font-size="28" fill="#8a8f99" text-anchor="middle">用户输入</text>
+        </g>
+        <path id="d-a1" class="dr h" pathLength="1" d="M450 420 L 640 420" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#d-ah)" />
+        <g id="d-dns" class="h">
+          <rect id="d-dnsr" x="650" y="340" width="300" height="160" rx="16" fill="#1a1524" stroke="#B48EF0" stroke-width="3" />
+          <text x="800" y="410" font-size="32" fill="#e8e6df" text-anchor="middle">DNS 记录</text>
+          <text x="800" y="455" font-size="28" fill="#8a8f99" text-anchor="middle">指向哪台服务器</text>
+        </g>
+        <g id="d-reg" class="h">
+          <rect x="650" y="620" width="300" height="110" rx="16" fill="#1a1524" stroke="#B48EF0" stroke-width="3" />
+          <text x="800" y="685" font-size="30" fill="#e8e6df" text-anchor="middle">注册商账号</text>
+          <line x1="800" y1="615" x2="800" y2="505" stroke="#B48EF0" stroke-width="3" />
+        </g>
+        <g id="d-atk" class="h"><circle cx="420" cy="760" r="44" fill="#2a1416" stroke="#FC6255" stroke-width="4" /><text x="420" y="770" font-size="28" fill="#FC6255" text-anchor="middle">攻击者</text></g>
+        <path id="d-take" class="dr h" pathLength="1" d="M470 745 L 640 690" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#d-ahr)" />
+        <!-- 两台服务器 -->
+        <g id="d-real" class="h">
+          <rect x="1300" y="220" width="420" height="140" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+          <text x="1510" y="300" font-size="32" fill="#e8e6df" text-anchor="middle">真实服务器</text>
+        </g>
+        <path id="d-ok" class="dr h" pathLength="1" d="M960 390 C 1100 330, 1180 300, 1290 290" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#d-ah)" />
+        <g id="d-clone" class="h">
+          <rect x="1300" y="500" width="420" height="200" rx="16" fill="#2a1416" stroke="#FC6255" stroke-width="4" />
+          <text x="1510" y="575" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">克隆页面</text>
+          <text x="1510" y="630" font-size="28" fill="#e8e6df" text-anchor="middle">请求 approve / permit</text>
+        </g>
+        <path id="d-bad" class="dr h" pathLength="1" d="M960 450 C 1100 500, 1180 580, 1290 590" stroke="#FC6255" stroke-width="5" fill="none" marker-end="url(#d-ahr)" />
+        <text id="d-bar" class="h" x="270" y="330" font-size="28" fill="#83C167" text-anchor="middle">✓ 地址栏完全正确</text>
+        <text id="d-barx" class="h" x="270" y="575" font-size="28" fill="#FC6255" text-anchor="middle">这一步的检查失效</text>
+        <!-- 锁：有效证书 -->
+        <g id="d-cert" class="h">
+          <rect x="1462" y="738" width="34" height="28" rx="4" fill="#83C167" />
+          <path d="M1468 738 v-10 a11 11 0 0 1 22 0 v10" fill="none" stroke="#83C167" stroke-width="4" />
+          <text x="1520" y="764" font-size="30" fill="#83C167">有效证书</text>
+        </g>
+        <text id="d-certm" class="h" x="1510" y="830" font-size="28" fill="#e8e6df" text-anchor="middle">锁只说明：连上了域名当前解析到的服务器</text>
+      </g>
+
+      <!-- 两次事件 + 防线 -->
+      <g id="d-tl">
+        <line id="d-axis" class="h" x1="300" y1="300" x2="1620" y2="300" stroke="#2a2f3a" stroke-width="4" />
+        <g id="d-e1" class="h"><circle cx="560" cy="300" r="16" fill="#FC6255" /><text x="560" y="250" font-size="32" fill="#e8e6df" text-anchor="middle">2022.8</text><text x="560" y="360" font-size="28" fill="#8a8f99" text-anchor="middle">克隆前端 · ≈ 57 万美元</text></g>
+        <g id="d-e2" class="h"><circle cx="1360" cy="300" r="16" fill="#FC6255" /><text x="1360" y="250" font-size="32" fill="#e8e6df" text-anchor="middle">2025.5</text><text x="1360" y="360" font-size="28" fill="#8a8f99" text-anchor="middle">注册商系统被入侵 · 改 DNS 委派</text></g>
+        <path id="d-same" class="dr" pathLength="1" d="M580 280 C 800 160, 1120 160, 1340 280" stroke="#FF9F43" stroke-width="3" stroke-dasharray="1" fill="none" />
+        <text id="d-samet" class="h" x="960" y="185" font-size="30" fill="#FF9F43" text-anchor="middle">同一家注册商</text>
+        <g id="d-def">
+          <g class="d-df h"><rect x="260" y="560" width="300" height="80" rx="40" fill="#141e14" stroke="#83C167" stroke-width="3" /><text x="410" y="611" font-size="30" fill="#83C167" text-anchor="middle">注册商锁</text></g>
+          <g class="d-df h"><rect x="620" y="560" width="300" height="80" rx="40" fill="#141e14" stroke="#83C167" stroke-width="3" /><text x="770" y="611" font-size="30" fill="#83C167" text-anchor="middle">注册局锁</text></g>
+          <g class="d-df h"><rect x="980" y="560" width="300" height="80" rx="40" fill="#141e14" stroke="#83C167" stroke-width="3" /><text x="1130" y="611" font-size="30" fill="#83C167" text-anchor="middle">硬件密钥登录</text></g>
+          <g class="d-df h"><rect x="1340" y="560" width="300" height="80" rx="40" fill="#141e14" stroke="#83C167" stroke-width="3" /><text x="1490" y="611" font-size="30" fill="#83C167" text-anchor="middle">DNS 变更监控</text></g>
+        </g>
+        <text id="d-pw" class="h" x="960" y="760" font-size="36" fill="#e8e6df" text-anchor="middle"><tspan fill="#8a8f99" text-decoration="line-through">换个强密码</tspan>　→　不够</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 53.49, "L": [[0.6, 3.6], [4.05, 11.35], [11.8, 19.16], [19.61, 31.4], [31.85, 41.21], [41.66, 52.39]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.8) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      const DRAWA = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 用户 → DNS → 真实服务器
+      IN("#d-title", at(0, 0.0), 0.5);
+      IN("#d-user", at(0, 0.3), 0.4);
+      DRAWA("#d-a1", at(0, 0.5), 0.4);
+      IN("#d-dns", at(0, 0.55), 0.4);
+      IN("#d-real", at(0, 0.7), 0.4);
+      DRAWA("#d-ok", at(0, 0.75), 0.5);
+      // L1 攻击者拿下注册商账号，改 DNS
+      IN("#d-reg", at(1, 0.05), 0.5);
+      IN("#d-atk", at(1, 0.25), 0.4);
+      DRAWA("#d-take", at(1, 0.35), 0.5);
+      tl.to("#d-dnsr", { stroke: "#FC6255", duration: 0.3 }, at(1, 0.6));
+      tl.to("#d-ok", { opacity: 0.15, duration: 0.3 }, at(1, 0.7));
+      DRAWA("#d-bad", at(1, 0.72), 0.6);
+      // L2 正确的域名，到达克隆页面
+      IN("#d-clone", at(2, 0.05), 0.5, { x: 30 }, { x: 0 });
+      IN("#d-bar", at(2, 0.3), 0.4);
+      IN("#d-barx", at(2, 0.7), 0.4);
+      // L3 锁
+      IN("#d-cert", at(3, 0.15), 0.5, { scale: 1.4, svgOrigin: "1480 752" }, { scale: 1 });
+      IN("#d-certm", at(3, 0.55), 0.6);
+      // L4 2025 年再一次
+      tl.to("#d-all", { opacity: 0, duration: 0.4 }, at(4, 0));
+      IN("#d-axis", at(4, 0.05), 0.4);
+      IN("#d-e1", at(4, 0.1), 0.4);
+      IN("#d-e2", at(4, 0.3), 0.5);
+      DRAW("#d-same", at(4, 0.6), 0.6);
+      IN("#d-samet", at(4, 0.65), 0.4);
+      // L5 防线
+      IN("#d-pw", at(5, 0.05), 0.5);
+      gsap.utils.toArray("#root .d-df").forEach((g, i) => IN(g, at(5, 0.3) + i * 0.12 * (L[5][1] - L[5][0]), 0.4, { y: 20 }, { y: 0 }));
+
+      tl.to(["#d-all", "#d-tl"], { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["dns"] = tl;
+    })();
+  </script>
+</template>

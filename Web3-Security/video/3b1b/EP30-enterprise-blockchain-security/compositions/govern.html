@@ -1,0 +1,143 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root text.mono, #root tspan.mono { font-family: "JetBrains Mono", "NotoSC", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="govern" data-duration="46.68" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="o-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="o-all">
+        <text id="o-t" class="h" x="960" y="120" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="700">最大的风险，常常在<tspan fill="#B48EF0">流程</tspan></text>
+        <!-- CA 树 -->
+        <g id="o-tree">
+          <g id="o-hsm" class="h"><rect x="800" y="170" width="320" height="150" rx="16" fill="none" stroke="#83C167" stroke-width="3" stroke-dasharray="10 8" /><text x="1140" y="200" font-size="28" fill="#83C167">离线 · HSM</text></g>
+          <g id="o-root" class="h"><rect id="o-rootr" x="860" y="200" width="200" height="90" rx="14" fill="#18141f" stroke="#B48EF0" stroke-width="4" /><text x="960" y="256" font-size="32" fill="#B48EF0" text-anchor="middle" font-weight="700">根 CA</text></g>
+          <g stroke="#8a8f99" stroke-width="3" fill="none">
+            <path class="o-tl dr h" pathLength="1" d="M900 295 L 640 380" /><path class="o-tl dr h" pathLength="1" d="M1020 295 L 1280 380" />
+          </g>
+          <g class="o-mid h"><rect x="520" y="380" width="240" height="80" rx="12" fill="#161a22" stroke="#B48EF0" stroke-opacity=".6" stroke-width="3" /><text x="640" y="430" font-size="28" fill="#e8e6df" text-anchor="middle">中间 CA</text></g>
+          <g class="o-mid h"><rect x="1160" y="380" width="240" height="80" rx="12" fill="#161a22" stroke="#B48EF0" stroke-opacity=".6" stroke-width="3" /><text x="1280" y="430" font-size="28" fill="#e8e6df" text-anchor="middle">中间 CA</text></g>
+          <g id="o-ids"></g>
+          <g id="o-fake"></g>
+          <text id="o-faket" class="h" x="960" y="600" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">根私钥泄露 → 签发任意身份</text>
+          <text id="o-daily" class="h" x="960" y="600" font-size="30" fill="#83C167" text-anchor="middle">日常签发交给中间 CA</text>
+        </g>
+        <!-- 身份只能吊销 -->
+        <g id="o-rev">
+          <g id="o-card" class="h">
+            <rect x="180" y="680" width="460" height="230" rx="16" fill="#18141f" stroke="#B48EF0" stroke-width="3" />
+            <text x="410" y="735" font-size="32" fill="#B48EF0" text-anchor="middle" font-weight="700">成员身份证书</text>
+            <text x="410" y="795" font-size="30" fill="#e8e6df" text-anchor="middle">不会自动过期</text>
+            <text x="410" y="850" font-size="30" fill="#FF9F43" text-anchor="middle">只能吊销</text>
+          </g>
+          <text id="o-drill" class="h" x="410" y="970" font-size="32" fill="#83C167" text-anchor="middle">吊销与撤换：提前演练</text>
+        </g>
+        <!-- 服务商握着多家管理员证书 -->
+        <g id="o-svc">
+          <g id="o-prov" class="h"><rect x="1040" y="680" width="380" height="110" rx="14" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="1230" y="720" font-size="30" fill="#e8e6df" text-anchor="middle">一家技术服务商</text></g>
+          <text id="o-many" class="h" x="1440" y="760" font-size="28" fill="#FC6255">Org1/2/3 的管理员证书</text>
+          <g class="o-org h"><rect x="1060" y="880" width="160" height="80" rx="12" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="1140" y="930" font-size="28" fill="#e8e6df" text-anchor="middle">Org1</text></g>
+          <g class="o-org h"><rect x="1260" y="880" width="160" height="80" rx="12" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="1340" y="930" font-size="28" fill="#e8e6df" text-anchor="middle">Org2</text></g>
+          <g class="o-org h"><rect x="1460" y="880" width="160" height="80" rx="12" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="1540" y="930" font-size="28" fill="#e8e6df" text-anchor="middle">Org3</text></g>
+          <g id="o-keys" fill="#B48EF0"><circle class="o-k h" cx="1160" cy="760" r="16" /><circle class="o-k h" cx="1230" cy="760" r="16" /><circle class="o-k h" cx="1300" cy="760" r="16" /></g>
+          <text id="o-own" class="h" x="1340" y="1030" font-size="30" fill="#83C167" text-anchor="middle">每家组织自持密钥</text>
+        </g>
+        <!-- 成员共谋与外部锚定 -->
+        <g id="o-col">
+          <g id="o-five"></g>
+          <text id="o-thr" class="h" x="700" y="200" font-size="32" fill="#FC6255" text-anchor="middle">达到背书阈值的成员（示例 3 / 5）</text>
+          <g id="o-led" class="h"><rect x="460" y="520" width="480" height="140" rx="14" fill="#1a1708" stroke="#F0B90B" stroke-width="3" /><text x="700" y="575" font-size="32" fill="#F0B90B" text-anchor="middle">联盟账本</text><text id="o-falset" x="700" y="625" font-size="30" fill="#FC6255" text-anchor="middle" opacity="0">虚假的业务状态</text></g>
+          <path id="o-anc" class="dr h" pathLength="1" d="M945 590 L 1235 590" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#o-ah)" />
+          <text id="o-anct" class="h" x="1090" y="560" font-size="28" fill="#8a8f99" text-anchor="middle">定期摘要</text>
+          <g id="o-pub" class="h"><rect x="1245" y="520" width="380" height="140" rx="14" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="1435" y="580" font-size="32" fill="#e8e6df" text-anchor="middle">外部锚定</text><text x="1435" y="625" font-size="28" fill="#8a8f99" text-anchor="middle">公链 / 第三方</text></g>
+          <text id="o-y" class="h" x="1435" y="760" font-size="34" fill="#83C167" text-anchor="middle">✓ 能证明：历史没被改写</text>
+          <text id="o-n" class="h" x="1435" y="830" font-size="34" fill="#FF9F43" text-anchor="middle">✕ 证明不了：数据本身是真的</text>
+        </g>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 46.68, "L": [[0.6, 4.39], [4.84, 17.15], [17.6, 25.26], [25.71, 34.06], [34.51, 45.58]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, ox, oy, d = 0.4) => IN(s, t, d, { scale: 0.4, svgOrigin: `${ox} ${oy}` }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      // 身份徽章（确定性）
+      const idh = document.querySelector("#o-ids"), ids = [];
+      [440, 560, 680, 800, 1120, 1240, 1360, 1480].forEach((x) => {
+        const c = document.createElementNS(NS, "rect");
+        c.setAttribute("x", x); c.setAttribute("y", "500"); c.setAttribute("width", "60"); c.setAttribute("height", "40"); c.setAttribute("rx", "6");
+        c.setAttribute("fill", "#18141f"); c.setAttribute("stroke", "#B48EF0"); c.setAttribute("stroke-width", "2"); c.setAttribute("opacity", "0");
+        idh.appendChild(c); ids.push(c);
+      });
+      const fk = document.querySelector("#o-fake"), fakes = [];
+      for (let i = 0; i < 10; i++) {
+        const c = document.createElementNS(NS, "rect");
+        c.setAttribute("x", 920); c.setAttribute("y", "320"); c.setAttribute("width", "60"); c.setAttribute("height", "40"); c.setAttribute("rx", "6");
+        c.setAttribute("fill", "#2a1414"); c.setAttribute("stroke", "#FC6255"); c.setAttribute("stroke-width", "2"); c.setAttribute("opacity", "0");
+        fk.appendChild(c); fakes.push({ c, dx: (i - 4.5) * 120, dy: 160 + (i % 2) * 60 });
+      }
+      const five = document.querySelector("#o-five"), F = [];
+      for (let i = 0; i < 5; i++) {
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", 380 + i * 160); c.setAttribute("cy", "330"); c.setAttribute("r", "46");
+        c.setAttribute("fill", "#161a22"); c.setAttribute("stroke", "#e8e6df"); c.setAttribute("stroke-width", "3"); c.setAttribute("opacity", "0");
+        five.appendChild(c); F.push(c);
+      }
+      // L0
+      IN("#o-t", at(0, 0.05), 0.6);
+      // L1 根 CA 决定信任边界；泄露 → 任意身份；修复：离线 + HSM + 中间 CA
+      IN("#o-root", at(1, 0.0), 0.4);
+      gsap.utils.toArray("#root .o-tl").forEach((p, i) => DRAW(p, at(1, 0.06) + i * 0.05, 0.4));
+      gsap.utils.toArray("#root .o-mid").forEach((g, i) => IN(g, at(1, 0.1) + i * 0.05, 0.3));
+      ids.forEach((c, i) => IN(c, at(1, 0.15) + i * 0.03, 0.25));
+      tl.to("#o-rootr", { stroke: "#FC6255", duration: 0.3 }, at(1, 0.3));
+      fakes.forEach((f, i) => tl.fromTo(f.c, { opacity: 0, x: 0, y: 0 }, { opacity: 1, x: f.dx, y: f.dy, duration: 0.6, ease: "power2.out" }, at(1, 0.32) + i * 0.04));
+      IN("#o-faket", at(1, 0.35), 0.3);
+      tl.to(fakes.map((f) => f.c), { opacity: 0, duration: 0.3 }, at(1, 0.66));
+      OUT("#o-faket", at(1, 0.66), 0.3);
+      tl.to("#o-rootr", { stroke: "#B48EF0", duration: 0.3 }, at(1, 0.68));
+      IN("#o-hsm", at(1, 0.7), 0.4, { scale: 1.2, svgOrigin: "960 245" }, { scale: 1 });
+      IN("#o-daily", at(1, 0.85), 0.3);
+      // L2 身份只能吊销
+      tl.to("#o-tree", { opacity: 0.25, duration: 0.4 }, at(2, 0));
+      IN("#o-card", at(2, 0.05), 0.5, { y: 20 }, { y: 0 });
+      IN("#o-drill", at(2, 0.6), 0.4);
+      // L3 服务商握多家管理员证书 → 各家自持
+      IN("#o-prov", at(3, 0.02), 0.4);
+      gsap.utils.toArray("#root .o-k").forEach((k, i) => IN(k, at(3, 0.15) + i * 0.08, 0.25));
+      IN("#o-many", at(3, 0.3), 0.3);
+      tl.to("#root .o-k", { fill: "#FC6255", duration: 0.3 }, at(3, 0.35));
+      gsap.utils.toArray("#root .o-org").forEach((g, i) => IN(g, at(3, 0.5) + i * 0.06, 0.3));
+      OUT("#o-many", at(3, 0.6), 0.2);
+      gsap.utils.toArray("#root .o-k").forEach((k, i) => tl.to(k, { attr: { cx: 1088 + i * 200, cy: 920 }, fill: "#B48EF0", duration: 0.6, ease: "power2.inOut" }, at(3, 0.62)));
+      IN("#o-own", at(3, 0.8), 0.4);
+      // L4 成员共谋；外部锚定
+      tl.to(["#o-tree", "#o-rev", "#o-svc"], { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(4, 0));
+      F.forEach((c, i) => IN(c, at(4, 0.05) + i * 0.04, 0.3));
+      tl.to(F.slice(0, 3), { stroke: "#FC6255", fill: "#2a1414", duration: 0.3 }, at(4, 0.15));
+      IN("#o-thr", at(4, 0.15), 0.3);
+      IN("#o-led", at(4, 0.2), 0.4);
+      tl.to("#o-falset", { opacity: 1, duration: 0.3 }, at(4, 0.3));
+      DRAW("#o-anc", at(4, 0.45), 0.5); IN("#o-anct", at(4, 0.45), 0.3);
+      IN("#o-pub", at(4, 0.5), 0.4);
+      IN("#o-y", at(4, 0.62), 0.4);
+      IN("#o-n", at(4, 0.8), 0.4);
+      tl.to("#o-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["govern"] = tl;
+    })();
+  </script>
+</template>

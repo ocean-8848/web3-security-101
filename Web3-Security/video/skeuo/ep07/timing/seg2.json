@@ -1,0 +1,2802 @@
+{
+ "id": "seg2",
+ "title": "四个陷阱",
+ "pill": 2,
+ "total": 164.06,
+ "lines": [
+  {
+   "id": "seg2-00",
+   "text": "低级调用，指 call，delegatecall 和 staticcall。",
+   "spoken": "低级掉用，指 call，delegatecall 和 staticcall。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-00.mp3",
+   "start": 1.6,
+   "dur": 4.392,
+   "speechStart": 1.698,
+   "speechEnd": 5.138
+  },
+  {
+   "id": "seg2-01",
+   "text": "它们失败时，不会自动回滚，只返回一个 false。",
+   "spoken": "它们失败时，不会自动回滚，只返回一个 false。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-01.mp3",
+   "start": 6.212,
+   "dur": 4.344,
+   "speechStart": 6.31,
+   "speechEnd": 9.714
+  },
+  {
+   "id": "seg2-02",
+   "text": "打个比方。你让快递员送包裹，然后在登记簿上写：已送达。",
+   "spoken": "打个比方。你让快递员送包裹，然后在登记簿上写：已送达。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-02.mp3",
+   "start": 10.776,
+   "dur": 6.288,
+   "speechStart": 10.874,
+   "speechEnd": 16.228
+  },
+  {
+   "id": "seg2-03",
+   "text": "陷阱一，不检查返回值。快递员没回话，你就当作送到了。",
+   "spoken": "陷阱一，不检查返回值。快递员没回话，你就荡作送到了。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-03.mp3",
+   "start": 17.284,
+   "dur": 6.024,
+   "speechStart": 17.382,
+   "speechEnd": 22.474
+  },
+  {
+   "id": "seg2-04",
+   "text": "修复是接住返回的布尔值，不成功就回滚。",
+   "spoken": "修复是接住返回的布尔值，不成功就回滚。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-04.mp3",
+   "start": 23.528,
+   "dur": 4.032,
+   "speechStart": 23.626,
+   "speechEnd": 26.721
+  },
+  {
+   "id": "seg2-05",
+   "text": "陷阱二，目标没有代码。地址是一块荒地。",
+   "spoken": "陷阱二，目标没有代码。地址是一块荒地。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-05.mp3",
+   "start": 27.78,
+   "dur": 4.68,
+   "speechStart": 27.878,
+   "speechEnd": 31.613
+  },
+  {
+   "id": "seg2-06",
+   "text": "快递员说送到了，因为荒地不会拒收。",
+   "spoken": "快递员说送到了，因为荒地不会拒收。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-06.mp3",
+   "start": 32.68,
+   "dur": 3.528,
+   "speechStart": 32.778,
+   "speechEnd": 35.373
+  },
+  {
+   "id": "seg2-07",
+   "text": "对无代码地址的 call，返回成功，返回数据是空的。",
+   "spoken": "对无代码地址的 call，返回成功，返回数据是空的。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-07.mp3",
+   "start": 36.428,
+   "dur": 4.608,
+   "speechStart": 36.526,
+   "speechEnd": 40.216
+  },
+  {
+   "id": "seg2-08",
+   "text": "修复是调用之前，检查目标地址的代码长度大于 0。",
+   "spoken": "修复是掉用之前，检查目标地址的代码常度大于 0。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-08.mp3",
+   "start": 41.256,
+   "dur": 5.688,
+   "speechStart": 41.354,
+   "speechEnd": 46.092
+  },
+  {
+   "id": "seg2-09",
+   "text": "陷阱三，返回数据炸弹。对方返回超大的数据。",
+   "spoken": "陷阱三，返回数据炸弹。对方返回超大的数据。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-09.mp3",
+   "start": 47.164,
+   "dur": 5.208,
+   "speechStart": 47.262,
+   "speechEnd": 51.521
+  },
+  {
+   "id": "seg2-10",
+   "text": "复制进内存，耗光 gas。修复是限制复制长度。",
+   "spoken": "复制进内存，耗光 gas。修复是限制复制常度。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-10.mp3",
+   "start": 52.592,
+   "dur": 5.424,
+   "speechStart": 52.69,
+   "speechEnd": 57.163
+  },
+  {
+   "id": "seg2-11",
+   "text": "陷阱四，gas 不足型失败。",
+   "spoken": "陷阱四，gas 不足型失败。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-11.mp3",
+   "start": 58.236,
+   "dur": 3.192,
+   "speechStart": 58.334,
+   "speechEnd": 60.584
+  },
+  {
+   "id": "seg2-12",
+   "text": "调用方故意给刚好不够的 gas，",
+   "spoken": "掉用方故意给刚好不够的 gas，",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-12.mp3",
+   "start": 61.648,
+   "dur": 3.144,
+   "speechStart": 61.746,
+   "speechEnd": 63.96
+  },
+  {
+   "id": "seg2-13",
+   "text": "内部调用失败，外层却继续往下走。",
+   "spoken": "内部掉用失败，外层却继续往下走。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-13.mp3",
+   "start": 65.012,
+   "dur": 3.672,
+   "speechStart": 65.11,
+   "speechEnd": 67.848
+  },
+  {
+   "id": "seg2-14",
+   "text": "修复是检查剩余 gas。关键调用失败时，整体回滚。",
+   "spoken": "修复是检查剩余 gas。关键掉用失败时，整体回滚。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-14.mp3",
+   "start": 68.904,
+   "dur": 5.784,
+   "speechStart": 69.002,
+   "speechEnd": 73.844
+  },
+  {
+   "id": "seg2-15",
+   "text": "比喻在这里不成立：快递员一次只会出一种错。",
+   "spoken": "比喻在这里不成立：快递员一次只会出一种错。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-15.mp3",
+   "start": 74.908,
+   "dur": 4.464,
+   "speechStart": 75.006,
+   "speechEnd": 78.565
+  },
+  {
+   "id": "seg2-16",
+   "text": "外部合约可以同时撒谎，回调，耗尽 gas。",
+   "spoken": "外部合约可以同时撒谎，回掉，耗尽 gas。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-16.mp3",
+   "start": 79.592,
+   "dur": 4.272,
+   "speechStart": 79.69,
+   "speechEnd": 83.023
+  },
+  {
+   "id": "seg2-17",
+   "text": "现在回到 Qubit。按 SlowMist 的公开分析，根因分五步。",
+   "spoken": "现在回到 Qubit。按 SlowMist 的公开分析，根因分五步。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-17.mp3",
+   "start": 84.084,
+   "dur": 5.592,
+   "speechStart": 84.182,
+   "speechEnd": 88.846
+  },
+  {
+   "id": "seg2-18",
+   "text": "第一步，桥给原生 ETH 配的代币地址，是零地址。",
+   "spoken": "第一步，桥给原生 ETH 配的代币地址，是零地址。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-18.mp3",
+   "start": 89.896,
+   "dur": 4.992,
+   "speechStart": 89.994,
+   "speechEnd": 94.053
+  },
+  {
+   "id": "seg2-19",
+   "text": "ETH 存款本该走 depositETH，它会核对随交易附带的 ETH。",
+   "spoken": "ETH 存款本该走 depositETH，它会核对随交易附带的 ETH。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-19.mp3",
+   "start": 95.108,
+   "dur": 5.592,
+   "speechStart": 95.206,
+   "speechEnd": 99.872
+  },
+  {
+   "id": "seg2-20",
+   "text": "第二步，攻击者调用普通的 deposit，传入 ETH 的资源 ID。",
+   "spoken": "第二步，攻击者掉用普通的 deposit，传入 ETH 的资源 ID。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-20.mp3",
+   "start": 100.92,
+   "dur": 5.496,
+   "speechStart": 101.018,
+   "speechEnd": 105.565
+  },
+  {
+   "id": "seg2-21",
+   "text": "白名单检查通过。",
+   "spoken": "白名单检查通过。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-21.mp3",
+   "start": 106.636,
+   "dur": 2.256,
+   "speechStart": 106.734,
+   "speechEnd": 108.043
+  },
+  {
+   "id": "seg2-22",
+   "text": "第三步，deposit 对零地址，执行 safeTransferFrom。",
+   "spoken": "第三步，deposit 对零地址，执行 safeTransferFrom。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-22.mp3",
+   "start": 109.112,
+   "dur": 5.064,
+   "speechStart": 109.21,
+   "speechEnd": 113.341
+  },
+  {
+   "id": "seg2-23",
+   "text": "第四步，零地址没有代码。低级调用返回成功，返回数据是空的。",
+   "spoken": "第四步，零地址没有代码。低级掉用返回成功，返回数据是空的。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-23.mp3",
+   "start": 114.396,
+   "dur": 6.6,
+   "speechStart": 114.494,
+   "speechEnd": 120.17
+  },
+  {
+   "id": "seg2-24",
+   "text": "旧版的安全转账库，把空返回当作成功。",
+   "spoken": "旧版的安全转账库，把空返回荡作成功。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-24.mp3",
+   "start": 121.216,
+   "dur": 4.2,
+   "speechStart": 121.314,
+   "speechEnd": 124.564
+  },
+  {
+   "id": "seg2-25",
+   "text": "这是为了兼容不返回值的 USDT。",
+   "spoken": "这是为了兼容不返回值的 USDT。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-25.mp3",
+   "start": 125.636,
+   "dur": 4.008,
+   "speechStart": 125.734,
+   "speechEnd": 128.805
+  },
+  {
+   "id": "seg2-26",
+   "text": "第五步，桥记下一笔 ETH 存款。BNB Chain 一侧，铸出大量 qXETH。",
+   "spoken": "第五步，桥记下一笔 ETH 存款。BNB Chain 一侧，铸出大量 qXETH。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-26.mp3",
+   "start": 129.864,
+   "dur": 6.768,
+   "speechStart": 129.962,
+   "speechEnd": 135.804
+  },
+  {
+   "id": "seg2-27",
+   "text": "攻击者拿它做抵押，借空了借贷池。",
+   "spoken": "攻击者拿它做抵押，借空了借贷池。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-27.mp3",
+   "start": 136.852,
+   "dur": 3.696,
+   "speechStart": 136.95,
+   "speechEnd": 139.712
+  },
+  {
+   "id": "seg2-28",
+   "text": "每一步单独看，都说得通。",
+   "spoken": "每一步单独看，都说得通。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-28.mp3",
+   "start": 140.768,
+   "dur": 3.072,
+   "speechStart": 140.866,
+   "speechEnd": 143.02
+  },
+  {
+   "id": "seg2-29",
+   "text": "漏洞来自组合：零地址，兼容性妥协，缺少原生币检查。",
+   "spoken": "漏洞来自组合：零地址，兼容性妥协，缺少原生币检查。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-29.mp3",
+   "start": 144.06,
+   "dur": 5.832,
+   "speechStart": 144.158,
+   "speechEnd": 149.05
+  },
+  {
+   "id": "seg2-30",
+   "text": "白名单只告诉你，这个 ID 被允许。",
+   "spoken": "白名单只告诉你，这个 ID 被允许。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-30.mp3",
+   "start": 150.112,
+   "dur": 3.936,
+   "speechStart": 150.21,
+   "speechEnd": 153.21
+  },
+  {
+   "id": "seg2-31",
+   "text": "没告诉你，它对应什么资产。",
+   "spoken": "没告诉你，它对应什么资产。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-31.mp3",
+   "start": 154.268,
+   "dur": 2.952,
+   "speechStart": 154.366,
+   "speechEnd": 156.366
+  },
+  {
+   "id": "seg2-32",
+   "text": "现在的 SafeERC20 遇到空返回，会检查目标有没有代码。",
+   "spoken": "现在的 SafeERC20 遇到空返回，会检查目标有没有代码。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep07/audio/lines/seg2-32.mp3",
+   "start": 157.44,
+   "dur": 5.424,
+   "speechStart": 157.538,
+   "speechEnd": 162.014
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "低级",
+   "start": 1.698,
+   "end": 1.96
+  },
+  {
+   "line": 0,
+   "text": "调用",
+   "start": 1.971,
+   "end": 2.376
+  },
+  {
+   "line": 0,
+   "text": "指",
+   "start": 2.555,
+   "end": 2.733
+  },
+  {
+   "line": 0,
+   "text": "call",
+   "start": 2.733,
+   "end": 3.186
+  },
+  {
+   "line": 0,
+   "text": "delegatecall",
+   "start": 3.412,
+   "end": 4.198
+  },
+  {
+   "line": 0,
+   "text": "和",
+   "start": 4.305,
+   "end": 4.471
+  },
+  {
+   "line": 0,
+   "text": "staticcall",
+   "start": 4.483,
+   "end": 5.138
+  },
+  {
+   "line": 1,
+   "text": "它们",
+   "start": 6.31,
+   "end": 6.536
+  },
+  {
+   "line": 1,
+   "text": "失败",
+   "start": 6.548,
+   "end": 6.869
+  },
+  {
+   "line": 1,
+   "text": "时",
+   "start": 6.869,
+   "end": 7.25
+  },
+  {
+   "line": 1,
+   "text": "不会",
+   "start": 7.488,
+   "end": 7.75
+  },
+  {
+   "line": 1,
+   "text": "自动",
+   "start": 7.762,
+   "end": 8.012
+  },
+  {
+   "line": 1,
+   "text": "回滚",
+   "start": 8.024,
+   "end": 8.464
+  },
+  {
+   "line": 1,
+   "text": "只",
+   "start": 8.643,
+   "end": 8.833
+  },
+  {
+   "line": 1,
+   "text": "返回",
+   "start": 8.833,
+   "end": 9.083
+  },
+  {
+   "line": 1,
+   "text": "一个",
+   "start": 9.095,
+   "end": 9.238
+  },
+  {
+   "line": 1,
+   "text": "false",
+   "start": 9.238,
+   "end": 9.714
+  },
+  {
+   "line": 2,
+   "text": "打",
+   "start": 10.874,
+   "end": 11.124
+  },
+  {
+   "line": 2,
+   "text": "个",
+   "start": 11.124,
+   "end": 11.207
+  },
+  {
+   "line": 2,
+   "text": "比方",
+   "start": 11.219,
+   "end": 11.659
+  },
+  {
+   "line": 2,
+   "text": "你",
+   "start": 12.193,
+   "end": 12.336
+  },
+  {
+   "line": 2,
+   "text": "让",
+   "start": 12.336,
+   "end": 12.466
+  },
+  {
+   "line": 2,
+   "text": "快递员",
+   "start": 12.478,
+   "end": 12.931
+  },
+  {
+   "line": 2,
+   "text": "送",
+   "start": 12.955,
+   "end": 13.133
+  },
+  {
+   "line": 2,
+   "text": "包裹",
+   "start": 13.133,
+   "end": 13.609
+  },
+  {
+   "line": 2,
+   "text": "然后",
+   "start": 13.943,
+   "end": 14.276
+  },
+  {
+   "line": 2,
+   "text": "在",
+   "start": 14.288,
+   "end": 14.431
+  },
+  {
+   "line": 2,
+   "text": "登记簿",
+   "start": 14.431,
+   "end": 14.788
+  },
+  {
+   "line": 2,
+   "text": "上",
+   "start": 14.8,
+   "end": 14.966
+  },
+  {
+   "line": 2,
+   "text": "写",
+   "start": 14.966,
+   "end": 15.264
+  },
+  {
+   "line": 2,
+   "text": "已",
+   "start": 15.597,
+   "end": 15.716
+  },
+  {
+   "line": 2,
+   "text": "送达",
+   "start": 15.728,
+   "end": 16.228
+  },
+  {
+   "line": 3,
+   "text": "陷阱",
+   "start": 17.382,
+   "end": 17.798
+  },
+  {
+   "line": 3,
+   "text": "一",
+   "start": 17.81,
+   "end": 18.096
+  },
+  {
+   "line": 3,
+   "text": "不",
+   "start": 18.37,
+   "end": 18.524
+  },
+  {
+   "line": 3,
+   "text": "检查",
+   "start": 18.524,
+   "end": 18.893
+  },
+  {
+   "line": 3,
+   "text": "返回",
+   "start": 18.917,
+   "end": 19.251
+  },
+  {
+   "line": 3,
+   "text": "值",
+   "start": 19.251,
+   "end": 19.584
+  },
+  {
+   "line": 3,
+   "text": "快递员",
+   "start": 20.117,
+   "end": 20.534
+  },
+  {
+   "line": 3,
+   "text": "没",
+   "start": 20.546,
+   "end": 20.665
+  },
+  {
+   "line": 3,
+   "text": "回话",
+   "start": 20.665,
+   "end": 21.129
+  },
+  {
+   "line": 3,
+   "text": "你",
+   "start": 21.474,
+   "end": 21.689
+  },
+  {
+   "line": 3,
+   "text": "就",
+   "start": 21.689,
+   "end": 21.76
+  },
+  {
+   "line": 3,
+   "text": "当",
+   "start": 21.772,
+   "end": 21.915
+  },
+  {
+   "line": 3,
+   "text": "作",
+   "start": 21.915,
+   "end": 21.986
+  },
+  {
+   "line": 3,
+   "text": "送",
+   "start": 21.998,
+   "end": 22.189
+  },
+  {
+   "line": 3,
+   "text": "到",
+   "start": 22.189,
+   "end": 22.32
+  },
+  {
+   "line": 3,
+   "text": "了",
+   "start": 22.32,
+   "end": 22.474
+  },
+  {
+   "line": 4,
+   "text": "修复",
+   "start": 23.626,
+   "end": 24.138
+  },
+  {
+   "line": 4,
+   "text": "是",
+   "start": 24.161,
+   "end": 24.292
+  },
+  {
+   "line": 4,
+   "text": "接住",
+   "start": 24.292,
+   "end": 24.578
+  },
+  {
+   "line": 4,
+   "text": "返回",
+   "start": 24.602,
+   "end": 24.899
+  },
+  {
+   "line": 4,
+   "text": "的",
+   "start": 24.899,
+   "end": 24.971
+  },
+  {
+   "line": 4,
+   "text": "布尔值",
+   "start": 24.983,
+   "end": 25.518
+  },
+  {
+   "line": 4,
+   "text": "不",
+   "start": 25.709,
+   "end": 25.84
+  },
+  {
+   "line": 4,
+   "text": "成功",
+   "start": 25.84,
+   "end": 26.185
+  },
+  {
+   "line": 4,
+   "text": "就",
+   "start": 26.209,
+   "end": 26.316
+  },
+  {
+   "line": 4,
+   "text": "回滚",
+   "start": 26.316,
+   "end": 26.721
+  },
+  {
+   "line": 5,
+   "text": "陷阱",
+   "start": 27.878,
+   "end": 28.282
+  },
+  {
+   "line": 5,
+   "text": "二",
+   "start": 28.294,
+   "end": 28.568
+  },
+  {
+   "line": 5,
+   "text": "目标",
+   "start": 28.913,
+   "end": 29.235
+  },
+  {
+   "line": 5,
+   "text": "没有",
+   "start": 29.259,
+   "end": 29.425
+  },
+  {
+   "line": 5,
+   "text": "代码",
+   "start": 29.437,
+   "end": 29.818
+  },
+  {
+   "line": 5,
+   "text": "地址",
+   "start": 30.363,
+   "end": 30.816
+  },
+  {
+   "line": 5,
+   "text": "是",
+   "start": 30.84,
+   "end": 30.982
+  },
+  {
+   "line": 5,
+   "text": "一块",
+   "start": 30.994,
+   "end": 31.173
+  },
+  {
+   "line": 5,
+   "text": "荒地",
+   "start": 31.185,
+   "end": 31.613
+  },
+  {
+   "line": 6,
+   "text": "快递员",
+   "start": 32.778,
+   "end": 33.182
+  },
+  {
+   "line": 6,
+   "text": "说",
+   "start": 33.182,
+   "end": 33.313
+  },
+  {
+   "line": 6,
+   "text": "送到",
+   "start": 33.325,
+   "end": 33.682
+  },
+  {
+   "line": 6,
+   "text": "了",
+   "start": 33.682,
+   "end": 33.944
+  },
+  {
+   "line": 6,
+   "text": "因为",
+   "start": 34.182,
+   "end": 34.385
+  },
+  {
+   "line": 6,
+   "text": "荒地",
+   "start": 34.397,
+   "end": 34.694
+  },
+  {
+   "line": 6,
+   "text": "不会",
+   "start": 34.718,
+   "end": 34.956
+  },
+  {
+   "line": 6,
+   "text": "拒收",
+   "start": 34.968,
+   "end": 35.373
+  },
+  {
+   "line": 7,
+   "text": "对",
+   "start": 36.526,
+   "end": 36.728
+  },
+  {
+   "line": 7,
+   "text": "无",
+   "start": 36.752,
+   "end": 36.871
+  },
+  {
+   "line": 7,
+   "text": "代码",
+   "start": 36.871,
+   "end": 37.157
+  },
+  {
+   "line": 7,
+   "text": "地址",
+   "start": 37.168,
+   "end": 37.418
+  },
+  {
+   "line": 7,
+   "text": "的",
+   "start": 37.418,
+   "end": 37.514
+  },
+  {
+   "line": 7,
+   "text": "call",
+   "start": 37.514,
+   "end": 37.883
+  },
+  {
+   "line": 7,
+   "text": "返回",
+   "start": 38.085,
+   "end": 38.418
+  },
+  {
+   "line": 7,
+   "text": "成功",
+   "start": 38.43,
+   "end": 38.883
+  },
+  {
+   "line": 7,
+   "text": "返回",
+   "start": 39.073,
+   "end": 39.43
+  },
+  {
+   "line": 7,
+   "text": "数据",
+   "start": 39.442,
+   "end": 39.716
+  },
+  {
+   "line": 7,
+   "text": "是空",
+   "start": 39.74,
+   "end": 40.073
+  },
+  {
+   "line": 7,
+   "text": "的",
+   "start": 40.073,
+   "end": 40.216
+  },
+  {
+   "line": 8,
+   "text": "修复",
+   "start": 41.354,
+   "end": 41.866
+  },
+  {
+   "line": 8,
+   "text": "是",
+   "start": 41.889,
+   "end": 42.056
+  },
+  {
+   "line": 8,
+   "text": "调用",
+   "start": 42.068,
+   "end": 42.342
+  },
+  {
+   "line": 8,
+   "text": "之前",
+   "start": 42.354,
+   "end": 42.866
+  },
+  {
+   "line": 8,
+   "text": "检查",
+   "start": 43.246,
+   "end": 43.627
+  },
+  {
+   "line": 8,
+   "text": "目标",
+   "start": 43.651,
+   "end": 43.925
+  },
+  {
+   "line": 8,
+   "text": "地址",
+   "start": 43.937,
+   "end": 44.246
+  },
+  {
+   "line": 8,
+   "text": "的",
+   "start": 44.246,
+   "end": 44.532
+  },
+  {
+   "line": 8,
+   "text": "代码",
+   "start": 44.627,
+   "end": 44.973
+  },
+  {
+   "line": 8,
+   "text": "长度",
+   "start": 44.985,
+   "end": 45.461
+  },
+  {
+   "line": 8,
+   "text": "大于 0",
+   "start": 45.485,
+   "end": 46.092
+  },
+  {
+   "line": 9,
+   "text": "陷阱",
+   "start": 47.262,
+   "end": 47.702
+  },
+  {
+   "line": 9,
+   "text": "三",
+   "start": 47.702,
+   "end": 48.035
+  },
+  {
+   "line": 9,
+   "text": "返回",
+   "start": 48.345,
+   "end": 48.75
+  },
+  {
+   "line": 9,
+   "text": "数据",
+   "start": 48.774,
+   "end": 49.035
+  },
+  {
+   "line": 9,
+   "text": "炸弹",
+   "start": 49.047,
+   "end": 49.44
+  },
+  {
+   "line": 9,
+   "text": "对方",
+   "start": 49.985,
+   "end": 50.354
+  },
+  {
+   "line": 9,
+   "text": "返回",
+   "start": 50.366,
+   "end": 50.688
+  },
+  {
+   "line": 9,
+   "text": "超大",
+   "start": 50.712,
+   "end": 51.057
+  },
+  {
+   "line": 9,
+   "text": "的",
+   "start": 51.057,
+   "end": 51.116
+  },
+  {
+   "line": 9,
+   "text": "数据",
+   "start": 51.128,
+   "end": 51.521
+  },
+  {
+   "line": 10,
+   "text": "复制",
+   "start": 52.69,
+   "end": 53.047
+  },
+  {
+   "line": 10,
+   "text": "进",
+   "start": 53.047,
+   "end": 53.166
+  },
+  {
+   "line": 10,
+   "text": "内存",
+   "start": 53.178,
+   "end": 53.666
+  },
+  {
+   "line": 10,
+   "text": "耗光",
+   "start": 53.928,
+   "end": 54.463
+  },
+  {
+   "line": 10,
+   "text": "gas",
+   "start": 54.463,
+   "end": 54.928
+  },
+  {
+   "line": 10,
+   "text": "修复",
+   "start": 55.461,
+   "end": 55.937
+  },
+  {
+   "line": 10,
+   "text": "是",
+   "start": 55.961,
+   "end": 56.092
+  },
+  {
+   "line": 10,
+   "text": "限制",
+   "start": 56.104,
+   "end": 56.461
+  },
+  {
+   "line": 10,
+   "text": "复制",
+   "start": 56.485,
+   "end": 56.711
+  },
+  {
+   "line": 10,
+   "text": "长度",
+   "start": 56.723,
+   "end": 57.163
+  },
+  {
+   "line": 11,
+   "text": "陷阱",
+   "start": 58.334,
+   "end": 58.738
+  },
+  {
+   "line": 11,
+   "text": "四",
+   "start": 58.75,
+   "end": 59.072
+  },
+  {
+   "line": 11,
+   "text": "gas",
+   "start": 59.334,
+   "end": 59.786
+  },
+  {
+   "line": 11,
+   "text": "不足型",
+   "start": 59.81,
+   "end": 60.191
+  },
+  {
+   "line": 11,
+   "text": "失败",
+   "start": 60.203,
+   "end": 60.584
+  },
+  {
+   "line": 12,
+   "text": "调",
+   "start": 61.746,
+   "end": 61.936
+  },
+  {
+   "line": 12,
+   "text": "用方",
+   "start": 61.936,
+   "end": 62.412
+  },
+  {
+   "line": 12,
+   "text": "故意",
+   "start": 62.496,
+   "end": 62.71
+  },
+  {
+   "line": 12,
+   "text": "给",
+   "start": 62.722,
+   "end": 62.841
+  },
+  {
+   "line": 12,
+   "text": "刚好",
+   "start": 62.865,
+   "end": 63.174
+  },
+  {
+   "line": 12,
+   "text": "不够",
+   "start": 63.186,
+   "end": 63.4
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 63.4,
+   "end": 63.484
+  },
+  {
+   "line": 12,
+   "text": "gas",
+   "start": 63.484,
+   "end": 63.96
+  },
+  {
+   "line": 13,
+   "text": "内部",
+   "start": 65.11,
+   "end": 65.455
+  },
+  {
+   "line": 13,
+   "text": "调用",
+   "start": 65.479,
+   "end": 65.741
+  },
+  {
+   "line": 13,
+   "text": "失败",
+   "start": 65.752,
+   "end": 66.205
+  },
+  {
+   "line": 13,
+   "text": "外层",
+   "start": 66.502,
+   "end": 66.895
+  },
+  {
+   "line": 13,
+   "text": "却",
+   "start": 66.919,
+   "end": 67.026
+  },
+  {
+   "line": 13,
+   "text": "继续",
+   "start": 67.038,
+   "end": 67.312
+  },
+  {
+   "line": 13,
+   "text": "往下",
+   "start": 67.324,
+   "end": 67.645
+  },
+  {
+   "line": 13,
+   "text": "走",
+   "start": 67.645,
+   "end": 67.848
+  },
+  {
+   "line": 14,
+   "text": "修复",
+   "start": 69.002,
+   "end": 69.49
+  },
+  {
+   "line": 14,
+   "text": "是",
+   "start": 69.514,
+   "end": 69.68
+  },
+  {
+   "line": 14,
+   "text": "检查",
+   "start": 69.68,
+   "end": 70.061
+  },
+  {
+   "line": 14,
+   "text": "剩余",
+   "start": 70.085,
+   "end": 70.383
+  },
+  {
+   "line": 14,
+   "text": "gas",
+   "start": 70.383,
+   "end": 70.883
+  },
+  {
+   "line": 14,
+   "text": "关键",
+   "start": 71.416,
+   "end": 71.821
+  },
+  {
+   "line": 14,
+   "text": "调用",
+   "start": 71.821,
+   "end": 72.059
+  },
+  {
+   "line": 14,
+   "text": "失败",
+   "start": 72.071,
+   "end": 72.428
+  },
+  {
+   "line": 14,
+   "text": "时",
+   "start": 72.428,
+   "end": 72.809
+  },
+  {
+   "line": 14,
+   "text": "整体",
+   "start": 72.987,
+   "end": 73.404
+  },
+  {
+   "line": 14,
+   "text": "回滚",
+   "start": 73.416,
+   "end": 73.844
+  },
+  {
+   "line": 15,
+   "text": "比喻",
+   "start": 75.006,
+   "end": 75.291
+  },
+  {
+   "line": 15,
+   "text": "在",
+   "start": 75.315,
+   "end": 75.398
+  },
+  {
+   "line": 15,
+   "text": "这里",
+   "start": 75.41,
+   "end": 75.577
+  },
+  {
+   "line": 15,
+   "text": "不",
+   "start": 75.589,
+   "end": 75.708
+  },
+  {
+   "line": 15,
+   "text": "成立",
+   "start": 75.708,
+   "end": 76.16
+  },
+  {
+   "line": 15,
+   "text": "快递员",
+   "start": 76.553,
+   "end": 77.041
+  },
+  {
+   "line": 15,
+   "text": "一次",
+   "start": 77.053,
+   "end": 77.518
+  },
+  {
+   "line": 15,
+   "text": "只",
+   "start": 77.625,
+   "end": 77.839
+  },
+  {
+   "line": 15,
+   "text": "会",
+   "start": 77.839,
+   "end": 77.97
+  },
+  {
+   "line": 15,
+   "text": "出",
+   "start": 77.97,
+   "end": 78.077
+  },
+  {
+   "line": 15,
+   "text": "一种",
+   "start": 78.089,
+   "end": 78.291
+  },
+  {
+   "line": 15,
+   "text": "错",
+   "start": 78.291,
+   "end": 78.565
+  },
+  {
+   "line": 16,
+   "text": "外部",
+   "start": 79.69,
+   "end": 79.999
+  },
+  {
+   "line": 16,
+   "text": "合约",
+   "start": 80.011,
+   "end": 80.368
+  },
+  {
+   "line": 16,
+   "text": "可以",
+   "start": 80.392,
+   "end": 80.606
+  },
+  {
+   "line": 16,
+   "text": "同时",
+   "start": 80.618,
+   "end": 80.892
+  },
+  {
+   "line": 16,
+   "text": "撒谎",
+   "start": 80.904,
+   "end": 81.321
+  },
+  {
+   "line": 16,
+   "text": "回调",
+   "start": 81.499,
+   "end": 81.951
+  },
+  {
+   "line": 16,
+   "text": "耗尽",
+   "start": 82.166,
+   "end": 82.559
+  },
+  {
+   "line": 16,
+   "text": "gas",
+   "start": 82.559,
+   "end": 83.023
+  },
+  {
+   "line": 17,
+   "text": "现在",
+   "start": 84.182,
+   "end": 84.539
+  },
+  {
+   "line": 17,
+   "text": "回到",
+   "start": 84.551,
+   "end": 85.027
+  },
+  {
+   "line": 17,
+   "text": "Qubit",
+   "start": 85.122,
+   "end": 85.693
+  },
+  {
+   "line": 17,
+   "text": "按",
+   "start": 86.239,
+   "end": 86.465
+  },
+  {
+   "line": 17,
+   "text": "SlowMist",
+   "start": 86.465,
+   "end": 87.048
+  },
+  {
+   "line": 17,
+   "text": "的",
+   "start": 87.048,
+   "end": 87.155
+  },
+  {
+   "line": 17,
+   "text": "公开",
+   "start": 87.179,
+   "end": 87.405
+  },
+  {
+   "line": 17,
+   "text": "分析",
+   "start": 87.417,
+   "end": 87.846
+  },
+  {
+   "line": 17,
+   "text": "根",
+   "start": 88.048,
+   "end": 88.215
+  },
+  {
+   "line": 17,
+   "text": "因",
+   "start": 88.215,
+   "end": 88.358
+  },
+  {
+   "line": 17,
+   "text": "分",
+   "start": 88.382,
+   "end": 88.513
+  },
+  {
+   "line": 17,
+   "text": "五步",
+   "start": 88.513,
+   "end": 88.846
+  },
+  {
+   "line": 18,
+   "text": "第一",
+   "start": 89.994,
+   "end": 90.232
+  },
+  {
+   "line": 18,
+   "text": "步",
+   "start": 90.232,
+   "end": 90.458
+  },
+  {
+   "line": 18,
+   "text": "桥",
+   "start": 90.696,
+   "end": 91.077
+  },
+  {
+   "line": 18,
+   "text": "给",
+   "start": 91.16,
+   "end": 91.256
+  },
+  {
+   "line": 18,
+   "text": "原生",
+   "start": 91.267,
+   "end": 91.648
+  },
+  {
+   "line": 18,
+   "text": "ETH",
+   "start": 91.648,
+   "end": 91.958
+  },
+  {
+   "line": 18,
+   "text": "配",
+   "start": 91.958,
+   "end": 92.113
+  },
+  {
+   "line": 18,
+   "text": "的",
+   "start": 92.113,
+   "end": 92.232
+  },
+  {
+   "line": 18,
+   "text": "代币",
+   "start": 92.256,
+   "end": 92.541
+  },
+  {
+   "line": 18,
+   "text": "地址",
+   "start": 92.553,
+   "end": 93.005
+  },
+  {
+   "line": 18,
+   "text": "是",
+   "start": 93.196,
+   "end": 93.446
+  },
+  {
+   "line": 18,
+   "text": "零",
+   "start": 93.446,
+   "end": 93.601
+  },
+  {
+   "line": 18,
+   "text": "地址",
+   "start": 93.613,
+   "end": 94.053
+  },
+  {
+   "line": 19,
+   "text": "ETH",
+   "start": 95.206,
+   "end": 95.539
+  },
+  {
+   "line": 19,
+   "text": "存款",
+   "start": 95.539,
+   "end": 96.015
+  },
+  {
+   "line": 19,
+   "text": "本该",
+   "start": 96.039,
+   "end": 96.337
+  },
+  {
+   "line": 19,
+   "text": "走",
+   "start": 96.348,
+   "end": 96.515
+  },
+  {
+   "line": 19,
+   "text": "depositETH",
+   "start": 96.515,
+   "end": 97.598
+  },
+  {
+   "line": 19,
+   "text": "它",
+   "start": 97.92,
+   "end": 98.063
+  },
+  {
+   "line": 19,
+   "text": "会",
+   "start": 98.063,
+   "end": 98.17
+  },
+  {
+   "line": 19,
+   "text": "核对",
+   "start": 98.182,
+   "end": 98.646
+  },
+  {
+   "line": 19,
+   "text": "随",
+   "start": 98.67,
+   "end": 98.872
+  },
+  {
+   "line": 19,
+   "text": "交易",
+   "start": 98.884,
+   "end": 99.098
+  },
+  {
+   "line": 19,
+   "text": "附带",
+   "start": 99.122,
+   "end": 99.36
+  },
+  {
+   "line": 19,
+   "text": "的",
+   "start": 99.36,
+   "end": 99.479
+  },
+  {
+   "line": 19,
+   "text": "ETH",
+   "start": 99.479,
+   "end": 99.872
+  },
+  {
+   "line": 20,
+   "text": "第二",
+   "start": 101.018,
+   "end": 101.291
+  },
+  {
+   "line": 20,
+   "text": "步",
+   "start": 101.291,
+   "end": 101.529
+  },
+  {
+   "line": 20,
+   "text": "攻击者",
+   "start": 101.839,
+   "end": 102.327
+  },
+  {
+   "line": 20,
+   "text": "调用",
+   "start": 102.327,
+   "end": 102.649
+  },
+  {
+   "line": 20,
+   "text": "普通",
+   "start": 102.672,
+   "end": 103.018
+  },
+  {
+   "line": 20,
+   "text": "的",
+   "start": 103.018,
+   "end": 103.125
+  },
+  {
+   "line": 20,
+   "text": "deposit",
+   "start": 103.149,
+   "end": 103.756
+  },
+  {
+   "line": 20,
+   "text": "传入",
+   "start": 103.934,
+   "end": 104.399
+  },
+  {
+   "line": 20,
+   "text": "ETH",
+   "start": 104.399,
+   "end": 104.684
+  },
+  {
+   "line": 20,
+   "text": "的",
+   "start": 104.684,
+   "end": 104.815
+  },
+  {
+   "line": 20,
+   "text": "资源",
+   "start": 104.827,
+   "end": 105.137
+  },
+  {
+   "line": 20,
+   "text": "ID",
+   "start": 105.149,
+   "end": 105.565
+  },
+  {
+   "line": 21,
+   "text": "白",
+   "start": 106.734,
+   "end": 106.936
+  },
+  {
+   "line": 21,
+   "text": "名单",
+   "start": 106.936,
+   "end": 107.281
+  },
+  {
+   "line": 21,
+   "text": "检查",
+   "start": 107.305,
+   "end": 107.626
+  },
+  {
+   "line": 21,
+   "text": "通过",
+   "start": 107.638,
+   "end": 108.043
+  },
+  {
+   "line": 22,
+   "text": "第三",
+   "start": 109.21,
+   "end": 109.555
+  },
+  {
+   "line": 22,
+   "text": "步",
+   "start": 109.555,
+   "end": 109.769
+  },
+  {
+   "line": 22,
+   "text": "deposit",
+   "start": 109.96,
+   "end": 110.579
+  },
+  {
+   "line": 22,
+   "text": "对",
+   "start": 110.602,
+   "end": 110.769
+  },
+  {
+   "line": 22,
+   "text": "零",
+   "start": 110.769,
+   "end": 110.912
+  },
+  {
+   "line": 22,
+   "text": "地址",
+   "start": 110.912,
+   "end": 111.352
+  },
+  {
+   "line": 22,
+   "text": "执行",
+   "start": 111.531,
+   "end": 112.067
+  },
+  {
+   "line": 22,
+   "text": "safeTransferFrom",
+   "start": 112.091,
+   "end": 113.341
+  },
+  {
+   "line": 23,
+   "text": "第四",
+   "start": 114.494,
+   "end": 114.863
+  },
+  {
+   "line": 23,
+   "text": "步",
+   "start": 114.863,
+   "end": 115.136
+  },
+  {
+   "line": 23,
+   "text": "零",
+   "start": 115.375,
+   "end": 115.601
+  },
+  {
+   "line": 23,
+   "text": "地址",
+   "start": 115.601,
+   "end": 115.898
+  },
+  {
+   "line": 23,
+   "text": "没有",
+   "start": 115.922,
+   "end": 116.101
+  },
+  {
+   "line": 23,
+   "text": "代码",
+   "start": 116.113,
+   "end": 116.506
+  },
+  {
+   "line": 23,
+   "text": "低级",
+   "start": 117.051,
+   "end": 117.348
+  },
+  {
+   "line": 23,
+   "text": "调用",
+   "start": 117.348,
+   "end": 117.741
+  },
+  {
+   "line": 23,
+   "text": "返回",
+   "start": 117.765,
+   "end": 118.075
+  },
+  {
+   "line": 23,
+   "text": "成功",
+   "start": 118.086,
+   "end": 118.551
+  },
+  {
+   "line": 23,
+   "text": "返回",
+   "start": 118.872,
+   "end": 119.277
+  },
+  {
+   "line": 23,
+   "text": "数据",
+   "start": 119.289,
+   "end": 119.61
+  },
+  {
+   "line": 23,
+   "text": "是空",
+   "start": 119.634,
+   "end": 120.015
+  },
+  {
+   "line": 23,
+   "text": "的",
+   "start": 120.015,
+   "end": 120.17
+  },
+  {
+   "line": 24,
+   "text": "旧",
+   "start": 121.314,
+   "end": 121.528
+  },
+  {
+   "line": 24,
+   "text": "版",
+   "start": 121.528,
+   "end": 121.671
+  },
+  {
+   "line": 24,
+   "text": "的",
+   "start": 121.671,
+   "end": 121.742
+  },
+  {
+   "line": 24,
+   "text": "安全",
+   "start": 121.766,
+   "end": 122.111
+  },
+  {
+   "line": 24,
+   "text": "转账库",
+   "start": 122.123,
+   "end": 122.73
+  },
+  {
+   "line": 24,
+   "text": "把",
+   "start": 123.04,
+   "end": 123.195
+  },
+  {
+   "line": 24,
+   "text": "空",
+   "start": 123.195,
+   "end": 123.397
+  },
+  {
+   "line": 24,
+   "text": "返回",
+   "start": 123.409,
+   "end": 123.826
+  },
+  {
+   "line": 24,
+   "text": "当",
+   "start": 123.849,
+   "end": 124.028
+  },
+  {
+   "line": 24,
+   "text": "作",
+   "start": 124.028,
+   "end": 124.123
+  },
+  {
+   "line": 24,
+   "text": "成功",
+   "start": 124.135,
+   "end": 124.564
+  },
+  {
+   "line": 25,
+   "text": "这是",
+   "start": 125.734,
+   "end": 126.293
+  },
+  {
+   "line": 25,
+   "text": "为了",
+   "start": 126.4,
+   "end": 126.674
+  },
+  {
+   "line": 25,
+   "text": "兼容",
+   "start": 126.686,
+   "end": 127.043
+  },
+  {
+   "line": 25,
+   "text": "不",
+   "start": 127.067,
+   "end": 127.174
+  },
+  {
+   "line": 25,
+   "text": "返回值",
+   "start": 127.174,
+   "end": 127.603
+  },
+  {
+   "line": 25,
+   "text": "的",
+   "start": 127.603,
+   "end": 127.829
+  },
+  {
+   "line": 25,
+   "text": "USDT",
+   "start": 127.924,
+   "end": 128.805
+  },
+  {
+   "line": 26,
+   "text": "第五",
+   "start": 129.962,
+   "end": 130.235
+  },
+  {
+   "line": 26,
+   "text": "步",
+   "start": 130.235,
+   "end": 130.473
+  },
+  {
+   "line": 26,
+   "text": "桥记",
+   "start": 130.676,
+   "end": 131.093
+  },
+  {
+   "line": 26,
+   "text": "下",
+   "start": 131.104,
+   "end": 131.295
+  },
+  {
+   "line": 26,
+   "text": "一",
+   "start": 131.295,
+   "end": 131.39
+  },
+  {
+   "line": 26,
+   "text": "笔",
+   "start": 131.39,
+   "end": 131.569
+  },
+  {
+   "line": 26,
+   "text": "ETH",
+   "start": 131.569,
+   "end": 131.878
+  },
+  {
+   "line": 26,
+   "text": "存款",
+   "start": 131.89,
+   "end": 132.283
+  },
+  {
+   "line": 26,
+   "text": "BNB",
+   "start": 132.828,
+   "end": 133.185
+  },
+  {
+   "line": 26,
+   "text": "Chain",
+   "start": 133.197,
+   "end": 133.471
+  },
+  {
+   "line": 26,
+   "text": "一侧",
+   "start": 133.483,
+   "end": 133.84
+  },
+  {
+   "line": 26,
+   "text": "铸出",
+   "start": 134.019,
+   "end": 134.412
+  },
+  {
+   "line": 26,
+   "text": "大量",
+   "start": 134.424,
+   "end": 134.816
+  },
+  {
+   "line": 26,
+   "text": "qXETH",
+   "start": 134.828,
+   "end": 135.804
+  },
+  {
+   "line": 27,
+   "text": "攻击者",
+   "start": 136.95,
+   "end": 137.45
+  },
+  {
+   "line": 27,
+   "text": "拿",
+   "start": 137.473,
+   "end": 137.581
+  },
+  {
+   "line": 27,
+   "text": "它",
+   "start": 137.581,
+   "end": 137.688
+  },
+  {
+   "line": 27,
+   "text": "做",
+   "start": 137.7,
+   "end": 137.854
+  },
+  {
+   "line": 27,
+   "text": "抵押",
+   "start": 137.854,
+   "end": 138.295
+  },
+  {
+   "line": 27,
+   "text": "借",
+   "start": 138.569,
+   "end": 138.807
+  },
+  {
+   "line": 27,
+   "text": "空",
+   "start": 138.807,
+   "end": 138.973
+  },
+  {
+   "line": 27,
+   "text": "了",
+   "start": 138.973,
+   "end": 139.045
+  },
+  {
+   "line": 27,
+   "text": "借贷",
+   "start": 139.057,
+   "end": 139.331
+  },
+  {
+   "line": 27,
+   "text": "池",
+   "start": 139.331,
+   "end": 139.712
+  },
+  {
+   "line": 28,
+   "text": "每",
+   "start": 140.866,
+   "end": 141.092
+  },
+  {
+   "line": 28,
+   "text": "一",
+   "start": 141.092,
+   "end": 141.223
+  },
+  {
+   "line": 28,
+   "text": "步",
+   "start": 141.223,
+   "end": 141.366
+  },
+  {
+   "line": 28,
+   "text": "单独",
+   "start": 141.389,
+   "end": 141.687
+  },
+  {
+   "line": 28,
+   "text": "看",
+   "start": 141.687,
+   "end": 142.008
+  },
+  {
+   "line": 28,
+   "text": "都",
+   "start": 142.366,
+   "end": 142.532
+  },
+  {
+   "line": 28,
+   "text": "说",
+   "start": 142.532,
+   "end": 142.651
+  },
+  {
+   "line": 28,
+   "text": "得",
+   "start": 142.651,
+   "end": 142.735
+  },
+  {
+   "line": 28,
+   "text": "通",
+   "start": 142.735,
+   "end": 143.02
+  },
+  {
+   "line": 29,
+   "text": "漏洞",
+   "start": 144.158,
+   "end": 144.455
+  },
+  {
+   "line": 29,
+   "text": "来自",
+   "start": 144.479,
+   "end": 144.729
+  },
+  {
+   "line": 29,
+   "text": "组合",
+   "start": 144.741,
+   "end": 145.253
+  },
+  {
+   "line": 29,
+   "text": "零",
+   "start": 145.467,
+   "end": 145.693
+  },
+  {
+   "line": 29,
+   "text": "地址",
+   "start": 145.693,
+   "end": 146.181
+  },
+  {
+   "line": 29,
+   "text": "兼容性",
+   "start": 146.431,
+   "end": 146.943
+  },
+  {
+   "line": 29,
+   "text": "妥协",
+   "start": 146.955,
+   "end": 147.491
+  },
+  {
+   "line": 29,
+   "text": "缺少",
+   "start": 147.658,
+   "end": 148.062
+  },
+  {
+   "line": 29,
+   "text": "原",
+   "start": 148.086,
+   "end": 148.253
+  },
+  {
+   "line": 29,
+   "text": "生币",
+   "start": 148.253,
+   "end": 148.55
+  },
+  {
+   "line": 29,
+   "text": "检查",
+   "start": 148.562,
+   "end": 149.05
+  },
+  {
+   "line": 30,
+   "text": "白",
+   "start": 150.21,
+   "end": 150.4
+  },
+  {
+   "line": 30,
+   "text": "名单",
+   "start": 150.4,
+   "end": 150.721
+  },
+  {
+   "line": 30,
+   "text": "只",
+   "start": 150.745,
+   "end": 150.864
+  },
+  {
+   "line": 30,
+   "text": "告诉",
+   "start": 150.876,
+   "end": 151.15
+  },
+  {
+   "line": 30,
+   "text": "你",
+   "start": 151.15,
+   "end": 151.424
+  },
+  {
+   "line": 30,
+   "text": "这个",
+   "start": 151.733,
+   "end": 152.091
+  },
+  {
+   "line": 30,
+   "text": "ID",
+   "start": 152.198,
+   "end": 152.662
+  },
+  {
+   "line": 30,
+   "text": "被",
+   "start": 152.674,
+   "end": 152.817
+  },
+  {
+   "line": 30,
+   "text": "允许",
+   "start": 152.817,
+   "end": 153.21
+  },
+  {
+   "line": 31,
+   "text": "没",
+   "start": 154.366,
+   "end": 154.544
+  },
+  {
+   "line": 31,
+   "text": "告诉",
+   "start": 154.556,
+   "end": 154.818
+  },
+  {
+   "line": 31,
+   "text": "你",
+   "start": 154.818,
+   "end": 155.151
+  },
+  {
+   "line": 31,
+   "text": "它",
+   "start": 155.461,
+   "end": 155.604
+  },
+  {
+   "line": 31,
+   "text": "对应",
+   "start": 155.616,
+   "end": 155.782
+  },
+  {
+   "line": 31,
+   "text": "什么",
+   "start": 155.806,
+   "end": 155.997
+  },
+  {
+   "line": 31,
+   "text": "资产",
+   "start": 156.008,
+   "end": 156.366
+  },
+  {
+   "line": 32,
+   "text": "现在",
+   "start": 157.538,
+   "end": 157.919
+  },
+  {
+   "line": 32,
+   "text": "的",
+   "start": 157.919,
+   "end": 158.085
+  },
+  {
+   "line": 32,
+   "text": "SafeERC",
+   "start": 158.109,
+   "end": 158.752
+  },
+  {
+   "line": 32,
+   "text": "20",
+   "start": 158.764,
+   "end": 159.371
+  },
+  {
+   "line": 32,
+   "text": "遇到",
+   "start": 159.466,
+   "end": 159.704
+  },
+  {
+   "line": 32,
+   "text": "空",
+   "start": 159.704,
+   "end": 159.883
+  },
+  {
+   "line": 32,
+   "text": "返回",
+   "start": 159.895,
+   "end": 160.347
+  },
+  {
+   "line": 32,
+   "text": "会",
+   "start": 160.538,
+   "end": 160.704
+  },
+  {
+   "line": 32,
+   "text": "检查",
+   "start": 160.716,
+   "end": 160.966
+  },
+  {
+   "line": 32,
+   "text": "目标",
+   "start": 160.978,
+   "end": 161.311
+  },
+  {
+   "line": 32,
+   "text": "有没有",
+   "start": 161.335,
+   "end": 161.609
+  },
+  {
+   "line": 32,
+   "text": "代码",
+   "start": 161.621,
+   "end": 162.014
+  }
+ ],
+ "captions": [
+  {
+   "text": "低级调用",
+   "start": 1.648,
+   "end": 2.485,
+   "id": "c0"
+  },
+  {
+   "text": "指 call",
+   "start": 2.505,
+   "end": 3.306,
+   "id": "c1"
+  },
+  {
+   "text": "delegatecall",
+   "start": 3.362,
+   "end": 4.235,
+   "id": "c2"
+  },
+  {
+   "text": "和 staticcall",
+   "start": 4.255,
+   "end": 5.258,
+   "id": "c3"
+  },
+  {
+   "text": "它们失败时",
+   "start": 6.26,
+   "end": 7.37,
+   "id": "c4"
+  },
+  {
+   "text": "不会自动回滚",
+   "start": 7.438,
+   "end": 8.573,
+   "id": "c5"
+  },
+  {
+   "text": "只返回一个 false",
+   "start": 8.593,
+   "end": 9.834,
+   "id": "c6"
+  },
+  {
+   "text": "打个比方",
+   "start": 10.824,
+   "end": 11.779,
+   "id": "c7"
+  },
+  {
+   "text": "你让快递员送包裹",
+   "start": 12.143,
+   "end": 13.729,
+   "id": "c8"
+  },
+  {
+   "text": "然后在登记簿上写 已送达",
+   "start": 13.893,
+   "end": 16.348,
+   "id": "c9"
+  },
+  {
+   "text": "陷阱一 不检查返回值",
+   "start": 17.332,
+   "end": 19.704,
+   "id": "c10"
+  },
+  {
+   "text": "快递员没回话",
+   "start": 20.067,
+   "end": 21.249,
+   "id": "c11"
+  },
+  {
+   "text": "你就当作送到了",
+   "start": 21.424,
+   "end": 22.594,
+   "id": "c12"
+  },
+  {
+   "text": "修复是接住返回的布尔值",
+   "start": 23.576,
+   "end": 25.638,
+   "id": "c13"
+  },
+  {
+   "text": "不成功就回滚",
+   "start": 25.659,
+   "end": 26.841,
+   "id": "c14"
+  },
+  {
+   "text": "陷阱二 目标没有代码",
+   "start": 27.828,
+   "end": 29.938,
+   "id": "c15"
+  },
+  {
+   "text": "地址是一块荒地",
+   "start": 30.313,
+   "end": 31.733,
+   "id": "c16"
+  },
+  {
+   "text": "快递员说送到了",
+   "start": 32.728,
+   "end": 34.064,
+   "id": "c17"
+  },
+  {
+   "text": "因为荒地不会拒收",
+   "start": 34.132,
+   "end": 35.493,
+   "id": "c18"
+  },
+  {
+   "text": "对无代码地址的 call",
+   "start": 36.476,
+   "end": 38.003,
+   "id": "c19"
+  },
+  {
+   "text": "返回成功",
+   "start": 38.035,
+   "end": 39.003,
+   "id": "c20"
+  },
+  {
+   "text": "返回数据是空的",
+   "start": 39.023,
+   "end": 40.336,
+   "id": "c21"
+  },
+  {
+   "text": "修复是调用之前",
+   "start": 41.304,
+   "end": 42.986,
+   "id": "c22"
+  },
+  {
+   "text": "检查目标地址的代码长度大于 0",
+   "start": 43.196,
+   "end": 46.212,
+   "id": "c23"
+  },
+  {
+   "text": "陷阱三 返回数据炸弹",
+   "start": 47.212,
+   "end": 49.56,
+   "id": "c24"
+  },
+  {
+   "text": "对方返回超大的数据",
+   "start": 49.935,
+   "end": 51.641,
+   "id": "c25"
+  },
+  {
+   "text": "复制进内存",
+   "start": 52.64,
+   "end": 53.786,
+   "id": "c26"
+  },
+  {
+   "text": "耗光 gas",
+   "start": 53.878,
+   "end": 55.048,
+   "id": "c27"
+  },
+  {
+   "text": "修复是限制复制长度",
+   "start": 55.411,
+   "end": 57.283,
+   "id": "c28"
+  },
+  {
+   "text": "陷阱四 gas 不足型失败",
+   "start": 58.284,
+   "end": 60.704,
+   "id": "c29"
+  },
+  {
+   "text": "调用方故意给刚好不够的 gas",
+   "start": 61.696,
+   "end": 64.08,
+   "id": "c30"
+  },
+  {
+   "text": "内部调用失败",
+   "start": 65.06,
+   "end": 66.325,
+   "id": "c31"
+  },
+  {
+   "text": "外层却继续往下走",
+   "start": 66.452,
+   "end": 67.968,
+   "id": "c32"
+  },
+  {
+   "text": "修复是检查剩余 gas",
+   "start": 68.952,
+   "end": 71.003,
+   "id": "c33"
+  },
+  {
+   "text": "关键调用失败时",
+   "start": 71.366,
+   "end": 72.917,
+   "id": "c34"
+  },
+  {
+   "text": "整体回滚",
+   "start": 72.937,
+   "end": 73.964,
+   "id": "c35"
+  },
+  {
+   "text": "比喻在这里不成立",
+   "start": 74.956,
+   "end": 76.28,
+   "id": "c36"
+  },
+  {
+   "text": "快递员一次只会出一种错",
+   "start": 76.503,
+   "end": 78.685,
+   "id": "c37"
+  },
+  {
+   "text": "外部合约可以同时撒谎 回调",
+   "start": 79.64,
+   "end": 82.071,
+   "id": "c38"
+  },
+  {
+   "text": "耗尽 gas",
+   "start": 82.116,
+   "end": 83.143,
+   "id": "c39"
+  },
+  {
+   "text": "现在回到 Qubit",
+   "start": 84.132,
+   "end": 85.813,
+   "id": "c40"
+  },
+  {
+   "text": "按 SlowMist 的公开分析",
+   "start": 86.189,
+   "end": 87.966,
+   "id": "c41"
+  },
+  {
+   "text": "根因分五步",
+   "start": 87.998,
+   "end": 88.966,
+   "id": "c42"
+  },
+  {
+   "text": "第一步 桥给原生 ETH 配的代币地址",
+   "start": 89.944,
+   "end": 93.125,
+   "id": "c43"
+  },
+  {
+   "text": "是零地址",
+   "start": 93.146,
+   "end": 94.173,
+   "id": "c44"
+  },
+  {
+   "text": "ETH 存款本该走 depositETH",
+   "start": 95.156,
+   "end": 97.718,
+   "id": "c45"
+  },
+  {
+   "text": "它会核对随交易附带的 ETH",
+   "start": 97.87,
+   "end": 99.992,
+   "id": "c46"
+  },
+  {
+   "text": "第二步 攻击者调用普通的 deposit",
+   "start": 100.968,
+   "end": 103.864,
+   "id": "c47"
+  },
+  {
+   "text": "传入 ETH 的资源 ID",
+   "start": 103.884,
+   "end": 105.685,
+   "id": "c48"
+  },
+  {
+   "text": "白名单检查通过",
+   "start": 106.684,
+   "end": 108.163,
+   "id": "c49"
+  },
+  {
+   "text": "第三步 deposit 对零地址",
+   "start": 109.16,
+   "end": 111.461,
+   "id": "c50"
+  },
+  {
+   "text": "执行 safeTransferFrom",
+   "start": 111.481,
+   "end": 113.461,
+   "id": "c51"
+  },
+  {
+   "text": "第四步 零地址没有代码",
+   "start": 114.444,
+   "end": 116.626,
+   "id": "c52"
+  },
+  {
+   "text": "低级调用返回成功",
+   "start": 117.001,
+   "end": 118.671,
+   "id": "c53"
+  },
+  {
+   "text": "返回数据是空的",
+   "start": 118.822,
+   "end": 120.29,
+   "id": "c54"
+  },
+  {
+   "text": "旧版的安全转账库",
+   "start": 121.264,
+   "end": 122.85,
+   "id": "c55"
+  },
+  {
+   "text": "把空返回当作成功",
+   "start": 122.99,
+   "end": 124.684,
+   "id": "c56"
+  },
+  {
+   "text": "这是为了兼容不返回值的 USDT",
+   "start": 125.684,
+   "end": 128.925,
+   "id": "c57"
+  },
+  {
+   "text": "第五步 桥记下一笔 ETH 存款",
+   "start": 129.912,
+   "end": 132.403,
+   "id": "c58"
+  },
+  {
+   "text": "BNB Chain 一侧",
+   "start": 132.778,
+   "end": 133.949,
+   "id": "c59"
+  },
+  {
+   "text": "铸出大量 qXETH",
+   "start": 133.969,
+   "end": 135.924,
+   "id": "c60"
+  },
+  {
+   "text": "攻击者拿它做抵押",
+   "start": 136.9,
+   "end": 138.415,
+   "id": "c61"
+  },
+  {
+   "text": "借空了借贷池",
+   "start": 138.519,
+   "end": 139.832,
+   "id": "c62"
+  },
+  {
+   "text": "每一步单独看",
+   "start": 140.816,
+   "end": 142.128,
+   "id": "c63"
+  },
+  {
+   "text": "都说得通",
+   "start": 142.316,
+   "end": 143.14,
+   "id": "c64"
+  },
+  {
+   "text": "漏洞来自组合 零地址",
+   "start": 144.108,
+   "end": 146.301,
+   "id": "c65"
+  },
+  {
+   "text": "兼容性妥协",
+   "start": 146.381,
+   "end": 147.588,
+   "id": "c66"
+  },
+  {
+   "text": "缺少原生币检查",
+   "start": 147.608,
+   "end": 149.17,
+   "id": "c67"
+  },
+  {
+   "text": "白名单只告诉你",
+   "start": 150.16,
+   "end": 151.544,
+   "id": "c68"
+  },
+  {
+   "text": "这个 ID 被允许",
+   "start": 151.683,
+   "end": 153.33,
+   "id": "c69"
+  },
+  {
+   "text": "没告诉你",
+   "start": 154.316,
+   "end": 155.271,
+   "id": "c70"
+  },
+  {
+   "text": "它对应什么资产",
+   "start": 155.411,
+   "end": 156.486,
+   "id": "c71"
+  },
+  {
+   "text": "现在的 SafeERC20 遇到空返回",
+   "start": 157.488,
+   "end": 160.467,
+   "id": "c72"
+  },
+  {
+   "text": "会检查目标有没有代码",
+   "start": 160.488,
+   "end": 162.134,
+   "id": "c73"
+  }
+ ]
+}

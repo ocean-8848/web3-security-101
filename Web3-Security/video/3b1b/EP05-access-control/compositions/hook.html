@@ -1,0 +1,93 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="hook" data-duration="30.88" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="h-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker></defs>
+      <g id="h-all">
+        <text id="h-date" class="h" x="120" y="130" font-size="34" fill="#6b6f7a" letter-spacing="2">2017 年 11 月 · Parity 多签钱包</text>
+        <!-- 用户 -->
+        <g id="h-user" class="h"><circle cx="240" cy="380" r="72" fill="#1c2029" stroke="#e8e6df" stroke-width="3" /><text x="240" y="392" font-size="30" fill="#e8e6df" text-anchor="middle">一名用户</text></g>
+        <!-- 库合约 -->
+        <g id="h-lib" class="h">
+          <rect id="h-libr" x="760" y="270" width="400" height="220" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="960" y="330" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">共用的库合约</text>
+          <text class="mono" x="960" y="390" font-size="30" fill="#8a8f99" text-anchor="middle">initWallet()</text>
+          <text class="mono" x="960" y="440" font-size="30" fill="#8a8f99" text-anchor="middle">kill()</text>
+        </g>
+        <path id="h-a1" class="dr h" pathLength="1" d="M316 370 L 752 370" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#h-ah)" />
+        <text id="h-a1t" class="h mono" x="530" y="345" font-size="30" fill="#e8e6df" text-anchor="middle">initWallet()</text>
+        <g id="h-own" class="h"><rect x="790" y="190" width="340" height="56" rx="28" fill="#1f170c" stroke="#FF9F43" stroke-width="2" /><text x="960" y="228" font-size="28" fill="#FF9F43" text-anchor="middle">owner = 这名用户</text></g>
+        <path id="h-a2" class="dr h" pathLength="1" d="M316 410 L 752 440" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#h-ah)" />
+        <text id="h-a2t" class="h mono" x="530" y="470" font-size="30" fill="#FC6255" text-anchor="middle">kill()</text>
+        <g id="h-x" class="h" stroke="#FC6255" stroke-width="10" stroke-linecap="round"><line x1="820" y1="300" x2="1100" y2="470" /><line x1="1100" y1="300" x2="820" y2="470" /></g>
+        <!-- 依赖它的钱包 -->
+        <g id="h-wl"></g>
+        <text id="h-amt" class="h" x="960" y="930" font-size="64" fill="#F0B90B" text-anchor="middle" font-weight="800">≈ 51 万 ETH 被冻结</text>
+        <g id="h-nock" class="h"><rect x="1300" y="320" width="440" height="64" rx="32" fill="#1f1012" stroke="#FC6255" stroke-width="2" /><text x="1520" y="362" font-size="30" fill="#FC6255" text-anchor="middle">initWallet()：没有权限检查</text></g>
+        <text id="h-nocr" class="h" x="1520" y="440" font-size="30" fill="#8a8f99" text-anchor="middle">没有破解任何密码</text>
+        <text id="h-q" class="h" x="960" y="1030" font-size="56" fill="#e8e6df" text-anchor="middle" font-weight="700">谁有权<tspan fill="#FF9F43">按这个按钮</tspan>？</text>
+      </g>
+      <g id="h-pin" class="h">
+        <rect x="80" y="70" width="500" height="84" rx="14" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="330" y="125" font-size="34" fill="#e8e6df" text-anchor="middle">谁有权按这个按钮？</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 30.88, "L": [[0.6, 6.7], [7.15, 12.04], [12.49, 19.26], [19.71, 25.49], [25.94, 29.78]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAWA = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      const wl = document.querySelector("#h-wl"), W = [];
+      for (let i = 0; i < 6; i++) {
+        const x = 360 + i * 240;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        g.innerHTML = `<path class="h-ln" d="M960 490 L ${x} 680" stroke="#58C4DD" stroke-width="2" stroke-opacity=".6" fill="none" /><rect class="h-wr" x="${x - 90}" y="680" width="180" height="110" rx="14" fill="#1a1708" stroke="#F0B90B" stroke-width="3" /><text x="${x}" y="745" font-size="28" fill="#F0B90B" text-anchor="middle">钱包</text>`;
+        wl.appendChild(g); W.push(g);
+      }
+
+      // L0 初始化库合约
+      IN("#h-date", at(0, 0.0), 0.5);
+      IN("#h-lib", at(0, 0.1), 0.6, { y: 20 }, { y: 0 });
+      W.forEach((g, i) => IN(g, at(0, 0.25) + i * 0.08, 0.4));
+      IN("#h-user", at(0, 0.4), 0.5);
+      DRAWA("#h-a1", at(0, 0.6), 0.5);
+      IN("#h-a1t", at(0, 0.62), 0.3);
+      IN("#h-own", at(0, 0.82), 0.4, { scale: 1.3, svgOrigin: "960 218" }, { scale: 1 });
+      // L1 kill
+      DRAWA("#h-a2", at(1, 0.1), 0.5);
+      IN("#h-a2t", at(1, 0.12), 0.3);
+      tl.to("#h-libr", { stroke: "#FC6255", duration: 0.3 }, at(1, 0.5));
+      IN("#h-x", at(1, 0.55), 0.3, { scale: 1.4, svgOrigin: "960 385" }, { scale: 1 });
+      tl.to("#h-lib", { opacity: 0.3, duration: 0.5 }, at(1, 0.7));
+      // L2 钱包失去逻辑，资金冻结
+      W.forEach((g, i) => {
+        tl.to(g.querySelector(".h-ln"), { stroke: "#FC6255", strokeDasharray: "8 8", duration: 0.3 }, at(2, 0.05) + i * 0.08);
+        tl.to(g.querySelector(".h-wr"), { stroke: "#6b6f7a", fill: "#16181d", duration: 0.4 }, at(2, 0.2) + i * 0.08);
+      });
+      IN("#h-amt", at(2, 0.5), 0.5, { scale: 1.2, svgOrigin: "960 905" }, { scale: 1 });
+      // L3 没有破解密码，只是没有权限检查
+      IN("#h-nocr", at(3, 0.05), 0.4);
+      IN("#h-nock", at(3, 0.45), 0.5, { x: 20 }, { x: 0 });
+      // L4 问题
+      tl.to(["#h-date", "#h-user", "#h-a1", "#h-a1t", "#h-a2", "#h-a2t", "#h-own", "#h-wl", "#h-amt", "#h-nocr"], { opacity: 0.2, duration: 0.4 }, at(4, 0.0));
+      IN("#h-q", at(4, 0.05), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      tl.to("#h-all", { opacity: 0, filter: "blur(6px)", duration: 0.6, ease: "power2.in" }, at(4, 0.45));
+      IN("#h-pin", at(4, 0.5), 0.6, { scale: 1.5, svgOrigin: "330 112" }, { scale: 1 });
+      OUT("#h-pin", C.d - 0.4, 0.3);
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>

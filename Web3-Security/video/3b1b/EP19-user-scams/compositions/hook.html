@@ -1,0 +1,114 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="hook" data-duration="33.33" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="h-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#F0B90B" /></marker>
+        <marker id="h-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="h-all">
+        <text id="h-date" class="h" x="160" y="150" font-size="34" fill="#6b6f7a" letter-spacing="2">2025 年 12 月</text>
+        <!-- 用户钱包 -->
+        <g id="h-user" class="h">
+          <circle cx="330" cy="520" r="70" fill="#2a2f3a" stroke="#e8e6df" stroke-width="3" />
+          <text x="330" y="533" font-size="34" fill="#e8e6df" text-anchor="middle">用户</text>
+          <circle cx="290" cy="640" r="16" fill="#F0B90B" /><circle cx="330" cy="640" r="16" fill="#F0B90B" /><circle cx="370" cy="640" r="16" fill="#F0B90B" />
+        </g>
+        <!-- 真实收款方 -->
+        <g id="h-real" class="h">
+          <rect x="1260" y="250" width="500" height="120" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+          <text x="1510" y="300" font-size="30" fill="#e8e6df" text-anchor="middle">真实收款地址</text>
+          <text x="1510" y="345" font-size="30" fill="#8a8f99" text-anchor="middle">0xd9e1 … 7f3a</text>
+        </g>
+        <path id="h-t1" class="dr h" pathLength="1" d="M410 480 C 700 330, 1000 310, 1250 310" stroke="#F0B90B" stroke-width="4" fill="none" marker-end="url(#h-ah)" />
+        <text id="h-t1l" class="h" x="800" y="330" font-size="32" fill="#F0B90B" text-anchor="middle">测试 50 USDT</text>
+        <text id="h-ok" class="h" x="1510" y="420" font-size="32" fill="#83C167" text-anchor="middle">✓ 到账</text>
+
+        <!-- 交易记录：复制地址 -->
+        <g id="h-rec" class="h">
+          <rect x="160" y="760" width="560" height="140" rx="14" fill="#14171e" stroke="#6b6f7a" stroke-width="2" />
+          <text x="190" y="805" font-size="28" fill="#6b6f7a">交易记录</text>
+          <text id="h-row" x="190" y="865" font-size="30" fill="#e8e6df">→ 0xd9e1 … 7f3a　50 USDT</text>
+        </g>
+        <text id="h-copy" class="h" x="440" y="950" font-size="28" fill="#8a8f99" text-anchor="middle">从记录里复制同一个地址</text>
+
+        <!-- 大额转账 → 攻击者 -->
+        <g id="h-atk" class="h">
+          <rect x="1260" y="640" width="500" height="120" rx="16" fill="#2a1416" stroke="#FC6255" stroke-width="4" />
+          <text x="1510" y="690" font-size="30" fill="#FC6255" text-anchor="middle" font-weight="700">攻击者的地址</text>
+          <text x="1510" y="735" font-size="30" fill="#FC6255" text-anchor="middle">0xd9e1 … 7f3a</text>
+        </g>
+        <path id="h-t2" class="dr h" pathLength="1" d="M410 540 C 700 560, 1000 700, 1250 700" stroke="#F0B90B" stroke-width="10" fill="none" marker-end="url(#h-ah)" />
+        <text id="h-amt" class="h" x="1300" y="900" font-size="80" fill="#F0B90B" text-anchor="middle" font-weight="800">≈ <tspan id="h-num">0</tspan> 万美元</text>
+        <text id="h-ex" class="h" x="1760" y="1010" font-size="28" fill="#6b6f7a" text-anchor="end">地址为示例</text>
+
+        <g id="h-key" class="h">
+          <text x="330" y="380" font-size="30" fill="#83C167" text-anchor="middle">✓ 私钥没有泄露</text>
+          <text x="330" y="425" font-size="30" fill="#83C167" text-anchor="middle">✓ 钱包没有被入侵</text>
+        </g>
+        <text id="h-q" class="h" x="960" y="1000" font-size="60" fill="#e8e6df" text-anchor="middle" font-weight="700">不偷<tspan fill="#B48EF0">钥匙</tspan>，怎么骗走<tspan fill="#F0B90B">钱</tspan>？</text>
+      </g>
+      <circle id="h-seed" class="h" cx="960" cy="540" r="12" fill="#e8e6df" />
+      <text id="h-seedt" class="h" x="960" y="620" font-size="34" fill="#6b6f7a" text-anchor="middle">答案在用户自己的一个动作里</text>
+      <g id="h-pin" class="h">
+        <rect x="80" y="60" width="600" height="84" rx="14" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="380" y="115" font-size="34" fill="#e8e6df" text-anchor="middle">不偷<tspan fill="#B48EF0">钥匙</tspan>，怎么骗走<tspan fill="#F0B90B">钱</tspan>？</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 33.33, "L": [[0.6, 8.71], [9.16, 15.86], [16.31, 19.5], [19.95, 26.91], [27.36, 32.23]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAWA = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 用户谨慎：先测试
+      IN("#h-date", at(0, 0), 0.5);
+      IN("#h-user", at(0, 0.1), 0.6, { scale: 0.8, svgOrigin: "330 560" }, { scale: 1 });
+      IN("#h-real", at(0, 0.5), 0.5);
+      DRAWA("#h-t1", at(0, 0.62), 0.8);
+      IN("#h-t1l", at(0, 0.7), 0.4);
+
+      // L1 到账；从记录复制；转大额
+      IN("#h-ok", at(1, 0.0), 0.4, { scale: 1.4, svgOrigin: "1510 410" }, { scale: 1 });
+      IN("#h-rec", at(1, 0.2), 0.5);
+      tl.fromTo("#h-row", { fill: "#e8e6df" }, { fill: "#FF9F43", duration: 0.3, yoyo: true, repeat: 1 }, at(1, 0.4));
+      IN("#h-copy", at(1, 0.42), 0.4);
+      DRAWA("#h-t2", at(1, 0.65), 0.8);
+      IN("#h-amt", at(1, 0.7), 0.4);
+      const n = { v: 0 }, num = document.querySelector("#h-num");
+      tl.fromTo(n, { v: 0 }, { v: 5000, duration: 1.4, ease: "power2.out", onUpdate: () => { num.textContent = Math.round(n.v).toLocaleString("en-US"); } }, at(1, 0.7));
+
+      // L2 进了攻击者的地址
+      IN("#h-atk", at(2, 0.05), 0.5, { scale: 1.1, svgOrigin: "1510 700" }, { scale: 1 });
+      tl.to("#h-t2", { stroke: "#FC6255", attr: { "marker-end": "url(#h-ahr)" }, duration: 0.4 }, at(2, 0.2));
+      tl.to("#h-amt", { fill: "#FC6255", duration: 0.4 }, at(2, 0.3));
+      IN("#h-ex", at(2, 0.5), 0.4);
+
+      // L3 私钥安全；问题
+      IN("#h-key", at(3, 0.05), 0.5);
+      tl.to(["#h-real", "#h-t1", "#h-t1l", "#h-ok", "#h-rec", "#h-copy", "#h-atk", "#h-t2", "#h-date", "#h-ex"], { opacity: 0.2, duration: 0.5 }, at(3, 0.45));
+      tl.to("#h-amt", { opacity: 0, duration: 0.3 }, at(3, 0.45));
+      IN("#h-q", at(3, 0.55), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+
+      // L4 钉住问题
+      tl.to("#h-all", { opacity: 0, filter: "blur(6px)", duration: 0.6, ease: "power2.in" }, at(4, 0.1));
+      IN("#h-pin", at(4, 0.2), 0.6, { scale: 1.6, svgOrigin: "380 102" }, { scale: 1 });
+      IN("#h-seed", at(4, 0.5), 0.5, { scale: 0, svgOrigin: "960 540" }, { scale: 1, ease: "back.out(1.6)" });
+      IN("#h-seedt", at(4, 0.55), 0.5);
+      OUT("#h-seedt", C.d - 0.7, 0.3);
+      OUT(["#h-pin", "#h-seed"], C.d - 0.45, 0.35);
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>

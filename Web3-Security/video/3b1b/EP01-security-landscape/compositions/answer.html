@@ -1,0 +1,103 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="50.29" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="r-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker></defs>
+      <g id="r-case">
+        <!-- 钉住的问题回来了 -->
+        <g id="r-pin" class="h">
+          <rect x="560" y="80" width="800" height="110" rx="18" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="960" y="152" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="700">Bybit：<tspan fill="#58C4DD">多签合约代码</tspan>有漏洞吗？</text>
+        </g>
+
+        <!-- 前端 / 签名界面 -->
+        <g id="r-fe" class="h">
+          <rect id="r-fer" x="220" y="360" width="520" height="360" rx="22" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="4" />
+          <text x="480" y="425" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">前端与签名界面</text>
+          <text id="r-see" x="480" y="560" font-size="36" fill="#e8e6df" text-anchor="middle">看起来：日常操作</text>
+          <text id="r-real" class="h" x="480" y="560" font-size="36" fill="#FC6255" text-anchor="middle" font-weight="700">实际：替换多签实现</text>
+          <text id="r-tamper" class="h" x="480" y="660" font-size="30" fill="#FC6255" text-anchor="middle">已被篡改</text>
+        </g>
+        <path id="r-arrow" class="dr h" pathLength="1" d="M750 540 L 1170 540" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#r-ah)" />
+
+        <!-- 合约：忠实执行 -->
+        <g id="r-con" class="h">
+          <rect x="1180" y="360" width="520" height="360" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+          <text x="1440" y="425" font-size="38" fill="#58C4DD" text-anchor="middle" font-weight="700">多签合约</text>
+          <text x="1440" y="560" font-size="36" fill="#e8e6df" text-anchor="middle">按签下的交易执行</text>
+        </g>
+        <text id="r-ok" class="h" x="1440" y="660" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700">✓ 未指向代码漏洞</text>
+        <text id="r-cat" class="h" x="960" y="860" font-size="40" fill="#B48EF0" text-anchor="middle" font-weight="700">属于 ⑥ 系统与运营</text>
+      </g>
+
+      <!-- 全生命周期：三层同心环 -->
+      <g id="r-rings">
+        <circle id="r-c3" class="h" cx="960" cy="560" r="430" fill="#1a1524" stroke="#B48EF0" stroke-width="4" />
+        <circle id="r-c2" class="h" cx="960" cy="560" r="290" fill="#14171e" stroke="#8a8f99" stroke-width="4" />
+        <circle id="r-c1" class="h" cx="960" cy="560" r="150" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+        <text id="r-t1" class="h" x="960" y="575" font-size="40" fill="#58C4DD" text-anchor="middle" font-weight="700">合约代码</text>
+        <text id="r-t2" class="h" x="960" y="345" font-size="36" fill="#e8e6df" text-anchor="middle">链与基础设施</text>
+        <text id="r-t3" class="h" x="960" y="205" font-size="36" fill="#B48EF0" text-anchor="middle" font-weight="700">钱包 · 人 · 流程</text>
+      </g>
+
+      <g id="r-final" class="h">
+        <text x="960" y="520" font-size="96" fill="#e8e6df" text-anchor="middle" font-weight="800"><tspan fill="#FC6255">攻击者</tspan>能控制什么？</text>
+        <text id="r-both" class="h" x="960" y="640" font-size="40" fill="#8a8f99" text-anchor="middle">对<tspan fill="#58C4DD">代码</tspan>成立，对<tspan fill="#B48EF0">代码之外</tspan>也成立</text>
+        <text id="r-pre" class="h" x="960" y="740" font-size="36" fill="#e8e6df" text-anchor="middle">前提：把<tspan fill="#B48EF0">代码之外</tspan>的环节，也画进地图</text>
+      </g>
+      <text id="r-next" class="h" x="960" y="900" font-size="36" fill="#6b6f7a" text-anchor="middle">下一集 · 02 私钥从哪里来</text>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 50.29, "L": [[0.6, 5.9], [6.35, 13.07], [13.52, 21.88], [22.33, 32.62], [33.07, 44.62], [45.07, 49.19]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      // L0 问题从左上角回来
+      IN("#r-pin", at(0, 0.05), 0.8, { scale: 0.5, x: -560, y: -10, svgOrigin: "960 135" }, { scale: 1, x: 0, y: 0, ease: "expo.out" });
+
+      // L1 合约忠实执行
+      IN("#r-con", at(1, 0.05), 0.6, { y: 20 }, { y: 0 });
+      IN("#r-ok", at(1, 0.3), 0.5, { scale: 1.3, svgOrigin: "1440 650" }, { scale: 1, ease: "back.out(2)" });
+
+      // L2 前端失守
+      IN("#r-fe", at(2, 0.0), 0.6, { y: 20 }, { y: 0 });
+      tl.fromTo("#r-arrow", { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: 0.6, ease: "power2.inOut" }, at(2, 0.1));
+      tl.to("#r-fer", { stroke: "#FC6255", strokeOpacity: 1, duration: 0.4 }, at(2, 0.4));
+      IN("#r-tamper", at(2, 0.4), 0.4);
+      tl.to("#r-see", { opacity: 0, rotationX: 90, svgOrigin: "480 548", duration: 0.3, ease: "power2.in" }, at(2, 0.62));
+      IN("#r-real", at(2, 0.62) + 0.3, 0.4, { rotationX: -90, svgOrigin: "480 548" }, { rotationX: 0 });
+      IN("#r-cat", at(2, 0.85), 0.5);
+
+      // L3 全生命周期：案例缩进内环，外环依次长出
+      tl.to("#r-case", { scale: 0.22, opacity: 0, svgOrigin: "960 560", duration: 0.8, ease: "power3.in" }, at(3, 0.0));
+      IN("#r-c1", at(3, 0.08), 0.6, { scale: 0.3, svgOrigin: "960 560" }, { scale: 1, ease: "expo.out" });
+      IN("#r-t1", at(3, 0.12), 0.4);
+      IN("#r-c2", at(3, 0.45), 0.7, { scale: 0.5, svgOrigin: "960 560" }, { scale: 1, ease: "expo.out" });
+      IN("#r-t2", at(3, 0.5), 0.4);
+      IN("#r-c3", at(3, 0.7), 0.7, { scale: 0.6, svgOrigin: "960 560" }, { scale: 1, ease: "expo.out" });
+      IN("#r-t3", at(3, 0.75), 0.4);
+
+      // L4 带走一个问题
+      tl.to("#r-rings", { opacity: 0.12, duration: 0.6 }, at(4, 0.0));
+      IN("#r-final", at(4, 0.08), 0.7, { filter: "blur(10px)" }, { filter: "blur(0px)" });
+
+      IN("#r-both", at(4, 0.42), 0.5);
+      IN("#r-pre", at(4, 0.7), 0.5);
+      // L5 下一集
+      IN("#r-next", at(5, 0.1), 0.5);
+      tl.to(["#r-final", "#r-next", "#r-rings"], { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

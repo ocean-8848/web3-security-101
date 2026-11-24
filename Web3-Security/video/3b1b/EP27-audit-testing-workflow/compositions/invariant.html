@@ -1,0 +1,154 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="invariant" data-duration="54.06" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="v-aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FF9F43" /></marker>
+      </defs>
+      <g id="v-all">
+        <g id="v-p1">
+          <text id="v-t" class="h" x="960" y="110" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">不变量测试：随机的是<tspan fill="#58C4DD">调用顺序</tspan></text>
+          <g id="v-chips" font-size="28" font-family="JetBrains Mono"></g>
+          <!-- 每一步之后检查 -->
+          <g id="v-panel" class="h">
+            <rect id="v-bal" x="700" y="420" width="140" height="300" fill="#F0B90B" opacity=".9" />
+            <text x="770" y="770" font-size="30" fill="#F0B90B" text-anchor="middle">银行 ETH 余额</text>
+            <rect x="1080" y="640" width="140" height="80" fill="#e8e6df" opacity=".85" />
+            <rect x="1080" y="554" width="140" height="80" fill="#e8e6df" opacity=".7" />
+            <rect x="1080" y="468" width="140" height="80" fill="#e8e6df" opacity=".85" />
+            <text x="1150" y="770" font-size="30" fill="#e8e6df" text-anchor="middle">存款之和</text>
+          </g>
+          <text id="v-ge" class="h" x="960" y="630" font-size="140" fill="#83C167" text-anchor="middle" font-weight="800">≥</text>
+          <text id="v-bad" class="h" x="960" y="860" font-size="38" fill="#FC6255" text-anchor="middle" font-weight="700">余额 &lt; 存款之和 → 发现了</text>
+        </g>
+
+        <!-- 重入：先 deposit，再在回调里 transfer -->
+        <g id="v-p2">
+          <g id="v-fz" class="h">
+            <rect x="80" y="420" width="500" height="150" rx="14" fill="#161a22" stroke="#8a8f99" stroke-width="3" />
+            <text x="330" y="480" font-size="30" fill="#e8e6df" text-anchor="middle">单个模糊测试</text>
+            <text x="330" y="530" font-size="28" fill="#8a8f99" text-anchor="middle">只随机参数，不随机顺序</text>
+          </g>
+          <text id="v-fzx" class="h" x="330" y="620" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">✕ 通常发现不了</text>
+          <g id="v-hd" class="h">
+            <rect x="1340" y="420" width="500" height="150" rx="14" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+            <text x="1590" y="480" font-size="30" fill="#58C4DD" text-anchor="middle" font-weight="700">辅助合约（Handler）</text>
+            <text x="1590" y="530" font-size="28" fill="#8a8f99" text-anchor="middle">能触发回调</text>
+          </g>
+        </g>
+
+        <!-- 只检查你写下的 -->
+        <g id="v-p3">
+          <g id="v-w" class="h">
+            <rect x="260" y="300" width="1400" height="120" rx="14" fill="#132013" stroke="#83C167" stroke-width="3" />
+            <text x="960" y="373" font-size="34" fill="#83C167" text-anchor="middle">写下的：余额 ≥ 存款之和 ✓ 被检查</text>
+          </g>
+          <g id="v-nw" class="h">
+            <rect x="260" y="480" width="1400" height="160" rx="14" fill="none" stroke="#6b6f7a" stroke-width="3" stroke-dasharray="12 8" />
+            <text x="960" y="545" font-size="32" fill="#8a8f99" text-anchor="middle">Euler：每个账户健康因子 ≥ 1，或可被清算且清算后协议不亏损</text>
+            <text x="960" y="600" font-size="30" fill="#6b6f7a" text-anchor="middle">没写进测试 → 工具不会发现</text>
+          </g>
+        </g>
+
+        <!-- 形式化验证 -->
+        <g id="v-p4">
+          <g id="v-grid"></g>
+          <text id="v-fvt" class="h" x="960" y="130" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">形式化验证：<tspan fill="#83C167">所有输入 × 所有状态</tspan></text>
+          <text id="v-ax1" class="h" x="960" y="880" font-size="28" fill="#6b6f7a" text-anchor="middle">输入 →</text>
+          <text id="v-ax2" class="h" x="520" y="540" font-size="28" fill="#6b6f7a" text-anchor="middle">状态 ↓</text>
+          <text id="v-use" class="h" x="960" y="950" font-size="32" fill="#e8e6df" text-anchor="middle">适合：核心数学 · 清算 · 代币会计 · 桥的证明验证</text>
+          <text id="v-cost" class="h" x="960" y="1010" font-size="30" fill="#FF9F43" text-anchor="middle">代价：规格难写，需要专门人才</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 54.06, "L": [[0.6, 6.89], [7.34, 13.75], [14.2, 23.84], [24.29, 29.98], [30.43, 38.86], [39.31, 52.96]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 随机调用序列（固定顺序，示意）
+      const SEQ = ["deposit", "withdraw", "deposit", "transfer", "withdraw", "deposit"];
+      const ch = document.querySelector("#v-chips"), CH = [];
+      SEQ.forEach((n, i) => {
+        const x = 170 + i * 270;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        g.innerHTML = `<rect x="${x - 110}" y="190" width="220" height="64" rx="32" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="${x}" y="232" fill="#58C4DD" text-anchor="middle">${n}()</text>` +
+          `<text class="v-ok" x="${x}" y="300" font-size="30" fill="#83C167" text-anchor="middle" opacity="0" font-family="NotoSC">✓</text>`;
+        ch.appendChild(g); CH.push(g);
+      });
+      // 重入序列：deposit →（回调里）transfer
+      const re = document.createElementNS(NS, "g"); re.setAttribute("id", "v-re"); re.setAttribute("opacity", "0"); re.setAttribute("font-size", "28"); re.setAttribute("font-family", "JetBrains Mono");
+      re.innerHTML = `<rect x="560" y="190" width="240" height="64" rx="32" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="680" y="232" fill="#58C4DD" text-anchor="middle">deposit()</text>` +
+        `<rect x="1120" y="190" width="240" height="64" rx="32" fill="#2a1414" stroke="#FC6255" stroke-width="3" /><text x="1240" y="232" fill="#FC6255" text-anchor="middle">transfer()</text>` +
+        `<text x="960" y="160" fill="#FF9F43" text-anchor="middle" font-family="NotoSC">回调里</text>`;
+      ch.appendChild(re);
+      const arc = document.createElementNS(NS, "path"); arc.setAttribute("id", "v-arc"); arc.setAttribute("class", "dr h"); arc.setAttribute("pathLength", "1");
+      arc.setAttribute("d", "M800 205 C 900 120, 1020 120, 1112 205"); arc.setAttribute("fill", "none"); arc.setAttribute("stroke", "#FF9F43"); arc.setAttribute("stroke-width", "4"); arc.setAttribute("marker-end", "url(#v-aho)");
+      ch.appendChild(arc);
+      // 形式化验证网格
+      const grid = document.querySelector("#v-grid"), GR = [];
+      for (let r = 0; r < 12; r++) for (let c = 0; c < 22; c++) {
+        const q = document.createElementNS(NS, "rect");
+        q.setAttribute("x", 600 + c * 34); q.setAttribute("y", 220 + r * 50); q.setAttribute("width", 26); q.setAttribute("height", 40); q.setAttribute("rx", 4);
+        q.setAttribute("fill", "#83C167"); q.setAttribute("opacity", "0"); grid.appendChild(q); GR.push({ q, c, r });
+      }
+
+      // L0 调用序列
+      IN("#v-t", at(0, 0.0), 0.5);
+      CH.forEach((g, i) => IN(g, at(0, 0.3) + i * 0.4, 0.3, { y: -20 }, { y: 0 }));
+
+      // L1 每一步之后检查
+      IN("#v-panel", at(1, 0.0), 0.5);
+      IN("#v-ge", at(1, 0.15), 0.4, { scale: 0.5, svgOrigin: "960 580" }, { scale: 1, ease: "back.out(2)" });
+      CH.forEach((g, i) => {
+        const t = at(1, 0.3) + i * 0.55;
+        tl.to(g.querySelector(".v-ok"), { opacity: 1, duration: 0.2 }, t);
+        tl.fromTo("#v-ge", { scale: 1, svgOrigin: "960 580" }, { scale: 1.12, duration: 0.15, yoyo: true, repeat: 1 }, t);
+      });
+
+      // L2 重入顺序；单个模糊测试发现不了
+      tl.to(CH, { opacity: 0, duration: 0.3 }, at(2, 0.0));
+      tl.to(re, { opacity: 1, duration: 0.4 }, at(2, 0.1));
+      DRAW("#v-arc", at(2, 0.3), 0.6);
+      IN("#v-fz", at(2, 0.55), 0.5);
+      IN("#v-fzx", at(2, 0.75), 0.4);
+
+      // L3 Handler 触发回调 → ≥ 被打破
+      IN("#v-hd", at(3, 0.0), 0.5);
+      tl.to("#v-arc", { strokeWidth: 7, duration: 0.25, yoyo: true, repeat: 1 }, at(3, 0.35));
+      tl.to("#v-bal", { attr: { y: 560, height: 160 }, duration: 0.6, ease: "power2.in" }, at(3, 0.45));
+      tl.to("#v-ge", { fill: "#FC6255", duration: 0.3 }, at(3, 0.55));
+      IN("#v-bad", at(3, 0.65), 0.4);
+
+      // L4 只检查你写下的
+      tl.to(["#v-p1", "#v-p2", "#v-chips"], { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(4, 0.0));
+      IN("#v-w", at(4, 0.08), 0.5);
+      IN("#v-nw", at(4, 0.35), 0.5);
+      tl.to("#v-nw rect", { stroke: "#FF9F43", duration: 0.4 }, at(4, 0.75));
+
+      // L5 形式化验证
+      tl.to("#v-p3", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(5, 0.0));
+      IN("#v-fvt", at(5, 0.05), 0.5);
+      GR.forEach((o) => tl.to(o.q, { opacity: 0.8, duration: 0.15 }, at(5, 0.12) + (o.c + o.r) * 0.04));
+      IN("#v-ax1", at(5, 0.15), 0.3); IN("#v-ax2", at(5, 0.15), 0.3);
+      IN("#v-use", at(5, 0.45), 0.5);
+      IN("#v-cost", at(5, 0.75), 0.5);
+
+      tl.to("#v-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["invariant"] = tl;
+    })();
+  </script>
+</template>

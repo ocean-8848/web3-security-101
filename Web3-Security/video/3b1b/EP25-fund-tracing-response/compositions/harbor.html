@@ -1,0 +1,81 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="harbor" data-duration="56.85" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="g-all">
+        <text id="g-title" class="h" x="960" y="110" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="800">两条有争议的路</text>
+        <g id="g-cetus">
+          <text id="g-ct" class="h" x="200" y="230" font-size="32" fill="#8a8f99">2025 年 5 月 · Sui 上的 Cetus · 被盗 ≈ 2.23 亿美元</text>
+          <rect id="g-red" class="h" x="200" y="260" width="0" height="80" fill="#FC6255" />
+          <rect id="g-grn" class="h" x="200" y="260" width="0" height="80" fill="#83C167" />
+          <text id="g-redt" class="h" x="200" y="390" font-size="30" fill="#FC6255">≈ 0.63 亿 冻结前已跨链</text>
+          <text id="g-grnt" class="h" x="1720" y="390" font-size="30" fill="#83C167" text-anchor="end">验证者链上冻结 ≈ 1.62 亿</text>
+          <g id="g-vote" class="h">
+            <text x="200" y="470" font-size="30" fill="#e8e6df">治理投票（按质押权）</text>
+            <rect x="200" y="490" width="1520" height="40" rx="8" fill="#2a2f3a" />
+            <rect id="g-vbar" x="200" y="490" width="0" height="40" rx="8" fill="#83C167" fill-opacity=".8" />
+            <text x="1720" y="580" font-size="30" fill="#83C167" text-anchor="end">≈ 90.9% 通过 → 资金转去赔付</text>
+          </g>
+          <g id="g-neu" class="h">
+            <rect x="200" y="640" width="1520" height="110" rx="16" fill="#1d1710" stroke="#FF9F43" stroke-width="3" />
+            <text x="960" y="707" font-size="32" fill="#FF9F43" text-anchor="middle">代价：这条链的验证者，可以干预任意地址 · 部分验证者公开保留意见</text>
+          </g>
+        </g>
+        <g id="g-neg">
+          <g class="g-n h"><rect x="200" y="260" width="700" height="160" rx="18" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="550" y="330" font-size="34" fill="#e8e6df" text-anchor="middle">Poly Network（2021）</text><text x="550" y="385" font-size="30" fill="#83C167" text-anchor="middle">攻击者约 15 天内归还</text></g>
+          <g class="g-n h"><rect x="1020" y="260" width="700" height="160" rx="18" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="1370" y="330" font-size="34" fill="#e8e6df" text-anchor="middle">Euler（2023）</text><text x="1370" y="385" font-size="30" fill="#83C167" text-anchor="middle">可追回资金全部归还</text></g>
+          <text id="g-why" class="h" x="960" y="500" font-size="34" fill="#FF9F43" text-anchor="middle" font-weight="700">归还的真正原因通常不公开 → 不能当预案主线</text>
+        </g>
+        <g id="g-sh" class="h">
+          <rect x="200" y="600" width="1520" height="300" rx="20" fill="#13200f" stroke="#83C167" stroke-width="4" />
+          <text x="960" y="670" font-size="38" fill="#83C167" text-anchor="middle" font-weight="800">安全港协议（SEAL Whitehat Safe Harbor）</text>
+          <text class="g-s" x="960" y="740" font-size="32" fill="#e8e6df" text-anchor="middle" opacity="0">治理事先授权白帽，攻击发生时抢救资金</text>
+          <text class="g-s" x="960" y="800" font-size="32" fill="#e8e6df" text-anchor="middle" opacity="0">72 小时内归还 · 赏金默认 10%，上限 100 万美元</text>
+          <text class="g-s" x="960" y="860" font-size="30" fill="#8a8f99" text-anchor="middle" opacity="0">只适用于正在发生的攻击，不保护黑帽</text>
+        </g>
+      </g>
+
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 56.85, "L": [[0.6, 3.05], [3.5, 18.98], [19.43, 28.21], [28.66, 40.09], [40.54, 55.75]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const POP = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const W = 1520 / 2.23;
+      IN("#g-title", at(0, 0.1), 0.5);
+      // L1 Cetus
+      IN("#g-ct", at(1, 0.05), 0.4);
+      IN("#g-red", at(1, 0.2), 0.2); tl.to("#g-red", { attr: { width: 0.63 * W }, duration: 0.6 }, at(1, 0.2)); IN("#g-redt", at(1, 0.25), 0.3);
+      IN("#g-grn", at(1, 0.4), 0.2);
+      tl.fromTo("#g-grn", { attr: { x: 200 + 0.63 * W, width: 0 } }, { attr: { x: 200 + 0.63 * W, width: 1.62 * W }, duration: 0.8, immediateRender: false }, at(1, 0.4));
+      IN("#g-grnt", at(1, 0.5), 0.3);
+      IN("#g-vote", at(1, 0.7), 0.3);
+      tl.to("#g-vbar", { attr: { width: 1520 * 0.909 }, duration: 0.8, ease: "power2.out" }, at(1, 0.72));
+      // L2 中立性
+      IN("#g-neu", at(2, 0.1), 0.5, { y: 20 }, { y: 0 });
+      tl.to(["#g-red", "#g-grn", "#g-vote"], { opacity: 0.35, duration: 0.5 }, at(2, 0.55));
+      // L3 谈判
+      OUT("#g-cetus", at(3, 0), 0.4);
+      gsap.utils.toArray("#root .g-n").forEach((g, i) => IN(g, at(3, 0.05 + i * 0.12), 0.4));
+      IN("#g-why", at(3, 0.5), 0.5);
+      // L4 安全港
+      IN("#g-sh", at(4, 0.05), 0.5, { y: 20 }, { y: 0 });
+      gsap.utils.toArray("#root .g-s").forEach((e, i) => tl.to(e, { opacity: 1, duration: 0.4 }, at(4, 0.15 + i * 0.22)));
+      tl.to("#g-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+
+      window.__timelines["harbor"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,114 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="timelock" data-duration="50.87" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="t-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="t-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#83C167" /></marker>
+      </defs>
+      <g id="t-all">
+        <g id="t-ms">
+          <!-- 多签 3/5 -->
+          <g id="t-sig" class="h"><rect x="100" y="250" width="380" height="330" rx="22" fill="#161a22" stroke="#B48EF0" stroke-width="3" /><text x="290" y="305" font-size="32" fill="#B48EF0" text-anchor="middle" font-weight="700">多签</text></g>
+          <g id="t-dots"></g>
+          <text id="t-35" class="h" x="290" y="545" font-size="48" fill="#83C167" text-anchor="middle" font-weight="800"><tspan id="t-35n">0</tspan> / 5</text>
+          <!-- 时间锁 -->
+          <g id="t-tl" class="h"><rect x="680" y="300" width="560" height="230" rx="22" fill="#1f170c" stroke="#FF9F43" stroke-width="4" /><text x="960" y="360" font-size="34" fill="#FF9F43" text-anchor="middle" font-weight="700">时间锁：排队</text><text x="960" y="500" font-size="28" fill="#8a8f99" text-anchor="middle">延迟 48 小时（示例）</text></g>
+          <rect id="t-barbg" class="h" x="730" y="400" width="460" height="40" rx="10" fill="#2a2f3a" />
+          <rect id="t-bar" x="730" y="400" width="0" height="40" rx="10" fill="#FF9F43" />
+          <text id="t-hrs" class="h mono" x="960" y="430" font-size="28" fill="#0f1117" text-anchor="middle" font-weight="700"><tspan id="t-hn">0</tspan>h</text>
+          <g id="t-tgt" class="h"><rect x="1440" y="320" width="380" height="190" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="1630" y="425" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">目标合约</text></g>
+          <path id="t-e1" class="dr h" pathLength="1" d="M484 415 L 672 415" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#t-ah)" />
+          <path id="t-e2" class="dr h" pathLength="1" d="M1244 415 L 1432 415" stroke="#83C167" stroke-width="4" fill="none" marker-end="url(#t-ahg)" />
+          <text id="t-ex" class="h" x="1338" y="390" font-size="28" fill="#83C167" text-anchor="middle">到期执行</text>
+          <!-- 48 小时里 -->
+          <g id="t-mon" class="h"><ellipse cx="760" cy="700" rx="60" ry="34" fill="none" stroke="#8a8f99" stroke-width="4" /><circle cx="760" cy="700" r="14" fill="#8a8f99" /><text x="760" y="780" font-size="28" fill="#8a8f99" text-anchor="middle">监控与社区：看得到队列</text></g>
+          <g id="t-grd" class="h"><circle cx="1160" cy="700" r="44" fill="#121a12" stroke="#83C167" stroke-width="4" /><text x="1160" y="712" font-size="28" fill="#83C167" text-anchor="middle">守护者</text><text x="1160" y="780" font-size="28" fill="#83C167" text-anchor="middle">能取消，不能发起</text></g>
+          <path id="t-cancel" class="dr h" pathLength="1" d="M1130 660 L 1060 540" stroke="#83C167" stroke-width="3" stroke-dasharray="1" fill="none" />
+          <g id="t-usr" class="h"><circle cx="1630" cy="700" r="40" fill="#1c2029" stroke="#e8e6df" stroke-width="3" /><text x="1630" y="780" font-size="28" fill="#e8e6df" text-anchor="middle">用户：不同意就先退出</text></g>
+          <path id="t-exit" class="dr h" pathLength="1" d="M1630 515 C 1630 580, 1630 620, 1630 652" stroke="#e8e6df" stroke-width="3" fill="none" marker-end="url(#t-ah)" />
+        </g>
+
+        <!-- Ronin：9 选 5 -->
+        <g id="t-ronin">
+          <text id="t-rt" class="h" x="960" y="170" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">2022 年 3 月 · Ronin 跨链桥：9 个验证者，5 个签名就放行</text>
+          <g id="t-vals"></g>
+          <line id="t-th" class="h" x1="915" y1="410" x2="915" y2="560" stroke="#FF9F43" stroke-width="4" stroke-dasharray="10 8" />
+          <text id="t-tht" class="h" x="915" y="610" font-size="30" fill="#FF9F43" text-anchor="middle">阈值：5</text>
+          <text id="t-cnt" class="h" x="960" y="720" font-size="48" fill="#FC6255" text-anchor="middle" font-weight="800">攻击者控制：<tspan id="t-cn">0</tspan> / 9</text>
+          <text id="t-old" class="h" x="860" y="380" font-size="28" fill="#FC6255" text-anchor="middle">早就不需要、却没撤销的授权</text>
+          <text id="t-ind" class="h" x="960" y="820" font-size="34" fill="#83C167" text-anchor="middle">阈值要和私钥的独立性匹配</text>
+          <g id="t-fake" class="h">
+            <rect x="560" y="880" width="800" height="110" rx="16" fill="#1f1012" stroke="#FC6255" stroke-width="2" />
+            <text x="960" y="948" font-size="32" fill="#FC6255" text-anchor="middle">多签防不了：所有签名人看到同一个被篡改的界面</text>
+          </g>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 50.87, "L": [[0.6, 6.86], [7.31, 14.39], [14.84, 25.91], [26.36, 35.0], [35.45, 42.19], [42.64, 49.77]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.5) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      const DRAWA = (s, t, d = 0.5) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      const COUNT = (sel, t, a, b, d) => { const o = { v: a }, el = document.querySelector(sel); tl.fromTo(o, { v: a }, { v: b, duration: d, ease: "none", onUpdate: () => { el.textContent = Math.round(o.v); } }, t); };
+
+      // 5 位签名人
+      const dh = document.querySelector("#t-dots"), D = [];
+      for (let i = 0; i < 5; i++) { const c = document.createElementNS(NS, "circle"); c.setAttribute("cx", 170 + i * 60); c.setAttribute("cy", 400); c.setAttribute("r", 22); c.setAttribute("fill", "#2a2440"); c.setAttribute("stroke", "#B48EF0"); c.setAttribute("stroke-width", 3); c.setAttribute("opacity", "0"); dh.appendChild(c); D.push(c); }
+      // 9 个验证者
+      const vh = document.querySelector("#t-vals"), V = [];
+      for (let i = 0; i < 9; i++) { const c = document.createElementNS(NS, "circle"); const x = 420 + i * 110; c.setAttribute("cx", x); c.setAttribute("cy", 440); c.setAttribute("r", 40); c.setAttribute("fill", "#1b1626"); c.setAttribute("stroke", "#B48EF0"); c.setAttribute("stroke-width", 4); c.setAttribute("opacity", "0"); vh.appendChild(c); V.push(c); }
+
+      // L0 多签 3/5
+      IN("#t-sig", at(0, 0.05), 0.5);
+      D.forEach((c, i) => IN(c, at(0, 0.15) + i * 0.08, 0.3));
+      IN("#t-35", at(0, 0.5), 0.3);
+      [0, 2, 4].forEach((k, i) => tl.to(D[k], { fill: "#83C167", stroke: "#83C167", duration: 0.25 }, at(0, 0.6) + i * 0.15));
+      COUNT("#t-35n", at(0, 0.6), 0, 3, 0.5);
+      // L1 排队 48 小时，到期执行
+      DRAWA("#t-e1", at(1, 0.0)); IN("#t-tl", at(1, 0.05), 0.5);
+      IN(["#t-barbg", "#t-hrs"], at(1, 0.15), 0.3);
+      tl.fromTo("#t-bar", { attr: { width: 0 } }, { attr: { width: 460 }, duration: 2.6, ease: "none" }, at(1, 0.2));
+      COUNT("#t-hn", at(1, 0.2), 0, 48, 2.6);
+      IN("#t-tgt", at(1, 0.6), 0.4);
+      DRAWA("#t-e2", at(1, 0.65)); IN("#t-ex", at(1, 0.7), 0.3);
+      // L2 48 小时里：监控、守护者、用户
+      IN("#t-mon", at(2, 0.05), 0.4);
+      IN("#t-grd", at(2, 0.3), 0.4);
+      DRAWA("#t-cancel", at(2, 0.4), 0.4);
+      IN("#t-usr", at(2, 0.65), 0.4);
+      DRAWA("#t-exit", at(2, 0.7), 0.4);
+      // L3 Ronin：9 选 5
+      tl.to("#t-ms", { opacity: 0, filter: "blur(6px)", duration: 0.5 }, at(3, 0.0));
+      IN("#t-rt", at(3, 0.1), 0.5);
+      V.forEach((c, i) => IN(c, at(3, 0.3) + i * 0.06, 0.3));
+      IN(["#t-th", "#t-tht"], at(3, 0.75), 0.4);
+      // L4 攻击者控制 5 把，其中一把是没撤销的旧授权
+      IN("#t-cnt", at(4, 0.0), 0.3);
+      for (let k = 0; k < 5; k++) tl.to(V[k], { fill: "#3a1416", stroke: "#FC6255", duration: 0.25 }, at(4, 0.08) + k * 0.35);
+      COUNT("#t-cn", at(4, 0.08), 0, 5, 1.6);
+      IN("#t-old", at(4, 0.6), 0.4);
+      tl.fromTo(V[4], { strokeWidth: 4 }, { strokeWidth: 10, duration: 0.3, yoyo: true, repeat: 1 }, at(4, 0.6));
+      IN("#t-ind", at(4, 0.8), 0.4);
+      // L5 局限
+      IN("#t-fake", at(5, 0.1), 0.6, { y: 20 }, { y: 0 });
+
+      tl.to("#t-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["timelock"] = tl;
+    })();
+  </script>
+</template>

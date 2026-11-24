@@ -1,0 +1,107 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="toy" data-duration="55.57" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="t-all">
+        <text id="t-title" class="h" x="960" y="110" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">玩具电路 · <tspan fill="#F0B90B">余额 20</tspan> · 所有运算 mod 97</text>
+        <text id="t-ex" class="h" x="960" y="160" font-size="28" fill="#6b6f7a" text-anchor="middle">（示例数字）</text>
+
+        <!-- 两条约束 -->
+        <g id="t-c1" class="h">
+          <rect x="140" y="200" width="760" height="90" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="3" />
+          <text x="170" y="258" font-size="32" fill="#58C4DD">① 守恒：<tspan class="mono" fill="#e8e6df">r = 20 − 提款额</tspan></text>
+        </g>
+        <text id="t-c1ok" class="h" x="860" y="260" font-size="40" fill="#83C167" text-anchor="middle" font-weight="800">✓</text>
+        <g id="t-c2" class="h">
+          <rect x="960" y="200" width="820" height="90" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="3" />
+          <text x="990" y="258" font-size="32" fill="#58C4DD">② 范围：<tspan class="mono" fill="#e8e6df">r = 16·b4+8·b3+4·b2+2·b1+b0</tspan></text>
+        </g>
+        <text id="t-c2ok" class="h" x="1745" y="260" font-size="40" fill="#83C167" text-anchor="middle" font-weight="800">✓</text>
+
+        <!-- 计算 r -->
+        <text id="t-r1" class="h mono" x="960" y="420" font-size="50" fill="#e8e6df" text-anchor="middle">r = 20 − <tspan fill="#FC6255">25</tspan> = −5</text>
+        <text id="t-r2" class="h mono" x="960" y="420" font-size="50" fill="#e8e6df" text-anchor="middle">r = 20 − <tspan fill="#FC6255">25</tspan> = −5 ≡ <tspan fill="#FF9F43" font-weight="700">92</tspan> (mod 97)</text>
+
+        <!-- 五个二进制位 -->
+        <g id="t-bits"></g>
+
+        <!-- 诚实情形 -->
+        <text id="t-max" class="h mono" x="960" y="845" font-size="44" fill="#e8e6df" text-anchor="middle">16+8+4+2+1 = 31 <tspan fill="#FF9F43">&lt; 92</tspan></text>
+        <text id="t-honest" class="h" x="960" y="910" font-size="34" fill="#8a8f99" text-anchor="middle">诚实的证明者：凑不出 92，生成不了证明</text>
+
+        <!-- 恶意情形 -->
+        <text id="t-m1" class="h mono" x="960" y="840" font-size="44" fill="#e8e6df" text-anchor="middle">16 × <tspan fill="#FC6255">30</tspan> = 480</text>
+        <text id="t-m2" class="h mono" x="960" y="905" font-size="44" fill="#e8e6df" text-anchor="middle">480 − 4 × 97 = <tspan fill="#FF9F43" font-weight="700">92</tspan></text>
+        <text id="t-pass" class="h" x="960" y="1000" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="800">证明有效：提走 25，余额只有 20</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 55.57, "L": [[0.6, 8.45], [8.9, 14.13], [14.58, 21.25], [21.7, 28.47], [28.92, 35.76], [36.21, 40.99], [41.44, 54.47]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 位：b4 … b0
+      const W = [16, 8, 4, 2, 1], host = document.querySelector("#t-bits"), B = [];
+      W.forEach((w, i) => {
+        const cx = 600 + i * 180;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        g.innerHTML =
+          `<text x="${cx}" y="520" font-size="30" fill="#8a8f99" text-anchor="middle" class="mono">×${w}</text>` +
+          `<rect class="box" x="${cx - 60}" y="545" width="120" height="110" rx="14" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />` +
+          `<text class="v0 mono" x="${cx}" y="620" font-size="52" fill="#6b6f7a" text-anchor="middle">?</text>` +
+          `<text class="v1 mono" x="${cx}" y="620" font-size="52" fill="#e8e6df" text-anchor="middle" opacity="0">1</text>` +
+          `<text class="v2 mono" x="${cx}" y="620" font-size="52" fill="${i === 0 ? "#FC6255" : "#e8e6df"}" text-anchor="middle" opacity="0" font-weight="700">${i === 0 ? 30 : 0}</text>` +
+          `<text class="lab mono" x="${cx}" y="700" font-size="28" fill="#6b6f7a" text-anchor="middle">b${4 - i}</text>` +
+          `<g class="tag"><rect x="${cx - 70}" y="720" width="140" height="44" rx="10" fill="none" stroke="#58C4DD" stroke-width="2" /><text x="${cx}" y="752" font-size="28" fill="#58C4DD" text-anchor="middle">∈ {0,1}</text></g>`;
+        host.appendChild(g);
+        B.push({ g, cx, v0: g.querySelector(".v0"), v1: g.querySelector(".v1"), v2: g.querySelector(".v2"), tag: g.querySelector(".tag"), box: g.querySelector(".box") });
+      });
+
+      // L0 题设
+      IN("#t-title", at(0, 0.0), 0.6);
+      IN("#t-ex", at(0, 0.75), 0.4);
+      // L1 守恒
+      IN("#t-c1", at(1, 0.1), 0.6, { y: 16 }, { y: 0 });
+      // L2 范围 + 位
+      IN("#t-c2", at(2, 0.05), 0.6, { y: 16 }, { y: 0 });
+      B.forEach((b, i) => IN(b.g, at(2, 0.35) + i * 0.12, 0.4, { y: 20 }, { y: 0 }));
+      // L3 提 25：一步步算
+      IN("#t-r1", at(3, 0.1), 0.5);
+      tl.to("#t-r1", { opacity: 0, duration: 0.15 }, at(3, 0.62));
+      tl.fromTo("#t-r2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, at(3, 0.62));
+      // L4 诚实：最多 31
+      B.forEach((b, i) => { tl.to(b.v0, { opacity: 0, duration: 0.15 }, at(4, 0.05) + i * 0.08); tl.to(b.v1, { opacity: 1, duration: 0.2 }, at(4, 0.05) + i * 0.08); });
+      IN("#t-max", at(4, 0.3), 0.5);
+      IN("#t-honest", at(4, 0.6), 0.5);
+      // L5 最高位少了约束
+      OUT(["#t-max", "#t-honest"], at(5, 0.0), 0.3);
+      B.forEach((b) => { tl.to(b.v1, { opacity: 0, duration: 0.2 }, at(5, 0.0)); tl.to(b.v0, { opacity: 1, duration: 0.2 }, at(5, 0.05)); });
+      tl.to(B[0].tag, { opacity: 0.15, duration: 0.5 }, at(5, 0.35));
+      tl.to(B[0].box, { stroke: "#FF9F43", strokeOpacity: 1, duration: 0.4 }, at(5, 0.35));
+      // L6 恶意证明者
+      B.forEach((b, i) => { tl.to(b.v0, { opacity: 0, duration: 0.15 }, at(6, 0.02) + (4 - i) * 0.08); tl.to(b.v2, { opacity: 1, duration: 0.25 }, at(6, 0.02) + (4 - i) * 0.08); });
+      tl.fromTo(B[0].v2, { scale: 1.5, svgOrigin: `${B[0].cx} 600` }, { scale: 1, duration: 0.4, ease: "back.out(2)" }, at(6, 0.1));
+      IN("#t-m1", at(6, 0.18), 0.5);
+      IN("#t-m2", at(6, 0.36), 0.5);
+      IN("#t-c1ok", at(6, 0.55), 0.3, { scale: 1.5, svgOrigin: "860 245" }, { scale: 1, ease: "back.out(2)" });
+      IN("#t-c2ok", at(6, 0.6), 0.3, { scale: 1.5, svgOrigin: "1745 245" }, { scale: 1, ease: "back.out(2)" });
+      IN("#t-pass", at(6, 0.75), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+
+      tl.to("#t-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["toy"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,103 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="bank" data-duration="33.86" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="k-all">
+        <!-- 每笔转账本人签字：三张小单据 -->
+        <g id="k-slips">
+          <g class="k-slip h"><rect x="160" y="250" width="300" height="150" rx="12" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="190" y="305" font-size="30" fill="#e8e6df">转账 · 一笔</text><path class="dr k-sig" pathLength="1" d="M190 360 C 220 330, 240 380, 270 350 S 320 340, 420 355" fill="none" stroke="#e8e6df" stroke-width="3" /></g>
+          <g class="k-slip h"><rect x="160" y="430" width="300" height="150" rx="12" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="190" y="485" font-size="30" fill="#e8e6df">转账 · 一笔</text><path class="dr k-sig" pathLength="1" d="M190 540 C 220 510, 240 560, 270 530 S 320 520, 420 535" fill="none" stroke="#e8e6df" stroke-width="3" /></g>
+          <g class="k-slip h"><rect x="160" y="610" width="300" height="150" rx="12" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="190" y="665" font-size="30" fill="#e8e6df">转账 · 一笔</text><path class="dr k-sig" pathLength="1" d="M190 720 C 220 690, 240 740, 270 710 S 320 700, 420 715" fill="none" stroke="#e8e6df" stroke-width="3" /></g>
+        </g>
+        <text id="k-each" class="h" x="310" y="830" font-size="30" fill="#8a8f99" text-anchor="middle">每笔都要本人签字</text>
+
+        <!-- 授权书 A：有限 -->
+        <g id="k-doc1" class="h">
+          <rect x="620" y="230" width="520" height="560" rx="16" fill="#161a22" stroke="#83C167" stroke-width="4" />
+          <text x="880" y="300" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">授权书</text>
+          <text x="660" y="380" font-size="30" fill="#e8e6df">允许助理</text>
+          <text x="660" y="430" font-size="30" fill="#e8e6df">每天替你付</text>
+          <text x="660" y="480" font-size="30" fill="#83C167" font-weight="700">100 元以内的账单</text>
+        </g>
+        <g id="k-days"></g>
+        <!-- 授权书 B：全部财产 -->
+        <g id="k-doc2" class="h">
+          <rect x="1240" y="230" width="520" height="560" rx="16" fill="#2a1416" stroke="#FC6255" stroke-width="4" />
+          <text x="1500" y="300" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">授权书</text>
+          <text x="1280" y="380" font-size="30" fill="#e8e6df">允许持有人</text>
+          <text x="1280" y="430" font-size="30" fill="#FC6255" font-weight="700">处理我的全部财产</text>
+          <g fill="#F0B90B"><circle cx="1360" cy="560" r="26" /><circle cx="1430" cy="560" r="26" /><circle cx="1500" cy="560" r="26" /><circle cx="1570" cy="560" r="26" /><circle cx="1640" cy="560" r="26" /><circle cx="1395" cy="630" r="26" /><circle cx="1465" cy="630" r="26" /><circle cx="1535" cy="630" r="26" /><circle cx="1605" cy="630" r="26" /></g>
+        </g>
+        <!-- 比方的局限 -->
+        <g id="k-stamp" class="h">
+          <circle cx="1060" cy="335" r="55" fill="none" stroke="#8a8f99" stroke-width="4" />
+          <text x="1060" y="346" font-size="30" fill="#8a8f99" text-anchor="middle">公证</text>
+        </g>
+        <text id="k-rev" class="h" x="880" y="860" font-size="30" fill="#8a8f99" text-anchor="middle">纸质：要公证，可去银行撤销</text>
+        <g id="k-chains"></g>
+        <text id="k-now" class="h" x="1500" y="860" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">链上：立即生效，可能多链同时生效</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 33.86, "L": [[0.6, 5.9], [6.35, 12.26], [12.71, 20.75], [21.2, 26.96], [27.41, 32.76]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      // 助理每天付账：7 根小柱，都不超过 100 元线
+      const days = document.querySelector("#k-days"), D = [];
+      const hs = [60, 40, 75, 30, 55, 70, 45];
+      hs.forEach((h, i) => {
+        const r = document.createElementNS(NS, "rect");
+        r.setAttribute("x", 680 + i * 60); r.setAttribute("y", 700 - h); r.setAttribute("width", 36); r.setAttribute("height", h); r.setAttribute("fill", "#F0B90B"); r.setAttribute("opacity", 0);
+        days.appendChild(r); D.push(r);
+      });
+      const lim = document.createElementNS(NS, "line");
+      lim.setAttribute("x1", 670); lim.setAttribute("x2", 1100); lim.setAttribute("y1", 610); lim.setAttribute("y2", 610); lim.setAttribute("stroke", "#83C167"); lim.setAttribute("stroke-width", 3); lim.setAttribute("stroke-dasharray", "10 8"); lim.setAttribute("opacity", 0);
+      days.appendChild(lim);
+      // 多条链（代码之外无关，这里是链：中性灰圈）
+      const ch = document.querySelector("#k-chains"), CH = [];
+      ["链 A", "链 B", "链 C"].forEach((t, i) => {
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", 0);
+        g.innerHTML = `<circle cx="${1360 + i * 140}" cy="950" r="40" fill="#2a1416" stroke="#FC6255" stroke-width="3" /><text x="${1360 + i * 140}" y="960" font-size="28" fill="#e8e6df" text-anchor="middle">${t}</text>`;
+        ch.appendChild(g); CH.push(g);
+      });
+
+      // L0 每笔签字
+      gsap.utils.toArray("#root .k-slip").forEach((g, i) => IN(g, at(0, 0.05) + i * 0.15, 0.4, { x: -20 }, { x: 0 }));
+      gsap.utils.toArray("#root .k-sig").forEach((p, i) => tl.fromTo(p, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.5 }, at(0, 0.35) + i * 0.2));
+      IN("#k-each", at(0, 0.7), 0.4);
+      // L1 有限授权书 + 每天付账
+      tl.to(["#k-slips", "#k-each"], { opacity: 0.3, duration: 0.4 }, at(1, 0.0));
+      IN("#k-doc1", at(1, 0.05), 0.6, { y: 20 }, { y: 0 });
+      tl.to(lim, { opacity: 1, duration: 0.3 }, at(1, 0.6));
+      D.forEach((r, i) => tl.fromTo(r, { opacity: 0, scaleY: 0, transformOrigin: "50% 100%" }, { opacity: 1, scaleY: 1, duration: 0.25 }, at(1, 0.62) + i * 0.1));
+      // L2 全部财产
+      IN("#k-doc2", at(2, 0.3), 0.6, { y: 20 }, { y: 0 });
+      tl.to("#k-doc2 circle", { fill: "#FC6255", duration: 0.4, stagger: 0.05 }, at(2, 0.75));
+      // L3 局限：公证、撤销
+      POP("#k-stamp", at(3, 0.15));
+      IN("#k-rev", at(3, 0.45), 0.5);
+      // L4 链上：立即、多链
+      IN("#k-now", at(4, 0.05), 0.5);
+      CH.forEach((g, i) => POP(g, at(4, 0.45) + i * 0.08, 0.35));
+      tl.to("#k-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["bank"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,113 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="48.82" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="r-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="r-all">
+        <g id="r-pin" class="h">
+          <rect x="510" y="70" width="900" height="110" rx="18" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="960" y="142" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="700">账户变成合约后，谁在<tspan fill="#F0B90B">花钱</tspan>？</text>
+        </g>
+        <!-- 签名 → 代码 → 花钱 -->
+        <g id="r-chain">
+          <g id="r-c1" class="h"><rect x="160" y="300" width="400" height="140" rx="18" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="360" y="382" font-size="36" fill="#e8e6df" text-anchor="middle" font-weight="700">签名授权</text></g>
+          <path id="r-a1" class="dr h" pathLength="1" d="M570 370 L 750 370" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#r-ah)" />
+          <g id="r-c2" class="h"><rect x="760" y="300" width="400" height="140" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="960" y="382" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">那段代码</text></g>
+          <path id="r-a2" class="dr h" pathLength="1" d="M1170 370 L 1350 370" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#r-ah)" />
+          <g id="r-c3" class="h"><rect x="1360" y="300" width="400" height="140" rx="18" fill="#1a1708" stroke="#F0B90B" stroke-width="4" /><text x="1560" y="382" font-size="36" fill="#F0B90B" text-anchor="middle" font-weight="700">花钱</text></g>
+          <text id="r-who" class="h" x="360" y="510" font-size="32" fill="#FC6255" text-anchor="middle">谁能让你签下授权</text>
+          <text id="r-who2" class="h" x="960" y="510" font-size="32" fill="#FC6255" text-anchor="middle">谁就决定了它是什么代码</text>
+        </g>
+        <!-- 链上 vs 链下 -->
+        <g id="r-onoff">
+          <line id="r-div" class="h" x1="960" y1="600" x2="960" y2="980" stroke="#2a2f3a" stroke-width="4" stroke-dasharray="14 10" />
+          <g id="r-off" class="h"><text x="480" y="650" font-size="32" fill="#8a8f99" text-anchor="middle">链下</text><rect x="300" y="690" width="360" height="110" rx="16" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="480" y="757" font-size="32" fill="#6b6f7a" text-anchor="middle">提现服务：已关</text></g>
+          <g id="r-on" class="h"><text x="1440" y="650" font-size="32" fill="#8a8f99" text-anchor="middle">链上</text><rect x="1220" y="690" width="440" height="110" rx="16" fill="#0b0e14" stroke="#FC6255" stroke-width="3" /><text class="mono" x="1440" y="757" font-size="30" fill="#FC6255" text-anchor="middle">code → 攻击者合约</text></g>
+          <text id="r-cant" class="h" x="960" y="900" font-size="38" fill="#e8e6df" text-anchor="middle" font-weight="700">停掉链下服务，撤销不了链上的委托</text>
+        </g>
+        <!-- 签名策略 -->
+        <g id="r-pol">
+          <g id="r-polbox" class="h"><rect x="760" y="580" width="400" height="200" rx="18" fill="#1a1524" stroke="#B48EF0" stroke-width="4" /><text x="960" y="660" font-size="34" fill="#B48EF0" text-anchor="middle" font-weight="700">托管签名策略</text><text x="960" y="715" font-size="28" fill="#8a8f99" text-anchor="middle">热钱包不需要 7702</text></g>
+          <g id="r-t2" class="h"><rect x="200" y="620" width="300" height="110" rx="14" fill="#161a22" stroke="#e8e6df" stroke-opacity=".5" stroke-width="3" /><text x="350" y="688" font-size="30" fill="#e8e6df" text-anchor="middle">普通转账</text></g>
+          <g id="r-t4" class="h"><rect x="200" y="780" width="300" height="110" rx="14" fill="#1f1608" stroke="#FF9F43" stroke-width="3" /><text x="350" y="848" font-size="30" fill="#FF9F43" text-anchor="middle">7702 授权</text></g>
+          <text id="r-y" class="h" x="1260" y="690" font-size="36" fill="#83C167" font-weight="700">✓ 签</text>
+          <text id="r-n" class="h" x="1260" y="860" font-size="36" fill="#FC6255" font-weight="700">✕ 一律拒签</text>
+        </g>
+        <!-- 监控 -->
+        <g id="r-mon">
+          <g id="r-addr" class="h"><rect x="460" y="620" width="1000" height="110" rx="16" fill="#0b0e14" stroke="#e8e6df" stroke-opacity=".4" stroke-width="3" /><text x="500" y="688" font-size="30" fill="#8a8f99">自有地址的代码</text></g>
+          <text id="r-m0" class="h mono" x="1420" y="690" font-size="34" fill="#6b6f7a" text-anchor="end">（空）</text>
+          <text id="r-m1" class="h mono" x="1420" y="690" font-size="34" fill="#FF9F43" text-anchor="end" font-weight="700">0xef0100…</text>
+          <text id="r-alarm" class="h" x="960" y="820" font-size="40" fill="#FF9F43" text-anchor="middle" font-weight="800">⚠ 立即告警</text>
+        </g>
+        <!-- Passkey -->
+        <g id="r-pk">
+          <g id="r-pk1" class="h"><rect x="360" y="620" width="560" height="140" rx="18" fill="#12200f" stroke="#83C167" stroke-width="3" /><text x="640" y="680" font-size="32" fill="#e8e6df" text-anchor="middle">Passkey 保护：登录</text><text x="640" y="730" font-size="32" fill="#83C167" text-anchor="middle" font-weight="700">✓</text></g>
+          <g id="r-pk2" class="h"><rect x="1000" y="620" width="560" height="140" rx="18" fill="#2a1416" stroke="#FC6255" stroke-width="3" /><text x="1280" y="680" font-size="32" fill="#e8e6df" text-anchor="middle">不保护：签名的内容</text><text x="1280" y="730" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">✕</text></g>
+        </g>
+        <text id="r-next" class="h" x="960" y="940" font-size="36" fill="#6b6f7a" text-anchor="middle">下一集 · 16 共识层与链级安全</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 48.82, "L": [[0.6, 5.62], [6.07, 13.03], [13.48, 19.48], [19.93, 28.28], [28.73, 36.22], [36.67, 40.99], [41.44, 47.72]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      // L0 问题回来
+      IN("#r-pin", at(0, 0.05), 0.8, { scale: 0.5, x: -570, y: -5, svgOrigin: "960 125" }, { scale: 1, x: 0, y: 0, ease: "expo.out" });
+      // L1 签名 → 代码 → 花钱
+      NODE("#r-c1", at(1, 0.0)); DRAW("#r-a1", at(1, 0.1), 0.4);
+      NODE("#r-c2", at(1, 0.15)); DRAW("#r-a2", at(1, 0.25), 0.4);
+      NODE("#r-c3", at(1, 0.3));
+      IN("#r-who", at(1, 0.55), 0.4);
+      IN("#r-who2", at(1, 0.75), 0.4);
+      // L2 链上 / 链下
+      IN("#r-div", at(2, 0.0), 0.4);
+      IN("#r-off", at(2, 0.1), 0.4);
+      IN("#r-on", at(2, 0.25), 0.4);
+      IN("#r-cant", at(2, 0.55), 0.5);
+      // L3 签名策略
+      OUT("#r-onoff", at(3, 0.0), 0.3);
+      NODE("#r-polbox", at(3, 0.05));
+      IN("#r-t2", at(3, 0.25), 0.4, { x: -20 }, { x: 0 });
+      IN("#r-t4", at(3, 0.35), 0.4, { x: -20 }, { x: 0 });
+      IN("#r-y", at(3, 0.5), 0.3);
+      POP("#r-n", at(3, 0.7));
+      // L4 监控
+      OUT("#r-pol", at(4, 0.0), 0.3);
+      IN("#r-addr", at(4, 0.05), 0.4);
+      IN("#r-m0", at(4, 0.15), 0.3);
+      OUT("#r-m0", at(4, 0.5), 0.2);
+      IN("#r-m1", at(4, 0.52), 0.3);
+      IN("#r-alarm", at(4, 0.6), 0.4, { scale: 1.3, svgOrigin: "960 805" }, { scale: 1, ease: "back.out(2)" });
+      tl.to("#r-alarm", { opacity: 0.4, duration: 0.25, yoyo: true, repeat: 3 }, at(4, 0.75));
+      // L5 Passkey
+      OUT("#r-mon", at(5, 0.0), 0.3);
+      IN("#r-pk1", at(5, 0.1), 0.4);
+      IN("#r-pk2", at(5, 0.45), 0.4);
+      // L6 下一集
+      tl.to(["#r-chain", "#r-pk", "#r-pin"], { opacity: 0.25, duration: 0.5 }, at(6, 0.0));
+      IN("#r-next", at(6, 0.1), 0.5);
+      tl.to("#r-all", { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

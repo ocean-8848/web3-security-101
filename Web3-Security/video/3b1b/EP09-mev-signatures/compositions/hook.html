@@ -1,0 +1,80 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="hook" data-duration="28.39" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="h-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#F0B90B" /></marker></defs>
+      <g id="h-all">
+        <g id="h-you" class="h"><circle cx="240" cy="330" r="72" fill="#161a22" stroke="#e8e6df" stroke-width="4" /><text x="240" y="343" font-size="38" fill="#e8e6df" text-anchor="middle">你</text><text x="240" y="450" font-size="34" fill="#F0B90B" text-anchor="middle" font-weight="700">10 ETH</text></g>
+        <path id="h-go" class="dr h" pathLength="1" d="M330 330 L 1180 330" fill="none" stroke="#F0B90B" stroke-width="4" marker-end="url(#h-ah)" />
+        <text id="h-sw" class="h" x="760" y="305" font-size="30" fill="#e8e6df" text-anchor="middle">换 USDC</text>
+        <g id="h-pool" class="h"><rect x="1200" y="230" width="560" height="200" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="5" /><text x="1480" y="310" font-size="38" fill="#58C4DD" text-anchor="middle" font-weight="700">DEX 池子</text><text x="1480" y="375" font-size="30" fill="#e8e6df" text-anchor="middle">1 ETH = 2,000 USDC<tspan fill="#8a8f99" font-size="28">（示例）</tspan></text></g>
+        <!-- 滑点 -->
+        <g id="h-slip" class="h">
+          <text x="240" y="580" font-size="34" fill="#e8e6df">滑点 <tspan fill="#FF9F43" font-weight="700">5%</tspan></text>
+          <line x1="480" y1="570" x2="1600" y2="570" stroke="#2a2f3a" stroke-width="8" stroke-linecap="round" />
+          <text x="1600" y="530" font-size="28" fill="#8a8f99" text-anchor="middle">按现价 20,000</text>
+          <text x="480" y="530" font-size="28" fill="#FF9F43" text-anchor="middle">最少 19,000</text>
+        </g>
+        <line id="h-band" class="h" x1="480" y1="570" x2="480" y2="570" stroke="#FF9F43" stroke-width="8" stroke-linecap="round" />
+        <text id="h-min" class="h" x="1040" y="640" font-size="36" fill="#FF9F43" text-anchor="middle" font-weight="700">amountOutMin = 19,000 USDC</text>
+        <!-- 内存池 -->
+        <g id="h-mem" class="h"><rect x="420" y="740" width="760" height="180" rx="20" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="460" y="790" font-size="30" fill="#8a8f99">公开内存池</text></g>
+        <g id="h-q" fill="#6b6f7a"></g>
+        <g id="h-tx" class="h"><rect x="900" y="810" width="230" height="80" rx="12" fill="#1a1708" stroke="#F0B90B" stroke-width="3" /><text x="1015" y="862" font-size="30" fill="#F0B90B" text-anchor="middle">你的交易</text></g>
+        <g id="h-s" class="h"><circle cx="1560" cy="830" r="64" fill="#2a1414" stroke="#FC6255" stroke-width="4" /><text x="1560" y="842" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">搜索者</text></g>
+        <line id="h-look" class="h" x1="1495" y1="840" x2="1140" y2="850" stroke="#FC6255" stroke-width="3" stroke-dasharray="10 8" />
+      </g>
+      <g id="h-qq" class="h"><text x="960" y="560" font-size="80" fill="#e8e6df" text-anchor="middle" font-weight="800">你最后会收到多少 <tspan fill="#F0B90B">USDC</tspan>？</text></g>
+      <g id="h-pin" class="h">
+        <rect x="70" y="60" width="760" height="84" rx="14" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="450" y="115" font-size="34" fill="#e8e6df" text-anchor="middle">滑点 5%：你最后会收到多少 <tspan fill="#F0B90B">USDC</tspan>？</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 28.39, "L": [[0.6, 9.22], [9.67, 15.57], [16.02, 22.6], [23.05, 27.29]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      const qg = document.querySelector("#h-q"), Q = [];
+      for (let i = 0; i < 9; i++) { const c = document.createElementNS(NS, "circle"); c.setAttribute("cx", 480 + i * 45); c.setAttribute("cy", "850"); c.setAttribute("r", "12"); c.setAttribute("opacity", "0"); qg.appendChild(c); Q.push(c); }
+      // L0
+      IN("#h-you", at(0, 0.0), 0.5, { scale: 0.7, svgOrigin: "240 330" }, { scale: 1 });
+      DRAW("#h-go", at(0, 0.2), 0.7);
+      IN("#h-sw", at(0, 0.25), 0.4);
+      IN("#h-pool", at(0, 0.45), 0.5);
+      // L1 滑点 5%
+      IN("#h-slip", at(1, 0.05), 0.5);
+      IN("#h-band", at(1, 0.24), 0.1);
+      tl.fromTo("#h-band", { attr: { x2: 480 } }, { attr: { x2: 1600 }, duration: 0.8, ease: "power2.out" }, at(1, 0.25));
+      IN("#h-min", at(1, 0.55), 0.4);
+      // L2 进入内存池，搜索者读到
+      IN("#h-mem", at(2, 0.0), 0.4);
+      Q.forEach((c, i) => IN(c, at(2, 0.05) + i * 0.05, 0.2));
+      IN("#h-tx", at(2, 0.2), 0.5, { y: -120 }, { y: 0 });
+      IN("#h-s", at(2, 0.55), 0.4, { scale: 0.7, svgOrigin: "1560 830" }, { scale: 1 });
+      IN("#h-look", at(2, 0.7), 0.3);
+      tl.to("#h-tx rect", { stroke: "#FC6255", duration: 0.2, yoyo: true, repeat: 3 }, at(2, 0.75));
+      // L3 问题
+      tl.to("#h-all", { opacity: 0.15, duration: 0.4 }, at(3, 0));
+      IN("#h-qq", at(3, 0.05), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      tl.to("#h-all", { opacity: 0, duration: 0.4 }, at(3, 1) + 0.05);
+      OUT("#h-qq", at(3, 1) + 0.05, 0.4);
+      IN("#h-pin", at(3, 1) + 0.15, 0.5, { scale: 1.5, svgOrigin: "450 102" }, { scale: 1 });
+      tl.to("#h-pin", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>

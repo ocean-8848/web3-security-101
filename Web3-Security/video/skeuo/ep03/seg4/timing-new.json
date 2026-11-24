@@ -1,0 +1,2718 @@
+{
+ "id": "seg4",
+ "title": "八个误解",
+ "pill": 4,
+ "total": 160.6,
+ "lines": [
+  {
+   "id": "seg4-00",
+   "text": "下面是最容易误解的 8 个语言特性。每个都看三件事：误解，事实，影响。",
+   "spoken": "下面是最容易误解的 8 个语言特性。每个都看三件事：误解，事实，影响。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-00.mp3",
+   "start": 1.6,
+   "dur": 7.656,
+   "speechStart": 1.698,
+   "speechEnd": 8.421
+  },
+  {
+   "id": "seg4-01",
+   "text": "一，private。误解是别人看不到。",
+   "spoken": "一，private。误解是别人看不到。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-01.mp3",
+   "start": 9.476,
+   "dur": 4.344,
+   "speechStart": 9.574,
+   "speechEnd": 12.988
+  },
+  {
+   "id": "seg4-02",
+   "text": "事实是，它只限制其他合约来调用，存储完全公开。所以不能存秘密。",
+   "spoken": "事实是，它只限制其他合约来掉用，存储完全公开。所以不能存秘密。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-02.mp3",
+   "start": 14.04,
+   "dur": 7.272,
+   "speechStart": 14.138,
+   "speechEnd": 20.469
+  },
+  {
+   "id": "seg4-03",
+   "text": "二，receive 和 fallback。误解是，转账只是改个余额。",
+   "spoken": "二，receive 和 fallback。误解是，转账只是改个余额。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-03.mp3",
+   "start": 21.532,
+   "dur": 5.808,
+   "speechStart": 21.63,
+   "speechEnd": 26.52
+  },
+  {
+   "id": "seg4-04",
+   "text": "事实是，向合约转 ETH，会执行它的代码。这就是重入的入口。",
+   "spoken": "事实是，向合约转 ETH，会执行它的代码。这就是虫入的入口。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-04.mp3",
+   "start": 27.56,
+   "dur": 6.072,
+   "speechStart": 27.658,
+   "speechEnd": 32.798
+  },
+  {
+   "id": "seg4-05",
+   "text": "三，selfdestruct。误解是它能删掉合约。",
+   "spoken": "三，selfdestruct。误解是它能删掉合约。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-05.mp3",
+   "start": 33.852,
+   "dur": 4.8,
+   "speechStart": 33.95,
+   "speechEnd": 37.816
+  },
+  {
+   "id": "seg4-06",
+   "text": "2024 年 Cancun 升级引入了 EIP-6780。之后，只有同一笔交易里创建的合约，才会被删除。其他情况，只转走余额。",
+   "spoken": "2024 年 Cancun 升级引入了 EIP-6780。之后，只有同一笔交易里创建的合约，才会被删除。其他情况，只转走余额。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-06.mp3",
+   "start": 38.872,
+   "dur": 12.12,
+   "speechStart": 38.97,
+   "speechEnd": 50.158
+  },
+  {
+   "id": "seg4-07",
+   "text": "四，合约余额。误解是，只能通过我的函数增加。",
+   "spoken": "四，合约余额。误解是，只能通过我的函数增加。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-07.mp3",
+   "start": 51.212,
+   "dur": 5.784,
+   "speechStart": 51.31,
+   "speechEnd": 56.164
+  },
+  {
+   "id": "seg4-08",
+   "text": "事实是，任何人都能强制转入。比如 selfdestruct，比如出块奖励地址。",
+   "spoken": "事实是，任何人都能强制转入。比如 selfdestruct，比如出块奖励地址。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-08.mp3",
+   "start": 57.216,
+   "dur": 7.68,
+   "speechStart": 57.314,
+   "speechEnd": 64.049
+  },
+  {
+   "id": "seg4-09",
+   "text": "所以，拿合约自己的余额来记账，会被一笔捐赠打乱。",
+   "spoken": "所以，拿合约自己的余额来记账，会被一笔捐赠打乱。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-09.mp3",
+   "start": 65.116,
+   "dur": 5.52,
+   "speechStart": 65.214,
+   "speechEnd": 69.785
+  },
+  {
+   "id": "seg4-10",
+   "text": "五，检查型算术。0.8 版以后，溢出会回滚。",
+   "spoken": "五，检查型算术。0.8 版以后，溢出会回滚。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-10.mp3",
+   "start": 70.856,
+   "dur": 5.568,
+   "speechStart": 70.954,
+   "speechEnd": 75.594
+  },
+  {
+   "id": "seg4-11",
+   "text": "但 unchecked 块，类型转换，除法截断，都不会报错。",
+   "spoken": "但 unchecked 块，类型转换，除法截断，都不会报错。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-11.mp3",
+   "start": 76.644,
+   "dur": 5.256,
+   "speechStart": 76.742,
+   "speechEnd": 81.051
+  },
+  {
+   "id": "seg4-12",
+   "text": "六，block.timestamp。它不是精确时间。",
+   "spoken": "六，block.timestamp。它不是精确时间。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-12.mp3",
+   "start": 82.12,
+   "dur": 4.536,
+   "speechStart": 82.218,
+   "speechEnd": 85.81
+  },
+  {
+   "id": "seg4-13",
+   "text": "出块者可以在小范围内改动它，L2 上由排序器决定。不能拿它做随机数，也不能做秒级判断。",
+   "spoken": "出块者可以在小范围内改动它，L2 上由排序器决定。不能拿它做随机数，也不能做秒级判断。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-13.mp3",
+   "start": 86.876,
+   "dur": 8.76,
+   "speechStart": 86.974,
+   "speechEnd": 94.793
+  },
+  {
+   "id": "seg4-14",
+   "text": "七，block.number。误解是，每个块的时间固定。",
+   "spoken": "七，block.number。误解是，每个块的时间固定。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-14.mp3",
+   "start": 95.856,
+   "dur": 5.112,
+   "speechStart": 95.954,
+   "speechEnd": 100.13
+  },
+  {
+   "id": "seg4-15",
+   "text": "BSC 在 2026 年 1 月的 Fermi 升级后，出块时间从 3 秒缩到了 0.45 秒。L2 上的含义，因链而异。",
+   "spoken": "BSC 在 2026 年 1 月的 Fermi 升级后，出块时间从 3 秒缩到了 0.45 秒。L2 上的含义，因链而异。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-15.mp3",
+   "start": 101.188,
+   "dur": 9.648,
+   "speechStart": 101.286,
+   "speechEnd": 110.009
+  },
+  {
+   "id": "seg4-16",
+   "text": "用区块数来算利息或锁定期，就会出错。",
+   "spoken": "用区块数来算利息或锁定期，就会出错。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-16.mp3",
+   "start": 111.056,
+   "dur": 4.44,
+   "speechStart": 111.154,
+   "speechEnd": 114.654
+  },
+  {
+   "id": "seg4-17",
+   "text": "八，函数选择器。误解是，函数名就是唯一的身份。",
+   "spoken": "八，函数选择器。误解是，函数名就是唯一的身份。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-17.mp3",
+   "start": 115.716,
+   "dur": 6.0,
+   "speechStart": 115.814,
+   "speechEnd": 120.883
+  },
+  {
+   "id": "seg4-18",
+   "text": "事实是，选择器只取哈希的前 4 字节，不同的函数签名，可能撞在一起。",
+   "spoken": "事实是，选择器只取哈希的前 4 字节，不同的函数签名，可能撞在一起。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-18.mp3",
+   "start": 121.936,
+   "dur": 6.936,
+   "speechStart": 122.034,
+   "speechEnd": 128.034
+  },
+  {
+   "id": "seg4-19",
+   "text": "2021 年 8 月的 Poly Network 事故，关键一步就在这里，损失约 6.1 亿美元。",
+   "spoken": "2021 年 8 月的 Poly Network 事故，关键一步就在这里，损失约 6.1 亿美元。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-19.mp3",
+   "start": 129.092,
+   "dur": 6.456,
+   "speechStart": 129.19,
+   "speechEnd": 134.713
+  },
+  {
+   "id": "seg4-20",
+   "text": "按公开复盘，一个构造出来的函数名，撞上了替换验证者公钥的那个函数。",
+   "spoken": "按公开复盘，一个构造出来的函数名，撞上了替换验证者公钥的那个函数。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-20.mp3",
+   "start": 135.768,
+   "dur": 6.84,
+   "speechStart": 135.866,
+   "speechEnd": 141.77
+  },
+  {
+   "id": "seg4-21",
+   "text": "审计时还要盯住一对词：storage 和 memory。",
+   "spoken": "审计时还要盯住一对词：storage 和 memory。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-21.mp3",
+   "start": 142.828,
+   "dur": 4.68,
+   "speechStart": 142.926,
+   "speechEnd": 146.687
+  },
+  {
+   "id": "seg4-22",
+   "text": "storage 是引用，改了会写回。memory 是副本，改了不写回。",
+   "spoken": "storage 是引用，改了会写回。memory 是副本，改了不写回。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-22.mp3",
+   "start": 147.728,
+   "dur": 5.808,
+   "speechStart": 147.826,
+   "speechEnd": 152.692
+  },
+  {
+   "id": "seg4-23",
+   "text": "写错一个词，余额或标志位没更新，资金就可能被反复领取。",
+   "spoken": "写错一个词，余额或标志位没更新，资金就可能被反复领取。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep03/audio/lines/seg4-23.mp3",
+   "start": 153.756,
+   "dur": 5.64,
+   "speechStart": 153.854,
+   "speechEnd": 158.556
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "下面",
+   "start": 1.698,
+   "end": 2.079
+  },
+  {
+   "line": 0,
+   "text": "是",
+   "start": 2.09,
+   "end": 2.209
+  },
+  {
+   "line": 0,
+   "text": "最",
+   "start": 2.233,
+   "end": 2.412
+  },
+  {
+   "line": 0,
+   "text": "容易",
+   "start": 2.412,
+   "end": 2.638
+  },
+  {
+   "line": 0,
+   "text": "误解",
+   "start": 2.65,
+   "end": 2.9
+  },
+  {
+   "line": 0,
+   "text": "的",
+   "start": 2.9,
+   "end": 3.019
+  },
+  {
+   "line": 0,
+   "text": "8 个",
+   "start": 3.043,
+   "end": 3.329
+  },
+  {
+   "line": 0,
+   "text": "语言",
+   "start": 3.34,
+   "end": 3.579
+  },
+  {
+   "line": 0,
+   "text": "特性",
+   "start": 3.59,
+   "end": 4.079
+  },
+  {
+   "line": 0,
+   "text": "每个",
+   "start": 4.624,
+   "end": 4.945
+  },
+  {
+   "line": 0,
+   "text": "都",
+   "start": 4.957,
+   "end": 5.052
+  },
+  {
+   "line": 0,
+   "text": "看",
+   "start": 5.052,
+   "end": 5.219
+  },
+  {
+   "line": 0,
+   "text": "三",
+   "start": 5.243,
+   "end": 5.433
+  },
+  {
+   "line": 0,
+   "text": "件",
+   "start": 5.433,
+   "end": 5.588
+  },
+  {
+   "line": 0,
+   "text": "事",
+   "start": 5.588,
+   "end": 5.909
+  },
+  {
+   "line": 0,
+   "text": "误解",
+   "start": 6.124,
+   "end": 6.707
+  },
+  {
+   "line": 0,
+   "text": "事实",
+   "start": 6.921,
+   "end": 7.659
+  },
+  {
+   "line": 0,
+   "text": "影响",
+   "start": 7.945,
+   "end": 8.421
+  },
+  {
+   "line": 1,
+   "text": "一",
+   "start": 9.574,
+   "end": 10.002
+  },
+  {
+   "line": 1,
+   "text": "private",
+   "start": 10.312,
+   "end": 10.847
+  },
+  {
+   "line": 1,
+   "text": "误解",
+   "start": 11.381,
+   "end": 11.976
+  },
+  {
+   "line": 1,
+   "text": "是",
+   "start": 12.071,
+   "end": 12.262
+  },
+  {
+   "line": 1,
+   "text": "别人",
+   "start": 12.274,
+   "end": 12.488
+  },
+  {
+   "line": 1,
+   "text": "看",
+   "start": 12.5,
+   "end": 12.666
+  },
+  {
+   "line": 1,
+   "text": "不",
+   "start": 12.666,
+   "end": 12.738
+  },
+  {
+   "line": 1,
+   "text": "到",
+   "start": 12.738,
+   "end": 12.988
+  },
+  {
+   "line": 2,
+   "text": "事实",
+   "start": 14.138,
+   "end": 14.507
+  },
+  {
+   "line": 2,
+   "text": "是",
+   "start": 14.507,
+   "end": 14.864
+  },
+  {
+   "line": 2,
+   "text": "它",
+   "start": 15.114,
+   "end": 15.304
+  },
+  {
+   "line": 2,
+   "text": "只",
+   "start": 15.304,
+   "end": 15.411
+  },
+  {
+   "line": 2,
+   "text": "限制",
+   "start": 15.423,
+   "end": 15.745
+  },
+  {
+   "line": 2,
+   "text": "其他",
+   "start": 15.769,
+   "end": 16.138
+  },
+  {
+   "line": 2,
+   "text": "合约",
+   "start": 16.15,
+   "end": 16.435
+  },
+  {
+   "line": 2,
+   "text": "来调",
+   "start": 16.459,
+   "end": 16.733
+  },
+  {
+   "line": 2,
+   "text": "用",
+   "start": 16.733,
+   "end": 16.947
+  },
+  {
+   "line": 2,
+   "text": "存储",
+   "start": 17.209,
+   "end": 17.697
+  },
+  {
+   "line": 2,
+   "text": "完全",
+   "start": 17.721,
+   "end": 18.09
+  },
+  {
+   "line": 2,
+   "text": "公开",
+   "start": 18.102,
+   "end": 18.507
+  },
+  {
+   "line": 2,
+   "text": "所以",
+   "start": 19.052,
+   "end": 19.492
+  },
+  {
+   "line": 2,
+   "text": "不能",
+   "start": 19.588,
+   "end": 19.897
+  },
+  {
+   "line": 2,
+   "text": "存",
+   "start": 19.897,
+   "end": 20.111
+  },
+  {
+   "line": 2,
+   "text": "秘密",
+   "start": 20.123,
+   "end": 20.469
+  },
+  {
+   "line": 3,
+   "text": "二",
+   "start": 21.63,
+   "end": 21.999
+  },
+  {
+   "line": 3,
+   "text": "receive",
+   "start": 22.296,
+   "end": 22.939
+  },
+  {
+   "line": 3,
+   "text": "和",
+   "start": 23.046,
+   "end": 23.177
+  },
+  {
+   "line": 3,
+   "text": "fallback",
+   "start": 23.189,
+   "end": 23.808
+  },
+  {
+   "line": 3,
+   "text": "误解",
+   "start": 24.353,
+   "end": 24.675
+  },
+  {
+   "line": 3,
+   "text": "是",
+   "start": 24.675,
+   "end": 25.032
+  },
+  {
+   "line": 3,
+   "text": "转账",
+   "start": 25.246,
+   "end": 25.592
+  },
+  {
+   "line": 3,
+   "text": "只是",
+   "start": 25.615,
+   "end": 25.782
+  },
+  {
+   "line": 3,
+   "text": "改",
+   "start": 25.794,
+   "end": 25.949
+  },
+  {
+   "line": 3,
+   "text": "个",
+   "start": 25.949,
+   "end": 26.02
+  },
+  {
+   "line": 3,
+   "text": "余额",
+   "start": 26.032,
+   "end": 26.52
+  },
+  {
+   "line": 4,
+   "text": "事实",
+   "start": 27.658,
+   "end": 28.015
+  },
+  {
+   "line": 4,
+   "text": "是",
+   "start": 28.015,
+   "end": 28.372
+  },
+  {
+   "line": 4,
+   "text": "向",
+   "start": 28.586,
+   "end": 28.86
+  },
+  {
+   "line": 4,
+   "text": "合约",
+   "start": 28.872,
+   "end": 29.17
+  },
+  {
+   "line": 4,
+   "text": "转",
+   "start": 29.181,
+   "end": 29.384
+  },
+  {
+   "line": 4,
+   "text": "ETH",
+   "start": 29.384,
+   "end": 29.777
+  },
+  {
+   "line": 4,
+   "text": "会",
+   "start": 29.955,
+   "end": 30.122
+  },
+  {
+   "line": 4,
+   "text": "执行",
+   "start": 30.134,
+   "end": 30.384
+  },
+  {
+   "line": 4,
+   "text": "它",
+   "start": 30.408,
+   "end": 30.503
+  },
+  {
+   "line": 4,
+   "text": "的",
+   "start": 30.503,
+   "end": 30.574
+  },
+  {
+   "line": 4,
+   "text": "代码",
+   "start": 30.586,
+   "end": 30.967
+  },
+  {
+   "line": 4,
+   "text": "这",
+   "start": 31.512,
+   "end": 31.739
+  },
+  {
+   "line": 4,
+   "text": "就",
+   "start": 31.739,
+   "end": 31.846
+  },
+  {
+   "line": 4,
+   "text": "是",
+   "start": 31.846,
+   "end": 31.929
+  },
+  {
+   "line": 4,
+   "text": "重",
+   "start": 31.953,
+   "end": 32.179
+  },
+  {
+   "line": 4,
+   "text": "入",
+   "start": 32.179,
+   "end": 32.262
+  },
+  {
+   "line": 4,
+   "text": "的",
+   "start": 32.262,
+   "end": 32.358
+  },
+  {
+   "line": 4,
+   "text": "入口",
+   "start": 32.37,
+   "end": 32.798
+  },
+  {
+   "line": 5,
+   "text": "三",
+   "start": 33.95,
+   "end": 34.426
+  },
+  {
+   "line": 5,
+   "text": "selfdestruct",
+   "start": 34.628,
+   "end": 35.652
+  },
+  {
+   "line": 5,
+   "text": "误解",
+   "start": 36.173,
+   "end": 36.602
+  },
+  {
+   "line": 5,
+   "text": "是",
+   "start": 36.614,
+   "end": 36.745
+  },
+  {
+   "line": 5,
+   "text": "它",
+   "start": 36.745,
+   "end": 36.852
+  },
+  {
+   "line": 5,
+   "text": "能",
+   "start": 36.864,
+   "end": 36.971
+  },
+  {
+   "line": 5,
+   "text": "删掉",
+   "start": 36.971,
+   "end": 37.292
+  },
+  {
+   "line": 5,
+   "text": "合约",
+   "start": 37.304,
+   "end": 37.816
+  },
+  {
+   "line": 6,
+   "text": "2024",
+   "start": 38.97,
+   "end": 39.482
+  },
+  {
+   "line": 6,
+   "text": "年",
+   "start": 39.482,
+   "end": 39.815
+  },
+  {
+   "line": 6,
+   "text": "Cancun",
+   "start": 39.922,
+   "end": 40.434
+  },
+  {
+   "line": 6,
+   "text": "升级",
+   "start": 40.458,
+   "end": 40.779
+  },
+  {
+   "line": 6,
+   "text": "引入",
+   "start": 40.791,
+   "end": 41.041
+  },
+  {
+   "line": 6,
+   "text": "了",
+   "start": 41.041,
+   "end": 41.267
+  },
+  {
+   "line": 6,
+   "text": "EIP",
+   "start": 41.374,
+   "end": 42.136
+  },
+  {
+   "line": 6,
+   "text": "6780",
+   "start": 42.243,
+   "end": 43.124
+  },
+  {
+   "line": 6,
+   "text": "之后",
+   "start": 43.658,
+   "end": 44.205
+  },
+  {
+   "line": 6,
+   "text": "只有",
+   "start": 44.562,
+   "end": 44.812
+  },
+  {
+   "line": 6,
+   "text": "同",
+   "start": 44.824,
+   "end": 45.003
+  },
+  {
+   "line": 6,
+   "text": "一",
+   "start": 45.003,
+   "end": 45.098
+  },
+  {
+   "line": 6,
+   "text": "笔",
+   "start": 45.098,
+   "end": 45.193
+  },
+  {
+   "line": 6,
+   "text": "交易",
+   "start": 45.205,
+   "end": 45.479
+  },
+  {
+   "line": 6,
+   "text": "里",
+   "start": 45.479,
+   "end": 45.562
+  },
+  {
+   "line": 6,
+   "text": "创建",
+   "start": 45.586,
+   "end": 45.86
+  },
+  {
+   "line": 6,
+   "text": "的",
+   "start": 45.86,
+   "end": 45.931
+  },
+  {
+   "line": 6,
+   "text": "合约",
+   "start": 45.943,
+   "end": 46.336
+  },
+  {
+   "line": 6,
+   "text": "才",
+   "start": 46.503,
+   "end": 46.67
+  },
+  {
+   "line": 6,
+   "text": "会",
+   "start": 46.67,
+   "end": 46.765
+  },
+  {
+   "line": 6,
+   "text": "被",
+   "start": 46.777,
+   "end": 46.86
+  },
+  {
+   "line": 6,
+   "text": "删除",
+   "start": 46.872,
+   "end": 47.36
+  },
+  {
+   "line": 6,
+   "text": "其他",
+   "start": 47.908,
+   "end": 48.289
+  },
+  {
+   "line": 6,
+   "text": "情况",
+   "start": 48.301,
+   "end": 48.848
+  },
+  {
+   "line": 6,
+   "text": "只",
+   "start": 49.11,
+   "end": 49.277
+  },
+  {
+   "line": 6,
+   "text": "转走",
+   "start": 49.277,
+   "end": 49.67
+  },
+  {
+   "line": 6,
+   "text": "余额",
+   "start": 49.682,
+   "end": 50.158
+  },
+  {
+   "line": 7,
+   "text": "四",
+   "start": 51.31,
+   "end": 51.762
+  },
+  {
+   "line": 7,
+   "text": "合约",
+   "start": 52.238,
+   "end": 52.702
+  },
+  {
+   "line": 7,
+   "text": "余额",
+   "start": 52.714,
+   "end": 53.214
+  },
+  {
+   "line": 7,
+   "text": "误解",
+   "start": 53.76,
+   "end": 54.069
+  },
+  {
+   "line": 7,
+   "text": "是",
+   "start": 54.069,
+   "end": 54.426
+  },
+  {
+   "line": 7,
+   "text": "只能",
+   "start": 54.688,
+   "end": 54.962
+  },
+  {
+   "line": 7,
+   "text": "通过",
+   "start": 54.974,
+   "end": 55.188
+  },
+  {
+   "line": 7,
+   "text": "我",
+   "start": 55.212,
+   "end": 55.283
+  },
+  {
+   "line": 7,
+   "text": "的",
+   "start": 55.283,
+   "end": 55.343
+  },
+  {
+   "line": 7,
+   "text": "函数",
+   "start": 55.355,
+   "end": 55.712
+  },
+  {
+   "line": 7,
+   "text": "增加",
+   "start": 55.724,
+   "end": 56.164
+  },
+  {
+   "line": 8,
+   "text": "事实",
+   "start": 57.314,
+   "end": 57.706
+  },
+  {
+   "line": 8,
+   "text": "是",
+   "start": 57.706,
+   "end": 58.075
+  },
+  {
+   "line": 8,
+   "text": "任何",
+   "start": 58.409,
+   "end": 58.79
+  },
+  {
+   "line": 8,
+   "text": "人",
+   "start": 58.79,
+   "end": 58.98
+  },
+  {
+   "line": 8,
+   "text": "都",
+   "start": 59.004,
+   "end": 59.123
+  },
+  {
+   "line": 8,
+   "text": "能",
+   "start": 59.123,
+   "end": 59.266
+  },
+  {
+   "line": 8,
+   "text": "强制",
+   "start": 59.29,
+   "end": 59.79
+  },
+  {
+   "line": 8,
+   "text": "转入",
+   "start": 59.802,
+   "end": 60.206
+  },
+  {
+   "line": 8,
+   "text": "比如",
+   "start": 60.752,
+   "end": 61.204
+  },
+  {
+   "line": 8,
+   "text": "selfdestruct",
+   "start": 61.311,
+   "end": 62.311
+  },
+  {
+   "line": 8,
+   "text": "比如",
+   "start": 62.597,
+   "end": 62.918
+  },
+  {
+   "line": 8,
+   "text": "出块",
+   "start": 62.942,
+   "end": 63.287
+  },
+  {
+   "line": 8,
+   "text": "奖励",
+   "start": 63.311,
+   "end": 63.609
+  },
+  {
+   "line": 8,
+   "text": "地址",
+   "start": 63.621,
+   "end": 64.049
+  },
+  {
+   "line": 9,
+   "text": "所以",
+   "start": 65.214,
+   "end": 65.761
+  },
+  {
+   "line": 9,
+   "text": "拿",
+   "start": 66.154,
+   "end": 66.321
+  },
+  {
+   "line": 9,
+   "text": "合约",
+   "start": 66.321,
+   "end": 66.618
+  },
+  {
+   "line": 9,
+   "text": "自己",
+   "start": 66.642,
+   "end": 66.868
+  },
+  {
+   "line": 9,
+   "text": "的",
+   "start": 66.868,
+   "end": 66.94
+  },
+  {
+   "line": 9,
+   "text": "余额",
+   "start": 66.952,
+   "end": 67.475
+  },
+  {
+   "line": 9,
+   "text": "来",
+   "start": 67.583,
+   "end": 67.773
+  },
+  {
+   "line": 9,
+   "text": "记账",
+   "start": 67.785,
+   "end": 68.261
+  },
+  {
+   "line": 9,
+   "text": "会",
+   "start": 68.464,
+   "end": 68.618
+  },
+  {
+   "line": 9,
+   "text": "被",
+   "start": 68.618,
+   "end": 68.714
+  },
+  {
+   "line": 9,
+   "text": "一",
+   "start": 68.726,
+   "end": 68.821
+  },
+  {
+   "line": 9,
+   "text": "笔",
+   "start": 68.821,
+   "end": 68.916
+  },
+  {
+   "line": 9,
+   "text": "捐赠",
+   "start": 68.928,
+   "end": 69.333
+  },
+  {
+   "line": 9,
+   "text": "打乱",
+   "start": 69.345,
+   "end": 69.785
+  },
+  {
+   "line": 10,
+   "text": "五",
+   "start": 70.954,
+   "end": 71.382
+  },
+  {
+   "line": 10,
+   "text": "检查",
+   "start": 71.739,
+   "end": 72.156
+  },
+  {
+   "line": 10,
+   "text": "型",
+   "start": 72.156,
+   "end": 72.323
+  },
+  {
+   "line": 10,
+   "text": "算术",
+   "start": 72.335,
+   "end": 72.787
+  },
+  {
+   "line": 10,
+   "text": "0.8",
+   "start": 73.332,
+   "end": 73.808
+  },
+  {
+   "line": 10,
+   "text": "版",
+   "start": 73.808,
+   "end": 73.939
+  },
+  {
+   "line": 10,
+   "text": "以后",
+   "start": 73.951,
+   "end": 74.404
+  },
+  {
+   "line": 10,
+   "text": "溢出",
+   "start": 74.689,
+   "end": 75.035
+  },
+  {
+   "line": 10,
+   "text": "会",
+   "start": 75.058,
+   "end": 75.165
+  },
+  {
+   "line": 10,
+   "text": "回滚",
+   "start": 75.166,
+   "end": 75.594
+  },
+  {
+   "line": 11,
+   "text": "但",
+   "start": 76.742,
+   "end": 77.039
+  },
+  {
+   "line": 11,
+   "text": "unchecked",
+   "start": 77.063,
+   "end": 77.67
+  },
+  {
+   "line": 11,
+   "text": "块",
+   "start": 77.67,
+   "end": 78.015
+  },
+  {
+   "line": 11,
+   "text": "类型",
+   "start": 78.206,
+   "end": 78.551
+  },
+  {
+   "line": 11,
+   "text": "转换",
+   "start": 78.563,
+   "end": 79.015
+  },
+  {
+   "line": 11,
+   "text": "除法",
+   "start": 79.277,
+   "end": 79.623
+  },
+  {
+   "line": 11,
+   "text": "截断",
+   "start": 79.634,
+   "end": 80.087
+  },
+  {
+   "line": 11,
+   "text": "都",
+   "start": 80.325,
+   "end": 80.48
+  },
+  {
+   "line": 11,
+   "text": "不会",
+   "start": 80.48,
+   "end": 80.658
+  },
+  {
+   "line": 11,
+   "text": "报错",
+   "start": 80.67,
+   "end": 81.051
+  },
+  {
+   "line": 12,
+   "text": "六",
+   "start": 82.218,
+   "end": 82.587
+  },
+  {
+   "line": 12,
+   "text": "block",
+   "start": 82.765,
+   "end": 83.182
+  },
+  {
+   "line": 12,
+   "text": "timestamp",
+   "start": 83.265,
+   "end": 83.991
+  },
+  {
+   "line": 12,
+   "text": "它",
+   "start": 84.525,
+   "end": 84.739
+  },
+  {
+   "line": 12,
+   "text": "不是",
+   "start": 84.751,
+   "end": 85.025
+  },
+  {
+   "line": 12,
+   "text": "精确",
+   "start": 85.049,
+   "end": 85.287
+  },
+  {
+   "line": 12,
+   "text": "时间",
+   "start": 85.299,
+   "end": 85.81
+  },
+  {
+   "line": 13,
+   "text": "出",
+   "start": 86.974,
+   "end": 87.176
+  },
+  {
+   "line": 13,
+   "text": "块",
+   "start": 87.176,
+   "end": 87.355
+  },
+  {
+   "line": 13,
+   "text": "者",
+   "start": 87.355,
+   "end": 87.581
+  },
+  {
+   "line": 13,
+   "text": "可以",
+   "start": 87.605,
+   "end": 87.795
+  },
+  {
+   "line": 13,
+   "text": "在",
+   "start": 87.795,
+   "end": 87.914
+  },
+  {
+   "line": 13,
+   "text": "小",
+   "start": 87.938,
+   "end": 88.116
+  },
+  {
+   "line": 13,
+   "text": "范围",
+   "start": 88.116,
+   "end": 88.378
+  },
+  {
+   "line": 13,
+   "text": "内",
+   "start": 88.378,
+   "end": 88.545
+  },
+  {
+   "line": 13,
+   "text": "改动",
+   "start": 88.569,
+   "end": 88.902
+  },
+  {
+   "line": 13,
+   "text": "它",
+   "start": 88.902,
+   "end": 89.224
+  },
+  {
+   "line": 13,
+   "text": "L",
+   "start": 89.593,
+   "end": 89.855
+  },
+  {
+   "line": 13,
+   "text": "2",
+   "start": 89.855,
+   "end": 90.021
+  },
+  {
+   "line": 13,
+   "text": "上",
+   "start": 90.021,
+   "end": 90.331
+  },
+  {
+   "line": 13,
+   "text": "由",
+   "start": 90.355,
+   "end": 90.533
+  },
+  {
+   "line": 13,
+   "text": "排序器",
+   "start": 90.545,
+   "end": 91.033
+  },
+  {
+   "line": 13,
+   "text": "决定",
+   "start": 91.045,
+   "end": 91.366
+  },
+  {
+   "line": 13,
+   "text": "不能",
+   "start": 91.912,
+   "end": 92.174
+  },
+  {
+   "line": 13,
+   "text": "拿",
+   "start": 92.186,
+   "end": 92.316
+  },
+  {
+   "line": 13,
+   "text": "它",
+   "start": 92.316,
+   "end": 92.412
+  },
+  {
+   "line": 13,
+   "text": "做",
+   "start": 92.424,
+   "end": 92.543
+  },
+  {
+   "line": 13,
+   "text": "随机数",
+   "start": 92.543,
+   "end": 93.197
+  },
+  {
+   "line": 13,
+   "text": "也",
+   "start": 93.495,
+   "end": 93.65
+  },
+  {
+   "line": 13,
+   "text": "不能",
+   "start": 93.65,
+   "end": 93.876
+  },
+  {
+   "line": 13,
+   "text": "做",
+   "start": 93.888,
+   "end": 94.031
+  },
+  {
+   "line": 13,
+   "text": "秒级",
+   "start": 94.031,
+   "end": 94.364
+  },
+  {
+   "line": 13,
+   "text": "判断",
+   "start": 94.376,
+   "end": 94.793
+  },
+  {
+   "line": 14,
+   "text": "七",
+   "start": 95.954,
+   "end": 96.346
+  },
+  {
+   "line": 14,
+   "text": "block",
+   "start": 96.537,
+   "end": 96.93
+  },
+  {
+   "line": 14,
+   "text": "number",
+   "start": 97.049,
+   "end": 97.525
+  },
+  {
+   "line": 14,
+   "text": "误解",
+   "start": 98.058,
+   "end": 98.368
+  },
+  {
+   "line": 14,
+   "text": "是",
+   "start": 98.368,
+   "end": 98.713
+  },
+  {
+   "line": 14,
+   "text": "每个",
+   "start": 99.023,
+   "end": 99.308
+  },
+  {
+   "line": 14,
+   "text": "块",
+   "start": 99.308,
+   "end": 99.439
+  },
+  {
+   "line": 14,
+   "text": "的",
+   "start": 99.439,
+   "end": 99.499
+  },
+  {
+   "line": 14,
+   "text": "时间",
+   "start": 99.511,
+   "end": 99.773
+  },
+  {
+   "line": 14,
+   "text": "固定",
+   "start": 99.785,
+   "end": 100.13
+  },
+  {
+   "line": 15,
+   "text": "BSC",
+   "start": 101.286,
+   "end": 101.928
+  },
+  {
+   "line": 15,
+   "text": "在",
+   "start": 101.94,
+   "end": 102.107
+  },
+  {
+   "line": 15,
+   "text": "2026",
+   "start": 102.131,
+   "end": 102.583
+  },
+  {
+   "line": 15,
+   "text": "年",
+   "start": 102.583,
+   "end": 102.726
+  },
+  {
+   "line": 15,
+   "text": "1 月",
+   "start": 102.738,
+   "end": 103.036
+  },
+  {
+   "line": 15,
+   "text": "的",
+   "start": 103.036,
+   "end": 103.202
+  },
+  {
+   "line": 15,
+   "text": "Fermi",
+   "start": 103.226,
+   "end": 103.583
+  },
+  {
+   "line": 15,
+   "text": "升级",
+   "start": 103.595,
+   "end": 103.857
+  },
+  {
+   "line": 15,
+   "text": "后",
+   "start": 103.857,
+   "end": 104.155
+  },
+  {
+   "line": 15,
+   "text": "出",
+   "start": 104.548,
+   "end": 104.738
+  },
+  {
+   "line": 15,
+   "text": "块",
+   "start": 104.738,
+   "end": 104.869
+  },
+  {
+   "line": 15,
+   "text": "时间",
+   "start": 104.881,
+   "end": 105.262
+  },
+  {
+   "line": 15,
+   "text": "从",
+   "start": 105.286,
+   "end": 105.44
+  },
+  {
+   "line": 15,
+   "text": "3 秒",
+   "start": 105.452,
+   "end": 105.869
+  },
+  {
+   "line": 15,
+   "text": "缩到",
+   "start": 105.964,
+   "end": 106.262
+  },
+  {
+   "line": 15,
+   "text": "了",
+   "start": 106.262,
+   "end": 106.381
+  },
+  {
+   "line": 15,
+   "text": "0.45 秒",
+   "start": 106.405,
+   "end": 107.238
+  },
+  {
+   "line": 15,
+   "text": "L",
+   "start": 107.771,
+   "end": 108.105
+  },
+  {
+   "line": 15,
+   "text": "2",
+   "start": 108.105,
+   "end": 108.271
+  },
+  {
+   "line": 15,
+   "text": "上",
+   "start": 108.271,
+   "end": 108.426
+  },
+  {
+   "line": 15,
+   "text": "的",
+   "start": 108.426,
+   "end": 108.486
+  },
+  {
+   "line": 15,
+   "text": "含义",
+   "start": 108.498,
+   "end": 109.009
+  },
+  {
+   "line": 15,
+   "text": "因",
+   "start": 109.224,
+   "end": 109.462
+  },
+  {
+   "line": 15,
+   "text": "链",
+   "start": 109.462,
+   "end": 109.605
+  },
+  {
+   "line": 15,
+   "text": "而",
+   "start": 109.617,
+   "end": 109.783
+  },
+  {
+   "line": 15,
+   "text": "异",
+   "start": 109.783,
+   "end": 110.009
+  },
+  {
+   "line": 16,
+   "text": "用",
+   "start": 111.154,
+   "end": 111.463
+  },
+  {
+   "line": 16,
+   "text": "区块",
+   "start": 111.487,
+   "end": 111.796
+  },
+  {
+   "line": 16,
+   "text": "数",
+   "start": 111.796,
+   "end": 112.213
+  },
+  {
+   "line": 16,
+   "text": "来",
+   "start": 112.237,
+   "end": 112.38
+  },
+  {
+   "line": 16,
+   "text": "算",
+   "start": 112.392,
+   "end": 112.594
+  },
+  {
+   "line": 16,
+   "text": "利息",
+   "start": 112.594,
+   "end": 113.058
+  },
+  {
+   "line": 16,
+   "text": "或",
+   "start": 113.082,
+   "end": 113.273
+  },
+  {
+   "line": 16,
+   "text": "锁定期",
+   "start": 113.285,
+   "end": 113.856
+  },
+  {
+   "line": 16,
+   "text": "就",
+   "start": 114.046,
+   "end": 114.177
+  },
+  {
+   "line": 16,
+   "text": "会",
+   "start": 114.177,
+   "end": 114.273
+  },
+  {
+   "line": 16,
+   "text": "出错",
+   "start": 114.285,
+   "end": 114.654
+  },
+  {
+   "line": 17,
+   "text": "八",
+   "start": 115.814,
+   "end": 116.195
+  },
+  {
+   "line": 17,
+   "text": "函数",
+   "start": 116.599,
+   "end": 117.04
+  },
+  {
+   "line": 17,
+   "text": "选择器",
+   "start": 117.052,
+   "end": 117.599
+  },
+  {
+   "line": 17,
+   "text": "误解",
+   "start": 118.145,
+   "end": 118.454
+  },
+  {
+   "line": 17,
+   "text": "是",
+   "start": 118.454,
+   "end": 118.811
+  },
+  {
+   "line": 17,
+   "text": "函数",
+   "start": 119.133,
+   "end": 119.585
+  },
+  {
+   "line": 17,
+   "text": "名",
+   "start": 119.585,
+   "end": 119.811
+  },
+  {
+   "line": 17,
+   "text": "就是唯一",
+   "start": 119.835,
+   "end": 120.43
+  },
+  {
+   "line": 17,
+   "text": "的",
+   "start": 120.43,
+   "end": 120.49
+  },
+  {
+   "line": 17,
+   "text": "身份",
+   "start": 120.502,
+   "end": 120.883
+  },
+  {
+   "line": 18,
+   "text": "事实",
+   "start": 122.034,
+   "end": 122.415
+  },
+  {
+   "line": 18,
+   "text": "是",
+   "start": 122.415,
+   "end": 122.772
+  },
+  {
+   "line": 18,
+   "text": "选择器",
+   "start": 123.046,
+   "end": 123.748
+  },
+  {
+   "line": 18,
+   "text": "只",
+   "start": 123.772,
+   "end": 123.95
+  },
+  {
+   "line": 18,
+   "text": "取",
+   "start": 123.95,
+   "end": 124.069
+  },
+  {
+   "line": 18,
+   "text": "哈希",
+   "start": 124.093,
+   "end": 124.438
+  },
+  {
+   "line": 18,
+   "text": "的",
+   "start": 124.438,
+   "end": 124.545
+  },
+  {
+   "line": 18,
+   "text": "前",
+   "start": 124.569,
+   "end": 124.807
+  },
+  {
+   "line": 18,
+   "text": "4 字节",
+   "start": 124.807,
+   "end": 125.438
+  },
+  {
+   "line": 18,
+   "text": "不同",
+   "start": 125.796,
+   "end": 126.081
+  },
+  {
+   "line": 18,
+   "text": "的",
+   "start": 126.081,
+   "end": 126.153
+  },
+  {
+   "line": 18,
+   "text": "函数",
+   "start": 126.165,
+   "end": 126.486
+  },
+  {
+   "line": 18,
+   "text": "签名",
+   "start": 126.498,
+   "end": 126.962
+  },
+  {
+   "line": 18,
+   "text": "可能",
+   "start": 127.129,
+   "end": 127.415
+  },
+  {
+   "line": 18,
+   "text": "撞",
+   "start": 127.438,
+   "end": 127.605
+  },
+  {
+   "line": 18,
+   "text": "在",
+   "start": 127.605,
+   "end": 127.688
+  },
+  {
+   "line": 18,
+   "text": "一起",
+   "start": 127.7,
+   "end": 128.034
+  },
+  {
+   "line": 19,
+   "text": "2021",
+   "start": 129.19,
+   "end": 129.618
+  },
+  {
+   "line": 19,
+   "text": "年",
+   "start": 129.618,
+   "end": 129.821
+  },
+  {
+   "line": 19,
+   "text": "8 月",
+   "start": 129.844,
+   "end": 130.142
+  },
+  {
+   "line": 19,
+   "text": "的",
+   "start": 130.142,
+   "end": 130.285
+  },
+  {
+   "line": 19,
+   "text": "Poly",
+   "start": 130.309,
+   "end": 130.547
+  },
+  {
+   "line": 19,
+   "text": "Network",
+   "start": 130.559,
+   "end": 131.082
+  },
+  {
+   "line": 19,
+   "text": "事故",
+   "start": 131.094,
+   "end": 131.463
+  },
+  {
+   "line": 19,
+   "text": "关键",
+   "start": 131.737,
+   "end": 132.035
+  },
+  {
+   "line": 19,
+   "text": "一",
+   "start": 132.047,
+   "end": 132.178
+  },
+  {
+   "line": 19,
+   "text": "步",
+   "start": 132.178,
+   "end": 132.332
+  },
+  {
+   "line": 19,
+   "text": "就",
+   "start": 132.356,
+   "end": 132.452
+  },
+  {
+   "line": 19,
+   "text": "在",
+   "start": 132.452,
+   "end": 132.547
+  },
+  {
+   "line": 19,
+   "text": "这里",
+   "start": 132.559,
+   "end": 132.904
+  },
+  {
+   "line": 19,
+   "text": "损失",
+   "start": 133.082,
+   "end": 133.618
+  },
+  {
+   "line": 19,
+   "text": "约",
+   "start": 133.642,
+   "end": 133.832
+  },
+  {
+   "line": 19,
+   "text": "6.1 亿",
+   "start": 133.844,
+   "end": 134.321
+  },
+  {
+   "line": 19,
+   "text": "美元",
+   "start": 134.332,
+   "end": 134.713
+  },
+  {
+   "line": 20,
+   "text": "按",
+   "start": 135.866,
+   "end": 136.092
+  },
+  {
+   "line": 20,
+   "text": "公开",
+   "start": 136.116,
+   "end": 136.449
+  },
+  {
+   "line": 20,
+   "text": "复盘",
+   "start": 136.461,
+   "end": 136.985
+  },
+  {
+   "line": 20,
+   "text": "一个",
+   "start": 137.378,
+   "end": 137.628
+  },
+  {
+   "line": 20,
+   "text": "构造",
+   "start": 137.639,
+   "end": 137.937
+  },
+  {
+   "line": 20,
+   "text": "出来",
+   "start": 137.937,
+   "end": 138.116
+  },
+  {
+   "line": 20,
+   "text": "的",
+   "start": 138.116,
+   "end": 138.175
+  },
+  {
+   "line": 20,
+   "text": "函数",
+   "start": 138.187,
+   "end": 138.568
+  },
+  {
+   "line": 20,
+   "text": "名",
+   "start": 138.568,
+   "end": 138.901
+  },
+  {
+   "line": 20,
+   "text": "撞上",
+   "start": 139.08,
+   "end": 139.461
+  },
+  {
+   "line": 20,
+   "text": "了",
+   "start": 139.461,
+   "end": 139.592
+  },
+  {
+   "line": 20,
+   "text": "替换",
+   "start": 139.616,
+   "end": 140.008
+  },
+  {
+   "line": 20,
+   "text": "验证",
+   "start": 140.02,
+   "end": 140.354
+  },
+  {
+   "line": 20,
+   "text": "者",
+   "start": 140.354,
+   "end": 140.58
+  },
+  {
+   "line": 20,
+   "text": "公钥",
+   "start": 140.675,
+   "end": 141.044
+  },
+  {
+   "line": 20,
+   "text": "的",
+   "start": 141.044,
+   "end": 141.128
+  },
+  {
+   "line": 20,
+   "text": "那个",
+   "start": 141.151,
+   "end": 141.318
+  },
+  {
+   "line": 20,
+   "text": "函数",
+   "start": 141.33,
+   "end": 141.77
+  },
+  {
+   "line": 21,
+   "text": "审计",
+   "start": 142.926,
+   "end": 143.366
+  },
+  {
+   "line": 21,
+   "text": "时",
+   "start": 143.366,
+   "end": 143.735
+  },
+  {
+   "line": 21,
+   "text": "还要",
+   "start": 143.842,
+   "end": 144.104
+  },
+  {
+   "line": 21,
+   "text": "盯住",
+   "start": 144.116,
+   "end": 144.354
+  },
+  {
+   "line": 21,
+   "text": "一对词",
+   "start": 144.366,
+   "end": 144.926
+  },
+  {
+   "line": 21,
+   "text": "storage",
+   "start": 145.104,
+   "end": 145.914
+  },
+  {
+   "line": 21,
+   "text": "和",
+   "start": 146.021,
+   "end": 146.152
+  },
+  {
+   "line": 21,
+   "text": "memory",
+   "start": 146.164,
+   "end": 146.687
+  },
+  {
+   "line": 22,
+   "text": "storage",
+   "start": 147.826,
+   "end": 148.504
+  },
+  {
+   "line": 22,
+   "text": "是",
+   "start": 148.516,
+   "end": 148.683
+  },
+  {
+   "line": 22,
+   "text": "引用",
+   "start": 148.695,
+   "end": 149.064
+  },
+  {
+   "line": 22,
+   "text": "改",
+   "start": 149.254,
+   "end": 149.421
+  },
+  {
+   "line": 22,
+   "text": "了",
+   "start": 149.421,
+   "end": 149.48
+  },
+  {
+   "line": 22,
+   "text": "会",
+   "start": 149.492,
+   "end": 149.611
+  },
+  {
+   "line": 22,
+   "text": "写回",
+   "start": 149.611,
+   "end": 150.064
+  },
+  {
+   "line": 22,
+   "text": "memory",
+   "start": 150.597,
+   "end": 151.085
+  },
+  {
+   "line": 22,
+   "text": "是",
+   "start": 151.109,
+   "end": 151.228
+  },
+  {
+   "line": 22,
+   "text": "副本",
+   "start": 151.24,
+   "end": 151.692
+  },
+  {
+   "line": 22,
+   "text": "改",
+   "start": 151.871,
+   "end": 152.038
+  },
+  {
+   "line": 22,
+   "text": "了",
+   "start": 152.038,
+   "end": 152.097
+  },
+  {
+   "line": 22,
+   "text": "不",
+   "start": 152.109,
+   "end": 152.204
+  },
+  {
+   "line": 22,
+   "text": "写回",
+   "start": 152.204,
+   "end": 152.692
+  },
+  {
+   "line": 23,
+   "text": "写错",
+   "start": 153.854,
+   "end": 154.199
+  },
+  {
+   "line": 23,
+   "text": "一个",
+   "start": 154.211,
+   "end": 154.377
+  },
+  {
+   "line": 23,
+   "text": "词",
+   "start": 154.377,
+   "end": 154.735
+  },
+  {
+   "line": 23,
+   "text": "余额",
+   "start": 155.139,
+   "end": 155.485
+  },
+  {
+   "line": 23,
+   "text": "或",
+   "start": 155.508,
+   "end": 155.651
+  },
+  {
+   "line": 23,
+   "text": "标志位",
+   "start": 155.663,
+   "end": 156.044
+  },
+  {
+   "line": 23,
+   "text": "没",
+   "start": 156.068,
+   "end": 156.163
+  },
+  {
+   "line": 23,
+   "text": "更新",
+   "start": 156.163,
+   "end": 156.58
+  },
+  {
+   "line": 23,
+   "text": "资金",
+   "start": 156.937,
+   "end": 157.366
+  },
+  {
+   "line": 23,
+   "text": "就",
+   "start": 157.389,
+   "end": 157.532
+  },
+  {
+   "line": 23,
+   "text": "可能",
+   "start": 157.544,
+   "end": 157.758
+  },
+  {
+   "line": 23,
+   "text": "被",
+   "start": 157.758,
+   "end": 157.865
+  },
+  {
+   "line": 23,
+   "text": "反复",
+   "start": 157.889,
+   "end": 158.187
+  },
+  {
+   "line": 23,
+   "text": "领取",
+   "start": 158.199,
+   "end": 158.556
+  }
+ ],
+ "captions": [
+  {
+   "text": "下面是最容易误解的 8 个语言特性",
+   "start": 1.648,
+   "end": 4.199,
+   "id": "c0"
+  },
+  {
+   "text": "每个都看三件事 误解 事实 影响",
+   "start": 4.574,
+   "end": 8.541,
+   "id": "c1"
+  },
+  {
+   "text": "一 private",
+   "start": 9.524,
+   "end": 10.967,
+   "id": "c2"
+  },
+  {
+   "text": "误解是别人看不到",
+   "start": 11.331,
+   "end": 13.108,
+   "id": "c3"
+  },
+  {
+   "text": "事实是 它只限制其他合约来调用",
+   "start": 14.088,
+   "end": 17.067,
+   "id": "c4"
+  },
+  {
+   "text": "存储完全公开",
+   "start": 17.159,
+   "end": 18.627,
+   "id": "c5"
+  },
+  {
+   "text": "所以不能存秘密",
+   "start": 19.002,
+   "end": 20.589,
+   "id": "c6"
+  },
+  {
+   "text": "二 receive 和 fallback",
+   "start": 21.58,
+   "end": 23.928,
+   "id": "c7"
+  },
+  {
+   "text": "误解是 转账只是改个余额",
+   "start": 24.303,
+   "end": 26.64,
+   "id": "c8"
+  },
+  {
+   "text": "事实是 向合约转 ETH",
+   "start": 27.608,
+   "end": 29.885,
+   "id": "c9"
+  },
+  {
+   "text": "会执行它的代码",
+   "start": 29.905,
+   "end": 31.087,
+   "id": "c10"
+  },
+  {
+   "text": "这就是重入的入口",
+   "start": 31.462,
+   "end": 32.918,
+   "id": "c11"
+  },
+  {
+   "text": "三 selfdestruct",
+   "start": 33.9,
+   "end": 35.772,
+   "id": "c12"
+  },
+  {
+   "text": "误解是它能删掉合约",
+   "start": 36.123,
+   "end": 37.936,
+   "id": "c13"
+  },
+  {
+   "text": "2024 年 Cancun 升级",
+   "start": 38.92,
+   "end": 40.721,
+   "id": "c14"
+  },
+  {
+   "text": "引入了 EIP-6780",
+   "start": 40.741,
+   "end": 43.244,
+   "id": "c15"
+  },
+  {
+   "text": "之后 只有同一笔交易里创建的合约",
+   "start": 43.608,
+   "end": 46.433,
+   "id": "c16"
+  },
+  {
+   "text": "才会被删除",
+   "start": 46.453,
+   "end": 47.48,
+   "id": "c17"
+  },
+  {
+   "text": "其他情况",
+   "start": 47.858,
+   "end": 48.968,
+   "id": "c18"
+  },
+  {
+   "text": "只转走余额",
+   "start": 49.06,
+   "end": 50.278,
+   "id": "c19"
+  },
+  {
+   "text": "四 合约余额",
+   "start": 51.26,
+   "end": 53.334,
+   "id": "c20"
+  },
+  {
+   "text": "误解是 只能通过我的函数增加",
+   "start": 53.71,
+   "end": 56.284,
+   "id": "c21"
+  },
+  {
+   "text": "事实是 任何人都能强制转入",
+   "start": 57.264,
+   "end": 60.326,
+   "id": "c22"
+  },
+  {
+   "text": "比如 selfdestruct",
+   "start": 60.702,
+   "end": 62.431,
+   "id": "c23"
+  },
+  {
+   "text": "比如出块奖励地址",
+   "start": 62.547,
+   "end": 64.169,
+   "id": "c24"
+  },
+  {
+   "text": "所以 拿合约自己的余额来记账",
+   "start": 65.164,
+   "end": 68.381,
+   "id": "c25"
+  },
+  {
+   "text": "会被一笔捐赠打乱",
+   "start": 68.414,
+   "end": 69.905,
+   "id": "c26"
+  },
+  {
+   "text": "五 检查型算术",
+   "start": 70.904,
+   "end": 72.907,
+   "id": "c27"
+  },
+  {
+   "text": "0.8 版以后",
+   "start": 73.282,
+   "end": 74.524,
+   "id": "c28"
+  },
+  {
+   "text": "溢出会回滚",
+   "start": 74.639,
+   "end": 75.714,
+   "id": "c29"
+  },
+  {
+   "text": "但 unchecked 块",
+   "start": 76.692,
+   "end": 78.135,
+   "id": "c30"
+  },
+  {
+   "text": "类型转换",
+   "start": 78.156,
+   "end": 79.135,
+   "id": "c31"
+  },
+  {
+   "text": "除法截断",
+   "start": 79.227,
+   "end": 80.207,
+   "id": "c32"
+  },
+  {
+   "text": "都不会报错",
+   "start": 80.275,
+   "end": 81.171,
+   "id": "c33"
+  },
+  {
+   "text": "六 block.timestamp",
+   "start": 82.168,
+   "end": 84.111,
+   "id": "c34"
+  },
+  {
+   "text": "它不是精确时间",
+   "start": 84.475,
+   "end": 85.93,
+   "id": "c35"
+  },
+  {
+   "text": "出块者可以在小范围内改动它",
+   "start": 86.924,
+   "end": 89.344,
+   "id": "c36"
+  },
+  {
+   "text": "L2 上由排序器决定",
+   "start": 89.543,
+   "end": 91.486,
+   "id": "c37"
+  },
+  {
+   "text": "不能拿它做随机数",
+   "start": 91.862,
+   "end": 93.317,
+   "id": "c38"
+  },
+  {
+   "text": "也不能做秒级判断",
+   "start": 93.445,
+   "end": 94.913,
+   "id": "c39"
+  },
+  {
+   "text": "七 block.number",
+   "start": 95.904,
+   "end": 97.645,
+   "id": "c40"
+  },
+  {
+   "text": "误解是 每个块的时间固定",
+   "start": 98.008,
+   "end": 100.25,
+   "id": "c41"
+  },
+  {
+   "text": "BSC 在 2026 年 1 月的 Fermi 升级后",
+   "start": 101.236,
+   "end": 104.275,
+   "id": "c42"
+  },
+  {
+   "text": "出块时间从 3 秒缩到了 0.45 秒",
+   "start": 104.498,
+   "end": 107.358,
+   "id": "c43"
+  },
+  {
+   "text": "L2 上的含义",
+   "start": 107.721,
+   "end": 109.129,
+   "id": "c44"
+  },
+  {
+   "text": "因链而异",
+   "start": 109.174,
+   "end": 110.129,
+   "id": "c45"
+  },
+  {
+   "text": "用区块数来算利息或锁定期",
+   "start": 111.104,
+   "end": 113.976,
+   "id": "c46"
+  },
+  {
+   "text": "就会出错",
+   "start": 113.996,
+   "end": 114.774,
+   "id": "c47"
+  },
+  {
+   "text": "八 函数选择器",
+   "start": 115.764,
+   "end": 117.719,
+   "id": "c48"
+  },
+  {
+   "text": "误解是 函数名就是唯一的身份",
+   "start": 118.095,
+   "end": 121.003,
+   "id": "c49"
+  },
+  {
+   "text": "事实是 选择器只取哈希的前 4 字节",
+   "start": 121.984,
+   "end": 125.558,
+   "id": "c50"
+  },
+  {
+   "text": "不同的函数签名",
+   "start": 125.746,
+   "end": 127.059,
+   "id": "c51"
+  },
+  {
+   "text": "可能撞在一起",
+   "start": 127.079,
+   "end": 128.154,
+   "id": "c52"
+  },
+  {
+   "text": "2021 年 8 月的 Poly Network 事故",
+   "start": 129.14,
+   "end": 131.583,
+   "id": "c53"
+  },
+  {
+   "text": "关键一步就在这里",
+   "start": 131.687,
+   "end": 133.012,
+   "id": "c54"
+  },
+  {
+   "text": "损失约 6.1 亿美元",
+   "start": 133.032,
+   "end": 134.833,
+   "id": "c55"
+  },
+  {
+   "text": "按公开复盘",
+   "start": 135.816,
+   "end": 137.105,
+   "id": "c56"
+  },
+  {
+   "text": "一个构造出来的函数名",
+   "start": 137.328,
+   "end": 139.01,
+   "id": "c57"
+  },
+  {
+   "text": "撞上了替换验证者公钥的那个函数",
+   "start": 139.03,
+   "end": 141.89,
+   "id": "c58"
+  },
+  {
+   "text": "审计时还要盯住一对词",
+   "start": 142.876,
+   "end": 145.034,
+   "id": "c59"
+  },
+  {
+   "text": "storage 和 memory",
+   "start": 145.054,
+   "end": 146.807,
+   "id": "c60"
+  },
+  {
+   "text": "storage 是引用",
+   "start": 147.776,
+   "end": 149.184,
+   "id": "c61"
+  },
+  {
+   "text": "改了会写回",
+   "start": 149.204,
+   "end": 150.184,
+   "id": "c62"
+  },
+  {
+   "text": "memory 是副本",
+   "start": 150.547,
+   "end": 151.801,
+   "id": "c63"
+  },
+  {
+   "text": "改了不写回",
+   "start": 151.821,
+   "end": 152.812,
+   "id": "c64"
+  },
+  {
+   "text": "写错一个词",
+   "start": 153.804,
+   "end": 154.855,
+   "id": "c65"
+  },
+  {
+   "text": "余额或标志位没更新",
+   "start": 155.089,
+   "end": 156.7,
+   "id": "c66"
+  },
+  {
+   "text": "资金就可能被反复领取",
+   "start": 156.887,
+   "end": 158.676,
+   "id": "c67"
+  }
+ ]
+}

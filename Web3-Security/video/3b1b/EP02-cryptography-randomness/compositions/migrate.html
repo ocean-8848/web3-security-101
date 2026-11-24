@@ -1,0 +1,143 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="migrate" data-duration="47.42" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="g-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#83C167" /></marker>
+        <marker id="g-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="g-all">
+        <text id="g-q" class="h" x="960" y="170" font-size="56" fill="#FF9F43" text-anchor="middle" font-weight="800">生成缺陷修复以后，问题就结束了吗？</text>
+
+        <!-- 代码：已修复 -->
+        <g id="g-code" class="h">
+          <rect id="g-coder" x="140" y="400" width="440" height="200" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="360" y="470" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">钱包的生成代码</text>
+          <g stroke="#58C4DD" stroke-width="5" stroke-linecap="round" opacity=".6"><line x1="200" y1="515" x2="400" y2="515" /><line x1="230" y1="550" x2="500" y2="550" /></g>
+        </g>
+        <g id="g-fixed" class="h">
+          <circle cx="560" cy="410" r="34" fill="#121a12" stroke="#83C167" stroke-width="4" />
+          <path d="M544 410 l 11 12 l 22 -26" stroke="#83C167" stroke-width="6" fill="none" stroke-linecap="round" />
+          <text x="360" y="650" font-size="32" fill="#83C167" text-anchor="middle" font-weight="700">已修复</text>
+        </g>
+
+        <!-- 已生成的钱包：私钥仍弱 -->
+        <g id="g-dots"></g>
+        <text id="g-weak" class="h" x="1260" y="430" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">已生成的钱包：私钥仍只来自 32 位种子</text>
+        <text id="g-leg" class="h" x="1260" y="482" font-size="28" fill="#8a8f99" text-anchor="middle"><tspan fill="#F0B90B">●</tspan> 钱包里还有资产　　<tspan fill="#FC6255">○</tspan> 已被盗空</text>
+        <text id="g-leg2" class="h" x="1260" y="482" font-size="28" fill="#8a8f99" text-anchor="middle"><tspan fill="#FC6255">○</tspan> 已被盗空　　<tspan fill="#83C167">○</tspan> 资产已迁到新地址</text>
+        <g id="g-axis">
+          <line id="g-ax0" class="h" x1="760" y1="680" x2="1760" y2="680" stroke="#6b6f7a" stroke-width="3" />
+          <text id="g-ax1" class="h" x="843" y="730" font-size="28" fill="#e8e6df" text-anchor="middle">11 月 14 日</text>
+          <text id="g-ax2" class="h" x="1590" y="730" font-size="28" fill="#e8e6df" text-anchor="middle">11 月 23 日</text>
+          <text id="g-ax3" class="h" x="1216" y="730" font-size="28" fill="#6b6f7a" text-anchor="middle">2022 年 · 新建的扩展钱包</text>
+        </g>
+        <path id="g-win" class="dr" pathLength="1" d="M843 625 L 1590 625" stroke="#FF9F43" stroke-width="4" fill="none" />
+        <text id="g-loss" class="h" x="1260" y="800" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="800">部分被盗：约 17 万美元</text>
+
+        <!-- 迁移 -->
+        <g id="g-new" class="h">
+          <rect x="1010" y="870" width="500" height="110" rx="18" fill="#121a12" stroke="#83C167" stroke-width="4" />
+          <text x="1260" y="938" font-size="36" fill="#83C167" text-anchor="middle" font-weight="700">新钱包生成的新地址</text>
+        </g>
+        <path id="g-mig" class="dr h" pathLength="1" d="M1640 590 C 1800 680, 1760 925, 1516 925" stroke="#83C167" stroke-width="5" fill="none" marker-end="url(#g-ah)" />
+        <text id="g-must" class="h" x="1260" y="1040" font-size="40" fill="#83C167" text-anchor="middle" font-weight="800">强制迁移</text>
+      </g>
+
+      <!-- 防御沿链路摆放 -->
+      <g id="g-def">
+        <text id="g-dt" class="h" x="960" y="300" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="800">防御沿链路摆</text>
+        <g id="g-n1" class="h"><rect x="140" y="420" width="300" height="110" rx="16" fill="#1f170c" stroke="#FF9F43" stroke-width="4" /><text x="290" y="487" font-size="34" fill="#FF9F43" text-anchor="middle" font-weight="700">生成私钥</text></g>
+        <g id="g-n2" class="h"><rect x="600" y="420" width="300" height="110" rx="16" fill="#1a1708" stroke="#F0B90B" stroke-width="4" /><text x="750" y="487" font-size="34" fill="#F0B90B" text-anchor="middle" font-weight="700">金库地址</text></g>
+        <g id="g-n3" class="h"><rect x="1060" y="420" width="300" height="110" rx="16" fill="#1f170c" stroke="#FF9F43" stroke-width="4" /><text x="1210" y="487" font-size="34" fill="#FF9F43" text-anchor="middle" font-weight="700">签名</text></g>
+        <g id="g-n4" class="h"><rect x="1520" y="420" width="300" height="110" rx="16" fill="#161a22" stroke="#8a8f99" stroke-width="4" /><text x="1670" y="487" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">上链之后</text></g>
+        <g fill="none" stroke="#8a8f99" stroke-width="3" marker-end="url(#g-ahg)">
+          <path id="g-a1" class="dr h" pathLength="1" d="M444 475 L 594 475" />
+          <path id="g-a2" class="dr h" pathLength="1" d="M904 475 L 1054 475" />
+          <path id="g-a3" class="dr h" pathLength="1" d="M1364 475 L 1514 475" />
+        </g>
+        <g id="g-d1" class="h"><rect x="140" y="600" width="300" height="80" rx="40" fill="#121a12" stroke="#83C167" stroke-width="3" /><text x="290" y="652" font-size="32" fill="#83C167" text-anchor="middle" font-weight="700">CSPRNG</text></g>
+        <g id="g-d2" class="h"><rect x="600" y="600" width="300" height="80" rx="40" fill="#121a12" stroke="#83C167" stroke-width="3" /><text x="750" y="652" font-size="30" fill="#83C167" text-anchor="middle" font-weight="700">不用靶号工具</text></g>
+        <g id="g-d3" class="h"><rect x="1060" y="600" width="300" height="80" rx="40" fill="#121a12" stroke="#83C167" stroke-width="3" /><text x="1210" y="652" font-size="30" fill="#83C167" text-anchor="middle" font-weight="700">确定性 nonce</text></g>
+        <g id="g-d4" class="h"><rect x="1520" y="600" width="300" height="80" rx="40" fill="#121a12" stroke="#83C167" stroke-width="3" /><text x="1670" y="652" font-size="30" fill="#83C167" text-anchor="middle" font-weight="700">监控重复 r 值</text></g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 47.42, "L": [[0.6, 5.95], [6.4, 11.35], [11.8, 27.3], [27.75, 33.87], [34.32, 46.32]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAWA = (s, t, d = 0.5) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 11 月 14–23 日每天新建的钱包（点的个数为示意）
+      const host = document.querySelector("#g-dots"), dots = [];
+      for (let d = 14; d <= 23; d++) {
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        const x = 760 + (d - 13) * 83;
+        g.innerHTML = `<circle cx="${x}" cy="560" r="28" fill="#2a1416" stroke="#FC6255" stroke-width="4" /><circle class="g-coin" cx="${x}" cy="560" r="13" fill="#F0B90B" />`;
+        host.appendChild(g); dots.push(g);
+      }
+
+      // L0 问题
+      IN("#g-q", at(0, 0.05), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      // L1 代码修好了，私钥没有
+      IN("#g-code", at(1, 0.0), 0.5);
+      IN("#g-fixed", at(1, 0.15), 0.4, { scale: 1.4, svgOrigin: "560 410" }, { scale: 1, ease: "back.out(2)" });
+      dots.forEach((g, i) => IN(g, at(1, 0.35) + i * 0.05, 0.3));
+      IN("#g-weak", at(1, 0.55), 0.4);
+      IN("#g-leg", at(1, 0.7), 0.4);
+      // L2 日期窗口 + 部分被盗
+      IN(["#g-ax0", "#g-ax1"], at(2, 0.05), 0.5);
+      IN("#g-ax2", at(2, 0.18), 0.5);
+      IN("#g-ax3", at(2, 0.3), 0.5);
+      tl.fromTo("#g-weak", { scale: 1, svgOrigin: "1260 420" }, { scale: 1.12, svgOrigin: "1260 420", duration: 0.3, yoyo: true, repeat: 1 }, at(2, 0.42));
+      tl.fromTo("#g-win", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.8, ease: "power2.inOut" }, at(2, 0.25));
+      dots.forEach((g, i) => tl.fromTo(g.querySelector("circle"), { attr: { r: 28 } }, { attr: { r: 36 }, duration: 0.3, yoyo: true, repeat: 1 }, at(2, 0.5) + i * 0.04));
+      [1, 4, 6, 8].forEach((k, i) => {
+        tl.to(dots[k].querySelector(".g-coin"), { x: 120, y: -80, fill: "#FC6255", opacity: 0, duration: 0.8, ease: "power3.in" }, at(2, 0.72) + i * 0.15);
+      });
+      IN("#g-loss", at(2, 0.78), 0.4);
+      // L3 强制迁移到新地址
+      OUT("#g-loss", at(3, 0.0), 0.3);
+      IN("#g-new", at(3, 0.1), 0.5, { y: 20 }, { y: 0 });
+      DRAWA("#g-mig", at(3, 0.2), 0.5);
+      [0, 2, 3, 5, 7, 9].forEach((k, i) => {
+        const cx = 760 + (k + 1) * 83;
+        tl.to(dots[k].querySelector(".g-coin"), { x: 1260 - cx, y: 365, duration: 0.8, ease: "power2.inOut" }, at(3, 0.3) + i * 0.08);
+        tl.to(dots[k].querySelector(".g-coin"), { opacity: 0, duration: 0.2 }, at(3, 0.3) + i * 0.08 + 0.8);
+      });
+      IN("#g-must", at(3, 0.35), 0.5);
+      [0, 2, 3, 5, 7, 9].forEach((k, i) => tl.to(dots[k].querySelector("circle"), { stroke: "#83C167", fill: "#121a12", duration: 0.3 }, at(3, 0.3) + i * 0.08 + 0.8));
+      OUT("#g-leg", at(3, 0.3), 0.3);
+      IN("#g-leg2", at(3, 0.4), 0.4);
+      tl.to("#g-q", { opacity: 0.3, duration: 0.4 }, at(3, 0.35));
+
+      // L4 防御沿链路摆
+      tl.to("#g-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, at(4, 0.0));
+      IN("#g-dt", at(4, 0.02), 0.4);
+      IN("#g-n1", at(4, 0.05), 0.4); DRAWA("#g-a1", at(4, 0.08));
+      IN("#g-n2", at(4, 0.1), 0.4); DRAWA("#g-a2", at(4, 0.13));
+      IN("#g-n3", at(4, 0.15), 0.4); DRAWA("#g-a3", at(4, 0.18));
+      IN("#g-n4", at(4, 0.2), 0.4);
+      IN("#g-d1", at(4, 0.24), 0.4, { y: 30 }, { y: 0 });
+      IN("#g-d2", at(4, 0.4), 0.4, { y: 30 }, { y: 0 });
+      IN("#g-d3", at(4, 0.58), 0.4, { y: 30 }, { y: 0 });
+      IN("#g-d4", at(4, 0.8), 0.4, { y: 30 }, { y: 0 });
+
+      tl.to("#g-def", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["migrate"] = tl;
+    })();
+  </script>
+</template>

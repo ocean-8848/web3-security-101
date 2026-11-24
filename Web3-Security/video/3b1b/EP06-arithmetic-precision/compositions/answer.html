@@ -1,0 +1,118 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="61.02" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="a-pin" class="h">
+        <rect x="460" y="70" width="1000" height="110" rx="18" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="960" y="143" font-size="50" fill="#e8e6df" text-anchor="middle" font-weight="700">差<tspan fill="#FF9F43">一个 wei</tspan>，为什么能丢一个<tspan fill="#F0B90B">金库</tspan>？</text>
+      </g>
+
+      <g id="a-case">
+        <g id="a-batch" class="h">
+          <path d="M180 330 v -20 h 1100 v 20" fill="none" stroke="#8a8f99" stroke-width="3" />
+          <text x="730" y="290" font-size="30" fill="#8a8f99" text-anchor="middle">一笔批量交换 · 稳定池 exact-out 路径</text>
+        </g>
+        <g id="a-swaps" fill="none" stroke="#e8e6df" stroke-width="2.5"></g>
+        <g id="a-errs" fill="#FF9F43"></g>
+        <text id="a-dir" class="h" x="180" y="520" font-size="32" fill="#FF9F43">每一步的舍入：都朝攻击者有利的方向</text>
+        <rect id="a-sum" x="180" y="560" width="0" height="40" rx="6" fill="#FC6255" />
+        <!-- 池子不变量 / 份额价格 -->
+        <g id="a-gauge" class="h">
+          <rect x="1420" y="300" width="360" height="330" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="1600" y="360" font-size="30" fill="#58C4DD" text-anchor="middle">池子不变量 · 份额价格</text>
+          <line x1="1470" y1="560" x2="1730" y2="560" stroke="#6b6f7a" stroke-width="3" />
+          <line x1="1600" y1="545" x2="1600" y2="575" stroke="#83C167" stroke-width="4" />
+        </g>
+        <g id="a-needle" class="h"><line x1="1600" y1="560" x2="1600" y2="420" stroke="#e8e6df" stroke-width="6" stroke-linecap="round" /><circle cx="1600" cy="560" r="10" fill="#e8e6df" /></g>
+        <text id="a-moved" class="h" x="1600" y="680" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">被操纵</text>
+      </g>
+
+      <!-- 答案 -->
+      <g id="a-ans">
+        <g id="a-f1" class="h"><rect x="200" y="400" width="440" height="150" rx="20" fill="none" stroke="#FF9F43" stroke-width="4" /><text x="420" y="490" font-size="44" fill="#FF9F43" text-anchor="middle" font-weight="800">余数方向错</text></g>
+        <text id="a-x" class="h" x="720" y="500" font-size="72" fill="#e8e6df" text-anchor="middle">×</text>
+        <g id="a-f2" class="h"><rect x="800" y="400" width="480" height="150" rx="20" fill="none" stroke="#FF9F43" stroke-width="4" /><text x="1040" y="470" font-size="44" fill="#FF9F43" text-anchor="middle" font-weight="800">可批量、可循环</text><text x="1040" y="525" font-size="30" fill="#8a8f99" text-anchor="middle">重复 N 次</text></g>
+        <text id="a-eq" class="h" x="1350" y="500" font-size="72" fill="#e8e6df" text-anchor="middle">=</text>
+        <g id="a-f3" class="h"><rect x="1420" y="400" width="320" height="150" rx="20" fill="#2a1414" stroke="#FC6255" stroke-width="4" /><text x="1580" y="490" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="800">丢一个金库</text></g>
+        <text id="a-unit" class="h" x="960" y="660" font-size="34" fill="#8a8f99" text-anchor="middle">单步测试看不见的误差，被重复放大</text>
+      </g>
+
+      <g id="a-cond" class="h">
+        <text x="960" y="370" font-size="40" fill="#83C167" text-anchor="middle" font-weight="800">成立条件</text>
+        <text x="960" y="470" font-size="40" fill="#e8e6df" text-anchor="middle">每一处除法：写明余数归谁，<tspan fill="#83C167">归协议</tspan></text>
+        <text id="a-c2" x="960" y="560" font-size="40" fill="#e8e6df" text-anchor="middle">模糊测试：覆盖<tspan fill="#83C167">同一操作重复 N 次</tspan>的路径</text>
+      </g>
+      <g id="a-note" class="h">
+        <text x="960" y="760" font-size="30" fill="#8a8f99" text-anchor="middle">口径：≈ 9,480 万美元 = Balancer 官方复盘，只覆盖其部署的池子</text>
+        <text id="a-n2" x="960" y="810" font-size="30" fill="#8a8f99" text-anchor="middle">早期分析（Check Point Research）≈ 1.28 亿美元 · 均为事发时估值</text>
+      </g>
+      <text id="a-next" class="h" x="960" y="950" font-size="36" fill="#6b6f7a" text-anchor="middle">下一集 · 07 外部调用与代币兼容性</text>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 61.02, "L": [[0.6, 5.21], [5.66, 15.81], [16.26, 23.6], [24.05, 35.24], [35.69, 45.02], [45.47, 54.47], [54.92, 59.92]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      const sw = document.querySelector("#a-swaps"), eg = document.querySelector("#a-errs"), S = [], E = [];
+      for (let i = 0; i < 48; i++) {
+        const x = 200 + i * 22.5;
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", x); c.setAttribute("cy", "390"); c.setAttribute("r", "8"); c.setAttribute("opacity", "0");
+        sw.appendChild(c); S.push(c);
+        const p = document.createElementNS(NS, "path");
+        p.setAttribute("d", `M${x - 7} 432 L ${x + 7} 440 L ${x - 7} 448 Z`); p.setAttribute("opacity", "0");
+        eg.appendChild(p); E.push(p);
+      }
+
+      // L0 问题回来
+      IN("#a-pin", at(0, 0.05), 0.8, { scale: 0.55, x: -460, y: -10, svgOrigin: "960 125" }, { scale: 1, x: 0, y: 0, ease: "expo.out" });
+
+      // L1 一笔批量交换，大量小额交换
+      IN("#a-batch", at(1, 0.05), 0.5);
+      S.forEach((c, i) => tl.fromTo(c, { opacity: 0 }, { opacity: 1, duration: 0.12 }, at(1, 0.4) + i * 0.08));
+
+      // L2 每步舍入同向累积 → 不变量与价格被操纵
+      IN("#a-dir", at(2, 0.0), 0.4);
+      IN(["#a-gauge", "#a-needle"], at(2, 0.05), 0.4);
+      E.forEach((p, i) => tl.fromTo(p, { opacity: 0 }, { opacity: 1, duration: 0.1 }, at(2, 0.1) + i * 0.06));
+      tl.fromTo("#a-sum", { attr: { width: 0 } }, { attr: { width: 1080 }, duration: 48 * 0.06, ease: "none" }, at(2, 0.1));
+      tl.fromTo("#a-needle", { rotation: 0, svgOrigin: "1600 560" }, { rotation: 55, svgOrigin: "1600 560", duration: 48 * 0.06, ease: "power1.in" }, at(2, 0.1));
+      IN("#a-moved", at(2, 0.75), 0.4);
+
+      // L3 答案：两件事叠加
+      tl.to("#a-case", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(3, 0));
+      IN("#a-f1", at(3, 0.08), 0.5, { y: 20 }, { y: 0 });
+      IN("#a-x", at(3, 0.25), 0.3);
+      IN("#a-f2", at(3, 0.3), 0.5, { y: 20 }, { y: 0 });
+      IN("#a-eq", at(3, 0.55), 0.3);
+      IN("#a-f3", at(3, 0.6), 0.5, { scale: 0.7, svgOrigin: "1580 475" }, { scale: 1, ease: "back.out(1.8)" });
+      IN("#a-unit", at(3, 0.75), 0.5);
+
+      // L4 成立条件
+      tl.to("#a-ans", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(4, 0));
+      IN("#a-cond", at(4, 0.05), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      IN("#a-c2", at(4, 0.5), 0.5);
+
+      // L5 口径
+      IN("#a-note", at(5, 0.1), 0.5);
+      IN("#a-n2", at(5, 0.6), 0.5);
+      // L6 下一集
+      IN("#a-next", at(6, 0.1), 0.5);
+      tl.to(["#a-pin", "#a-cond", "#a-note", "#a-next"], { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

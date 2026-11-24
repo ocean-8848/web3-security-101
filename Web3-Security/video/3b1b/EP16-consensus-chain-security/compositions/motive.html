@@ -1,0 +1,124 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="motive" data-duration="41.95" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="v-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#F0B90B" /></marker>
+      </defs>
+      <g id="v-all">
+        <g id="v-pe">
+          <g id="v-atk" class="h">
+            <circle cx="300" cy="300" r="80" fill="#2a1416" stroke="#FC6255" stroke-width="5" />
+            <text x="300" y="295" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">攻击者</text>
+            <text x="300" y="335" font-size="28" fill="#8a8f99" text-anchor="middle">不持有多数</text>
+          </g>
+          <g id="v-voters"></g>
+          <!-- P+ε 收益表 -->
+          <g id="v-tab" class="h">
+            <text x="1180" y="560" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">P + ε 攻击：投 X 的人得到什么</text>
+            <rect x="700" y="600" width="480" height="120" rx="12" fill="#161a22" stroke="#6b6f7a" stroke-width="2" />
+            <rect x="1200" y="600" width="480" height="120" rx="12" fill="#161a22" stroke="#6b6f7a" stroke-width="2" />
+            <text x="940" y="650" font-size="30" fill="#8a8f99" text-anchor="middle">X 获胜</text>
+            <text x="940" y="695" font-size="30" fill="#e8e6df" text-anchor="middle">正常奖励 P · 攻击者不付钱</text>
+            <text x="1440" y="650" font-size="30" fill="#8a8f99" text-anchor="middle">X 落败</text>
+            <text x="1440" y="695" font-size="30" fill="#F0B90B" text-anchor="middle">攻击者补 P + ε</text>
+          </g>
+          <text id="v-dom" class="h" x="1180" y="800" font-size="34" fill="#FF9F43" text-anchor="middle" font-weight="700">投 X 成了每个人的优势策略</text>
+        </g>
+        <!-- Steem -->
+        <g id="v-st">
+          <text id="v-stt" class="h" x="960" y="110" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">2020 年 3 月 · Steem（机制相近）</text>
+          <g id="v-ex"></g>
+          <g id="v-seats" class="h">
+            <rect x="1260" y="300" width="460" height="440" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+            <text x="1490" y="370" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">见证人席位</text>
+          </g>
+          <g id="v-seatg"></g>
+          <text id="v-note" class="h" x="960" y="840" font-size="30" fill="#8a8f99" text-anchor="middle">报道称：交易所用托管的客户 STEEM 投票，帮助 Justin Sun 控制见证人席位</text>
+          <text id="v-hb" class="h" x="480" y="920" font-size="32" fill="#e8e6df" text-anchor="middle">Huobi：承认动用了客户资金</text>
+          <text id="v-bn" class="h" x="1440" y="920" font-size="32" fill="#e8e6df" text-anchor="middle">Binance：撤回了投票</text>
+        </g>
+        <g id="v-law" class="h">
+          <rect x="360" y="380" width="1200" height="260" rx="22" fill="#1a1524" stroke="#B48EF0" stroke-width="4" />
+          <text x="960" y="480" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="800">托管资产 = <tspan fill="#B48EF0">共识权力</tspan></text>
+          <text id="v-law2" x="960" y="570" font-size="34" fill="#83C167" text-anchor="middle">默认不参与投票；例外要有书面授权</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 41.95, "L": [[0.6, 4.78], [5.23, 16.34], [16.79, 27.04], [27.49, 32.53], [32.98, 40.85]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      // 投票人：8 个灰点
+      const vh = document.querySelector("#v-voters"), V = [];
+      for (let i = 0; i < 8; i++) {
+        const x = 700 + (i % 4) * 160, y = 220 + Math.floor(i / 4) * 140;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", 0);
+        g.innerHTML = `<line x1="385" y1="300" x2="${x - 36}" y2="${y}" stroke="#F0B90B" stroke-width="2" stroke-opacity=".5" stroke-dasharray="6 6" />` +
+          `<circle class="dot" cx="${x}" cy="${y}" r="34" fill="#161a22" stroke="#8a8f99" stroke-width="3" />` +
+          `<text x="${x}" y="${y + 10}" font-size="28" fill="#8a8f99" text-anchor="middle">票</text>`;
+        vh.appendChild(g); V.push(g);
+      }
+      // 三家交易所，金币 = 托管的客户 STEEM
+      const eh = document.querySelector("#v-ex"), E = [];
+      ["交易所 A", "交易所 B", "交易所 C"].forEach((t, i) => {
+        const y = 230 + i * 190;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", 0);
+        g.innerHTML = `<rect x="200" y="${y}" width="420" height="150" rx="16" fill="#1a1708" stroke="#F0B90B" stroke-width="3" />` +
+          `<text x="240" y="${y + 60}" font-size="32" fill="#e8e6df">${t}</text>` +
+          `<text x="240" y="${y + 110}" font-size="28" fill="#F0B90B">客户的 STEEM</text>` +
+          `<path class="vv" d="M630 ${y + 75} C 900 ${y + 75}, 1000 ${450 + i * 80}, 1250 ${450 + i * 80}" fill="none" stroke="#F0B90B" stroke-width="4" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />`;
+        eh.appendChild(g); E.push(g);
+      });
+      const sg = document.querySelector("#v-seatg"), SEAT = [];
+      for (let i = 0; i < 10; i++) {
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", 1330 + (i % 5) * 80); c.setAttribute("cy", 480 + Math.floor(i / 5) * 140); c.setAttribute("r", 28);
+        c.setAttribute("fill", "#161a22"); c.setAttribute("stroke", "#58C4DD"); c.setAttribute("stroke-width", 3); c.setAttribute("opacity", 0);
+        sg.appendChild(c); SEAT.push(c);
+      }
+      // L0 攻击者什么都不持有
+      NODE("#v-atk", at(0, 0.05));
+      V.forEach((g, i) => IN(g, at(0, 0.35) + i * 0.06, 0.3));
+      // L1 P+ε
+      IN("#v-tab", at(1, 0.1), 0.5);
+      tl.to(V.map((g) => g.querySelector(".dot")), { stroke: "#F0B90B", fill: "#1a1708", duration: 0.3, stagger: 0.08 }, at(1, 0.55));
+      IN("#v-dom", at(1, 0.6), 0.5);
+      // L2 Steem
+      OUT("#v-pe", at(2, 0.0), 0.35);
+      IN("#v-stt", at(2, 0.05), 0.4);
+      E.forEach((g, i) => IN(g, at(2, 0.15) + i * 0.1, 0.4, { x: -20 }, { x: 0 }));
+      IN("#v-seats", at(2, 0.3), 0.4);
+      SEAT.forEach((c, i) => tl.to(c, { opacity: 1, duration: 0.15 }, at(2, 0.35) + i * 0.03));
+      E.forEach((g, i) => tl.to(g.querySelector(".vv"), { strokeDashoffset: 0, duration: 0.7 }, at(2, 0.55) + i * 0.1));
+      tl.to(SEAT.slice(0, 7), { fill: "#F0B90B", stroke: "#F0B90B", duration: 0.25, stagger: 0.06 }, at(2, 0.75));
+      IN("#v-note", at(2, 0.6), 0.5);
+      // L3 Huobi / Binance
+      IN("#v-hb", at(3, 0.05), 0.4);
+      IN("#v-bn", at(3, 0.55), 0.4);
+      // L4 托管资产 = 共识权力
+      OUT("#v-st", at(4, 0.0), 0.35);
+      NODE("#v-law", at(4, 0.1), 0.6);
+      tl.fromTo("#v-law2", { opacity: 0 }, { opacity: 1, duration: 0.5 }, at(4, 0.55));
+      tl.to("#v-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["motive"] = tl;
+    })();
+  </script>
+</template>

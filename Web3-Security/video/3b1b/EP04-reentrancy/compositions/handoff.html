@@ -1,0 +1,95 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="handoff" data-duration="39.09" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="o-aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FF9F43" /></marker></defs>
+      <g id="o-all">
+        <text id="o-title" class="h" x="960" y="110" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="700">重入的两个前提</text>
+        <!-- 函数执行条：中途有一个缺口 -->
+        <rect id="o-f1" class="h" x="160" y="230" width="700" height="70" rx="12" fill="#121a22" stroke="#58C4DD" stroke-width="3" />
+        <rect id="o-f2" class="h" x="1060" y="230" width="700" height="70" rx="12" fill="#121a22" stroke="#58C4DD" stroke-width="3" />
+        <text id="o-ft" class="h" x="200" y="276" font-size="30" fill="#58C4DD">函数执行中……</text>
+        <text id="o-ft2" class="h" x="1100" y="276" font-size="30" fill="#58C4DD">……函数继续</text>
+        <path id="o-out" class="dr h" pathLength="1" d="M900 300 L 900 482" stroke="#FF9F43" stroke-width="5" fill="none" marker-end="url(#o-aho)" />
+        <text id="o-c1" class="h" x="930" y="400" font-size="30" fill="#FF9F43">① 中途外部调用，对方受攻击者控制</text>
+        <g id="o-c2" class="h">
+          <rect x="560" y="160" width="300" height="56" rx="28" fill="#1f170c" stroke="#FF9F43" stroke-width="2" />
+          <text x="710" y="198" font-size="28" fill="#FF9F43" text-anchor="middle">② 状态：还是旧的</text>
+        </g>
+        <circle id="o-atk" class="h" cx="900" cy="590" r="100" fill="#1f1012" stroke="#FC6255" stroke-width="5" />
+        <text id="o-atkt" class="h" x="900" y="580" font-size="30" fill="#FC6255" text-anchor="middle" font-weight="700">攻击者</text>
+        <text id="o-atkt2" class="h" x="900" y="620" font-size="28" fill="#FC6255" text-anchor="middle">控制的代码</text>
+        <text id="o-not" class="h" x="960" y="770" font-size="34" fill="#e8e6df" text-anchor="middle">交出控制权的，不只是转 ETH</text>
+        <g id="o-fan" fill="none" stroke="#6b6f7a" stroke-width="2"></g>
+        <g id="o-labs"></g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 39.09, "L": [[0.6, 3.84], [4.29, 15.86], [16.31, 19.96], [20.41, 29.72], [30.17, 37.99]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.5) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      const DRAWA = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 六种交出控制权的位置（原文 2 节表）
+      const S = [
+        ["转 ETH：执行 receive / fallback", 780, 870, "end"],
+        ["攻击者部署的代币：代码任意", 780, 950, "end"],
+        ["ERC-777 转账钩子", 780, 1030, "end"],
+        ["NFT 安全转账：onERC721Received", 1060, 870, "start"],
+        ["闪电贷回调 onFlashLoan", 1060, 950, "start"],
+        ["调用任意用户提供的地址", 1060, 1030, "start"]
+      ];
+      const fan = document.querySelector("#o-fan"), labs = document.querySelector("#o-labs"), items = [];
+      S.forEach(([t, x, y, a]) => {
+        const p = document.createElementNS(NS, "path");
+        const sx = a === "end" ? 850 : 950;
+        p.setAttribute("d", `M${sx} ${650} C ${sx} ${y - 10}, ${(sx + x) / 2} ${y - 10}, ${a === "end" ? x + 14 : x - 14} ${y - 10}`);
+        p.setAttribute("pathLength", "1"); p.setAttribute("class", "dr");
+        fan.appendChild(p);
+        const tx = document.createElementNS(NS, "text");
+        tx.setAttribute("x", a === "end" ? x : x); tx.setAttribute("y", y); tx.setAttribute("font-size", "30");
+        tx.setAttribute("fill", "#e8e6df"); tx.setAttribute("text-anchor", a); tx.setAttribute("opacity", "0");
+        tx.textContent = t; labs.appendChild(tx);
+        items.push({ p, tx });
+      });
+
+      IN("#o-title", at(0, 0.1), 0.6);
+      // L1 两个前提
+      IN(["#o-f1", "#o-f2", "#o-ft", "#o-ft2"], at(1, 0.0), 0.5);
+      DRAWA("#o-out", at(1, 0.1), 0.5);
+      IN(["#o-atk", "#o-atkt", "#o-atkt2"], at(1, 0.18), 0.5, { scale: 0.6, svgOrigin: "900 590" }, { scale: 1 });
+      IN("#o-c1", at(1, 0.22), 0.4);
+      IN("#o-c2", at(1, 0.6), 0.5, { y: -10 }, { y: 0 });
+      // L2 不只是转 ETH
+      OUT("#o-title", at(2, 0.0), 0.3);
+      IN("#o-not", at(2, 0.1), 0.5);
+      DRAW(items[0].p, at(2, 0.45)); IN(items[0].tx, at(2, 0.5), 0.4);
+      // L3 代币、ERC-777、NFT
+      OUT("#o-not", at(3, 0.0), 0.3);
+      DRAW(items[1].p, at(3, 0.05)); IN(items[1].tx, at(3, 0.08), 0.4);
+      DRAW(items[2].p, at(3, 0.4)); IN(items[2].tx, at(3, 0.43), 0.4);
+      DRAW(items[3].p, at(3, 0.65)); IN(items[3].tx, at(3, 0.68), 0.4);
+      // L4 闪电贷、任意地址
+      DRAW(items[4].p, at(4, 0.05)); IN(items[4].tx, at(4, 0.08), 0.4);
+      DRAW(items[5].p, at(4, 0.5)); IN(items[5].tx, at(4, 0.53), 0.4);
+      tl.fromTo("#o-atk", { strokeWidth: 5 }, { strokeWidth: 10, duration: 0.3, yoyo: true, repeat: 1 }, at(4, 0.8));
+
+      tl.to("#o-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["handoff"] = tl;
+    })();
+  </script>
+</template>

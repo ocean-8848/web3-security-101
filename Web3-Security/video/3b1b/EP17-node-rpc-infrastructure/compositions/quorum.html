@@ -1,0 +1,100 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="quorum" data-duration="49.33" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="q-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="q-all">
+        <text id="q-title" class="h" x="960" y="100" font-size="42" fill="#e8e6df" text-anchor="middle" font-weight="700">多源校验：3 个数据源，至少 2 个一致才入账（示例）</text>
+        <g id="q-src"></g>
+        <g id="q-sys" class="h">
+          <rect x="1200" y="400" width="520" height="260" rx="20" fill="#1a1708" stroke="#F0B90B" stroke-width="4" />
+          <text x="1460" y="470" font-size="36" fill="#F0B90B" text-anchor="middle" font-weight="700">充值扫描</text>
+          <text id="q-k" class="mono" x="1460" y="540" font-size="40" fill="#e8e6df" text-anchor="middle">k = 2</text>
+        </g>
+        <text id="q-k1" class="h mono" x="1460" y="540" font-size="40" fill="#FC6255" text-anchor="middle">k = 1</text>
+        <text id="q-tally" class="h mono" x="1460" y="620" font-size="34" fill="#83C167" text-anchor="middle">2 : 1 → 干净 ✓</text>
+        <text id="q-only" class="h mono" x="1460" y="620" font-size="34" fill="#FF9F43" text-anchor="middle">只剩 1 个回答</text>
+        <text id="q-bad" class="h" x="1460" y="760" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="700">自动降级 2 → 1：伪造数据通过 ✕</text>
+        <text id="q-good" class="h" x="1460" y="840" font-size="36" fill="#83C167" text-anchor="middle" font-weight="700">不降级：1 &lt; 2 → 暂停，人工确认</text>
+        <!-- 同一上游 -->
+        <g id="q-up" class="h">
+          <rect x="160" y="820" width="660" height="100" rx="16" fill="#1a1524" stroke="#B48EF0" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="490" y="882" font-size="32" fill="#e8e6df" text-anchor="middle">同一个上游运营方</text>
+        </g>
+        <text id="q-upt" class="h" x="490" y="990" font-size="34" fill="#FF9F43" text-anchor="middle" font-weight="700">三个地址，只算一个源</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 49.33, "L": [[0.6, 9.12], [9.57, 15.86], [16.31, 22.86], [23.31, 32.74], [33.19, 39.31], [39.76, 48.23]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      const SRC = [["源 A", false], ["源 B", false], ["源 C", true]];
+      const sh = document.querySelector("#q-src"), S = [];
+      SRC.forEach(([t, bad], i) => {
+        const y = 230 + i * 190;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", 0);
+        g.innerHTML = `<rect class="bx" x="160" y="${y}" width="420" height="130" rx="16" fill="${bad ? "#2a1416" : "#1a1524"}" stroke="${bad ? "#FC6255" : "#B48EF0"}" stroke-width="3" />` +
+          `<text x="200" y="${y + 60}" font-size="32" fill="#e8e6df">${t}</text>` +
+          `<text class="sub" x="200" y="${y + 105}" font-size="28" fill="${bad ? "#FC6255" : "#8a8f99"}">${bad ? "被污染" : "干净"}</text>` +
+          `<text class="ans mono" x="560" y="${y + 80}" font-size="30" fill="${bad ? "#FC6255" : "#83C167"}" text-anchor="end" opacity="0">${bad ? "伪造的数据" : "真实的数据"}</text>` +
+          `<text class="to mono" x="560" y="${y + 80}" font-size="30" fill="#6b6f7a" text-anchor="end" opacity="0">超时</text>` +
+          `<path class="ln" d="M590 ${y + 65} C 900 ${y + 65}, 1000 530, 1190 530" fill="none" stroke="${bad ? "#FC6255" : "#83C167"}" stroke-width="3" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />`;
+        sh.appendChild(g); S.push(g);
+      });
+      // L0 三个源 + 门槛
+      IN("#q-title", at(0, 0.0), 0.5);
+      S.forEach((g, i) => IN(g, at(0, 0.25) + i * 0.3, 0.4, { x: -20 }, { x: 0 }));
+      NODE("#q-sys", at(0, 0.6));
+      // L1 2:1
+      S.forEach((g, i) => { tl.to(g.querySelector(".ans"), { opacity: 1, duration: 0.3 }, at(1, 0.05) + i * 0.15); tl.to(g.querySelector(".ln"), { strokeDashoffset: 0, duration: 0.5 }, at(1, 0.1) + i * 0.15); });
+      IN("#q-tally", at(1, 0.65), 0.4);
+      // L2 DDoS 掉两个干净源
+      OUT("#q-tally", at(2, 0.0), 0.2);
+      [0, 1].forEach((i) => {
+        tl.to(S[i].querySelector(".ans"), { opacity: 0, duration: 0.2 }, at(2, 0.15) + i * 0.15);
+        tl.to(S[i].querySelector(".to"), { opacity: 1, duration: 0.2 }, at(2, 0.2) + i * 0.15);
+        tl.to(S[i].querySelector(".ln"), { opacity: 0, duration: 0.3 }, at(2, 0.2) + i * 0.15);
+        tl.to(S[i].querySelector(".bx"), { strokeOpacity: 0.3, fillOpacity: 0.4, duration: 0.3 }, at(2, 0.2) + i * 0.15);
+      });
+      IN("#q-only", at(2, 0.6), 0.4);
+      // L3 自动降级
+      tl.to("#q-k", { opacity: 0, duration: 0.15 }, at(3, 0.1));
+      IN("#q-k1", at(3, 0.25), 0.3);
+      IN("#q-bad", at(3, 0.35), 0.5);
+      tl.to(S[2].querySelector(".ln"), { strokeWidth: 8, duration: 0.25, yoyo: true, repeat: 3 }, at(3, 0.7));
+      // L4 不降级
+      OUT("#q-k1", at(4, 0.02), 0.15);
+      tl.to("#q-k", { opacity: 1, duration: 0.3 }, at(4, 0.15));
+      tl.to("#q-bad", { opacity: 0.3, duration: 0.3 }, at(4, 0.1));
+      IN("#q-good", at(4, 0.25), 0.5);
+      // L5 同一上游
+      OUT(["#q-bad", "#q-good", "#q-only"], at(5, 0.0), 0.3);
+      S.forEach((g, i) => tl.to(g.querySelector(".bx"), { stroke: "#B48EF0", strokeOpacity: 1, fillOpacity: 1, fill: "#1a1524", duration: 0.3 }, at(5, 0.05)));
+      S.forEach((g) => { tl.to([g.querySelector(".ans"), g.querySelector(".to"), g.querySelector(".ln")], { opacity: 0, duration: 0.2 }, at(5, 0.0)); });
+      tl.to(S.map((g) => g.querySelector(".sub")), { opacity: 0, duration: 0.2 }, at(5, 0.0));
+      IN("#q-up", at(5, 0.2), 0.5, { y: 20 }, { y: 0 });
+      IN("#q-upt", at(5, 0.6), 0.5);
+      tl.to("#q-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["quorum"] = tl;
+    })();
+  </script>
+</template>

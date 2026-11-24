@@ -1,0 +1,117 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="bank" data-duration="45.59" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="b-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker></defs>
+      <g id="b-all">
+        <!-- 银行合约 -->
+        <g id="b-bank" class="h">
+          <rect x="120" y="160" width="700" height="760" rx="24" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="470" y="225" font-size="40" fill="#58C4DD" text-anchor="middle" font-weight="700">银行合约</text>
+        </g>
+        <text id="b-bn" class="h" x="470" y="290" font-size="36" fill="#F0B90B" text-anchor="middle" font-weight="700">金库：<tspan id="b-bnum">10</tspan> ETH</text>
+        <g id="b-led" class="h">
+          <rect x="180" y="500" width="580" height="80" rx="12" fill="#121a12" stroke="#83C167" stroke-width="3" />
+          <text x="210" y="552" font-size="32" fill="#83C167">账本：你的余额 =</text>
+          <text id="b-ledv" class="mono" x="720" y="553" font-size="34" fill="#83C167" text-anchor="end" font-weight="700">1 ETH</text>
+        </g>
+        <!-- 取款三步 -->
+        <g id="b-steps" class="h">
+          <text x="180" y="640" font-size="30" fill="#8a8f99">取款 withdraw()</text>
+          <rect id="b-s1" x="180" y="660" width="580" height="62" rx="10" fill="#161a22" stroke="#3a3f4a" stroke-width="2" />
+          <rect id="b-s2" x="180" y="732" width="580" height="62" rx="10" fill="#161a22" stroke="#3a3f4a" stroke-width="2" />
+          <rect id="b-s3" x="180" y="804" width="580" height="62" rx="10" fill="#161a22" stroke="#3a3f4a" stroke-width="2" />
+          <text x="210" y="702" font-size="30" fill="#e8e6df">① 读出你的余额</text>
+          <text x="210" y="774" font-size="30" fill="#F0B90B">② 把钱转给你</text>
+          <text x="210" y="846" font-size="30" fill="#83C167">③ 余额清零</text>
+        </g>
+        <text id="b-read" class="h mono" x="740" y="702" font-size="30" fill="#FF9F43" text-anchor="end">→ 1 ETH</text>
+
+        <!-- 你：一个合约 -->
+        <g id="b-atk" class="h">
+          <rect x="1180" y="300" width="620" height="460" rx="24" fill="#1f1012" stroke="#FC6255" stroke-width="4" />
+          <text x="1490" y="365" font-size="38" fill="#FC6255" text-anchor="middle" font-weight="700">你（一个合约）</text>
+          <rect id="b-recv" x="1240" y="400" width="500" height="120" rx="12" fill="#0b0e14" stroke="#FC6255" stroke-width="2" />
+          <text class="mono" x="1270" y="448" font-size="30" fill="#e8e6df">receive() {</text>
+          <text class="mono" x="1300" y="492" font-size="30" fill="#FF9F43">  bank.withdraw();</text>
+          <text x="1490" y="740" font-size="34" fill="#F0B90B" text-anchor="middle" font-weight="700">你：<tspan id="b-anum">0</tspan> ETH</text>
+        </g>
+        <path id="b-back" class="dr h" pathLength="1" d="M1240 470 C 1040 470, 980 690, 768 690" stroke="#FC6255" stroke-width="5" fill="none" marker-end="url(#b-ahr)" />
+        <text id="b-backt" class="h mono" x="1000" y="620" font-size="28" fill="#FC6255" text-anchor="middle">再调用一次</text>
+        <g id="b-coins"></g>
+        <text id="b-res" class="h" x="1490" y="880" font-size="40" fill="#FC6255" text-anchor="middle" font-weight="800">存 1，取走 10</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 45.59, "L": [[0.6, 7.87], [8.32, 14.18], [14.63, 22.26], [22.71, 30.01], [30.46, 35.93], [36.38, 44.49]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAWA = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 10 枚 ETH（1 枚 = 1 ETH）
+      const host = document.querySelector("#b-coins"), coins = [];
+      for (let i = 0; i < 10; i++) {
+        const c = document.createElementNS(NS, "circle");
+        const x = 250 + (i % 5) * 110, y = 360 + Math.floor(i / 5) * 80;
+        c.setAttribute("cx", x); c.setAttribute("cy", y); c.setAttribute("r", 28); c.setAttribute("fill", "#F0B90B"); c.setAttribute("opacity", "0");
+        host.appendChild(c);
+        const tx = 1290 + (i % 5) * 100, ty = 590 + Math.floor(i / 5) * 70;
+        coins.push({ c, dx: tx - x, dy: ty - y });
+      }
+      const bn = document.querySelector("#b-bnum"), an = document.querySelector("#b-anum");
+      const SEND = (k, t, d = 0.7) => {
+        tl.to(coins[k].c, { x: coins[k].dx, y: coins[k].dy, attr: { r: 22 }, duration: d, ease: "power2.inOut" }, t);
+        tl.call(() => {}, null, t);
+        const o = { v: 0 };
+        tl.fromTo(o, { v: 0 }, { v: 1, duration: 0.01, immediateRender: false, onUpdate: () => { bn.textContent = o.v > 0.5 ? 9 - k : 10 - k; an.textContent = o.v > 0.5 ? k + 1 : k; } }, t + d);
+      };
+      const HI = (s, t) => tl.fromTo(s, { stroke: "#3a3f4a", strokeWidth: 2 }, { stroke: "#FF9F43", strokeWidth: 5, duration: 0.2, yoyo: true, repeat: 1 }, t);
+
+      // L0 银行、10 ETH、账本 1 ETH
+      IN("#b-bank", at(0, 0.0), 0.6);
+      IN("#b-bn", at(0, 0.15), 0.4);
+      coins.forEach((o, i) => IN(o.c, at(0, 0.2) + i * 0.06, 0.3, { scale: 0.3, transformOrigin: "50% 50%" }, { scale: 1 }));
+      IN("#b-led", at(0, 0.65), 0.5);
+      // L1 三步
+      IN("#b-steps", at(1, 0.05), 0.6);
+      HI("#b-s1", at(1, 0.35)); HI("#b-s2", at(1, 0.55)); HI("#b-s3", at(1, 0.78));
+      // L2 你是一个合约；第一次取款转出 1 ETH，触发 receive
+      IN("#b-atk", at(2, 0.0), 0.6, { x: 40 }, { x: 0 });
+      HI("#b-s1", at(2, 0.4)); IN("#b-read", at(2, 0.4), 0.3);
+      HI("#b-s2", at(2, 0.55)); SEND(0, at(2, 0.58));
+      tl.fromTo("#b-recv", { strokeWidth: 2 }, { stroke: "#FF9F43", strokeWidth: 6, duration: 0.3 }, at(2, 0.85));
+      // L3 receive 里再取一次：账本仍是 1
+      DRAWA("#b-back", at(3, 0.05), 0.7);
+      IN("#b-backt", at(3, 0.15), 0.4);
+      HI("#b-s1", at(3, 0.55));
+      tl.fromTo("#b-led rect", { strokeWidth: 3 }, { stroke: "#FF9F43", strokeWidth: 7, duration: 0.25, yoyo: true, repeat: 3 }, at(3, 0.6));
+      // L4 又转出 1
+      HI("#b-s2", at(4, 0.1)); SEND(1, at(4, 0.15));
+      // L5 一直到 0
+      for (let k = 2; k < 10; k++) { const t = at(5, 0.02) + (k - 2) * 0.55; HI("#b-s2", t); SEND(k, t + 0.05, 0.5); }
+      const tz = at(5, 0.02) + 8 * 0.55 + 0.4;
+      HI("#b-s3", tz);
+      tl.to("#b-ledv", { fill: "#6b6f7a", duration: 0.2 }, tz);
+      tl.call(() => {}, null, tz);
+      const z = { v: 0 }, lv = document.querySelector("#b-ledv");
+      tl.fromTo(z, { v: 0 }, { v: 1, duration: 0.01, onUpdate: () => { lv.textContent = z.v > 0.5 ? "0 ETH" : "1 ETH"; } }, tz + 0.1);
+      IN("#b-res", tz + 0.2, 0.5, { scale: 1.3, svgOrigin: "1490 865" }, { scale: 1 });
+
+      tl.to("#b-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["bank"] = tl;
+    })();
+  </script>
+</template>

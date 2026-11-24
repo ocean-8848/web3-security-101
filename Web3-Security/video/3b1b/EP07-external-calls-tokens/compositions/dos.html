@@ -1,0 +1,97 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+  </style>
+  <div id="root" data-composition-id="dos" data-duration="49.14" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="d-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#F0B90B" /></marker>
+        <marker id="d-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+        <marker id="d-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#83C167" /></marker>
+      </defs>
+      <g id="d-all">
+        <text id="d-tt" class="h" x="960" y="130" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="800">拒绝服务（DoS）：让合约<tspan fill="#FC6255">卡死</tspan></text>
+        <g id="d-auc" class="h"><rect x="760" y="420" width="400" height="220" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="5" /><text x="960" y="510" font-size="38" fill="#58C4DD" text-anchor="middle" font-weight="700">拍卖合约</text><text id="d-top" x="960" y="575" font-size="30" fill="#8a8f99" text-anchor="middle">最高出价：A</text><text id="d-topb" class="h" x="960" y="575" font-size="30" fill="#83C167" text-anchor="middle">最高出价：B</text></g>
+        <g id="d-a" class="h"><circle cx="300" cy="300" r="64" fill="#161a22" stroke="#e8e6df" stroke-width="4" /><text x="300" y="312" font-size="34" fill="#e8e6df" text-anchor="middle">A</text><text x="300" y="215" font-size="28" fill="#8a8f99" text-anchor="middle">上一位出价者</text></g>
+        <g id="d-arev" class="h"><circle cx="300" cy="300" r="64" fill="#2a1414" stroke="#FC6255" stroke-width="4" /><text x="300" y="312" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">A</text><text x="300" y="410" font-size="28" fill="#FC6255" text-anchor="middle" class="mono">receive() { revert }</text></g>
+        <g id="d-b" class="h"><circle cx="1620" cy="300" r="64" fill="#161a22" stroke="#e8e6df" stroke-width="4" /><text x="1620" y="312" font-size="34" fill="#e8e6df" text-anchor="middle">B</text><text x="1620" y="215" font-size="28" fill="#8a8f99" text-anchor="middle">新出价者</text></g>
+        <path id="d-bid" class="dr h" pathLength="1" d="M1560 340 L 1170 470" fill="none" stroke="#F0B90B" stroke-width="5" marker-end="url(#d-ah)" />
+        <text id="d-bidt" class="h" x="1420" y="450" font-size="30" fill="#F0B90B">新出价</text>
+        <path id="d-ref" class="dr h" pathLength="1" d="M750 470 L 370 340" fill="none" stroke="#F0B90B" stroke-width="5" marker-end="url(#d-ah)" />
+        <text id="d-reft" class="h" x="520" y="450" font-size="30" fill="#F0B90B">退给 A</text>
+        <text id="d-x1" class="h" x="510" y="390" font-size="56" fill="#FC6255" text-anchor="middle" font-weight="800">✕</text>
+        <path id="d-rb" class="dr h" pathLength="1" d="M1170 500 L 1560 370" fill="none" stroke="#FC6255" stroke-width="5" marker-end="url(#d-ahr)" />
+        <text id="d-rbt" class="h" x="1430" y="530" font-size="32" fill="#FC6255" font-weight="700">整笔回滚</text>
+        <g id="d-others" class="h" font-size="30" fill="#8a8f99" text-anchor="middle">
+          <circle cx="1620" cy="760" r="44" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="1620" y="771">C</text>
+          <circle cx="1400" cy="840" r="44" fill="#161a22" stroke="#8a8f99" stroke-width="3" /><text x="1400" y="851">D</text>
+        </g>
+        <g id="d-ox" class="h" font-size="40" fill="#FC6255" font-weight="800"><text x="1680" y="730">✕</text><text x="1460" y="810">✕</text></g>
+        <text id="d-forever" class="h" x="960" y="720" font-size="38" fill="#FC6255" text-anchor="middle" font-weight="700">A 永远是最高出价者</text>
+        <!-- 拉取式支付 -->
+        <g id="d-pull" class="h"><rect x="760" y="690" width="400" height="120" rx="14" fill="#121a22" stroke="#83C167" stroke-width="3" /><text x="960" y="740" font-size="30" fill="#83C167" text-anchor="middle">待领取</text><text x="960" y="785" font-size="32" fill="#e8e6df" text-anchor="middle">A：可自行提取</text></g>
+        <path id="d-ok" class="dr h" pathLength="1" d="M1560 340 L 1170 470" fill="none" stroke="#83C167" stroke-width="5" marker-end="url(#d-ahg)" />
+        <text id="d-pullt" class="h" x="960" y="900" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700">拉取式支付：只记账，收款人自己来提</text>
+        <text id="d-batch" class="h" x="960" y="960" font-size="32" fill="#8a8f99" text-anchor="middle">批量转账：单笔失败，不能拖垮整体</text>
+      </g>
+      <g id="d-aku" class="h">
+        <text x="960" y="300" font-size="34" fill="#6b6f7a" text-anchor="middle">2022 年 4 月 · Akutars NFT</text>
+        <text x="960" y="420" font-size="40" fill="#e8e6df" text-anchor="middle">推送退款：可被拒收合约卡死</text>
+        <text x="960" y="500" font-size="40" fill="#e8e6df" text-anchor="middle">项目方提款：条件比较了错误的变量</text>
+        <text id="d-lock" x="960" y="660" font-size="64" fill="#FC6255" text-anchor="middle" font-weight="800">11,539.5 ETH 永久锁定</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 49.14, "L": [[0.6, 5.04], [5.49, 11.37], [11.82, 20.15], [20.6, 25.78], [26.23, 35.38], [35.83, 48.04]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      // L0
+      IN("#d-tt", at(0, 0.1), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      // L1 拍卖：新出价，退给上一位
+      IN("#d-auc", at(1, 0.0), 0.5);
+      IN("#d-a", at(1, 0.15), 0.4);
+      IN("#d-b", at(1, 0.3), 0.4);
+      DRAW("#d-bid", at(1, 0.4), 0.5); IN("#d-bidt", at(1, 0.45), 0.3);
+      DRAW("#d-ref", at(1, 0.7), 0.5); IN("#d-reft", at(1, 0.75), 0.3);
+      // L2 A 拒收 → 整笔回滚
+      OUT("#d-a", at(2, 0.1), 0.3);
+      IN("#d-arev", at(2, 0.12), 0.4);
+      tl.to("#d-ref", { stroke: "#FC6255", duration: 0.3 }, at(2, 0.45));
+      IN("#d-x1", at(2, 0.5), 0.3, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1 });
+      OUT(["#d-bid", "#d-bidt"], at(2, 0.7), 0.3);
+      DRAW("#d-rb", at(2, 0.72), 0.5);
+      IN("#d-rbt", at(2, 0.78), 0.3);
+      // L3 没人能再出价
+      IN("#d-others", at(3, 0.05), 0.4);
+      IN("#d-ox", at(3, 0.3), 0.3);
+      IN("#d-forever", at(3, 0.5), 0.4);
+      tl.to("#d-top", { fill: "#FC6255", duration: 0.3 }, at(3, 0.5));
+      // L4 拉取式支付
+      OUT(["#d-ref", "#d-reft", "#d-x1", "#d-rb", "#d-rbt", "#d-others", "#d-ox", "#d-forever"], at(4, 0), 0.3);
+      IN("#d-pull", at(4, 0.08), 0.5);
+      DRAW("#d-ok", at(4, 0.3), 0.5);
+      OUT("#d-top", at(4, 0.4), 0.2);
+      IN("#d-topb", at(4, 0.45), 0.3);
+      IN("#d-pullt", at(4, 0.45), 0.4);
+      IN("#d-batch", at(4, 0.75), 0.4);
+      // L5 Akutars
+      tl.to("#d-all", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(5, 0));
+      IN("#d-aku", at(5, 0.05), 0.6);
+      IN("#d-lock", at(5, 0.6), 0.5, { scale: 1.2, transformOrigin: "50% 50%" }, { scale: 1 });
+      tl.to("#d-aku", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["dos"] = tl;
+    })();
+  </script>
+</template>

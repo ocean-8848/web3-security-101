@@ -1,0 +1,142 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="nomad" data-duration="51.46" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="n-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="n-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="n-all">
+        <text id="n-title" class="h" x="960" y="130" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="700">Nomad：把路径画完整</text>
+
+        <!-- 上路：升级把全零标成可信 -->
+        <g id="n-a" class="h">
+          <rect x="100" y="240" width="560" height="120" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="3" />
+          <text x="380" y="285" font-size="28" fill="#58C4DD" text-anchor="middle">升级时的初始化</text>
+          <text class="mono" x="380" y="335" font-size="30" fill="#e8e6df" text-anchor="middle">root = <tspan fill="#FF9F43">0x00</tspan></text>
+        </g>
+        <path id="n-ab" class="dr h" pathLength="1" d="M665 300 L 758 300" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#n-ah)" />
+        <g id="n-b" class="h">
+          <rect x="770" y="240" width="460" height="120" rx="16" fill="#1f1a12" stroke="#FF9F43" stroke-width="3" />
+          <text class="mono" x="1000" y="290" font-size="30" fill="#e8e6df" text-anchor="middle">confirmAt[<tspan fill="#FF9F43">0x00</tspan>] = 1</text>
+          <text x="1000" y="337" font-size="28" fill="#FF9F43" text-anchor="middle">全零根被标成可信</text>
+        </g>
+
+        <!-- 下路：未证明消息查到默认值 -->
+        <g id="n-c" class="h">
+          <rect x="100" y="600" width="560" height="120" rx="16" fill="#1f1214" stroke="#FC6255" stroke-width="3" />
+          <text x="380" y="672" font-size="32" fill="#FC6255" text-anchor="middle">伪造消息（从未证明）</text>
+        </g>
+        <path id="n-cd" class="dr h" pathLength="1" d="M665 660 L 758 660" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#n-ah)" />
+        <g id="n-d" class="h">
+          <rect x="770" y="600" width="460" height="120" rx="16" fill="#161a22" stroke="#8a8f99" stroke-width="3" />
+          <text class="mono" x="1000" y="650" font-size="30" fill="#e8e6df" text-anchor="middle">messages[hash]</text>
+          <text x="1000" y="697" font-size="28" fill="#8a8f99" text-anchor="middle">默认值 = <tspan class="mono" fill="#FF9F43">0x00</tspan></text>
+        </g>
+
+        <!-- 汇合 -->
+        <path id="n-be" class="dr h" pathLength="1" d="M1235 300 C 1290 300, 1300 400, 1312 448" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#n-ah)" />
+        <path id="n-de" class="dr h" pathLength="1" d="M1235 660 C 1290 660, 1300 560, 1312 532" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#n-ah)" />
+        <g id="n-e" class="h">
+          <rect id="n-er" x="1300" y="430" width="540" height="120" rx="16" fill="#1f1214" stroke="#FC6255" stroke-width="4" />
+          <text class="mono" x="1570" y="480" font-size="30" fill="#e8e6df" text-anchor="middle">acceptableRoot(0x00)</text>
+          <text id="n-true" class="mono" x="1570" y="528" font-size="30" fill="#FC6255" text-anchor="middle" font-weight="700">== true</text>
+        </g>
+        <path id="n-ef" class="dr h" pathLength="1" d="M1570 555 L 1570 648" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#n-ahr)" />
+        <g id="n-f" class="h">
+          <rect x="1360" y="660" width="420" height="110" rx="16" fill="#1f1214" stroke="#FC6255" stroke-width="3" />
+          <text x="1570" y="728" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">放行 → 提走资金</text>
+        </g>
+        <g id="n-coins" fill="#F0B90B"></g>
+
+        <!-- 复制交易 -->
+        <g id="n-copies"></g>
+        <text id="n-copyt" class="h" x="700" y="940" font-size="34" fill="#FC6255" text-anchor="middle">数百个地址复制同一笔交易，只换收款地址</text>
+
+        <!-- 教训 -->
+        <ellipse class="n-ring h" cx="1056" cy="279" rx="58" ry="28" fill="none" stroke="#FF9F43" stroke-width="5" />
+        <ellipse class="n-ring h" cx="1058" cy="688" rx="58" ry="28" fill="none" stroke="#FF9F43" stroke-width="5" />
+        <text id="n-l1" class="h" x="960" y="880" font-size="38" fill="#e8e6df" text-anchor="middle">① <tspan fill="#FF9F43">零值</tspan>不能有业务含义：默认值和合法值必须分得开</text>
+        <text id="n-l2" class="h" x="960" y="950" font-size="38" fill="#e8e6df" text-anchor="middle">② 升级时的<tspan fill="#58C4DD">初始化参数</tspan>，和代码一样要审计</text>
+        <g id="n-block" class="h">
+          <line x1="1265" y1="560" x2="1265" y2="760" stroke="#83C167" stroke-width="8" stroke-linecap="round" />
+          <text x="1265" y="800" font-size="30" fill="#83C167" text-anchor="middle" font-weight="700">拒绝 ✓</text>
+        </g>
+        <text id="n-l3" class="h" x="960" y="1020" font-size="38" fill="#e8e6df" text-anchor="middle">③ 回归测试：<tspan fill="#83C167">未经证明的消息，必须被拒绝</tspan></text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 51.46, "L": [[0.6, 4.27], [4.72, 12.88], [13.33, 18.95], [19.4, 25.81], [26.26, 31.75], [32.2, 42.93], [43.38, 50.36]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 流出的金币与复制的交易（位置固定）
+      const coins = [], ch = document.querySelector("#n-coins");
+      for (let i = 0; i < 8; i++) {
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", 1430 + i * 40); c.setAttribute("cy", "720"); c.setAttribute("r", "14"); c.setAttribute("opacity", "0");
+        ch.appendChild(c); coins.push(c);
+      }
+      const pills = [], ph = document.querySelector("#n-copies");
+      for (let i = 0; i < 16; i++) {
+        const r = document.createElementNS(NS, "rect");
+        r.setAttribute("x", 140 + (i % 8) * 140); r.setAttribute("y", 790 + Math.floor(i / 8) * 46);
+        r.setAttribute("width", "110"); r.setAttribute("height", "32"); r.setAttribute("rx", "8");
+        r.setAttribute("fill", "#FC6255"); r.setAttribute("opacity", "0");
+        ph.appendChild(r); pills.push(r);
+      }
+
+      IN("#n-title", at(0, 0.05), 0.5);
+      // L1 上路
+      IN("#n-a", at(1, 0.05), 0.5, { x: -20 }, { x: 0 });
+      DRAW("#n-ab", at(1, 0.45), 0.4);
+      IN("#n-b", at(1, 0.5), 0.5);
+      // L2 下路
+      IN("#n-c", at(2, 0.05), 0.5, { x: -20 }, { x: 0 });
+      DRAW("#n-cd", at(2, 0.4), 0.4);
+      IN("#n-d", at(2, 0.45), 0.5);
+      // L3 汇合
+      DRAW("#n-be", at(3, 0.05), 0.5);
+      DRAW("#n-de", at(3, 0.05), 0.5);
+      IN("#n-e", at(3, 0.2), 0.5, { scale: 0.9, svgOrigin: "1570 490" }, { scale: 1 });
+      DRAW("#n-ef", at(3, 0.55), 0.4);
+      IN("#n-f", at(3, 0.6), 0.5);
+      coins.forEach((c, i) => {
+        tl.fromTo(c, { opacity: 0, y: 0 }, { opacity: 1, duration: 0.15 }, at(3, 0.72) + i * 0.1);
+        tl.to(c, { y: 200, fill: "#FC6255", opacity: 0, duration: 0.7, ease: "power2.in" }, at(3, 0.72) + i * 0.1 + 0.15);
+      });
+      // L4 复制交易
+      pills.forEach((p, i) => IN(p, at(4, 0.05) + i * 0.12, 0.25, { x: -30 }, { x: 0 }));
+      IN("#n-copyt", at(4, 0.3), 0.5);
+      // L5 教训一、二
+      OUT(["#n-copies", "#n-copyt"], at(5, 0), 0.35);
+      tl.to(["#n-a", "#n-c", "#n-e", "#n-f", "#n-ab", "#n-cd", "#n-be", "#n-de", "#n-ef", "#n-title"], { opacity: 0.35, duration: 0.4 }, at(5, 0.02));
+      gsap.utils.toArray("#root .n-ring").forEach((r, i) => IN(r, at(5, 0.05) + i * 0.15, 0.4, { scale: 1.4, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" }));
+      IN("#n-l1", at(5, 0.1), 0.5);
+      IN("#n-l2", at(5, 0.6), 0.5);
+      tl.to("#n-a", { opacity: 1, duration: 0.3 }, at(5, 0.6));
+      // L6 回归测试
+      tl.to(["#n-a"], { opacity: 0.35, duration: 0.3 }, at(6, 0));
+      tl.to(["#n-c", "#n-de"], { opacity: 1, duration: 0.3 }, at(6, 0.05));
+      IN("#n-block", at(6, 0.2), 0.4, { scale: 1.3, svgOrigin: "1265 660" }, { scale: 1 });
+      IN("#n-l3", at(6, 0.3), 0.5);
+
+      tl.to("#n-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["nomad"] = tl;
+    })();
+  </script>
+</template>

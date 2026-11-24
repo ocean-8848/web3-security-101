@@ -1,0 +1,2668 @@
+{
+ "id": "seg3",
+ "title": "存储冲突",
+ "pill": 3,
+ "total": 142.69,
+ "lines": [
+  {
+   "id": "seg3-00",
+   "text": "代理的存储，是一排编了号的格子，叫槽位。",
+   "spoken": "代理的存储，是一排编了号的格子，叫槽位。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-00.mp3",
+   "start": 1.6,
+   "dur": 4.392,
+   "speechStart": 1.698,
+   "speechEnd": 5.162
+  },
+  {
+   "id": "seg3-01",
+   "text": "代码不认变量名，只认格子的编号。",
+   "spoken": "代码不认变量名，只认格子的编号。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-01.mp3",
+   "start": 6.212,
+   "dur": 3.768,
+   "speechStart": 6.31,
+   "speechEnd": 9.143
+  },
+  {
+   "id": "seg3-02",
+   "text": "第一种冲突：代理自己的变量，和实现的变量，撞进同一个格子。",
+   "spoken": "第一种冲突：代理自己的变量，和实现的变量，撞进同一个格子。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-02.mp3",
+   "start": 10.2,
+   "dur": 5.616,
+   "speechStart": 10.298,
+   "speechEnd": 14.976
+  },
+  {
+   "id": "seg3-03",
+   "text": "一个朴素的代理，把实现地址放在 0 号槽位。",
+   "spoken": "一个朴素的代理，把实现地址放在 0 号槽位。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-03.mp3",
+   "start": 16.036,
+   "dur": 4.68,
+   "speechStart": 16.134,
+   "speechEnd": 19.884
+  },
+  {
+   "id": "seg3-04",
+   "text": "实现合约的第一个变量是管理员，也在 0 号槽位。",
+   "spoken": "实现合约的第一个变量是管理员，也在 0 号槽位。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-04.mp3",
+   "start": 20.936,
+   "dur": 4.944,
+   "speechStart": 21.034,
+   "speechEnd": 25.046
+  },
+  {
+   "id": "seg3-05",
+   "text": "于是，写管理员，就是改写实现地址。",
+   "spoken": "于是，写管理员，就是改写实现地址。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-05.mp3",
+   "start": 26.1,
+   "dur": 4.488,
+   "speechStart": 26.198,
+   "speechEnd": 29.745
+  },
+  {
+   "id": "seg3-06",
+   "text": "修复是 EIP-1967。它用一个哈希算出的固定槽位，存放实现地址和管理员地址。",
+   "spoken": "修复是 EIP-1967。它用一个哈希算出的固定槽位，存放实现地址和管理员地址。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-06.mp3",
+   "start": 30.808,
+   "dur": 8.664,
+   "speechStart": 30.906,
+   "speechEnd": 38.617
+  },
+  {
+   "id": "seg3-07",
+   "text": "这个位置远离普通变量。算法里还减去 1，让映射和数组的派生位置，碰不到它。",
+   "spoken": "这个位置远离普通变量。算法里还减去 1，让映射和数组的派生位置，碰不到它。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-07.mp3",
+   "start": 39.692,
+   "dur": 7.92,
+   "speechStart": 39.79,
+   "speechEnd": 46.775
+  },
+  {
+   "id": "seg3-08",
+   "text": "第二种冲突：升级前后，变量的顺序变了。",
+   "spoken": "第二种冲突：升级前后，变量的顺序变了。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-08.mp3",
+   "start": 47.832,
+   "dur": 4.344,
+   "speechStart": 47.93,
+   "speechEnd": 51.334
+  },
+  {
+   "id": "seg3-09",
+   "text": "先猜一道题。",
+   "spoken": "先猜一道题。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-09.mp3",
+   "start": 52.396,
+   "dur": 2.088,
+   "speechStart": 52.494,
+   "speechEnd": 53.648
+  },
+  {
+   "id": "seg3-10",
+   "text": "旧版本里，0 号槽位是管理员，1 号是存款总额。",
+   "spoken": "旧版本里，0 号槽位是管理员，1 号是存款总额。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-10.mp3",
+   "start": 54.704,
+   "dur": 5.232,
+   "speechStart": 54.802,
+   "speechEnd": 59.087
+  },
+  {
+   "id": "seg3-11",
+   "text": "新版本在最前面，插入了一个手续费变量。升级以后读管理员，读到的是什么？",
+   "spoken": "新版本在最前面，插入了一个手续费变量。升级以后读管理员，读到的是什么？",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-11.mp3",
+   "start": 60.156,
+   "dur": 7.176,
+   "speechStart": 60.254,
+   "speechEnd": 66.513
+  },
+  {
+   "id": "seg3-12",
+   "text": "读到的是旧的存款总额，截掉一部分，被解释成一个地址。",
+   "spoken": "读到的是旧的存款总额，截掉一部分，被解释成一个地址。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-12.mp3",
+   "start": 67.832,
+   "dur": 5.376,
+   "speechStart": 67.93,
+   "speechEnd": 72.358
+  },
+  {
+   "id": "seg3-13",
+   "text": "因为新代码把管理员挪到了 1 号，而 1 号里还是旧数据。",
+   "spoken": "因为新代码把管理员挪到了 1 号，而 1 号里还是旧数据。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-13.mp3",
+   "start": 73.428,
+   "dur": 5.52,
+   "speechStart": 73.526,
+   "speechEnd": 78.109
+  },
+  {
+   "id": "seg3-14",
+   "text": "后面每一格都错开一位。映射的基址变了，所有余额看上去都消失了。",
+   "spoken": "后面每一格都错开一位。映射的基址变了，所有余额看上去都消失了。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-14.mp3",
+   "start": 79.168,
+   "dur": 6.744,
+   "speechStart": 79.266,
+   "speechEnd": 85.073
+  },
+  {
+   "id": "seg3-15",
+   "text": "规则有四条。",
+   "spoken": "规则有四条。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-15.mp3",
+   "start": 86.132,
+   "dur": 2.064,
+   "speechStart": 86.23,
+   "speechEnd": 87.372
+  },
+  {
+   "id": "seg3-16",
+   "text": "只在末尾追加变量。",
+   "spoken": "只在末尾追加变量。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-16.mp3",
+   "start": 88.416,
+   "dur": 2.304,
+   "speechStart": 88.514,
+   "speechEnd": 89.883
+  },
+  {
+   "id": "seg3-17",
+   "text": "不删除，不重新排序，不改类型。",
+   "spoken": "不删除，不重新排序，不改类型。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-17.mp3",
+   "start": 90.94,
+   "dur": 3.864,
+   "speechStart": 91.038,
+   "speechEnd": 93.954
+  },
+  {
+   "id": "seg3-18",
+   "text": "父合约预留一段空槽位，或者用 ERC-7201 的命名空间存储。",
+   "spoken": "父合约预留一段空槽位，或者用 ERC-7201 的命名空间存储。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-18.mp3",
+   "start": 95.024,
+   "dur": 5.664,
+   "speechStart": 95.122,
+   "speechEnd": 99.848
+  },
+  {
+   "id": "seg3-19",
+   "text": "用工具比对新旧布局，比如 OpenZeppelin 的升级插件，或者 forge inspect。不要靠肉眼核对。",
+   "spoken": "用工具比对新旧布局，比如 OpenZeppelin 的升级插件，或者 forge inspect。不要靠肉眼核对。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-19.mp3",
+   "start": 100.908,
+   "dur": 8.472,
+   "speechStart": 101.006,
+   "speechEnd": 108.527
+  },
+  {
+   "id": "seg3-20",
+   "text": "还有一种撞车，不在存储里，而在函数选择器上。",
+   "spoken": "还有一种撞车，不在存储里，而在函数选择器上。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-20.mp3",
+   "start": 109.6,
+   "dur": 4.68,
+   "speechStart": 109.698,
+   "speechEnd": 113.471
+  },
+  {
+   "id": "seg3-21",
+   "text": "选择器是函数签名哈希的前 4 个字节。两个名字完全不同的函数，可能算出同一个选择器。",
+   "spoken": "选择器是函数签名哈希的前 4 个字节。两个名字完全不同的函数，可能算出同一个选择器。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-21.mp3",
+   "start": 114.5,
+   "dur": 7.944,
+   "speechStart": 114.598,
+   "speechEnd": 121.595
+  },
+  {
+   "id": "seg3-22",
+   "text": "代理自己有这个函数时，调用会被代理截下，不会转给实现。",
+   "spoken": "代理自己有这个函数时，掉用会被代理截下，不会转给实现。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-22.mp3",
+   "start": 122.664,
+   "dur": 5.04,
+   "speechStart": 122.762,
+   "speechEnd": 126.869
+  },
+  {
+   "id": "seg3-23",
+   "text": "编译器只检查同一个合约内部的冲突。代理和实现之间，要在部署前用工具比对。",
+   "spoken": "编译器只检查同一个合约内部的冲突。代理和实现之间，要在部署前用工具比对。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-23.mp3",
+   "start": 127.924,
+   "dur": 7.632,
+   "speechStart": 128.022,
+   "speechEnd": 134.734
+  },
+  {
+   "id": "seg3-24",
+   "text": "透明代理靠管理员不转发、其他人只转发，绕开了这个问题。",
+   "spoken": "透明代理靠管理员不转发、其他人只转发，绕开了这个问题。",
+   "src": "/Users/k/Workon/Learning/web3/web3-security-101/Web3-Security/video/skeuo/ep10/audio/lines/seg3-24.mp3",
+   "start": 135.776,
+   "dur": 5.712,
+   "speechStart": 135.874,
+   "speechEnd": 140.647
+  }
+ ],
+ "words": [
+  {
+   "line": 0,
+   "text": "代理",
+   "start": 1.698,
+   "end": 1.971
+  },
+  {
+   "line": 0,
+   "text": "的",
+   "start": 1.971,
+   "end": 2.043
+  },
+  {
+   "line": 0,
+   "text": "存储",
+   "start": 2.055,
+   "end": 2.638
+  },
+  {
+   "line": 0,
+   "text": "是",
+   "start": 2.84,
+   "end": 3.019
+  },
+  {
+   "line": 0,
+   "text": "一",
+   "start": 3.031,
+   "end": 3.138
+  },
+  {
+   "line": 0,
+   "text": "排编",
+   "start": 3.138,
+   "end": 3.471
+  },
+  {
+   "line": 0,
+   "text": "了",
+   "start": 3.471,
+   "end": 3.531
+  },
+  {
+   "line": 0,
+   "text": "号",
+   "start": 3.543,
+   "end": 3.686
+  },
+  {
+   "line": 0,
+   "text": "的",
+   "start": 3.686,
+   "end": 3.757
+  },
+  {
+   "line": 0,
+   "text": "格子",
+   "start": 3.769,
+   "end": 4.162
+  },
+  {
+   "line": 0,
+   "text": "叫",
+   "start": 4.483,
+   "end": 4.65
+  },
+  {
+   "line": 0,
+   "text": "槽",
+   "start": 4.662,
+   "end": 4.936
+  },
+  {
+   "line": 0,
+   "text": "位",
+   "start": 4.936,
+   "end": 5.162
+  },
+  {
+   "line": 1,
+   "text": "代码",
+   "start": 6.31,
+   "end": 6.667
+  },
+  {
+   "line": 1,
+   "text": "不",
+   "start": 6.691,
+   "end": 6.893
+  },
+  {
+   "line": 1,
+   "text": "认变",
+   "start": 6.893,
+   "end": 7.167
+  },
+  {
+   "line": 1,
+   "text": "量名",
+   "start": 7.167,
+   "end": 7.643
+  },
+  {
+   "line": 1,
+   "text": "只",
+   "start": 8.012,
+   "end": 8.191
+  },
+  {
+   "line": 1,
+   "text": "认",
+   "start": 8.191,
+   "end": 8.333
+  },
+  {
+   "line": 1,
+   "text": "格子",
+   "start": 8.357,
+   "end": 8.619
+  },
+  {
+   "line": 1,
+   "text": "的",
+   "start": 8.619,
+   "end": 8.702
+  },
+  {
+   "line": 1,
+   "text": "编号",
+   "start": 8.714,
+   "end": 9.143
+  },
+  {
+   "line": 2,
+   "text": "第一",
+   "start": 10.298,
+   "end": 10.524
+  },
+  {
+   "line": 2,
+   "text": "种",
+   "start": 10.524,
+   "end": 10.655
+  },
+  {
+   "line": 2,
+   "text": "冲突",
+   "start": 10.667,
+   "end": 11.143
+  },
+  {
+   "line": 2,
+   "text": "代理",
+   "start": 11.476,
+   "end": 11.774
+  },
+  {
+   "line": 2,
+   "text": "自己",
+   "start": 11.798,
+   "end": 12.0
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 12.0,
+   "end": 12.083
+  },
+  {
+   "line": 2,
+   "text": "变量",
+   "start": 12.095,
+   "end": 12.56
+  },
+  {
+   "line": 2,
+   "text": "和",
+   "start": 12.738,
+   "end": 12.881
+  },
+  {
+   "line": 2,
+   "text": "实现",
+   "start": 12.893,
+   "end": 13.226
+  },
+  {
+   "line": 2,
+   "text": "的",
+   "start": 13.226,
+   "end": 13.298
+  },
+  {
+   "line": 2,
+   "text": "变量",
+   "start": 13.31,
+   "end": 13.738
+  },
+  {
+   "line": 2,
+   "text": "撞进",
+   "start": 13.952,
+   "end": 14.274
+  },
+  {
+   "line": 2,
+   "text": "同",
+   "start": 14.274,
+   "end": 14.44
+  },
+  {
+   "line": 2,
+   "text": "一个",
+   "start": 14.452,
+   "end": 14.607
+  },
+  {
+   "line": 2,
+   "text": "格子",
+   "start": 14.619,
+   "end": 14.976
+  },
+  {
+   "line": 3,
+   "text": "一个",
+   "start": 16.134,
+   "end": 16.384
+  },
+  {
+   "line": 3,
+   "text": "朴素",
+   "start": 16.407,
+   "end": 16.753
+  },
+  {
+   "line": 3,
+   "text": "的",
+   "start": 16.753,
+   "end": 16.848
+  },
+  {
+   "line": 3,
+   "text": "代理",
+   "start": 16.86,
+   "end": 17.36
+  },
+  {
+   "line": 3,
+   "text": "把",
+   "start": 17.598,
+   "end": 17.741
+  },
+  {
+   "line": 3,
+   "text": "实现",
+   "start": 17.753,
+   "end": 18.146
+  },
+  {
+   "line": 3,
+   "text": "地址",
+   "start": 18.157,
+   "end": 18.645
+  },
+  {
+   "line": 3,
+   "text": "放",
+   "start": 18.753,
+   "end": 18.955
+  },
+  {
+   "line": 3,
+   "text": "在",
+   "start": 18.955,
+   "end": 19.062
+  },
+  {
+   "line": 3,
+   "text": "0",
+   "start": 19.086,
+   "end": 19.265
+  },
+  {
+   "line": 3,
+   "text": "号",
+   "start": 19.265,
+   "end": 19.431
+  },
+  {
+   "line": 3,
+   "text": "槽",
+   "start": 19.443,
+   "end": 19.657
+  },
+  {
+   "line": 3,
+   "text": "位",
+   "start": 19.657,
+   "end": 19.884
+  },
+  {
+   "line": 4,
+   "text": "实现",
+   "start": 21.034,
+   "end": 21.474
+  },
+  {
+   "line": 4,
+   "text": "合约",
+   "start": 21.486,
+   "end": 21.772
+  },
+  {
+   "line": 4,
+   "text": "的",
+   "start": 21.772,
+   "end": 21.903
+  },
+  {
+   "line": 4,
+   "text": "第一个",
+   "start": 21.926,
+   "end": 22.248
+  },
+  {
+   "line": 4,
+   "text": "变量",
+   "start": 22.26,
+   "end": 22.724
+  },
+  {
+   "line": 4,
+   "text": "是",
+   "start": 22.819,
+   "end": 23.034
+  },
+  {
+   "line": 4,
+   "text": "管理员",
+   "start": 23.046,
+   "end": 23.665
+  },
+  {
+   "line": 4,
+   "text": "也",
+   "start": 23.903,
+   "end": 24.057
+  },
+  {
+   "line": 4,
+   "text": "在",
+   "start": 24.057,
+   "end": 24.2
+  },
+  {
+   "line": 4,
+   "text": "0",
+   "start": 24.224,
+   "end": 24.415
+  },
+  {
+   "line": 4,
+   "text": "号",
+   "start": 24.415,
+   "end": 24.593
+  },
+  {
+   "line": 4,
+   "text": "槽",
+   "start": 24.605,
+   "end": 24.819
+  },
+  {
+   "line": 4,
+   "text": "位",
+   "start": 24.819,
+   "end": 25.046
+  },
+  {
+   "line": 5,
+   "text": "于是",
+   "start": 26.198,
+   "end": 26.733
+  },
+  {
+   "line": 5,
+   "text": "写",
+   "start": 27.043,
+   "end": 27.34
+  },
+  {
+   "line": 5,
+   "text": "管理员",
+   "start": 27.34,
+   "end": 28.007
+  },
+  {
+   "line": 5,
+   "text": "就",
+   "start": 28.174,
+   "end": 28.352
+  },
+  {
+   "line": 5,
+   "text": "是",
+   "start": 28.352,
+   "end": 28.483
+  },
+  {
+   "line": 5,
+   "text": "改写",
+   "start": 28.495,
+   "end": 28.864
+  },
+  {
+   "line": 5,
+   "text": "实现",
+   "start": 28.888,
+   "end": 29.245
+  },
+  {
+   "line": 5,
+   "text": "地址",
+   "start": 29.257,
+   "end": 29.745
+  },
+  {
+   "line": 6,
+   "text": "修复",
+   "start": 30.906,
+   "end": 31.263
+  },
+  {
+   "line": 6,
+   "text": "是",
+   "start": 31.275,
+   "end": 31.644
+  },
+  {
+   "line": 6,
+   "text": "EIP",
+   "start": 31.751,
+   "end": 32.596
+  },
+  {
+   "line": 6,
+   "text": "1967",
+   "start": 32.691,
+   "end": 33.429
+  },
+  {
+   "line": 6,
+   "text": "它",
+   "start": 33.975,
+   "end": 34.129
+  },
+  {
+   "line": 6,
+   "text": "用",
+   "start": 34.129,
+   "end": 34.225
+  },
+  {
+   "line": 6,
+   "text": "一个",
+   "start": 34.237,
+   "end": 34.391
+  },
+  {
+   "line": 6,
+   "text": "哈希",
+   "start": 34.403,
+   "end": 34.772
+  },
+  {
+   "line": 6,
+   "text": "算出",
+   "start": 34.772,
+   "end": 35.07
+  },
+  {
+   "line": 6,
+   "text": "的",
+   "start": 35.07,
+   "end": 35.165
+  },
+  {
+   "line": 6,
+   "text": "固定",
+   "start": 35.189,
+   "end": 35.475
+  },
+  {
+   "line": 6,
+   "text": "槽位",
+   "start": 35.487,
+   "end": 35.951
+  },
+  {
+   "line": 6,
+   "text": "存放",
+   "start": 36.225,
+   "end": 36.606
+  },
+  {
+   "line": 6,
+   "text": "实现",
+   "start": 36.618,
+   "end": 36.975
+  },
+  {
+   "line": 6,
+   "text": "地址",
+   "start": 36.987,
+   "end": 37.451
+  },
+  {
+   "line": 6,
+   "text": "和",
+   "start": 37.57,
+   "end": 37.737
+  },
+  {
+   "line": 6,
+   "text": "管理员",
+   "start": 37.748,
+   "end": 38.248
+  },
+  {
+   "line": 6,
+   "text": "地址",
+   "start": 38.26,
+   "end": 38.617
+  },
+  {
+   "line": 7,
+   "text": "这个",
+   "start": 39.79,
+   "end": 40.063
+  },
+  {
+   "line": 7,
+   "text": "位置",
+   "start": 40.075,
+   "end": 40.73
+  },
+  {
+   "line": 7,
+   "text": "远离",
+   "start": 40.837,
+   "end": 41.159
+  },
+  {
+   "line": 7,
+   "text": "普通",
+   "start": 41.182,
+   "end": 41.551
+  },
+  {
+   "line": 7,
+   "text": "变量",
+   "start": 41.563,
+   "end": 41.968
+  },
+  {
+   "line": 7,
+   "text": "算法",
+   "start": 42.513,
+   "end": 42.978
+  },
+  {
+   "line": 7,
+   "text": "里",
+   "start": 42.978,
+   "end": 43.156
+  },
+  {
+   "line": 7,
+   "text": "还",
+   "start": 43.18,
+   "end": 43.323
+  },
+  {
+   "line": 7,
+   "text": "减去",
+   "start": 43.323,
+   "end": 43.609
+  },
+  {
+   "line": 7,
+   "text": "1",
+   "start": 43.621,
+   "end": 43.835
+  },
+  {
+   "line": 7,
+   "text": "让",
+   "start": 44.144,
+   "end": 44.311
+  },
+  {
+   "line": 7,
+   "text": "映射",
+   "start": 44.323,
+   "end": 44.752
+  },
+  {
+   "line": 7,
+   "text": "和",
+   "start": 44.775,
+   "end": 44.859
+  },
+  {
+   "line": 7,
+   "text": "数组",
+   "start": 44.871,
+   "end": 45.144
+  },
+  {
+   "line": 7,
+   "text": "的",
+   "start": 45.144,
+   "end": 45.204
+  },
+  {
+   "line": 7,
+   "text": "派生",
+   "start": 45.228,
+   "end": 45.537
+  },
+  {
+   "line": 7,
+   "text": "位置",
+   "start": 45.549,
+   "end": 45.93
+  },
+  {
+   "line": 7,
+   "text": "碰",
+   "start": 46.156,
+   "end": 46.347
+  },
+  {
+   "line": 7,
+   "text": "不",
+   "start": 46.347,
+   "end": 46.418
+  },
+  {
+   "line": 7,
+   "text": "到",
+   "start": 46.418,
+   "end": 46.525
+  },
+  {
+   "line": 7,
+   "text": "它",
+   "start": 46.537,
+   "end": 46.775
+  },
+  {
+   "line": 8,
+   "text": "第二",
+   "start": 47.93,
+   "end": 48.192
+  },
+  {
+   "line": 8,
+   "text": "种",
+   "start": 48.192,
+   "end": 48.322
+  },
+  {
+   "line": 8,
+   "text": "冲突",
+   "start": 48.334,
+   "end": 48.822
+  },
+  {
+   "line": 8,
+   "text": "升级",
+   "start": 49.061,
+   "end": 49.477
+  },
+  {
+   "line": 8,
+   "text": "前后",
+   "start": 49.489,
+   "end": 50.013
+  },
+  {
+   "line": 8,
+   "text": "变量",
+   "start": 50.251,
+   "end": 50.537
+  },
+  {
+   "line": 8,
+   "text": "的",
+   "start": 50.537,
+   "end": 50.596
+  },
+  {
+   "line": 8,
+   "text": "顺序",
+   "start": 50.608,
+   "end": 50.942
+  },
+  {
+   "line": 8,
+   "text": "变",
+   "start": 50.953,
+   "end": 51.156
+  },
+  {
+   "line": 8,
+   "text": "了",
+   "start": 51.156,
+   "end": 51.334
+  },
+  {
+   "line": 9,
+   "text": "先",
+   "start": 52.494,
+   "end": 52.863
+  },
+  {
+   "line": 9,
+   "text": "猜",
+   "start": 52.863,
+   "end": 53.017
+  },
+  {
+   "line": 9,
+   "text": "一道",
+   "start": 53.029,
+   "end": 53.244
+  },
+  {
+   "line": 9,
+   "text": "题",
+   "start": 53.244,
+   "end": 53.648
+  },
+  {
+   "line": 10,
+   "text": "旧",
+   "start": 54.802,
+   "end": 54.992
+  },
+  {
+   "line": 10,
+   "text": "版本",
+   "start": 54.992,
+   "end": 55.266
+  },
+  {
+   "line": 10,
+   "text": "里",
+   "start": 55.266,
+   "end": 55.564
+  },
+  {
+   "line": 10,
+   "text": "0",
+   "start": 55.909,
+   "end": 56.147
+  },
+  {
+   "line": 10,
+   "text": "号",
+   "start": 56.147,
+   "end": 56.29
+  },
+  {
+   "line": 10,
+   "text": "槽",
+   "start": 56.302,
+   "end": 56.528
+  },
+  {
+   "line": 10,
+   "text": "位",
+   "start": 56.528,
+   "end": 56.683
+  },
+  {
+   "line": 10,
+   "text": "是",
+   "start": 56.706,
+   "end": 56.825
+  },
+  {
+   "line": 10,
+   "text": "管理员",
+   "start": 56.837,
+   "end": 57.421
+  },
+  {
+   "line": 10,
+   "text": "1",
+   "start": 57.79,
+   "end": 57.98
+  },
+  {
+   "line": 10,
+   "text": "号",
+   "start": 57.98,
+   "end": 58.159
+  },
+  {
+   "line": 10,
+   "text": "是",
+   "start": 58.183,
+   "end": 58.278
+  },
+  {
+   "line": 10,
+   "text": "存款",
+   "start": 58.29,
+   "end": 58.623
+  },
+  {
+   "line": 10,
+   "text": "总额",
+   "start": 58.635,
+   "end": 59.087
+  },
+  {
+   "line": 11,
+   "text": "新",
+   "start": 60.254,
+   "end": 60.527
+  },
+  {
+   "line": 11,
+   "text": "版本",
+   "start": 60.527,
+   "end": 60.861
+  },
+  {
+   "line": 11,
+   "text": "在",
+   "start": 60.885,
+   "end": 61.004
+  },
+  {
+   "line": 11,
+   "text": "最",
+   "start": 61.016,
+   "end": 61.182
+  },
+  {
+   "line": 11,
+   "text": "前面",
+   "start": 61.182,
+   "end": 61.646
+  },
+  {
+   "line": 11,
+   "text": "插入",
+   "start": 61.825,
+   "end": 62.182
+  },
+  {
+   "line": 11,
+   "text": "了",
+   "start": 62.182,
+   "end": 62.254
+  },
+  {
+   "line": 11,
+   "text": "一个",
+   "start": 62.266,
+   "end": 62.42
+  },
+  {
+   "line": 11,
+   "text": "手续费",
+   "start": 62.444,
+   "end": 62.92
+  },
+  {
+   "line": 11,
+   "text": "变量",
+   "start": 62.932,
+   "end": 63.301
+  },
+  {
+   "line": 11,
+   "text": "升级",
+   "start": 63.846,
+   "end": 64.287
+  },
+  {
+   "line": 11,
+   "text": "以后",
+   "start": 64.299,
+   "end": 64.596
+  },
+  {
+   "line": 11,
+   "text": "读",
+   "start": 64.62,
+   "end": 64.763
+  },
+  {
+   "line": 11,
+   "text": "管理员",
+   "start": 64.775,
+   "end": 65.442
+  },
+  {
+   "line": 11,
+   "text": "读",
+   "start": 65.727,
+   "end": 65.894
+  },
+  {
+   "line": 11,
+   "text": "到",
+   "start": 65.894,
+   "end": 66.013
+  },
+  {
+   "line": 11,
+   "text": "的",
+   "start": 66.013,
+   "end": 66.073
+  },
+  {
+   "line": 11,
+   "text": "是",
+   "start": 66.096,
+   "end": 66.18
+  },
+  {
+   "line": 11,
+   "text": "什么",
+   "start": 66.18,
+   "end": 66.513
+  },
+  {
+   "line": 12,
+   "text": "读到",
+   "start": 67.93,
+   "end": 68.239
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 68.239,
+   "end": 68.322
+  },
+  {
+   "line": 12,
+   "text": "是",
+   "start": 68.322,
+   "end": 68.727
+  },
+  {
+   "line": 12,
+   "text": "旧",
+   "start": 68.858,
+   "end": 69.037
+  },
+  {
+   "line": 12,
+   "text": "的",
+   "start": 69.037,
+   "end": 69.12
+  },
+  {
+   "line": 12,
+   "text": "存款",
+   "start": 69.132,
+   "end": 69.477
+  },
+  {
+   "line": 12,
+   "text": "总额",
+   "start": 69.489,
+   "end": 69.953
+  },
+  {
+   "line": 12,
+   "text": "截掉",
+   "start": 70.203,
+   "end": 70.537
+  },
+  {
+   "line": 12,
+   "text": "一部分",
+   "start": 70.537,
+   "end": 71.037
+  },
+  {
+   "line": 12,
+   "text": "被",
+   "start": 71.239,
+   "end": 71.394
+  },
+  {
+   "line": 12,
+   "text": "解释",
+   "start": 71.406,
+   "end": 71.644
+  },
+  {
+   "line": 12,
+   "text": "成",
+   "start": 71.644,
+   "end": 71.775
+  },
+  {
+   "line": 12,
+   "text": "一个",
+   "start": 71.799,
+   "end": 71.93
+  },
+  {
+   "line": 12,
+   "text": "地址",
+   "start": 71.942,
+   "end": 72.358
+  },
+  {
+   "line": 13,
+   "text": "因为",
+   "start": 73.526,
+   "end": 73.752
+  },
+  {
+   "line": 13,
+   "text": "新",
+   "start": 73.764,
+   "end": 73.966
+  },
+  {
+   "line": 13,
+   "text": "代码",
+   "start": 73.966,
+   "end": 74.383
+  },
+  {
+   "line": 13,
+   "text": "把",
+   "start": 74.478,
+   "end": 74.645
+  },
+  {
+   "line": 13,
+   "text": "管理员",
+   "start": 74.657,
+   "end": 75.097
+  },
+  {
+   "line": 13,
+   "text": "挪到",
+   "start": 75.121,
+   "end": 75.323
+  },
+  {
+   "line": 13,
+   "text": "了",
+   "start": 75.323,
+   "end": 75.395
+  },
+  {
+   "line": 13,
+   "text": "1",
+   "start": 75.407,
+   "end": 75.538
+  },
+  {
+   "line": 13,
+   "text": "号",
+   "start": 75.538,
+   "end": 75.799
+  },
+  {
+   "line": 13,
+   "text": "而",
+   "start": 76.121,
+   "end": 76.538
+  },
+  {
+   "line": 13,
+   "text": "1",
+   "start": 76.549,
+   "end": 76.728
+  },
+  {
+   "line": 13,
+   "text": "号",
+   "start": 76.728,
+   "end": 76.942
+  },
+  {
+   "line": 13,
+   "text": "里",
+   "start": 76.942,
+   "end": 77.216
+  },
+  {
+   "line": 13,
+   "text": "还是",
+   "start": 77.323,
+   "end": 77.633
+  },
+  {
+   "line": 13,
+   "text": "旧",
+   "start": 77.645,
+   "end": 77.728
+  },
+  {
+   "line": 13,
+   "text": "数据",
+   "start": 77.728,
+   "end": 78.109
+  },
+  {
+   "line": 14,
+   "text": "后面",
+   "start": 79.266,
+   "end": 79.599
+  },
+  {
+   "line": 14,
+   "text": "每",
+   "start": 79.623,
+   "end": 79.777
+  },
+  {
+   "line": 14,
+   "text": "一",
+   "start": 79.778,
+   "end": 79.908
+  },
+  {
+   "line": 14,
+   "text": "格",
+   "start": 79.908,
+   "end": 80.242
+  },
+  {
+   "line": 14,
+   "text": "都",
+   "start": 80.349,
+   "end": 80.516
+  },
+  {
+   "line": 14,
+   "text": "错开",
+   "start": 80.516,
+   "end": 80.837
+  },
+  {
+   "line": 14,
+   "text": "一",
+   "start": 80.849,
+   "end": 80.944
+  },
+  {
+   "line": 14,
+   "text": "位",
+   "start": 80.944,
+   "end": 81.158
+  },
+  {
+   "line": 14,
+   "text": "映射",
+   "start": 81.692,
+   "end": 82.049
+  },
+  {
+   "line": 14,
+   "text": "的",
+   "start": 82.049,
+   "end": 82.144
+  },
+  {
+   "line": 14,
+   "text": "基址",
+   "start": 82.156,
+   "end": 82.442
+  },
+  {
+   "line": 14,
+   "text": "变",
+   "start": 82.454,
+   "end": 82.68
+  },
+  {
+   "line": 14,
+   "text": "了",
+   "start": 82.68,
+   "end": 82.954
+  },
+  {
+   "line": 14,
+   "text": "所有",
+   "start": 83.275,
+   "end": 83.704
+  },
+  {
+   "line": 14,
+   "text": "余额",
+   "start": 83.716,
+   "end": 84.001
+  },
+  {
+   "line": 14,
+   "text": "看上去",
+   "start": 84.025,
+   "end": 84.406
+  },
+  {
+   "line": 14,
+   "text": "都",
+   "start": 84.43,
+   "end": 84.513
+  },
+  {
+   "line": 14,
+   "text": "消失",
+   "start": 84.525,
+   "end": 84.906
+  },
+  {
+   "line": 14,
+   "text": "了",
+   "start": 84.906,
+   "end": 85.073
+  },
+  {
+   "line": 15,
+   "text": "规则",
+   "start": 86.23,
+   "end": 86.611
+  },
+  {
+   "line": 15,
+   "text": "有",
+   "start": 86.634,
+   "end": 86.765
+  },
+  {
+   "line": 15,
+   "text": "四条",
+   "start": 86.765,
+   "end": 87.372
+  },
+  {
+   "line": 16,
+   "text": "只",
+   "start": 88.514,
+   "end": 88.68
+  },
+  {
+   "line": 16,
+   "text": "在",
+   "start": 88.68,
+   "end": 88.787
+  },
+  {
+   "line": 16,
+   "text": "末尾",
+   "start": 88.799,
+   "end": 89.109
+  },
+  {
+   "line": 16,
+   "text": "追加",
+   "start": 89.133,
+   "end": 89.442
+  },
+  {
+   "line": 16,
+   "text": "变量",
+   "start": 89.454,
+   "end": 89.883
+  },
+  {
+   "line": 17,
+   "text": "不",
+   "start": 91.038,
+   "end": 91.169
+  },
+  {
+   "line": 17,
+   "text": "删除",
+   "start": 91.169,
+   "end": 91.68
+  },
+  {
+   "line": 17,
+   "text": "不",
+   "start": 92.038,
+   "end": 92.192
+  },
+  {
+   "line": 17,
+   "text": "重新",
+   "start": 92.192,
+   "end": 92.514
+  },
+  {
+   "line": 17,
+   "text": "排序",
+   "start": 92.526,
+   "end": 92.966
+  },
+  {
+   "line": 17,
+   "text": "不",
+   "start": 93.264,
+   "end": 93.383
+  },
+  {
+   "line": 17,
+   "text": "改",
+   "start": 93.383,
+   "end": 93.502
+  },
+  {
+   "line": 17,
+   "text": "类型",
+   "start": 93.514,
+   "end": 93.954
+  },
+  {
+   "line": 18,
+   "text": "父",
+   "start": 95.122,
+   "end": 95.348
+  },
+  {
+   "line": 18,
+   "text": "合约",
+   "start": 95.348,
+   "end": 95.645
+  },
+  {
+   "line": 18,
+   "text": "预留",
+   "start": 95.669,
+   "end": 95.895
+  },
+  {
+   "line": 18,
+   "text": "一段",
+   "start": 95.907,
+   "end": 96.157
+  },
+  {
+   "line": 18,
+   "text": "空槽",
+   "start": 96.181,
+   "end": 96.55
+  },
+  {
+   "line": 18,
+   "text": "位",
+   "start": 96.55,
+   "end": 96.788
+  },
+  {
+   "line": 18,
+   "text": "或者",
+   "start": 97.003,
+   "end": 97.241
+  },
+  {
+   "line": 18,
+   "text": "用",
+   "start": 97.253,
+   "end": 97.514
+  },
+  {
+   "line": 18,
+   "text": "ERC",
+   "start": 97.514,
+   "end": 97.907
+  },
+  {
+   "line": 18,
+   "text": "7201",
+   "start": 98.003,
+   "end": 98.562
+  },
+  {
+   "line": 18,
+   "text": "的",
+   "start": 98.562,
+   "end": 98.693
+  },
+  {
+   "line": 18,
+   "text": "命名",
+   "start": 98.705,
+   "end": 99.05
+  },
+  {
+   "line": 18,
+   "text": "空间",
+   "start": 99.062,
+   "end": 99.443
+  },
+  {
+   "line": 18,
+   "text": "存储",
+   "start": 99.455,
+   "end": 99.848
+  },
+  {
+   "line": 19,
+   "text": "用",
+   "start": 101.006,
+   "end": 101.244
+  },
+  {
+   "line": 19,
+   "text": "工具",
+   "start": 101.256,
+   "end": 101.768
+  },
+  {
+   "line": 19,
+   "text": "比",
+   "start": 101.875,
+   "end": 102.018
+  },
+  {
+   "line": 19,
+   "text": "对",
+   "start": 102.018,
+   "end": 102.148
+  },
+  {
+   "line": 19,
+   "text": "新",
+   "start": 102.172,
+   "end": 102.387
+  },
+  {
+   "line": 19,
+   "text": "旧",
+   "start": 102.387,
+   "end": 102.494
+  },
+  {
+   "line": 19,
+   "text": "布局",
+   "start": 102.506,
+   "end": 102.97
+  },
+  {
+   "line": 19,
+   "text": "比如",
+   "start": 103.196,
+   "end": 103.625
+  },
+  {
+   "line": 19,
+   "text": "OpenZeppelin",
+   "start": 103.732,
+   "end": 104.482
+  },
+  {
+   "line": 19,
+   "text": "的",
+   "start": 104.482,
+   "end": 104.589
+  },
+  {
+   "line": 19,
+   "text": "升级",
+   "start": 104.613,
+   "end": 104.887
+  },
+  {
+   "line": 19,
+   "text": "插件",
+   "start": 104.898,
+   "end": 105.339
+  },
+  {
+   "line": 19,
+   "text": "或者",
+   "start": 105.518,
+   "end": 105.851
+  },
+  {
+   "line": 19,
+   "text": "forge",
+   "start": 105.875,
+   "end": 106.208
+  },
+  {
+   "line": 19,
+   "text": "inspect",
+   "start": 106.22,
+   "end": 106.779
+  },
+  {
+   "line": 19,
+   "text": "不要",
+   "start": 107.325,
+   "end": 107.587
+  },
+  {
+   "line": 19,
+   "text": "靠",
+   "start": 107.598,
+   "end": 107.765
+  },
+  {
+   "line": 19,
+   "text": "肉眼",
+   "start": 107.789,
+   "end": 108.098
+  },
+  {
+   "line": 19,
+   "text": "核对",
+   "start": 108.11,
+   "end": 108.527
+  },
+  {
+   "line": 20,
+   "text": "还有",
+   "start": 109.698,
+   "end": 109.912
+  },
+  {
+   "line": 20,
+   "text": "一种",
+   "start": 109.924,
+   "end": 110.162
+  },
+  {
+   "line": 20,
+   "text": "撞车",
+   "start": 110.174,
+   "end": 110.721
+  },
+  {
+   "line": 20,
+   "text": "不在",
+   "start": 110.9,
+   "end": 111.138
+  },
+  {
+   "line": 20,
+   "text": "存储",
+   "start": 111.15,
+   "end": 111.602
+  },
+  {
+   "line": 20,
+   "text": "里",
+   "start": 111.602,
+   "end": 111.757
+  },
+  {
+   "line": 20,
+   "text": "而",
+   "start": 112.126,
+   "end": 112.281
+  },
+  {
+   "line": 20,
+   "text": "在",
+   "start": 112.281,
+   "end": 112.376
+  },
+  {
+   "line": 20,
+   "text": "函数",
+   "start": 112.4,
+   "end": 112.757
+  },
+  {
+   "line": 20,
+   "text": "选择器",
+   "start": 112.769,
+   "end": 113.245
+  },
+  {
+   "line": 20,
+   "text": "上",
+   "start": 113.245,
+   "end": 113.471
+  },
+  {
+   "line": 21,
+   "text": "选择器",
+   "start": 114.598,
+   "end": 115.229
+  },
+  {
+   "line": 21,
+   "text": "是",
+   "start": 115.252,
+   "end": 115.371
+  },
+  {
+   "line": 21,
+   "text": "函数",
+   "start": 115.383,
+   "end": 115.74
+  },
+  {
+   "line": 21,
+   "text": "签名",
+   "start": 115.752,
+   "end": 116.038
+  },
+  {
+   "line": 21,
+   "text": "哈希",
+   "start": 116.062,
+   "end": 116.383
+  },
+  {
+   "line": 21,
+   "text": "的",
+   "start": 116.383,
+   "end": 116.514
+  },
+  {
+   "line": 21,
+   "text": "前",
+   "start": 116.538,
+   "end": 116.776
+  },
+  {
+   "line": 21,
+   "text": "4 个",
+   "start": 116.776,
+   "end": 116.99
+  },
+  {
+   "line": 21,
+   "text": "字节",
+   "start": 117.002,
+   "end": 117.431
+  },
+  {
+   "line": 21,
+   "text": "两",
+   "start": 117.976,
+   "end": 118.19
+  },
+  {
+   "line": 21,
+   "text": "个",
+   "start": 118.19,
+   "end": 118.274
+  },
+  {
+   "line": 21,
+   "text": "名字",
+   "start": 118.286,
+   "end": 118.548
+  },
+  {
+   "line": 21,
+   "text": "完全",
+   "start": 118.571,
+   "end": 118.952
+  },
+  {
+   "line": 21,
+   "text": "不同",
+   "start": 118.964,
+   "end": 119.214
+  },
+  {
+   "line": 21,
+   "text": "的",
+   "start": 119.214,
+   "end": 119.286
+  },
+  {
+   "line": 21,
+   "text": "函数",
+   "start": 119.298,
+   "end": 119.75
+  },
+  {
+   "line": 21,
+   "text": "可能",
+   "start": 120.107,
+   "end": 120.369
+  },
+  {
+   "line": 21,
+   "text": "算出",
+   "start": 120.381,
+   "end": 120.69
+  },
+  {
+   "line": 21,
+   "text": "同",
+   "start": 120.714,
+   "end": 120.964
+  },
+  {
+   "line": 21,
+   "text": "一个",
+   "start": 120.964,
+   "end": 121.095
+  },
+  {
+   "line": 21,
+   "text": "选择器",
+   "start": 121.107,
+   "end": 121.595
+  },
+  {
+   "line": 22,
+   "text": "代理",
+   "start": 122.762,
+   "end": 123.035
+  },
+  {
+   "line": 22,
+   "text": "自己",
+   "start": 123.047,
+   "end": 123.262
+  },
+  {
+   "line": 22,
+   "text": "有",
+   "start": 123.285,
+   "end": 123.369
+  },
+  {
+   "line": 22,
+   "text": "这个",
+   "start": 123.381,
+   "end": 123.535
+  },
+  {
+   "line": 22,
+   "text": "函数",
+   "start": 123.547,
+   "end": 123.94
+  },
+  {
+   "line": 22,
+   "text": "时",
+   "start": 123.94,
+   "end": 124.285
+  },
+  {
+   "line": 22,
+   "text": "调用",
+   "start": 124.583,
+   "end": 124.869
+  },
+  {
+   "line": 22,
+   "text": "会",
+   "start": 124.869,
+   "end": 124.976
+  },
+  {
+   "line": 22,
+   "text": "被",
+   "start": 124.976,
+   "end": 125.071
+  },
+  {
+   "line": 22,
+   "text": "代理",
+   "start": 125.083,
+   "end": 125.321
+  },
+  {
+   "line": 22,
+   "text": "截下",
+   "start": 125.333,
+   "end": 125.762
+  },
+  {
+   "line": 22,
+   "text": "不会",
+   "start": 126.0,
+   "end": 126.25
+  },
+  {
+   "line": 22,
+   "text": "转给",
+   "start": 126.262,
+   "end": 126.464
+  },
+  {
+   "line": 22,
+   "text": "实现",
+   "start": 126.476,
+   "end": 126.869
+  },
+  {
+   "line": 23,
+   "text": "编译器",
+   "start": 128.022,
+   "end": 128.641
+  },
+  {
+   "line": 23,
+   "text": "只",
+   "start": 128.664,
+   "end": 128.807
+  },
+  {
+   "line": 23,
+   "text": "检查",
+   "start": 128.807,
+   "end": 129.176
+  },
+  {
+   "line": 23,
+   "text": "同",
+   "start": 129.2,
+   "end": 129.391
+  },
+  {
+   "line": 23,
+   "text": "一个",
+   "start": 129.391,
+   "end": 129.534
+  },
+  {
+   "line": 23,
+   "text": "合约",
+   "start": 129.545,
+   "end": 129.831
+  },
+  {
+   "line": 23,
+   "text": "内部",
+   "start": 129.855,
+   "end": 130.057
+  },
+  {
+   "line": 23,
+   "text": "的",
+   "start": 130.057,
+   "end": 130.117
+  },
+  {
+   "line": 23,
+   "text": "冲突",
+   "start": 130.129,
+   "end": 130.534
+  },
+  {
+   "line": 23,
+   "text": "代理",
+   "start": 131.079,
+   "end": 131.412
+  },
+  {
+   "line": 23,
+   "text": "和",
+   "start": 131.436,
+   "end": 131.507
+  },
+  {
+   "line": 23,
+   "text": "实现",
+   "start": 131.519,
+   "end": 131.9
+  },
+  {
+   "line": 23,
+   "text": "之间",
+   "start": 131.912,
+   "end": 132.364
+  },
+  {
+   "line": 23,
+   "text": "要",
+   "start": 132.686,
+   "end": 132.841
+  },
+  {
+   "line": 23,
+   "text": "在",
+   "start": 132.841,
+   "end": 132.948
+  },
+  {
+   "line": 23,
+   "text": "部署",
+   "start": 132.96,
+   "end": 133.281
+  },
+  {
+   "line": 23,
+   "text": "前",
+   "start": 133.281,
+   "end": 133.674
+  },
+  {
+   "line": 23,
+   "text": "用",
+   "start": 133.769,
+   "end": 133.948
+  },
+  {
+   "line": 23,
+   "text": "工具",
+   "start": 133.96,
+   "end": 134.329
+  },
+  {
+   "line": 23,
+   "text": "比",
+   "start": 134.341,
+   "end": 134.484
+  },
+  {
+   "line": 23,
+   "text": "对",
+   "start": 134.484,
+   "end": 134.734
+  },
+  {
+   "line": 24,
+   "text": "透明",
+   "start": 135.874,
+   "end": 136.207
+  },
+  {
+   "line": 24,
+   "text": "代理",
+   "start": 136.219,
+   "end": 136.659
+  },
+  {
+   "line": 24,
+   "text": "靠",
+   "start": 136.766,
+   "end": 137.005
+  },
+  {
+   "line": 24,
+   "text": "管理员",
+   "start": 137.016,
+   "end": 137.433
+  },
+  {
+   "line": 24,
+   "text": "不",
+   "start": 137.457,
+   "end": 137.576
+  },
+  {
+   "line": 24,
+   "text": "转发",
+   "start": 137.576,
+   "end": 138.028
+  },
+  {
+   "line": 24,
+   "text": "其他",
+   "start": 138.409,
+   "end": 138.743
+  },
+  {
+   "line": 24,
+   "text": "人",
+   "start": 138.743,
+   "end": 138.897
+  },
+  {
+   "line": 24,
+   "text": "只",
+   "start": 138.921,
+   "end": 139.028
+  },
+  {
+   "line": 24,
+   "text": "转发",
+   "start": 139.04,
+   "end": 139.505
+  },
+  {
+   "line": 24,
+   "text": "绕开",
+   "start": 139.731,
+   "end": 140.076
+  },
+  {
+   "line": 24,
+   "text": "了",
+   "start": 140.076,
+   "end": 140.136
+  },
+  {
+   "line": 24,
+   "text": "这个",
+   "start": 140.159,
+   "end": 140.29
+  },
+  {
+   "line": 24,
+   "text": "问题",
+   "start": 140.302,
+   "end": 140.647
+  }
+ ],
+ "captions": [
+  {
+   "text": "代理的存储",
+   "start": 1.648,
+   "end": 2.758,
+   "id": "c0"
+  },
+  {
+   "text": "是一排编了号的格子 叫槽位",
+   "start": 2.79,
+   "end": 5.282,
+   "id": "c1"
+  },
+  {
+   "text": "代码不认变量名",
+   "start": 6.26,
+   "end": 7.763,
+   "id": "c2"
+  },
+  {
+   "text": "只认格子的编号",
+   "start": 7.962,
+   "end": 9.263,
+   "id": "c3"
+  },
+  {
+   "text": "第一种冲突",
+   "start": 10.248,
+   "end": 11.263,
+   "id": "c4"
+  },
+  {
+   "text": "代理自己的变量",
+   "start": 11.426,
+   "end": 12.668,
+   "id": "c5"
+  },
+  {
+   "text": "和实现的变量",
+   "start": 12.688,
+   "end": 13.858,
+   "id": "c6"
+  },
+  {
+   "text": "撞进同一个格子",
+   "start": 13.902,
+   "end": 15.096,
+   "id": "c7"
+  },
+  {
+   "text": "一个朴素的代理",
+   "start": 16.084,
+   "end": 17.48,
+   "id": "c8"
+  },
+  {
+   "text": "把实现地址放在 0 号槽位",
+   "start": 17.548,
+   "end": 20.004,
+   "id": "c9"
+  },
+  {
+   "text": "实现合约的第一个变量是管理员",
+   "start": 20.984,
+   "end": 23.785,
+   "id": "c10"
+  },
+  {
+   "text": "也在 0 号槽位",
+   "start": 23.853,
+   "end": 25.166,
+   "id": "c11"
+  },
+  {
+   "text": "于是 写管理员",
+   "start": 26.148,
+   "end": 28.104,
+   "id": "c12"
+  },
+  {
+   "text": "就是改写实现地址",
+   "start": 28.124,
+   "end": 29.865,
+   "id": "c13"
+  },
+  {
+   "text": "修复是 EIP-1967",
+   "start": 30.856,
+   "end": 33.549,
+   "id": "c14"
+  },
+  {
+   "text": "它用一个哈希算出的固定槽位",
+   "start": 33.925,
+   "end": 36.071,
+   "id": "c15"
+  },
+  {
+   "text": "存放实现地址和管理员地址",
+   "start": 36.175,
+   "end": 38.737,
+   "id": "c16"
+  },
+  {
+   "text": "这个位置远离普通变量",
+   "start": 39.74,
+   "end": 42.088,
+   "id": "c17"
+  },
+  {
+   "text": "算法里还减去 1",
+   "start": 42.463,
+   "end": 43.955,
+   "id": "c18"
+  },
+  {
+   "text": "让映射和数组的派生位置",
+   "start": 44.094,
+   "end": 46.05,
+   "id": "c19"
+  },
+  {
+   "text": "碰不到它",
+   "start": 46.106,
+   "end": 46.895,
+   "id": "c20"
+  },
+  {
+   "text": "第二种冲突",
+   "start": 47.88,
+   "end": 48.942,
+   "id": "c21"
+  },
+  {
+   "text": "升级前后",
+   "start": 49.011,
+   "end": 50.133,
+   "id": "c22"
+  },
+  {
+   "text": "变量的顺序变了",
+   "start": 50.201,
+   "end": 51.454,
+   "id": "c23"
+  },
+  {
+   "text": "先猜一道题",
+   "start": 52.444,
+   "end": 53.768,
+   "id": "c24"
+  },
+  {
+   "text": "旧版本里",
+   "start": 54.752,
+   "end": 55.684,
+   "id": "c25"
+  },
+  {
+   "text": "0 号槽位是管理员",
+   "start": 55.859,
+   "end": 57.541,
+   "id": "c26"
+  },
+  {
+   "text": "1 号是存款总额",
+   "start": 57.74,
+   "end": 59.207,
+   "id": "c27"
+  },
+  {
+   "text": "新版本在最前面",
+   "start": 60.204,
+   "end": 61.755,
+   "id": "c28"
+  },
+  {
+   "text": "插入了一个手续费变量",
+   "start": 61.775,
+   "end": 63.421,
+   "id": "c29"
+  },
+  {
+   "text": "升级以后读管理员",
+   "start": 63.796,
+   "end": 65.562,
+   "id": "c30"
+  },
+  {
+   "text": "读到的是什么",
+   "start": 65.677,
+   "end": 66.633,
+   "id": "c31"
+  },
+  {
+   "text": "读到的是旧的存款总额",
+   "start": 67.88,
+   "end": 70.073,
+   "id": "c32"
+  },
+  {
+   "text": "截掉一部分",
+   "start": 70.153,
+   "end": 71.157,
+   "id": "c33"
+  },
+  {
+   "text": "被解释成一个地址",
+   "start": 71.189,
+   "end": 72.478,
+   "id": "c34"
+  },
+  {
+   "text": "因为新代码把管理员挪到了 1 号",
+   "start": 73.476,
+   "end": 75.919,
+   "id": "c35"
+  },
+  {
+   "text": "而 1 号里还是旧数据",
+   "start": 76.071,
+   "end": 78.229,
+   "id": "c36"
+  },
+  {
+   "text": "后面每一格都错开一位",
+   "start": 79.216,
+   "end": 81.278,
+   "id": "c37"
+  },
+  {
+   "text": "映射的基址变了",
+   "start": 81.642,
+   "end": 83.074,
+   "id": "c38"
+  },
+  {
+   "text": "所有余额看上去都消失了",
+   "start": 83.225,
+   "end": 85.193,
+   "id": "c39"
+  },
+  {
+   "text": "规则有四条",
+   "start": 86.18,
+   "end": 87.492,
+   "id": "c40"
+  },
+  {
+   "text": "只在末尾追加变量",
+   "start": 88.464,
+   "end": 90.003,
+   "id": "c41"
+  },
+  {
+   "text": "不删除 不重新排序",
+   "start": 90.988,
+   "end": 93.086,
+   "id": "c42"
+  },
+  {
+   "text": "不改类型",
+   "start": 93.214,
+   "end": 94.074,
+   "id": "c43"
+  },
+  {
+   "text": "父合约预留一段空槽位",
+   "start": 95.072,
+   "end": 96.908,
+   "id": "c44"
+  },
+  {
+   "text": "或者用 ERC-7201 的命名空间存储",
+   "start": 96.953,
+   "end": 99.968,
+   "id": "c45"
+  },
+  {
+   "text": "用工具比对新旧布局",
+   "start": 100.956,
+   "end": 103.09,
+   "id": "c46"
+  },
+  {
+   "text": "比如 OpenZeppelin 的升级插件",
+   "start": 103.146,
+   "end": 105.448,
+   "id": "c47"
+  },
+  {
+   "text": "或者 forge inspect",
+   "start": 105.468,
+   "end": 106.899,
+   "id": "c48"
+  },
+  {
+   "text": "不要靠肉眼核对",
+   "start": 107.275,
+   "end": 108.647,
+   "id": "c49"
+  },
+  {
+   "text": "还有一种撞车",
+   "start": 109.648,
+   "end": 110.83,
+   "id": "c50"
+  },
+  {
+   "text": "不在存储里",
+   "start": 110.85,
+   "end": 111.877,
+   "id": "c51"
+  },
+  {
+   "text": "而在函数选择器上",
+   "start": 112.076,
+   "end": 113.591,
+   "id": "c52"
+  },
+  {
+   "text": "选择器是函数签名哈希的前 4 个字节",
+   "start": 114.548,
+   "end": 117.551,
+   "id": "c53"
+  },
+  {
+   "text": "两个名字完全不同的函数",
+   "start": 117.926,
+   "end": 119.87,
+   "id": "c54"
+  },
+  {
+   "text": "可能算出同一个选择器",
+   "start": 120.057,
+   "end": 121.715,
+   "id": "c55"
+  },
+  {
+   "text": "代理自己有这个函数时",
+   "start": 122.712,
+   "end": 124.405,
+   "id": "c56"
+  },
+  {
+   "text": "调用会被代理截下",
+   "start": 124.533,
+   "end": 125.882,
+   "id": "c57"
+  },
+  {
+   "text": "不会转给实现",
+   "start": 125.95,
+   "end": 126.989,
+   "id": "c58"
+  },
+  {
+   "text": "编译器只检查同一个合约内部的冲突",
+   "start": 127.972,
+   "end": 130.654,
+   "id": "c59"
+  },
+  {
+   "text": "代理和实现之间",
+   "start": 131.029,
+   "end": 132.484,
+   "id": "c60"
+  },
+  {
+   "text": "要在部署前用工具比对",
+   "start": 132.636,
+   "end": 134.854,
+   "id": "c61"
+  },
+  {
+   "text": "透明代理靠管理员不转发",
+   "start": 135.824,
+   "end": 138.148,
+   "id": "c62"
+  },
+  {
+   "text": "其他人只转发",
+   "start": 138.359,
+   "end": 139.625,
+   "id": "c63"
+  },
+  {
+   "text": "绕开了这个问题",
+   "start": 139.681,
+   "end": 140.767,
+   "id": "c64"
+  }
+ ]
+}

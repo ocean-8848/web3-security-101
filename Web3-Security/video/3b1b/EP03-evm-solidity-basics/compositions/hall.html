@@ -1,0 +1,117 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="hall" data-duration="40.24" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="l-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker></defs>
+      <g id="l-all">
+        <text id="l-title" class="h" x="960" y="140" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="700">政务大厅：同一时刻，只有一处在办事</text>
+        <rect id="l-hall" class="h" x="120" y="230" width="1680" height="640" rx="24" fill="none" stroke="#2a2f3a" stroke-width="4" />
+
+        <!-- 科室 A -->
+        <g id="l-A" class="h">
+          <rect x="200" y="300" width="600" height="500" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="500" y="355" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">科室 A</text>
+          <g fill="#2a2f3a" stroke="#8a8f99" stroke-width="2"><rect x="260" y="400" width="180" height="60" rx="6" /><rect x="260" y="470" width="180" height="60" rx="6" /><rect id="l-a0" x="260" y="540" width="180" height="60" rx="6" /><rect x="260" y="610" width="180" height="60" rx="6" /></g>
+          <text x="350" y="710" font-size="28" fill="#8a8f99" text-anchor="middle">档案柜 = 存储</text>
+          <rect x="540" y="410" width="180" height="140" rx="8" fill="#0b141a" stroke="#58C4DD" stroke-width="3" />
+          <g stroke="#58C4DD" stroke-width="4" stroke-linecap="round" opacity=".7"><line x1="565" y1="450" x2="690" y2="450" /><line x1="565" y1="480" x2="670" y2="480" /><line x1="565" y1="510" x2="695" y2="510" /></g>
+          <text x="630" y="590" font-size="28" fill="#58C4DD" text-anchor="middle">规程 = 代码</text>
+        </g>
+        <!-- 科室 B -->
+        <g id="l-B" class="h">
+          <rect x="1120" y="300" width="600" height="500" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="1420" y="355" font-size="36" fill="#58C4DD" text-anchor="middle" font-weight="700">科室 B</text>
+          <g fill="#2a2f3a" stroke="#8a8f99" stroke-width="2"><rect x="1460" y="400" width="180" height="60" rx="6" /><rect x="1460" y="470" width="180" height="60" rx="6" /><rect x="1460" y="540" width="180" height="60" rx="6" /><rect x="1460" y="610" width="180" height="60" rx="6" /></g>
+          <text x="1550" y="710" font-size="28" fill="#8a8f99" text-anchor="middle">档案柜 = 存储</text>
+          <rect x="1200" y="410" width="180" height="140" rx="8" fill="#0b141a" stroke="#58C4DD" stroke-width="3" />
+          <g stroke="#58C4DD" stroke-width="4" stroke-linecap="round" opacity=".7"><line x1="1225" y1="450" x2="1350" y2="450" /><line x1="1225" y1="480" x2="1330" y2="480" /><line x1="1225" y1="510" x2="1355" y2="510" /></g>
+          <text x="1290" y="590" font-size="28" fill="#58C4DD" text-anchor="middle">规程 = 代码</text>
+        </g>
+        <!-- 窗口 -->
+        <line id="l-winA" class="h" x1="800" y1="620" x2="800" y2="700" stroke="#FF9F43" stroke-width="10" />
+        <line id="l-winB" class="h" x1="1120" y1="620" x2="1120" y2="700" stroke="#FF9F43" stroke-width="10" />
+        <!-- 办理中的灯：只有一盏亮 -->
+        <circle id="l-lamp" class="h" cx="500" cy="270" r="18" fill="#FF9F43" />
+        <text id="l-lampt" class="h" x="530" y="280" font-size="28" fill="#FF9F43">办理中</text>
+
+        <!-- 跑腿的人带着材料 -->
+        <g id="l-msgr" class="h">
+          <circle cx="760" cy="660" r="20" fill="#e8e6df" />
+          <rect x="745" y="615" width="30" height="24" rx="3" fill="#F0B90B" />
+        </g>
+        <text id="l-calld" class="h" x="960" y="600" font-size="28" fill="#8a8f99" text-anchor="middle">带着材料</text>
+
+        <!-- 比方不成立：不能插队回来 -->
+        <g id="l-queue" class="h" fill="#8a8f99"><circle cx="1060" cy="770" r="16" /><circle cx="1010" cy="770" r="16" /><circle cx="960" cy="770" r="16" /><circle cx="910" cy="770" r="16" /></g>
+        <circle id="l-cut" class="h" cx="880" cy="840" r="18" fill="#e8e6df" />
+        <g id="l-x" class="h" stroke="#FF9F43" stroke-width="7" stroke-linecap="round"><line x1="1000" y1="810" x2="1050" y2="860" /><line x1="1050" y1="810" x2="1000" y2="860" /></g>
+        <text id="l-xt" class="h" x="960" y="940" font-size="34" fill="#FF9F43" text-anchor="middle">真实的大厅：离开窗口，就不能插队回来</text>
+
+        <!-- EVM：B 中途回头找 A -->
+        <rect id="l-progbg" class="h" x="260" y="740" width="460" height="30" rx="8" fill="#1c2029" />
+        <rect id="l-prog" class="h" x="260" y="740" width="230" height="30" rx="8" fill="#FF9F43" />
+        <text id="l-progt" class="h" x="490" y="845" font-size="28" fill="#FF9F43" text-anchor="middle">A 的上一件事：还没办完</text>
+        <path id="l-back" class="dr h" pathLength="1" d="M1300 300 C 1250 160, 700 160, 640 290" stroke="#FC6255" stroke-width="5" fill="none" marker-end="url(#l-ahr)" />
+        <text id="l-re" class="h" x="960" y="960" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="800">这就是重入 <tspan fill="#8a8f99" font-size="32" font-weight="400">· 下一集</tspan></text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 40.24, "L": [[0.6, 5.57], [6.02, 13.72], [14.17, 21.64], [22.09, 28.83], [29.28, 39.14]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAWA = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 大厅
+      IN("#l-hall", at(0, 0.0), 0.6);
+      IN("#l-title", at(0, 0.2), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      // L1 科室：档案柜 + 规程
+      IN("#l-A", at(1, 0.0), 0.6, { y: 20 }, { y: 0 });
+      IN("#l-B", at(1, 0.2), 0.6, { y: 20 }, { y: 0 });
+      IN(["#l-lamp", "#l-lampt"], at(1, 0.6), 0.4);
+      // L2 A 派人去 B 的窗口，办完再回来
+      IN(["#l-winA", "#l-winB"], at(2, 0.0), 0.3);
+      IN("#l-msgr", at(2, 0.05), 0.3);
+      IN("#l-calld", at(2, 0.1), 0.3);
+      tl.to("#l-msgr", { x: 380, duration: 1.0, ease: "power2.inOut" }, at(2, 0.15));
+      tl.to(["#l-lamp"], { attr: { cx: 1420 }, duration: 0.4 }, at(2, 0.35));
+      tl.to(["#l-lampt"], { attr: { x: 1450 }, duration: 0.4 }, at(2, 0.35));
+      tl.to("#l-msgr", { x: 0, duration: 1.0, ease: "power2.inOut" }, at(2, 0.65));
+      tl.to(["#l-lamp"], { attr: { cx: 500 }, duration: 0.4 }, at(2, 0.85));
+      tl.to(["#l-lampt"], { attr: { x: 530 }, duration: 0.4 }, at(2, 0.85));
+      OUT("#l-calld", at(2, 0.9), 0.3);
+      // L3 比方不成立
+      IN("#l-queue", at(3, 0.05), 0.4);
+      IN("#l-cut", at(3, 0.2), 0.3);
+      tl.to("#l-cut", { attr: { cx: 1010, cy: 800 }, duration: 0.6, ease: "power2.out" }, at(3, 0.3));
+      IN("#l-x", at(3, 0.45), 0.3, { scale: 1.5, svgOrigin: "1025 835" }, { scale: 1 });
+      tl.to("#l-cut", { attr: { cx: 880, cy: 840 }, duration: 0.5 }, at(3, 0.6));
+      IN("#l-xt", at(3, 0.5), 0.4);
+      // L4 EVM：B 办到一半回头找 A
+      OUT(["#l-queue", "#l-cut", "#l-x", "#l-xt"], at(4, 0.0), 0.3);
+      tl.to("#l-msgr", { x: 380, duration: 0.8, ease: "power2.inOut" }, at(4, 0.0));
+      tl.to(["#l-lamp"], { attr: { cx: 1420 }, duration: 0.3 }, at(4, 0.08));
+      tl.to(["#l-lampt"], { attr: { x: 1450 }, duration: 0.3 }, at(4, 0.08));
+      IN(["#l-progbg", "#l-prog"], at(4, 0.1), 0.4);
+      IN("#l-progt", at(4, 0.15), 0.4);
+      DRAWA("#l-back", at(4, 0.3), 0.8);
+      tl.to(["#l-lamp"], { attr: { cx: 500 }, fill: "#FC6255", duration: 0.3 }, at(4, 0.45));
+      tl.to(["#l-lampt"], { attr: { x: 530 }, fill: "#FC6255", duration: 0.3 }, at(4, 0.45));
+      tl.fromTo("#l-prog", { fill: "#FF9F43" }, { fill: "#FC6255", duration: 0.25, yoyo: true, repeat: 3 }, at(4, 0.5));
+      IN("#l-re", at(4, 0.6), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+
+      tl.to("#l-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["hall"] = tl;
+    })();
+  </script>
+</template>

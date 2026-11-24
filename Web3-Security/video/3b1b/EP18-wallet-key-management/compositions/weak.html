@@ -1,0 +1,91 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="weak" data-duration="39.81" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="w-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="w-all">
+        <g id="w-q" class="h">
+          <circle cx="760" cy="150" r="34" fill="#2a1416" stroke="#FC6255" stroke-width="4" />
+          <text x="820" y="164" font-size="44" fill="#e8e6df" font-weight="700"><tspan fill="#FC6255">攻击者</tspan>能控制什么？</text>
+        </g>
+        <!-- 一条链：七个环节 -->
+        <g id="w-chain"></g>
+        <g id="w-arrows" fill="none" stroke="#FC6255" stroke-width="4"></g>
+        <text id="w-rule" class="h" x="960" y="830" font-size="52" fill="#e8e6df" text-anchor="middle" font-weight="800">强度 = <tspan fill="#FC6255">最弱</tspan>的那一环</text>
+
+        <!-- 大额事故通常不是数学破解 -->
+        <g id="w-math" class="h">
+          <text x="520" y="960" font-size="36" fill="#8a8f99" text-anchor="middle">私钥被数学破解</text>
+          <line id="w-mx" x1="370" y1="948" x2="370" y2="948" stroke="#8a8f99" stroke-width="4" />
+        </g>
+        <text id="w-real" class="h" x="1360" y="960" font-size="36" fill="#FC6255" text-anchor="middle" font-weight="700">某一步被拿到 · 被骗着签</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 39.81, "L": [[0.6, 5.69], [6.14, 13.87], [14.32, 20.63], [21.08, 29.93], [30.38, 38.71]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAWA = (s, t, d = 0.5) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // 七个环节：原文第 2 节表格"攻击者能控制的东西"
+      const N = ["随机数", "设备", "日志 · 云备份", "发布渠道", "签名界面", "签名人", "签名服务"];
+      const NS = "http://www.w3.org/2000/svg", ch = document.querySelector("#w-chain"), ar = document.querySelector("#w-arrows");
+      const links = N.map((n, i) => {
+        const x = 280 + i * 227, y = 520;
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        const vert = i % 2 === 1;
+        g.innerHTML = vert
+          ? `<rect class="lk" x="${x - 45}" y="${y - 80}" width="90" height="160" rx="45" fill="none" stroke="#8a8f99" stroke-width="12" />`
+          : `<rect class="lk" x="${x - 200}" y="${y - 45}" width="400" height="90" rx="45" fill="none" stroke="#8a8f99" stroke-width="12" />`;
+        g.innerHTML += `<text x="${x}" y="${vert ? y + 140 : y + 100}" font-size="30" fill="#e8e6df" text-anchor="middle">${n}</text>`;
+        ch.appendChild(g);
+        const p = document.createElementNS(NS, "path");
+        p.setAttribute("d", `M${x} 250 L ${x} ${vert ? y - 92 : y - 58}`);
+        p.setAttribute("pathLength", "1"); p.setAttribute("class", "dr h"); p.setAttribute("marker-end", "url(#w-ahr)");
+        ar.appendChild(p);
+        return { g, p, rect: g.querySelector(".lk") };
+      });
+
+      // L0 问题
+      IN("#w-q", at(0, 0.05), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      links.forEach((l, i) => IN(l.g, at(0, 0.4) + i * 0.08, 0.4));
+
+      // L1 随机数、设备、日志、发布渠道
+      [0.08, 0.3, 0.52, 0.8].forEach((f, i) => { DRAWA(links[i].p, at(1, f), 0.5); tl.to(links[i].rect, { stroke: "#FC6255", duration: 0.3 }, at(1, f) + 0.4); });
+      // L2 界面、签名人、签名服务
+      [0.12, 0.45, 0.72].forEach((f, k) => { const i = k + 4; DRAWA(links[i].p, at(2, f), 0.5); tl.to(links[i].rect, { stroke: "#FC6255", duration: 0.3 }, at(2, f) + 0.4); });
+
+      // L3 最弱的一环：一台设备、一行日志、一个签名人的眼睛
+      tl.to(links.map((l) => l.p), { opacity: 0.15, duration: 0.4 }, at(3, 0));
+      tl.to(links.map((l) => l.rect), { stroke: "#8a8f99", duration: 0.4 }, at(3, 0));
+      IN("#w-rule", at(3, 0.15), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      [[1, 0.55], [2, 0.68], [5, 0.82]].forEach(([i, f]) => {
+        tl.to(links[i].rect, { stroke: "#FC6255", strokeWidth: 16, duration: 0.3 }, at(3, f));
+      });
+      // 签名人这一环断开
+      tl.to(links[5].g, { y: 30, rotation: 12, svgOrigin: "1415 520", duration: 0.5, ease: "power2.in" }, at(3, 0.92));
+
+      // L4 不是数学破解
+      tl.to("#w-rule", { opacity: 0.35, duration: 0.3 }, at(4, 0));
+      IN("#w-math", at(4, 0.05), 0.5);
+      tl.to("#w-mx", { attr: { x2: 670 }, duration: 0.4, ease: "power2.out" }, at(4, 0.25));
+      IN("#w-real", at(4, 0.45), 0.5);
+
+      tl.to("#w-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["weak"] = tl;
+    })();
+  </script>
+</template>

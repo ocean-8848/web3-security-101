@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      /* EP15 账户抽象与新钱包范式 · 3b1b 风格。颜色语义全片固定，见 STORYBOARD.md §2。 */
+      @font-face {
+        font-family: "NotoSC";
+        src: url("assets/fonts/noto-sc.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0f1117; }
+      #root { position: relative; width: 100%; height: 100%; background: #0f1117; font-family: "NotoSC", sans-serif; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="376.73" data-width="1920" data-height="1080">
+      <div id="hook" data-composition-id="hook" data-composition-src="compositions/hook.html" data-start="0.0" data-duration="32.9" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="meaning" data-composition-id="meaning" data-composition-src="compositions/meaning.html" data-start="32.9" data-duration="28.56" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="bank" data-composition-id="bank" data-composition-src="compositions/bank.html" data-start="61.46" data-duration="33.86" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="flow" data-composition-id="flow" data-composition-src="compositions/flow.html" data-start="95.32" data-duration="47.29" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="delegate" data-composition-id="delegate" data-composition-src="compositions/delegate.html" data-start="142.61" data-duration="48.79" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="batch" data-composition-id="batch" data-composition-src="compositions/batch.html" data-start="191.4" data-duration="41.92" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="session" data-composition-id="session" data-composition-src="compositions/session.html" data-start="233.32" data-duration="48.13" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="permit" data-composition-id="permit" data-composition-src="compositions/permit.html" data-start="281.45" data-duration="46.46" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="answer" data-composition-id="answer" data-composition-src="compositions/answer.html" data-start="327.91" data-duration="48.82" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <audio id="narration" class="clip" src="assets/narration.wav" data-start="0" data-duration="376.73" data-track-index="2" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

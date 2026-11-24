@@ -1,0 +1,115 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="map" data-duration="46.38" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="p-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="p-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="p-all">
+        <text id="p-title" class="h" x="960" y="140" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">一笔交易经过哪些环节</text>
+
+        <!-- 箭头 -->
+        <g fill="none" stroke="#8a8f99" stroke-width="3" marker-end="url(#p-ah)">
+          <path id="p-a1" class="dr h" pathLength="1" d="M300 330 L 385 330" />
+          <path id="p-a2" class="dr h" pathLength="1" d="M650 330 L 735 330" />
+          <path id="p-a3" class="dr h" pathLength="1" d="M1000 330 L 1085 330" />
+          <path id="p-a4" class="dr h" pathLength="1" d="M1350 330 L 1485 330" />
+          <path id="p-a5" class="dr h" pathLength="1" d="M1590 385 L 1590 670" />
+          <path id="p-a6" class="dr h" pathLength="1" d="M1510 385 L 1300 672" />
+          <path id="p-a7" class="dr h" pathLength="1" d="M1490 360 C 1250 470, 1000 520, 880 672" />
+          <path id="p-a8" class="dr h" pathLength="1" d="M670 730 L 515 730" />
+        </g>
+        <path id="p-back" class="dr h" pathLength="1" d="M1700 675 C 1800 600, 1800 460, 1700 388" fill="none" stroke="#8a8f99" stroke-width="3" marker-end="url(#p-ah)" />
+        <path id="p-backr" class="dr h" pathLength="1" d="M1700 675 C 1800 600, 1800 460, 1700 388" fill="none" stroke="#FC6255" stroke-width="6" marker-end="url(#p-ahr)" />
+
+        <!-- 节点 -->
+        <g id="p-n1" class="h"><rect x="40" y="275" width="260" height="110" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="170" y="342" font-size="32" fill="#e8e6df" text-anchor="middle">用户 / 攻击者</text></g>
+        <g id="p-n2" class="h"><rect x="390" y="275" width="260" height="110" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="520" y="322" font-size="32" fill="#e8e6df" text-anchor="middle">钱包与前端</text><text x="520" y="362" font-size="28" fill="#8a8f99" text-anchor="middle">签名界面</text></g>
+        <g id="p-n3" class="h"><rect x="740" y="275" width="260" height="110" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="870" y="322" font-size="32" fill="#e8e6df" text-anchor="middle">内存池</text>
+          <g fill="#6b6f7a"><circle cx="810" cy="355" r="9" /><circle cx="840" cy="355" r="9" /><circle cx="870" cy="355" r="9" /><circle cx="900" cy="355" r="9" /><circle cx="930" cy="355" r="9" /></g></g>
+        <g id="p-n4" class="h"><rect x="1090" y="275" width="260" height="110" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="1220" y="322" font-size="32" fill="#e8e6df" text-anchor="middle">区块构建者</text><text x="1220" y="362" font-size="28" fill="#8a8f99" text-anchor="middle">决定顺序</text></g>
+        <g id="p-n5" class="h"><rect x="1490" y="275" width="260" height="110" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="5" /><text x="1620" y="342" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">目标合约</text></g>
+        <g id="p-n6" class="h"><rect x="1465" y="675" width="310" height="110" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="1620" y="722" font-size="32" fill="#e8e6df" text-anchor="middle">外部合约</text><text x="1620" y="762" font-size="28" fill="#8a8f99" text-anchor="middle">代币 · DEX · 预言机</text></g>
+        <g id="p-n7" class="h"><rect x="1100" y="675" width="260" height="110" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="1230" y="722" font-size="32" fill="#e8e6df" text-anchor="middle">代理与实现</text><text x="1230" y="762" font-size="28" fill="#8a8f99" text-anchor="middle">升级权限</text></g>
+        <g id="p-n8" class="h"><rect x="680" y="675" width="260" height="110" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="810" y="742" font-size="32" fill="#e8e6df" text-anchor="middle">跨链桥</text></g>
+        <g id="p-n9" class="h"><rect x="250" y="675" width="260" height="110" rx="16" fill="#121a22" stroke="#58C4DD" stroke-opacity=".6" stroke-width="3" /><text x="380" y="742" font-size="30" fill="#58C4DD" text-anchor="middle">另一条链的合约</text></g>
+
+        <!-- 信任边界（橙） -->
+        <g fill="none" stroke="#FF9F43" stroke-width="4" stroke-dasharray="12 8">
+          <rect class="p-tb h" x="378" y="263" width="284" height="134" rx="22" />
+          <rect class="p-tb h" x="728" y="263" width="284" height="134" rx="22" />
+          <rect class="p-tb h" x="1453" y="663" width="334" height="134" rx="22" />
+          <rect class="p-tb h" x="1088" y="663" width="284" height="134" rx="22" />
+          <rect class="p-tb h" x="668" y="663" width="284" height="134" rx="22" />
+        </g>
+        <text id="p-tbt" class="h" x="960" y="930" font-size="44" fill="#FF9F43" text-anchor="middle" font-weight="700">信任边界：数据和控制权在这里换手</text>
+        <text id="p-ret" class="h" x="1560" y="880" font-size="36" fill="#FC6255" text-anchor="middle" font-weight="700">执行到一半被调回来 → 重入</text>
+
+        <!-- 交易（金色点） -->
+        <circle id="p-tx" class="h" cx="170" cy="250" r="14" fill="#F0B90B" />
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 46.38, "L": [[0.6, 5.47], [5.92, 11.56], [12.01, 17.75], [18.2, 27.99], [28.44, 36.24], [36.69, 45.28]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t) => IN(s, t, 0.5, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const MOVE = (x, t, d = 0.6) => tl.to("#p-tx", { attr: { cx: x }, duration: d, ease: "power2.inOut" }, t);
+
+      // L0
+      IN("#p-title", at(0, 0), 0.5);
+      NODE("#p-n1", at(0, 0.45));
+      IN("#p-tx", at(0, 0.7), 0.3);
+
+      // L1 钱包前端 → 内存池
+      DRAW("#p-a1", at(1, 0.0));
+      NODE("#p-n2", at(1, 0.08));
+      MOVE(520, at(1, 0.15));
+      DRAW("#p-a2", at(1, 0.55));
+      NODE("#p-n3", at(1, 0.6));
+      MOVE(870, at(1, 0.66));
+
+      // L2 构建者 → 目标合约
+      DRAW("#p-a3", at(2, 0.0));
+      NODE("#p-n4", at(2, 0.05));
+      MOVE(1220, at(2, 0.12));
+      DRAW("#p-a4", at(2, 0.55));
+      NODE("#p-n5", at(2, 0.62));
+      MOVE(1620, at(2, 0.68));
+
+      // L3 外部合约、代理、跨链桥、另一条链
+      DRAW("#p-a5", at(3, 0.02)); NODE("#p-n6", at(3, 0.08));
+      DRAW("#p-a6", at(3, 0.42)); NODE("#p-n7", at(3, 0.48));
+      DRAW("#p-a7", at(3, 0.62)); NODE("#p-n8", at(3, 0.7));
+      DRAW("#p-a8", at(3, 0.85)); NODE("#p-n9", at(3, 0.9));
+      OUT("#p-tx", at(3, 0.1), 0.3);
+
+      // L4 五处信任边界
+      gsap.utils.toArray("#root .p-tb").forEach((r, i) => IN(r, at(4, 0.08) + i * 0.3, 0.4, { scale: 1.12, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" }));
+      IN("#p-tbt", at(4, 0.45), 0.5);
+
+      // L5 回调箭头
+      OUT("#p-tbt", at(5, 0), 0.3);
+      DRAW("#p-back", at(5, 0.05), 0.6);
+      DRAW("#p-backr", at(5, 0.2), 0.8);
+      tl.to(["#p-n1", "#p-n2", "#p-n3", "#p-n4", "#p-n7", "#p-n8", "#p-n9", "#p-a1", "#p-a2", "#p-a3", "#p-a4", "#p-a6", "#p-a7", "#p-a8", "#root .p-tb"], { opacity: 0.18, duration: 0.5 }, at(5, 0.2));
+      IN("#p-ret", at(5, 0.6), 0.5);
+
+      tl.to("#p-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["map"] = tl;
+    })();
+  </script>
+</template>

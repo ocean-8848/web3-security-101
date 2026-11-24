@@ -1,0 +1,119 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="cetus" data-duration="66.3" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="m-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker></defs>
+      <g id="m-all">
+        <text id="m-title" class="h" x="960" y="130" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="700">Move：资源安全 ≠ 业务安全</text>
+        <!-- 类型系统保证 -->
+        <g id="m-obj" class="h">
+          <rect x="200" y="240" width="420" height="200" rx="22" fill="#1a1708" stroke="#F0B90B" stroke-width="4" />
+          <text x="410" y="320" font-size="36" fill="#F0B90B" text-anchor="middle" font-weight="700">代币对象</text>
+          <text x="410" y="385" font-size="30" fill="#83C167" text-anchor="middle">不能复制 · 不能凭空丢弃</text>
+        </g>
+        <g font-size="34">
+          <text class="m-no h" x="760" y="290" fill="#FF9F43">✕ 不保证数学正确</text>
+          <text class="m-no h" x="760" y="350" fill="#FF9F43">✕ 不保证权限正确</text>
+          <text class="m-no h" x="760" y="410" fill="#FF9F43">✕ 不保证升级正确</text>
+        </g>
+        <text id="m-trunc" class="h" x="1250" y="350" font-size="36" fill="#FC6255" font-weight="700">位移溢出：截断，不中止</text>
+
+        <!-- 8 位示例 -->
+        <text id="m-ex" class="h" x="960" y="540" font-size="32" fill="#8a8f99" text-anchor="middle">示例：8 位整数 192，左移 2 位</text>
+        <g id="m-bits"></g>
+        <g id="m-calc" class="h" font-size="34" text-anchor="middle">
+          <text x="560" y="830" fill="#e8e6df">应该是 192 × 4 = <tspan fill="#F0B90B" font-weight="800">768</tspan></text>
+          <text x="1360" y="830" fill="#e8e6df">8 位放不下，截断后 = <tspan fill="#FC6255" font-weight="800">0</tspan></text>
+          <text x="960" y="900" fill="#FF9F43">没有报错，程序照常往下走</text>
+        </g>
+
+        <!-- Cetus -->
+        <text id="m-date" class="h" x="160" y="230" font-size="32" fill="#6b6f7a">2025 年 5 月 22 日 · Cetus（Sui）</text>
+        <g font-size="30" text-anchor="middle">
+          <g class="m-f h"><rect x="140" y="290" width="380" height="120" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="330" y="345" fill="#e8e6df">加流动性</text><text class="mono" x="330" y="388" fill="#58C4DD">liquidity &lt;&lt; 64</text></g>
+          <g class="m-f h"><rect x="600" y="290" width="420" height="120" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="810" y="345" fill="#e8e6df">开源数学库</text><text x="810" y="388" fill="#8a8f99">判断会不会溢出</text></g>
+          <g class="m-f h"><rect x="1100" y="290" width="380" height="120" rx="16" fill="#1f1214" stroke="#FC6255" stroke-width="4" /><text x="1290" y="345" fill="#FC6255">比较常量写错</text><text x="1290" y="388" fill="#FC6255">本该拦住的值放行</text></g>
+          <g class="m-f h"><rect x="1560" y="290" width="240" height="120" rx="16" fill="#1f1214" stroke="#FC6255" stroke-width="3" /><text x="1680" y="360" fill="#FC6255">截断</text></g>
+          <path class="m-f h" d="M525 350 H 590 M1025 350 H 1090 M1485 350 H 1550" stroke="#8a8f99" stroke-width="4" />
+        </g>
+        <g id="m-out" font-size="36" text-anchor="middle">
+          <text class="m-o h" x="480" y="560" fill="#F0B90B">存入约 1 个代币</text>
+          <text class="m-o h" x="960" y="560" fill="#8a8f99">→</text>
+          <text class="m-o h" x="1440" y="560" fill="#FC6255">拿到巨量流动性份额</text>
+          <text class="m-o h" x="960" y="680" fill="#FC6255" font-size="52" font-weight="800">提走 ≈ 2.23 亿美元</text>
+          <text class="m-o h" x="960" y="760" fill="#e8e6df" font-size="32">Sui 验证者冻结约 1.62 亿美元（链级冻结有争议）</text>
+        </g>
+
+        <!-- 教训 -->
+        <g font-size="34">
+          <g class="m-l h"><text x="200" y="320" fill="#83C167">✓</text><text x="260" y="320" fill="#e8e6df">审计范围覆盖<tspan fill="#58C4DD">数学依赖库</tspan>；位移与乘法溢出显式检查</text></g>
+          <g class="m-l h"><text x="200" y="440" fill="#83C167">✓</text><text x="260" y="440" fill="#e8e6df">语言的保证依赖<tspan fill="#58C4DD">字节码验证器</tspan>本身没错</text><text x="260" y="490" font-size="28" fill="#6b6f7a">2023 年 Zellic 发现共享验证器漏掉控制流边，已修复，无损失</text></g>
+          <g class="m-l h"><text x="200" y="590" fill="#83C167">✓</text><text x="260" y="590" fill="#e8e6df">协议风险仍来自<tspan fill="#FF9F43">升级权限和部署流程</tspan></text><text x="260" y="640" font-size="28" fill="#6b6f7a">2025 年 Nemo：审计后私自部署未审计代码，升级权限只有单签，约 240–260 万美元</text></g>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 66.3, "L": [[0.6, 7.39], [7.84, 18.93], [19.38, 31.4], [31.85, 42.65], [43.1, 52.97], [53.42, 65.2]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      // 8 个比特：192 = 1100 0000
+      const NS = "http://www.w3.org/2000/svg", bh = document.querySelector("#m-bits"), B = [];
+      const bits = [1, 1, 0, 0, 0, 0, 0, 0];
+      bits.forEach((b, i) => {
+        const x = 600 + i * 90, g = document.createElementNS(NS, "g");
+        g.setAttribute("opacity", "0");
+        g.innerHTML = `<rect x="${x}" y="600" width="80" height="100" rx="10" fill="#161a22" stroke="#58C4DD" stroke-width="3" /><text class="mono" x="${x + 40}" y="668" font-size="44" fill="${b ? "#F0B90B" : "#6b6f7a"}" text-anchor="middle">${b}</text>`;
+        bh.appendChild(g); B.push(g);
+      });
+      const zeros = [0, 1].map((k) => {
+        const t = document.createElementNS(NS, "text");
+        t.setAttribute("class", "mono"); t.setAttribute("x", String(600 + (6 + k) * 90 + 40)); t.setAttribute("y", "668");
+        t.setAttribute("font-size", "44"); t.setAttribute("fill", "#6b6f7a"); t.setAttribute("text-anchor", "middle"); t.setAttribute("opacity", "0");
+        t.textContent = "0"; bh.appendChild(t); return t;
+      });
+
+      IN("#m-title", at(0, 0.0), 0.5);
+      IN("#m-obj", at(0, 0.3), 0.6, { y: 20 }, { y: 0 });
+      // L1 不保证 + 截断
+      gsap.utils.toArray("#root .m-no").forEach((t, i) => IN(t, at(1, 0.05) + i * 0.4, 0.4, { x: -20 }, { x: 0 }));
+      IN("#m-trunc", at(1, 0.6), 0.5);
+      // L2 一步步算：192 << 2
+      IN("#m-ex", at(2, 0.02), 0.4);
+      B.forEach((g, i) => IN(g, at(2, 0.05) + i * 0.05, 0.3));
+      // 每一位的数字左移两格；最左两个 1 掉出框外变红
+      B.forEach((g, i) => {
+        const tx = g.querySelector("text");
+        tl.to(tx, { x: -180, duration: 0.8, ease: "power2.inOut" }, at(2, 0.3));
+        if (i < 2) tl.to(tx, { fill: "#FC6255", opacity: 0, duration: 0.4 }, at(2, 0.3) + 0.6);
+      });
+      // 移完之后：右边补两个 0，八位全是 0
+      zeros.forEach((z) => IN(z, at(2, 0.3) + 0.85, 0.3));
+      tl.set("#m-calc", { opacity: 1 }, at(2, 0.45)); Array.from(document.querySelector("#m-calc").children).forEach((c, k) => IN(c, at(2, [0.45, 0.65, 0.85][k]), 0.5));
+      // L3 Cetus
+      OUT(["#m-obj", "#root .m-no", "#m-trunc", "#m-ex", "#m-bits", "#m-calc"], at(3, 0), 0.35);
+      IN("#m-date", at(3, 0.02), 0.4);
+      gsap.utils.toArray("#root .m-f").forEach((g, i) => IN(g, at(3, [0.1, 0.3, 0.6, 0.85, 0.3][i]), 0.4));
+      // L4 结果
+      gsap.utils.toArray("#root .m-o").forEach((t, i) => IN(t, at(4, [0.02, 0.15, 0.2, 0.45, 0.72][i]), 0.4));
+      // L5 教训
+      OUT(["#m-date", "#root .m-f", "#root .m-o", "#m-title"], at(5, 0), 0.35);
+      gsap.utils.toArray("#root .m-l").forEach((g, i) => IN(g, at(5, [0.05, 0.35, 0.65][i]), 0.5, { x: -20 }, { x: 0 }));
+
+      tl.to("#m-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["cetus"] = tl;
+    })();
+  </script>
+</template>

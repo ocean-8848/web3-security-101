@@ -1,0 +1,113 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="hook" data-duration="29.85" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="h-all">
+        <text id="h-date" class="h" x="160" y="150" font-size="34" fill="#6b6f7a" letter-spacing="2">2025 年 11 月 · Balancer V2</text>
+
+        <!-- 稳定池（资产 = 金） -->
+        <g id="h-pool" class="h">
+          <rect id="h-poolr" x="1260" y="250" width="440" height="520" rx="24" fill="#1a1708" stroke="#F0B90B" stroke-width="4" />
+          <text x="1480" y="225" font-size="38" fill="#F0B90B" text-anchor="middle" font-weight="700">稳定池</text>
+        </g>
+        <rect id="h-lvl" class="h" x="1295" y="320" width="370" height="420" rx="10" fill="#F0B90B" opacity=".85" />
+        <text id="h-amt" class="h" x="1480" y="870" font-size="64" fill="#FC6255" text-anchor="middle" font-weight="800">被盗 ≈ <tspan id="h-num">0</tspan> 万美元</text>
+        <text id="h-src" class="h" x="1480" y="925" font-size="28" fill="#6b6f7a" text-anchor="middle">官方复盘估算 · 事发时估值</text>
+
+        <!-- 单次交换：误差几乎看不见 -->
+        <g id="h-one" class="h">
+          <circle cx="300" cy="380" r="18" fill="none" stroke="#e8e6df" stroke-width="3" />
+          <text x="340" y="391" font-size="32" fill="#e8e6df">单次交换</text>
+          <circle id="h-err" cx="560" cy="380" r="3" fill="#FC6255" />
+          <text x="585" y="391" font-size="30" fill="#8a8f99">误差：小到几乎可以忽略</text>
+        </g>
+
+        <!-- 一笔批量交换：很多小交换，误差累积 -->
+        <g id="h-batch" class="h">
+          <path d="M180 500 v -20 h 860 v 20" fill="none" stroke="#8a8f99" stroke-width="3" />
+          <text x="610" y="460" font-size="30" fill="#8a8f99" text-anchor="middle">一笔批量交换</text>
+        </g>
+        <g id="h-swaps" fill="none" stroke="#e8e6df" stroke-width="2.5"></g>
+        <g id="h-bits" fill="#FC6255"></g>
+        <rect id="h-acc" x="180" y="700" width="0" height="44" rx="6" fill="#FC6255" />
+        <text id="h-acct" class="h" x="180" y="800" font-size="32" fill="#FC6255">误差累积起来</text>
+      </g>
+
+      <g id="h-q" class="h">
+        <text x="960" y="560" font-size="80" fill="#e8e6df" text-anchor="middle" font-weight="800">差<tspan fill="#FF9F43">一个 wei</tspan>，为什么能丢一个<tspan fill="#F0B90B">金库</tspan>？</text>
+      </g>
+      <g id="h-pin" class="h">
+        <rect x="70" y="60" width="760" height="84" rx="14" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="450" y="115" font-size="36" fill="#e8e6df" text-anchor="middle">差<tspan fill="#FF9F43">一个 wei</tspan>，为什么能丢一个<tspan fill="#F0B90B">金库</tspan>？</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 29.85, "L": [[0.6, 6.02], [6.47, 11.83], [12.28, 18.28], [18.73, 24.1], [24.55, 28.75]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      // 批量交换里的 40 次小交换（确定性位置）
+      const NS = "http://www.w3.org/2000/svg";
+      const sw = document.querySelector("#h-swaps"), bits = document.querySelector("#h-bits");
+      const S = [], B = [];
+      for (let i = 0; i < 40; i++) {
+        const x = 195 + i * 21.5;
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", x); c.setAttribute("cy", "560"); c.setAttribute("r", "8"); c.setAttribute("opacity", "0");
+        sw.appendChild(c); S.push(c);
+        const b = document.createElementNS(NS, "rect");
+        b.setAttribute("x", x - 3); b.setAttribute("y", "580"); b.setAttribute("width", "6"); b.setAttribute("height", "6"); b.setAttribute("opacity", "0");
+        bits.appendChild(b); B.push({ b, x });
+      }
+
+      // L0 稳定池
+      IN("#h-date", at(0, 0), 0.5);
+      IN("#h-pool", at(0, 0.2), 0.8, { y: 20 }, { y: 0 });
+      tl.fromTo("#h-lvl", { opacity: 0, scaleY: 0, svgOrigin: "1480 740" }, { opacity: 0.85, scaleY: 1, duration: 0.9, ease: "expo.out" }, at(0, 0.35));
+
+      // L1 金额
+      tl.to("#h-poolr", { stroke: "#FC6255", duration: 0.3, yoyo: true, repeat: 1 }, at(1, 0.1));
+      IN("#h-amt", at(1, 0.15), 0.5);
+      const n = { v: 0 }, num = document.querySelector("#h-num");
+      tl.fromTo(n, { v: 0 }, { v: 9480, duration: 1.8, ease: "power2.out", onUpdate: () => { num.textContent = Math.round(n.v).toLocaleString("en-US"); } }, at(1, 0.15));
+      IN("#h-src", at(1, 0.5), 0.4);
+
+      // L2 单次交换
+      IN("#h-one", at(2, 0.25), 0.6);
+      tl.fromTo("#h-err", { attr: { r: 3 } }, { attr: { r: 7 }, duration: 0.3, yoyo: true, repeat: 1 }, at(2, 0.6));
+
+      // L3 批量交换：误差一点点落进累积条，池子水位下降
+      IN("#h-batch", at(3, 0.0), 0.4);
+      const t0 = at(3, 0.08), step = (at(3, 0.8) - t0) / 40;
+      S.forEach((c, i) => tl.fromTo(c, { opacity: 0 }, { opacity: 1, duration: 0.15 }, t0 + i * step));
+      B.forEach((o, i) => {
+        tl.fromTo(o.b, { opacity: 0, y: 0 }, { opacity: 1, duration: 0.1 }, t0 + i * step + 0.05);
+        tl.to(o.b, { y: 125, x: 180 + i * 18 - o.x, opacity: 0, duration: 0.45, ease: "power2.in" }, t0 + i * step + 0.12);
+      });
+      tl.fromTo("#h-acc", { attr: { width: 0 } }, { attr: { width: 720 }, duration: 40 * step + 0.5, ease: "none" }, t0 + 0.5);
+      tl.to("#h-lvl", { scaleY: 0.35, svgOrigin: "1480 740", duration: 40 * step + 0.5, ease: "none" }, t0 + 0.5);
+      IN("#h-acct", at(3, 0.7), 0.4);
+
+      // L4 问题
+      tl.to("#h-all", { opacity: 0.15, duration: 0.5 }, at(4, 0));
+      IN("#h-q", at(4, 0.08), 0.6, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      // 钉住问题：缩到左上角，结尾回答
+      tl.to("#h-all", { opacity: 0, filter: "blur(6px)", duration: 0.4 }, at(4, 1) + 0.05);
+      OUT("#h-q", at(4, 1) + 0.05, 0.4);
+      IN("#h-pin", at(4, 1) + 0.15, 0.5, { scale: 1.5, svgOrigin: "450 102" }, { scale: 1 });
+      tl.to("#h-pin", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>

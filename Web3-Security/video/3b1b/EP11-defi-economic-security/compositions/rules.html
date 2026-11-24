@@ -1,0 +1,124 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="rules" data-duration="45.07" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="u-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="u-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="u-all">
+        <g id="u-t0" class="h">
+          <text x="960" y="500" font-size="80" fill="#e8e6df" text-anchor="middle" font-weight="800">经济攻击</text>
+          <text x="960" y="590" font-size="40" fill="#8a8f99" text-anchor="middle">不依赖代码 bug</text>
+        </g>
+
+        <!-- 协议规则 + 顺序 / 规模 / 时间 -->
+        <g id="u-rule" class="h">
+          <rect x="720" y="380" width="480" height="260" rx="24" fill="#121a22" stroke="#58C4DD" stroke-width="5" />
+          <text x="960" y="490" font-size="44" fill="#58C4DD" text-anchor="middle" font-weight="700">协议规则</text>
+          <text x="960" y="560" font-size="32" fill="#83C167" text-anchor="middle">每一步都合规 ✓</text>
+        </g>
+        <path id="u-path" class="dr h" pathLength="1" d="M300 800 C 500 300, 700 260, 760 360 S 1150 300, 1220 420 S 1300 760, 1600 820" stroke="#FC6255" stroke-width="5" fill="none" marker-end="url(#u-ahr)" />
+        <circle id="u-atk" class="h" cx="300" cy="800" r="24" fill="#FC6255" />
+        <text id="u-atkt" class="h" x="300" y="870" font-size="30" fill="#FC6255" text-anchor="middle">攻击者</text>
+        <text class="u-d h" x="560" y="290" font-size="40" fill="#FF9F43" text-anchor="middle" font-weight="700">顺序</text>
+        <text class="u-d h" x="1360" y="290" font-size="40" fill="#FF9F43" text-anchor="middle" font-weight="700">规模</text>
+        <text class="u-d h" x="1520" y="660" font-size="40" fill="#FF9F43" text-anchor="middle" font-weight="700">时间</text>
+        <text id="u-unseen" class="h" x="960" y="960" font-size="36" fill="#e8e6df" text-anchor="middle">组合了设计者<tspan fill="#FF9F43">没想到</tspan>的顺序、规模或时间</text>
+
+        <!-- 超市比方 -->
+        <g id="u-tag" class="h">
+          <path d="M260 340 H 640 L 700 420 L 640 500 H 260 Z" fill="#1a1708" stroke="#F0B90B" stroke-width="4" />
+          <text x="300" y="400" font-size="30" fill="#8a8f99">当前标价（示例）</text>
+          <text id="u-p100" x="300" y="470" font-size="52" fill="#F0B90B" font-weight="800">100</text>
+        </g>
+        <text id="u-p200" class="h" x="300" y="470" font-size="52" fill="#FF9F43" font-weight="800">200 ↑</text>
+        <g id="u-card" class="h">
+          <rect x="1000" y="320" width="700" height="200" rx="20" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="1350" y="395" font-size="36" fill="#e8e6df" text-anchor="middle">超市规则：7 天无理由退货</text>
+          <text x="1350" y="460" font-size="36" fill="#e8e6df" text-anchor="middle">按<tspan fill="#F0B90B">当前标价</tspan>退款</text>
+        </g>
+        <text id="u-nobug" class="h" x="1350" y="580" font-size="32" fill="#83C167" text-anchor="middle">规则本身没有 bug ✓</text>
+        <g id="u-loss" class="h">
+          <text x="480" y="600" font-size="34" fill="#e8e6df" text-anchor="middle">买入付 100，退货拿回 200</text>
+          <text x="480" y="670" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="800">超市亏 100</text>
+        </g>
+        <g id="u-day" class="h">
+          <path d="M520 760 V 740 H 1400 V 760" stroke="#FF9F43" stroke-width="4" fill="none" />
+          <text x="960" y="725" font-size="30" fill="#FF9F43" text-anchor="middle">同一天做完</text>
+          <rect x="520" y="790" width="220" height="80" rx="12" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="630" y="842" font-size="32" fill="#e8e6df" text-anchor="middle">买入</text>
+          <rect x="850" y="790" width="220" height="80" rx="12" fill="#161a22" stroke="#FF9F43" stroke-width="3" /><text x="960" y="842" font-size="32" fill="#FF9F43" text-anchor="middle">改价</text>
+          <rect x="1180" y="790" width="220" height="80" rx="12" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="1290" y="842" font-size="32" fill="#e8e6df" text-anchor="middle">退货</text>
+          <path d="M745 830 H 840 M1075 830 H 1170" stroke="#8a8f99" stroke-width="3" />
+        </g>
+        <text id="u-flash" class="h" x="960" y="950" font-size="38" fill="#F0B90B" text-anchor="middle" font-weight="700">链上：一笔交易里做完 = 闪电贷</text>
+
+        <!-- 比方不成立 -->
+        <g id="u-shop" class="h">
+          <rect x="200" y="300" width="660" height="300" rx="22" fill="#14171e" stroke="#8a8f99" stroke-width="3" />
+          <text x="530" y="380" font-size="40" fill="#8a8f99" text-anchor="middle" font-weight="700">超市</text>
+          <text x="530" y="460" font-size="32" fill="#e8e6df" text-anchor="middle">可以随时改规则</text>
+          <text x="530" y="520" font-size="32" fill="#e8e6df" text-anchor="middle">可以拒绝可疑退货</text>
+        </g>
+        <g id="u-con" class="h">
+          <rect x="1060" y="300" width="660" height="300" rx="22" fill="#121a22" stroke="#58C4DD" stroke-width="4" />
+          <text x="1390" y="380" font-size="40" fill="#58C4DD" text-anchor="middle" font-weight="700">合约</text>
+          <text x="1390" y="460" font-size="32" fill="#e8e6df" text-anchor="middle">规则部署后照章执行</text>
+          <text x="1390" y="520" font-size="32" fill="#e8e6df" text-anchor="middle">只能靠升级或治理来改</text>
+        </g>
+        <g id="u-gov" class="h">
+          <rect x="1210" y="720" width="360" height="110" rx="16" fill="#121a22" stroke="#FC6255" stroke-width="4" />
+          <text x="1390" y="788" font-size="34" fill="#FC6255" text-anchor="middle" font-weight="700">治理也可被攻击</text>
+          <line x1="1390" y1="605" x2="1390" y2="715" stroke="#8a8f99" stroke-width="3" />
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 45.07, "L": [[0.6, 4.97], [5.42, 12.38], [12.83, 21.13], [21.58, 32.29], [32.74, 43.97]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0
+      IN("#u-t0", at(0, 0.05), 0.7, { filter: "blur(8px)" }, { filter: "blur(0px)" });
+      // L1 规则内的路径
+      OUT("#u-t0", at(1, 0), 0.35);
+      IN("#u-rule", at(1, 0.05), 0.6, { scale: 0.9, svgOrigin: "960 510" }, { scale: 1 });
+      IN(["#u-atk", "#u-atkt"], at(1, 0.15), 0.4);
+      DRAW("#u-path", at(1, 0.25), 1.6);
+      gsap.utils.toArray("#root .u-d").forEach((t, i) => IN(t, at(1, 0.55) + i * 0.3, 0.4, { scale: 1.3, transformOrigin: "50% 50%" }, { scale: 1 }));
+      IN("#u-unseen", at(1, 0.7), 0.5);
+      // L2 超市
+      OUT(["#u-rule", "#u-path", "#u-atk", "#u-atkt", "#root .u-d", "#u-unseen"], at(2, 0), 0.35);
+      IN("#u-card", at(2, 0.1), 0.6, { y: 20 }, { y: 0 });
+      IN("#u-tag", at(2, 0.35), 0.5, { x: -30 }, { x: 0 });
+      IN("#u-nobug", at(2, 0.75), 0.4);
+      // L3 改价 + 同一天
+      OUT("#u-p100", at(3, 0.08), 0.2);
+      IN("#u-p200", at(3, 0.1), 0.3, { y: 10 }, { y: 0 });
+      IN("#u-loss", at(3, 0.2), 0.5);
+      IN("#u-day", at(3, 0.5), 0.6);
+      IN("#u-flash", at(3, 0.78), 0.5);
+      // L4 比方不成立
+      OUT(["#u-tag", "#u-p200", "#u-card", "#u-nobug", "#u-loss", "#u-day", "#u-flash"], at(4, 0), 0.35);
+      IN("#u-shop", at(4, 0.08), 0.5, { y: 20 }, { y: 0 });
+      IN("#u-con", at(4, 0.35), 0.5, { y: 20 }, { y: 0 });
+      IN("#u-gov", at(4, 0.75), 0.5, { y: -20 }, { y: 0 });
+
+      tl.to("#u-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["rules"] = tl;
+    })();
+  </script>
+</template>

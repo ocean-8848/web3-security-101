@@ -1,0 +1,100 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="pq" data-duration="37.8" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="q-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="q-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="q-all">
+        <text id="q-title" class="h" x="120" y="130" font-size="48" fill="#e8e6df" font-weight="800">后量子 <tspan fill="#8a8f99" font-weight="400">· 延伸</tspan></text>
+
+        <!-- L0 公钥 → 量子计算机 → 私钥 -->
+        <g id="q-pub" class="h"><rect x="180" y="250" width="400" height="130" rx="18" fill="#161a22" stroke="#8a8f99" stroke-width="4" /><text x="380" y="310" font-size="36" fill="#e8e6df" text-anchor="middle" font-weight="700">公钥</text><text x="380" y="355" font-size="30" fill="#8a8f99" text-anchor="middle">链上公开</text></g>
+        <path id="q-e1" class="dr h" pathLength="1" d="M585 315 L 754 315" stroke="#8a8f99" stroke-width="4" fill="none" marker-end="url(#q-ah)" />
+        <g id="q-qc" class="h"><rect x="760" y="250" width="400" height="130" rx="18" fill="#2a1416" stroke="#FC6255" stroke-width="4" /><text x="960" y="310" font-size="36" fill="#FC6255" text-anchor="middle" font-weight="700">量子计算机</text><text x="960" y="355" font-size="30" fill="#8a8f99" text-anchor="middle">足够大时</text></g>
+        <path id="q-e2" class="dr h" pathLength="1" d="M1165 315 L 1334 315" stroke="#FC6255" stroke-width="4" fill="none" marker-end="url(#q-ahr)" />
+        <g id="q-key" class="h"><rect x="1340" y="250" width="400" height="130" rx="18" fill="#1b1626" stroke="#B48EF0" stroke-width="4" /><text x="1540" y="310" font-size="36" fill="#B48EF0" text-anchor="middle" font-weight="700">私钥</text><text x="1540" y="355" font-size="30" fill="#FC6255" text-anchor="middle" font-weight="700">被算出</text></g>
+        <text id="q-alg" class="h" x="960" y="215" font-size="30" fill="#8a8f99" text-anchor="middle">受影响：ECDSA、EdDSA 签名　·　哈希函数受影响较小</text>
+
+        <!-- L1 签没签过名 -->
+        <g id="q-a1" class="h"><rect x="180" y="520" width="700" height="150" rx="18" fill="#121a12" stroke="#83C167" stroke-width="4" /><text x="530" y="585" font-size="36" fill="#83C167" text-anchor="middle" font-weight="700">从没签过名的地址</text><text x="530" y="635" font-size="30" fill="#8a8f99" text-anchor="middle">链上只有地址，公钥没有公开</text></g>
+        <g id="q-a2" class="h"><rect x="1040" y="520" width="700" height="150" rx="18" fill="#1f170c" stroke="#FF9F43" stroke-width="4" /><text x="1390" y="585" font-size="36" fill="#FF9F43" text-anchor="middle" font-weight="700">签过名的地址</text><text x="1390" y="635" font-size="30" fill="#8a8f99" text-anchor="middle">第一次签名后，公钥已公开</text></g>
+        <path id="q-e3" class="dr h" pathLength="1" d="M1390 515 C 1390 470, 640 470, 470 388" stroke="#FF9F43" stroke-width="4" fill="none" stroke-dasharray="1" marker-end="url(#q-ah)" />
+        <text id="q-safer" class="h" x="530" y="715" font-size="32" fill="#83C167" text-anchor="middle" font-weight="700">更安全</text>
+
+        <!-- L2 迁移以年计 -->
+        <g id="q-tl" class="h">
+          <line x1="200" y1="880" x2="1720" y2="880" stroke="#2a2f3a" stroke-width="3" />
+          <circle cx="300" cy="880" r="14" fill="#83C167" />
+          <text x="300" y="840" font-size="30" fill="#83C167" text-anchor="middle" font-weight="700">2024 年 8 月</text>
+          <text x="300" y="935" font-size="30" fill="#e8e6df" text-anchor="middle">NIST 发布后量子标准</text>
+        </g>
+        <g id="q-tl2" class="h">
+          <circle cx="960" cy="880" r="14" fill="#FF9F43" />
+          <text x="960" y="840" font-size="30" fill="#FF9F43" text-anchor="middle" font-weight="700">比特币</text>
+          <text x="960" y="935" font-size="30" fill="#e8e6df" text-anchor="middle">BIP-360 仍是草案</text>
+        </g>
+        <g id="q-tl3" class="h">
+          <circle cx="1600" cy="880" r="14" fill="#FF9F43" />
+          <text x="1600" y="840" font-size="30" fill="#FF9F43" text-anchor="middle" font-weight="700">以太坊</text>
+          <text x="1600" y="935" font-size="30" fill="#e8e6df" text-anchor="middle">目标约 2029 年（规划）</text>
+        </g>
+        <text id="q-years" class="h" x="960" y="1010" font-size="34" fill="#FF9F43" text-anchor="middle" font-weight="700">整条链一起升级签名方案，周期以年计</text>
+      </g>
+
+      <!-- L3 现在能做的 -->
+      <g id="q-now">
+        <text id="q-nowt" class="h" x="960" y="330" font-size="52" fill="#e8e6df" text-anchor="middle" font-weight="800">现在能做的</text>
+        <g id="q-d1" class="h"><rect x="460" y="420" width="1000" height="110" rx="55" fill="#121a12" stroke="#83C167" stroke-width="4" /><text x="960" y="488" font-size="38" fill="#83C167" text-anchor="middle" font-weight="700">盘点资产</text></g>
+        <g id="q-d2" class="h"><rect x="460" y="570" width="1000" height="110" rx="55" fill="#121a12" stroke="#83C167" stroke-width="4" /><text x="960" y="638" font-size="38" fill="#83C167" text-anchor="middle" font-weight="700">标出公钥已暴露的地址</text></g>
+        <g id="q-d3" class="h"><rect x="460" y="720" width="1000" height="110" rx="55" fill="#121a12" stroke="#83C167" stroke-width="4" /><text x="960" y="788" font-size="38" fill="#83C167" text-anchor="middle" font-weight="700">不重复使用地址</text></g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 37.8, "L": [[0.6, 9.29], [9.74, 17.11], [17.56, 28.93], [29.38, 36.7]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const DRAWA = (s, t, d = 0.5) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // L0 量子计算机：公钥 → 私钥
+      IN("#q-title", at(0, 0.0), 0.5);
+      IN("#q-qc", at(0, 0.2), 0.6, { y: 16 }, { y: 0 });
+      IN("#q-pub", at(0, 0.45), 0.5);
+      DRAWA("#q-e1", at(0, 0.5));
+      DRAWA("#q-e2", at(0, 0.6));
+      IN("#q-key", at(0, 0.65), 0.5, { x: -30 }, { x: 0 });
+      IN("#q-alg", at(0, 0.8), 0.5);
+      // L1 签没签过名
+      IN("#q-a2", at(1, 0.0), 0.5, { y: 20 }, { y: 0 });
+      DRAWA("#q-e3", at(1, 0.15), 0.7);
+      IN("#q-a1", at(1, 0.45), 0.5, { y: 20 }, { y: 0 });
+      IN("#q-safer", at(1, 0.7), 0.4);
+      // L2 迁移以年计
+      IN("#q-years", at(2, 0.05), 0.5);
+      IN("#q-tl", at(2, 0.4), 0.5);
+      IN("#q-tl2", at(2, 0.7), 0.5);
+      IN("#q-tl3", at(2, 0.8), 0.5);
+      // L3 现在能做的
+      tl.to("#q-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, at(3, 0.0));
+      IN("#q-nowt", at(3, 0.05), 0.5);
+      IN("#q-d1", at(3, 0.15), 0.4, { y: 20 }, { y: 0 });
+      IN("#q-d2", at(3, 0.4), 0.4, { y: 20 }, { y: 0 });
+      IN("#q-d3", at(3, 0.75), 0.4, { y: 20 }, { y: 0 });
+
+      tl.to("#q-now", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["pq"] = tl;
+    })();
+  </script>
+</template>

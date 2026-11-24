@@ -1,0 +1,76 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="44.18" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="r-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+        <marker id="r-ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#83C167" /></marker>
+      </defs>
+      <g id="r-all">
+        <g id="r-pin" class="h">
+          <rect x="610" y="70" width="700" height="110" rx="18" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="960" y="142" font-size="46" fill="#e8e6df" text-anchor="middle" font-weight="700">你读到的是<tspan fill="#FF9F43">谁的链</tspan>？</text>
+        </g>
+        <g id="r-a">
+          <g id="r-node" class="h"><rect x="760" y="300" width="400" height="140" rx="18" fill="#2a1416" stroke="#FC6255" stroke-width="4" /><text x="960" y="365" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">被替换的节点</text><text x="960" y="410" font-size="28" fill="#8a8f99" text-anchor="middle">按来源 IP 区别对待</text></g>
+          <path id="r-l1" class="dr h" pathLength="1" d="M1165 400 C 1300 420, 1360 470, 1400 520" fill="none" stroke="#FC6255" stroke-width="4" marker-end="url(#r-ahr)" />
+          <path id="r-l2" class="dr h" pathLength="1" d="M755 400 C 620 420, 560 470, 520 520" fill="none" stroke="#83C167" stroke-width="4" marker-end="url(#r-ahg)" />
+          <g id="r-ver" class="h"><rect x="1240" y="530" width="420" height="120" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><text x="1450" y="583" font-size="30" fill="#e8e6df" text-anchor="middle">验证者收到</text><text x="1450" y="625" font-size="30" fill="#FC6255" text-anchor="middle">伪造的数据</text></g>
+          <g id="r-mon" class="h"><rect x="260" y="530" width="420" height="120" rx="16" fill="#12200f" stroke="#83C167" stroke-width="3" /><text x="470" y="583" font-size="30" fill="#e8e6df" text-anchor="middle">监控收到</text><text x="470" y="625" font-size="30" fill="#83C167" text-anchor="middle">真实的数据</text></g>
+          <g id="r-cmp" class="h">
+            <rect x="1240" y="720" width="200" height="90" rx="14" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><text x="1340" y="775" font-size="28" fill="#e8e6df" text-anchor="middle">运营方 X</text>
+            <rect x="1460" y="720" width="200" height="90" rx="14" fill="#1a1524" stroke="#B48EF0" stroke-width="3" /><text x="1560" y="775" font-size="28" fill="#e8e6df" text-anchor="middle">运营方 Y</text>
+            <text x="1450" y="870" font-size="32" fill="#FF9F43" text-anchor="middle" font-weight="700">比对：不一致 → 暂停</text>
+          </g>
+        </g>
+        <g id="r-rules" font-size="34"></g>
+        <text id="r-next" class="h" x="960" y="980" font-size="36" fill="#6b6f7a" text-anchor="middle">下一集 · 18 钱包与密钥管理</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 44.18, "L": [[0.6, 5.18], [5.63, 14.35], [14.8, 20.92], [21.37, 36.13], [36.58, 43.08]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      // 线条画出；带箭头的路径同时 class="h"，opacity 0→1，箭头头部随线出现
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NODE = (s, t, d = 0.5) => IN(s, t, d, { scale: 0.85, transformOrigin: "50% 50%" }, { scale: 1, ease: "expo.out" });
+      const POP = (s, t, d = 0.4) => IN(s, t, d, { scale: 1.6, transformOrigin: "50% 50%" }, { scale: 1, ease: "back.out(2)" });
+      const NS = "http://www.w3.org/2000/svg";
+      const RULES = [["数据源按运营方计数", "#B48EF0"], ["超时不降级", "#83C167"], ["结果冲突就暂停", "#FF9F43"], ["同一把验证者密钥，任何时刻只在一处签名", "#B48EF0"], ["relay 白名单写进策略，定期复核", "#58C4DD"]];
+      const rh = document.querySelector("#r-rules"), RR = [];
+      RULES.forEach(([t, c], i) => {
+        const y = 290 + i * 110, g = document.createElementNS(NS, "g"); g.setAttribute("opacity", 0);
+        g.innerHTML = `<rect x="360" y="${y - 55}" width="16" height="70" rx="4" fill="${c}" /><text x="410" y="${y}" fill="#e8e6df">${t}</text>`;
+        rh.appendChild(g); RR.push(g);
+      });
+      // L0 问题回来
+      IN("#r-pin", at(0, 0.05), 0.8, { scale: 0.5, x: -600, y: -5, svgOrigin: "960 125" }, { scale: 1, x: 0, y: 0, ease: "expo.out" });
+      // L1 节点区别对待
+      NODE("#r-node", at(1, 0.0));
+      DRAW("#r-l1", at(1, 0.25), 0.5); IN("#r-ver", at(1, 0.3), 0.4);
+      DRAW("#r-l2", at(1, 0.55), 0.5); IN("#r-mon", at(1, 0.6), 0.4);
+      // L2 比对
+      IN("#r-cmp", at(2, 0.15), 0.5, { y: 20 }, { y: 0 });
+      // L3 规则
+      OUT("#r-a", at(3, 0.0), 0.35);
+      RR.forEach((g, i) => IN(g, at(3, 0.05 + i * 0.17), 0.4, { x: -20 }, { x: 0 }));
+      // L4 下一集
+      tl.to(["#r-rules", "#r-pin"], { opacity: 0.25, duration: 0.5 }, at(4, 0.0));
+      IN("#r-next", at(4, 0.15), 0.5);
+      tl.to("#r-all", { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

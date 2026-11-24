@@ -1,0 +1,88 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="cashio" data-duration="37.15" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="c-all">
+        <text id="c-title" class="h" x="960" y="160" font-size="52" fill="#e8e6df" text-anchor="middle" font-weight="800">账户之间互相一致，还不够</text>
+        <text id="c-date" class="h" x="160" y="280" font-size="32" fill="#6b6f7a">2022 年 3 月 · Cashio（Solana）</text>
+
+        <!-- 可信根的位置 -->
+        <g id="c-root0" class="h">
+          <rect x="140" y="420" width="240" height="140" rx="18" fill="none" stroke="#6b6f7a" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="260" y="500" font-size="30" fill="#6b6f7a" text-anchor="middle">可信根？</text>
+        </g>
+        <g id="c-gap" class="h"><path d="M390 490 L 470 490" stroke="#FF9F43" stroke-width="4" stroke-dasharray="6 8" /><text x="430" y="460" font-size="34" fill="#FF9F43" text-anchor="middle" font-weight="800">?</text></g>
+        <g id="c-chain"></g>
+        <g id="c-mint" class="h">
+          <text x="1060" y="720" font-size="48" fill="#FC6255" text-anchor="middle" font-weight="800">铸出约 20 亿枚 CASH</text>
+          <text x="1060" y="790" font-size="34" fill="#e8e6df" text-anchor="middle">抵押的是没有价值的代币 · 损失约 4,800–5,280 万美元</text>
+          <text x="1060" y="840" font-size="28" fill="#6b6f7a" text-anchor="middle">rekt.news 估约 4,800 万，CertiK 估约 5,280 万</text>
+        </g>
+        <text id="c-meta" class="h" x="1060" y="720" font-size="38" fill="#e8e6df" text-anchor="middle">一串证件互相作证，没有一本来自<tspan fill="#FF9F43">签发机关</tspan></text>
+
+        <g id="c-root1" class="h">
+          <rect x="140" y="420" width="240" height="140" rx="18" fill="#132016" stroke="#83C167" stroke-width="4" />
+          <text x="260" y="482" font-size="28" fill="#83C167" text-anchor="middle">硬编码地址</text>
+          <text x="260" y="522" font-size="28" fill="#83C167" text-anchor="middle">或本程序 PDA</text>
+          <path d="M385 490 L 475 490" stroke="#83C167" stroke-width="5" />
+        </g>
+        <text id="c-rule" class="h" x="1060" y="760" font-size="40" fill="#83C167" text-anchor="middle" font-weight="700">账户校验链，必须终止于可信根</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 37.15, "L": [[0.6, 3.94], [4.39, 12.95], [13.4, 22.4], [22.85, 28.4], [28.85, 36.05]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      // 一条互相一致的账户链（4 个账户，相邻之间 ✓）
+      const NS = "http://www.w3.org/2000/svg", ch = document.querySelector("#c-chain"), A = [], K = [];
+      const names = ["抵押代币", "账户 A", "账户 B", "铸币检查"];
+      names.forEach((n, i) => {
+        const x = 480 + i * 360, g = document.createElementNS(NS, "g");
+        g.setAttribute("opacity", "0");
+        g.innerHTML = `<rect x="${x}" y="420" width="260" height="140" rx="18" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><text x="${x + 130}" y="502" font-size="32" fill="#e8e6df" text-anchor="middle">${n}</text>`;
+        ch.appendChild(g); A.push(g);
+        if (i < 3) {
+          const k = document.createElementNS(NS, "g");
+          k.setAttribute("opacity", "0");
+          k.innerHTML = `<path d="M${x + 265} 490 L ${x + 355} 490" stroke="#83C167" stroke-width="4" /><text x="${x + 310}" y="465" font-size="28" fill="#83C167" text-anchor="middle">✓</text>`;
+          ch.appendChild(k); K.push(k);
+        }
+      });
+
+      IN("#c-title", at(0, 0.05), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      // L1 互相对得上，但没锚定可信根
+      tl.to("#c-title", { opacity: 0.4, duration: 0.3 }, at(1, 0));
+      IN("#c-date", at(1, 0.0), 0.4);
+      A.forEach((g, i) => { IN(g, at(1, 0.08) + i * 0.3, 0.4, { y: 20 }, { y: 0 }); if (i < 3) IN(K[i], at(1, 0.08) + i * 0.3 + 0.2, 0.3); });
+      IN("#c-root0", at(1, 0.7), 0.4);
+      IN("#c-gap", at(1, 0.78), 0.4);
+      // L2 整条链是伪造的
+      A.forEach((g, i) => tl.to(g.querySelector("rect"), { stroke: "#FC6255", strokeOpacity: 1, fill: "#1f1214", duration: 0.25 }, at(2, 0.05) + i * 0.12));
+      IN("#c-mint", at(2, 0.35), 0.6);
+      // L3 证件比方
+      OUT("#c-mint", at(3, 0), 0.3);
+      IN("#c-meta", at(3, 0.08), 0.5);
+      // L4 锚定可信根
+      OUT(["#c-meta", "#c-root0", "#c-gap"], at(4, 0), 0.3);
+      A.forEach((g) => tl.to(g.querySelector("rect"), { stroke: "#83C167", fill: "#132016", duration: 0.3 }, at(4, 0.3)));
+      IN("#c-root1", at(4, 0.1), 0.5);
+      IN("#c-rule", at(4, 0.4), 0.5);
+
+      tl.to("#c-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["cashio"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,113 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="hook" data-duration="27.72" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="h-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="h-all">
+        <text id="h-date" class="h" x="160" y="170" font-size="34" fill="#6b6f7a" letter-spacing="2">2026 年 10 月 29 日 · Binance</text>
+
+        <!-- 热钱包（资产 = 金）：四条链各一摞金币 -->
+        <g id="h-wallet" class="h">
+          <rect x="1260" y="300" width="500" height="420" rx="22" fill="#1a1708" stroke="#F0B90B" stroke-width="4" />
+          <text x="1510" y="370" font-size="38" fill="#F0B90B" text-anchor="middle" font-weight="700">热钱包 · 多条链</text>
+          <g stroke="#F0B90B" stroke-opacity=".3" stroke-width="2">
+            <line x1="1385" y1="410" x2="1385" y2="690" /><line x1="1510" y1="410" x2="1510" y2="690" /><line x1="1635" y1="410" x2="1635" y2="690" />
+          </g>
+          <g id="h-coins" fill="#F0B90B"></g>
+        </g>
+        <g id="h-amount" class="h">
+          <text x="1510" y="830" font-size="80" fill="#F0B90B" text-anchor="middle" font-weight="800">≈ <tspan id="h-num">0</tspan> 亿美元</text>
+          <text x="1510" y="885" font-size="30" fill="#6b6f7a" text-anchor="middle">项目方口径 · 事发时估值</text>
+        </g>
+
+        <!-- 私钥：仍在保险柜里（代码之外 = 紫） -->
+        <g id="h-safe" class="h">
+          <rect x="160" y="340" width="380" height="340" rx="22" fill="#18141f" stroke="#B48EF0" stroke-width="4" />
+          <circle cx="300" cy="490" r="34" fill="none" stroke="#B48EF0" stroke-width="7" />
+          <path d="M334 490 H 440 M 410 490 V 520 M 435 490 V 512" stroke="#B48EF0" stroke-width="7" fill="none" stroke-linecap="round" />
+          <text x="350" y="610" font-size="34" fill="#B48EF0" text-anchor="middle" font-weight="700">私钥</text>
+        </g>
+        <text id="h-keyok" class="h" x="350" y="740" font-size="30" fill="#83C167" text-anchor="middle">✓ 未发现泄露证据</text>
+
+        <!-- 内部签名服务 -->
+        <g id="h-svc" class="h">
+          <rect x="740" y="410" width="360" height="200" rx="18" fill="#161a22" stroke="#B48EF0" stroke-opacity=".8" stroke-width="3" />
+          <text x="920" y="500" font-size="34" fill="#e8e6df" text-anchor="middle" font-weight="700">内部签名服务</text>
+          <text x="920" y="550" font-size="28" fill="#8a8f99" text-anchor="middle">代为签名</text>
+        </g>
+        <path id="h-k2s" class="dr" pathLength="1" d="M545 510 L 735 510" stroke="#B48EF0" stroke-opacity=".5" stroke-width="3" stroke-dasharray="1" fill="none" />
+        <circle id="h-atk" class="h" cx="920" cy="900" r="26" fill="#FC6255" />
+        <text id="h-atkt" class="h" x="970" y="910" font-size="30" fill="#FC6255">攻击者</text>
+        <path id="h-a1" class="dr h" pathLength="1" d="M920 870 L 920 622" stroke="#FC6255" stroke-width="5" fill="none" marker-end="url(#h-ahr)" />
+        <path id="h-a2" class="dr h" pathLength="1" d="M1105 510 L 1250 510" stroke="#FC6255" stroke-width="5" fill="none" marker-end="url(#h-ahr)" />
+        <text id="h-sigt" class="h" x="1178" y="480" font-size="28" fill="#FC6255" text-anchor="middle">签名</text>
+      </g>
+
+      <g id="h-q" class="h">
+        <text x="960" y="470" font-size="76" fill="#e8e6df" text-anchor="middle" font-weight="800"><tspan fill="#B48EF0">钥匙</tspan>还在，<tspan fill="#F0B90B">钱</tspan>却没了</text>
+        <text x="960" y="590" font-size="52" fill="#FF9F43" text-anchor="middle" font-weight="700">不偷私钥，怎样拿到签名？</text>
+      </g>
+      <g id="h-pin" class="h">
+        <rect x="70" y="60" width="600" height="84" rx="14" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="370" y="115" font-size="34" fill="#e8e6df" text-anchor="middle">不偷私钥，怎样拿到签名？</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 27.72, "L": [[0.6, 8.88], [9.33, 13.05], [13.5, 17.94], [18.39, 26.62]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // 四摞金币（确定性位置）
+      const host = document.querySelector("#h-coins"), coins = [];
+      for (let c = 0; c < 4; c++) for (let r = 0; r < 4; r++) {
+        const e = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        e.setAttribute("cx", 1322 + c * 125); e.setAttribute("cy", 660 - r * 62); e.setAttribute("r", "24");
+        host.appendChild(e); coins.push(e);
+      }
+
+      // L0 热钱包被转走
+      IN("#h-date", at(0, 0), 0.5);
+      IN("#h-wallet", at(0, 0.05), 0.8, { y: 20 }, { y: 0 });
+      coins.forEach((c, i) => tl.to(c, { x: 360 + (i % 4) * 20, y: ((i % 3) - 1) * 50, fill: "#FC6255", opacity: 0, duration: 0.9, ease: "power3.in" }, at(0, 0.35) + i * 0.09));
+      IN("#h-amount", at(0, 0.4), 0.5);
+      const n = { v: 0 }, num = document.querySelector("#h-num");
+      tl.fromTo(n, { v: 0 }, { v: 63.4, duration: 2.0, ease: "power2.out", onUpdate: () => { num.textContent = n.v.toFixed(1); } }, at(0, 0.4));
+
+      // L1 私钥还在
+      IN("#h-safe", at(1, 0.05), 0.7, { y: 20 }, { y: 0 });
+      IN("#h-keyok", at(1, 0.45), 0.5, { scale: 1.2, svgOrigin: "350 730" }, { scale: 1, ease: "back.out(2)" });
+
+      // L2 攻击者进入签名服务，签名流向钱包
+      IN("#h-svc", at(2, 0.0), 0.6, { scale: 0.9, svgOrigin: "920 510" }, { scale: 1 });
+      DRAW("#h-k2s", at(2, 0.1), 0.5);
+      IN("#h-atk", at(2, 0.2), 0.4, { scale: 0, svgOrigin: "920 900" }, { scale: 1, ease: "back.out(2)" });
+      IN("#h-atkt", at(2, 0.25), 0.4);
+      DRAW("#h-a1", at(2, 0.35), 0.6);
+      DRAW("#h-a2", at(2, 0.7), 0.5);
+      IN("#h-sigt", at(2, 0.75), 0.4);
+
+      // L3 问题，钉住
+      tl.to("#h-all", { opacity: 0.15, duration: 0.5 }, at(3, 0));
+      IN("#h-q", at(3, 0.05), 0.7, { filter: "blur(10px)" }, { filter: "blur(0px)" });
+      tl.to("#h-all", { opacity: 0, filter: "blur(6px)", duration: 0.5 }, at(3, 0.62));
+      tl.to("#h-q", { opacity: 0, scale: 0.4, x: -590, y: -430, svgOrigin: "960 530", duration: 0.7, ease: "power3.inOut" }, at(3, 0.62));
+      IN("#h-pin", at(3, 0.7), 0.5);
+      tl.to("#h-pin", { opacity: 0, duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>

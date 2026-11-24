@@ -1,0 +1,143 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="plane" data-duration="52.65" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- 飞机：机身 + 机翼 + 尾翼，原点在机身中心 -->
+        <g id="p-shape">
+          <path d="M-150 0 C -150 -18, 120 -22, 150 0 C 120 22, -150 18, -150 0 Z" />
+          <path d="M-20 -10 L 40 -120 L 70 -120 L 40 -10 Z" />
+          <path d="M-20 10 L 40 120 L 70 120 L 40 10 Z" />
+          <path d="M-140 -6 L -110 -60 L -95 -60 L -110 -6 Z" />
+          <path d="M-140 6 L -110 60 L -95 60 L -110 6 Z" />
+        </g>
+      </defs>
+      <g id="p-all">
+        <text id="p-t0" class="h" x="960" y="140" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">开发合约 ≈ 造一架飞机</text>
+
+        <!-- 四个阶段的标题 -->
+        <g font-size="34" text-anchor="middle" font-weight="700">
+          <text id="p-h1" class="h" x="280" y="260" fill="#e8e6df">设计</text>
+          <text id="p-h2" class="h" x="720" y="260" fill="#e8e6df">制造</text>
+          <text id="p-h3" class="h" x="1160" y="260" fill="#e8e6df">适航认证</text>
+          <text id="p-h4" class="h" x="1620" y="260" fill="#e8e6df">运营</text>
+        </g>
+
+        <!-- 1 设计：图纸 + 不变量 -->
+        <g id="p-s1" class="h">
+          <rect x="110" y="320" width="340" height="300" rx="10" fill="#101a26" stroke="#58C4DD" stroke-opacity=".5" stroke-width="2" />
+          <use href="#p-shape" transform="translate(280 470) scale(0.9)" fill="none" stroke="#58C4DD" stroke-width="3" stroke-dasharray="8 6" />
+        </g>
+        <g id="p-inv" class="h">
+          <text x="280" y="690" font-size="30" fill="#83C167" text-anchor="middle" font-weight="700">机翼任何情况下不能断</text>
+          <text x="280" y="735" font-size="28" fill="#83C167" text-anchor="middle">= 不变量</text>
+        </g>
+
+        <!-- 2 制造：零件 + 风洞 -->
+        <g id="p-s2" class="h">
+          <rect x="600" y="400" width="80" height="80" rx="8" fill="none" stroke="#58C4DD" stroke-width="4" />
+          <rect x="700" y="400" width="80" height="80" rx="8" fill="none" stroke="#58C4DD" stroke-width="4" />
+          <rect x="650" y="500" width="80" height="80" rx="8" fill="none" stroke="#58C4DD" stroke-width="4" />
+          <text x="720" y="690" font-size="30" fill="#e8e6df" text-anchor="middle">零件逐个测</text>
+        </g>
+        <g id="p-tunnel" class="h">
+          <text x="720" y="735" font-size="30" fill="#e8e6df" text-anchor="middle">风洞：极端风向</text>
+        </g>
+        <g id="p-wind" fill="none" stroke="#8a8f99" stroke-width="3" stroke-linecap="round"></g>
+
+        <!-- 3 认证：抽查 -->
+        <g id="p-s3" class="h">
+          <use href="#p-shape" transform="translate(1160 470) scale(0.9)" fill="#1b2430" stroke="#e8e6df" stroke-width="3" />
+          <g fill="#6b6f7a"><circle cx="1080" cy="470" r="6" /><circle cx="1120" cy="470" r="6" /><circle cx="1160" cy="470" r="6" /><circle cx="1200" cy="470" r="6" /><circle cx="1240" cy="470" r="6" /><circle cx="1195" cy="400" r="6" /><circle cx="1195" cy="540" r="6" /></g>
+        </g>
+        <g id="p-check" class="h" fill="none" stroke="#83C167" stroke-width="5">
+          <circle cx="1160" cy="470" r="34" /><circle cx="1195" cy="400" r="26" />
+        </g>
+        <text id="p-s3t" class="h" x="1160" y="690" font-size="30" fill="#e8e6df" text-anchor="middle">外部机构抽查关键系统</text>
+        <text id="p-s3t2" class="h" x="1160" y="735" font-size="30" fill="#83C167" text-anchor="middle" font-weight="700">= 审计</text>
+
+        <!-- 4 运营：雷达 + 黑匣子 -->
+        <g id="p-s4" class="h">
+          <circle cx="1620" cy="470" r="130" fill="none" stroke="#2a2f3a" stroke-width="3" />
+          <circle cx="1620" cy="470" r="80" fill="none" stroke="#2a2f3a" stroke-width="3" />
+          <line id="p-sweep" x1="1620" y1="470" x2="1620" y2="340" stroke="#83C167" stroke-width="4" />
+          <circle cx="1680" cy="420" r="9" fill="#e8e6df" />
+          <rect x="1520" y="560" width="70" height="44" rx="6" fill="#FF9F43" />
+          <text x="1620" y="690" font-size="30" fill="#e8e6df" text-anchor="middle">黑匣子 · 雷达 · 应急程序</text>
+          <text x="1620" y="735" font-size="28" fill="#8a8f99" text-anchor="middle">= 监控与应急</text>
+        </g>
+
+        <!-- 比方不成立：召回 vs 改不了 -->
+        <g id="p-lim">
+          <text class="p-li h" x="560" y="880" font-size="32" fill="#8a8f99" text-anchor="middle">飞机：出厂后可以召回维修</text>
+          <text class="p-li h" x="1360" y="880" font-size="32" fill="#FF9F43" text-anchor="middle" font-weight="700">不可升级的合约：上线后改不了</text>
+          <text class="p-li h" x="960" y="960" font-size="34" fill="#e8e6df" text-anchor="middle">→ 前面的关口必须更严</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 52.65, "L": [[0.6, 6.55], [7.0, 15.62], [16.07, 23.15], [23.6, 33.05], [33.5, 40.13], [40.58, 51.55]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      // 风洞的风线（确定性位置）
+      const wind = document.querySelector("#p-wind"), ws = [];
+      for (let i = 0; i < 6; i++) {
+        const l = document.createElementNS(NS, "line");
+        const y = 380 + i * 40, a = (i % 3 - 1) * 30;
+        l.setAttribute("x1", 540); l.setAttribute("y1", y - a); l.setAttribute("x2", 600); l.setAttribute("y2", y);
+        l.setAttribute("opacity", "0"); wind.appendChild(l); ws.push(l);
+      }
+
+      // L0 比方
+      IN("#p-t0", at(0, 0.3), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+
+      // L1 设计 + 不变量
+      IN("#p-h1", at(1, 0.0), 0.4);
+      IN("#p-s1", at(1, 0.08), 0.6, { y: 20 }, { y: 0 });
+      IN("#p-inv", at(1, 0.5), 0.5);
+
+      // L2 制造 + 风洞
+      IN("#p-h2", at(2, 0.0), 0.4);
+      IN("#p-s2", at(2, 0.08), 0.6, { y: 20 }, { y: 0 });
+      IN("#p-tunnel", at(2, 0.5), 0.4);
+      ws.forEach((l, i) => {
+        tl.fromTo(l, { opacity: 0, x: -40 }, { opacity: 0.9, x: 40, duration: 0.5, ease: "none" }, at(2, 0.55) + i * 0.1);
+        tl.to(l, { opacity: 0, duration: 0.3 }, at(2, 0.55) + i * 0.1 + 0.5);
+        tl.fromTo(l, { opacity: 0, x: -40 }, { opacity: 0.9, x: 40, duration: 0.5, ease: "none" }, at(2, 0.55) + 1.2 + i * 0.1);
+        tl.to(l, { opacity: 0, duration: 0.3 }, at(2, 0.55) + 1.7 + i * 0.1);
+      });
+
+      // L3 认证 = 审计（抽查）
+      IN("#p-h3", at(3, 0.0), 0.4);
+      IN("#p-s3", at(3, 0.08), 0.6, { y: 20 }, { y: 0 });
+      IN("#p-s3t", at(3, 0.3), 0.4);
+      IN("#p-check", at(3, 0.5), 0.4, { scale: 1.4, svgOrigin: "1170 440" }, { scale: 1 });
+      IN("#p-s3t2", at(3, 0.78), 0.4);
+
+      // L4 运营
+      IN("#p-h4", at(4, 0.0), 0.4);
+      IN("#p-s4", at(4, 0.08), 0.6, { y: 20 }, { y: 0 });
+      tl.fromTo("#p-sweep", { rotation: 0, svgOrigin: "1620 470" }, { rotation: 360, svgOrigin: "1620 470", duration: 3, ease: "none" }, at(4, 0.15));
+
+      // L5 比方不成立处
+      tl.to(["#p-s1", "#p-s2", "#p-s3", "#p-s4", "#p-check", "#p-inv", "#p-tunnel", "#p-s3t", "#p-s3t2", "#p-t0"], { opacity: 0.3, duration: 0.5 }, at(5, 0.0));
+      gsap.utils.toArray("#root .p-li").forEach((t, i) => IN(t, at(5, [0.1, 0.35, 0.72][i]), 0.5, { y: 20 }, { y: 0 }));
+
+      tl.to("#p-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["plane"] = tl;
+    })();
+  </script>
+</template>

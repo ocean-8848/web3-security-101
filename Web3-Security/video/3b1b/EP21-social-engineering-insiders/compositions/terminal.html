@@ -1,0 +1,101 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="terminal" data-duration="43.44" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="m-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+        <marker id="m-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+      </defs>
+      <g id="m-all">
+        <text id="m-title" class="h" x="960" y="100" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">签名人的电脑 · 2024 · Radiant Capital</text>
+        <!-- 冒充前承包商发来压缩包 -->
+        <g id="m-zip" class="h">
+          <rect x="120" y="250" width="300" height="200" rx="14" fill="#2a1f10" stroke="#FF9F43" stroke-width="3" />
+          <text x="270" y="320" font-size="30" fill="#FF9F43" text-anchor="middle">压缩包</text>
+          <text x="270" y="375" font-size="28" fill="#e8e6df" text-anchor="middle">「复盘.pdf」</text>
+          <text x="270" y="500" font-size="28" fill="#8a8f99" text-anchor="middle">冒充前承包商 · Telegram</text>
+        </g>
+        <text id="m-real" class="h" x="270" y="420" font-size="28" fill="#FC6255" text-anchor="middle" font-weight="700">实际：后门程序</text>
+        <!-- 3 台开发者设备 -->
+        <g id="m-pcs"></g>
+        <text id="m-pct" class="h" x="830" y="690" font-size="28" fill="#FC6255" text-anchor="middle">3 名开发者的设备被感染</text>
+        <!-- 多签前端显示被改写 -->
+        <g id="m-ui" class="h">
+          <rect x="1220" y="220" width="560" height="300" rx="16" fill="#161a22" stroke="#FC6255" stroke-width="4" />
+          <text x="1500" y="280" font-size="30" fill="#e8e6df" text-anchor="middle">多签前端（被改写的显示）</text>
+          <text x="1500" y="360" font-size="30" fill="#e8e6df" text-anchor="middle">交易：正常</text>
+          <text x="1500" y="420" font-size="30" fill="#83C167" text-anchor="middle">模拟：✓ 没有问题</text>
+          <text x="1500" y="480" font-size="28" fill="#8a8f99" text-anchor="middle">（屏幕上的也是假的）</text>
+        </g>
+        <g id="m-hw" class="h">
+          <rect x="1300" y="600" width="400" height="120" rx="16" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+          <text x="1500" y="672" font-size="30" fill="#e8e6df" text-anchor="middle">硬件钱包：签名</text>
+        </g>
+        <path id="m-sig" class="dr h" pathLength="1" d="M1500 525 L 1500 592" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#m-ah)" />
+        <text id="m-loss" class="h" x="1500" y="820" font-size="44" fill="#FC6255" text-anchor="middle" font-weight="800">多签所有权被转移 · ≈ 5,000 万美元</text>
+      </g>
+      <!-- 防线：专用干净设备 -->
+      <g id="m-def">
+        <g id="m-clean" class="h">
+          <rect x="660" y="300" width="600" height="340" rx="18" fill="#141e14" stroke="#83C167" stroke-width="4" />
+          <text x="960" y="380" font-size="38" fill="#83C167" text-anchor="middle" font-weight="700">签名专用设备</text>
+          <text x="960" y="450" font-size="30" fill="#e8e6df" text-anchor="middle">只做签名和独立解码</text>
+          <text x="960" y="520" font-size="30" fill="#FC6255" text-anchor="middle">✕ 收文件　✕ 聊天软件</text>
+        </g>
+        <g id="m-zip2" class="h"><rect x="200" y="420" width="100" height="100" rx="10" fill="#2a1f10" stroke="#FF9F43" stroke-width="3" /></g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 43.44, "L": [[0.6, 4.46], [4.91, 14.66], [15.11, 20.92], [21.37, 33.92], [34.37, 42.34]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.8) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      const DRAWA = (s, t, d = 0.5) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+
+      const ph = document.querySelector("#m-pcs"), P = [];
+      [[620, 330], [830, 470], [1040, 330]].forEach(([x, y]) => {
+        const g = document.createElementNS(NS, "g"); g.setAttribute("opacity", "0");
+        g.innerHTML = `<rect class="sc" x="${x - 90}" y="${y - 60}" width="180" height="110" rx="10" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" /><path d="M${x - 110} ${y + 60} h 220 l -16 -10 h -188 z" fill="#2a2f3a" />`;
+        ph.appendChild(g); P.push(g);
+      });
+
+      // L0
+      IN("#m-title", at(0, 0.05), 0.6);
+      // L1 冒充前承包商发来"PDF"
+      IN("#m-zip", at(1, 0.1), 0.5, { x: -30 }, { x: 0 });
+      tl.to("#m-zip text:nth-of-type(2)", { opacity: 0, duration: 0.3 }, at(1, 0.7));
+      IN("#m-real", at(1, 0.72), 0.4);
+      // L2 三台设备；前端显示被改写
+      P.forEach((g, i) => { IN(g, at(2, 0.05) + i * 0.12, 0.4); tl.to(g.querySelector(".sc"), { stroke: "#FC6255", strokeOpacity: 1, fill: "#2a1416", duration: 0.3 }, at(2, 0.3) + i * 0.1); });
+      IN("#m-pct", at(2, 0.4), 0.4);
+      IN("#m-ui", at(2, 0.65), 0.5);
+      // L3 硬件钱包 + 模拟也没用；损失
+      IN("#m-hw", at(3, 0.05), 0.4);
+      DRAWA("#m-sig", at(3, 0.15), 0.4);
+      tl.to("#m-ui text:nth-of-type(3)", { fill: "#FC6255", duration: 0.25, yoyo: true, repeat: 3 }, at(3, 0.35));
+      IN("#m-loss", at(3, 0.75), 0.5);
+      // L4 防线
+      tl.to("#m-all", { opacity: 0, duration: 0.4 }, at(4, 0));
+      IN("#m-clean", at(4, 0.05), 0.6);
+      IN("#m-zip2", at(4, 0.4), 0.3);
+      tl.fromTo("#m-zip2", { x: 0 }, { x: 330, duration: 0.6, ease: "power2.in" }, at(4, 0.45));
+      tl.to("#m-zip2", { x: 0, opacity: 0, duration: 0.6, ease: "power2.out" }, at(4, 0.45) + 0.6);
+      tl.to("#m-clean rect", { strokeWidth: 8, duration: 0.15, yoyo: true, repeat: 1 }, at(4, 0.45) + 0.55);
+
+      tl.to(["#m-all", "#m-def"], { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["terminal"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,99 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="defend" data-duration="45.4" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <g id="f-all">
+        <text id="f-title" class="h" x="960" y="110" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">防线建在<tspan fill="#83C167">页面之外</tspan></text>
+        <!-- 哈希比对 -->
+        <g id="f-cmp" class="h">
+          <rect x="180" y="200" width="560" height="200" rx="16" fill="#141e14" stroke="#83C167" stroke-width="3" />
+          <text x="210" y="250" font-size="28" fill="#8a8f99">独立系统比对</text>
+          <text x="210" y="305" font-size="30" fill="#e8e6df">构建产物：0x3fa9…d20c</text>
+          <text id="f-online" x="210" y="360" font-size="30" fill="#e8e6df">线上文件：0x3fa9…d20c</text>
+        </g>
+        <text id="f-ok" class="h" x="780" y="305" font-size="32" fill="#83C167">✓ 一致</text>
+        <text id="f-bad" class="h" x="210" y="360" font-size="30" fill="#FC6255" font-weight="700">线上文件：0x91b7…44ea</text>
+        <text id="f-alarm" class="h" x="780" y="360" font-size="32" fill="#FC6255" font-weight="700">✕ 告警</text>
+        <text id="f-ex" class="h" x="740" y="440" font-size="28" fill="#6b6f7a" text-anchor="end">哈希为示意</text>
+
+        <!-- 只覆盖那一刻、那个位置：多点比对 -->
+        <g id="f-map" class="h">
+          <ellipse cx="1440" cy="320" rx="320" ry="150" fill="none" stroke="#2a2f3a" stroke-width="3" />
+          <text x="1440" y="510" font-size="28" fill="#8a8f99" text-anchor="middle">不同位置的观察点</text>
+        </g>
+        <g id="f-pts"></g>
+        <text id="f-once" class="h" x="1440" y="560" font-size="28" fill="#FF9F43" text-anchor="middle">一次比对 = 一个时刻 · 一个位置</text>
+
+        <!-- CSP 与日志 -->
+        <g id="f-csp" class="h">
+          <rect x="180" y="560" width="560" height="160" rx="16" fill="#141e14" stroke="#83C167" stroke-width="3" />
+          <text x="210" y="615" font-size="30" fill="#83C167" font-weight="700">内容安全策略（CSP）</text>
+          <text x="210" y="670" font-size="28" fill="#e8e6df">只允许列出的脚本来源</text>
+        </g>
+        <g id="f-log" class="h">
+          <rect x="180" y="760" width="560" height="160" rx="16" fill="#141e14" stroke="#83C167" stroke-width="3" />
+          <text x="210" y="815" font-size="30" fill="#83C167" font-weight="700">每个版本的哈希 + 访问日志</text>
+          <text x="210" y="870" font-size="28" fill="#e8e6df">事后取证用</text>
+        </g>
+        <!-- 签名人 -->
+        <g id="f-sig" class="h">
+          <rect x="1000" y="640" width="760" height="300" rx="16" fill="#141e14" stroke="#83C167" stroke-width="3" />
+          <text x="1040" y="700" font-size="32" fill="#83C167" font-weight="700">签名人：不只看前端</text>
+          <text class="f-sl" x="1040" y="770" font-size="30" fill="#e8e6df">独立工具重算交易哈希</text>
+          <text class="f-sl" x="1040" y="830" font-size="30" fill="#e8e6df">在硬件钱包上核对</text>
+          <text class="f-sl" x="1040" y="890" font-size="30" fill="#e8e6df">例行转账：operation = 0（普通调用）</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 45.4, "L": [[0.6, 4.66], [5.11, 13.0], [13.45, 24.25], [24.7, 32.98], [33.43, 44.3]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+
+      // 6 个观察点：只有 2 个看到被改写的响应
+      const NS = "http://www.w3.org/2000/svg", ph = document.querySelector("#f-pts"), P = [];
+      const pos = [[1200, 280], [1330, 220], [1500, 210], [1650, 290], [1560, 400], [1300, 400]];
+      pos.forEach(([x, y]) => {
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", x); c.setAttribute("cy", y); c.setAttribute("r", "18"); c.setAttribute("fill", "#83C167"); c.setAttribute("opacity", "0");
+        ph.appendChild(c); P.push(c);
+      });
+
+      // L0
+      IN("#f-title", at(0, 0.05), 0.6, { filter: "blur(6px)" }, { filter: "blur(0px)" });
+      // L1 哈希比对：一致 / 不一致告警
+      IN("#f-cmp", at(1, 0.05), 0.5);
+      IN("#f-ok", at(1, 0.35), 0.3);
+      OUT(["#f-online", "#f-ok"], at(1, 0.6), 0.2);
+      IN("#f-bad", at(1, 0.62), 0.3);
+      IN("#f-alarm", at(1, 0.68), 0.3, { scale: 1.4, svgOrigin: "830 350" }, { scale: 1 });
+      IN("#f-ex", at(1, 0.75), 0.3);
+      // L2 多位置反复比对
+      IN("#f-map", at(2, 0.05), 0.5);
+      P.forEach((c, i) => IN(c, at(2, 0.15) + i * 0.1, 0.3));
+      IN("#f-once", at(2, 0.3), 0.4);
+      tl.to([P[1], P[4]], { fill: "#FC6255", duration: 0.3 }, at(2, 0.55));
+      tl.to([P[1], P[4]], { attr: { r: 26 }, duration: 0.25, yoyo: true, repeat: 3 }, at(2, 0.6));
+      // L3 CSP + 日志
+      IN("#f-csp", at(3, 0.05), 0.5, { x: -20 }, { x: 0 });
+      IN("#f-log", at(3, 0.55), 0.5, { x: -20 }, { x: 0 });
+      // L4 签名人
+      IN("#f-sig", at(4, 0.0), 0.5, { y: 20 }, { y: 0 });
+      gsap.utils.toArray("#root .f-sl").forEach((t, i) => IN(t, at(4, 0.2) + i * 0.22 * (L[4][1] - L[4][0]), 0.4));
+
+      tl.to("#f-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["defend"] = tl;
+    })();
+  </script>
+</template>

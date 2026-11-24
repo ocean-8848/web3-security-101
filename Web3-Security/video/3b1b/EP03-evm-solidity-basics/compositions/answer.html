@@ -1,0 +1,87 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="57.54" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="r-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="r-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="r-pin" class="h">
+        <rect x="520" y="70" width="880" height="100" rx="16" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+        <text x="960" y="136" font-size="44" fill="#e8e6df" text-anchor="middle" font-weight="700">一次调用里，谁是 <tspan class="mono" fill="#FF9F43">msg.sender</tspan>？</text>
+      </g>
+      <g id="r-case">
+        <g id="r-adm" class="h"><circle cx="300" cy="420" r="60" fill="#1c2029" stroke="#e8e6df" stroke-width="3" /><text x="300" y="432" font-size="30" fill="#e8e6df" text-anchor="middle">管理员</text></g>
+        <g id="r-atk" class="h"><rect x="760" y="360" width="380" height="120" rx="16" fill="#1f1012" stroke="#FC6255" stroke-width="4" /><text x="950" y="432" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">攻击者的合约</text></g>
+        <g id="r-vlt" class="h"><rect x="1420" y="340" width="380" height="160" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="1610" y="432" font-size="34" fill="#58C4DD" text-anchor="middle" font-weight="700">你的金库</text></g>
+        <path id="r-e1" class="dr h" pathLength="1" d="M365 420 L 752 420" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#r-ah)" />
+        <path id="r-e2" class="dr h" pathLength="1" d="M1145 420 L 1412 420" stroke="#FC6255" stroke-width="3" fill="none" marker-end="url(#r-ahr)" />
+        <text id="r-ms" class="h" x="1610" y="570" font-size="34" fill="#FC6255" text-anchor="middle"><tspan class="mono">msg.sender</tspan> = 攻击者的合约</text>
+        <path id="r-msl" class="dr" pathLength="1" d="M950 485 C 950 560, 1250 580, 1370 570" stroke="#FC6255" stroke-width="2" fill="none" stroke-dasharray="1" />
+        <text id="r-to" class="h" x="1610" y="640" font-size="34" fill="#e8e6df" text-anchor="middle"><tspan class="mono">tx.origin</tspan> = 管理员</text>
+        <path id="r-tol" class="dr" pathLength="1" d="M300 485 C 300 640, 900 660, 1370 640" stroke="#e8e6df" stroke-opacity=".5" stroke-width="2" fill="none" />
+        <g id="r-pass" class="h">
+          <rect x="1330" y="700" width="520" height="90" rx="14" fill="#1f1012" stroke="#FC6255" stroke-width="3" />
+          <text x="1590" y="758" font-size="32" fill="#FC6255" text-anchor="middle"><tspan class="mono">tx.origin == owner</tspan>：通过了</text>
+        </g>
+      </g>
+      <g id="r-rule" class="h">
+        <text x="960" y="420" font-size="60" fill="#e8e6df" text-anchor="middle" font-weight="800">权限检查看 <tspan class="mono" fill="#83C167">msg.sender</tspan>，不看 <tspan class="mono" fill="#FC6255">tx.origin</tspan></text>
+      </g>
+      <text id="r-pre" class="h" x="960" y="530" font-size="34" fill="#FF9F43" text-anchor="middle">前提：分清每一跳是 call 还是 delegatecall（delegatecall 原样带过 msg.sender）</text>
+      <text id="r-7702" class="h" x="960" y="620" font-size="34" fill="#FF9F43" text-anchor="middle">EIP-7702 之后：msg.sender == tx.origin，也不能证明是普通用户</text>
+      <g id="r-ch" class="h" font-size="30">
+        <text x="960" y="730" fill="#e8e6df" text-anchor="middle">A <tspan class="mono" fill="#8a8f99">─call→</tspan> B：B 看到的 <tspan class="mono">msg.sender</tspan> = A</text>
+        <text x="960" y="790" fill="#e8e6df" text-anchor="middle">A <tspan class="mono" fill="#FF9F43">─delegatecall→</tspan> B：<tspan class="mono">msg.sender</tspan> 仍是调用 A 的那个地址</text>
+      </g>
+      <g id="r-eoa" class="h">
+        <circle cx="900" cy="760" r="50" fill="#1b1626" stroke="#B48EF0" stroke-width="4" />
+        <text x="900" y="771" font-size="28" fill="#B48EF0" text-anchor="middle">EOA</text>
+        <rect x="970" y="730" width="120" height="60" rx="10" fill="#121a22" stroke="#58C4DD" stroke-width="3" stroke-dasharray="8 6" />
+        <text x="1030" y="771" font-size="28" fill="#58C4DD" text-anchor="middle">代码</text>
+      </g>
+      <text id="r-next" class="h" x="960" y="940" font-size="40" fill="#8a8f99" text-anchor="middle">下一集 · <tspan fill="#FC6255">重入攻击</tspan></text>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 57.54, "L": [[0.6, 5.9], [6.35, 14.27], [14.72, 26.48], [26.93, 40.37], [40.82, 50.35], [50.8, 56.44]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+      const DRAWA = (s, t, d = 0.5) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      IN("#r-pin", at(0, 0.05), 0.8, { scale: 0.6, x: -560, y: -10, svgOrigin: "960 120" }, { scale: 1, x: 0, y: 0, ease: "expo.out" });
+      IN("#r-adm", at(0, 0.5), 0.4); DRAWA("#r-e1", at(0, 0.55)); IN("#r-atk", at(0, 0.62), 0.4); DRAWA("#r-e2", at(0, 0.7)); IN("#r-vlt", at(0, 0.78), 0.4);
+      // L1 msg.sender = 攻击者合约
+      DRAW("#r-msl", at(1, 0.4), 0.6);
+      IN("#r-ms", at(1, 0.5), 0.5);
+      // L2 tx.origin = 管理员 → 通过
+      DRAW("#r-tol", at(2, 0.05), 0.8);
+      IN("#r-to", at(2, 0.15), 0.5);
+      IN("#r-pass", at(2, 0.7), 0.5, { scale: 1.2, svgOrigin: "1610 745" }, { scale: 1 });
+      // L3 规则 + 前提
+      tl.to("#r-case", { opacity: 0, duration: 0.5 }, at(3, 0.0));
+      IN("#r-rule", at(3, 0.05), 0.7, { filter: "blur(10px)" }, { filter: "blur(0px)" });
+      IN("#r-pre", at(3, 0.5), 0.5);
+      IN("#r-ch", at(3, 0.72), 0.5, { y: 15 }, { y: 0 });
+      // L4 EIP-7702
+      tl.to("#r-ch", { opacity: 0, duration: 0.3 }, at(4, 0.0));
+      IN("#r-7702", at(4, 0.1), 0.5);
+      IN("#r-eoa", at(4, 0.45), 0.5, { scale: 0.8, svgOrigin: "960 760" }, { scale: 1 });
+      // L5 下一集
+      IN("#r-next", at(5, 0.1), 0.5);
+      tl.to(["#r-pin", "#r-rule", "#r-pre", "#r-7702", "#r-eoa", "#r-next"], { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>

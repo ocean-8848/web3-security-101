@@ -1,0 +1,104 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="check" data-duration="40.51" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="c-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <marker id="c-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#FC6255" /></marker>
+      </defs>
+      <g id="c-all">
+        <!-- ① 没有检查 -->
+        <g id="c-one">
+          <text id="c-t1" class="h" x="120" y="120" font-size="44" fill="#FC6255" font-weight="800">① 根本没有检查</text>
+          <g id="c-code" class="h">
+            <rect x="720" y="170" width="1080" height="230" rx="18" fill="#0b0e14" stroke="#58C4DD" stroke-opacity=".5" stroke-width="3" />
+            <text class="mono" x="760" y="240" font-size="32" fill="#e8e6df">function mint(address to, uint256 amt)</text>
+            <text id="c-l2a" class="mono" xml:space="preserve" x="760" y="290" font-size="32" fill="#e8e6df">    external {</text>
+            <text id="c-l2b" class="mono h" xml:space="preserve" x="760" y="290" font-size="32" fill="#e8e6df">    external <tspan fill="#83C167">onlyRole(MINTER_ROLE)</tspan> {</text>
+            <text class="mono" xml:space="preserve" x="760" y="340" font-size="32" fill="#e8e6df">    _mint(to, amt); }</text>
+          </g>
+          <g id="c-anyone"></g>
+          <text id="c-anyt" class="h" x="340" y="470" font-size="30" fill="#8a8f99" text-anchor="middle">任何地址</text>
+          <g id="c-coins"></g>
+          <text id="c-print" class="h" x="340" y="530" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">给自己印钱</text>
+          <g id="c-minter" class="h"><circle cx="560" cy="290" r="26" fill="#83C167" /><text x="560" y="345" font-size="28" fill="#83C167" text-anchor="middle">增发角色</text></g>
+          <g id="c-block" class="h" stroke="#FC6255" stroke-width="6" stroke-linecap="round"><line x1="640" y1="190" x2="680" y2="230" /><line x1="680" y1="190" x2="640" y2="230" /><line x1="640" y1="350" x2="680" y2="390" /><line x1="680" y1="350" x2="640" y2="390" /></g>
+        </g>
+
+        <!-- ② 查错了人 -->
+        <g id="c-two">
+          <text id="c-t2" class="h" x="120" y="630" font-size="44" fill="#FF9F43" font-weight="800">② 检查查错了人</text>
+          <g id="c-adm" class="h"><circle cx="300" cy="820" r="60" fill="#1c2029" stroke="#e8e6df" stroke-width="3" /><text x="300" y="832" font-size="30" fill="#e8e6df" text-anchor="middle">管理员</text></g>
+          <g id="c-atk" class="h"><rect x="640" y="760" width="340" height="120" rx="16" fill="#1f1012" stroke="#FC6255" stroke-width="4" /><text x="810" y="830" font-size="32" fill="#FC6255" text-anchor="middle" font-weight="700">攻击者的合约</text></g>
+          <g id="c-you" class="h"><rect x="1240" y="760" width="340" height="120" rx="16" fill="#121a22" stroke="#58C4DD" stroke-width="4" /><text x="1410" y="830" font-size="32" fill="#58C4DD" text-anchor="middle" font-weight="700">你的合约</text></g>
+          <path id="c-e1" class="dr h" pathLength="1" d="M364 820 L 632 820" stroke="#8a8f99" stroke-width="3" fill="none" marker-end="url(#c-ah)" />
+          <path id="c-e2" class="dr h" pathLength="1" d="M984 820 L 1232 820" stroke="#FC6255" stroke-width="3" fill="none" marker-end="url(#c-ahr)" />
+          <text id="c-to" class="h" x="1410" y="730" font-size="30" fill="#FC6255" text-anchor="middle"><tspan class="mono">tx.origin</tspan> = 管理员 → 通过</text>
+          <text id="c-ms" class="h" x="1410" y="940" font-size="30" fill="#83C167" text-anchor="middle">查 <tspan class="mono">msg.sender</tspan> = 攻击者的合约 → 拒绝</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 40.51, "L": [[0.6, 4.22], [4.67, 12.57], [13.02, 18.71], [19.16, 26.79], [27.24, 39.41]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAWA = (s, t, d = 0.5) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+      const NS = "http://www.w3.org/2000/svg";
+      // 任何地址：8 个灰点
+      const any = document.querySelector("#c-anyone"), P = [];
+      for (let i = 0; i < 8; i++) {
+        const c = document.createElementNS(NS, "circle");
+        const x = 180 + (i % 4) * 100, y = 230 + Math.floor(i / 4) * 120;
+        c.setAttribute("cx", x); c.setAttribute("cy", y); c.setAttribute("r", 22); c.setAttribute("fill", "#8a8f99"); c.setAttribute("opacity", "0");
+        any.appendChild(c); P.push({ c, x, y });
+      }
+      const coins = document.querySelector("#c-coins"), K = [];
+      for (let i = 0; i < 8; i++) {
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", 760); c.setAttribute("cy", 285); c.setAttribute("r", 14); c.setAttribute("fill", "#F0B90B"); c.setAttribute("opacity", "0");
+        coins.appendChild(c); K.push(c);
+      }
+
+      // L0 ① 标题
+      IN("#c-t1", at(0, 0.05), 0.5, { x: -20 }, { x: 0 });
+      // L1 公开增发，任何人都能调用
+      IN("#c-code", at(1, 0.0), 0.6);
+      P.forEach((p, i) => IN(p.c, at(1, 0.25) + i * 0.05, 0.3));
+      IN("#c-anyt", at(1, 0.3), 0.4);
+      K.forEach((c, i) => { const t = at(1, 0.55) + i * 0.08; IN(c, t, 0.1); tl.to(c, { attr: { cx: P[i].x, cy: P[i].y - 30 }, duration: 0.6, ease: "power2.out" }, t); });
+      IN("#c-print", at(1, 0.75), 0.4);
+      // L2 加上角色检查
+      tl.to("#c-l2a", { opacity: 0, duration: 0.2 }, at(2, 0.05));
+      IN("#c-l2b", at(2, 0.08), 0.4);
+      K.forEach((c) => tl.to(c, { opacity: 0, duration: 0.3 }, at(2, 0.3)));
+      OUT("#c-print", at(2, 0.3), 0.3);
+      tl.to(P.map((p) => p.c), { opacity: 0.25, duration: 0.4 }, at(2, 0.35));
+      IN("#c-block", at(2, 0.4), 0.3);
+      IN("#c-minter", at(2, 0.55), 0.4, { scale: 0.5, svgOrigin: "560 290" }, { scale: 1 });
+      // L3 ② tx.origin
+      tl.to("#c-one", { opacity: 0.3, duration: 0.4 }, at(3, 0.0));
+      IN("#c-t2", at(3, 0.05), 0.5, { x: -20 }, { x: 0 });
+      IN("#c-adm", at(3, 0.4), 0.4);
+      // L4 攻击路径与修复
+      DRAWA("#c-e1", at(4, 0.0)); IN("#c-atk", at(4, 0.05), 0.4);
+      DRAWA("#c-e2", at(4, 0.15)); IN("#c-you", at(4, 0.2), 0.4);
+      IN("#c-to", at(4, 0.3), 0.4);
+      IN("#c-ms", at(4, 0.65), 0.5);
+
+      tl.to("#c-all", { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.in" }, C.d - 0.5);
+      window.__timelines["check"] = tl;
+    })();
+  </script>
+</template>

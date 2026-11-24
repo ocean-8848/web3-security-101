@@ -1,0 +1,117 @@
+<template>
+  <style>
+    @font-face { font-family: "NotoSC"; src: url("assets/fonts/noto-sc.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0f1117; overflow: hidden; }
+    #root svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #root text { font-family: "NotoSC", sans-serif; }
+    #root .mono { font-family: "JetBrains Mono", monospace; }
+    #root .h { opacity: 0; }
+    #root .dr { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  </style>
+  <div id="root" data-composition-id="answer" data-duration="56.08" data-width="1920" data-height="1080">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="r-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a8f99" /></marker>
+        <symbol id="r-key" viewBox="0 0 80 40"><g stroke="#FF9F43" stroke-width="5" fill="none" stroke-linecap="round"><circle cx="16" cy="20" r="12" /><path d="M28 20 H 74 M60 20 V 32 M70 20 V 30" /></g></symbol>
+      </defs>
+      <g id="r-all">
+        <g id="r-pin" class="h">
+          <rect x="510" y="70" width="900" height="110" rx="18" fill="none" stroke="#FF9F43" stroke-width="3" stroke-dasharray="10 8" />
+          <text x="960" y="142" font-size="48" fill="#e8e6df" text-anchor="middle" font-weight="700">维修门的<tspan fill="#FF9F43">钥匙</tspan>，在谁手里？</text>
+        </g>
+
+        <!-- 三个持有人 -->
+        <g id="r-holders">
+          <g class="r-hd h"><rect x="180" y="290" width="440" height="150" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><use href="#r-key" x="210" y="335" width="80" height="40" /><text x="440" y="350" font-size="32" fill="#e8e6df" text-anchor="middle">透明代理</text><text x="440" y="405" font-size="30" fill="#FF9F43" text-anchor="middle">管理员</text></g>
+          <g class="r-hd h"><rect x="740" y="290" width="440" height="150" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><use href="#r-key" x="770" y="335" width="80" height="40" /><text x="1000" y="350" font-size="32" fill="#e8e6df" text-anchor="middle">UUPS</text><text x="1000" y="405" font-size="30" fill="#FF9F43" text-anchor="middle">授权函数</text></g>
+          <g class="r-hd h"><rect x="1300" y="290" width="440" height="150" rx="18" fill="#121a22" stroke="#58C4DD" stroke-width="3" /><use href="#r-key" x="1330" y="335" width="80" height="40" /><text x="1560" y="350" font-size="32" fill="#e8e6df" text-anchor="middle">信标</text><text x="1560" y="405" font-size="30" fill="#FF9F43" text-anchor="middle">owner</text></g>
+          <g fill="none" stroke="#8a8f99" stroke-width="4">
+            <path class="r-ha dr h" pathLength="1" d="M400 450 L 870 655" marker-end="url(#r-ah)" />
+            <path class="r-ha dr h" pathLength="1" d="M960 450 L 960 640" marker-end="url(#r-ah)" />
+            <path class="r-ha dr h" pathLength="1" d="M1520 450 L 1050 655" marker-end="url(#r-ah)" />
+          </g>
+          <g id="r-gold" class="h" fill="#F0B90B">
+            <circle cx="900" cy="720" r="24" /><circle cx="960" cy="720" r="24" /><circle cx="1020" cy="720" r="24" /><circle cx="930" cy="676" r="24" /><circle cx="990" cy="676" r="24" />
+          </g>
+          <text id="r-goldt" class="h" x="960" y="820" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">谁持有它，谁就拥有<tspan fill="#F0B90B">全部资金</tspan></text>
+        </g>
+
+        <!-- 升级交易本身 -->
+        <g id="r-tx" class="h">
+          <rect x="560" y="290" width="800" height="360" rx="22" fill="#161a22" stroke="#e8e6df" stroke-opacity=".6" stroke-width="3" />
+          <text x="960" y="360" font-size="40" fill="#e8e6df" text-anchor="middle" font-weight="700">一笔升级交易</text>
+          <text x="620" y="450" font-size="34" fill="#58C4DD">新实现的代码</text><text x="1300" y="450" font-size="34" fill="#83C167" text-anchor="end">审过 ✓</text>
+          <text x="620" y="560" font-size="34" fill="#58C4DD">初始化参数</text>
+          <text id="r-param" class="mono" x="1300" y="560" font-size="34" fill="#e8e6df" text-anchor="end">root = 0x00</text>
+        </g>
+        <rect id="r-pbox" class="h" x="1050" y="515" width="270" height="64" rx="10" fill="none" stroke="#FC6255" stroke-width="4" />
+        <text id="r-txt" class="h" x="960" y="760" font-size="40" fill="#e8e6df" text-anchor="middle">升级交易本身，包括<tspan fill="#FC6255">初始化参数</tspan>，也要审计</text>
+
+        <!-- 安全升级流程 -->
+        <line id="r-line" class="h" x1="200" y1="520" x2="1720" y2="520" stroke="#2a2f3a" stroke-width="5" />
+        <g id="r-steps" font-size="32" text-anchor="middle"></g>
+        <circle id="r-dot" class="h" cx="200" cy="520" r="14" fill="#F0B90B" />
+
+        <!-- 成立条件 -->
+        <g id="r-cond" text-anchor="middle">
+          <text class="r-cl h" x="960" y="330" font-size="40" fill="#83C167" font-weight="700">成立条件</text>
+          <text class="r-cl h" x="960" y="420" font-size="36" fill="#e8e6df">升级权限经过<tspan fill="#B48EF0">多签</tspan>和<tspan fill="#FF9F43">时间锁</tspan></text>
+          <text class="r-cl h" x="960" y="490" font-size="36" fill="#e8e6df">暂停权另外设计</text>
+          <text class="r-cl h" x="960" y="560" font-size="36" fill="#e8e6df">核对过：底下那条链，由谁升级</text>
+        </g>
+        <text id="r-next" class="h" x="960" y="900" font-size="36" fill="#6b6f7a" text-anchor="middle">下一集 · 11 DeFi 经济安全：规格本身可以被套利</text>
+      </g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const C = /*CUES*/{"d": 56.08, "L": [[0.6, 5.21], [5.66, 16.12], [16.57, 25.31], [25.76, 38.0], [38.45, 48.05], [48.5, 54.98]]}/*END*/;
+      const L = C.L, at = (i, f = 0) => L[i][0] + f * (L[i][1] - L[i][0]);
+      const tl = gsap.timeline({ paused: true });
+      const IN = (s, t, d = 0.7, from = {}, to = {}) => tl.fromTo(s, { opacity: 0, ...from }, { opacity: 1, duration: d, ease: "power3.out", ...to }, t);
+      const OUT = (s, t, d = 0.35) => tl.to(s, { opacity: 0, duration: d, ease: "power2.in" }, t);
+      const DRAW = (s, t, d = 0.6) => tl.fromTo(s, { strokeDashoffset: 1, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: d, ease: "power2.inOut" }, t);
+
+      // 流程节点
+      const S = ["比对布局", "分叉测试", "审计升级交易", "多签 + 时间锁", "执行后验证", "回滚方案"];
+      const NS = "http://www.w3.org/2000/svg", host = document.querySelector("#r-steps");
+      const G = S.map((s, i) => {
+        const x = 200 + i * 304, g = document.createElementNS(NS, "g");
+        g.setAttribute("opacity", "0");
+        const col = i === 2 ? "#FC6255" : i === 3 ? "#FF9F43" : "#83C167";
+        g.innerHTML = `<circle cx="${x}" cy="520" r="24" fill="#0f1117" stroke="${col}" stroke-width="5" /><text x="${x}" y="${i % 2 ? 460 : 600}" fill="#e8e6df">${s}</text>`;
+        host.appendChild(g); return { g, x };
+      });
+
+      // L0 问题回来
+      IN("#r-pin", at(0, 0.05), 0.8, { scale: 0.5, x: -560, y: -10, svgOrigin: "960 125" }, { scale: 1, x: 0, y: 0, ease: "expo.out" });
+      // L1 三个持有人 → 全部资金
+      gsap.utils.toArray("#root .r-hd").forEach((g, i) => IN(g, at(1, 0.12) + i * 0.12, 0.5, { y: 20 }, { y: 0 }));
+      gsap.utils.toArray("#root .r-ha").forEach((p, i) => DRAW(p, at(1, 0.55) + i * 0.08, 0.5));
+      IN("#r-gold", at(1, 0.65), 0.5, { scale: 0.6, svgOrigin: "960 700" }, { scale: 1 });
+      IN("#r-goldt", at(1, 0.72), 0.5);
+      // L2 升级交易本身
+      OUT("#r-holders", at(2, 0), 0.4);
+      IN("#r-tx", at(2, 0.1), 0.6, { y: 20 }, { y: 0 });
+      tl.to("#r-param", { fill: "#FC6255", duration: 0.3 }, at(2, 0.55));
+      IN("#r-pbox", at(2, 0.55), 0.4, { scale: 1.2, svgOrigin: "1185 547" }, { scale: 1 });
+      IN("#r-txt", at(2, 0.62), 0.5);
+      // L3 安全升级流程
+      OUT(["#r-tx", "#r-pbox", "#r-txt"], at(3, 0), 0.4);
+      IN("#r-line", at(3, 0.05), 0.5);
+      IN("#r-dot", at(3, 0.08), 0.3);
+      const tf = [0.1, 0.22, 0.34, 0.5, 0.7, 0.86];
+      G.forEach((o, i) => {
+        IN(o.g, at(3, tf[i]), 0.4, { scale: 0.9, svgOrigin: `${o.x} 520` }, { scale: 1 });
+        tl.to("#r-dot", { attr: { cx: o.x }, duration: 0.4, ease: "power2.inOut" }, at(3, tf[i]));
+      });
+      // L4 成立条件
+      tl.to(["#r-line", "#r-steps", "#r-dot"], { opacity: 0, duration: 0.5 }, at(4, 0));
+      gsap.utils.toArray("#root .r-cl").forEach((t, i) => IN(t, at(4, [0.02, 0.1, 0.42, 0.62][i]), 0.5, { filter: "blur(6px)" }, { filter: "blur(0px)" }));
+      // L5 下一集
+      IN("#r-next", at(5, 0.1), 0.5);
+      tl.to("#r-all", { opacity: 0, duration: 0.5, ease: "power2.in" }, C.d - 0.6);
+      window.__timelines["answer"] = tl;
+    })();
+  </script>
+</template>
