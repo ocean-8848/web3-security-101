@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EP03 重入攻击</title>
+<title>EP04 重入攻击</title>
 <link rel="stylesheet" href="assets/player.css">
 <link rel="stylesheet" href="assets/contract.css">
 <style>
@@ -15,11 +15,11 @@
 </style>
 </head>
 <body>
-<div class="stage" data-ep="EP03" data-title="重入攻击：在你记账之前再取一次钱">
+<div class="stage" data-ep="EP04" data-title="重入攻击：在你记账之前再取一次钱">
 
   <!-- 1 开场 -->
   <section class="scene title" data-title="开场" data-onstep="marks">
-    <div class="kicker">合约安全 · 主线 · EP03</div>
+    <div class="kicker">合约安全 · 主线 · EP04</div>
     <h1>先给钱，后记账：<br>最古老、也最常<span class="hl">复发</span>的漏洞</h1>
     <div class="hero">
       <div class="card sell" data-k="1" data-nocur><div class="k">2016 · The DAO</div><div class="big">约 6,000 万$</div><div>以太坊因此硬分叉</div></div>
@@ -27,7 +27,7 @@
       <div class="card info" data-k="3" data-nocur><div class="k">2023 · Curve / Vyper</div><div class="big">约 7,000 万$</div><div>编译器生成的锁是错的</div></div>
     </div>
     <ol class="say">
-      <li>大家好，欢迎来到主线第3集，重入攻击。一句话理解，合约在更新自己的账本之前，把控制权交给了外部地址。外部地址趁账本还是旧的，再次调用合约。</li>
+      <li>大家好，欢迎来到主线第4集，重入攻击。一句话理解，合约在更新自己的账本之前，把控制权交给了外部地址。外部地址趁账本还是旧的，再次调用合约。</li>
       <li>看三起事故，以下据公开报道。2016年，The DAO 被重入，约6000万美元。以太坊社区为此做了硬分叉，反对者继续维护原链，就是今天的以太坊经典。</li>
       <li>六年后的2022年，借贷协议 Fei Rari 被跨函数重入，约8000万美元。</li>
       <li>2023年，Curve 的几个池子被重入，约7000万美元。源码里写了重入锁，但编译器生成的锁是错的。重入在以太坊早期就被发现了，可至今仍在复发。</li>
@@ -255,7 +255,7 @@
       <li data-step="1"><span class="hl">CEI</span> 是首选；锁要覆盖所有共享状态的入口；只读重入要在读方防。</li>
       <li data-step="2">源码正确 ≠ 字节码正确；允许任意代币 = 允许<span class="hl">任意回调</span>。</li>
     </ul>
-    <h2 data-show="3">下一集：EP04 访问控制与权限</h2>
+    <h2 data-show="3">下一集：EP05 访问控制与权限</h2>
     <div class="path" data-show="3">
       <div class="card sell"><div class="n">6</div><b>六种权限缺陷</b><div class="d">缺修饰器、tx.origin、未初始化…</div></div>
       <div class="card gold"><div class="n">M/N</div><b>多签 + 时间锁</b><div class="d">权限怎样分层</div></div>

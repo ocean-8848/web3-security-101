@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EP06 外部调用与代币兼容性</title>
+<title>EP07 外部调用与代币兼容性</title>
 <link rel="stylesheet" href="assets/player.css">
 <link rel="stylesheet" href="assets/contract.css">
 <style>
@@ -19,11 +19,11 @@
 </style>
 </head>
 <body>
-<div class="stage" data-ep="EP06" data-title="外部调用与代币兼容性：对方未必按标准出牌">
+<div class="stage" data-ep="EP07" data-title="外部调用与代币兼容性：对方未必按标准出牌">
 
   <!-- 1 开场 -->
   <section class="scene title" data-title="开场" data-onstep="marks">
-    <div class="kicker">合约安全 · 主线 · EP06</div>
+    <div class="kicker">合约安全 · 主线 · EP07</div>
     <h1>每一个外部调用，<br>都是<span class="hl">把命运交给别人</span></h1>
     <div class="hero">
       <div class="card sell" data-k="1" data-nocur><div class="k">2022 · Qubit 跨链桥</div><div class="big">约 8,000 万$</div><div>对零地址"转账"也算成功</div></div>
@@ -31,7 +31,7 @@
       <div class="card info" data-k="3" data-nocur><div class="k">TRON 上的 USDT</div><div class="big">false</div><div>转账成功，却返回 false</div></div>
     </div>
     <ol class="say">
-      <li>大家好，欢迎来到主线第6集，外部调用与代币兼容性。一句话理解，每一个外部调用，都是把命运交给别人。对方可能失败，可能撒谎，可能拖延，也可能根本不存在。</li>
+      <li>大家好，欢迎来到主线第7集，外部调用与代币兼容性。一句话理解，每一个外部调用，都是把命运交给别人。对方可能失败，可能撒谎，可能拖延，也可能根本不存在。</li>
       <li>看三个例子，以下据公开报道。2022年，Qubit 跨链桥损失约8000万美元。它对一个零地址做转账，结果被当成了成功。</li>
       <li>同年，以太坊上的 Akutars NFT，11539.5个 ETH 被永久锁死。退款被一个拒收的合约卡住，项目方提款的条件又写错了。</li>
       <li>还有 TRON 上的 USDT，据一份公开审计，它的转账在成功时也返回 false。用以太坊上的标准写法去调用它，会一律失败。</li>
@@ -181,7 +181,7 @@
     <ol class="say">
       <li>外部调用还会导致拒绝服务，让功能永久或长期无法使用。第一种模式，推送支付中有人回滚。比如拍卖时，新的出价要先把钱退给上一个出价者。如果上一个出价者是一个总是拒收的合约，新出价就永远失败，他永远是最高价。修复是拉取式支付。</li>
       <li>第二种，无界循环。遍历所有用户发奖励，用户数增长后，gas 超过区块上限。修复是分页处理，或者用累计奖励因子，让每个用户自己领。第三种，黑名单地址卡住批量操作。修复是逐个处理，失败的记账待领取。</li>
-      <li>第四种，依赖强制的余额等式。第2集讲过，余额可以被强制转入，所以要用大于等于。第五种，TRON 上单笔执行超过80毫秒的 CPU 时间，会返回超时。在以太坊上 gas 足够的循环，在 TRON 上可能失败。</li>
+      <li>第四种，依赖强制的余额等式。第3集讲过，余额可以被强制转入，所以要用大于等于。第五种，TRON 上单笔执行超过80毫秒的 CPU 时间，会返回超时。在以太坊上 gas 足够的循环，在 TRON 上可能失败。</li>
     </ol>
   </section>
 
@@ -267,7 +267,7 @@
       <li data-step="1">代币只守接口不守行为：<span class="hl">按实收记账</span>；TRON USDT 推送用余额差。</li>
       <li data-step="2"><span class="hl">推送改拉取</span>防 DoS；持有授权的合约不接受任意调用。</li>
     </ul>
-    <h2 data-show="3">下一集：EP07 预言机与闪电贷</h2>
+    <h2 data-show="3">下一集：EP08 预言机与闪电贷</h2>
     <div class="path" data-show="3">
       <div class="card sell"><div class="n">1 tx</div><b>现货价操纵</b><div class="d">一笔交易就能改写的价格</div></div>
       <div class="card gold"><div class="n">TWAP</div><b>时间加权</b><div class="d">多区块操纵的代价</div></div>

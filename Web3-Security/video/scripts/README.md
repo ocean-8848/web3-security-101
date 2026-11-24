@@ -15,19 +15,19 @@
 | A09 | [应急响应：评估之后，出事了怎么办](A09-incident-response.md) | 13 | 2938 | 10.1 分钟 |
 | A10 | [实例分析：钱包里的 Audit 页是怎么来的](A10-case-binance-alpha-audit.md) | 13 | 3041 | 10.5 分钟 |
 | EP01 | [合约安全全景：为什么代码就是金库](EP01-security-landscape.md) | 14 | 3721 | 12.8 分钟 |
-| EP02 | [EVM 与 Solidity 安全基础：先看懂这台机器](EP02-evm-solidity-basics.md) | 15 | 3955 | 13.6 分钟 |
-| EP03 | [重入攻击：在你记账之前再取一次钱](EP03-reentrancy.md) | 14 | 3298 | 11.4 分钟 |
-| EP04 | [访问控制与权限：谁有权按这个按钮](EP04-access-control.md) | 15 | 3622 | 12.5 分钟 |
-| EP05 | [算术与精度：差一个 wei，丢一个金库](EP05-arithmetic-precision.md) | 14 | 3460 | 11.9 分钟 |
-| EP06 | [外部调用与代币兼容性：对方未必按标准出牌](EP06-external-calls-tokens.md) | 14 | 3647 | 12.6 分钟 |
-| EP07 | [预言机与闪电贷：一笔交易就能改写的价格](EP07-oracle-flashloan.md) | 13 | 3237 | 11.2 分钟 |
-| EP08 | [MEV 与签名安全：顺序可以被买，签名可以被重放](EP08-mev-signatures.md) | 14 | 3470 | 12.0 分钟 |
-| EP09 | [可升级合约与代理：维修门的两面](EP09-upgradeable-proxy.md) | 13 | 3209 | 11.1 分钟 |
-| EP10 | [DeFi 经济安全：代码没错，规则错了](EP10-defi-economic-security.md) | 12 | 2822 | 9.7 分钟 |
-| EP11 | [跨链桥安全：两条链之间的那条缝](EP11-cross-chain-bridges.md) | 10 | 2658 | 9.2 分钟 |
-| EP12 | [审计、测试与开发流程：把安全写进流水线](EP12-audit-testing-workflow.md) | 14 | 3232 | 11.1 分钟 |
-| EP13 | [事故案例库：同样的错误，换个名字再来一次](EP13-incident-casebook.md) | 10 | 3003 | 10.4 分钟 |
+| EP03 | [EVM 与 Solidity 安全基础：先看懂这台机器](EP03-evm-solidity-basics.md) | 15 | 3956 | 13.6 分钟 |
+| EP04 | [重入攻击：在你记账之前再取一次钱](EP04-reentrancy.md) | 14 | 3298 | 11.4 分钟 |
+| EP05 | [访问控制与权限：谁有权按这个按钮](EP05-access-control.md) | 15 | 3622 | 12.5 分钟 |
+| EP06 | [算术与精度：差一个 wei，丢一个金库](EP06-arithmetic-precision.md) | 14 | 3460 | 11.9 分钟 |
+| EP07 | [外部调用与代币兼容性：对方未必按标准出牌](EP07-external-calls-tokens.md) | 14 | 3647 | 12.6 分钟 |
+| EP08 | [预言机与闪电贷：一笔交易就能改写的价格](EP08-oracle-flashloan.md) | 13 | 3237 | 11.2 分钟 |
+| EP09 | [MEV 与签名安全：顺序可以被买，签名可以被重放](EP09-mev-signatures.md) | 14 | 3470 | 12.0 分钟 |
+| EP10 | [可升级合约与代理：维修门的两面](EP10-upgradeable-proxy.md) | 13 | 3210 | 11.1 分钟 |
+| EP11 | [DeFi 经济安全：代码没错，规则错了](EP11-defi-economic-security.md) | 12 | 2822 | 9.7 分钟 |
+| EP12 | [跨链桥安全：两条链之间的那条缝](EP12-cross-chain-bridges.md) | 10 | 2659 | 9.2 分钟 |
+| EP27 | [审计、测试与开发流程：把安全写进流水线](EP27-audit-testing-workflow.md) | 14 | 3233 | 11.1 分钟 |
+| EP28 | [事故案例库：同样的错误，换个名字再来一次](EP28-incident-casebook.md) | 10 | 2993 | 10.3 分钟 |
 | C00 | [以太坊专题：合约案例深潜](C00-ethereum.md) | 12 | 4310 | 14.9 分钟 |
 | C01 | [BNB Chain 专题：我以为一样的地方](C01-bnb-chain.md) | 10 | 3283 | 11.3 分钟 |
 | C02 | [TRON 专题：能跑 Solidity，但 TVM 不是 EVM](C02-tron.md) | 9 | 3467 | 12.0 分钟 |
-| C03 | [Mantle 专题：以太坊 L2 视角](C03-mantle.md) | 9 | 3461 | 11.9 分钟 |
+| C03 | [Mantle 专题：以太坊 L2 视角](C03-mantle.md) | 9 | 3454 | 11.9 分钟 |

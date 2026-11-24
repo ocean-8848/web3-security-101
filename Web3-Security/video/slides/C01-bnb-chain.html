@@ -95,7 +95,7 @@
 
   <!-- 5 Uranium 分叉改常数 -->
   <section class="scene" data-title="Uranium：分叉改常数" data-onstep="marks">
-    <div class="kicker">案例一 · EP05 常数散落的代价</div>
+    <div class="kicker">案例一 · EP06 常数散落的代价</div>
     <h2>改手续费漏改一个常数，k 检查失效</h2>
     <div class="src sm" data-k="0"><div class="ln c"><span class="cm">// ❌ 余额项放大到 10000，右侧 k 仍按 1000**2 比较</span></div>
 <div class="ln bad">balance0Adj = balance0*10000 - amount0In*16;</div>
@@ -117,7 +117,7 @@
 
   <!-- 6 PancakeBunny -->
   <section class="scene" data-title="PancakeBunny：LP 定价被操纵" data-onstep="marks">
-    <div class="kicker">案例二 · EP07 铸造的输入必须抗操纵</div>
+    <div class="kicker">案例二 · EP08 铸造的输入必须抗操纵</div>
     <h2>按池子储备给 LP 估值，再据此铸造奖励</h2>
     <div class="src sm" data-k="0"><div class="ln c"><span class="cm">// ❌ 用一笔交易内可变的池储备给 LP 定价</span></div>
 <div class="ln bad">lpValue = f(reserveWBNB, reserveUSDT);  <span class="cm">// 储备同交易内被扭曲</span></div>
@@ -138,7 +138,7 @@
 
   <!-- 7 Venus 抵押品风险 -->
   <section class="scene" data-title="Venus：抵押品风险" data-onstep="marks">
-    <div class="kicker">案例三 · EP10 抵押品的质量</div>
+    <div class="kicker">案例三 · EP11 抵押品的质量</div>
     <h2>同一个协议，两次栽在抵押品上</h2>
     <div class="vs">
       <div class="card info" data-k="0"><h3>XVS 事件（2021-05）</h3><div class="fs27">抵押品 = 协议自有治理代币 XVS<br>价格短时从约 76 → 144 美元<br>借出大量 BTC/ETH，回落后清算不及<br><span class="hl">坏账超 9,500 万美元</span></div></div>
@@ -154,7 +154,7 @@
 
   <!-- 8 Qubit / Token Hub 系统层 -->
   <section class="scene" data-title="跨链：系统层传导到应用层" data-onstep="marks">
-    <div class="kicker">案例四 · EP11 跨链风险要看两侧</div>
+    <div class="kicker">案例四 · EP12 跨链风险要看两侧</div>
     <h2>代码正确的借贷协议，接收了"凭空铸造"的抵押品</h2>
     <div class="vs">
       <div class="card info" data-k="0"><h3>Qubit Bridge（2022-01）</h3><div class="fs27">漏洞在<b>以太坊一侧</b>的存款合约<br>（对零地址 safeTransferFrom 返回成功）<br>损失却发生在 <b>BSC 一侧</b>的借贷池<br>→ 只审计 BSC 侧，看不到漏洞</div></div>

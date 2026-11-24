@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EP12 审计、测试与开发流程</title>
+<title>EP27 审计、测试与开发流程</title>
 <link rel="stylesheet" href="assets/player.css">
 <link rel="stylesheet" href="assets/contract.css">
 <style>
@@ -16,11 +16,11 @@
 </style>
 </head>
 <body>
-<div class="stage" data-ep="EP12" data-title="审计、测试与开发流程：把安全写进流水线">
+<div class="stage" data-ep="EP27" data-title="审计、测试与开发流程：把安全写进流水线">
 
   <!-- 1 开场 -->
   <section class="scene title" data-title="开场" data-onstep="marks">
-    <div class="kicker">合约安全 · 主线 · EP12</div>
+    <div class="kicker">合约安全 · 主线 · EP27</div>
     <h1>审计不是起点，<br>也不是<span class="hl">终点</span></h1>
     <div class="ana">
       <div class="card info" data-k="1" data-nocur><b>之前</b><div class="a">设计 + 测试</div></div>
@@ -29,7 +29,7 @@
       <div class="card sell" data-k="3" data-nocur><b>PancakeBunny</b><div class="a">被利用的是审计之后新上线的版本</div></div>
     </div>
     <ol class="say">
-      <li>大家好，欢迎来到主线第12集，审计、测试与开发流程。把前面所有知识，变成一套可执行的流程。一句话理解，审计不是安全的起点，也不是终点。</li>
+      <li>大家好，欢迎来到主线第27集，审计、测试与开发流程。把前面所有知识，变成一套可执行的流程。一句话理解，审计不是安全的起点，也不是终点。</li>
       <li>审计只是流水线上的一个关口。它之前要有设计和测试。</li>
       <li>它之后要有监控和应急。</li>
       <li>据公开报道，PancakeBunny 被利用的，是审计之后新上线、未经审计的合约版本。所以记住，审计过，只对审计时的那个版本成立。本集讲八个关口、测试三层和链特定测试。</li>
@@ -100,7 +100,7 @@
     </table>
     <ol class="say">
       <li>静态分析是第三个关口，每次提交都应该跑。常用工具 Slither，发现重入模式、未检查返回值、未初始化变量和可见性问题。还有 Aderyn 这类，做常见模式检查，输出报告。</li>
-      <li>编译器内置的 SMTChecker，能发现断言违背和溢出，需要启用。forge inspect 的存储布局导出，用于升级前后对比，第9集讲过。</li>
+      <li>编译器内置的 SMTChecker，能发现断言违背和溢出，需要启用。forge inspect 的存储布局导出，用于升级前后对比，第10集讲过。</li>
       <li>一个重要原则，静态分析的误报率高。不要追求零告警，要追求每个告警都有结论，是真问题还是误报，并写明理由。</li>
     </ol>
   </section>
@@ -247,7 +247,7 @@
       <li data-step="1">测试三层：单元、模糊、<span class="hl">不变量</span>；工具找序列，但性质要你写对。</li>
       <li data-step="2">"审计过"只对<span class="hl">那个版本</span>成立；应急能力要事先设计进合约。</li>
     </ul>
-    <h2 data-show="3">下一集：EP13 事故案例库</h2>
+    <h2 data-show="3">下一集：EP28 事故案例库</h2>
     <div class="path" data-show="3">
       <div class="card sell"><div class="n">30+</div><b>分类总表</b><div class="d">按链、按根因</div></div>
       <div class="card gold"><div class="n">7</div><b>七种反复模式</b><div class="d">同样的错一犯再犯</div></div>

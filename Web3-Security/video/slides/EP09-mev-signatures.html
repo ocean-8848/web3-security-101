@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EP08 MEV 与签名安全</title>
+<title>EP09 MEV 与签名安全</title>
 <link rel="stylesheet" href="assets/player.css">
 <link rel="stylesheet" href="assets/contract.css">
 <style>
@@ -19,18 +19,18 @@
 </style>
 </head>
 <body>
-<div class="stage" data-ep="EP08" data-title="MEV 与签名安全：顺序可以被买，签名可以被重放">
+<div class="stage" data-ep="EP09" data-title="MEV 与签名安全：顺序可以被买，签名可以被重放">
 
   <!-- 1 开场 -->
   <section class="scene title" data-title="开场" data-onstep="marks">
-    <div class="kicker">合约安全 · 主线 · EP08</div>
+    <div class="kicker">合约安全 · 主线 · EP09</div>
     <h1>顺序<span class="hl">可以被买</span>，<br>签名<span class="hl">可以被重放</span></h1>
     <div class="ana">
       <div class="card info" data-k="1" data-nocur><h3>MEV</h3><div class="a">交易在打包前是公开的，打包顺序由别人决定</div></div>
       <div class="card sell" data-k="2" data-nocur><h3>签名重放</h3><div class="a">签名用过之后仍然存在，能否再用取决于你签了什么</div></div>
     </div>
     <ol class="say">
-      <li>大家好，欢迎来到主线第8集，MEV 与签名安全。一句话理解分两半。交易在被打包之前是公开的，打包的顺序由别人决定。签名在被使用之后仍然存在，能否再次使用，取决于你签了什么。</li>
+      <li>大家好，欢迎来到主线第9集，MEV 与签名安全。一句话理解分两半。交易在被打包之前是公开的，打包的顺序由别人决定。签名在被使用之后仍然存在，能否再次使用，取决于你签了什么。</li>
       <li>第一半是 MEV，最大可提取价值。区块生产者或者搜索者，通过调整、插入、排除交易，获得额外收益。</li>
       <li>第二半是签名安全。链下签名用过之后不会消失，如果它绑定的字段不全，就能被重放。本集讲 MEV 的三种形态、防御，签名必须绑定的五个字段，以及签名界面的安全。</li>
     </ol>
@@ -179,13 +179,13 @@
         <tr><td>CHAINID 返回创世区块后 4 字节（主网 728126428）</td><td>域分隔符仍能区分链；别写死以太坊风格链 ID</td></tr>
         <tr><td>账户没有 nonce，交易用 TAPOS 防重放，默认 60 秒过期</td><td>交易层防重放不同；<b>合约层签名的 nonce 仍要自己实现</b></td></tr>
         <tr><td>地址在链边界带 0x41 前缀，VM 内部是 20 字节</td><td>签名工具和合约对地址的编码必须一致</td></tr>
-        <tr><td>账户多权限（EP04）</td><td>一个地址可能需要多个签名人；用 ValidateMultiSign 预编译验证账户多签</td></tr>
+        <tr><td>账户多权限（EP05）</td><td>一个地址可能需要多个签名人；用 ValidateMultiSign 预编译验证账户多签</td></tr>
       </tbody>
     </table>
     <ol class="say">
       <li>部署到 TRON，签名有几个差异。第一，TRON 的链 ID 返回的是创世区块的后4字节，主网是一个很大的数。域分隔符仍然能区分链，但不要在代码里写死以太坊风格的小整数链 ID。</li>
       <li>第二，TRON 账户没有 nonce，交易层用一种基于区块的机制防重放，默认60秒过期。但这是交易层的，合约层签名的防重放，仍然要你自己实现 nonce。</li>
-      <li>第三，地址在链边界带一个前缀字节，VM 内部是20字节。签名工具链和合约对地址的编码必须一致。第四，第4集讲过 TRON 账户多权限，一个地址可能需要多个签名人。合约里的 ecrecover 只能验证单个私钥签名，TRON 提供了一个预编译合约来验证账户多签。</li>
+      <li>第三，地址在链边界带一个前缀字节，VM 内部是20字节。签名工具链和合约对地址的编码必须一致。第四，第5集讲过 TRON 账户多权限，一个地址可能需要多个签名人。合约里的 ecrecover 只能验证单个私钥签名，TRON 提供了一个预编译合约来验证账户多签。</li>
     </ol>
   </section>
 
@@ -234,7 +234,7 @@
     </div>
     <ol class="say">
       <li>来练一练。一个自动复投金库，每小时把奖励代币换成本金，最小输出用池子当前的现货价乘以99%计算。这个保护有效吗？</li>
-      <li>参考答案。无效。因为现货价本身可以被同一笔交易操纵。攻击者先推高或压低现货价，最小输出就跟着变成一个离谱但自洽的值，保护形同虚设。这正是第5集合约层那条警告。修复是，最小输出用外部的抗操纵价格计算，或者由发起方在链下传入。</li>
+      <li>参考答案。无效。因为现货价本身可以被同一笔交易操纵。攻击者先推高或压低现货价，最小输出就跟着变成一个离谱但自洽的值，保护形同虚设。这正是第6集合约层那条警告。修复是，最小输出用外部的抗操纵价格计算，或者由发起方在链下传入。</li>
     </ol>
   </section>
 
@@ -247,7 +247,7 @@
       <li data-step="1">签名绑定<span class="hl">五个字段</span>；用 EIP-712 + ECDSA，查零地址和高 s。</li>
       <li data-step="2">"没有公开内存池"≠ 没有 MEV；<span class="hl">界面被篡改</span>比私钥被盗更难防。</li>
     </ul>
-    <h2 data-show="3">下一集：EP09 可升级合约与代理</h2>
+    <h2 data-show="3">下一集：EP10 可升级合约与代理</h2>
     <div class="path" data-show="3">
       <div class="card sell"><div class="n">3</div><b>三种代理模式</b><div class="d">透明、UUPS、Beacon</div></div>
       <div class="card gold"><div class="n">slot</div><b>存储冲突</b><div class="d">升级把余额读成地址</div></div>

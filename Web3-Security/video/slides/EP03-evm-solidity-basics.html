@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EP02 EVM 与 Solidity 安全基础</title>
+<title>EP03 EVM 与 Solidity 安全基础</title>
 <link rel="stylesheet" href="assets/player.css">
 <link rel="stylesheet" href="assets/contract.css">
 <style>
@@ -18,11 +18,11 @@
 </style>
 </head>
 <body>
-<div class="stage" data-ep="EP02" data-title="EVM 与 Solidity 安全基础：先看懂这台机器">
+<div class="stage" data-ep="EP03" data-title="EVM 与 Solidity 安全基础：先看懂这台机器">
 
   <!-- 1 开场 -->
   <section class="scene title" data-title="开场" data-onstep="marks">
-    <div class="kicker">合约安全 · 主线 · EP02</div>
+    <div class="kicker">合约安全 · 主线 · EP03</div>
     <h1>每一次调用，<br>都可能把<span class="hl">控制权</span>交给别人</h1>
     <div class="grid3">
       <div class="card" data-k="1" data-nocur><b>单线程</b><div class="muted fs28">一次只执行一个调用帧</div></div>
@@ -30,7 +30,7 @@
       <div class="card sell" data-k="2" data-nocur><b>消息调用</b><div class="muted fs28">调用对方时，执行权交出去</div></div>
     </div>
     <ol class="say">
-      <li>大家好，欢迎来到主线第2集，EVM 与 Solidity 安全基础。理解合约运行的这台机器，才能理解漏洞从哪里来。</li>
+      <li>大家好，欢迎来到主线第3集，EVM 与 Solidity 安全基础。理解合约运行的这台机器，才能理解漏洞从哪里来。</li>
       <li>先用一句话描述它。EVM 是一台单线程的栈式计算机。每个合约有自己的代码和自己的存储。</li>
       <li>合约之间靠消息调用通信。每次你调用别人，都可能把控制权交给对方，而对方可以在你的事情办完之前，反过来调用你。本集讲四件事，调用上下文，三种调用，存储布局，以及八个最容易误解的语言特性。</li>
     </ol>
@@ -94,7 +94,7 @@
       <li>为什么不能用交易发起人做权限判断？看一个机制示意。一个钱包合约这样写，要求交易发起人等于 owner，才能转出资金。</li>
       <li>某天，owner 被诱导去调用一个看起来无害的合约，比如领取一个空投。</li>
       <li>这个合约在内部转身调用了钱包的转账函数。此时，钱包看到的交易发起人，仍然是 owner，检查通过，资金被转走。</li>
-      <li>如果钱包检查的是消息发送者，看到的就是那个恶意合约，检查失败。所以权限判断用 msg.sender，不用 tx.origin。第4集还会详细讲。</li>
+      <li>如果钱包检查的是消息发送者，看到的就是那个恶意合约，检查失败。所以权限判断用 msg.sender，不用 tx.origin。第5集还会详细讲。</li>
     </ol>
   </section>
 
@@ -107,7 +107,7 @@
       <li>合约之间有三种调用方式。第一种是 call，最常见。执行 B 的代码，修改 B 的存储。B 看到的消息发送者是 A，当前地址是 B。</li>
       <li>第二种是 delegatecall。执行 B 的代码，但修改的是 A 的存储。而且消息发送者和附带的币都保持不变，B 的代码看到的消息发送者，仍然是用户，当前地址是 A。代理合约和库合约都依赖它。</li>
       <li>第三种是 staticcall，只读调用。任何写存储或者发事件的操作都会回滚。外部调用 view 函数时，用的就是它。</li>
-      <li>还有一点很重要。低级 call 失败时，不会自动回滚调用方，只返回一个 false。忘了检查这个返回值，是第6集的主题。手册里的存储与代理实验，可以一步步观察这四个变量的变化。</li>
+      <li>还有一点很重要。低级 call 失败时，不会自动回滚调用方，只返回一个 false。忘了检查这个返回值，是第7集的主题。手册里的存储与代理实验，可以一步步观察这四个变量的变化。</li>
     </ol>
   </section>
 
@@ -160,7 +160,7 @@
       <li>看一个例子。第一个变量是地址 owner，20字节，放进第0个槽位。第二个是布尔值 paused，1字节，和 owner 一起，第0个槽位用了21字节。</li>
       <li>第三个是 fee，类型是96位整数，12字节。21加12是33，超过了32，放不下。所以 fee 从第1个槽位开始。后面的 total 在第2个槽位，映射 bal 占第3个槽位。</li>
       <li>如果把 fee 改成88位整数，11字节，20加1加11正好32，三个变量全部挤进第0个槽位。total 变成第1个，映射变成第2个。</li>
-      <li>看出问题了吗？只改了一个类型，后面所有变量的位置都变了。如果这是一个已经上线的可升级合约，新代码会按新位置去读旧数据，余额可能被当成地址。这就是第9集存储冲突的根源。</li>
+      <li>看出问题了吗？只改了一个类型，后面所有变量的位置都变了。如果这是一个已经上线的可升级合约，新代码会按新位置去读旧数据，余额可能被当成地址。这就是第10集存储冲突的根源。</li>
     </ol>
   </section>
 
@@ -218,7 +218,7 @@
       <li>第五，检查型算术。误解是0.8版本以后算术不会出错。事实是溢出会回滚，但 unchecked 块、类型转换和除法截断都不会报错。第六，区块时间戳。误解是精确时间。事实是出块者可以小幅调整，二层网络上由排序器决定，不能做随机数，也不能做秒级判断。</li>
       <li>第七，区块号。误解是每个区块的时间固定。算一个示例。一个合约要锁仓7天，按3秒一个块计算，写死了201600个块。</li>
       <li>后来出块间隔缩短到0.75秒，这正是 BNB Chain 发生过的变化。同样是201600个块，现在只要42个小时，也就是1.75天，锁仓期缩短了四分之三。</li>
-      <li>第八，函数选择器。误解是函数名唯一。事实是选择器只有4个字节，不同的函数签名可能算出同一个选择器。2021年 Poly Network 事故的关键一步，就利用了这一点，第11集会讲。</li>
+      <li>第八，函数选择器。误解是函数名唯一。事实是选择器只有4个字节，不同的函数签名可能算出同一个选择器。2021年 Poly Network 事故的关键一步，就利用了这一点，第12集会讲。</li>
     </ol>
   </section>
 
@@ -269,7 +269,7 @@
       <li data-step="1">存储按槽位打包；改一个类型、插一个变量，<span class="hl">后面全部错位</span>。</li>
       <li data-step="2">private 不保密、余额可被强制转入、区块时间会变、低级 call 失败<span class="hl">不冒泡</span>。</li>
     </ul>
-    <h2 data-show="3">下一集：EP03 重入攻击</h2>
+    <h2 data-show="3">下一集：EP04 重入攻击</h2>
     <div class="path" data-show="3">
       <div class="card sell"><div class="n">4</div><b>四种重入</b><div class="d">单函数、跨函数、跨合约、只读</div></div>
       <div class="card gold"><div class="n">CEI</div><b>检查 · 生效 · 交互</b><div class="d">顺序就是防线</div></div>

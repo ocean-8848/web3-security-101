@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EP04 访问控制与权限</title>
+<title>EP05 访问控制与权限</title>
 <link rel="stylesheet" href="assets/player.css">
 <link rel="stylesheet" href="assets/contract.css">
 <style>
@@ -17,11 +17,11 @@
 </style>
 </head>
 <body>
-<div class="stage" data-ep="EP04" data-title="访问控制与权限：谁有权按这个按钮">
+<div class="stage" data-ep="EP05" data-title="访问控制与权限：谁有权按这个按钮">
 
   <!-- 1 开场 -->
   <section class="scene title" data-title="开场" data-onstep="marks">
-    <div class="kicker">合约安全 · 主线 · EP04</div>
+    <div class="kicker">合约安全 · 主线 · EP05</div>
     <h1>每个函数都要回答：<br><span class="hl">谁可以调用我？</span></h1>
     <div class="hero">
       <div class="card sell" data-k="1" data-nocur><div class="k">2017 · Parity 多签</div><div class="big">51 万 ETH</div><div>库合约未初始化 → 被自毁 → 永久冻结</div></div>
@@ -29,7 +29,7 @@
       <div class="card info" data-k="3" data-nocur><div class="k">2022 · BNB Token Hub</div><div class="big">200 万 BNB</div><div>付 100 BNB 押金就能当中继者</div></div>
     </div>
     <ol class="say">
-      <li>大家好，欢迎来到主线第4集，访问控制与权限。合约的每个状态修改函数，都必须回答一个问题，谁可以调用我？如果答案是任何人，就必须证明任何人调用都安全。</li>
+      <li>大家好，欢迎来到主线第5集，访问控制与权限。合约的每个状态修改函数，都必须回答一个问题，谁可以调用我？如果答案是任何人，就必须证明任何人调用都安全。</li>
       <li>看三起事故，以下据公开报道。2017年，Parity 多签钱包依赖的库合约没有初始化，被一个用户接管后自毁，约51万个 ETH 被永久冻结。</li>
       <li>2022年，Ronin 跨链桥，其中一份签名权，来自一个早就不需要、却没有撤销的授权。</li>
       <li>同年，BNB Chain 的 Token Hub，只要付100个 BNB 的押金就能注册成跨链中继者，攻击者因此凭空铸造了200万个 BNB。三起事故，都是谁能做什么没有想清楚。</li>
@@ -86,12 +86,12 @@
       <div class="card good" data-k="1"><h3>修复</h3><div class="src sm" style="background:transparent;border:0;padding:0"><span class="ln good"><span class="kw">function</span> <span class="fn">mint</span>(to, amt) <span class="kw">external</span></span><span class="ln good">    onlyRole(MINTER_ROLE) {</span><span class="ln">  _mint(to, amt);</span><span class="ln">}</span></div></div>
     </div>
     <div class="card warn fs28" data-k="2">0.5 之前函数默认 public：旧合约忘写可见性 = 把内部函数暴露给所有人。</div>
-    <div class="card info fs28" data-k="3">② tx.origin 鉴权 → 改用 msg.sender（机制见 EP02）</div>
+    <div class="card info fs28" data-k="3">② tx.origin 鉴权 → 改用 msg.sender（机制见 EP03）</div>
     <ol class="say">
       <li>第一种缺陷，缺少权限检查。这个增发函数是外部可调用的，没有任何修饰器，任何人都能增发。</li>
       <li>修复很简单，加上角色检查，只有拥有增发角色的地址才能调用。</li>
       <li>注意一个历史问题。Solidity 0.5之前，函数默认可见性是 public。旧合约如果忘了写可见性，就等于把内部函数暴露给了所有人。审计老代码时要特别留意。</li>
-      <li>第二种缺陷，用 tx.origin 鉴权，第2集讲过机制。修复是改用 msg.sender。</li>
+      <li>第二种缺陷，用 tx.origin 鉴权，第3集讲过机制。修复是改用 msg.sender。</li>
     </ol>
   </section>
 
@@ -137,7 +137,7 @@
     <ol class="say">
       <li>第四种缺陷，任意外部调用。一个执行函数，让用户指定目标地址和调用数据。如果这个合约持有别人给它的代币授权，攻击者就把调用数据构造成，从受害者转账给攻击者。如果这里用的是 delegatecall，攻击者的代码会直接改写本合约的存储。</li>
       <li>第五种，单步所有权转移。owner 一步把权限转给新地址，输错一个字符，权限就永久丢失。修复是两步式，新 owner 必须主动调用接受函数。</li>
-      <li>第六种，签名鉴权写错。用签名代替消息发送者来鉴权时，ecrecover 对无效签名会返回零地址。如果被比较的签名者变量从没设置过，它默认也是零，检查就通过了。第8集会详细讲签名。</li>
+      <li>第六种，签名鉴权写错。用签名代替消息发送者来鉴权时，ecrecover 对无效签名会返回零地址。如果被比较的签名者变量从没设置过，它默认也是零，检查就通过了。第9集会详细讲签名。</li>
     </ol>
   </section>
 
@@ -273,7 +273,7 @@
       <li data-step="1">实现合约本身也要<span class="hl">锁死初始化</span>；所有权两步转移。</li>
       <li data-step="2">最小权限 + 多签 + 时间锁；<span class="hl">撤销流程</span>和账户模型同样是权限。</li>
     </ul>
-    <h2 data-show="3">下一集：EP05 算术与精度</h2>
+    <h2 data-show="3">下一集：EP06 算术与精度</h2>
     <div class="path" data-show="3">
       <div class="card sell"><div class="n">÷</div><b>舍入方向</b><div class="d">向谁取整，谁就吃亏</div></div>
       <div class="card gold"><div class="n">4626</div><b>金库通胀攻击</b><div class="d">一笔捐赠拉高份额价格</div></div>

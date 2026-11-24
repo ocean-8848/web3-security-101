@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EP07 预言机与闪电贷</title>
+<title>EP08 预言机与闪电贷</title>
 <link rel="stylesheet" href="assets/player.css">
 <link rel="stylesheet" href="assets/contract.css">
 <style>
@@ -19,11 +19,11 @@
 </style>
 </head>
 <body>
-<div class="stage" data-ep="EP07" data-title="预言机与闪电贷：一笔交易就能改写的价格">
+<div class="stage" data-ep="EP08" data-title="预言机与闪电贷：一笔交易就能改写的价格">
 
   <!-- 1 开场 -->
   <section class="scene title" data-title="开场" data-onstep="marks">
-    <div class="kicker">合约安全 · 主线 · EP07</div>
+    <div class="kicker">合约安全 · 主线 · EP08</div>
     <h1>合约相信了一个<br><span class="hl">一笔交易就能改写</span>的价格</h1>
     <div class="hero">
       <div class="card sell" data-k="1" data-nocur><div class="k">2021 · Cream Finance</div><div class="big">约 1.3 亿$</div><div>份额价格被捐赠抬高</div></div>
@@ -31,7 +31,7 @@
       <div class="card info" data-k="3" data-nocur><div class="k">2022 · Inverse Finance</div><div class="big">约 1,560 万$</div><div>TWAP 也没挡住</div></div>
     </div>
     <ol class="say">
-      <li>大家好，欢迎来到主线第7集，预言机与闪电贷。一句话理解，如果合约用同一笔交易里可以被改变的数据来定价，就会被人先改变它，再按错误的价格和合约做交易。本集的重点是，怎样识别不可信的价格源，以及怎样安全地读取价格。</li>
+      <li>大家好，欢迎来到主线第8集，预言机与闪电贷。一句话理解，如果合约用同一笔交易里可以被改变的数据来定价，就会被人先改变它，再按错误的价格和合约做交易。本集的重点是，怎样识别不可信的价格源，以及怎样安全地读取价格。</li>
       <li>看三起事故，以下据公开报道。2021年，Cream Finance 约1.3亿美元，份额价格被捐赠抬高，而协议用它给抵押品估值。</li>
       <li>2022年，BNB Chain 上的 Venus，约1100万美元，根因是预言机的下限熔断，价格停在了下限。</li>
       <li>同年，Inverse Finance 约1560万美元，连时间加权平均价也没能挡住。三起事故的共同点是，协议相信了一个可被操纵的价格。</li>
@@ -171,7 +171,7 @@
     <ol class="say">
       <li>不是只有 AMM 现货价危险。份额价格同样会被操纵。看 Cream，以下据公开复盘。一个金库的份额价格，等于总资产除以总份额。如果总资产直接读合约的代币余额，那么任何人直接向金库转账，就能抬高每份的价值。</li>
       <li>Cream 用这个份额价格，给一种抵押品估值。攻击者向金库捐赠大量资产，份额价格被抬高。</li>
-      <li>然后用少量这种份额作抵押，按虚高的价格借出大量资金，损失约1.3亿美元。这和第5集讲的金库通胀，是同一个根源，总资产直接读余额。</li>
+      <li>然后用少量这种份额作抵押，按虚高的价格借出大量资金，损失约1.3亿美元。这和第6集讲的金库通胀，是同一个根源，总资产直接读余额。</li>
       <li>还有 LP 代币的定价。LP 代币不能用储备乘以现货价再除以总供应来算，因为储备和现货价都可被操纵。要用公平储备法，用外部预言机价格和不变量反推出公平储备，再算 LP 价值。</li>
     </ol>
   </section>
@@ -237,7 +237,7 @@
       <li data-step="1">三类价格源各有短板；读链下预言机查<span class="hl">正值、时效、上下限、精度</span>。</li>
       <li data-step="2">问"<span class="hl">价格错了/停了会怎样</span>"；L2 查排序器；TWAP 要配池深。</li>
     </ul>
-    <h2 data-show="3">下一集：EP08 MEV 与签名安全</h2>
+    <h2 data-show="3">下一集：EP09 MEV 与签名安全</h2>
     <div class="path" data-show="3">
       <div class="card sell"><div class="n">夹</div><b>三明治</b><div class="d">你的交易被夹在中间</div></div>
       <div class="card gold"><div class="n">5</div><b>签名五要素</b><div class="d">少一个就能被重放</div></div>
@@ -341,7 +341,7 @@
     if (st >= 3) { rect(svg, 40, 300, 400, 212, { fill: C.curFill, stroke: C.gold, sw: 3 }); T(svg, 240, 340, 'LP 代币定价', C.gold, 28, 'middle', true); T(svg, 240, 386, '✗ 储备 × 现货价 ÷ 总供应', C.sell, 24); T(svg, 240, 428, '✓ 公平储备法：', C.buy, 24); T(svg, 240, 468, '外部价 + 不变量反推公平储备', C.text, 24); }
     const side = el.querySelector('#shareSide');
     side.innerHTML = ['<div class="card fs28 muted">份额价格也可被操纵</div>',
-      '<div class="card warn fs28">和第 5 集金库通胀<br>同一个根源：<b>总资产读余额</b></div>',
+      '<div class="card warn fs28">和第 6 集金库通胀<br>同一个根源：<b>总资产读余额</b></div>',
       '<div class="card sell fs28">Cream：用份额价给抵押品估值<br>→ 约 1.3 亿$</div>',
       '<div class="card info fs28">LP 代币：用公平储备法，<br>不用储备直接算</div>'][Math.min(st, 3)];
   }

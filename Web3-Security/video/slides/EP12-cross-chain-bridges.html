@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EP11 跨链桥安全</title>
+<title>EP12 跨链桥安全</title>
 <link rel="stylesheet" href="assets/player.css">
 <link rel="stylesheet" href="assets/contract.css">
 <style>
@@ -15,11 +15,11 @@
 </style>
 </head>
 <body>
-<div class="stage" data-ep="EP11" data-title="跨链桥安全：两条链之间的那条缝">
+<div class="stage" data-ep="EP12" data-title="跨链桥安全：两条链之间的那条缝">
 
   <!-- 1 开场 -->
   <section class="scene title" data-title="开场" data-onstep="marks">
-    <div class="kicker">合约安全 · 主线 · EP11</div>
+    <div class="kicker">合约安全 · 主线 · EP12</div>
     <h1>B 链看不到 A 链，<br>只能<span class="hl">相信一种证明</span></h1>
     <div class="hero">
       <div class="card sell" data-k="1" data-nocur><div class="k">2021 · Poly Network</div><div class="big">约 6.1 亿$</div><div>用选择器碰撞换掉验证者公钥</div></div>
@@ -27,7 +27,7 @@
       <div class="card info" data-k="3" data-nocur><div class="k">2022 · Wormhole</div><div class="big">约 3.2 亿$</div><div>没校验传入的系统账户</div></div>
     </div>
     <ol class="say">
-      <li>大家好，欢迎来到主线第11集，跨链桥安全，损失最大的一类事故。一句话理解，跨链桥让 B 链上的合约相信，A 链上发生了某件事。B 链看不到 A 链，所以它只能相信某种证明。证明机制被骗，桥上的全部资产就被骗走。</li>
+      <li>大家好，欢迎来到主线第12集，跨链桥安全，损失最大的一类事故。一句话理解，跨链桥让 B 链上的合约相信，A 链上发生了某件事。B 链看不到 A 链，所以它只能相信某种证明。证明机制被骗，桥上的全部资产就被骗走。</li>
       <li>看三起事故，以下据公开报道。2021年，Poly Network 约6.1亿美元，用一个选择器碰撞，换掉了验证者的公钥，后来攻击者归还了。</li>
       <li>2022年，Ronin 约6.2亿美元，验证者私钥被拿到。</li>
       <li>同年，Wormhole 约3.2亿美元，Solana 一侧没有校验传入的系统账户是否真实。跨链桥往往是整个系统里最大的一笔钱，所以是攻击者的首选目标。</li>
@@ -93,7 +93,7 @@
     <ol class="say">
       <li>跨链桥事故可以归入四类根因。第一类，私钥与运营。Ronin 就是，9个验证者里5个签名放行，攻击者控制了5把私钥，其中4把属于同一机构，1把来自本应撤销的授权。阈值的意义，取决于签名人的独立性。4把钥匙放在同一个地方，等于1把。</li>
       <li>第二类，验证逻辑。Token Hub，攻击者没偷任何私钥，而是利用了证明验证代码的缺陷，伪造消息铸造了200万 BNB。还有 Wormhole，Solana 一侧没有校验传入的系统账户是否真实。</li>
-      <li>第三类，初始化。Nomad，升级时把可信根设成零，任何消息都被视为已证明，第9集讲过。第四类，存款伪造。Qubit，对零地址调用转账返回成功，桥记录了不存在的存款，第6集讲过。</li>
+      <li>第三类，初始化。Nomad，升级时把可信根设成零，任何消息都被视为已证明，第10集讲过。第四类，存款伪造。Qubit，对零地址调用转账返回成功，桥记录了不存在的存款，第7集讲过。</li>
       <li>特别看 Poly Network，它属于验证逻辑类，手法很典型。跨链管理合约允许消息调用任意目标函数。攻击者构造一个函数名，让它的4字节选择器，和替换验证者公钥的那个函数相同，于是通过跨链消息，把验证者公钥换成了自己的，然后签发任意提款。所以，跨链消息执行器绝不能调用持有特权的合约，目标地址和函数选择器都要白名单化。</li>
     </ol>
   </section>
@@ -181,7 +181,7 @@
       <li data-step="1">四类根因：私钥、验证逻辑、初始化、存款伪造；消息执行器<span class="hl">不碰特权合约</span>。</li>
       <li data-step="2">阈值要配<span class="hl">签名人独立性</span>；交易所充值就是一座桥，查地址、查回执、查幂等。</li>
     </ul>
-    <h2 data-show="3">下一集：EP12 审计、测试与开发流程</h2>
+    <h2 data-show="3">下一集：EP27 审计、测试与开发流程</h2>
     <div class="path" data-show="3">
       <div class="card sell"><div class="n">8</div><b>八个安全关口</b><div class="d">从设计到上线</div></div>
       <div class="card gold"><div class="n">∀</div><b>模糊与不变量测试</b><div class="d">工具替你找序列</div></div>

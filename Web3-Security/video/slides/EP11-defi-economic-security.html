@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EP10 DeFi 经济安全</title>
+<title>EP11 DeFi 经济安全</title>
 <link rel="stylesheet" href="assets/player.css">
 <link rel="stylesheet" href="assets/contract.css">
 <style>
@@ -16,11 +16,11 @@
 </style>
 </head>
 <body>
-<div class="stage" data-ep="EP10" data-title="DeFi 经济安全：代码没错，规则错了">
+<div class="stage" data-ep="EP11" data-title="DeFi 经济安全：代码没错，规则错了">
 
   <!-- 1 开场 -->
   <section class="scene title" data-title="开场" data-onstep="marks">
-    <div class="kicker">合约安全 · 主线 · EP10</div>
+    <div class="kicker">合约安全 · 主线 · EP11</div>
     <h1>代码没错，<br><span class="hl">规则</span>错了</h1>
     <div class="hero">
       <div class="card sell" data-k="1" data-nocur><div class="k">2023 · Euler</div><div class="big">约 1.97 亿$</div><div>一个函数漏了健康检查</div></div>
@@ -28,7 +28,7 @@
       <div class="card info" data-k="3" data-nocur><div class="k">2021 · Venus XVS</div><div class="big">坏账超 9,500 万$</div><div>自有代币作抵押品的反身性</div></div>
     </div>
     <ol class="say">
-      <li>大家好，欢迎来到主线第10集，DeFi 经济安全。一句话理解，经济攻击不依赖代码 bug。攻击者严格按照协议规则操作，只是组合了设计者没想到的顺序、规模或时间。</li>
+      <li>大家好，欢迎来到主线第11集，DeFi 经济安全。一句话理解，经济攻击不依赖代码 bug。攻击者严格按照协议规则操作，只是组合了设计者没想到的顺序、规模或时间。</li>
       <li>看三起事故，以下据公开报道。2023年，Euler 约1.97亿美元，根因是一个函数漏了健康检查。</li>
       <li>2022年，Beanstalk 约1.8亿美元，根因是投票权能借，提案又能当场执行。</li>
       <li>2021年，Venus 的 XVS 事件，用自己的治理代币作抵押品，坏账超过9500万美元。这些都不是代码写错了，是规则本身可以被套利。</li>
@@ -146,7 +146,7 @@
     </table>
     <ol class="say">
       <li>奖励分发也容易被无风险套利。第一个缺陷，存入即领奖。奖励按存款时点的余额计算，攻击者就用闪电贷存入、领奖、取出，一笔交易薅走奖励。修复是奖励随时间累积，存入后设最短锁定期。</li>
-      <li>第二，奖励代币和质押代币相同。合约的余额同时包含奖励和质押，计算份额就出错。修复是质押量用内部变量记录，不读余额，这和第5集金库通胀是一个道理。</li>
+      <li>第二，奖励代币和质押代币相同。合约的余额同时包含奖励和质押，计算份额就出错。修复是质押量用内部变量记录，不读余额，这和第6集金库通胀是一个道理。</li>
       <li>第三，奖励速率可被调用者影响，比如按本区块成交量或池子价格算。修复是参数由治理设定，不读一笔交易内可变的数据。第四，按 LP 价值铸币，就是 PancakeBunny，要用公平储备定价。</li>
     </ol>
   </section>
@@ -211,7 +211,7 @@
       <li data-step="1">投票权用<span class="hl">历史快照</span>，提案<span class="hl">经时间锁执行</span>；奖励不读可变数据。</li>
       <li data-step="2"><span class="hl">延迟是安全参数</span>；自有代币作抵押品有反身性风险。</li>
     </ul>
-    <h2 data-show="3">下一集：EP11 跨链桥安全</h2>
+    <h2 data-show="3">下一集：EP12 跨链桥安全</h2>
     <div class="path" data-show="3">
       <div class="card sell"><div class="n">4</div><b>四种验证方式</b><div class="d">多签、乐观、轻客户端、ZK</div></div>
       <div class="card gold"><div class="n">4</div><b>四类根因</b><div class="d">验证、消息、铸造、初始化</div></div>

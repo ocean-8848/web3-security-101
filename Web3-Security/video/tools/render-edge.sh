@@ -3,7 +3,7 @@
 # Voice = CEX sample "D-yunxi-lively" (zh-CN-YunxiNeural, +5% rate, +3Hz pitch). Each sentence also gets its own
 # speed / pitch / volume by role (questions rise, warnings slow down and get louder, examples speed up), and pauses
 # follow punctuation. EDGE_PROSODY=0 turns the variation off; EDGE_RATE / EDGE_PITCH change the base.
-#   ./render-edge.sh          # all 27 episodes        ./render-edge.sh EP03   # one episode (file-name prefix)
+#   ./render-edge.sh          # all 27 episodes        ./render-edge.sh EP04   # one episode (file-name prefix)
 cd "$(dirname "$0")"
 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH:$HOME/.local/bin"
 for d in "$HOME"/Library/Python/*/bin; do [ -d "$d" ] && PATH="$PATH:$d"; done

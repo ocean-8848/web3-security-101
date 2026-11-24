@@ -1,6 +1,6 @@
-# EP05 算术与精度：差一个 wei，丢一个金库
+# EP06 算术与精度：差一个 wei，丢一个金库
 
-> 口播约 3460 字，预计 11.9 分钟。画面：[slides/EP05-arithmetic-precision.html](../slides/EP05-arithmetic-precision.html)（浏览器打开，→ 键逐步播放，N 键显示讲稿）。成片：`output/EP05-arithmetic-precision.mp4`。
+> 口播约 3460 字，预计 11.9 分钟。画面：[slides/EP06-arithmetic-precision.html](../slides/EP06-arithmetic-precision.html)（浏览器打开，→ 键逐步播放，N 键显示讲稿）。成片：`output/EP06-arithmetic-precision.mp4`。
 
 ## 场景目录
 
@@ -23,7 +23,7 @@
 
 **画面标题**：EVM 只有整数， 丢掉的余数归谁？（逐步动画）
 
-**[1.0]** 大家好，欢迎来到主线第5集，算术与精度。一句话理解，EVM 只有整数，每一次除法都会丢掉余数。丢掉的余数归谁，决定了谁能从协议里慢慢抠出钱。
+**[1.0]** 大家好，欢迎来到主线第6集，算术与精度。一句话理解，EVM 只有整数，每一次除法都会丢掉余数。丢掉的余数归谁，决定了谁能从协议里慢慢抠出钱。
 
 **[1.1]** 看三起事故，以下据公开报道。2018年，BEC 代币的一次乘法溢出，结果回绕成零，攻击者凭空增发了天量代币。
 

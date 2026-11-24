@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EP09 可升级合约与代理</title>
+<title>EP10 可升级合约与代理</title>
 <link rel="stylesheet" href="assets/player.css">
 <link rel="stylesheet" href="assets/contract.css">
 <style>
@@ -22,11 +22,11 @@
 </style>
 </head>
 <body>
-<div class="stage" data-ep="EP09" data-title="可升级合约与代理：维修门的两面">
+<div class="stage" data-ep="EP10" data-title="可升级合约与代理：维修门的两面">
 
   <!-- 1 开场 -->
   <section class="scene title" data-title="开场" data-onstep="marks">
-    <div class="kicker">合约安全 · 主线 · EP09</div>
+    <div class="kicker">合约安全 · 主线 · EP10</div>
     <h1>谁能换实现，<br>谁就拥有<span class="hl">全部资金</span></h1>
     <div class="hero">
       <div class="card sell" data-k="1" data-nocur><div class="k">2022 · Nomad 桥</div><div class="big">约 1.9 亿$</div><div>升级把可信根设成了 0</div></div>
@@ -34,7 +34,7 @@
       <div class="card info" data-k="3" data-nocur><div class="k">2021 · Compound 提案 62</div><div class="big">约 8,000 万$</div><div>没有紧急开关，修复要等 7 天</div></div>
     </div>
     <ol class="say">
-      <li>大家好，欢迎来到主线第9集，可升级合约与代理。留给自己的维修门，也是留给攻击者的门。一句话理解，代理合约保存数据和资金，实现合约提供代码。升级，就是换掉代理指向的实现。谁能换实现，谁就拥有全部资金。</li>
+      <li>大家好，欢迎来到主线第10集，可升级合约与代理。留给自己的维修门，也是留给攻击者的门。一句话理解，代理合约保存数据和资金，实现合约提供代码。升级，就是换掉代理指向的实现。谁能换实现，谁就拥有全部资金。</li>
       <li>看三个案例，以下据公开报道。2022年，Nomad 桥在升级时，把可信消息根设成了零，损失约1.9亿美元。</li>
       <li>2021年，OpenZeppelin 公告它的 UUPS 实现有问题，未初始化的实现合约可被接管并自毁。</li>
       <li>同年，Compound 的一个升级提案出错，部分用户超额领取奖励，而协议没有紧急开关，修复要等约7天。本集讲三种代理、三类漏洞和安全升级流程。</li>
@@ -91,7 +91,7 @@
       <li>第一类存储冲突，代理自己的变量和实现的变量撞在同一个槽。看一个朴素代理，它把实现地址放在第0个槽位。</li>
       <li>实现合约里，owner 也在第0个槽位。因为 delegatecall 用的是代理的存储。</li>
       <li>当实现合约执行设置 owner 的代码，改的是第0个槽，也就是代理的实现地址被改成了一个 owner 地址。</li>
-      <li>下一次调用，代理会把这个 owner 地址当作实现合约去 delegatecall，合约彻底坏掉。修复是用 EIP-1967 定义的固定伪随机槽位，存放实现地址，第2集讲过那个以3608开头的位置，几乎不可能和普通变量重合。</li>
+      <li>下一次调用，代理会把这个 owner 地址当作实现合约去 delegatecall，合约彻底坏掉。修复是用 EIP-1967 定义的固定伪随机槽位，存放实现地址，第3集讲过那个以3608开头的位置，几乎不可能和普通变量重合。</li>
     </ol>
   </section>
 
@@ -154,7 +154,7 @@
     <ol class="say">
       <li>再看一个对照案例，Compound 提案62，2021年9月。升级后的奖励逻辑有误，部分用户可以超额领取奖励代币，最坏情况约28万枚，约8000万美元。</li>
       <li>问题是，协议没有一个可以停止奖励分发的紧急开关。任何修复，都要走约7天的治理流程。在这7天里，错误的奖励还在继续发放。</li>
-      <li>和 Nomad 对比，一个是升级权太容易被利用，一个是没有紧急开关，修复太慢。教训是，时间锁挡住了恶意升级，但也挡住了紧急修复。所以，暂停权和升级权要分开设计，暂停要快，升级要慢，第4集讲过。</li>
+      <li>和 Nomad 对比，一个是升级权太容易被利用，一个是没有紧急开关，修复太慢。教训是，时间锁挡住了恶意升级，但也挡住了紧急修复。所以，暂停权和升级权要分开设计，暂停要快，升级要慢，第5集讲过。</li>
     </ol>
   </section>
 
@@ -236,7 +236,7 @@
       <li data-step="1">实现合约<span class="hl">锁死初始化</span>；零值不能有业务含义（Nomad）。</li>
       <li data-step="2"><span class="hl">升级交易本身要审计</span>；暂停权与升级权分开；L2 升级权是安全上限。</li>
     </ul>
-    <h2 data-show="3">下一集：EP10 DeFi 经济安全</h2>
+    <h2 data-show="3">下一集：EP11 DeFi 经济安全</h2>
     <div class="path" data-show="3">
       <div class="card sell"><div class="n">∑</div><b>偿付不变量</b><div class="d">资产永远盖得住负债</div></div>
       <div class="card gold"><div class="n">vote</div><b>治理攻击</b><div class="d">投票权能借、提案能当场执行</div></div>

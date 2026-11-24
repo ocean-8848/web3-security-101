@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EP13 事故案例库</title>
+<title>EP28 事故案例库</title>
 <link rel="stylesheet" href="assets/player.css">
 <link rel="stylesheet" href="assets/contract.css">
 <style>
@@ -22,11 +22,11 @@
 </style>
 </head>
 <body>
-<div class="stage" data-ep="EP13" data-title="事故案例库：同样的错误，换个名字再来一次">
+<div class="stage" data-ep="EP28" data-title="事故案例库：同样的错误，换个名字再来一次">
 
   <!-- 1 开场 -->
   <section class="scene title" data-title="开场" data-onstep="marks">
-    <div class="kicker">合约安全 · 主线 · EP13（完结）</div>
+    <div class="kicker">合约安全 · 主线 · EP28（完结）</div>
     <h1>大多数事故不是新漏洞，<br>是旧漏洞<span class="hl">换了环境</span></h1>
     <div class="ana">
       <div class="card info" data-k="1" data-nocur><b>新链</b><div class="a">同一个坑，换条链再踩</div></div>
@@ -35,7 +35,7 @@
       <div class="card sell" data-k="2" data-nocur><b>新组合</b><div class="a">两个安全的东西拼在一起</div></div>
     </div>
     <ol class="say">
-      <li>大家好，欢迎来到主线第13集，也是主线的最后一集，事故案例库。前面十二集我们逐类讲了漏洞和防御，这一集把它们串成一张事故地图。</li>
+      <li>大家好，欢迎来到主线第28集，事故案例库。前面十二集我们逐类讲了漏洞和防御，这一集把它们串成一张事故地图。</li>
       <li>一句话理解，大多数事故不是全新的漏洞，而是旧漏洞在新环境里复发。换了新链，同一个坑再踩一次。分叉改了一行，原来的检查就失效了。</li>
       <li>或者审计之后又改了版本，又或者，两个各自安全的东西拼在一起就出了问题。本集讲三十多起事故的分类总表、七种反复出现的模式，和一份复盘模板。</li>
     </ol>
@@ -225,9 +225,9 @@
   function catStep(el, st) {
     const svg = el.querySelector('#cat'); svg.innerHTML = '';
     const D = [
-      ['重入', 4, 'EP03', C.sell], ['权限/初始化', 3, 'EP04', C.info], ['算术/精度', 4, 'EP05', C.warn],
-      ['外部调用', 3, 'EP06', C.info], ['预言机操纵', 5, 'EP07', C.sell], ['前端/签名', 3, 'EP08', C.warn],
-      ['升级/治理', 3, 'EP09·10', C.info], ['跨链/私钥', 4, 'EP11', C.sell]
+      ['重入', 4, 'EP04', C.sell], ['权限/初始化', 3, 'EP05', C.info], ['算术/精度', 4, 'EP06', C.warn],
+      ['外部调用', 3, 'EP07', C.info], ['预言机操纵', 5, 'EP08', C.sell], ['前端/签名', 3, 'EP09', C.warn],
+      ['升级/治理', 3, 'EP10·10', C.info], ['跨链/私钥', 4, 'EP12', C.sell]
     ];
     const grp = [0, 0, 0, 1, 1, 2, 2, 2];
     const maxN = 5, bw = 185, gap = 15, x0 = 40, baseY = 380;

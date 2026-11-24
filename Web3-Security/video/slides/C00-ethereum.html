@@ -87,16 +87,16 @@
     <table class="t xs">
       <thead><tr><th>事故</th><th>模式</th><th>主线章节</th></tr></thead>
       <tbody>
-        <tr><td>Fei Rari（2022）</td><td>跨函数重入，锁没覆盖全部函数</td><td>EP03</td></tr>
-        <tr><td>Penpie（2024）</td><td>无许可注册 + 领奖无锁</td><td>EP03·06</td></tr>
-        <tr><td>Akutars（2022）</td><td>逻辑错误 + 推送退款 DoS</td><td>EP06</td></tr>
-        <tr><td>KyberSwap（2023）</td><td>舍入方向与注释相反</td><td>EP05</td></tr>
-        <tr><td>Harvest（2020）</td><td>份额价格被池价操纵（单交易）</td><td>EP07</td></tr>
-        <tr><td>Inverse（2022）</td><td>浅池 TWAP 被持续操纵（多区块）</td><td>EP07</td></tr>
-        <tr><td>Sushi RP2（2023）</td><td>回调校验只认上次调用的地址</td><td>EP04·06</td></tr>
-        <tr><td>Compound 62（2021）</td><td>升级引入 bug + 无紧急开关</td><td>EP09·10</td></tr>
-        <tr><td>WazirX（2024）</td><td>签名界面与实际交易不一致</td><td>EP08</td></tr>
-        <tr><td>EIP-7702 钓鱼（2025）</td><td>诱导签署委托代码</td><td>EP08</td></tr>
+        <tr><td>Fei Rari（2022）</td><td>跨函数重入，锁没覆盖全部函数</td><td>EP04</td></tr>
+        <tr><td>Penpie（2024）</td><td>无许可注册 + 领奖无锁</td><td>EP04·06</td></tr>
+        <tr><td>Akutars（2022）</td><td>逻辑错误 + 推送退款 DoS</td><td>EP07</td></tr>
+        <tr><td>KyberSwap（2023）</td><td>舍入方向与注释相反</td><td>EP06</td></tr>
+        <tr><td>Harvest（2020）</td><td>份额价格被池价操纵（单交易）</td><td>EP08</td></tr>
+        <tr><td>Inverse（2022）</td><td>浅池 TWAP 被持续操纵（多区块）</td><td>EP08</td></tr>
+        <tr><td>Sushi RP2（2023）</td><td>回调校验只认上次调用的地址</td><td>EP05·06</td></tr>
+        <tr><td>Compound 62（2021）</td><td>升级引入 bug + 无紧急开关</td><td>EP10·10</td></tr>
+        <tr><td>WazirX（2024）</td><td>签名界面与实际交易不一致</td><td>EP09</td></tr>
+        <tr><td>EIP-7702 钓鱼（2025）</td><td>诱导签署委托代码</td><td>EP09</td></tr>
       </tbody>
     </table>
     <ol class="say">
@@ -108,7 +108,7 @@
 
   <!-- 5 Fei Rari 跨函数重入 -->
   <section class="scene" data-title="Fei Rari：跨函数重入" data-onstep="marks">
-    <div class="kicker">案例一 · EP03 跨函数重入的真实版本</div>
+    <div class="kicker">案例一 · EP04 跨函数重入的真实版本</div>
     <h2>把 transfer 改成 call，就改变了重入面</h2>
     <div class="src sm" data-k="0"><div class="ln c"><span class="cm">// ❌ borrow 先转出 ETH，后更新借款记录</span></div>
 <div class="ln">function borrowFresh(...) internal {</div>
@@ -131,7 +131,7 @@
 
   <!-- 6 Akutars 逻辑错误 -->
   <section class="scene" data-title="Akutars：一个变量名锁死资金" data-onstep="marks">
-    <div class="kicker">案例二 · EP06 不可升级合约的上线门槛</div>
+    <div class="kicker">案例二 · EP07 不可升级合约的上线门槛</div>
     <h2>11,539 ETH 被永久锁死，起因是比较错了变量</h2>
     <div class="src sm" data-k="0"><div class="ln c"><span class="cm">// ❌ 缺陷 2：比较对象写错</span></div>
 <div class="ln">function claimProjectFunds() external onlyOwner {</div>
@@ -155,7 +155,7 @@
 
   <!-- 7 Harvest vs Inverse -->
   <section class="scene" data-title="Harvest vs Inverse" data-onstep="marks">
-    <div class="kicker">案例三 · EP07 单交易操纵 vs 多区块操纵</div>
+    <div class="kicker">案例三 · EP08 单交易操纵 vs 多区块操纵</div>
     <h2>TWAP 挡得住闪电贷，挡不住有资本的持续操纵</h2>
     <div class="vs">
       <div class="card info" data-k="0"><h3>Harvest（单笔交易）</h3><div class="fs27">闪电贷压低 Curve 池内 USDC 价<br>→ 份额价格 = 持仓估值 ÷ 份额<br>→ 低价存入、恢复后赎回<br><span class="hl">约 3,380 万美元</span></div></div>
@@ -171,7 +171,7 @@
 
   <!-- 8 Sushi RouteProcessor2 -->
   <section class="scene" data-title="Sushi RP2：回调校验" data-onstep="marks">
-    <div class="kicker">案例四 · EP06 持有授权就是持有钥匙</div>
+    <div class="kicker">案例四 · EP07 持有授权就是持有钥匙</div>
     <h2>"回调来自我刚调用的地址"≠"那是真实的池子"</h2>
     <div class="src sm" data-k="0"><div class="ln bad">address pool = readAddress(route); <span class="cm">// ❌ 池子地址来自用户输入</span></div>
 <div class="ln">lastCalledPool = pool; IUniswapV3Pool(pool).swap(...); <span class="cm">// 恶意池回调</span></div>
@@ -192,7 +192,7 @@
 
   <!-- 9 Compound 62 升级无刹车 -->
   <section class="scene" data-title="Compound 62：升级无刹车" data-onstep="compStep">
-    <div class="kicker">案例五 · EP09/10 时间锁的两面性</div>
+    <div class="kicker">案例五 · EP10/10 时间锁的两面性</div>
     <h2>同一把时间锁，挡住恶意升级，也挡住快速修复</h2>
     <svg id="comp" width="1600" height="400" viewBox="0 0 1600 400"></svg>
     <div class="card gold fs29" data-k="3"><b>教训：</b>把权限分两类——可快速执行、只能"停"的守护者权限；必须经时间锁、可以"改"的升级权限。升级前在主网分叉跑不变量："每个用户累计领取 ≤ 按份额应得"。</div>
@@ -206,7 +206,7 @@
 
   <!-- 10 WazirX / Bybit / 7702 签名 -->
   <section class="scene" data-title="签名界面与委托" data-onstep="rowStep">
-    <div class="kicker">案例六 · EP08 签名人看不懂所签内容</div>
+    <div class="kicker">案例六 · EP09 签名人看不懂所签内容</div>
     <h2>同一种攻击，7 个月内两次命中大型交易所</h2>
     <table class="t sm">
       <thead><tr><th></th><th>WazirX（2024-07）</th><th>Bybit（2025-02）</th></tr></thead>

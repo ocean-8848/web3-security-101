@@ -55,11 +55,11 @@
     <div class="kicker">主线 13 集 · 五层</div>
     <h2>从地图到复盘，由浅入深</h2>
     <div class="layers">
-      <div class="card gold" data-k="0"><span class="n">第一层</span><b>地图</b><div class="d">EP01 安全全景<br>EP02 EVM 基础</div></div>
-      <div class="card sell" data-k="1"><span class="n">第二层</span><b>经典漏洞</b><div class="d">EP03 重入<br>EP04 权限<br>EP05 算术<br>EP06 外部调用</div></div>
-      <div class="card warn" data-k="2"><span class="n">第三层</span><b>DeFi 攻击</b><div class="d">EP07 预言机与闪电贷<br>EP08 MEV 与签名</div></div>
-      <div class="card info" data-k="3"><span class="n">第四层</span><b>系统级</b><div class="d">EP09 升级与代理<br>EP10 经济安全<br>EP11 跨链桥</div></div>
-      <div class="card buy" data-k="4"><span class="n">第五层</span><b>工程与复盘</b><div class="d">EP12 审计与测试<br>EP13 事故案例库</div></div>
+      <div class="card gold" data-k="0"><span class="n">第一层</span><b>地图</b><div class="d">EP01 安全全景<br>EP03 EVM 基础</div></div>
+      <div class="card sell" data-k="1"><span class="n">第二层</span><b>经典漏洞</b><div class="d">EP04 重入<br>EP05 权限<br>EP06 算术<br>EP07 外部调用</div></div>
+      <div class="card warn" data-k="2"><span class="n">第三层</span><b>DeFi 攻击</b><div class="d">EP08 预言机与闪电贷<br>EP09 MEV 与签名</div></div>
+      <div class="card info" data-k="3"><span class="n">第四层</span><b>系统级</b><div class="d">EP10 升级与代理<br>EP11 经济安全<br>EP12 跨链桥</div></div>
+      <div class="card buy" data-k="4"><span class="n">第五层</span><b>工程与复盘</b><div class="d">EP27 审计与测试<br>EP28 事故案例库</div></div>
     </div>
     <div class="card fs28" data-k="5">本集路线：售货机比喻 → 和 Web2 的三个区别 → 攻击面地图 → 六大类 → 攻击者能做什么 → 威胁建模 → 损失趋势 → 四条链</div>
     <ol class="say">
@@ -125,7 +125,7 @@
       <li>闪电贷，是在同一笔交易内借出、并且必须归还的无抵押贷款。交易结束时没还上，整笔交易回滚，就像什么都没发生过。</li>
       <li>来算一个示例。攻击者借1亿美元的稳定币，示例手续费是万分之五，就是5万美元。</li>
       <li>他用这1亿去推动一个价格，或者撑大一个余额，在同一笔交易里，从某个协议里取出比应得更多的钱，然后归还1亿，加5万手续费。</li>
-      <li>如果失败呢？交易回滚，他只损失 gas 费。成功了，赚走差价。所以，凡是按当前余额或当前价格计算的量，在攻击者眼里都是可控的输入。这在第7集详细讲。</li>
+      <li>如果失败呢？交易回滚，他只损失 gas 费。成功了，赚走差价。所以，凡是按当前余额或当前价格计算的量，在攻击者眼里都是可控的输入。这在第8集详细讲。</li>
     </ol>
   </section>
 
@@ -147,12 +147,12 @@
     <div class="kicker">分类</div>
     <h2>六大类，真实事故通常多类叠加</h2>
     <div class="six">
-      <div class="card" data-k="0"><span class="n">① 控制流</span>外部调用让攻击者"插队"<div class="d">重入、只读重入、回调</div><span class="ch">EP03 · EP06</span></div>
-      <div class="card" data-k="0"><span class="n">② 权限</span>不该调用的人调用了<div class="d">缺修饰器、tx.origin、未初始化</div><span class="ch">EP04 · EP09</span></div>
-      <div class="card" data-k="1"><span class="n">③ 数学</span>数字算错了<div class="d">溢出、精度、舍入方向、金库通胀</div><span class="ch">EP05</span></div>
-      <div class="card" data-k="1"><span class="n">④ 数据可信度</span>相信了可被操纵的数据<div class="d">现货价预言机、闪电贷、签名重放</div><span class="ch">EP07 · EP08</span></div>
-      <div class="card" data-k="2"><span class="n">⑤ 经济设计</span>代码对，规格可被套利<div class="d">治理攻击、清算漏洞、坏账</div><span class="ch">EP10</span></div>
-      <div class="card" data-k="2"><span class="n">⑥ 系统与运营</span>代码之外的环节失守<div class="d">跨链验证、私钥、前端、编译器</div><span class="ch">EP11 · EP12</span></div>
+      <div class="card" data-k="0"><span class="n">① 控制流</span>外部调用让攻击者"插队"<div class="d">重入、只读重入、回调</div><span class="ch">EP04 · EP07</span></div>
+      <div class="card" data-k="0"><span class="n">② 权限</span>不该调用的人调用了<div class="d">缺修饰器、tx.origin、未初始化</div><span class="ch">EP05 · EP10</span></div>
+      <div class="card" data-k="1"><span class="n">③ 数学</span>数字算错了<div class="d">溢出、精度、舍入方向、金库通胀</div><span class="ch">EP06</span></div>
+      <div class="card" data-k="1"><span class="n">④ 数据可信度</span>相信了可被操纵的数据<div class="d">现货价预言机、闪电贷、签名重放</div><span class="ch">EP08 · EP09</span></div>
+      <div class="card" data-k="2"><span class="n">⑤ 经济设计</span>代码对，规格可被套利<div class="d">治理攻击、清算漏洞、坏账</div><span class="ch">EP11</span></div>
+      <div class="card" data-k="2"><span class="n">⑥ 系统与运营</span>代码之外的环节失守<div class="d">跨链验证、私钥、前端、编译器</div><span class="ch">EP12 · EP27</span></div>
     </div>
     <ol class="say">
       <li>漏洞可以分六大类。第一类，控制流，外部调用让攻击者插队执行，比如重入和回调。第二类，权限，不该调用的人调用了，比如缺少修饰器、用了交易发起人做鉴权，或者合约没初始化。</li>
@@ -293,7 +293,7 @@
       <li data-step="1">从<span class="hl">攻击者能控制什么</span>出发建模；链上没有秘密，闪电贷让本金不是门槛。</li>
       <li data-step="2"><span class="hl">不变量</span>是锚点；最大的损失正在转向跨链桥和运营。</li>
     </ul>
-    <h2 data-show="3">下一集：EP02 EVM 与 Solidity 安全基础</h2>
+    <h2 data-show="3">下一集：EP03 EVM 与 Solidity 安全基础</h2>
     <div class="path" data-show="3">
       <div class="card info"><div class="n">3</div><b>三种调用</b><div class="d">call、delegatecall、staticcall</div></div>
       <div class="card gold"><div class="n">32</div><b>存储布局</b><div class="d">槽位、打包、映射</div></div>

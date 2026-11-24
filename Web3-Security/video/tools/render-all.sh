@@ -1,6 +1,6 @@
 #!/bin/bash
-# Render every contract-security episode (A01–A10, EP01–EP13, C00–C03), JOBS in parallel (default 4). Logs go to ../output/logs/.
-# Optional filter by file-name prefix:  render-all.sh A   → only A episodes;  render-all.sh EP0 → EP01–EP09;  render-all.sh C0
+# Render every contract-security episode (A01–A10, EP01–EP28, C00–C03), JOBS in parallel (default 4). Logs go to ../output/logs/.
+# Optional filter by file-name prefix:  render-all.sh A   → only A episodes;  render-all.sh EP0 → EP01、EP03–EP09;  render-all.sh C0
 # Extra args go to render.mjs, e.g.  render-all.sh "" --engine kokoro
 # Resumable: an episode already rendered with the same engine (and not edited since) is skipped. FORCE=1 re-renders all.
 cd "$(dirname "$0")"
