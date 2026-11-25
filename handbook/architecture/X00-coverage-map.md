@@ -76,9 +76,9 @@ flowchart LR
 
 | 领域 | 章节 | 主要内容 |
 |---|---|---|
-| A · 通用底座 | [X01](X01-security-program-controls.md)–[X09](X09-security-team-management.md) | 控制矩阵、标准与合规、生产基础设施、软件交付、检测响应、灾备与演练、威胁情报、人员安全、安全团队建设 |
-| C · 公链与项目方 | [X31](X31-chain-foundation-client-ops.md)–[X36](X36-disclosure-bounty-ops.md) | 基金会与客户端、L2/桥/预言机、DeFi 项目方、稳定币与 RWA、验证者、披露与赏金 |
-| D · 其他应用场景 | [X37](X37-wallet-vendor-security.md)–[X48](X48-privacy-protocol-ops.md) | 钱包厂商、托管机构、移动端工程、TEE/HSM 与密钥仪式、支付与法币、做市商、AI Agent、NFT/GameFi、预测市场、再质押、DAO、隐私协议 |
+| 01 · 通用底座 | [X01](X01-security-program-controls.md)–[X09](X09-security-team-management.md) | 控制矩阵、标准与合规、生产基础设施、软件交付、检测响应、灾备与演练、威胁情报、人员安全、安全团队建设 |
+| 03 · 公链与项目方 | [X31](X31-chain-foundation-client-ops.md)–[X36](X36-disclosure-bounty-ops.md) | 基金会与客户端、L2/桥/预言机、DeFi 项目方、稳定币与 RWA、验证者、披露与赏金 |
+| 04 · 其他应用场景 | [X37](X37-wallet-vendor-security.md)–[X48](X48-privacy-protocol-ops.md) | 钱包厂商、托管机构、移动端工程、TEE/HSM 与密钥仪式、支付与法币、做市商、AI Agent、NFT/GameFi、预测市场、再质押、DAO、隐私协议 |
 
 ## 5. 按角色的阅读顺序
 
