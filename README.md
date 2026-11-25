@@ -38,7 +38,7 @@ web3-security-101/
 | `README.md` | 手册首页 | `home` |
 | `chapters/` | 知识正文 33 章 | `01`–`33` → `s01`–`s33` |
 | `bootcamp/` | Web3 安全训练营 | `B00`–`B83` → `w..`（映射见 `tools/build.mjs` 的 `BOOT_IDS`） |
-| `architecture/` | Web3 安全架构与运营：A 通用底座 X00–X09、B 交易所 X10–X30、C 公链与项目方 X31–X36、D 其他应用场景 X37–X48 | `X00`–`X06` → `x00`–`x06`；`X07`–`X48` → `y07`–`y48`（旧编号的 `x07`–`x48` 经 `ALIASES` 跳转） |
+| `architecture/` | Web3 安全架构与运营：01 通用底座 X00–X09、02 交易所 X10–X30、03 公链与项目方 X31–X36、04 其他应用场景 X37–X48 | `X00`–`X06` → `x00`–`x06`；`X07`–`X48` → `y07`–`y48`（旧编号的 `x07`–`x48` 经 `ALIASES` 跳转） |
 | `chains/` | 链专题：以太坊、BNB Chain、TRON、Mantle、Solana、Move（Sui / Aptos）、TON、比特币、Rollup | `C00`–`C08` → `k00`–`k08` |
 | `assessment/` | 评估篇 | `A01`–`A11` → `a01`–`a11` |
 | `templates/` | 评估模板 | `T01`–`T12` → `t01`–`t12` |
