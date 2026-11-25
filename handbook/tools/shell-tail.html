@@ -244,26 +244,58 @@ function showDoc(id) {
     <nav class="pager">${prev ? `<a href="#${prev}" data-nav="${prev}"><span class="k">← 上一篇</span><span class="t">${shortTitle(docs[prev].title)}</span></a>` : ''}
     ${next ? `<a class="next" href="#${next}" data-nav="${next}"><span class="k">下一篇 →</span><span class="t">${shortTitle(docs[next].title)}</span></a>` : ''}</nav>`;
   initChecks(id);
-  initDecks(view);
   enhanceCode(view);
   renderMermaid(view);
   buildToc();
 }
-// ---------- 章节顶部的幻灯讲解：标签页切换拟物化 / 3b1b，只加载选中的那套 ----------
-let deckWant = null;  // 从旧链接 #vNN / #dNN 跳来时指定的标签
-function initDecks(root) {
-  const box = root.querySelector('.deck-tabs'); if (!box) return;
-  const tabs = [...box.querySelectorAll('[role="tab"]')], frames = [...box.querySelectorAll('iframe')], hint = box.querySelector('.deck-hint');
-  const pick = k => {
-    tabs.forEach(b => b.setAttribute('aria-selected', String(b.dataset.deck === k)));
-    frames.forEach(f => { const on = f.dataset.deck === k; f.hidden = !on; if (on) { if (!f.getAttribute('src')) f.src = f.dataset.src; hint.textContent = f.dataset.hint; } });
-  };
-  let saved = null; try { saved = localStorage.getItem('deckStyle'); } catch (e) {}
-  const want = [deckWant, saved, 'skeuo'].find(k => k && tabs.some(b => b.dataset.deck === k)) || tabs[0].dataset.deck;
-  deckWant = null;
-  pick(want);
-  tabs.forEach(b => b.addEventListener('click', () => { pick(b.dataset.deck); try { localStorage.setItem('deckStyle', b.dataset.deck); } catch (e) {} }));
-}
+// ---------- 幻灯讲解：顶栏「▶ Slides」打开全屏播放器，拟物化 / 3b1b 两种风格切换，只加载当前那套 ----------
+const slides = (() => {
+  const decks = DATA.decks || [], byId = Object.fromEntries(decks.map(d => [d.id, d]));
+  const box = document.getElementById('slides'), port = document.getElementById('slidesPort'), title = document.getElementById('slidesTitle');
+  const hint = document.getElementById('slidesHint'), sel = document.getElementById('slSel'), tabs = [...box.querySelectorAll('[role="tab"]')];
+  const HINT = { skeuo: '拟物化：每页直接显示结论画面，点「▶ 看过程」（P）看推导；点画面或按 → 翻页，N 看讲稿，F 全屏。', '3b1b': '3b1b 风格：每页一个想法，配要点和讲稿，最后 3 道自测题；点画面或按 → 翻页，N 看讲稿，Z 放大，F 全屏。' };
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const store = (k, v) => { try { return v === undefined ? localStorage.getItem(k) : localStorage.setItem(k, v); } catch (e) { return null; } };
+  sel.innerHTML = decks.map(d => `<option value="${d.id}">${esc(docs[d.id].title)}</option>`).join('');
+  let cur = null, start = null, style = store('deckStyle') || 'skeuo', lastFocus = null;
+  function load(id, st) {
+    const d = byId[id]; if (!d) return;
+    if (st) style = st;
+    if (!d[style]) style = d.skeuo ? 'skeuo' : '3b1b';
+    cur = id; store('deckLast', id);
+    title.textContent = docs[id].title; sel.value = id; hint.textContent = HINT[style];
+    tabs.forEach(b => { b.hidden = !d[b.dataset.deck]; b.setAttribute('aria-selected', String(b.dataset.deck === style)); });
+    const i = decks.indexOf(d);
+    document.getElementById('slPrev').disabled = i === 0; document.getElementById('slNext').disabled = i === decks.length - 1;
+    port.innerHTML = `<iframe src="${d[style]}" title="${esc(docs[id].title)} 幻灯讲解" allow="fullscreen" allowfullscreen></iframe>`;
+    port.firstChild.focus();
+  }
+  function open(id, st) {
+    if (!decks.length) return;
+    const here = (location.hash || '').slice(1);
+    id = byId[id] ? id : byId[here] ? here : byId[store('deckLast')] ? store('deckLast') : decks[0].id;
+    lastFocus = document.activeElement;
+    box.hidden = false; document.body.classList.add('slides-open');
+    load(id, st); start = cur;
+  }
+  function close() {
+    if (box.hidden) return;
+    box.hidden = true; port.innerHTML = ''; document.body.classList.remove('slides-open');
+    if (cur !== start) go(cur);  // 在播放器里换过章：关闭后打开那一章的原文
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  const step = k => { const i = decks.findIndex(d => d.id === cur) + k; if (decks[i]) load(decks[i].id); };
+  tabs.forEach(b => b.addEventListener('click', () => { store('deckStyle', b.dataset.deck); load(cur, b.dataset.deck); }));
+  sel.addEventListener('change', () => load(sel.value));
+  document.getElementById('slPrev').addEventListener('click', () => step(-1));
+  document.getElementById('slNext').addEventListener('click', () => step(1));
+  document.getElementById('slClose').addEventListener('click', close);
+  document.getElementById('slidesBtn').addEventListener('click', () => open());
+  document.addEventListener('click', e => { const b = e.target.closest('[data-slides]'); if (b) open(b.dataset.slides); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !box.hidden) close(); });
+  return { open, close, has: id => !!byId[id] };
+})();
+let deckWant = null;  // 从旧链接 #vNN / #dNN 跳来：打开对应章节的播放器和风格
 // ---------- 本页目录（悬浮） ----------
 const tocEl = document.getElementById('toc'), tocList = document.getElementById('tocList'), tocFab = document.getElementById('tocFab'), mainEl = document.getElementById('main');
 let tocHeads = [];
@@ -386,6 +418,7 @@ function route() {
   else { showDoc('home'); }
   setCurrent(id);
   if (!id.startsWith('lab')) window.scrollTo(0, 0);
+  if (deckWant) { const st = deckWant; deckWant = null; if (slides.has(id)) slides.open(id, st); }
 }
 function go(id) { if (location.hash === '#' + id) route(); else location.hash = id; }
 document.addEventListener('click', e => {

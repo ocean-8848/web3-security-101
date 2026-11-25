@@ -178,17 +178,26 @@ a.lab-link::after { content: " ▸"; font-size: .8em; color: var(--gold); }
 .labhead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; padding: 10px 0; }
 .labhead h1 { font-family: var(--f-display); font-size: 20px; margin: 0; }
 .labhead .muted { font-size: 13px; color: var(--ink-2); }
-.deck-tabs { margin: 14px 0 26px; }
-.deck-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
-.deck-bar [role="tab"] { font: inherit; font-size: 13.5px; padding: 5px 14px; border: 1px solid var(--rule); border-radius: 999px; background: var(--paper); color: var(--ink-2); cursor: pointer; }
-.deck-bar [role="tab"]:hover { border-color: var(--gold); color: var(--ink); }
-.deck-bar [role="tab"][aria-selected="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
-.deck-hint { flex: 1 1 260px; font-size: 12.5px; color: var(--ink-2); line-height: 1.5; }
-.deck-tabs .deck-embed { margin-top: 10px; }
-.deck-embed { position: relative; left: 50%; transform: translateX(-50%); width: min(1280px, calc(100vw - var(--rail) - 40px)); margin: 18px 0 8px; }
-.deck-embed iframe { display: block; width: 100%; height: max(540px, calc(100vh - var(--bar) - 150px)); border: 1px solid var(--rule); border-radius: 12px; background: var(--ground); }
-@media (max-width: 960px), (max-aspect-ratio: 4/3) { .deck-embed iframe { height: calc(min(1280px, 100vw - var(--rail) - 40px) * .5625 + 470px); } }
-@media (max-width: 900px) { .deck-embed { width: calc(100vw - 24px); } .deck-embed iframe { height: calc((100vw - 24px) * .5625 + 470px); } }
+.slides-cta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; width: 100%; margin: 4px 0 18px; padding: 10px 14px; font: inherit; text-align: left; border: 1px solid var(--rule); border-left: 3px solid var(--gold); border-radius: 10px; background: var(--paper); color: var(--ink); cursor: pointer; }
+.slides-cta:hover { border-color: var(--gold); }
+.slides-cta b { color: var(--gold); font-size: 15px; }
+.slides-cta span { color: var(--ink-2); font-size: 13px; }
+/* slides player: full screen, opened from the top bar */
+.slides { position: fixed; inset: 0; z-index: 90; display: flex; flex-direction: column; background: var(--ground); }
+.slides[hidden] { display: none; }
+.slides-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: calc(8px + env(safe-area-inset-top, 0px)) 16px 8px; background: var(--paper); border-bottom: 1px solid var(--rule); }
+.slides-bar .st { flex: 1 1 220px; min-width: 0; font-family: var(--f-display); font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.slides-bar select { font: inherit; font-size: 13.5px; height: 34px; max-width: 220px; padding: 0 8px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); color: var(--ink); }
+.slides-tabs { display: inline-flex; border: 1px solid var(--rule); border-radius: 999px; overflow: hidden; }
+.slides-tabs button { font: inherit; font-size: 13.5px; padding: 5px 14px; border: 0; background: var(--paper); color: var(--ink-2); cursor: pointer; }
+.slides-tabs button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+.slides-tabs button[hidden] { display: none; }
+.slides-hint { width: 100%; font-size: 12px; color: var(--ink-2); line-height: 1.5; }
+.slides-port { flex: 1; min-height: 0; padding: 10px; }
+.slides-port iframe { display: block; width: 100%; height: 100%; border: 1px solid var(--rule); border-radius: 10px; background: var(--ground); }
+.slides-port iframe[hidden] { display: none; }
+body.slides-open { overflow: hidden; }
+@media (max-width: 600px) { .slides-hint { display: none; } .slides-bar { gap: 6px; padding-inline: 8px; } .slides-bar .st { flex-basis: 100%; font-size: 14px; } .slides-bar select { flex: 1 1 0; min-width: 0; max-width: none; } .slides-port { padding: 4px; } }
 .labframe { flex: 1; width: 100%; border: 1px solid var(--rule); border-radius: 10px 10px 0 0; background: var(--ground); }
 
 .results { margin-top: 10px; }
@@ -259,6 +268,7 @@ ul.ck-done + *, ol.ck-done { }
   <button class="icon-btn" id="menuBtn" aria-label="打开目录">☰ 目录</button>
   <a class="brand" href="#home" data-nav="home"><b>Web3 安全学习手册</b><span class="tick">合约 · 链 · 钱包 · 运营</span></a>
   <span class="spacer"></span>
+  <button class="icon-btn" id="slidesBtn" type="button" title="打开本章幻灯讲解">▶ Slides</button>
   <a class="icon-btn" href="#labs" data-nav="labs" style="display:inline-flex;align-items:center;text-decoration:none">交互实验</a>
 </header>
 <div class="shell">
@@ -271,6 +281,16 @@ ul.ck-done + *, ol.ck-done { }
   <button type="button" class="toc-fab" id="tocFab" hidden aria-controls="toc" aria-expanded="false">☰ 本页目录</button>
 </div>
 
+<div class="slides" id="slides" hidden role="dialog" aria-modal="true" aria-labelledby="slidesTitle">
+  <div class="slides-bar">
+    <span class="st" id="slidesTitle"></span>
+    <span class="slides-tabs" role="tablist"><button type="button" role="tab" data-deck="skeuo">拟物化</button><button type="button" role="tab" data-deck="3b1b">3b1b</button></span>
+    <button class="icon-btn" type="button" id="slPrev" title="上一章">◀</button><select id="slSel" aria-label="选择章节"></select><button class="icon-btn" type="button" id="slNext" title="下一章">▶</button>
+    <button class="icon-btn" type="button" id="slClose" title="关闭（Esc），回到原文">读原文 ✕</button>
+    <div class="slides-hint" id="slidesHint"></div>
+  </div>
+  <div class="slides-port" id="slidesPort"></div>
+</div>
 <div class="viewer" id="viewer" hidden role="dialog" aria-modal="true" aria-labelledby="viewerTitle">
   <div class="viewer-bar">
     <span class="vt" id="viewerTitle">流程图</span>

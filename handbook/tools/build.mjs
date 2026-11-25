@@ -181,23 +181,21 @@ if (fs.existsSync(path.join(ROOT, 'tools/topics.json'))) {
   }
 }
 // 知识讲解幻灯：media/decks/skeuo/chNN/（拟物化）和 media/decks/3b1b/chNN.html（3b1b 风格）由视频工程生成
-// （media/video/{skeuo,3b1b}/tools/make_deck.py）。两套幻灯嵌在对应知识章节 sNN 的标题下方，用标签页切换，
-// 选中的那套才加载（shell-tail.html 的 initDecks）。旧的独立页 vNN / dNN 经 ALIASES 跳回章节并打开对应标签。
+// （media/video/{skeuo,3b1b}/tools/make_deck.py）。顶栏右上角「▶ Slides」打开全屏幻灯播放器（shell-tail.html 的 slides），
+// 两套风格用标签切换；知识章节 sNN 标题下方另有一条入口。旧的独立页 vNN / dNN 经 ALIASES 跳回章节并打开播放器。
+const DECKS = [];
 {
   const skeuo = fs.existsSync(path.join(MEDIA, 'decks/skeuo')) ? fs.readdirSync(path.join(MEDIA, 'decks/skeuo')).filter(d => /^ch\d\d$/.test(d)).map(d => d.slice(2)) : [];
   const b3 = fs.existsSync(path.join(MEDIA, 'decks/3b1b')) ? fs.readdirSync(path.join(MEDIA, 'decks/3b1b')).filter(f => /^ch\d\d\.html$/.test(f)).map(f => f.slice(2, 4)) : [];
-  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
   for (const n of [...new Set([...skeuo, ...b3])].sort()) {
     const sid = 's' + n, ch = docs[sid];
     if (!ch) throw new Error('deck ch' + n + ' has no chapter ' + sid);
-    const t = esc(ch.title.replace(/^\d\d[a-z]?\s+/, ''));
-    const tabs = [];
-    if (skeuo.includes(n)) { tabs.push(['skeuo', '拟物化讲解', `decks/skeuo/ch${n}/index.html`, '每页直接显示结论画面，点「▶ 看过程」（P）看推导；点画面或按 → 翻页，N 看讲稿，F 全屏。']); ALIASES['v' + n] = sid; }
-    if (b3.includes(n)) { tabs.push(['3b1b', '3b1b 风格讲解', `decks/3b1b/ch${n}.html`, '每页一个想法，配要点和讲稿，最后 3 道自测题；点画面或按 → 翻页，N 看讲稿，Z 放大，F 全屏。']); ALIASES['d' + n] = sid; }
-    const block = `\n<section class="deck-tabs" aria-label="本章幻灯讲解">` +
-      `<div class="deck-bar" role="tablist">${tabs.map(([k, label]) => `<button type="button" role="tab" data-deck="${k}" aria-selected="false">${label}</button>`).join('')}<span class="deck-hint"></span></div>` +
-      `<div class="deck-embed">${tabs.map(([k, label, src, hint]) => `<iframe data-deck="${k}" data-src="${src}" data-hint="${hint}" title="${label}：${t}" allow="fullscreen" allowfullscreen hidden></iframe>`).join('')}</div></section>`;
-    ch.html = ch.html.replace(/(<\/h1>)/, `$1${block}`);
+    const d = { id: sid };
+    if (skeuo.includes(n)) { d.skeuo = `decks/skeuo/ch${n}/index.html`; ALIASES['v' + n] = sid; }
+    if (b3.includes(n)) { d['3b1b'] = `decks/3b1b/ch${n}.html`; ALIASES['d' + n] = sid; }
+    DECKS.push(d);
+    const styles = [d.skeuo && '拟物化', d['3b1b'] && '3b1b'].filter(Boolean).join(' / ');
+    ch.html = ch.html.replace(/(<\/h1>)/, `$1\n<button type="button" class="slides-cta" data-slides="${sid}"><b>▶ 看 Slides</b><span>${styles} 两种动画讲解，一页一页过完本章要点</span></button>`);
   }
 }
 const DATA = { parts: NAV_PARTS,
@@ -205,6 +203,7 @@ const DATA = { parts: NAV_PARTS,
   labs: LABS.map(([f, title]) => ({ id: 'lab-' + f, file: f + '.html', title })),
   mdMap: Object.fromEntries(Object.entries(mdMap).map(([k, v]) => ['../' + k, v])),
   aliases: ALIASES,
+  decks: DECKS,
 };
 const json = JSON.stringify(DATA).replace(/<\/(script)/gi, '<\\/$1').replace(/<!--/g, '<\\!--');
 const page = fs.readFileSync(path.join(ROOT, 'tools/shell-head.html'), 'utf8') + 'const DATA = ' + json + fs.readFileSync(path.join(ROOT, 'tools/shell-tail.html'), 'utf8');
