@@ -182,7 +182,7 @@ if (fs.existsSync(path.join(ROOT, 'tools/topics.json'))) {
 }
 // 知识讲解幻灯：media/decks/skeuo/chNN/（拟物化）和 media/decks/3b1b/chNN.html（3b1b 风格）由视频工程生成
 // （media/video/{skeuo,3b1b}/tools/make_deck.py）。顶栏右上角「▶ Slides」打开全屏幻灯播放器（shell-tail.html 的 slides），
-// 两套风格用标签切换；知识章节 sNN 标题下方另有一条入口。旧的独立页 vNN / dNN 经 ALIASES 跳回章节并打开播放器。
+// 两套风格用标签切换。旧的独立页 vNN / dNN 经 ALIASES 跳回章节并打开播放器。
 const DECKS = [];
 {
   const skeuo = fs.existsSync(path.join(MEDIA, 'decks/skeuo')) ? fs.readdirSync(path.join(MEDIA, 'decks/skeuo')).filter(d => /^ch\d\d$/.test(d)).map(d => d.slice(2)) : [];
@@ -194,8 +194,6 @@ const DECKS = [];
     if (skeuo.includes(n)) { d.skeuo = `decks/skeuo/ch${n}/index.html`; ALIASES['v' + n] = sid; }
     if (b3.includes(n)) { d['3b1b'] = `decks/3b1b/ch${n}.html`; ALIASES['d' + n] = sid; }
     DECKS.push(d);
-    const styles = [d.skeuo && '拟物化', d['3b1b'] && '3b1b'].filter(Boolean).join(' / ');
-    ch.html = ch.html.replace(/(<\/h1>)/, `$1\n<button type="button" class="slides-cta" data-slides="${sid}"><b>▶ 看 Slides</b><span>${styles} 两种动画讲解，一页一页过完本章要点</span></button>`);
   }
 }
 const DATA = { parts: NAV_PARTS,

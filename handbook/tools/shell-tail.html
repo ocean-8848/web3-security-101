@@ -291,7 +291,6 @@ const slides = (() => {
   document.getElementById('slNext').addEventListener('click', () => step(1));
   document.getElementById('slClose').addEventListener('click', close);
   document.getElementById('slidesBtn').addEventListener('click', () => open());
-  document.addEventListener('click', e => { const b = e.target.closest('[data-slides]'); if (b) open(b.dataset.slides); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !box.hidden) close(); });
   return { open, close, has: id => !!byId[id] };
 })();
